@@ -1,0 +1,95 @@
+﻿.pager
+{
+    background:#fff;
+    width:684px;
+    padding:10px 0 8px 0;
+    margin: 10px 0 0 0;
+    overflow: hidden;
+    position: relative;
+    -moz-box-shadow:0 0 12px 0 #e0e0e0;
+    -webkit-box-shadow: 0 0 12px 0 #e0e0e0;
+}
+.pager div.short
+{
+    float: right;
+    margin: 0;
+    padding: 0;
+    margin-right: 10px;
+    width: 74px;
+}
+.pager div.short input
+{
+    width: 28px;
+    height: 18px;
+    border: none;
+    margin-left: 8px;
+    float: left;
+}
+.pager ul
+{
+    list-style: none;
+    padding: 0 10px;
+    margin: 0;
+    float: left;
+    margin-right: 4px;
+}
+.pager ul li
+{
+    display: inline;
+    margin-left: 5px;
+}
+.pager ul li a
+{
+    text-decoration: none;
+    display: inline-table;
+    width: 20px;
+    text-align: center;
+/*    border-radius: 4px;
+    -moz-border-radius: 4px;*/
+}
+
+.pager span
+{
+    margin-left: 4px;
+    color: White;
+    float: left;
+}
+.pager .btn
+{
+    display: block;
+    width: 40px;
+    text-align: center;
+    float: left;
+    padding: 0;
+    margin: 0;
+    margin-left: 4px;
+    cursor: pointer;
+}
+.pager .disabled
+{
+    color: #A0A0A0 !important;
+    text-shadow: 1px 1px 1px #FFFFFF;
+}
+/*green*/.blue
+{
+    background-color: #39BAF1;
+}
+.blue.normal
+{
+    background-color: #33A7D9;
+    color: White;
+    border: solid 1px white;
+}
+.blue.active
+{
+    background-color: #33A7D9;
+    color: #F8EB00;
+    font-weight:bold;
+    border: solid 1px white;
+}
+.pager.blue.btn
+{
+    background-color: #33A7D9;
+    color: black;
+    border: solid 1px white;
+}

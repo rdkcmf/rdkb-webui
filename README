@@ -1,0 +1,36 @@
+
+Overview
+================
+
+Web GUI code is developed with PHP. PHP extension is used for PHP code to access CCSP data models via CCSP Message Bus.
+
+There are three portions:
+1) CcspPhpExtension     -- CCSP PHP extension code
+2) CcspPhpApi           -- CCSP PHP APIs, which in turn calls PHP extension
+3) Styles               -- Web GUI code and configuration, including PHP files, theme related files, Java Scripts, etc...
+
+
+PHP Extension and PHP APIs
+==========================
+
+See source/CcspPhpExtension/README for details
+
+
+Styles - Web GUI code
+==========================
+
+Actual PHP code and other GUI files are located in "code" directory.
+
+"config" directory contains the configuration file to run the lighttpd web server:
+
+    .lighttpd.conf  -- configuration file for lighttpd
+    .php.ini        -- configuration file for PHP. Included php.ini configures
+                       the location of CcspPhpExtension "cosa.so" as follows:
+
+                        extension_dir = "/fss/gw/usr/ccsp"
+                        extension=cosa.so
+
+                        The above settings needs to udpated should move the php extension to a different location.
+
+    .webgui.sh      -- this script configures and starts lighttpd. This file should
+                       be tailored to fit your needs.
