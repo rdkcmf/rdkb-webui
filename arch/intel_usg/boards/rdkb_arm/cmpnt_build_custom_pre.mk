@@ -1,1 +1,0 @@
-../arm_shared/cmpnt_build_custom_pre.mk
