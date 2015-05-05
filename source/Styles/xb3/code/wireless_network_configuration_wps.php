@@ -37,8 +37,6 @@ foreach ($ssids as $i){
 		$encrypt_method	= getStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_EncryptionMethod");
 		$broadcastSSID	= getStr("Device.WiFi.AccessPoint.$i.SSIDAdvertisementEnabled");
 		$filter_enable	= getStr("Device.WiFi.AccessPoint.$i.X_CISCO_COM_MACFilter.Enable");
-		// do not detect ACL for WPS at this time 0509
-		$filter_enable	= "false";		
 		if (strstr($encrypt_mode, "WEP") || (strstr($encrypt_mode, "WPA") && $encrypt_method=="TKIP") || "false"==$broadcastSSID || "true"==$filter_enable){
 			$wps_config	= "false";
 			break;

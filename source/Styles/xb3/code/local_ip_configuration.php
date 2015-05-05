@@ -80,7 +80,7 @@ $(document).ready(function() {
 			beginning_ip3 = "0";
 			beginning_ip4 = "2";
 			ending_ip3 = "255";
-			ending_ip4 = "253";
+			ending_ip4 = "254";
 			$("#ipv4_dhcp_beginning_address_1").prop("disabled", true);
 			$("#ipv4_dhcp_beginning_address_2").prop("disabled", true);
 			$("#ipv4_dhcp_ending_address_1").prop("disabled", true);
@@ -88,7 +88,7 @@ $(document).ready(function() {
 			$("#ipv4_dhcp_beginning_address_3").prop("disabled", false);
 			$("#ipv4_dhcp_ending_address_3").prop("disabled", false);
 			$("#ipv4_dhcp_beginning_address_4").val(2);
-			$("#ipv4_dhcp_ending_address_4").val(253);
+			$("#ipv4_dhcp_ending_address_4").val(254);
 
 			$("#ipv4_gateway_address_2").prop("disabled", false);
 			$("#ipv4_gateway_address_3").prop("disabled", true);
@@ -96,7 +96,7 @@ $(document).ready(function() {
 		} 
 		else if (subnet == "255.255.255.128") {
 			beginning_ip4 = "2";
-			ending_ip4 = "125";
+			ending_ip4 = "126";
 			$("#ipv4_dhcp_beginning_address_1").prop("disabled", true);
 			$("#ipv4_dhcp_beginning_address_2").prop("disabled", true);
 			$("#ipv4_dhcp_beginning_address_3").prop("disabled", true);
@@ -104,7 +104,7 @@ $(document).ready(function() {
 			$("#ipv4_dhcp_ending_address_2").prop("disabled", true);
 			$("#ipv4_dhcp_ending_address_3").prop("disabled", true);
 			$("#ipv4_dhcp_beginning_address_4").val(2);
-			$("#ipv4_dhcp_ending_address_4").val(125);
+			$("#ipv4_dhcp_ending_address_4").val(126);
 			$("#ipv4_gateway_address_2").prop("disabled", false);
 			$("#ipv4_gateway_address_3").prop("disabled", false);
 		}
@@ -125,9 +125,9 @@ $(document).ready(function() {
 		}
 		else if (subnet == "255.0.0.0") {
 			beginning_ip3 = "0";
-			beginning_ip4 = "2";
+			//beginning_ip4 = "2";
 			ending_ip3 = "255";
-			ending_ip4 = "253";
+			//ending_ip4 = "254";
 			beginning_ip2 = "0";
 			ending_ip2 = "255";
 			$("#ipv4_dhcp_beginning_address_1").prop("disabled", true);
@@ -137,7 +137,7 @@ $(document).ready(function() {
 			$("#ipv4_dhcp_ending_address_2").prop("disabled", false);
 			$("#ipv4_dhcp_ending_address_3").prop("disabled", false);
 		    $("#ipv4_dhcp_beginning_address_4").val(2);
-			$("#ipv4_dhcp_ending_address_4").val(253);
+			$("#ipv4_dhcp_ending_address_4").val(254);
 
 			$("#ipv4_gateway_address_2").prop("disabled", true);
 			$("#ipv4_gateway_address_3").prop("disabled", true);
@@ -176,8 +176,6 @@ $(document).ready(function() {
 		$("#ipv4_dhcp_ending_address_2").val(replaceNaNwithEmptyString(ending_ip2));
 		$("#ipv4_dhcp_ending_address_3").val(replaceNaNwithEmptyString(ending_ip3));
 		//$("#ipv4_dhcp_ending_address_4").val(replaceNaNwithEmptyString(ending_ip4));
-		
-		$("#pageForm").valid();
 	}//end of updateIPv4
 
 	// Update range addresses automatically
@@ -299,15 +297,18 @@ $(document).ready(function() {
 
 	jQuery.validator.addMethod("checkMask",function(value,element){		
 		var netmask = $('#ipv4_subnet_mask').val();
-		// reserved last available address for all subnet
 		if (netmask == '255.255.255.128'){
-			return ((value>=2) && (value<=125));
+			return ((value>=2) && (value<=126));
 		}
 		else if (netmask == '255.255.255.252'){
 			return  (value == 2);
 		}
-		else {
-			return ((value>=2) && (value<=253));
+		else if (netmask == '255.255.255.0'){
+			return ((value>=2) && (value<=(element.id == "ipv4_dhcp_ending_address_4" ? 253 : 254)));
+		}
+		else
+		{
+			return true;
 		}
 	}, "DHCP ending address is beyond the valid range.");
 

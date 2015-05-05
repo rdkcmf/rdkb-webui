@@ -495,7 +495,7 @@ function init_form()
 		$("#div_password_show").hide();
 	}
 	else if ("cusadmin"==thisUser){
-		$("#div_password_show").hide();
+		// $("#div_password_show").hide();
 		$("#div_enableWMM").hide();
 	}
 	else{

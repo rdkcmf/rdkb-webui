@@ -62,7 +62,7 @@ for ($i=6; $i<count($raws);)
 		$Des 		= $raws[$i++];	//description
 	}		
 	
-	$timeT = preg_split("/[\s,]+/", $time);		//Oct 10 17:09:17 2014
+	$timeT = explode(' ', $time);	//Oct 10 17:09:17 2014
 	$timeU = mktime(0, 0, 0, $MONTH[$timeT[0]], $timeT[1], $timeT[3]);
 	if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
 	
