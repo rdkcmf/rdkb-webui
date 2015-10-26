@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 <!-- $Id: port_triggering_add.php 3117 2009-10-15 20:23:13Z cporto $ -->
 
 <div id="sub-header">
@@ -99,26 +99,36 @@ $(document).ready(function() {
 </script>
 <?php $i=$_GET['id'];
 	echo "<script>var ID=".$i.";</script>";
+    $port_trigger_param = array(
+        "service_name"      => "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Description",
+        "type"              => "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerProtocol",
+        "from_start_port"   => "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortStart",
+        "from_end_port"     => "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortEnd",
+        "to_start_port"     => "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortStart",
+        "to_end_port"       => "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortEnd",
+	);
+    $port_trigger_value = KeyExtGet("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.", $port_trigger_param);
 ?>
 <div id="content">
 	<h1>Advanced > Port Triggering > Edit Port Trigger</h1>
     <div id="educational-tip">
-        <p class="tip"> Some text about email notification and how they work.</p>
-        <p class="hidden">Some more text to help the customer understand about this content.</p>
-    </div>
+		<p class="tip">Edit a rule for port triggering services by user.</p>
+		<p class="hidden">Port triggering monitors outbound traffic on your network. When traffic is detected on a particular outbound port, the Gateway remembers that computer's IP address, triggers the inbound port to accept the incoming traffic, and directs the communications to the same computer.</p>
+		<p class="hidden">Port triggering settings can affect the Gateway's performance.</p>
+	</div>
 	<form method="post" id="pageForm" action="">
 	<div class="module forms">
 		<h2>Edit Port Trigger</h2>
 
 		<div class="form-row odd">
-			<label for="service_name">Service Name:</label> <input type="text" class="text" value="<?php echo getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Description");?>" id="service_name" name="service_name" />
+			<label for="service_name">Service Name:</label> <input type="text" class="text" value="<?php echo $port_trigger_value["service_name"]; ?>" id="service_name" name="service_name" />
 		</div>
 
 		<div class="form-row">
 			<label for="service_type">Service Type:</label>
 			<select id="service_type">
 
-			<?php $type = getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerProtocol"); ?>
+			<?php $type = $port_trigger_value["type"]; ?>
 
 			<option value="tcp_udp" <?php if($type === 'BOTH') echo 'selected'; ?>>TCP/UDP</option>
 			<option value="tcp" <?php if($type === 'TCP') echo 'selected'; ?>>TCP</option>
@@ -128,16 +138,16 @@ $(document).ready(function() {
 		</div>
 
 		<div class="form-row odd">
-			<label for="from_start_port">Trigger From Starting Port:</label>  <input type="text" class="text" value="<?php echo getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortStart");?>" id="from_start_port" name="from_start_port" />
+			<label for="from_start_port">Trigger From Starting Port:</label>  <input type="text" class="text" value="<?php echo $port_trigger_value["from_start_port"]; ?>" id="from_start_port" name="from_start_port" />
 		</div>
 		<div class="form-row">
-			<label for="from_end_port">Trigger From Ending Port:</label>  <input type="text" class="text" value="<?php echo getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortEnd");?>" id="from_end_port" name="from_end_port" />
+			<label for="from_end_port">Trigger From Ending Port:</label>  <input type="text" class="text" value="<?php echo $port_trigger_value["from_end_port"]; ?>" id="from_end_port" name="from_end_port" />
 		</div>
 	    <div class="form-row odd">
-			<label for="to_start_port">Target To Starting Port:</label>  <input type="text" class="text" value="<?php echo getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortStart");?>" id="to_start_port" name="to_start_port" />
+			<label for="to_start_port">Target To Starting Port:</label>  <input type="text" class="text" value="<?php echo $port_trigger_value["to_start_port"];?>" id="to_start_port" name="to_start_port" />
 		</div>
 		<div class="form-row">
-			<label for="to_end_port">Target To Ending Port:</label>  <input type="text" class="text" value="<?php echo getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortEnd");?>" id="to_end_port" name="to_end_port" />
+			<label for="to_end_port">Target To Ending Port:</label>  <input type="text" class="text" value="<?php echo $port_trigger_value["to_end_port"];?>" id="to_end_port" name="to_end_port" />
 		</div>
 		<div class="form-btn">
 			<input type="button" id="btn-save" value="Save" class="btn submit"/>

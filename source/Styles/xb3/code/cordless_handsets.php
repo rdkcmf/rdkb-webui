@@ -217,7 +217,7 @@ function init_data(){
 	<h1>Connected Devices > Cordless Handsets</h1>
 
 	<div id="educational-tip">
-		<p class="tip">Connect/disconnect a certified CAT-iq 2.0 cordless handset (up to five) to the Gateway.  </p>
+		<p class="tip">Connect/Disconnect a certified CAT-iq 2.0 cordless handset (up to five) to the Gateway.  </p>
 		<p class="hidden"><strong>REGISTER NEW HANDSET:</strong> Click to connect a new handset and follow the instructions. </p>
 		<p class="hidden"><strong>DEREGISTER:</strong> Click to disassociate the handset from the Gateway. </p>
 	</div>

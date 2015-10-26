@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 <!-- $Id: managed_devices_add_computer.php 2943 2009-08-25 20:58:43Z slemoine $ -->
 
 <div id="sub-header">
@@ -195,10 +195,10 @@ $(document).ready(function() {
 					});
 				} 
 			} else {
-				alert("MAC is not valid! Can not be saved.");
+				jAlert("MAC is not valid! Can not be saved.");
 			}
 		} else {
-				alert("Not valid! Can not be saved.");
+				jAlert("Not valid! Can not be saved.");
 		}
 	});
 
@@ -226,7 +226,7 @@ $(document).ready(function() {
 </script>
 
 <div id="content">
-	<h1>Parental Control > Manage Devices > Add Allowed Device</h1>
+	<h1>Parental Control > Managed Devices > Add Allowed Device</h1>
 
 <form id="pageForm" action="managed_devices.php" method="post">
 	<div class="module">
@@ -243,21 +243,32 @@ $(document).ready(function() {
 			        <th class="ip">MAC Address</th>
 			    </tr>
 			    <?php 
+                    $rootObjName    = "Device.Hosts.Host.";
+                    $paramNameArray = array("Device.Hosts.Host.");
+                    $mapping_array  = array("HostName", "PhysAddress");
+		    		$hostsInstance = array();
+                    $hostsInstanceArr = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+
 					$hostIDs=explode(",",getInstanceIDs("Device.Hosts.Host."));
 					$iclass="";
 					if (empty($hostIDs) || empty($hostIDs[0])) {
 						$hostIDs = array();
 					}
 					foreach ($hostIDs as $key=>$i) {
+						$hostsInstance["$i"] = $hostsInstanceArr["$key"];
+					}
+					foreach ($hostIDs as $key=>$i) {
 						if ($iclass=="") {$iclass="odd";} else {$iclass="";}
-						$hostName = getStr("Device.Hosts.Host.".$i.".HostName");
-						$hostMac = getStr("Device.Hosts.Host.".$i.".PhysAddress");
+						$hostName = $hostsInstance["$i"]["HostName"]; 
+						$hostMac = $hostsInstance["$i"]["PhysAddress"]; 
+						
+
 						echo "
-							<tr class=$iclass>
-								<th class=\"row-label alt\"><input name=\"computer\" id=\"$hostMac\" type=\"radio\" value=\"$hostName\" /></th>
-								<td>".$hostName."</td>
-								<td>".$hostMac."</td>
-							</tr>"; 
+						<tr class=$iclass>
+							<th class=\"row-label alt\"><input name=\"computer\" id=\"$hostMac\" type=\"radio\" value=\"$hostName\" /></th>
+							<td>".$hostName."</td>
+							<td>".$hostMac."</td>
+						</tr>";
 					} 
 				?>
 
@@ -366,8 +377,9 @@ $(document).ready(function() {
             	<input type="button" id="btn-save" name="save" class="btn submit" value="Save"/>
             	<input type="button" id="btn-cancel" name="cancel" class="btn alt reset" value="Cancel"/>
             </div>
-    	</div> <!-- end .form -->
 	</div> <!-- end .module -->
+	</div>
+    	</div> <!-- end .form -->
     </form>
 </div><!-- end #content -->
 

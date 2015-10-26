@@ -48,6 +48,70 @@
 
 	// !!! move "get hotspot status" to edit_public.php, no change on the "Edit" link 
 
+  function php_KeyExtGet($root, $params)
+  {
+    if ("Enabled" == $_SESSION["psmMode"])
+    {
+      if ((strstr($root, "WiFi")) || (strstr($root, "MoCA"))){
+          foreach($params as $i=>$key)
+          {
+            $params["$key"] = "";
+          }
+          return $params;
+      }
+    }
+    return KeyExtGet($root, $params);
+  }
+
+      $wifi_param = array(
+      "SSID1"               => "Device.WiFi.SSID.1.SSID",
+      "SSID2"               => "Device.WiFi.SSID.2.SSID",
+      "SSID3"               => "Device.WiFi.SSID.3.SSID",
+      "SSID4"               => "Device.WiFi.SSID.4.SSID",
+      "SSID5"               => "Device.WiFi.SSID.5.SSID",
+      "SSID6"               => "Device.WiFi.SSID.6.SSID",
+      "Enable1"             => "Device.WiFi.SSID.1.Enable",
+      "Enable2"             => "Device.WiFi.SSID.2.Enable",
+      "Enable3"             => "Device.WiFi.SSID.3.Enable",
+      "Enable4"             => "Device.WiFi.SSID.4.Enable",
+      "Enable5"             => "Device.WiFi.SSID.5.Enable",
+      "Enable6"             => "Device.WiFi.SSID.6.Enable",
+      "ModeEnabled1"        => "Device.WiFi.AccessPoint.1.Security.ModeEnabled",
+      "ModeEnabled2"        => "Device.WiFi.AccessPoint.2.Security.ModeEnabled",
+      "ModeEnabled3"        => "Device.WiFi.AccessPoint.3.Security.ModeEnabled",
+      "ModeEnabled4"        => "Device.WiFi.AccessPoint.4.Security.ModeEnabled",
+      "ModeEnabled5"        => "Device.WiFi.AccessPoint.5.Security.ModeEnabled",
+      "ModeEnabled6"        => "Device.WiFi.AccessPoint.6.Security.ModeEnabled",
+      "NumberOfEntries1"    => "Device.WiFi.AccessPoint.1.AssociatedDeviceNumberOfEntries",
+      "NumberOfEntries2"    => "Device.WiFi.AccessPoint.2.AssociatedDeviceNumberOfEntries",
+      "NumberOfEntries3"    => "Device.WiFi.AccessPoint.3.AssociatedDeviceNumberOfEntries",
+      "NumberOfEntries4"    => "Device.WiFi.AccessPoint.4.AssociatedDeviceNumberOfEntries",
+      "NumberOfEntries5"    => "Device.WiFi.AccessPoint.5.AssociatedDeviceNumberOfEntries",
+      "NumberOfEntries6"    => "Device.WiFi.AccessPoint.6.AssociatedDeviceNumberOfEntries",
+      "EncryptionMethod1"   => "Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_EncryptionMethod",
+      "EncryptionMethod2"   => "Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_EncryptionMethod",
+      "EncryptionMethod3"   => "Device.WiFi.AccessPoint.3.Security.X_CISCO_COM_EncryptionMethod",
+      "EncryptionMethod4"   => "Device.WiFi.AccessPoint.4.Security.X_CISCO_COM_EncryptionMethod",
+      "EncryptionMethod5"   => "Device.WiFi.AccessPoint.5.Security.X_CISCO_COM_EncryptionMethod",
+      "EncryptionMethod6"   => "Device.WiFi.AccessPoint.6.Security.X_CISCO_COM_EncryptionMethod",
+      "OperatingStandards1" => "Device.WiFi.Radio.1.OperatingStandards",
+      "OperatingStandards2" => "Device.WiFi.Radio.2.OperatingStandards",
+
+    );
+    $wifi_value = php_KeyExtGet("Device.WiFi.", $wifi_param);
+    $device_ctrl_param = array(
+        "LanIPAddress"    => "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress",
+        "LanSubnetMask"   => "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask" ,
+        "WanAddressMode"  => "Device.X_CISCO_COM_DeviceControl.WanAddressMode",
+      );
+    $device_ctrl_value = php_KeyExtGet("Device.X_CISCO_COM_DeviceControl.", $device_ctrl_param);
+    $dhcpv4_param = array(
+        "Enable"                => "Device.DHCPv4.Server.Enable",
+        "LeaseTime"             => "Device.DHCPv4.Server.Pool.1.LeaseTime",
+        "LeaseTimeRemaining"    => "Device.DHCPv4.Client.1.LeaseTimeRemaining",
+      );
+    $dhcpv4_value = php_KeyExtGet("Device.DHCPv4.", $dhcpv4_param);
+
 ?>
 
 
@@ -125,19 +189,19 @@ $(document).ready(function() {
         
                 <div class="form-row ">
                     <span class="readonlyLabel">IP Address (IPv4):</span> <span class="value"> 
-                         <?php echo php_getstr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress"); ?>
+                         <?php echo $device_ctrl_value["LanIPAddress"]; ?>
                     </span>
                 </div>
 
                 <div class="form-row odd" >
                     <span class="readonlyLabel">Subnet mask:</span> <span class="value">
-                     <?php echo php_getstr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask"); ?>
+                     <?php echo $device_ctrl_value["LanSubnetMask"]; ?>
                     </span>
                 </div>
 
                 <div class="form-row ">
                         <span class="readonlyLabel">DHCPv4 Server:</span> <span class="value"> 
-                  <?php if ( !strcasecmp("true", php_getstr("Device.DHCPv4.Server.Enable"))) 
+                  <?php if ( !strcasecmp("true", $dhcpv4_value["Enable"])) 
                           echo "Enabled";
                           else  echo "Disabled";
                   ?> 
@@ -165,9 +229,14 @@ $(document).ready(function() {
 
                       function sec2dhms($sec)
                       {
-                        (!is_numeric($sec)) && ($sec = 0);
+                        
+			if($sec == "-1") return "Forever";
 
-                        $tmp = div_mod($sec, 24*60*60);
+			(!is_numeric($sec)) && ($sec = 0);
+
+                        if($sec >= 604800 && $sec % 604800 == 0) return $sec/(604800)." Week";
+
+			$tmp = div_mod($sec, 24*60*60);
                         $day = $tmp[0];
 
                         $tmp = div_mod($tmp[1], 60*60);
@@ -179,7 +248,7 @@ $(document).ready(function() {
                         return "${day}d:${hor}h:${min}m";
                       }
                        
-                      $dhcp_lease_time = php_getstr("Device.DHCPv4.Server.Pool.1.LeaseTime");      
+                      $dhcp_lease_time = $dhcpv4_value["LeaseTime"];      
                       echo sec2dhms($dhcp_lease_time);
 
                       ?>
@@ -262,7 +331,7 @@ $(document).ready(function() {
         <div class="form-row">
         <span class="readonlyLabel">DHCP Client:</span> <span class="value"> 
         <?php 
-         if("DHCP" == php_getstr("Device.X_CISCO_COM_DeviceControl.WanAddressMode")) 
+         if("DHCP" == $device_ctrl_value["WanAddressMode"]) 
              echo "Enabled";
          else
              echo "Disabled";
@@ -274,7 +343,7 @@ $(document).ready(function() {
           <span class="readonlyLabel">DHCP Expire Time:</span> <span class="value">
                     <?php
 
-                    $expire_time = php_getstr("Device.DHCPv4.Client.1.LeaseTimeRemaining");
+                    $expire_time = $dhcpv4_value["LeaseTimeRemaining"];
                     echo sec2dhms($expire_time);
 
                     ?>
@@ -316,68 +385,68 @@ $(document).ready(function() {
 			{
 			//MoCA 1.1
 			case "1150":
-				echo "D1(1150 MHz)";
+				echo "D1 (1150 MHz)";
 				break;  
 			case "1200":
-				echo "D2(1200 MHz)";
+				echo "D2 (1200 MHz)";
 				break;  
 			case "1250":
-				echo "D3(1250 MHz)";
+				echo "D3 (1250 MHz)";
 				break;
 			case "1300":
-				echo "D4(1300 MHz)";
+				echo "D4 (1300 MHz)";
 				break;
 			case "1350":
-				echo "D5(1350 MHz)";
+				echo "D5 (1350 MHz)";
 				break;
 			case "1400":
-				echo "D6(1400 MHz)";
+				echo "D6 (1400 MHz)";
 				break;
 			case "1450":
-				echo "D7(1450 MHz)";
+				echo "D7 (1450 MHz)";
 				break;
 			case "1500":
-				echo "D8(1500 MHz)";
+				echo "D8 (1500 MHz)";
 				break;
 			case "1550":
-				echo "D9(1550 MHz)";
+				echo "D9 (1550 MHz)";
 				break;
 			case "1600":
-				echo "D10(1600 MHz)";
+				echo "D10 (1600 MHz)";
 				break;
 			//MoCA 2.0
 			case "1175":
-				echo "D1a(1175 MHz)";
+				echo "D1a (1175 MHz)";
 				break;
 			case "1225":
-				echo "D2a(1225 MHz)";
+				echo "D2a (1225 MHz)";
 				break;
 			case "1275":
-				echo "D3a(1275 MHz)";
+				echo "D3a (1275 MHz)";
 				break;
 			case "1325":
-				echo "D4a(1325 MHz)";
+				echo "D4a (1325 MHz)";
 				break;
 			case "1375":
-				echo "D5a(1375 MHz)";
+				echo "D5a (1375 MHz)";
 				break;
 			case "1425":
-				echo "D6a(1425 MHz)";
+				echo "D6a (1425 MHz)";
 				break;
 			case "1475":
-				echo "D7a(1475 MHz)";
+				echo "D7a (1475 MHz)";
 				break;
 			case "1525":
-				echo "D8a(1525 MHz)";
+				echo "D8a (1525 MHz)";
 				break;
 			case "1575":
-				echo "D9a(1575 MHz)";
+				echo "D9a (1575 MHz)";
 				break;
 			case "1625":
-				echo "D10a(1625 MHz)";
+				echo "D10a (1625 MHz)";
 				break;
 			default:
-				echo "D1(1150 MHz)";
+				echo "D1 (1150 MHz)";
 			}
 			?>
             </span>
@@ -398,12 +467,12 @@ $(document).ready(function() {
 
   <div style="width:355px;float:left;position:relative;left:5px;" class="wifi_section"><!-- contain private and public Wi-Fi -->
     <div class="module forms block private-wifi">
-        <h2>Private Wi-Fi Network-<?php echo php_getstr("Device.WiFi.SSID.1.SSID"); ?></h2>
+        <h2>Private Wi-Fi Network-<?php echo $wifi_value["SSID1"]; ?></h2>
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.php?id=1" class="btn">Edit</a></p>
         <div class="form-row">
-          <span class="readonlyLabel">Wireless Network(Wi-Fi 2.4 GHz):</span> <span class="value">
+          <span class="readonlyLabel">Wireless Network (Wi-Fi 2.4 GHz):</span> <span class="value">
           <?php 
-              if("true" == php_getstr("Device.WiFi.SSID.1.Enable")) 
+              if("true" == $wifi_value["Enable1"]) 
                 echo "Active";
               else
                 echo "Inactive";
@@ -413,7 +482,7 @@ $(document).ready(function() {
 
         <div class="form-row odd">
           <span class="readonlyLabel">Supported Protocols:</span> <span class="value">
-          <?php echo strtoupper(php_getstr("Device.WiFi.Radio.1.OperatingStandards")); ?>
+          <?php echo strtoupper($wifi_value["OperatingStandards1"]); ?>
           </span>
         </div>
 
@@ -421,8 +490,8 @@ $(document).ready(function() {
 			<span class="readonlyLabel">Security:</span> <span class="value">
 			<?php 
 				//echo php_getstr("Device.WiFi.AccessPoint.2.Security.ModeEnabled");
-				$encrypt_mode	= php_getstr("Device.WiFi.AccessPoint.1.Security.ModeEnabled");
-				$encrypt_method	= php_getstr("Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_EncryptionMethod");
+				$encrypt_mode	= $wifi_value["ModeEnabled1"];
+				$encrypt_method	= $wifi_value["EncryptionMethod1"];
 				echo encrypt_map($encrypt_mode, $encrypt_method);
 			?>
 			</span>
@@ -436,13 +505,13 @@ $(document).ready(function() {
     </div><!-- end .module private wifi 2.4-->  
      
     <div class="module forms block private-wifi" style="position:relative;top:0px;right:0px;">
-        <h2>Private Wi-Fi Network-<?php echo php_getstr("Device.WiFi.SSID.2.SSID"); ?> </h2>
+        <h2>Private Wi-Fi Network-<?php echo $wifi_value["SSID2"]; ?> </h2>
 
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.php?id=2" class="btn">Edit</a></p>
         <div class="form-row">
-          <span class="readonlyLabel">Wireless Network(Wi-Fi 5 GHz):</span> <span class="value">
+          <span class="readonlyLabel">Wireless Network (Wi-Fi 5 GHz):</span> <span class="value">
           <?php 
-              if("true" == php_getstr("Device.WiFi.SSID.2.Enable")) 
+              if("true" == $wifi_value["Enable2"]) 
                 echo "Active";
               else
                 echo "Inactive";
@@ -452,7 +521,7 @@ $(document).ready(function() {
 
         <div class="form-row odd">
           <span class="readonlyLabel">Supported Protocols:</span> <span class="value">
-          <?php echo strtoupper(php_getstr("Device.WiFi.Radio.2.OperatingStandards")); ?>
+          <?php echo strtoupper($wifi_value["OperatingStandards2"]); ?>
           </span>
         </div>
 
@@ -460,8 +529,8 @@ $(document).ready(function() {
 			<span class="readonlyLabel">Security:</span> <span class="value">
 			<?php 
 				//echo php_getstr("Device.WiFi.AccessPoint.2.Security.ModeEnabled");
-				$encrypt_mode	= php_getstr("Device.WiFi.AccessPoint.2.Security.ModeEnabled");
-				$encrypt_method	= php_getstr("Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_EncryptionMethod");
+				$encrypt_mode	= $wifi_value["ModeEnabled2"];
+				$encrypt_method	= $wifi_value["EncryptionMethod2"];
 				echo encrypt_map($encrypt_mode, $encrypt_method);
 			?>
 			</span>
@@ -469,7 +538,7 @@ $(document).ready(function() {
 
         <div class="form-row odd">
           <span class="readonlyLabel">No of Clients connected:</span> <span class="value">
-          <?php echo php_getstr("Device.WiFi.AccessPoint.2.AssociatedDeviceNumberOfEntries"); ?>
+          <?php echo $wifi_value["NumberOfEntries2"]; ?>
           </span>
         </div>
     </div><!-- end .module private wifi 5 --> 
@@ -489,28 +558,34 @@ $(document).ready(function() {
 
 	foreach ($ssids as $i)
 	{
-		if (intval($i)<3 || intval($i)>4){		//SSID 1,2 for Private, 3,4 for Home Security, 5,6 for Hot Spot
+		if (intval($i)!=3){		//SSID 1,2 for Private, 3,4 for Home Security, 5,6 for Hot Spot
 			continue;
 		}
 		$freq_id = strpos(php_getstr("Device.WiFi.SSID.$i.LowerLayers"), "Radio.1") ? "1" : "2";
 		array_push($public_v, array(
 			'ssid_id'		=> $i,
-			'ssid_enable'	=> php_getstr("Device.WiFi.SSID.$i.Enable"),
-			'ssid_name'		=> php_getstr("Device.WiFi.SSID.$i.SSID"),
+			'ssid_enable'	=> $wifi_value["Enable".$i],
+			'ssid_name'		=> $wifi_value["SSID".$i],
 			'radio_mode'	=> strtoupper(php_getstr("Device.WiFi.Radio.$freq_id.OperatingStandards")),
 			'radio_freq'	=> ("1"==$freq_id) ? "2.4" : "5",
-			'client_cnt'	=> php_getstr("Device.WiFi.AccessPoint.$i.AssociatedDeviceNumberOfEntries"),
-			'security'		=> encrypt_map(php_getstr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled"), php_getstr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_EncryptionMethod"))
+			'client_cnt'	=> $wifi_value["NumberOfEntries".$i],
+			'security'		=> encrypt_map($wifi_value["ModeEnabled".$i], $wifi_value["EncryptionMethod".$i])
 		));
 	}
 
 	for ($j=0; $j<count($public_v); $j++)
 	{
+		$wifi_enable = "Inactive";
+		if("true" == $public_v[$j]['ssid_enable']) 
+		        $wifi_enable = "Active";
+		else
+		        $wifi_enable = "Inactive";
+				
 		echo '<div class="module forms block" style="position:relative;top:0px;right:0px;">';
 		echo '<h2>HomeSecurityNetwork-'.$public_v[$j]['ssid_name'].'</h2>';
 		// !!!dont goto edit_public page!!! thant page just for hotspot tunnel configuration
 		echo '<p class="button"><a tabindex="0" class="btn" href="wireless_network_configuration_edit.php?id='.$public_v[$j]['ssid_id'].'">Edit</a></p>';
-		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Wireless Network(Wi-Fi '.$public_v[$j]['radio_freq'].' GHz):</span> <span class="value">'.$public_v[$j]['ssid_enable'].'</span></div>';
+		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Wireless Network (Wi-Fi '.$public_v[$j]['radio_freq'].' GHz):</span> <span class="value">'.$wifi_enable.'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Supported Protocols:</span> <span class="value">'.$public_v[$j]['radio_mode'].'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Security:</span> <span class="value">'.$public_v[$j]['security'].'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">No of Clients connected:</span> <span class="value">'.$public_v[$j]['client_cnt'].'</span></div>';
@@ -539,33 +614,32 @@ $(document).ready(function() {
 		}
 		$freq_id = strpos(php_getstr("Device.WiFi.SSID.$i.LowerLayers"), "Radio.1") ? "1" : "2";
 		
-		$RemoteEndpoints	= php_getstr("Device.X_COMCAST_COM_GRE.Interface.1.RemoteEndpoints");
+		$PrimaryRemoteEndpoint	= php_getstr("Device.X_COMCAST-COM_GRE.Tunnel.1.PrimaryRemoteEndpoint");	// 2.4G and 5G share one gre tunnel
+		$SecondaryRemoteEndpoint = php_getstr("Device.X_COMCAST-COM_GRE.Tunnel.1.SecondaryRemoteEndpoint");	// 2.4G and 5G share one gre tunnel
 		$RemoteEndpointsV4	= array();
 		$RemoteEndpointsV6	= array();
-		$ips = explode(",", $RemoteEndpoints);
-		foreach($ips as $v){
-			if (strpos($v, ".")){
-				array_push($RemoteEndpointsV4, $v);
-			}
-			else if (strpos($v, ":")){
-				array_push($RemoteEndpointsV6, $v);
-			}
-		}
+		
+		array_push($RemoteEndpointsV4, $PrimaryRemoteEndpoint);
+		array_push($RemoteEndpointsV4, $SecondaryRemoteEndpoint);
+		
+		array_push($RemoteEndpointsV6, $PrimaryRemoteEndpoint);
+		array_push($RemoteEndpointsV6, $SecondaryRemoteEndpoint);
+		
 		$wlan_gw = "";
 		if (isset($RemoteEndpointsV4[0])) $wlan_gw = $RemoteEndpointsV4[0];
 		if (isset($RemoteEndpointsV6[0])) $wlan_gw = $wlan_gw."/".$RemoteEndpointsV6[0];
 	
 		array_push($public_v, array(
 			'ssid_id'		=> $i,
-			'ssid_enable'	=> php_getstr("Device.WiFi.SSID.$i.Enable"),
-			'ssid_name'		=> php_getstr("Device.WiFi.SSID.$i.SSID"),
-			'xf_capable'	=> php_getstr("Device.DeviceInfo.X_COMCAST-COM_xfinitywifiCapable"),
-			'time_last'		=> sec2dhms(php_getstr("Device.X_COMCAST_COM_GRE.Interface.1.LastChange")),	// 2.4G and 5G share one gre tunnel
+			'ssid_enable'	=> $wifi_value["Enable".$i],
+			'ssid_name'		=> $wifi_value["SSID".$i],
+			'xf_capable'	=> php_getstr("Device.DeviceInfo.X_COMCAST-COM_xfinitywifiCapableCPE"),
+			'time_last'		=> sec2dhms(php_getstr("Device.X_COMCAST-COM_GRE.Tunnel.1.LastChange")),	// 2.4G and 5G share one gre tunnel
 			'wlan_gw'		=> $wlan_gw,
 			'radio_mode'	=> strtoupper(php_getstr("Device.WiFi.Radio.$freq_id.OperatingStandards")),
 			'radio_freq'	=> ("1"==$freq_id) ? "2.4" : "5",
-			'client_cnt'	=> php_getstr("Device.WiFi.AccessPoint.$i.AssociatedDeviceNumberOfEntries"),
-			'security'		=> encrypt_map(php_getstr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled"), php_getstr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_EncryptionMethod"))
+			'client_cnt'	=> $wifi_value["NumberOfEntries".$i],
+			'security'		=> encrypt_map($wifi_value["ModeEnabled".$i], $wifi_value["EncryptionMethod".$i])
 		));
 	}
 
@@ -575,7 +649,7 @@ $(document).ready(function() {
 		echo '<h2>Public Wi-Fi Network-'.$public_v[$j]['ssid_name'].'</h2>';
 		echo '<p class="button"><a class="btn" href="wireless_network_configuration_edit_public.php?id='.$public_v[$j]['ssid_id'].'">Edit</a></p>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Xfinity Wi-Fi Capable:</span> <span class="value">'.("true"==$public_v[$j]['xf_capable']?"Yes":"No").'</span></div>';
-		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Wireless Network(Wi-Fi '.$public_v[$j]['radio_freq'].' GHz):</span> <span class="value">'.("true"==$public_v[$j]['ssid_enable']?"Active":"Inactive").'</span></div>';
+		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Wireless Network (Wi-Fi '.$public_v[$j]['radio_freq'].' GHz):</span> <span class="value">'.("true"==$public_v[$j]['ssid_enable']?"Active":"Inactive").'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Time Since Last Status:</span> <span class="value">'.$public_v[$j]['time_last'].'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">WLAN Gateway:</span> <span class="value">'.$public_v[$j]['wlan_gw'].'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Supported Protocols:</span> <span class="value">'.$public_v[$j]['radio_mode'].'</span></div>';

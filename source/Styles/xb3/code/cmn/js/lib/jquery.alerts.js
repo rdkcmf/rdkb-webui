@@ -290,6 +290,7 @@
 					$("#popup_title").css({ cursor: 'move' });
 				} catch(e) { /* requires jQuery UI draggables */ }
 			}
+			$("#popup_ok").blur();
 		},
 		
 		_hide: function() {

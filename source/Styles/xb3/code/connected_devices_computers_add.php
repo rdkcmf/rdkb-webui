@@ -8,10 +8,20 @@
 
 <?php include('includes/nav.php'); ?>
 
+<?php
+$beginAddr 	= getStr("Device.DHCPv4.Server.Pool.1.MinAddress");
+$endAddr 	= getStr("Device.DHCPv4.Server.Pool.1.MaxAddress");
+?>
+
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Connected Devices > Devices > Edit Device", "nav-cdevices");
     $('#host_name').focus();
+
+	var beginAddr	= "<?php echo $beginAddr; ?>";
+	var endAddr	= "<?php echo $endAddr; ?>";
+	var beginArr	= beginAddr.split(".");
+	var endArr	= endAddr.split(".");
 
 	/*jQuery.validator.addMethod("multicastMAC",function(value,element){
 		
@@ -66,6 +76,15 @@ $(document).ready(function() {
     	var reseverd_ipAddr = $('#staticIPAddress').val();
     	var Comments = $('#comments').val();      
 
+		//to check if "Reserved IP Address" is in "DHCP Pool range"
+		var reseverd_ipArr	= reseverd_ipAddr.split(".");
+		for(i=0;i<4;i++){
+			if(parseInt(beginArr[i]) > parseInt(reseverd_ipArr[i]) || parseInt(reseverd_ipArr[i]) > parseInt(endArr[i])){
+				jAlert("Reserved IP Address is not in valid range:\n"+beginAddr+" ~ "+endAddr);
+				return;
+			}
+		}
+
     	var deviceInfo = '{"addResvIP": "true", "Comments": "'+ Comments +'", "hostName": "' + hostName + '", "macAddress": "' + macAddress + '", "reseverd_ipAddr": "' + reseverd_ipAddr + '"}';
         //alert( deviceInfo);
       
@@ -105,9 +124,9 @@ $(document).ready(function() {
     <h1>Connected Devices > Devices > Add Device</h1>
     <div id="educational-tip">
 		<p class="tip">Connect a Device using a Reserved IP address.</p>
-		<p class="hidden"><strong>Host Name:</strong> Name of Device being added. </p>
-				<p class="hidden"><strong>MAC Address:</strong>  MAC address of Device being added.</p>
-				<p class="hidden"><strong>Reserved IP address:</strong>  The IP of the device being added must be within the Gateway's range of the DHCP IP address pool. To find your IP address range, go to <strong>Gateway > Connection > Local IP Network.</strong></p>
+		<p class="hidden"><strong>Host Name:</strong> Name of the Device being added. </p>
+				<p class="hidden"><strong>MAC Address:</strong>  MAC address of the Device being added.</p>
+				<p class="hidden"><strong>Reserved IP address:</strong>  The IP address of the device being added must be within the Gateway's range of the DHCP IP address pool.To find your IP address range, go to <strong>Gateway > Connection > Local IP Network.</strong></p>
 	</div>
 	<div class="module forms" id="computers-edit">
 		<h2>Add Device with Reserved IP Address</h2>

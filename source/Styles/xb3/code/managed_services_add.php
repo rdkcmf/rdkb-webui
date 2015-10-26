@@ -56,7 +56,7 @@ $(document).ready(function() {
 	
 	$("#pageForm").validate({
 	   rules: {
-	       service: {
+	       user_defined_service: {
 	           required: true
 	       }
 	       ,start_port: {
@@ -190,7 +190,7 @@ $(document).ready(function() {
 			<h2>Add Service to be Blocked</h2>
 
             <div class="form-row">
-				<label for="service">User Defined Service:</label>
+				<label for="user_defined_service">User Defined Service:</label>
 				<input type="text" id="user_defined_service" value="" name="user_defined_service" class="text" />
 			</div>
 

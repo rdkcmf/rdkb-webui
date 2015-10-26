@@ -102,7 +102,14 @@ if (isset($_POST['edit'])){
 	$password=$_POST['password'];
 	$hostname=$_POST['hostname'];
 	
-	setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".ServiceName",$sp,false);
+	//delete entry - we can't edit on same index so delete on one index and update on other index
+	if(strcasecmp($sp,getStr("Device.X_CISCO_COM_DDNS.Service.".$i.".ServiceName")) != 0){
+		setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Enable","false",true);
+	}
+
+	$i = selectTable($sp);
+
+	//setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".ServiceName",$sp,false);
 	setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Username",$username,false);
 	setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Password",$password,false);
 	setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Domain",$hostname,false);

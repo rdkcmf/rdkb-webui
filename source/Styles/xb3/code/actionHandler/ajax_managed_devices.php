@@ -16,6 +16,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
+﻿<?php include('../includes/utility.php') ?>
 <?php
 
 if (isset($_POST['set'])){
@@ -39,12 +40,33 @@ if (isset($_POST['allow_block'])){
 //	echo json_encode("Disabled");
 }
 
+function time_date_conflict($TD1, $TD2) {
+	$ret = false;
+	$days1 = explode(",", $TD1[2]);
+	$days2 = explode(",", $TD2[2]);
+
+	foreach ($days1 as &$value) {
+		if (in_array($value, $days2)) {
+			//deMorgan's law - to find if ranges are overlapping
+			//(StartA <= EndB)  and  (EndA >= StartB)
+			if((strtotime($TD1[0]) < strtotime($TD2[1])) and (strtotime($TD1[1]) > strtotime($TD2[0]))){
+	  			$ret = true;
+	  			break;
+			} 
+		}
+	}
+	return $ret;
+}
+
 if (isset($_POST['add'])){
 
 	$type=$_POST['type'];
 	$name=$_POST['name'];
 	$mac=$_POST['mac'];
 	$block=$_POST['block'];
+	$startTime=$_POST['startTime'];
+	$endTime=$_POST['endTime'];
+	$blockDays=$_POST['days'];
 	
 	$ids=explode(",",getInstanceIDs("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device."));
 	if (count($ids)==0) {	//no table, need test whether it equals 0
@@ -66,16 +88,29 @@ if (isset($_POST['add'])){
 	else {
 		
 		$result="";
+		$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.";
+		$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.");
+		$mapping_array  = array("Description", "Type", "MACAddress", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
 
-		foreach ($ids as $key=>$j) {
+		$managedDevicesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+		foreach ($managedDevicesValues as $key) {
 
-			$deviceName = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$j.Description");
-			$accessType = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$j.Type");	
-			$MACAddress = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$j.MACAddress");	
+			$deviceName = $key["Description"];
+			$accessType = $key["Type"];	
+			$MACAddress = $key["MACAddress"];	
+			$always_Block = $key["AlwaysBlock"];
+			$start_Time = $key["StartTime"];
+			$end_Time = $key["EndTime"];
+			$block_Days = $key["BlockDays"];
 
 			if (($type == $accessType) && (!strcasecmp($mac, $MACAddress))) {
-				$result .= "This device is already in $type list.";
-				break;
+				//Check for time and day conflicts
+				$TD1=array($startTime, $endTime, $blockDays);
+				$TD2=array($start_Time, $end_Time, $block_Days);
+				if(($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)){
+					$result .= "Conflict with other device. Please check your input!";
+					break;
+				}
 			}
 		}
 
@@ -104,21 +139,37 @@ if (isset($_POST['edit'])){
 	$name=$_POST['name'];
 	$mac=$_POST['mac'];
 	$block=$_POST['block'];
+	$startTime=$_POST['startTime'];
+	$endTime=$_POST['endTime'];
+	$blockDays=$_POST['days'];
 
 	$type = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$i.Type");
 	$result="";
 	
-	$ids=explode(",",getInstanceIDs("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device."));
-	foreach ($ids as $key=>$j) {
+	
+	$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.";
+	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.");
+	$mapping_array  = array("Description", "Type", "MACAddress", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
+	$managedDevicesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
+	foreach ($managedDevicesValues as $key) {
+		$j = $key["__id"];
 		if ($i==$j) continue;
+		$deviceName = $key["Description"];
+		$accessType = $key["Type"];	
+		$MACAddress = $key["MACAddress"];	
+		$always_Block = $key["AlwaysBlock"];
+		$start_Time = $key["StartTime"];
+		$end_Time = $key["EndTime"];
+		$block_Days = $key["BlockDays"];
 
-		$deviceName = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$j.Description");
-	    $accessType = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$j.Type");	
-	    $MACAddress = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$j.MACAddress");	
-		
 		if (($type == $accessType) && (!strcasecmp($mac, $MACAddress))) {
-			$result .= "This device is already in $type list.";
-			break;
+			//Check for time and day conflicts
+			$TD1=array($startTime, $endTime, $blockDays);
+			$TD2=array($start_Time, $end_Time, $block_Days);
+			if(($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)){
+				$result .= "Conflict with other device. Please check your input!";
+				break;
+			}
 		}
 	}
 

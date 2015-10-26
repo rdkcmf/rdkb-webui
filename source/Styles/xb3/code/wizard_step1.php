@@ -46,14 +46,24 @@ $(document).ready(function() {
 	$("#userPassword").val("");
 	$("#verifyPassword").val("");
 	
+	//Fix for IE8 browser issue, IE8 changeing type from "text" to "password" is not supported
  	$("#password_show").change(function() {
-		var pwd_t = $(this).attr("checked") ? 'type="text"' : 'type="password"';
-		$(".password").each(function(){
-			var currVal = $(this).find("input").val();
-			// Note: After replaced, the $(this) of input will be changed!!!
-			$(this).html($(this).html().replace(/(type="text"|type="password")/g, pwd_t));
-			$(this).find("input").val(currVal);		
-		});
+		if ($("#password_show").is(":checked")) {
+			document.getElementById("password_field_1").innerHTML = 
+			'<input type="text"     size="23" id="oldPassword" name="oldPassword" class="text" value="' + $("#oldPassword").val() + '" />';
+			document.getElementById("password_field_2").innerHTML = 
+			'<input type="text"     size="23" id="userPassword" name="userPassword" class="text" value="' + $("#userPassword").val() + '" />';
+			document.getElementById("password_field_3").innerHTML = 
+			'<input type="text"     size="23" id="verifyPassword" name="verifyPassword" class="text" value="' + $("#verifyPassword").val() + '" />';
+		}
+		else {
+			document.getElementById("password_field_1").innerHTML = 
+			'<input type="password" size="23" id="oldPassword" name="oldPassword" class="text" value="' + $("#oldPassword").val() + '" />';
+			document.getElementById("password_field_2").innerHTML = 
+			'<input type="password" size="23" id="userPassword" name="userPassword" class="text" value="' + $("#userPassword").val() + '" />';
+			document.getElementById("password_field_3").innerHTML = 
+			'<input type="password" size="23" id="verifyPassword" name="verifyPassword" class="text" value="' + $("#verifyPassword").val() + '" />';
+		}
 	});
 	
 });
@@ -83,14 +93,17 @@ function set_config(jsConfig)
 		},
 		function(msg)
 		{
-			jHide();
-			if ("Match" == msg.p_status) {
-				window.location = "wizard_step2.php";
-			}
-			else
-			{
-				jAlert("Current Password Wrong!");
-			}
+			setTimeout(function(){ 
+				jHide();
+				if ("Match" == msg.p_status) {
+					//window.location = "wizard_step2.php";
+					document.getElementById("pageForm").submit();
+				}
+				else
+				{
+					jAlert("Current Password Wrong!");
+				}
+			 }, 5000);
 		},
 		"json"     
 	);
@@ -125,23 +138,23 @@ function next_step()
 	
 	<div class="module forms">
 		<!--form action="wizard_step2.php" method="post" id="pageForm"-->
-		<form method="post" id="pageForm">
+		<form action="wizard_step2.php" method="post" id="pageForm">
 			<h2>Step 1 of 2</h2>
 			<p class="summary">To configure your home network, we need some basic information</p>
 			
 			<div class="form-row password">
 				<label for="oldPassword">Current Password:</label>
-				<input type="password" value="" name="oldPassword" id="oldPassword" autocomplete="off" />
+				<span id="password_field_1"><input type="password" size="23" id="oldPassword" name="oldPassword" class="text" value=""></span>
    			</div>
 			
 			<div class="form-row odd password">
 				<label for="userPassword">New Password:</label>
-				<input type="password" value="" name="userPassword" id="userPassword" autocomplete="off" />
+				<span id="password_field_2"><input type="password" size="23" id="userPassword" name="userPassword" class="text" value=""></span>
 			</div>
 			
 			<div class="form-row password">
 				<label for="verifyPassword">Re-enter New Password:</label>
-				<input type="password" value="" name="verifyPassword" id="verifyPassword" autocomplete="off" />
+				<span id="password_field_3"><input type="password" size="23" id="verifyPassword" name="verifyPassword" class="text" value=""></span>
 			</div>
 
 			<div class="form-row odd">

@@ -192,18 +192,36 @@ $jsConfig = json_encode($arConfig);
 		
 		$.each(dat, function(idx, val)		// the index may be 1,3,5... instead of 1,2,3...
 		{
+			var k=0;
 			for (var j=0; j<val.ssid_info.length; j++)
 			{
-				$("#range_extender").append('\
-					<tr id="'+ val.ext_ip +'" class="'+ ((odd=!odd) ? "odd" : "") +'">\
-						<td headers="ext-name" class="ext_name" rowspan="'+val.ssid_info.length+'" style="display:'+ (j?"none":"") +'">'+ val.ext_name +'</td>\
-						<td headers="ssid" class="ssid">'+ val.ssid_info[j].ssid +'</td>\
-						<td headers="bssid" class="bssid">'+ val.ssid_info[j].bssid +'</td>\
-						<td headers="frequency-band" class="freq">'+ val.ssid_info[j].freq +'</td>\
-						<td headers="channel" class="channel">'+ val.ssid_info[j].channel +'</td>\
-						<td headers="security-mode" class="secur">'+ val.ssid_info[j].secur +'</td>\
-						<td headers="disconnect-btn" class="ext_action" align="center" rowspan="'+val.ssid_info.length+'" style="display:'+ (j?"none":"") +'"><a href="javascript:void(0);" title="'+val.ext_name+'" id="del_'+idx+j+'" class="btn connect_switch" tabindex="0">'+ val.ext_action +'</a></td>\
-					</tr>');
+				if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>"){
+					if (!(val.ssid_info[j].ssid.toLowerCase().indexOf("xhs")!=-1 ||  val.ssid_info[j].ssid.toLowerCase().indexOf("xhh")!=-1)) {
+						$("#range_extender").append('\
+							<tr id="'+ val.ext_ip +'" class="'+ ((odd=!odd) ? "odd" : "") +'">\
+								<td headers="ext-name" class="ext_name" rowspan="'+val.ssid_info.length+'" style="display:'+ (k?"none":"") +'">'+ val.ext_name +'</td>\
+								<td headers="ssid" class="ssid">'+ val.ssid_info[j].ssid +'</td>\
+								<td headers="bssid" class="bssid">'+ val.ssid_info[j].bssid +'</td>\
+								<td headers="frequency-band" class="freq">'+ val.ssid_info[j].freq +'</td>\
+								<td headers="channel" class="channel">'+ val.ssid_info[j].channel +'</td>\
+								<td headers="security-mode" class="secur">'+ val.ssid_info[j].secur +'</td>\
+								<td headers="disconnect-btn" class="ext_action" align="center" rowspan="'+val.ssid_info.length+'" style="display:'+ (k?"none":"") +'"><a href="javascript:void(0);" title="'+val.ext_name+'" id="del_'+idx+j+'" class="btn connect_switch" tabindex="0">'+ val.ext_action +'</a></td>\
+							</tr>');
+					}
+				}
+				else {
+					$("#range_extender").append('\
+						<tr id="'+ val.ext_ip +'" class="'+ ((odd=!odd) ? "odd" : "") +'">\
+							<td headers="ext-name" class="ext_name" rowspan="'+val.ssid_info.length+'" style="display:'+ (k?"none":"") +'">'+ val.ext_name +'</td>\
+							<td headers="ssid" class="ssid">'+ val.ssid_info[j].ssid +'</td>\
+							<td headers="bssid" class="bssid">'+ val.ssid_info[j].bssid +'</td>\
+							<td headers="frequency-band" class="freq">'+ val.ssid_info[j].freq +'</td>\
+							<td headers="channel" class="channel">'+ val.ssid_info[j].channel +'</td>\
+							<td headers="security-mode" class="secur">'+ val.ssid_info[j].secur +'</td>\
+							<td headers="disconnect-btn" class="ext_action" align="center" rowspan="'+val.ssid_info.length+'" style="display:'+ (k?"none":"") +'"><a href="javascript:void(0);" title="'+val.ext_name+'" id="del_'+idx+j+'" class="btn connect_switch" tabindex="0">'+ val.ext_action +'</a></td>\
+						</tr>');
+				}
+				k=k+1;
 			}
 			// console.log(idx);
 		});

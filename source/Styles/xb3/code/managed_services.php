@@ -188,7 +188,7 @@ $(document).ready(function() {
         <p class="tip">Manage access to specific services and applications by network devices.</p>
 		<p class="hidden">Select <strong>Enable</strong> to manage services and applications, or <strong> Disable</strong>  to turn off.</p>
 		<p class="hidden"><strong>+ADD:</strong> Add to block a new service or application.</p>
-		<p class="hidden">The Gateway will block services and applications on all untrusted computers, based on the specified rules. If you don't want restrictions for a particular computer, select Yes under Trusted.</p>
+		<p class="hidden">The Gateway will block services and applications on all untrusted computers, based on the specified rules. If you don't want restrictions for a particular computer, select <strong>Yes</strong> under <strong>Trusted Computers</strong>.</p>
     </div>
 
 	<div class="module">
@@ -214,25 +214,49 @@ $(document).ready(function() {
             <th id='delete-button' class="delete">&nbsp;</th>
 	    </tr>
 	    <?php 
+             	$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.";
+	          	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.");
+	           	$mapping_array  = array("Protocol", "AlwaysBlock", "Description", "StartPort", "EndPort","StartTime", "EndTime", "BlockDays");
+		   		$blockedServicesInstance = array();
+	           	$blockedServicesInstanceArr = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+
+				//TrustedUser
+				$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser.";
+				$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser.");
+				$mapping_array  = array("IPAddress", "Trusted");
+
+				$TrustedUser = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+
+				//Host
+				$rootObjName    = "Device.Hosts.Host.";
+				$paramNameArray = array("Device.Hosts.Host.");
+				$mapping_array  = array("HostName", "PhysAddress", "IPAddress", "IPv6Address.1.IPAddress");
+
+				$HostParam = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+
+
 				$num=getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.ServiceNumberOfEntries");
 				if($num!=0) {
 					$MSIDs=explode(",",getInstanceIDs("Device.X_Comcast_com_ParentalControl.ManagedServices.Service."));
 					$iclass="even";
 					$j = 0;
 					foreach ($MSIDs as $key=>$i) {
+						$blockedServicesInstance["$i"] = $blockedServicesInstanceArr["$key"];
+					}
+					foreach ($MSIDs as $key=>$i) {
 						$j += 1;
 						if ($iclass=="even") {$iclass="odd";} else {$iclass="even";}
-						$protocol = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".Protocol");
+						$protocol = $blockedServicesInstance["$i"]["Protocol"];
 						if($protocol == "BOTH")
 							$protocol = "TCP/UDP";
-						$blockStatus = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".AlwaysBlock");
+						$blockStatus = $blockedServicesInstance["$i"]["AlwaysBlock"];
 						if($blockStatus == "true")
 							$blockStatus = "Always";
 						else if($blockStatus == "false") {
 							//$blockStatus = "Period";
-							$stime = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.$i.StartTime");
-							$etime = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.$i.EndTime");
-							$bdays = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.$i.BlockDays");
+							$stime = $blockedServicesInstance["$i"]["StartTime"];
+							$etime = $blockedServicesInstance["$i"]["EndTime"];
+							$bdays = $blockedServicesInstance["$i"]["BlockDays"];
 					
 					        $blockStatus = $stime."-".$etime.",".$bdays;
 						}
@@ -240,13 +264,13 @@ $(document).ready(function() {
 						echo "
 					<tr class=$iclass>
 						<td headers='service-number' class=\"row-label alt number\">$j</td>
-						<td headers='service-name'>".getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".Description")."</td>
+						<td headers='service-name'>".$blockedServicesInstance["$i"]["Description"]."</td>
 						<td headers='protocol-type'>".$protocol."</td>
-						<td headers='start-port'>".getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".StartPort")."</td>
-						<td headers='end-port'>".getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".EndPort")."</td>
+						<td headers='start-port'>".$blockedServicesInstance["$i"]["StartPort"]."</td>
+						<td headers='end-port'>".$blockedServicesInstance["$i"]["EndPort"]."</td>
 						<td headers='effect-time'>".$blockStatus."</td>
 						<td headers='edit-button' class=\"edit\"><a tabindex='0' href=\"managed_services_edit.php?id=$i\" class=\"btn\"  id=\"edit_$i\">Edit</a></td>
-						<td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_services.php?del=$i\" class=\"btn confirm\" title=\"delete this service for ".getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".Description")." \" id=\"delete_$i\">x</a></td>
+						<td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_services.php?del=$i\" class=\"btn confirm\" title=\"delete this service for ".$blockedServicesInstance["$i"]["Description"]." \" id=\"delete_$i\">x</a></td>
 					</tr>"; 
 					} 
 				}
@@ -272,18 +296,7 @@ $(document).ready(function() {
 		<form action="managed_services.php" method="post">
 			<input  type="hidden"  name="update_trusted_computers"  value="true" />
 
-		<?php 
-			$TrustedUserInstance = getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser.");
-			$TrustedUserInstanceArr = explode(",", $TrustedUserInstance);
-			$TrustedUserNums = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUserNumberOfEntries");
-			$TrustedUser = array();
-
-			for ($i=0; $i < $TrustedUserNums; $i++) { 
-	            //$TrustedUser["$i"]['instanceID'] = $TrustedUserInstanceArr["$i"];
-				$TrustedUser["$i"]['IPAddress'] = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser." .$TrustedUserInstanceArr["$i"]. ".IPAddress");
-				$TrustedUser["$i"]['Trusted']   = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser." .$TrustedUserInstanceArr["$i"]. ".Trusted");
-			}
-
+		<?php
 			$hostsInstance = getInstanceIds("Device.Hosts.Host.");
 			$hostsInstanceArr = explode(",", $hostsInstance);
 
@@ -294,15 +307,33 @@ $(document).ready(function() {
 
 			for ($i=0; $i < $hostNums; $i++) { 
             
-				$HostName = getStr("Device.Hosts.Host." .$hostsInstanceArr["$i"]. ".HostName");
+				$HostName = $HostParam[$i]["HostName"];
 		        if (($HostName == "*") || (strlen($HostName) == 0)) {
-		            $Host["$i"]['HostName'] = getStr("Device.Hosts.Host." .$hostsInstanceArr["$i"]. ".PhysAddress");
+		            $Host["$i"]['HostName'] = $HostParam[$i]["PhysAddress"];
 		        }
 		        else {
 					$Host["$i"]['HostName'] = $HostName;
 		        }
 
-				$Host["$i"]['IPAddress'] = getStr("Device.Hosts.Host." .$hostsInstanceArr["$i"]. ".IPAddress");
+			$Host["$i"]['IPAddress'] = $HostParam[$i]["IPAddress"];
+			$IPAddress = $HostParam["$i"]['IPAddress'];
+			//$IPv4Address	= getStr("Device.Hosts.Host." .$hostsInstanceArr["$i"]. ".IPv4Address.1.IPAddress");
+			$IPv6Address	= $HostParam[$i]["IPv6Address.1.IPAddress"];
+			
+			//for now as "Device.Hosts.Host.'$i'.IPv4Address.1.IPAddress" is not updating on GW_IP Change
+			$IPv4Address = $IPAddress;
+
+			//In IPv6 only mode, IPv4=NA
+			if( strpos($IPv4Address, '.') === false ) $IPv4Address = 'NA';
+
+			if (substr($IPv6Address, 0, 5) == "2001:") {
+				$Host["$i"]['IPShow'] = $IPv4Address.'/'.$IPv6Address;
+			}
+			else {
+				//If IPv6 is not global then IPv6=NA
+				$Host["$i"]['IPShow'] = $IPv4Address.'/NA';
+			}
+
 				array_push($HostNameArr, $Host["$i"]['HostName']);
 				array_push($ipAddrArr, $Host["$i"]['IPAddress']);
                 $Host["$i"]['Trusted'] = false;
@@ -342,8 +373,8 @@ $(document).ready(function() {
 						echo "<tr $odd>
 						<td headers='number' class=\"row-label alt\">" .$k. "</td>
 						<td headers='device-name'  id='HostName-" .$k. "' >" .$Host["$i"]['HostName']. "</td>
-						<td headers='IP'  id='IPAddress-" .$k. "' >" .$Host["$i"]['IPAddress']. "</td>
-						<td headers='trusted-or-not'>
+						<td headers='IP'  id='IPAddress-" .$k. "' >" .$Host["$i"]['IPShow']. "</td>
+						<td headers='trusted-or-not' style='min-width: 92px;'>
 							<span id=\"trusted_user_".$k."\" switch-val=\"".( $Host["$i"]['Trusted'] == 'true' ? "on" : "off" )."\"></span>
 						</td>
 						</tr>

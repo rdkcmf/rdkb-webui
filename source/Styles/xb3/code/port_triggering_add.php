@@ -102,9 +102,10 @@ $(document).ready(function() {
 <div id="content">
 	<h1>Advanced > Port Triggering > Add Port Trigger</h1>
     <div id="educational-tip">
-        <p class="tip"> Some text about email notification and how they work.</p>
-        <p class="hidden">Some more text to help the customer understand about this content.</p>
-    </div>
+		<p class="tip">Add a rule for port triggering services by user.</p>
+		<p class="hidden">Port triggering monitors outbound traffic on your network. When traffic is detected on a particular outbound port, the Gateway remembers that computer's IP address, triggers the inbound port to accept the incoming traffic, and directs the communications to the same computer.</p>
+		<p class="hidden">Port triggering settings can affect the Gateway's performance.</p>
+	</div>
 	<form method="post" id="pageForm" action="">
 	<div class="module forms">
 		<h2>Add Port Trigger</h2>

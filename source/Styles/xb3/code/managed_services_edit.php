@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 <!-- $Id: managed_services_add.php 2943 2009-08-25 20:58:43Z slemoine $ -->
 
 <div id="sub-header">
@@ -11,17 +11,30 @@
 <?php
 	$i=$_GET['id'];
 //	echo "<script>var ID=".$i.";</script>";
-	$serviceName = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".Description");
-	$protocol = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".Protocol");
-	$startPort = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".StartPort");
-	$endPort = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".EndPort");
-	$blockStatus = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".AlwaysBlock"); //true-always, false-period
+    $managed_services_param = array(
+        "serviceName"   => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".Description",
+        "protocol"      => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".Protocol",
+        "startPort"     => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".StartPort",
+        "endPort"       => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".EndPort",
+        "blockStatus"   => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".AlwaysBlock", 
+        "startTime"   => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".StartTime", 
+        "endTime"   => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".EndTime", 
+        "days"   => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".BlockDays", 
+	);
+    $managed_services_value = KeyExtGet("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.", $managed_services_param);
+
+
+	$serviceName = $managed_services_value["serviceName"];
+	$protocol = $managed_services_value["protocol"];
+	$startPort = $managed_services_value["startPort"];
+	$endPort = $managed_services_value["endPort"];
+	$blockStatus = $managed_services_value["blockStatus"];
 	
 	global $startTime, $endTime, $days;
 	if($blockStatus == "false") {
-		$startTime = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".StartTime");
-		$endTime = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".EndTime");
-		$days = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".BlockDays");
+		$startTime = $managed_services_value["startTime"];
+		$endTime = $managed_services_value["endTime"];
+		$days = $managed_services_value["days"];
 	}
 
 	($blockStatus == "") && ($blockStatus = "true");
@@ -141,7 +154,7 @@ $(document).ready(function() {
 	}, "Please enter a value more than or equal to Start Port.");
 	$("#pageForm").validate({
 	   rules: {
-	       service: {
+	       user_defined_service: {
 	           required: true
 	       }
 	       ,start_port: {
@@ -299,7 +312,7 @@ $(document).ready(function() {
 <form id="pageForm"  method="post">
 
             <div class="form-row">
-				<label for="service">User Defined Service:</label>
+				<label for="user_defined_service">User Defined Service:</label>
 				<input type="text" id="user_defined_service" value="FTP" name="user_defined_service" class="text" />
 			</div>
 

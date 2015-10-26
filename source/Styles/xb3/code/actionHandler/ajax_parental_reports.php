@@ -39,7 +39,9 @@ switch($timef){			//	[$mintime, $maxtime)
 		$mintime=strtotime("last month");
 	break;
 	case "Last 90 days":
-		$maxtime=strtotime("today");
+		//zqiu: last 90 days include today
+		//$maxtime=strtotime("today");
+		$maxtime=strtotime("now");
 		$mintime=strtotime("-90 days");
 	break;
 }

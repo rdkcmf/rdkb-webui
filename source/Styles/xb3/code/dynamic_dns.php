@@ -9,9 +9,6 @@
 
 <?php
 $enable = getStr("Device.X_CISCO_COM_DDNS.Enable");
-
-("" == $enableMS) && ($enableMS = "false");
-
 ?>
 
 <script type="text/javascript">
@@ -30,29 +27,39 @@ $(document).ready(function() {
 		state: jsEnable ? "on" : "off"
 	});
 
+	$("a.confirm").unbind('click');
+
+	function setupDeleteConfirmDialogs() {
+	/*
+	 * Confirm dialog for delete action
+	 */             
+		$("a.confirm").click(function(e) {
+			e.preventDefault();            
+			var href = $(this).attr("href");
+		    	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+			   
+			jConfirm(
+				message
+				,"Are You Sure?"
+				,function(ret) {
+				    if(ret) {
+				        window.location = href;
+				    }    
+			});
+		});
+    	}
+
 	function enableHandler() {
 		var isUDNSDisabled = $("#ddns_switch").radioswitch("getState").on === false;
 
 		if(isUDNSDisabled) {
-
-		$("#DNS-items *").prop("disabled",true).addClass("disabled");
-
-/*		document.getElementById('add-service').disabled = true;
-		document.getElementById('edit1').disabled = true;
-		document.getElementById('edit2').disabled = true;
-		document.getElementById('delete1').disabled = true;
-		document.getElementById('delete2').disabled = true;*/
-
+			$("a.confirm").unbind('click');
+			$('.module *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
+			$("#DNS-items").prop("disabled",true).addClass("disabled");
+			$("a.btn").addClass("disabled").click(function(e){e.preventDefault();});
 		}
 		else {
-		$("#DNS-items *").prop("disabled",false).removeClass("disabled");
-
-		$("btn").removeClass("disabled");
-/*		document.getElementById('add-service').disabled = false;
-		 document.getElementById('edit1').disabled = false;
-		 document.getElementById('edit2').disabled = false;
-		 document.getElementById('delete1').disabled = false;
-		 document.getElementById('delete2').disabled = false;*/
+			setupDeleteConfirmDialogs();
 		}
 	}
 	
@@ -61,7 +68,17 @@ $(document).ready(function() {
 	$("#ddns_switch").change(function() {
 
 		var status = ($("#ddns_switch").radioswitch("getState").on ? "Enabled" : "Disabled");
-//		var status = $("#DNS_disabled").is(":checked");
+		var isUDNSDisabled = $("#ddns_switch").radioswitch("getState").on === false;
+		if(isUDNSDisabled){
+			$("a.confirm").unbind('click');
+			$('.module *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
+			$("#DNS-items").prop("disabled",true).addClass("disabled");
+			$("a.btn").addClass("disabled").click(function(e){e.preventDefault();});
+		}else{
+			$('.module *').not(".radioswitch_cont, .radioswitch_cont *").removeClass("disabled");
+			$("#DNS-items").prop("disabled",false).removeClass("disabled");
+			setupDeleteConfirmDialogs();
+		}
 		jProgress('This may take several seconds', 60);
 		$.ajax({
 			type:"POST",
@@ -73,12 +90,8 @@ $(document).ready(function() {
 				if (status!=results){ 
 					jAlert("Could not do it!");
 					$("#ddns_switch").radioswitch("doSwitch", results === 'Enabled' ? 'on' : 'off');
-				}
-				var isUDNSDisabled = $("#ddns_switch").radioswitch("getState").on === false;
-				if(isUDNSDisabled){
-					$("#DNS-items *").prop("disabled",true).addClass("disabled");
-				}else{
-					$("#DNS-items *").prop("disabled",false).removeClass("disabled");
+				} else {
+					window.location.href="dynamic_dns.php";
 				}
 			},
 			error:function(){
@@ -89,6 +102,18 @@ $(document).ready(function() {
 	});
 
 });
+</script>
+
+<script>
+	//Don't allow user to add morethan 4 rules as only 4 Service Provider are allowed
+	function add_service() {
+		if ($('.edit').length > 3) {
+			jAlert("No more than 4 Dynamic DNS rules can be added!");
+			return;
+		} else {
+			location.href="dynamic_dns_add.php";
+		}
+	}
 </script>
 
 <div id="content">
@@ -116,7 +141,7 @@ $(document).ready(function() {
 <div id="DNS-items">
 <div class="module data">
 		<h2>Dynamic DNS</h2>
-		<p class="button"><a href="dynamic_dns_add.php" class="btn" id="add-service">+ ADD DDNS</a></p>
+		<p class="button"><a class="btn" id="add-service" onclick="add_service()">+ ADD DDNS</a></p>
 		<table class="data">
 			<tr>
 				<td class="acs-th">Service Provider</td>
@@ -156,26 +181,6 @@ $(document).ready(function() {
 					} 
 				}
 			?>
-<!--				    <tr>
-				        <td>dyndns.org</td>
-					<td>USG</td>
-								<td>**********</td>
-								<td>App1, App2, Host1, Host2</td>
-
-		            	<td class="edit"><a href="dynamic_dns_edit1.php" class="btn" id="edit1">Edit</a></td>
-				        <td class="delete"><a href="#" class="btn confirm" title="delete this Port Forwading service for FTP" id="delete1">x</a>
-
-				        </td>
-				    </tr>
-				    <tr class="odd">
-				        <td>changeip.com</td>
-					<td>USG1</td>
-								<td>**********</td>
-								<td>App3, App4, Host3, Host4</td>
-
-		            	<td class="edit"><a href="dynamic_dns_edit2.php" class="btn" id="edit2">Edit</a></td>
-				        <td class="delete"><a href="#" class="btn confirm" title="delete this Port Forwading service for HTTP" id="delete2">x</a></td>
-				    </tr>-->
 		</table>
 		</div> <!-- end .module -->
 

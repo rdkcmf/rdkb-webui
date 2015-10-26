@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
@@ -9,12 +9,18 @@
 
 <?php
 	$i=$_GET['id'];
+	$dns_param = array(
+	  	"sp" 		=> "Device.X_CISCO_COM_DDNS.Service."."$i".".ServiceName",
+		"username" 	=> "Device.X_CISCO_COM_DDNS.Service."."$i".".Username",
+		"password" 	=> "Device.X_CISCO_COM_DDNS.Service."."$i".".Password",
+		"hostname" 	=> "Device.X_CISCO_COM_DDNS.Service."."$i".".Domain",      
+		);
+	$dns_value = KeyExtGet("Device.X_CISCO_COM_DDNS.Service.", $dns_param);
 //	echo "<script>var ID=".$i.";</script>";
-	$sp = getStr("Device.X_CISCO_COM_DDNS.Service."."$i".".ServiceName");
-	$username = getStr("Device.X_CISCO_COM_DDNS.Service."."$i".".Username");
-	$password = getStr("Device.X_CISCO_COM_DDNS.Service."."$i".".Password");
-	$hostname = getStr("Device.X_CISCO_COM_DDNS.Service."."$i".".Domain");
-	
+	$sp = $dns_value["sp"];
+	$username = $dns_value["username"];
+	$password = $dns_value["password"];
+	$hostname = $dns_value["hostname"];
 	
 ?>
 
@@ -157,13 +163,21 @@ button.onclick=add1
 
 			<div class="form-row "  style="float:left">
 				<label for="Service_Provider">Service Provider:</label>
-				<input type="text" value="dyndns.org" id="Service_Provider1"  name="Service_Provider" />
-
+				<!--input type="text" value="dyndns.org" id="Service_Provider1"  name="Service_Provider" /-->
+				<select name="Service_Provider1" id="Service_Provider1">
+				<?php
+					$ids=explode(",",getInstanceIDs("Device.X_CISCO_COM_DDNS.Service."));
+					foreach ($ids as $key=>$j) {
+						$spName		=getStr("Device.X_CISCO_COM_DDNS.Service.".$j.".ServiceName");
+						$serviceStatus	=getStr("Device.X_CISCO_COM_DDNS.Service.".$j.".Enable");
+						if(strcasecmp($sp,$spName) == 0) echo '<option value="'.$spName.'">'.$spName.'</option>';
+						else if(strcasecmp($serviceStatus,"false") == 0) echo '<option value="'.$spName.'">'.$spName.'</option>';
+					}
+				?>
+				</select>
 			</div>
-			<div  style="font-size: .8em;  "></br>Eg:dyndns.org,changeip.com,freedns.afraid.org</div>
 
 		</div>
-
 
 		<div class="form-row odd" >
 			<label for="User_name"> User Name:</label> <input type="text"  id="User_name" name="User_name" class="text" size="35"  value="USG"/>

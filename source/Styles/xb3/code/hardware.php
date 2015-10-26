@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 <!-- $Id: hardware.php 3158 2010-01-08 23:32:05Z slemoine $ -->
 
 <div id="sub-header">
@@ -13,7 +13,22 @@ $(document).ready(function() {
     comcast.page.init("Gateway > Hardware > System Hardware", "nav-system-hardware");
 });
 </script>
-
+<?php
+	$deviceinfo_param = array(
+	"model_name"		=> "Device.DeviceInfo.ModelName",
+	"manufacturer"		=> "Device.DeviceInfo.Manufacturer",
+	"hardware_version"	=> "Device.DeviceInfo.HardwareVersion",
+	"serial_number"		=> "Device.DeviceInfo.SerialNumber",
+	"cisco_processor_speed" => "Device.DeviceInfo.X_CISCO_COM_ProcessorSpeed",
+	"mem_total"		=> "Device.DeviceInfo.MemoryStatus.Total",
+	"mem_used"		=> "Device.DeviceInfo.MemoryStatus.Used",
+	"mem_free"		=> "Device.DeviceInfo.MemoryStatus.Free",
+	"hardware"		=> "Device.DeviceInfo.Hardware",
+	"hardware_mem_used"	=> "Device.DeviceInfo.Hardware_MemUsed",
+	"hardware_mem_free"	=> "Device.DeviceInfo.Hardware_MemFree"
+	);
+	$deviceinfo_value = KeyExtGet("Device.DeviceInfo.", $deviceinfo_param);
+?>
 <div id="content">
 	<h1>Gateway > Hardware > System Hardware</h1>
 	<div id="educational-tip">
@@ -24,31 +39,47 @@ $(document).ready(function() {
 		<h2>System Hardware</h2>
 		<div class="form-row odd">
 			<span class="readonlyLabel">Model:</span> <span class="value">
-			<?php echo getStr("Device.DeviceInfo.ModelName"); ?></span>
+			<?php echo $deviceinfo_value["model_name"]; ?></span>
 		</div>
 		<div class="form-row">
 			<span class="readonlyLabel">Vendor:</span> <span class="value">
-			<?php echo getStr("Device.DeviceInfo.Manufacturer"); ?></span>
+			<?php echo $deviceinfo_value["manufacturer"]; ?></span>
 		</div>
 		<div class="form-row odd">
 			<span class="readonlyLabel">Hardware Revision:</span> <span class="value">
-			<?php echo getStr("Device.DeviceInfo.HardwareVersion"); ?></span>
+			<?php echo $deviceinfo_value["hardware_version"]; ?></span>
 		</div>
 		<div class="form-row">
 			<span class="readonlyLabel">Serial Number:</span> <span class="value">
-			<?php echo getStr("Device.DeviceInfo.SerialNumber"); ?></span>
+			<?php echo  $deviceinfo_value["serial_number"]; ?></span>
 		</div>
 		<div class="form-row odd">
 			<span class="readonlyLabel">Processor Speed:</span> <span class="value">
-			<?php echo getStr("Device.DeviceInfo.X_CISCO_COM_ProcessorSpeed"); ?> MHz</span>
+			<?php echo $deviceinfo_value["cisco_processor_speed"]; ?> MHz</span>
 		</div>
 		<div class="form-row">
-			<span class="readonlyLabel">DRAM:</span> <span class="value">
-			<?php echo getStr("Device.DeviceInfo.MemoryStatus.Total"); ?> MB</span>
+			<span class="readonlyLabel">DRAM Total Memory:</span> <span class="value">
+			<?php echo $deviceinfo_value["mem_total"]; ?> MB</span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">Flash:</span> <span class="value">
-			<?php echo getStr("Device.DeviceInfo.Hardware"); ?> MB</span>
+			<span class="readonlyLabel">DRAM Used Memory:</span> <span class="value">
+			<?php echo $deviceinfo_value["mem_used"]; ?> MB</span>
+		</div>
+		<div class="form-row">
+			<span class="readonlyLabel">DRAM Available Memory:</span> <span class="value">
+			<?php echo $deviceinfo_value["mem_free"]; ?> MB</span>
+		</div>
+		<div class="form-row odd">
+			<span class="readonlyLabel">Flash Total Memory:</span> <span class="value">
+			<?php echo $deviceinfo_value["hardware"]; ?> MB</span>
+		</div>
+		<div class="form-row">
+			<span class="readonlyLabel">Flash Used Memory:</span> <span class="value">
+			<?php echo $deviceinfo_value["hardware_mem_used"]; ?> MB</span>
+		</div>
+		<div class="form-row odd">
+			<span class="readonlyLabel">Flash Available Memory:</span> <span class="value">
+			<?php echo $deviceinfo_value["hardware_mem_free"]; ?> MB</span>
 		</div>
 	</div> <!-- end .module -->
 </div><!-- end #content -->

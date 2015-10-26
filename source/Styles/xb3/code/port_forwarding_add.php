@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 <!-- $Id: port_forwarding_add.php 3158 2010-01-08 23:32:05Z slemoine $ -->
 
 <div id="sub-header">
@@ -9,12 +9,35 @@
 <?php include('includes/nav.php'); ?>
 
 <?php 
-//add by yaosheng 
-$LanSubnetMask = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask");
-//$LanSubnetMask = "255.255.0.0";
-$LanGwIP = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
-//$LanGwIP = "10.0.0.1";
+//add by yaosheng
+$devices_param = array(
+    "LanGwIP"   	=> "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress",
+	"LanSubnetMask"	=> "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask",
+	"DeviceMode"	=> "Device.X_CISCO_COM_DeviceControl.DeviceMode",
+	);
+    $devices_value = KeyExtGet("Device.X_CISCO_COM_DeviceControl.", $devices_param);
 
+
+$v6_param = array(
+    "state"   	=> "Device.DHCPv6.Server.X_CISCO_COM_Type",
+	"v6_begin_addr"	=> "Device.DHCPv6.Server.Pool.1.PrefixRangeBegin",
+	"v6_end_addr"	=> "Device.DHCPv6.Server.Pool.1.PrefixRangeEnd",
+	);
+    $v6_value = KeyExtGet("Device.DHCPv6.Server.", $v6_param);
+
+$LanGwIP 	= $devices_value["LanGwIP"];
+$LanSubnetMask 	= $devices_value["LanSubnetMask"];
+$beginAddr 	= getStr("Device.DHCPv4.Server.Pool.1.MinAddress");
+$endAddr 	= getStr("Device.DHCPv4.Server.Pool.1.MaxAddress");
+
+$DeviceMode = $devices_value["DeviceMode"];
+//$DeviceMode = "IPv6";
+$state = $v6_value["state"];
+//2040::/64, 2040:1::/64, 2040:1:2::/64 and 2040:1:2:3::/64
+$prefix_arr = explode('::/', getStr("Device.IP.Interface.1.IPv6Prefix.1.Prefix"));
+//$prefix_arr = explode('::/', "2040:1:2:3::/64");
+$v6_begin_addr = $v6_value["v6_begin_addr"];
+$v6_end_addr = $v6_value["v6_end_addr"];
 ?>
 
 <style type="text/css">
@@ -35,10 +58,15 @@ $(document).ready(function() {
     comcast.page.init("Advanced > Port Forwarding > Add Service", "nav-port-forwarding");
     $('#service_name').focus();
 
-    var jsNetMask = "<?php echo $LanSubnetMask; ?>";
-    //alert(typeof(jsNetMask));
+    var jsNetMask	= "<?php echo $LanSubnetMask; ?>";
+    var beginAddr	= "<?php echo $beginAddr; ?>";
+    var endAddr		= "<?php echo $endAddr; ?>";
+    var beginArr	= beginAddr.split(".");
+    var endArr		= endAddr.split(".");
+
     var jsGwIP = "<?php echo $LanGwIP; ?>".split(".");
     var jsGatewayIP = "<?php echo $LanGwIP; ?>";
+    var DeviceMode = "<?php echo $DeviceMode; ?>";
 
 function populateIPv6Addr(v6addr){
     var v6_arr = new Array();
@@ -69,11 +97,14 @@ function populateIPv6Addr(v6addr){
 }
 
 function IsBlank(id_prefix){
+	//Don't check for - ip6_address_r[1-4]
 	var ret = true;
 	$('[id^="'+id_prefix+'"]').each(function(){
-		if ($(this).val().replace(/\s/g, '') != ""){
-			ret = false;
-			return false;
+		if($(this).attr('id').search(/^ip6_address_r[1-4]$/) == "-1"){
+			if ($(this).val().replace(/\s/g, '') != ""){
+				ret = false;
+				return false;
+			}
 		}
 	});
 	return ret;
@@ -105,6 +136,9 @@ function isIp4AddrRequired()
 	jQuery.validator.addMethod("ip4",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 1 && value <= 254);
 	}, "Please enter a valid IP address.");
+	jQuery.validator.addMethod("ip4_end",function(value,element){
+		return this.optional(element) || (value.match(/^\d+$/g) && value >= 1 && value <= 253);
+	}, "Please enter a valid IP address.");
 	jQuery.validator.addMethod("port",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 65535);
 	}, "Please enter a port number less than 65536.");
@@ -117,7 +151,7 @@ function isIp4AddrRequired()
 		onkeyup: false,
 		groups:{
 			server_ipv4: "server_ip_address_1 server_ip_address_2 server_ip_address_3 server_ip_address_4",
-			server_ipv6: "ip_address_1 ip_address_2 ip_address_3 ip_address_4 ip_address_5 ip_address_6 ip_address_7 ip_address_8"
+			server_ipv6: "ip6_address_r1 ip6_address_r2 ip6_address_r3 ip6_address_r4 ip6_address_r5 ip6_address_r6 ip6_address_r7 ip6_address_r8"
 		},
         rules: {        	
         	start_port: {
@@ -147,37 +181,37 @@ function isIp4AddrRequired()
             }
 			,server_ip_address_4: {
                 required: isIp4AddrRequired,
-				ip4: true
+				ip4_end: true
             }
-            ,ip_address_1:{
+            ,ip6_address_r1:{
             	required: isIp6AddrRequired,
             	hexadecimal: true            	
             } 
-            ,ip_address_2:{
+            ,ip6_address_r2:{
             	required: isIp6AddrRequired,
             	hexadecimal: true            	
             }  
-            ,ip_address_3:{
+            ,ip6_address_r3:{
             	required: isIp6AddrRequired,
             	hexadecimal: true            	
             }  
-            ,ip_address_4:{
+            ,ip6_address_r4:{
             	required: isIp6AddrRequired,
             	hexadecimal: true            	
             }  
-            ,ip_address_5:{
+            ,ip6_address_r5:{
             	required: isIp6AddrRequired,
             	hexadecimal: true            	
             }  
-            ,ip_address_6:{
+            ,ip6_address_r6:{
             	required: isIp6AddrRequired,
             	hexadecimal: true            	
             }   
-            ,ip_address_7:{
+            ,ip6_address_r7:{
             	required: isIp6AddrRequired,
             	hexadecimal: true            	
             }  
-            ,ip_address_8:{
+            ,ip6_address_r8:{
             	required: isIp6AddrRequired,
             	hexadecimal: true            	
             }            
@@ -215,49 +249,74 @@ function isIp4AddrRequired()
 		var endport=$('#end_port').val();
 		var ipv6addr = GetAddress(":", "ip6_address_r");
 
-	    var host0 = parseInt($("#server_ip_address_1").val());
-	    var host1 = parseInt($("#server_ip_address_2").val());
-	    var host2 = parseInt($("#server_ip_address_3").val());
-	    var host3 = parseInt($("#server_ip_address_4").val());
+		var host0 = parseInt($("#server_ip_address_1").val());
+		var host1 = parseInt($("#server_ip_address_2").val());
+		var host2 = parseInt($("#server_ip_address_3").val());
+		var host3 = parseInt($("#server_ip_address_4").val());
 
-	    if (IsBlank("ip6_address_r") && (ip.length > 3)) {
-	    	//ipv6 is not specified, validate ipv4 addr
-		    if (ip == jsGatewayIP){
+	    if (IsBlank("server_ip_address_") && IsBlank("ip6_address_r")) {
+	   	  	jAlert("Please input valid server address !");
+	   	  	return;
+		}
+		
+		if (!IsBlank("server_ip_address_")) {
+			//to check if "Server IPv4 Address" is in "DHCP Pool range"
+			var IPv4_not_valid = false;
+			for(i=0;i<4;i++){
+				j = i+1;
+				if(parseInt(beginArr[i]) > parseInt($("#server_ip_address_"+j).val()) || parseInt($("#server_ip_address_"+j).val()) > parseInt(endArr[i])){
+					IPv4_not_valid = true;
+					break;
+				}
+			}
+
+			//IPv4 validation
+			if (ip == jsGatewayIP){
 				jAlert("Server IP can't be equal to the Gateway IP address !");
 				return;
+			} else if(IPv4_not_valid){
+				jAlert("Server IP addr is not in valid range:\n"+beginAddr+" ~ "+endAddr);
+				return;
 			}
-			if(jsNetMask.indexOf('255.255.255') >= 0){
-				//the first three field should be equal to gw ip field
-				if((jsGwIP[0] != host0) || (jsGwIP[1] != host1) || (jsGwIP[2] != host2)){
-				  var msg = 'Server IP addr is not in valid range:\n' + jsGwIP[0]+'.'+jsGwIP[1]+'.'+jsGwIP[2]+'.[2~254]';
-				  jAlert(msg);
-				  return;
-				}		
-			}
-			else if(jsNetMask == "255.255.0.0"){
-				if((jsGwIP[0] != host0) || (jsGwIP[1] != host1)){
-				  jAlert('Server IP addr is not in valid range:\n' + jsGwIP[0]+ '.' + jsGwIP[1] + '.[0~255]' + '.[2~254]');
-				  return;
-				}		
-			}
-			else{
-				if(jsGwIP[0] != host0){
-				  jAlert("Server IP addr is not in valid range:\n [10.0.0.2 ~ 10.255.255.254]");
-				  return;
-				}		
-			}
-		}  
+		}
 
-		if (IsBlank("server_ip_address_") && IsBlank("ip6_address_r")) {
-	   	  jAlert("Please input valid server address !");
-	   	  return;
-	    }
-	    else if (IsBlank("server_ip_address_")) {
-	   	    ip = "255.255.255.255";
-	    }
-	    else if (IsBlank("ip6_address_r")) {
-		    ipv6addr = "x"; 
-	    } 
+		if (!IsBlank("ip6_address_r")) {
+		//IPv6 validation
+		//Check if IPv6 Mode - Stateless(Auto-Config), Stateful(Use Dhcp Server)
+			if("<?php echo $state; ?>" == "Stateful"){
+				//if Stateful(Use Dhcp Server) then accept inrange values
+				var start = "<?php echo $v6_begin_addr; ?>";
+				var start1 = start.split(":");
+				var end = "<?php echo $v6_end_addr; ?>";
+				var end1 = end.split(":");
+				var ipv6res = ipv6addr.split(":");
+				var ipv6res1 = ipv6res.splice(4, 4);
+
+				for (i = 0; i < ipv6res1.length; i++) {
+					var val = parseInt(ipv6res1[i].toUpperCase(), 16);
+					var low = parseInt(start1[i].toUpperCase(), 16);
+					var upp = parseInt(end1[i].toUpperCase(), 16);
+					if(!((val >= low) && (val <= upp))){
+						jAlert("Server IPv6 addr is not in valid range:\n <?php echo $prefix_arr[0].':'.$v6_begin_addr.' ~ '.$prefix_arr[0].':'.$v6_end_addr; ?>");
+					  	return;
+					}
+				}
+			}
+	     	}  
+
+		$('.port').each(function(){
+			if (!validator.element($(this))){
+				isValid = false;	//any invalid will make this false
+				return;
+			}
+		});
+
+		if (IsBlank("server_ip_address_")) {
+	   	    	ip = "255.255.255.255";
+		}
+		if (IsBlank("ip6_address_r")) {
+		    	ipv6addr = "x"; 
+		}
 
 		if($("#pageForm").valid()) {
 			jProgress('This may take several seconds.',60);
@@ -344,6 +403,12 @@ $('#device').click(function(){
 	$('#add-0').focus();
 });
 
+	if(DeviceMode == "Ipv4"){
+		$("#ip6_address_r5, #ip6_address_r6, #ip6_address_r7, #ip6_address_r8").prop("disabled", true);
+    	} else {
+		$("#ip6_address_r5, #ip6_address_r6, #ip6_address_r7, #ip6_address_r8").prop("disabled", false);
+	}
+
 });//end of document ready
 </script>
 
@@ -351,7 +416,8 @@ $('#device').click(function(){
 	<h1>Advanced > Port Forwarding > Add Service</h1>
     <div id="educational-tip">
         <p class="tip"> Add a rule for port forwarding services by user.</p>
-        <p class="hidden">Some more text to help the customer understand about this content.</p>
+        <p class="hidden">Port forwarding permits communications from external hosts by forwarding them to a particular port.</p>
+		<p class="hidden">Port forwarding settings can affect the Gateway's performance.</p>
     </div>
 	<form method="post" id="pageForm" action="">
 	<div class="module forms">
@@ -364,6 +430,9 @@ $('#device').click(function(){
 					<option  value="5190|5190">AIM</option>
 					<option  value="80|80" >HTTP</option>
 					<option  value="1723|1723">PPTP</option>
+					<option  value="443|443">HTTPs</option>
+					<option  value="23|23">Telnet</option>
+					<option  value="22|22">SSH</option>
 					<option  value="other" class="other" selected="selected">Other</option>
 					</select>
 				</div>
@@ -383,7 +452,7 @@ $('#device').click(function(){
 		</div>
 
 		<div class="form-row ">
-			<label for="server_ip_address_1">Server IP Address:</label>
+			<label for="server_ip_address_1">Server IPv4 Address:</label>
 	        <input type="text" size="2"  maxlength="3"  id="server_ip_address_1" name="server_ip_address_1" class="ipv4-addr smallInput" />
 	        <label for="server_ip_address_2" class="acs-hide"></label>
 			.<input type="text" size="2" maxlength="3"  id="server_ip_address_2" name="server_ip_address_2" class="ipv4-addr smallInput" />
@@ -393,15 +462,23 @@ $('#device').click(function(){
 			.<input type="text" size="2" maxlength="3"  id="server_ip_address_4" name="server_ip_address_4" class="ipv4-addr smallInput" />
 		</div>
 
+		<?php  
+	      		//2040::/64, 2040:1::/64, 2040:1:2::/64 and 2040:1:2:3::/64
+                  	$prefix_arr = explode('::/', getStr("Device.IP.Interface.1.IPv6Prefix.1.Prefix"));
+			//$prefix_arr = explode('::/', "2040:1:2:3::/64");
+			$ipv6_prefix_arr = explode(':', $prefix_arr[0]);
+                  	$ipa_size = count($ipv6_prefix_arr);
+		?>
+
 		<div class="form-row odd">		
 			<label for="ip6_address_r1">Server IPv6 Address:</label>
-			<input type="text" size="1" maxlength="4" id="ip6_address_r1" name="ip_address_1" class="ipv6-addr ipv6-input"/>:
+			<input type="text" size="1" maxlength="4" id="ip6_address_r1" name="ip_address_1" disabled="disabled" class="ipv6-addr ipv6-input" value="<?php if($DeviceMode!='Ipv4') {echo $ipv6_prefix_arr[0];} ?>"/>:
 	        <label for="ip6_address_r2" class="acs-hide"></label>
-			<input type="text" size="1" maxlength="4" id="ip6_address_r2" name="ip_address_2" class="ipv6-addr ipv6-input"/>:
+			<input type="text" size="1" maxlength="4" id="ip6_address_r2" name="ip_address_2" disabled="disabled" class="ipv6-addr ipv6-input" value="<?php if($DeviceMode!='Ipv4') {if($ipa_size > 1) echo $ipv6_prefix_arr[1]; else echo '0';} ?>"/>:
 	        <label for="ip6_address_r3" class="acs-hide"></label>
-			<input type="text" size="1" maxlength="4" id="ip6_address_r3" name="ip_address_3" class="ipv6-addr ipv6-input"/>:
+			<input type="text" size="1" maxlength="4" id="ip6_address_r3" name="ip_address_3" disabled="disabled" class="ipv6-addr ipv6-input" value="<?php if($DeviceMode!='Ipv4') {if($ipa_size > 2) echo $ipv6_prefix_arr[2]; else echo '0';} ?>"/>:
 	        <label for="ip6_address_r4" class="acs-hide"></label>
-			<input type="text" size="1" maxlength="4" id="ip6_address_r4" name="ip_address_4" class="ipv6-addr ipv6-input"/>:
+			<input type="text" size="1" maxlength="4" id="ip6_address_r4" name="ip_address_4" disabled="disabled" class="ipv6-addr ipv6-input" value="<?php if($DeviceMode!='Ipv4') {if($ipa_size > 3) echo $ipv6_prefix_arr[3]; else echo '0';} ?>"/>:
 	        <label for="ip6_address_r5" class="acs-hide"></label>
 			<input type="text" size="1" maxlength="4" id="ip6_address_r5" name="ip_address_5" class="ipv6-addr ipv6-input"/>:
 	        <label for="ip6_address_r6" class="acs-hide"></label>

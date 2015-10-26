@@ -9,7 +9,6 @@
 <?php include('includes/nav.php'); ?>
 
 <link rel="stylesheet" type="text/css" href="./cmn/css/lib/smartpaginator.css"/>
-<style> td:first-child {word-break: break-all;}</style>
 <script type="text/javascript" src="./cmn/js/lib/smartpaginator.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -233,9 +232,14 @@ function ajaxDo(mode,timef){
 			var trClass="odd";
 			$("#"+mode+"_logs_"+timef2+" > tbody").empty();
 			$.each(results,function(key,value){
-				// simplify logic when fix huge log issue
-				$("#"+mode+"_logs_"+timef2+" > tbody").append('<tr class="' + (trClass=(""==trClass)?"odd":"") + '"><td>'
-				+value.Des+'</td><td>'+value.time+'</td><td>'+value.Level+'</td></tr>');
+				if (mode=="system") {
+					$("#"+mode+"_logs_"+timef2+" > tbody").append("<tr class='"+trClass+"'><td>"+value.Des+"</td><td>"+value.time+"</td><td>"+value.Level+"</td></tr>");
+				} else if (mode=="event") {
+					$("#"+mode+"_logs_"+timef2+" > tbody").append("<tr class='"+trClass+"'><td>"+value.Des+"</td><td>"+value.time+"</td><td>"+value.Level+"</td></tr>");
+				} else {
+					$("#"+mode+"_logs_"+timef2+" > tbody").append("<tr class='"+trClass+"'><td>"+value.Des+", "+value.Count+" Attempts, "+value.time+"</td><td>"+value.Type+"</td><td></td></tr>");
+				}	// need to modify by new SNMP file 
+				trClass=((trClass=="")?"odd":"");
 				length++;
 			});
 			
@@ -245,7 +249,7 @@ function ajaxDo(mode,timef){
 			}
 			// alert(length+mode+'_logs_'+timef2);
 			if(length>20){
-				$(".smart_paginator:hidden").show();	//add by shunjie
+				$(".smart_paginator").empty();
 				$(".smart_paginator:visible").smartpaginator({
 					totalrecords:length,
 					recordsperpage:20,
@@ -306,7 +310,7 @@ function ajaxDo(mode,timef){
 		<table id="system_logs_today" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-				<td class="acs-th" scope="col" colspan="3">All logs for today</td>
+				<td class="acs-th" scope="col" colspan="3">All logs for Today</td>
 				</tr>
 			</thead>
 				<tbody>
@@ -316,7 +320,7 @@ function ajaxDo(mode,timef){
 		<table id="system_logs_yesterday" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-				<td class="acs-th" scope="col" colspan="3">All logs for Yesterday</td>
+				<td class="acs-th" scope="col" colspan="3">All logs from Yesterday</td>
 				</tr>
 			</thead>
 				<tbody>
@@ -326,7 +330,7 @@ function ajaxDo(mode,timef){
 		<table id="system_logs_week" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
-				<td class="acs-th" scope="col" colspan="3">All logs for Last week</td>
+				<td class="acs-th" scope="col" colspan="3">All logs from Last Week</td>
 				</tr>
 			</thead>
 				<tbody>
@@ -336,7 +340,7 @@ function ajaxDo(mode,timef){
 		<table id="system_logs_month" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
-				<td class="acs-th" scope="col" colspan="3">All logs for Last month</td>
+				<td class="acs-th" scope="col" colspan="3">All logs from Last Month</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -346,7 +350,7 @@ function ajaxDo(mode,timef){
 		<table id="system_logs_last" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
-				<td class="acs-th" scope="col" colspan="3">All logs for Last 90 days</td>
+				<td class="acs-th" scope="col" colspan="3">All logs for Last 90 Days</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -366,7 +370,7 @@ function ajaxDo(mode,timef){
 		<table id="event_logs_today" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
-				<td class="acs-th" scope="col" colspan="3">All Logs for Today</td>
+				<td class="acs-th" scope="col" colspan="3">All logs for Today</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -375,7 +379,7 @@ function ajaxDo(mode,timef){
 		<table id="event_logs_yesterday" cellpadding="0" cellspacing="0" class="data">
 				<thead>
 					<tr>
-					<td class="acs-th" scope="col" colspan="3">All Logs for Yesterday</td>
+					<td class="acs-th" scope="col" colspan="3">All logs from Yesterday</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -384,7 +388,7 @@ function ajaxDo(mode,timef){
 		<table id="event_logs_week" cellpadding="0" cellspacing="0" class="data">
 				<thead>
 					<tr>
-					<td class="acs-th" scope="col" colspan="3">All Logs for Last week</td>
+					<td class="acs-th" scope="col" colspan="3">All logs from Last Week</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -394,7 +398,7 @@ function ajaxDo(mode,timef){
 		<table id="event_logs_month" cellpadding="0" cellspacing="0" class="data">
 				<thead>
 					<tr>
-					<td class="acs-th" scope="col" colspan="3">All Logs for Last month</td>
+					<td class="acs-th" scope="col" colspan="3">All logs from Last Month</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -404,7 +408,7 @@ function ajaxDo(mode,timef){
 		<table id="event_logs_last" cellpadding="0" cellspacing="0" class="data">
 				<thead>
 					<tr>
-					<td class="acs-th" scope="col" colspan="3">All Logs for Last 90 days</td>
+					<td class="acs-th" scope="col" colspan="3">All logs for Last 90 Days</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -424,7 +428,7 @@ function ajaxDo(mode,timef){
 		<table id="firewall_logs_today" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col" colspan="3">All Logs for Today</td>
+					<td class="acs-th" scope="col" colspan="3">All logs for Today</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -434,7 +438,7 @@ function ajaxDo(mode,timef){
 		<table id="firewall_logs_yesterday" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col" colspan="3">All Logs for Yesterday</td>
+					<td class="acs-th" scope="col" colspan="3">All logs from Yesterday</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -443,7 +447,7 @@ function ajaxDo(mode,timef){
 		<table id="firewall_logs_week" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col" colspan="3">All Logs for Last Week</td>
+					<td class="acs-th" scope="col" colspan="3">All logs from Last Week</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -452,7 +456,7 @@ function ajaxDo(mode,timef){
 		<table id="firewall_logs_month" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col" colspan="3">All Logs for Last Month</td>
+					<td class="acs-th" scope="col" colspan="3">All logs from Last Month</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -461,7 +465,7 @@ function ajaxDo(mode,timef){
 		<table id="firewall_logs_last" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col" colspan="3">All Logs for Last 90 days</td>
+					<td class="acs-th" scope="col" colspan="3">All logs for Last 90 Days</td>
 				</tr>
 			</thead>
 			<tbody>

@@ -16,17 +16,13 @@
 <?php
 /*********************get WiFi parameters***************************/
 $wifi_param = array(
-	"radio_enable" 			=> "Device.WiFi.SSID.1.Enable",
-	"network_name" 			=> "Device.WiFi.SSID.1.SSID",
-	"feq_band" 				=> "Device.WiFi.Radio.1.OperatingFrequencyBand",
-	"mac_address"			=> "Device.WiFi.SSID.1.BSSID",
-	"encrypt_mode" 			=> "Device.WiFi.AccessPoint.1.Security.ModeEnabled",
-	"encrypt_method" 		=> "Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_EncryptionMethod",
+	"feq_band" 			=> "Device.WiFi.Radio.1.OperatingFrequencyBand",
 	"wireless_mode"			=> "Device.WiFi.Radio.1.OperatingStandards",
 	"transmit_power"		=> "Device.WiFi.Radio.1.TransmitPower",
 	"channel_automatic"		=> "Device.WiFi.Radio.1.AutoChannelEnable",
 	"channel_number"		=> "Device.WiFi.Radio.1.Channel",
 	"BG_protect_mode"		=> "Device.WiFi.Radio.1.X_CISCO_COM_CTSProtectionMode",
+	"IGMP_Snooping"			=> "Device.WiFi.Radio.1.X_COMCAST_COM_IGMPSnoopingEnable",
 	"operation_mode"		=> "Device.WiFi.Radio.1.X_CISCO_COM_11nGreenfieldEnabled",
 	"channel_bandwidth"		=> "Device.WiFi.Radio.1.OperatingChannelBandwidth",
 	"guard_interval"		=> "Device.WiFi.Radio.1.GuardInterval",
@@ -35,51 +31,96 @@ $wifi_param = array(
 	"MSDU_enabled"			=> "Device.WiFi.Radio.1.X_CISCO_COM_AggregationMSDU",
 	"blockACK_enabled"		=> "Device.WiFi.Radio.1.X_CISCO_COM_AutoBlockAck",
 	"blockBA_enabled"		=> "Device.WiFi.Radio.1.X_CISCO_COM_DeclineBARequest",
+	"DCS_Supported"			=> "Device.WiFi.Radio.1.X_COMCAST-COM_DCSSupported", //1-supported 0-not supported
+	"DCS_Enable"			=> "Device.WiFi.Radio.1.X_COMCAST-COM_DCSEnable",
 	"HT_TxStream"			=> "Device.WiFi.Radio.1.X_CISCO_COM_HTTxStream",
 	"HT_RxStream"			=> "Device.WiFi.Radio.1.X_CISCO_COM_HTRxStream",
 	"STBC_enabled" 			=> "Device.WiFi.Radio.1.X_CISCO_COM_STBCEnable",
-	"WMM_power_save"		=> "Device.WiFi.AccessPoint.1.UAPSDEnable",
-	"enableWMM"				=> "Device.WiFi.AccessPoint.1.WMMEnable",
 	"possible_channels"		=> "Device.WiFi.Radio.1.PossibleChannels",
-	"radio_enable1" 		=> "Device.WiFi.SSID.2.Enable",
-	"network_name1" 		=> "Device.WiFi.SSID.2.SSID",
 	"feq_band1" 			=> "Device.WiFi.Radio.2.OperatingFrequencyBand",
-	"mac_address1"			=> "Device.WiFi.SSID.2.BSSID",
-	"encrypt_mode1" 		=> "Device.WiFi.AccessPoint.2.Security.ModeEnabled",
-	"encrypt_method1" 		=> "Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_EncryptionMethod",
 	"wireless_mode1"		=> "Device.WiFi.Radio.2.OperatingStandards",
 	"transmit_power1"		=> "Device.WiFi.Radio.2.TransmitPower",
-	"channel_automatic1"	=> "Device.WiFi.Radio.2.AutoChannelEnable",
+	"channel_automatic1"		=> "Device.WiFi.Radio.2.AutoChannelEnable",
 	"channel_number1"		=> "Device.WiFi.Radio.2.Channel",
 	"BG_protect_mode1"		=> "Device.WiFi.Radio.2.X_CISCO_COM_CTSProtectionMode",
+	"IGMP_Snooping1"		=> "Device.WiFi.Radio.2.X_COMCAST_COM_IGMPSnoopingEnable",
 	"operation_mode1"		=> "Device.WiFi.Radio.2.X_CISCO_COM_11nGreenfieldEnabled",
-	"channel_bandwidth1"	=> "Device.WiFi.Radio.2.OperatingChannelBandwidth",
+	"channel_bandwidth1"		=> "Device.WiFi.Radio.2.OperatingChannelBandwidth",
 	"guard_interval1"		=> "Device.WiFi.Radio.2.GuardInterval",
 	"reverse_enabled1"		=> "Device.WiFi.Radio.2.X_CISCO_COM_ReverseDirectionGrant",
 	"ext_channel1"			=> "Device.WiFi.Radio.2.ExtensionChannel",
 	"MSDU_enabled1"			=> "Device.WiFi.Radio.2.X_CISCO_COM_AggregationMSDU",
 	"blockACK_enabled1"		=> "Device.WiFi.Radio.2.X_CISCO_COM_AutoBlockAck",
 	"blockBA_enabled1"		=> "Device.WiFi.Radio.2.X_CISCO_COM_DeclineBARequest",
+	"DFS_Support1"			=> "Device.WiFi.Radio.2.X_COMCAST_COM_DFSSupport", //1-supported 0-not supported
+	"DFS_Enable1"			=> "Device.WiFi.Radio.2.X_COMCAST_COM_DFSEnable",
+	"DCS_Supported1"		=> "Device.WiFi.Radio.2.X_COMCAST-COM_DCSSupported", //1-supported 0-not supported
+	"DCS_Enable1"			=> "Device.WiFi.Radio.2.X_COMCAST-COM_DCSEnable",
 	"HT_TxStream1"			=> "Device.WiFi.Radio.2.X_CISCO_COM_HTTxStream",
 	"HT_RxStream1"			=> "Device.WiFi.Radio.2.X_CISCO_COM_HTRxStream",
 	"STBC_enabled1" 		=> "Device.WiFi.Radio.2.X_CISCO_COM_STBCEnable",
-	"WMM_power_save1"		=> "Device.WiFi.AccessPoint.2.UAPSDEnable",
-	"enableWMM1"			=> "Device.WiFi.AccessPoint.2.WMMEnable",
-	"possible_channels1"	=> "Device.WiFi.Radio.2.PossibleChannels",
+	"possible_channels1"		=> "Device.WiFi.Radio.2.PossibleChannels",
+	//WiFi radio status
+	"Radio_Enable1"			=> "Device.WiFi.Radio.1.Enable",
+	"Radio_Enable2"			=> "Device.WiFi.Radio.2.Enable",
+	//check if 5g support 802.11ac
+	"support_mode_5g"		=> "Device.WiFi.Radio.2.SupportedStandards",
+	//AccessPoint
+	"AccessPoint_Enable4"		=> "Device.WiFi.AccessPoint.4.Enable",
+	//WPS status
+	"WPS_Enable1"	=> "Device.WiFi.AccessPoint.1.WPS.Enable",
+	"WPS_Pin1"	=> "Device.WiFi.AccessPoint.1.WPS.X_CISCO_COM_Pin",
+	"WPS_Config1"	=> "Device.WiFi.AccessPoint.1.WPS.ConfigMethodsEnabled",
+	"ModeEnabled1"	=> "Device.WiFi.AccessPoint.1.Security.ModeEnabled",
+	"EncrypMethod1"	=> "Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_EncryptionMethod",
+	"SSIDAdvert1"	=> "Device.WiFi.AccessPoint.1.SSIDAdvertisementEnabled",
+	"WMM_power_save"=> "Device.WiFi.AccessPoint.1.UAPSDEnable",
+	"enableWMM"	=> "Device.WiFi.AccessPoint.1.WMMEnable",
+	"WPS_Enable2"	=> "Device.WiFi.AccessPoint.2.WPS.Enable",
+	"WPS_Pin2"	=> "Device.WiFi.AccessPoint.2.WPS.X_CISCO_COM_Pin",
+	"WPS_Config2"	=> "Device.WiFi.AccessPoint.2.WPS.ConfigMethodsEnabled",
+	"ModeEnabled2"	=> "Device.WiFi.AccessPoint.2.Security.ModeEnabled",
+	"EncrypMethod2"	=> "Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_EncryptionMethod",
+	"SSIDAdvert2"	=> "Device.WiFi.AccessPoint.2.SSIDAdvertisementEnabled",
+	"WMM_power_save1"=> "Device.WiFi.AccessPoint.2.UAPSDEnable",
+	"enableWMM1"	=> "Device.WiFi.AccessPoint.2.WMMEnable",
+	"ModeEnabled3"	=> "Device.WiFi.AccessPoint.3.Security.ModeEnabled",
+	"EncrypMethod3"	=> "Device.WiFi.AccessPoint.3.Security.X_CISCO_COM_EncryptionMethod",
+	"ModeEnabled4"	=> "Device.WiFi.AccessPoint.4.Security.ModeEnabled",
+	"EncrypMethod4"	=> "Device.WiFi.AccessPoint.4.Security.X_CISCO_COM_EncryptionMethod",
+	"ModeEnabled5"	=> "Device.WiFi.AccessPoint.5.Security.ModeEnabled",
+	"EncrypMethod5"	=> "Device.WiFi.AccessPoint.5.Security.X_CISCO_COM_EncryptionMethod",
+	"ModeEnabled6"	=> "Device.WiFi.AccessPoint.6.Security.ModeEnabled",
+	"EncrypMethod6"	=> "Device.WiFi.AccessPoint.6.Security.X_CISCO_COM_EncryptionMethod",
+	"SSID_Enable1"	=> "Device.WiFi.SSID.1.Enable",
+	"SSID_Enable2"	=> "Device.WiFi.SSID.2.Enable",
+	"network_name1"	=> "Device.WiFi.SSID.1.SSID",
+	"mac_address1"	=> "Device.WiFi.SSID.1.BSSID",
+	"network_name2" => "Device.WiFi.SSID.2.SSID",
+	"mac_address2"	=> "Device.WiFi.SSID.2.BSSID",
+	"SSID_SSID3"	=> "Device.WiFi.SSID.3.SSID",
+	"SSID_BSSID3"	=> "Device.WiFi.SSID.3.BSSID",
+	"SSID_SSID4"	=> "Device.WiFi.SSID.4.SSID",
+	"SSID_BSSID4"	=> "Device.WiFi.SSID.4.BSSID",
+	"SSID_SSID5"	=> "Device.WiFi.SSID.5.SSID",
+	"SSID_BSSID5"	=> "Device.WiFi.SSID.5.BSSID",
+	"SSID_SSID6"	=> "Device.WiFi.SSID.6.SSID",
+	"SSID_BSSID6"	=> "Device.WiFi.SSID.6.BSSID",
 	);
 $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 
-$radio_enable		= $wifi_value['radio_enable'];
-$network_name		= $wifi_value['network_name'];
+$radio_enable		= $wifi_value['Radio_Enable1'];
+$network_name		= $wifi_value['network_name1'];
 $feq_band			= $wifi_value['feq_band'];
-$mac_address		= $wifi_value['mac_address'];
-$encrypt_mode		= $wifi_value['encrypt_mode'];
-$encrypt_method		= $wifi_value['encrypt_method'];
+$mac_address		= $wifi_value['mac_address1'];
+$encrypt_mode		= $wifi_value['ModeEnabled1'];
+$encrypt_method		= $wifi_value['EncrypMethod1'];
 $wireless_mode		= $wifi_value['wireless_mode'];
 $transmit_power		= $wifi_value['transmit_power'];
 $channel_automatic	= $wifi_value['channel_automatic'];
 $channel_number		= $wifi_value['channel_number'];
 $BG_protect_mode	= $wifi_value['BG_protect_mode'];
+$IGMP_Snooping		= $wifi_value['IGMP_Snooping'];
 $operation_mode		= $wifi_value['operation_mode'];
 $channel_bandwidth	= $wifi_value['channel_bandwidth'];
 $guard_interval		= $wifi_value['guard_interval'];
@@ -88,23 +129,26 @@ $ext_channel		= $wifi_value['ext_channel'];
 $MSDU_enabled		= $wifi_value['MSDU_enabled'];
 $blockACK_enabled	= $wifi_value['blockACK_enabled'];
 $blockBA_enabled	= $wifi_value['blockBA_enabled'];
+$DCS_Supported		= $wifi_value['DCS_Supported'];
+$DCS_Enable			= $wifi_value['DCS_Enable'];
 $HT_TxStream		= $wifi_value['HT_TxStream'];
 $HT_RxStream		= $wifi_value['HT_RxStream'];
 $STBC_enabled		= $wifi_value['STBC_enabled'];
 $WMM_power_save		= $wifi_value['WMM_power_save'];
 $enableWMM			= $wifi_value['enableWMM'];
 $possible_channels	= $wifi_value['possible_channels'];
-$radio_enable1		= $wifi_value['radio_enable1'];
-$network_name1		= $wifi_value['network_name1'];
+$radio_enable1		= $wifi_value['Radio_Enable2'];
+$network_name1		= $wifi_value['network_name2'];
 $feq_band1			= $wifi_value['feq_band1'];
-$mac_address1		= $wifi_value['mac_address1'];
-$encrypt_mode1		= $wifi_value['encrypt_mode1'];
-$encrypt_method1	= $wifi_value['encrypt_method1'];
+$mac_address1		= $wifi_value['mac_address2'];
+$encrypt_mode1		= $wifi_value['ModeEnabled2'];
+$encrypt_method1	= $wifi_value['EncrypMethod2'];
 $wireless_mode1		= $wifi_value['wireless_mode1'];
 $transmit_power1	= $wifi_value['transmit_power1'];
 $channel_automatic1	= $wifi_value['channel_automatic1'];
 $channel_number1	= $wifi_value['channel_number1'];
 $BG_protect_mode1	= $wifi_value['BG_protect_mode1'];
+$IGMP_Snooping1		= $wifi_value['IGMP_Snooping1'];
 $operation_mode1	= $wifi_value['operation_mode1'];
 $channel_bandwidth1	= $wifi_value['channel_bandwidth1'];
 $guard_interval1	= $wifi_value['guard_interval1'];
@@ -113,6 +157,10 @@ $ext_channel1		= $wifi_value['ext_channel1'];
 $MSDU_enabled1		= $wifi_value['MSDU_enabled1'];
 $blockACK_enabled1	= $wifi_value['blockACK_enabled1'];
 $blockBA_enabled1	= $wifi_value['blockBA_enabled1'];
+$DFS_Support1		= $wifi_value['DFS_Support1'];
+$DFS_Enable1		= $wifi_value['DFS_Enable1'];
+$DCS_Supported1		= $wifi_value['DCS_Supported1'];
+$DCS_Enable1		= $wifi_value['DCS_Enable1'];
 $HT_TxStream1		= $wifi_value['HT_TxStream1'];
 $HT_RxStream1		= $wifi_value['HT_RxStream1'];
 $STBC_enabled1		= $wifi_value['STBC_enabled1'];
@@ -120,38 +168,13 @@ $WMM_power_save1	= $wifi_value['WMM_power_save1'];
 $enableWMM1			= $wifi_value['enableWMM1'];
 $possible_channels1	= $wifi_value['possible_channels1'];
 
-/*************************get WiFi radio status****************************/
-//do not need this again, cause BWG has define a radio.enable
-/*
-$ssids = explode(",", getInstanceIds("Device.WiFi.SSID."));		// now, for ALL SSIDs so as to disable radio
-$radio_enable = "false";
-foreach ($ssids as $j){
-	if (intval($j)%2 == 1){		// 2.4G, 1,3,5...
-		if ("true" == getStr("Device.WiFi.SSID.$j.Enable")){
-			$radio_enable = "true";
-			break;
-		}
-	}
-}
-$radio_enable1 = "false";
-foreach ($ssids as $j){
-	if (intval($j)%2 == 0){		// 5G
-		if ("true" == getStr("Device.WiFi.SSID.$j.Enable")){
-			$radio_enable1 = "true";
-			break;
-		}
-	}
-}
-*/
-$radio_enable	= getStr("Device.WiFi.Radio.1.Enable");
-$radio_enable1	= getStr("Device.WiFi.Radio.2.Enable");
+$DFS_Support1 = "false" ; //Remove/disable DFS channels, DFS_Support1 1-supported 0-not supported
 
-//check if support 802.11ac
-$support_mode_5g		= getStr("Device.WiFi.Radio.2.SupportedStandards");
+$support_mode_5g = $wifi_value['support_mode_5g'];
 
 /**********************get WPS status, manual-disabled or auto-disabled?*******************************/
-// $ssids			= explode(",", getInstanceIds("Device.WiFi.SSID."));
-$ssids			= explode(",", "1,2");	//Currently, only SSID.1(2.4G) and SSID.2(5G) are involved with WPS
+// $ssidsWPS			= explode(",", getInstanceIds("Device.WiFi.SSID."));
+$ssidsWPS			= explode(",", "1,2");	//Currently, only SSID.1(2.4G) and SSID.2(5G) are involved with WPS
 $wps_enabled	= "false";
 $wps_pin		= "";
 $wps_method		= "PushButton";
@@ -159,25 +182,25 @@ $f_e_ssid		= "1";
 // $wps_enabled	= "true";
 
 //get the first WPS enabled SSID, in principle all WPS should be enabled or disabled simultaneously
-foreach ($ssids as $i){
-	if ("true" == getStr("Device.WiFi.AccessPoint.$i.WPS.Enable")){
+foreach ($ssidsWPS as $i){
+	if ("true" == $wifi_value['WPS_Enable'.$i]){
 		$wps_enabled	= "true";
-		$wps_pin		= getStr("Device.WiFi.AccessPoint.$i.WPS.X_CISCO_COM_Pin");
-		$wps_method		= getStr("Device.WiFi.AccessPoint.$i.WPS.ConfigMethodsEnabled");
-		$f_e_ssid		= $i;
+		$wps_pin	= $wifi_value['WPS_Pin'.$i];
+		$wps_method	= $wifi_value['WPS_Config'.$i];
+		$f_e_ssid	= $i;
 		break;
 	}
 }
 
 //if wps_config is false, then show WPS disabled, and do not allow to enable it
 $wps_config = "false";
-foreach ($ssids as $i){
-	if ("true"==getStr("Device.WiFi.SSID.$i.Enable") && "true"==getStr("Device.WiFi.Radio.".(2-intval($i)%2).".Enable")){
+foreach ($ssidsWPS as $i){
+	if ("true"==$wifi_value['SSID_Enable'.$i] && "true"==$wifi_value['Radio_Enable'.$i]){
 		$wps_config	= "true";
-		$wps_encrypt_mode	= getStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled");
-		$wps_encrypt_method	= getStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_EncryptionMethod");
-		$wps_broadcastSSID	= getStr("Device.WiFi.AccessPoint.$i.SSIDAdvertisementEnabled");
-		$wps_filter_enable	= getStr("Device.WiFi.AccessPoint.$i.X_CISCO_COM_MACFilter.Enable");
+		$wps_encrypt_mode	= $wifi_value['ModeEnabled'.$i];
+		$wps_encrypt_method	= $wifi_value['EncrypMethod'.$i];
+		$wps_broadcastSSID	= $wifi_value['SSIDAdvert'.$i];
+		//$wps_filter_enable	= getStr("Device.WiFi.AccessPoint.$i.X_CISCO_COM_MACFilter.Enable");
 		// do not detect ACL for WPS at this time 0509
 		$wps_filter_enable	= "false";
 		if (strstr($wps_encrypt_mode, "WEP") || (strstr($wps_encrypt_mode, "WPA") && $wps_encrypt_method=="TKIP") || "false"==$wps_broadcastSSID || "true"==$wps_filter_enable){
@@ -248,6 +271,30 @@ if ($_SESSION['_DEBUG']){
 if ("1-11"==$possible_channels)
 $possible_channels = "1,2,3,4,5,6,7,8,9,10,11";
 
+// SSID 1,2 for Private, 3,4 for Home Security, 5,6 for Hot Spot, HotSpot share the same SSID as a service set
+//$ssids 		= explode(",", getInstanceIds("Device.WiFi.SSID.")); this will return all 16
+
+// Hardcoded for XB3-1.6
+if ("mso" != $_SESSION["loginuser"]) {
+	$ssids	= explode(",", "1,2");
+}
+else {
+	$ssids	= explode(",", "1,2,3,4,5,6");
+	/*- if xfinitywifi XHS AccessPoint is not up don't show in GUI -*/
+	if(strstr(getStr("Device.DeviceInfo.X_COMCAST_COM_xfinitywifiEnable"), "false")){
+		unset($ssids[5]);
+		unset($ssids[4]);
+	}
+
+	if(strstr($wifi_value['AccessPoint_Enable4'], "false")) unset($ssids[3]);
+}
+
+/*- In bridge mode don't show 'Mac filter settings ' -*/
+	if(strstr($_SESSION["lanMode"], "bridge-static")){
+		unset($ssids[1]);
+		unset($ssids[0]);
+	}
+
 ?>
 
 
@@ -274,12 +321,25 @@ $(document).ready(function() {
 
     var isBridge = "<?php echo $_SESSION["lanMode"]; ?>";
 
+
+    //Disable all the MAC filter options in user admin mode if bridge mode is enabled
     if (isBridge == 'bridge-static') {       
 
         $('.div_private_wifi *').addClass('disabled');
         $('.div_private_wifi .btn').click(function(e) {
             e.preventDefault();
         });
+
+	if ("mso" != "<?php echo $_SESSION["loginuser"]; ?>"){
+		$("#mac_admin").addClass('disabled');
+		$("#mac_ssid").addClass('disabled').prop('disabled',true);
+		$("#filtering_mode").addClass('disabled').prop('disabled',true);
+		$("#device_name").addClass('disabled').prop("disabled", true);
+		$('[id^="mac_address_"]').addClass('disabled').prop("disabled", true);	//1-6
+		$("#add_manual").addClass('disabled').prop("disabled", true);
+		$("#save_filter").addClass('disabled').prop("disabled", true);
+	}
+
     };
 
 	$("#radio24_switch").radioswitch({
@@ -322,7 +382,30 @@ $(document).ready(function() {
 		title_off: "Disable WPS PIN",
 		state: G_wps_method !== "PushButton" ? "on" : "off"
 	});
+
+	//DFS_Support1 1-supported 0-not supported
+	if("<?php echo $DFS_Support1;?>" == "true"){
+		if("<?php echo $channel_number1;?>" >= 52 && "<?php echo $channel_number1;?>" <= 140 ) {
+			$('[name="DFS_Channel_Selection"]').prop("disabled", false);
+		} else {
+			$('[name="DFS_Channel_Selection"]').prop("disabled", true);
+		}
+	} else {
+		$('[name="DFS_Channel_Selection"]').prop("disabled", true);
+	}
 	
+	if("<?php echo $DCS_Supported;?>" == "true"){
+		$('[name="DCS_Channel_Selection"]').prop("disabled", false);		
+	} else {
+		$('[name="DCS_Channel_Selection"]').prop("disabled", true);
+	}
+	
+	if("<?php echo $DCS_Supported1;?>" == "true"){
+		$('[name="DCS_Channel_Selection1"]').prop("disabled", false);		
+	} else {
+		$('[name="DCS_Channel_Selection1"]').prop("disabled", true);
+	}
+
     $("[name='channel']").change(function() {
 		if($("#channel_automatic").is(":checked")) {
 			document.getElementById('channel_number').disabled = true;
@@ -350,8 +433,18 @@ $(document).ready(function() {
 			$("#auto_channel_number1").hide();
 		}
 	}).trigger("change");
-	
-    $("#wireless_mode").change(function() {
+
+    	$("#wireless_mode").change(function() {
+		if($(this).val() == "b,g,n") {
+			jConfirm(
+				"WARNING:<br/> Changing the Wi-Fi mode to '802.11 b/g/n' will significantly reduce the performance of your Wi-Fi network. This setting is required only if you have older 'b only' Wi-Fi devices in your network. All newer Wi-Fi devices support '802.11 g/n' mode. Are you sure you want to continue with the change?"
+				, "Are You Sure?"
+				,function(ret) {
+					if(!ret) {
+						$("#wireless_mode").val('<?php echo $wireless_mode; ?>').attr("selected","selected");
+					}
+			});
+		}
 		if("n"==$("#wireless_mode").attr("value")) {
 			$("#mixed_mode").prop("checked", true);
 			$("#operation_mode").prop("disabled", false);
@@ -360,8 +453,17 @@ $(document).ready(function() {
 			$("#mixed_mode").prop("checked", true);
 			$("#operation_mode").prop("disabled", true);
 		}
-	}).trigger("change");
+	});
 	
+	if("n"=='<?php echo $wireless_mode; ?>') {
+		$("#mixed_mode").prop("checked", true);
+		$("#operation_mode").prop("disabled", false);
+	}
+	else {
+		$("#mixed_mode").prop("checked", true);
+		$("#operation_mode").prop("disabled", true);
+	}
+
     $("#wireless_mode1").change(function() {
 		// for green field (no mixed radio mode)
 		if($("#wireless_mode1").val().indexOf(",") == -1) {
@@ -396,11 +498,15 @@ $(document).ready(function() {
 			//40MHz
 			if ($("#channel_bandwidth1").prop("checked")) {
 				if ("BelowControlChannel" == "<?php echo $ext_channel1; ?>"){
-					$("#channel_number1").find("[value='36'],[value='44'],[value='52'],[value='60'],[value='100'],[value='108'],[value='116'],[value='132'],[value='140'],[value='149'],[value='157'],[value='165']").prop("disabled", true).prop("selected", false);
+					$("#channel_number1").find("[value='36'],[value='44'],[value='52'],[value='60'],[value='100'],[value='108'],[value='116'],[value='132'],[value='140'],[value='144'],[value='149'],[value='157'],[value='165']").prop("disabled", true).prop("selected", false);
 				}	
-				else{	//AboveControlChannel or Auto
-					$("#channel_number1").find("[value='40'],[value='48'],[value='56'],[value='64'],[value='104'],[value='112'],[value='136'],[value='153'],[value='161']").prop("disabled", true).prop("selected", false);
+				else{	//AboveControlChannel or Auto  //zqiu: exclude 116,140
+					$("#channel_number1").find("[value='40'],[value='48'],[value='56'],[value='64'],[value='104'],[value='112'],[value='116'],[value='136'],[value='140'],[value='144'],[value='153'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);
 				}
+			} 
+			//80MHz
+			else if ($("#channel_bandwidth2").prop("checked")) {
+				$("#channel_number1").find("[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144'],[value='165']").prop("disabled", true).prop("selected", false);			
 			}
 			// NOT 20MHz, disable channel 165
 			$("#channel_number1").find("[value='165']").prop("disabled", true).prop("selected", false);
@@ -414,9 +520,9 @@ $(document).ready(function() {
     			required: function() {
     				return ($("#wps_enabled").prop("checked") && $("#pair_method_pin").prop("checked"));
     			},
-				maxlength:	8
-			}
-		},
+			maxlength:9
+				     }
+			},
 		submitHandler: function() {
 			if($("#wps_disabled").is(":checked")) {
 				jAlert("Please enable WPS first!");
@@ -483,12 +589,24 @@ $(document).ready(function() {
 				});
 			}	
 	}); */
-	
+
+	var doOnce = true;
+
     $("#mac_ssid").change(function() {
-		var ssid_number	=	$("#mac_ssid").attr("value");
+		var ssid_number		= $("#mac_ssid").attr("value");
+		
+		var mac_ssid_GET	= "<?php echo $_GET['mac_ssid'];?>";
+		if(doOnce && mac_ssid_GET) {
+			ssid_number	= mac_ssid_GET;
+			$("#mac_ssid").val(mac_ssid_GET);
+			doOnce = false;
+		}
+
 		var jsConfig 	=	'{"ssid_number":"'+ssid_number+'", "target":"'+"mac_ssid"+'"}';	
 		
-		jProgress('This may take several seconds...', 60);
+		//jProgress('This may take several seconds...', 60);
+		$("#mac_admin_temp, #mac_admin").toggle();
+
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_wireless_network_configuration.php",
@@ -510,10 +628,12 @@ $(document).ready(function() {
 					add_row("auto_table", -1, msg.at[i][0], msg.at[i][1]);
 				}
 				
-				jHide();
+				//jHide();
+				$("#mac_admin_temp, #mac_admin").toggle();
 			},
 			error: function(){            
-				jHide();
+				//jHide();
+				$("#mac_admin_temp, #mac_admin").toggle();
 				jAlert("Failure, please try again.");
 			}
 		});
@@ -572,15 +692,48 @@ $(document).ready(function() {
 	}
 	
 	// disable NOT 20MHz channel if 165
+	// Warning for DFS channel (52-140)
 	$("#channel_number1").change(function(){
+		var channel = $("#channel_number1 option:selected").val();
+
+		if(channel >= 52 && channel <= 140 ) {
+			jConfirm(
+				"WARNING:<br/> You are selecting a Dynamic Frequency Selection (DFS) Channel (52-140). Some Wi-Fi devices do not support DFS channels in the 5 GHz band. For those devices that do not support DFS channels, the 5 GHz Wi-Fi Network Name (SSID) will not be displayed on the list of available networks. Do you wish to continue?"
+				, "Are You Sure?"
+				,function(ret) {
+					if(!ret) {
+						$("#channel_number1").val('<?php echo $channel_number1; ?>').attr("selected","selected");
+					}
+			});
+		}
+
+		//DFS_Support1 1-supported 0-not supported
+		if("<?php echo $DFS_Support1;?>" == "true"){
+			if($("#channel_number1 option:selected").val() >= 52 && $("#channel_number1 option:selected").val() <= 140) {
+				$('[name="DFS_Channel_Selection"]').prop("disabled", false);
+			} else {
+				$('[name="DFS_Channel_Selection"]').prop("disabled", true);
+			}
+		} else {
+			$('[name="DFS_Channel_Selection"]').prop("disabled", true);
+		}
+
 		if ("165" == $(this).val()){
 			$('[name="channel_bandwidth1"]:not([value="20MHz"])').prop("disabled", true);
 		}
 		else{
 			$('[name="channel_bandwidth1"]').prop("disabled", false);
 		}
-	}).trigger("change");
-	
+	});
+
+	// disable NOT 20MHz channel if 165	
+	if ( "true" != "<?php echo $channel_automatic1; ?>"  && "165" == "<?php echo $channel_number1; ?>"){
+		$('[name="channel_bandwidth1"]:not([value="20MHz"])').prop("disabled", true);
+	}
+	else{
+		$('[name="channel_bandwidth1"]').prop("disabled", false);
+	}
+
 	// now we can show target content
 	$("#content").show();
 
@@ -596,7 +749,7 @@ function set_config(jsConfig)
 		data: { configInfo: jsConfig },
 		success: function(msg) {
 			jHide();
-			location.reload();
+			window.location.href = "wireless_network_configuration.php";
 		},
 		error: function(){            
 			jHide();
@@ -639,6 +792,15 @@ function check_add()
 		|| (parseInt(sHex,16)%2 != 0) ) {
 		return ["ERROR", "Please enter valid MAC address! \n First byte must be even. \n Each character must be [0-9a-fA-F]."];
 	}
+	
+	$("#device_name").val("");
+	$("#mac_address_1").val("");
+	$("#mac_address_2").val("");
+	$("#mac_address_3").val("");
+	$("#mac_address_4").val("");
+	$("#mac_address_5").val("");
+	$("#mac_address_6").val("");
+
 	return [name, addr];
 }
 
@@ -678,7 +840,7 @@ function add_row(tid, idex, name, addr)
 	if (len == -1) {
 		idex = tb.rows.length;
 	}
-	else if (len > 16) {
+	else if (len > 17) {
 		jAlert("No more than 16 devices can be added!");
 		return;
 	}
@@ -711,9 +873,18 @@ function add_row(tid, idex, name, addr)
 
 function del_row(row) 
 {
-	var idex = row.parentNode.parentNode.rowIndex;
-	document.getElementById("filter_table").deleteRow(idex);
-	adjust_row("filter_table");
+	jConfirm(
+		"Are you sure you want to delete this entry from Wi-Fi Control List?"
+		, "Are You Sure?"
+		,function(ret) {
+			if(ret) {
+				var idex = row.parentNode.parentNode.rowIndex;
+				document.getElementById("filter_table").deleteRow(idex);
+				adjust_row("filter_table");
+			}
+		}
+	);
+
 }
 
 function add_auto(row)
@@ -764,29 +935,35 @@ function save_config(ssid_number, sub_target)
 {
 	var suf = (("2"==ssid_number) ? "1" : "");
 	
-	var wireless_mode =		$("#wireless_mode"+suf).attr("value");
-	var transmit_power =	$("#transmit_power"+suf).attr("value");
-	var channel_automatic =	$("#channel_automatic"+suf).prop("checked");
-	var channel_number =	$("#channel_number"+suf).attr("value");
-	var BG_protect_mode =	$("#BG_protection_mode"+suf).attr("value");
-	var operation_mode =	$("#operation_mode"+suf).prop("checked");
-	var channel_bandwidth=	$('[name="channel_bandwidth'+suf+'"]:checked').attr("value");
-	var guard_interval =	$('[name="guard_interval'+suf+'"]:checked').attr("value");
-	var reverse_enabled =	$("#reverse_enabled"+suf).prop("checked");
-	var ext_channel =		(("1"==ssid_number && false==channel_automatic) ? ($("#Extension_Channel"+channel_number).val()) : "Auto");
-	var MSDU_enabled =		$("#MSDU_enabled"+suf).prop("checked");
-	var blockACK_enabled =	$("#blockACK_enabled"+suf).prop("checked");
-	var blockBA_enabled =	$("#blockBA_enabled"+suf).prop("checked");
-	var HT_TxStream =		$("#HT_TxStream"+suf).attr("value");
-	var HT_RxStream =		$("#HT_RxStream"+suf).attr("value");
-	var WMM_power_save =	$("#WMM_power_save"+suf).prop("checked");
-	var STBC_enabled = 		$("#STBC_enabled"+suf).prop("checked");
+	var wireless_mode 	= $("#wireless_mode"+suf).attr("value");
+	var transmit_power 	= $("#transmit_power"+suf).attr("value");
+	var channel_automatic 	= $("#channel_automatic"+suf).prop("checked");
+	var channel_number 	= $("#channel_number"+suf).attr("value");
+	var BG_protect_mode 	= $("#BG_protection_mode"+suf).attr("value");
+	var IGMP_Snooping	= $("#IGMP_Snooping_enabled"+suf).prop("checked");
+	var operation_mode 	= $("#operation_mode"+suf).prop("checked");
+	var channel_bandwidth	= $('[name="channel_bandwidth'+suf+'"]:checked').attr("value");
+	var guard_interval 	= $('[name="guard_interval'+suf+'"]:checked').attr("value");
+	var reverse_enabled 	= $("#reverse_enabled"+suf).prop("checked");
+	var ext_channel 	= (("1"==ssid_number && false==channel_automatic) ? ($("#Extension_Channel"+channel_number).val()) : "Auto");
+	var MSDU_enabled 	= $("#MSDU_enabled"+suf).prop("checked");
+	var blockACK_enabled 	= $("#blockACK_enabled"+suf).prop("checked");
+	var blockBA_enabled 	= $("#blockBA_enabled"+suf).prop("checked");
+	var DFS_Selection	= $("#DFS_Channel_Selection_enabled").prop("checked");
+	var DCS_Selection	= $("#DCS_Channel_Selection_enabled"+suf).prop("checked");
+	var HT_TxStream 	= $("#HT_TxStream"+suf).attr("value");
+	var HT_RxStream 	= $("#HT_RxStream"+suf).attr("value");
+	var WMM_power_save 	= $("#WMM_power_save"+suf).prop("checked");
+	var STBC_enabled 	= $("#STBC_enabled"+suf).prop("checked");
 
 	var jsConfig = '{"wireless_mode":"'+wireless_mode+'", "transmit_power":"'+transmit_power+'", "channel_automatic":"'+channel_automatic
-					+'", "channel_number":"'+channel_number+'", "BG_protect_mode":"'+BG_protect_mode+'", "operation_mode":"'+operation_mode
+					+'", "channel_number":"'+channel_number+'", "BG_protect_mode":"'+BG_protect_mode
+					+'", "IGMP_Snooping":"'+IGMP_Snooping+'", "operation_mode":"'+operation_mode
 					+'", "channel_bandwidth":"'+channel_bandwidth+'", "guard_interval":"'+guard_interval+'", "reverse_enabled":"'+reverse_enabled
 					+'", "ext_channel":"'+ext_channel+'", "MSDU_enabled":"'+MSDU_enabled+'", "blockACK_enabled":"'+blockACK_enabled
-					+'", "blockBA_enabled":"'+blockBA_enabled+'", "HT_TxStream":"'+HT_TxStream+'", "HT_RxStream":"'+HT_RxStream
+					+'", "blockBA_enabled":"'+blockBA_enabled+'", "DFS_Selection":"'+DFS_Selection
+					+'", "DCS_Selection":"'+DCS_Selection
+					+'", "HT_TxStream":"'+HT_TxStream+'", "HT_RxStream":"'+HT_RxStream
 					+'", "WMM_power_save":"'+WMM_power_save+'", "STBC_enabled":"'+STBC_enabled
 					+'", "target":"'+"save_config"+'", "ssid_number":"'+ssid_number+'", "sub_target":"'+sub_target+'"}';
 		
@@ -829,6 +1006,9 @@ function save_enable(sub_target)
 
 function validChecksum(PIN)
 {
+	if (PIN.search(/^(\d{4}|\d{8}|\d{4}[\-|\s]\d{4})$/) != 0) return false;
+	PIN = PIN.replace(" ","");
+	PIN = PIN.replace("-","");
 	var accum = 0;
 	accum += 3 * (parseInt(PIN / 10000000) % 10);
 	accum += 1 * (parseInt(PIN / 1000000) % 10);
@@ -840,6 +1020,7 @@ function validChecksum(PIN)
 	accum += 1 * (parseInt(PIN / 1) % 10);
 	return (0 == (accum % 10));
 }
+
 
 function pair_client()
 {
@@ -990,7 +1171,7 @@ function pair_cancel()
 		</tr>
 
 		<?php
-		$ssids 		= explode(",", getInstanceIds("Device.WiFi.SSID."));
+		//$ssids 		= explode(",", getInstanceIds("Device.WiFi.SSID."));
 		$public_v	= array();
 		$odd 		= true;
 
@@ -1002,10 +1183,10 @@ function pair_cancel()
 			array_push($public_v, array(
 				'sufix'	=> (intval($i)==5 || intval($i)==6) ? "_public" : "",
 				'id'	=> $i,
-				'ssid'	=> getStr("Device.WiFi.SSID.$i.SSID"),
+				'ssid'	=> $wifi_value['SSID_SSID'.$i],
 				'freq'	=> intval($i)%2 ? "2.4 GHz" : "5 GHz",
-				'bssid'	=> getStr("Device.WiFi.SSID.$i.BSSID"),
-				'secur'	=> encrypt_map(getStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled"), getStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_EncryptionMethod"))			
+				'bssid'	=> $wifi_value['SSID_BSSID'.$i],
+				'secur'	=> encrypt_map($wifi_value['ModeEnabled'.$i], $wifi_value['EncrypMethod'.$i])
 				));
 		}
 
@@ -1034,7 +1215,7 @@ function pair_cancel()
 	<div class="form-row">
 		<label for="wireless_mode">Mode:</label>
 		<select name="wireless_mode" id="wireless_mode">
-		<option value="n"  		selected="selected" >802.11 n</option>
+		<!--option value="n"  		<?php //if ("n" == $wireless_mode) echo 'selected="selected"';?> >802.11 n</option-->
 		<option value="g,n" 	<?php if ("g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 g/n</option>
 		<option value="b,g,n" 	<?php if ("b,g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 b/g/n</option>
 		</select>
@@ -1082,12 +1263,18 @@ function pair_cancel()
 
 <div class="module data data div_radio_setting">
 	<h2>2.4GHz Wireless Advanced Setting</h2><br/>
-	<div class="form-row odd">
+	<div class="form-row">
 		<label for="BG_protection_mode">BG Protection Mode:</label>
 		<select name="BG_protection_mode" id="BG_protection_mode">
 		<option value="Auto" selected="selected">Auto</option>
 		<option value="Disabled" <?php if ("Disabled"==$BG_protect_mode) echo 'selected="selected"';?> >Manual</option>
 		</select>
+	</div>
+	<div class="form-row odd">
+		<label for="IGMP_Snooping_disabled">IGMP Snooping</label>
+		<input type="radio"  name="IGMP_Snooping" value="false" id="IGMP_Snooping_disabled" checked="checked" /><b>Disable</b>
+		<label for="IGMP_Snooping_enabled" class="acs-hide"></label>
+		<input type="radio"  name="IGMP_Snooping" value="true"  id="IGMP_Snooping_enabled" <?php if ("true"==$IGMP_Snooping) echo 'checked="checked"';?> /><b>Enable</b>
 	</div>
 	<div class="form-row">
 		<label for="mixed_mode">Operation Mode:</label>
@@ -1142,22 +1329,22 @@ function pair_cancel()
 	<div class="form-row" id="Ext5" style="display:none;">
 		<label for="Extension_Channel5">Extension Channel:</label>
 		<select name="Extension_Channel" id="Extension_Channel5">
-		<option value="AboveControlChannel" selected="selected" >2462MHz(Channel9)</option>
-		<option value="BelowControlChannel" <?php if ("1"==$ext_channel) echo 'selected="selected"';?> >2437MHz(Channel1)</option>
+		<option value="AboveControlChannel" <?php if ("AboveControlChannel"==$ext_channel) echo 'selected="selected"';?> >2462MHz(Channel9)</option>
+		<option value="BelowControlChannel" <?php if ("BelowControlChannel"==$ext_channel) echo 'selected="selected"';?> >2437MHz(Channel1)</option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext6" style="display:none;">
 		<label for="Extension_Channel6">Extension Channel:</label>
 		<select name="Extension_Channel" id="Extension_Channel6">
-		<option value="AboveControlChannel" selected="selected" >2467MHz(Channel10)</option>
-		<option value="BelowControlChannel" <?php if ("2"==$ext_channel) echo 'selected="selected"';?> >2427MHz(Channel2)</option>
+		<option value="AboveControlChannel" <?php if ("AboveControlChannel"==$ext_channel) echo 'selected="selected"';?> >2467MHz(Channel10)</option>
+		<option value="BelowControlChannel" <?php if ("BelowControlChannel"==$ext_channel) echo 'selected="selected"';?> >2427MHz(Channel2)</option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext7" style="display:none;">
 		<label for="Extension_Channel7">Extension Channel:</label>
 		<select name="Extension_Channel" id="Extension_Channel7">
-		<option value="AboveControlChannel" selected="selected" >2472MHz(Channel11)</option>
-		<option value="BelowControlChannel" <?php if ("3"==$ext_channel) echo 'selected="selected"';?> >2432MHz(Channel3)</option>
+		<option value="AboveControlChannel" <?php if ("AboveControlChannel"==$ext_channel) echo 'selected="selected"';?> >2472MHz(Channel11)</option>
+		<option value="BelowControlChannel" <?php if ("BelowControlChannel"==$ext_channel) echo 'selected="selected"';?> >2432MHz(Channel3)</option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext8" style="display:none;">
@@ -1237,7 +1424,13 @@ function pair_cancel()
 		<label for="STBC_enabled" class="acs-hide"></label>
 		<input type="radio"  name="STBC" value="enabled"  id="STBC_enabled" <?php if ("true"==$STBC_enabled) echo 'checked="checked"';?> /><b>Enable</b>
 	</div>
-	<div class="form-row">
+	<div class="form-row">	
+		<label for="DCS_Channel_Selection_disabled">Dynamic Channel Selection:</label>
+		<input type="radio"  name="DCS_Channel_Selection" value="disabled" id="DCS_Channel_Selection_disabled" checked="checked" /><b>Disable</b>
+		<label for="DCS_Channel_Selection_enabled" class="acs-hide"></label>
+		<input type="radio"  name="DCS_Channel_Selection" value="enabled"  id="DCS_Channel_Selection_enabled" <?php if ("true"==$DCS_Enable) echo 'checked="checked"';?> /><b>Enable</b>
+	</div>
+	<div class="form-row odd">
 		<div class="form-btn">
 		<label for="save_advance" class="acs-hide"></label>
 			<input type="submit" id="save_advance" value="Save Advanced Settings" class="btn" onclick="save_config('1', 'save_advance');"/>
@@ -1251,11 +1444,12 @@ function pair_cancel()
 		<label for="wireless_mode1">Mode:</label>
 		<select name="wireless_mode1" id="wireless_mode1">
 		<?php if (strstr($support_mode_5g, "ac")){ ?>
-			<option value="ac" 		selected="selected"                                                  >802.11 ac</option>
+            <option value="n"       <?php if ("n"      == $wireless_mode1) echo 'selected="selected"';?> >802.11 n</option>
+			<option value="ac" 		<?php if ("ac"     == $wireless_mode1) echo 'selected="selected"';?> >802.11 ac</option>
 			<option value="n,ac"	<?php if ("n,ac"   == $wireless_mode1) echo 'selected="selected"';?> >802.11 n/ac</option>
 			<option value="a,n,ac"	<?php if ("a,n,ac" == $wireless_mode1) echo 'selected="selected"';?> >802.11 a/n/ac</option>	
 		<?php } else{ ?>
-			<option value="n"   	selected="selected">802.11 n</option>
+			<option value="n"   	<?php if ("n"      == $wireless_mode1) echo 'selected="selected"';?> >802.11 n</option>
 			<option value="a,n" 	<?php if ("a,n"    == $wireless_mode1) echo 'selected="selected"';?> >802.11 a/n</option>	
 		<?php }	?>
 		</select>
@@ -1273,7 +1467,7 @@ function pair_cancel()
 	</div>
 	<div class="form-row " id="channel_switch1">
 		<label for="channel_manual1">Channel Selection:</label>
-		<input type="radio"  name="channel1" value="manual"  id="channel_manual1" checked="checked" /><b>Manual</b>
+		<input type="radio"  name="channel1" value="manual"  id="channel_manual1" <?php if ("true" != $channel_automatic1) echo 'checked="checked"';?> /><b>Manual</b>
 		<label for="channel_automatic1" class="acs-hide"></label>
 		<input type="radio"  name="channel1" value="auto" 	id="channel_automatic1" <?php if ("true" == $channel_automatic1) echo 'checked="checked"';?> /><b>Automatic</b>
 	</div>
@@ -1311,12 +1505,18 @@ function pair_cancel()
 		</select>
 	</div>
 	<div class="form-row">
+		<label for="IGMP_Snooping_disabled1">IGMP Snooping</label>
+		<input type="radio"  name="IGMP_Snooping1" value="false" id="IGMP_Snooping_disabled1" checked="checked" /><b>Disable</b>
+		<label for="IGMP_Snooping_enabled1" class="acs-hide"></label>
+		<input type="radio"  name="IGMP_Snooping1" value="true"  id="IGMP_Snooping_enabled1" <?php if ("true"==$IGMP_Snooping1) echo 'checked="checked"';?> /><b>Enable</b>
+	</div>
+	<div class="form-row odd">
 		<label for="mixed_mode1">Operation Mode:</label>
 		<input type="radio"  name="operation_mode1" value="false" id="mixed_mode1" checked="checked" /><b>Mixed Mode</b>
 		<label for="operation_mode1" class="acs-hide"></label>
 		<input type="radio"  name="operation_mode1" value="true"  id="operation_mode1" <?php if ("true"==$operation_mode1) echo 'checked="checked"';?> /><b>Green Field</b>
 	</div>
-	<div class="form-row odd" id="bandwidth_switch1">
+	<div class="form-row" id="bandwidth_switch1">
 		<label for="channel_bandwidth201">Channel Bandwidth:</label>
 		<input type="radio"  name="channel_bandwidth1" value="20MHz" id="channel_bandwidth201" checked="checked" /><b>20</b>
 		<?php if (strstr($support_mode_5g, "ac")){ ?>
@@ -1329,7 +1529,7 @@ function pair_cancel()
 			<input type="radio"  name="channel_bandwidth1" value="40MHz"  id="channel_bandwidth1" <?php if ("40MHz"==$channel_bandwidth1) echo 'checked="checked"';?> /><b>20/40</b>
 		<?php }	?>
 	</div>
-	<div class="form-row">
+	<div class="form-row odd">
 		<label for="guard_interval800ns1">Guard Interval:</label>
 		<input type="radio"  name="guard_interval1" value="400nsec"  id="guard_interval800ns1" checked="checked" /><b>400ns</b>
 		<label for="guard_interval400ns1" class="acs-hide"></label>
@@ -1337,31 +1537,37 @@ function pair_cancel()
 		<label for="guard_intervalauto1" class="acs-hide"></label>
 		<input type="radio"  name="guard_interval1" value="Auto"     id="guard_intervalauto1"  <?php if ("Auto"==$guard_interval1) echo 'checked="checked"';?> /><b>Auto</b>
 	</div>
-	<div class="form-row odd">
+	<div class="form-row">
 		<label for="Reverse_Direction_Grant_disabled1">Reverse Direction Grant</label>
 		<input type="radio"  name="Reverse_Direction_Grant1" value="disabled" id="Reverse_Direction_Grant_disabled1" checked="checked" /><b>Disable</b>
 		<label for="reverse_enabled1" class="acs-hide"></label>
 		<input type="radio"  name="Reverse_Direction_Grant1" value="enabled"  id="reverse_enabled1" <?php if ("true"==$reverse_enabled1) echo 'checked="checked"';?> /><b>Enable</b>
 	</div>
-	<div class="form-row">
+	<div class="form-row odd">
 		<label for="Aggregation_MSDU(A-MSDU)_disabled1">Aggregation MSDU(A-MSDU)</label>
 		<input type="radio"  name="Aggregation_MSDU(A-MSDU)1" value="disabled" id="Aggregation_MSDU(A-MSDU)_disabled1" checked="checked" /><b>Disable</b>
 		<label for="MSDU_enabled1" class="acs-hide"></label>
 		<input type="radio"  name="Aggregation_MSDU(A-MSDU)1" value="enabled"  id="MSDU_enabled1" <?php if ("true"==$MSDU_enabled1) echo 'checked="checked"';?> /><b>Enable</b>
 	</div>
-	<div class="form-row  odd">
+	<div class="form-row">
 		<label for="Auto_Block_Ack_disabled1">Auto Block Ack:</label>
 		<input type="radio"  name="Auto_Block_Ack1" value="disabled"  id="Auto_Block_Ack_disabled1" checked="checked" /><b>Disable</b>
 		<label for="blockACK_enabled1" class="acs-hide"></label>
 		<input type="radio"  name="Auto_Block_Ack1" value="enabled"   id="blockACK_enabled1" <?php if ("true"==$blockACK_enabled1) echo 'checked="checked"';?> /><b>Enable</b>
 	</div>
-	<div class="form-row">
+	<div class="form-row odd">
 		<label for="Decline_BA_Request_disabled1">Decline BA Request:</label>
 		<input type="radio"  name="Decline_BA_Request1" value="disabled" id="Decline_BA_Request_disabled1" checked="checked" /><b>Disable</b>
 		<label for="blockBA_enabled1" class="acs-hide"></label>
 		<input type="radio"  name="Decline_BA_Request1" value="enabled"  id="blockBA_enabled1" <?php if ("true"==$blockBA_enabled1) echo 'checked="checked"';?> /><b>Enable</b>
 	</div>
-	<div class="form-row  odd">
+	<div class="form-row">
+		<label for="DFS_Channel_Selection_disabled">DFS Channel Selection In Auto Mode:</label>
+		<input type="radio"  name="DFS_Channel_Selection" value="disabled" id="DFS_Channel_Selection_disabled" checked="checked" /><b>Disable</b>
+		<label for="DFS_Channel_Selection_enabled" class="acs-hide"></label>
+		<input type="radio"  name="DFS_Channel_Selection" value="enabled"  id="DFS_Channel_Selection_enabled" <?php if ("true"==$DFS_Enable1) echo 'checked="checked"';?> /><b>Enable</b>
+	</div>
+	<div class="form-row odd">
 	<label for="HT_TxStream1">HT TxStream:</label>
 		<select name="HT_TxStream1" id="HT_TxStream1">
 		<option value="3" selected="selected" >3</option>
@@ -1388,6 +1594,12 @@ function pair_cancel()
 		<label for="STBC_enabled1" class="acs-hide"></label>
 		<input type="radio"  name="STBC1" value="enabled"  id="STBC_enabled1" <?php if ("true"==$STBC_enabled1) echo 'checked="checked"';?> /><b>Enable</b>
 	</div>
+	<div class="form-row odd">
+		<label for="DCS_Channel_Selection_disabled1">Dynamic Channel Selection:</label>
+		<input type="radio"  name="DCS_Channel_Selection1" value="disabled" id="DCS_Channel_Selection_disabled1" checked="checked" /><b>Disable</b>
+		<label for="DCS_Channel_Selection_enabled1" class="acs-hide"></label>
+		<input type="radio"  name="DCS_Channel_Selection1" value="enabled"  id="DCS_Channel_Selection_enabled1" <?php if ("true"==$DCS_Enable1) echo 'checked="checked"';?> /><b>Enable</b>
+	</div>
 	<div class="form-row"> 
 		<div class="form-btn">
 		<label for="save_advance1" class="acs-hide"></label>
@@ -1396,8 +1608,14 @@ function pair_cancel()
 	</div>
 </div>
 
+<div class="module data" id="mac_admin_temp" style="display: none;">
+	<h2>MAC Filter Setting</h2>
+	<div>
+		<p>This may take several seconds...</p>
+	</div>
+</div>
 
-<div class="module data">
+<div class="module data" id="mac_admin">
 	<h2>MAC Filter Setting</h2>
 	<div>
 		<p>You can control the Wi-Fi access to the USG using the below Mac-Filter settings.</p>
@@ -1408,17 +1626,6 @@ function pair_cancel()
 			<!--option value="1" selected="selected"><?php //echo $network_name;?></option>
 			<option value="2" ><?php //echo $network_name1;?></option-->
 			<?php
-				// SSID 1,2 for Private, 3,4 for Home Security, 5,6 for Hot Spot, HotSpot share the same SSID as a service set
-				$ssids 		= explode(",", getInstanceIds("Device.WiFi.SSID."));
-
-				// Hardcoded for XB3-1.6
-				if ("mso" != $_SESSION["loginuser"]) {
-					$ssids	= explode(",", "1,2");
-				}
-				else {
-					$ssids	= explode(",", "1,2,3,4,5");
-				}
-
 				foreach ($ssids as $i) {
 					echo '<option value="'.$i.'" '.(("1"==$i)?'selected="selected"':"").'>'.getStr("Device.WiFi.SSID.$i.SSID").'</option>';
 				}
@@ -1529,7 +1736,7 @@ function pair_cancel()
 		<br>
 
 		<div class="form-row odd">
-			<p class="form-btn"><input type="submit" value="SAVE FILTER SETTING" class="btn right" size="1" onclick="save_filter()"/></p>
+			<p class="form-btn"><input type="submit" id="save_filter" value="SAVE FILTER SETTING" class="btn right" size="1" onclick="save_filter()"/></p>
 		</div>
 	</div>
 </div>			
@@ -1586,7 +1793,7 @@ function pair_cancel()
 		<h3>
 		<label for="pair_method_push" class="acs-hide"></label>
 			<input type="radio"  name="pair_method" value="PushButton" id="pair_method_push" checked="checked"><b>Push Button(recommended)</b>
-		</h3>&nbsp; &nbsp; Push the WPS button on the Gateway or click "PAIR WITH MY WI-FI CLIENT" below to connect your
+		</h3>&nbsp; &nbsp; Push the WPS button on the Gateway or click "PAIR WITH MY Wi-Fi CLIENT" below to connect your
 		<br/>  &nbsp; &nbsp; Wireless client to your network.<br/><br/>
 	</div>
 	<div class="form-row" id="div_method_pin">
@@ -1600,7 +1807,7 @@ function pair_cancel()
 	</div>
 	<div class="form-btn">
 	<label for="wps_pair" class="acs-hide"></label>
-		<input id="wps_pair"   name="wps_pair"   type="submit" value="PAIR WITH MY WI-FI CLIENT" class="btn" size="3" />
+		<input id="wps_pair"   name="wps_pair"   type="submit" style="text-transform : none;" value="PAIR WITH MY Wi-Fi CLIENT" class="btn" size="3" />
 		<label for="wps_cancel" class="acs-hide"></label>
 		<input id="wps_cancel" name="wps_cancel" type="button" value="CANCEL " class="btn" onclick="pair_cancel()"/>
 	</div>

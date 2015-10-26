@@ -16,6 +16,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
+<?php include('../includes/utility.php'); ?>
 <?php 
 
 $flag = json_decode($_REQUEST['TrustFlag'], true);
@@ -26,14 +27,20 @@ if( $flag['trustFlag'] == "true" ){
     //if device not in trusted user table, add this device to Trusted user table, set the trusted flag == true
     //if already exist, just set the trusted flag  == true
     
-    $IDs  = getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.");
-    $idArr = explode(",", $IDs);
+   /* $IDs  = getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.");
+    $idArr = explode(",", $IDs);*/
     $deviceExist = false;
 
-    foreach ($idArr as $key => $value) {
-        if ($flag['IPAddress'] == getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.$value.IPAddress")) {
+    $rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.";
+    $paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.");
+    $mapping_array  = array("IPAddress");
+    $TrustedUserValues = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
+
+    foreach ($TrustedUserValues as $key => $value) {
+        if ($flag['IPAddress'] == $value["IPAddress"]) {
            $deviceExist = true;
-           setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.$value.Trusted", $flag['trustFlag'], true);
+           $id = $value["__id"];
+           setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.$id.Trusted", $flag['trustFlag'], true);
            break; 
         }
     }
@@ -60,12 +67,17 @@ if( $flag['trustFlag'] == "true" ){
 }
 else{
     // "yes" => "no" not trusted
-    $IDs  = getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.");
-    $idArr = explode(",", $IDs);
+   /* $IDs  = getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.");
+    $idArr = explode(",", $IDs);*/
 
-    foreach ($idArr as $key => $value) {
-        if ($flag['IPAddress'] == getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.$value.IPAddress")) {
-           $index = $value;
+    $rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.";
+    $paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.");
+    $mapping_array  = array("IPAddress");
+    $TrustedUserValues = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
+
+    foreach ($TrustedUserValues as $key => $value) {
+        if ($flag['IPAddress'] == $value["IPAddress"]) {
+           $index = $value["__id"];
            break; 
         }
     }

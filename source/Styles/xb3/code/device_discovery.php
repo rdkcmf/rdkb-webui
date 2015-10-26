@@ -44,8 +44,8 @@ jsAdPeriod = jsAdPeriod/60; //unit is seconds in backend implementation.
 		radio_name: "upnp",
 		id_on: "upnp_enabled",
 		id_off: "upnp_disabled",
-		title_on: "Enable UPNP",
-		title_off: "Disable UPNP",
+		title_on: "Enable UPnP",
+		title_off: "Disable UPnP",
 		state: jsEnableUPnP ? "on" : "off"
 	});
 
@@ -101,10 +101,12 @@ $("#pageForm").validate({
 	       period: {
 	           required: true
 	           ,digits: true
+			   ,min: 1
 	       }
 	       ,live: {
 	           required: true
 	           ,digits: true
+			   ,min: 1
 	       }
 	   }
 });
@@ -121,10 +123,16 @@ $('#save_setting').click(function() {
 	upnpInfo = '{"IsEnabledUPnP":"'+isEnabledUPnP+'", "Period":"'+period+'", "Live":"'+live+'", "IsEnabledZero":"'+isEnabledZero+'"}';
 //	upnpInfo = '{"IsEnabledUPnP":"'+isEnabledUPnP+'", "Period":"'+period+'", "Live":"'+live+'", "IsEnabledZero":"'+isEnabledZero+'", "IsEnabledQosUPnP":"'+isEnabledQosUPnP+'"}';
 //	alert(upnpInfo);
-	if($("#pageForm").valid()) {
-		saveQoS(upnpInfo);
+
+	if(isEnabledUPnP == true){
+		if($("#pageForm").valid()) {
+			saveQoS(upnpInfo);
+		} else {
+			//alert("Not valid! Can not be saved.");
+			alert("Please enter a value greater than or equal to 1.\nFor Advertisement Period & Time To Live.");
+		}
 	} else {
-		alert("Not valid! Can not be saved.");
+		saveQoS(upnpInfo);
 	}
 });
 
@@ -158,8 +166,8 @@ function saveQoS(information) {
 		        <p class="tip">Manage UPnP network.</p>
 		        <p class="hidden">The UPnP enabled Gateway discovers all UPnP enabled client devices, such as network printers and laptops. Using UPnP, the ports are opened automatically for the appropriate services and applications. The UPnP devices will be auto configured in the network.</p>
 				<p class="hidden"><strong>Advertisement Period:</strong> The Advertisement Period is how often the gateway will advertise (broadcast) its UPnP information. </p>
-				<p class="hidden"><strong>Time to live:</strong> Measured in hops for each UPnP packet sent. A hop is the number of steps an UPnP advertisement is allowed to propagate before disappearing.</p>
-				<p class="hidden"><strong>Zeroconfig:</strong> Discovery protocol which allows devices, such as printers and computers, to connect to a network automatically. </p>
+				<p class="hidden"><strong>Time to Live:</strong> Measured in hops for each UPnP packet sent. A hop is the number of steps an UPnP advertisement is allowed to propagate before disappearing.</p>
+				<p class="hidden"><strong>Zero Config:</strong> Discovery protocol which allows devices, such as printers and computers, to connect to a network automatically. </p>
     </div>
 
 

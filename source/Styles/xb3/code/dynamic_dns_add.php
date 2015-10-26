@@ -152,12 +152,18 @@ function add()
 
    		<div class="form-row " id="Service_Provider" >
 
-   			<div class="form-row "  style="float:left">
-   				<label for="Service_Provider">Service Provider:</label>
-   				<input type="text"  id="Service_Provider1"  name="Service_Provider" />
-   			</div>
-   			<div  style="font-size: .8em;  "></br>Eg:dyndns.org,changeip.com,freedns.afraid.org</div>
-
+   			<label for="Service_Provider">Service Provider:</label>
+				<!--input type="text" value="dyndns.org" id="Service_Provider1"  name="Service_Provider" /-->
+				<select name="Service_Provider1" id="Service_Provider1">
+				<?php
+					$ids=explode(",",getInstanceIDs("Device.X_CISCO_COM_DDNS.Service."));
+					foreach ($ids as $key=>$j) {
+						$spName		=getStr("Device.X_CISCO_COM_DDNS.Service.".$j.".ServiceName");
+						$serviceStatus	=getStr("Device.X_CISCO_COM_DDNS.Service.".$j.".Enable");
+						if(strcasecmp($serviceStatus,"false") == 0) echo '<option value="'.$spName.'">'.$spName.'</option>';
+					}
+				?>
+				</select>
    		</div>
 
    		<div class="form-row odd" >

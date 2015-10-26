@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 <!-- $Id: managed_devices_add_computer_blocked.php 2943 2009-08-25 20:58:43Z slemoine $ -->
 
 <div id="sub-header">
@@ -11,15 +11,26 @@
 <?php
 	$i=$_GET['id'];
 //	echo "<script>var ID=".$i.";</script>";
-	$name = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".Description");
-	$mac = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".MACAddress");
-	$blockStatus = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".AlwaysBlock"); //true-always, false-period
+    $managed_devices_param = array(
+        "name"          => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".Description",
+        "mac"           => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".MACAddress",
+        "blockStatus"   => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".AlwaysBlock",
+        "startTime"     => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".StartTime",
+        "endTime"       => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".EndTime",
+        "days"          => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".BlockDays",
+	);
+    $managed_devices_value = KeyExtGet("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.", $managed_devices_param);
+
+
+	$name = $managed_devices_value["name"]; 
+	$mac = $managed_devices_value["mac"]; 
+	$blockStatus = $managed_devices_value["blockStatus"]; 
 	
 	global $startTime, $endTime, $days;
 	if($blockStatus == "false") {
-		$startTime = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".StartTime");
-		$endTime = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".EndTime");
-		$days = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".BlockDays");
+		$startTime = $managed_devices_value["startTime"]; 
+		$endTime = $managed_devices_value["endTime"]; 
+		$days = $managed_devices_value["days"]; 
 	}
 
 	($blockStatus == "") && ($blockStatus = "true");
@@ -27,7 +38,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Parental Control > Manage Devices > Add Blocked Device", "nav-devices");
+    comcast.page.init("Parental Control > Managed Devices > Add Blocked Device", "nav-devices");
 
 	var ID = "<?php echo $i ?>";
 	var jsName = "<?php echo $name ?>";
@@ -252,10 +263,10 @@ $(document).ready(function() {
 					});
 				} 
 			} else {
-				alert("MAC is not valid! Can not be saved.");
+				jAlert("MAC is not valid! Can not be saved.");
 			}
 		} else {
-				alert("Not valid! Can not be saved.");
+				jAlert("Not valid! Can not be saved.");
 		}
 	});
 	
@@ -264,7 +275,7 @@ $(document).ready(function() {
 </script>
 
 <div id="content">
-	<h1>Parental Control > Manage Devices > Edit Blocked Device</h1>
+	<h1>Parental Control > Managed Devices > Edit Blocked Device</h1>
 	<form id="pageForm" method="post">
 
 	<div class="module">

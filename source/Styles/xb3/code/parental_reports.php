@@ -309,6 +309,7 @@ function ajaxDo(mode,timef){
 				$('input[value="Download"]:visible').prop("disabled",false).removeClass("disabled");
 			}
 			if(length>20){
+				$(".smart_paginator").empty();
 				$(".smart_paginator:visible").smartpaginator({
 					totalrecords:length,
 					recordsperpage:20,
@@ -367,7 +368,7 @@ function ajaxDo(mode,timef){
 		<table id="site_report_today" cellpadding="0" cellspacing="0" class="data" style="display:none" >
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col"  colspan="3">Reports for today</td>
+					<td class="acs-th" scope="col"  colspan="3">Reports for Today</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -551,7 +552,7 @@ function ajaxDo(mode,timef){
 		<table id="device_report_yesterday" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
-					<td  class="acs-th" scope="col" id="firewall_time_yesterday" colspan="2">Reports for Yesterday</td>
+					<td  class="acs-th" scope="col" id="firewall_time_yesterday" colspan="2">Reports from Yesterday</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -561,7 +562,7 @@ function ajaxDo(mode,timef){
 		<table id="device_report_week" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
-					<td class="acs-th"  scope="col" id="firewall_time_lweek" colspan="2">Reports for Last Week</td>
+					<td class="acs-th"  scope="col" id="firewall_time_lweek" colspan="2">Reports from Last Week</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -571,7 +572,7 @@ function ajaxDo(mode,timef){
 		<table id="device_report_month" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
-					<td class="acs-th"  scope="col" id="firewall_time_lmonth" colspan="2">Reports for Last Month</td>
+					<td class="acs-th"  scope="col" id="firewall_time_lmonth" colspan="2">Reports from Last Month</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -581,7 +582,7 @@ function ajaxDo(mode,timef){
 		<table id="device_report_last" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
-					<td class="acs-th"  scope="col" id="firewall_time_l90days" colspan="2">Reports for Last 90 days</td>
+					<td class="acs-th"  scope="col" id="firewall_time_l90days" colspan="2">Reports from Last 90 days</td>
 				</tr>
 			</thead>
 			<tbody>

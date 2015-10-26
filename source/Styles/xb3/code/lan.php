@@ -25,6 +25,12 @@ function getPort4XHSEnabled() {
 }
 
 $isPort4XHSEnabled = getPort4XHSEnabled();
+
+$rootObjName = "Device.Ethernet.Interface.";
+$paramNameArray = array("Device.Ethernet.Interface.");
+$mapping_array  = array("Upstream", "Status", "MACAddress", "MaxBitRate");
+
+$ethernetParam = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
 ?>
 
 <script type="text/javascript">
@@ -106,42 +112,48 @@ $(document).ready(function() {
 	if ($_DEBUG) {
 		$ids = array("1", "2", "3", "4");
 	}
-	foreach ($ids as $id)
+	foreach ($ethernetParam as $id => $value)
 	{
-		if ("true" == getStr("Device.Ethernet.Interface.$id.Upstream")){
+		if ("true" == $ethernetParam[$id]["Upstream"]){
 			continue;		
 		}
 		echo '<div class="module forms block">';
-		echo '<h2>LAN Ethernet Port '.$id.'</h2>';
+		echo '<h2>LAN Ethernet Port '.$ids[$id].'</h2>';
 
 		$dm = array(
-			array("LAN Ethernet link status:", null, "Device.Ethernet.Interface.$id.Status"),
-			array("MAC Address:", null, "Device.Ethernet.Interface.$id.MACAddress")
+			array("LAN Ethernet link status:", null, $ethernetParam[$id]["Status"]),
+			array("MAC Address:", null, $ethernetParam[$id]["MACAddress"])
 		);
 
 		/* link speed */
-		$lspeed = getStr("Device.Ethernet.Interface.$id.MaxBitRate");
+		$lspeed = $ethernetParam[$id]["MaxBitRate"];
 		$lunit = " Mbps";
 		if (empty($lspeed)) {
 			$lspeed = "Not Applicable";
 			$lunit = "";
 		}
+		else if ((int)$lspeed < 0) {
+			$lspeed = "Disconnected";
+			$lunit = "";
+		}
+		/* zqiu
 		else if ((int)$lspeed >= 1000) {
 			$lspeed = floor((int)$lspeed / 1000);
 			$lunit = " Gbps";
-		}
+		} 
+		*/
 		array_push($dm, array("Connection Speed:", $lspeed.$lunit));
 		
 		for ($m=0, $i=0; $i<count($dm); $i++)
 		{
 			echo '<div class="form-row '.(($m++ % 2)?'odd':'').'" >';
 			echo '<span class="readonlyLabel">'.$dm[$i][0].'</span>';
-			echo '<span class="value">'.($dm[$i][1] === null ? NameMap(getStr($dm[$i][2])) : $dm[$i][1]).'</span>';
+			echo '<span class="value">'.($dm[$i][1] === null ? NameMap($dm[$i][2]) : $dm[$i][1]).'</span>';
 			
 			echo '</div>';
 		}
 
-		if ($id === "4") {
+		if ($ids[$id] === "4") {
 			/* port 4 as home security port */
 			echo '<div class="form-row odd ">'.
 					'<label for="channel_selection">Associate Ethernet Port 4 to XFINITY HOME Network:</label>'.

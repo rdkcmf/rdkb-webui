@@ -41,11 +41,11 @@ function save_config(target)
 	if ("switch_callsignallog" == target) {
 		if ($('#switch_callsignallog').attr("value")=="Enable Logging")	{
 			$('#switch_callsignallog').attr("value", "Disable Logging");
-			jsConfig = '{"target":"'+target+'", "value":"'+"false"+'"}';
+			jsConfig = '{"target":"'+target+'", "value":"'+"true"+'"}';
 		}
 		else {
 			$('#switch_callsignallog').attr("value", "Enable Logging");
-			jsConfig = '{"target":"'+target+'", "value":"'+"true"+'"}';
+			jsConfig = '{"target":"'+target+'", "value":"'+"false"+'"}';
 		}
 		set_config(jsConfig);
 	}
@@ -62,11 +62,11 @@ function save_config(target)
 	else if ("switch_DSXlog" == target) {
 		if ($('#switch_DSXlog').attr("value")=="Enable Logging")	{
 			$('#switch_DSXlog').attr("value", "Disable Logging");
-			jsConfig = '{"target":"'+target+'", "value":"'+"false"+'"}';
+			jsConfig = '{"target":"'+target+'", "value":"'+"true"+'"}';
 		}
 		else {
 			$('#switch_DSXlog').attr("value", "Enable Logging");
-			jsConfig = '{"target":"'+target+'", "value":"'+"true"+'"}';
+			jsConfig = '{"target":"'+target+'", "value":"'+"false"+'"}';
 		}
 		set_config(jsConfig);
 	}	
@@ -91,6 +91,7 @@ function set_config(jsConfig)
 		url: "actionHandler/ajaxSet_qos.php",
 		data: { configInfo: jsConfig },
 		success: function(msg) {
+			location.reload();
 			jHide();
 		},
 		error: function(){
@@ -134,7 +135,7 @@ function set_config(jsConfig)
 
 	<div class="btn-group">
 		&nbsp;&nbsp;&nbsp;&nbsp;<input id="show_callsignallog" name="show_callsignallog" type="button"  value="Show Call Signalling Log" class="btn" />
-		<input id="switch_callsignallog" type="button" onClick="save_config('switch_callsignallog')"  value="Disable Logging" class="btn alt" />
+		<input id="switch_callsignallog" type="button" onClick="save_config('switch_callsignallog')"  value="<?php echo getStr('Device.X_CISCO_COM_MTA.CallSignallingLogEnable')!='true'?'Enable':'Disable'; ?> Logging" class="btn alt" />
         <input id="clear_callsignallog"  type="submit" onClick="save_config('clear_callsignallog')"   value="Clear" class="btn" />
     </div>
 	
@@ -169,7 +170,7 @@ function set_config(jsConfig)
 
     <div class="btn-group">
 		&nbsp;&nbsp;&nbsp;&nbsp;<input id="show_DSXlog" name="show_DSXlog" type="button"   value="Show DSX Log" class="btn" />
-        <input id="switch_DSXlog" type="button" onClick="save_config('switch_DSXlog')" value="Disable Logging" class="btn alt" />
+        <input id="switch_DSXlog" type="button" onClick="save_config('switch_DSXlog')" value="<?php echo getStr('Device.X_CISCO_COM_MTA.DSXLogEnable')!='true'?'Enable':'Disable'; ?> Logging" class="btn alt" />
         <input id="clear_DSXlog"  type="submit" onClick="save_config('clear_DSXlog')"  value="Clear" class="btn" />
     </div>
 </div><!-- end #content -->

@@ -16,7 +16,26 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
+<?php include('../includes/utility.php'); ?>
 <?php 
+
+function time_date_conflict($TD1, $TD2) {
+	$ret = false;
+	$days1 = explode(",", $TD1[2]);
+	$days2 = explode(",", $TD2[2]);
+
+	foreach ($days1 as &$value) {
+		if (in_array($value, $days2)) {
+			//deMorgan's law - to find if ranges are overlapping
+			//(StartA <= EndB)  and  (EndA >= StartB)
+			if((strtotime($TD1[0]) < strtotime($TD2[1])) and (strtotime($TD1[1]) > strtotime($TD2[0]))){
+	  			$ret = true;
+	  			break;
+			} 
+		}
+	}
+	return $ret;
+}
 
 $blockedSiteInfo = json_decode($_REQUEST['BlockInfo'], true);
 
@@ -25,18 +44,39 @@ $rootObjName = $objPrefix;
 $exist = false;
 $idArr = explode(",", getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite."));
 
+$block=$blockedSiteInfo['alwaysBlock'];
+$startTime=$blockedSiteInfo['StartTime'];
+$endTime=$blockedSiteInfo['EndTime'];
+$blockDays=$blockedSiteInfo['blockedDays'];
+
+$result = "";
+
 if( array_key_exists('URL', $blockedSiteInfo) ) {
 	//this is to set blocked URL
-    //firstly, check whether URL exist or not
+    	//firstly, check whether URL exist or not
 	$url = $blockedSiteInfo['URL'];
-    foreach ($idArr as $key => $value) {
-	    if ( $url == getStr($objPrefix.$value.".Site")){
-	        $exist = true;
-	        break;
-	    }
+		$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
+		$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
+		$mapping_array  = array("Site", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
+
+		$managedSitesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+
+    	foreach ($idArr as $key => $value) {
+		$always_Block = $managedSitesValues["$key"]["AlwaysBlock"];
+		$start_Time = $managedSitesValues["$key"]["StartTime"];
+		$end_Time = $managedSitesValues["$key"]["EndTime"];
+		$block_Days = $managedSitesValues["$key"]["BlockDays"];
+
+		//Check for time and day conflicts
+		$TD1=array($startTime, $endTime, $blockDays);
+		$TD2=array($start_Time, $end_Time, $block_Days);
+		if (($url == $managedSitesValues["$key"]["Site"]) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
+			$result .= "Conflict with other blocked site rule. Please check your input!";
+			break;
+		}
 	}
 
-	if (! $exist){
+	if ($result == ""){
 
 		addTblObj("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
 		$idArr = explode(",", getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite."));
@@ -91,24 +131,33 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 			setStr($objPrefix.$index.".BlockDays", $blockedSiteInfo['blockedDays'], true);
 */		
 		}
-
-		echo "0";
-	}
-	else{
-		echo "1";
 	}
 }
 else{
 	//this is to set blocked Keyword
 	$keyword = $blockedSiteInfo['Keyword'];
-    foreach ($idArr as $key => $value) {
-	    if ( $keyword == getStr($objPrefix.$value.".Site")){
-	        $exist = true;
-	        break;
-	    }
+		$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
+		$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
+		$mapping_array  = array("Site", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
+
+		$managedSitesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+
+    	foreach ($idArr as $key => $value) {
+	    	$always_Block = $managedSitesValues["$key"]["AlwaysBlock"];
+		$start_Time = $managedSitesValues["$key"]["StartTime"];
+		$end_Time = $managedSitesValues["$key"]["EndTime"];
+		$block_Days = $managedSitesValues["$key"]["BlockDays"];
+
+		//Check for time and day conflicts
+		$TD1=array($startTime, $endTime, $blockDays);
+		$TD2=array($start_Time, $end_Time, $block_Days);
+		if (($keyword == $managedSitesValues["$key"]["Site"]) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
+			$result .= "Conflict with other blocked Keyword rule. Please check your input!";
+			break;
+		}
 	}
 
-	if (! $exist){
+	if ($result == ""){
 
 		addTblObj("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
 		$idArr = explode(",", getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite."));
@@ -163,11 +212,9 @@ else{
 			setStr($objPrefix.$index.".BlockDays", $blockedSiteInfo['blockedDays'], true);
 */	
 		}
-		echo "0";
-	}
-	else{
-		echo "1";
 	}
 }
+
+echo $result;
 
 ?>

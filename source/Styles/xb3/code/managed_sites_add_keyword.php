@@ -50,10 +50,17 @@ $(document).ready(function() {
         }
     });
 
+	 $(function() {
+$.validator.addMethod("no_space", function(value, element, param) {
+		return !param || /^[a-zA-Z0-9]*$/i.test(value);
+	}, " No spaces. Case sensitive.");
+
     $("#pageForm").validate({
         rules: {
             keyword: {
-                required: true
+                required: true,
+                no_space:true
+
             }
             ,day: {
               required: function() {
@@ -61,6 +68,7 @@ $(document).ready(function() {
             }
         }
     }
+});
     });
 
     $("#keyword").focus();
@@ -132,8 +140,8 @@ $(document).ready(function() {
                 data: { BlockInfo: blockInfo },
                 success: function(data){            
                     jHide();
-                    if (data == "1") {
-                        jAlert("This keyword is already set!");
+                    if (data != "Success!") {
+                        jAlert(data);
                     }else{
                         window.location.href = "managed_sites.php";
                     }
@@ -248,8 +256,8 @@ $(document).ready(function() {
             	<input type="submit" class="btn submit" value="Save"/>
             	<input type="button" id="btn-cancel" class="btn alt reset" value="Cancel"/>
             </div>
+	</div> <!-- end .form -->
 	</div> <!-- end .module -->
-
  </form>
 </div><!-- end #content -->
 

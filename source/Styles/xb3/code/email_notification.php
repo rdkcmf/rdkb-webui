@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 <!-- $Id: at_a_glance.dory.php 2943 2009-08-25 20:58:43Z slemoine $ -->
 
 <div id="sub-header">
@@ -8,15 +8,31 @@
 
 <?php include('includes/nav.php'); ?>
 <?php
-$recipient_mail = 	getStr("Device.X_CISCO_COM_Security.EmailSendTo");
-$firewall_breach = 	getStr("Device.X_CISCO_COM_Security.EmailFirewallBreach");
-$parental_breach = 	getStr("Device.X_CISCO_COM_Security.EmailParentalControlBreach");
-$alerts_warnings = 	getStr("Device.X_CISCO_COM_Security.EmailAlertsOrWarnings");
-$send_logs = 		getStr("Device.X_CISCO_COM_Security.EmailSendLogs");
-$smtp_address = 	getStr("Device.X_CISCO_COM_Security.EmailServer");
-$comcast_address = 	getStr("Device.X_CISCO_COM_Security.EmailFromAddress");
-$comcast_username = getStr("Device.X_CISCO_COM_Security.EmailUserName");
-$comcast_password = getStr("Device.X_CISCO_COM_Security.EmailPassword");
+
+$email_notif_param = array(
+        "recipient_mail"    => "Device.X_CISCO_COM_Security.EmailSendTo",
+        "firewall_breach"   => "Device.X_CISCO_COM_Security.EmailFirewallBreach",
+        "parental_breach"   => "Device.X_CISCO_COM_Security.EmailParentalControlBreach",
+        "alerts_warnings"   => "Device.X_CISCO_COM_Security.EmailAlertsOrWarnings",
+        "send_logs"         => "Device.X_CISCO_COM_Security.EmailSendLogs",
+        "smtp_address"      => "Device.X_CISCO_COM_Security.EmailServer",
+        "comcast_address"   => "Device.X_CISCO_COM_Security.EmailFromAddress",
+        "comcast_username"  => "Device.X_CISCO_COM_Security.EmailUserName",
+        "comcast_password"  => "Device.X_CISCO_COM_Security.EmailPassword",
+
+	);
+    $email_notif_value = KeyExtGet("Device.X_CISCO_COM_Security.", $email_notif_param);
+
+
+$recipient_mail = 	$email_notif_value["recipient_mail"]; //getStr("Device.X_CISCO_COM_Security.EmailSendTo");
+$firewall_breach = 	$email_notif_value["firewall_breach"]; //getStr("Device.X_CISCO_COM_Security.EmailFirewallBreach");
+$parental_breach = 	$email_notif_value["parental_breach"]; //getStr("Device.X_CISCO_COM_Security.EmailParentalControlBreach");
+$alerts_warnings = 	$email_notif_value["alerts_warnings"]; //getStr("Device.X_CISCO_COM_Security.EmailAlertsOrWarnings");
+$send_logs = 		$email_notif_value["send_logs"];       //getStr("Device.X_CISCO_COM_Security.EmailSendLogs");
+$smtp_address = 	$email_notif_value["smtp_address"]; //getStr("Device.X_CISCO_COM_Security.EmailServer");
+$comcast_address = 	$email_notif_value["comcast_address"]; //getStr("Device.X_CISCO_COM_Security.EmailFromAddress");
+$comcast_username = $email_notif_value["comcast_username"]; //getStr("Device.X_CISCO_COM_Security.EmailUserName");
+$comcast_password = $email_notif_value["comcast_password"]; //getStr("Device.X_CISCO_COM_Security.EmailPassword");
 
 // $recipient_mail = 	"string1";
 // $firewall_breach = 	"true";

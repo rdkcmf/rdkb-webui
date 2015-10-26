@@ -22,7 +22,7 @@ $ip_config = json_decode($_REQUEST['configInfo'], true);
 
 if(!array_key_exists('IPv6', $ip_config)){
     //set ipv4 part
-	setStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress", $ip_config['Ipaddr'], false);
+	setStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress", $ip_config['Ipaddr'], true);
 	setStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask", $ip_config['Subnet_mask'], true);
 	
 	//20140523
@@ -40,8 +40,10 @@ else{
 	$restore = $ip_config['restore'];
 
 	if ($state == 'true') {//stateful	
-        getStr("Device.IP.Interface.1.IPv6Prefix.1."); //this line is a trick fix for Yan, may delete in future 
+        getStr("Device.IP.Interface.1.IPv6Prefix.1."); //this line if a trick fix for Yan's framework bug, may delete in future 
+	
 		setStr("Device.RouterAdvertisement.InterfaceSetting.1.AdvManagedFlag", "true", true);
+
 		setStr("Device.DHCPv6.Server.X_CISCO_COM_Type", "Stateful", true);
 		setStr("Device.DHCPv6.Server.Pool.1.PrefixRangeBegin", $ip_config['dhcpv6_begin_addr'], false);
 		setStr("Device.DHCPv6.Server.Pool.1.PrefixRangeEnd", $ip_config['dhcpv6_end_addr'], false);
@@ -53,9 +55,9 @@ else{
 		setStr("Device.DHCPv6.Server.X_CISCO_COM_Type", "Stateless", true);
 	}
 	if ($restore == 'true'){
-		getStr("Device.IP.Interface.1.IPv6Prefix.1."); //this line is a trick fix for Yan, may delete in future 
-		setStr("Device.RouterAdvertisement.InterfaceSetting.1.AdvManagedFlag", "true", true);
-		setStr("Device.DHCPv6.Server.X_CISCO_COM_Type", "Stateful", true);
+		setStr("Device.RouterAdvertisement.InterfaceSetting.1.AdvManagedFlag", "false", true);
+
+		setStr("Device.DHCPv6.Server.X_CISCO_COM_Type", "Stateless", true);
 		setStr("Device.DHCPv6.Server.Pool.1.PrefixRangeBegin", $ip_config['dhcpv6_begin_addr'], false);
 		setStr("Device.DHCPv6.Server.Pool.1.PrefixRangeEnd", $ip_config['dhcpv6_end_addr'], false);
 		setStr("Device.DHCPv6.Server.Pool.1.LeaseTime", $ip_config['dhcpv6_lease_time'], true);

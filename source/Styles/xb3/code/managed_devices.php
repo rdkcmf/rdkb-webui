@@ -184,8 +184,8 @@ $(document).ready(function() {
 	<div  id="educational-tip">
 			<p class="tip">Manage access by specific devices on your network.</p>
 			<p class="hidden">Select <strong>Enable</strong> to manage network devices, or <strong>Disable</strong> to turn off.</p>
-			<p class="hidden"><strong>Access Type:</strong> If most of your devices will not be restricted, select <strong>Allow All</strong>. Then select <strong>+ADD BLOCKED DEVICE</strong> to add only the devices you want to restrict.</p>
-			<p class="hidden">If most of your computers will be restricted, select <strong>Block All.</strong> Click <strong>+ADD ALLOWED DEVICE</strong> to add devices you don't want to restrict.</p>
+			<p class="hidden"><strong>Access Type:</strong> If you don't want your devices to be restricted, select <strong>Allow All</strong>. Then select <strong>+ADD BLOCKED DEVICE</strong> to add only the device you want to restrict.</p>
+			<p class="hidden">If you want your devices to be restricted, select <strong>Block All.</strong> Click <strong>+ADD ALLOWED DEVICE</strong> to add the device you don't want to restrict.</p>
 	</div>
 	<div class="module forms enable">
 
@@ -202,25 +202,34 @@ $(document).ready(function() {
 	</div>
 	
 	<?php 
+    $rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.";
+	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.");
+	$mapping_array  = array("Type", "Description", "MACAddress", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
+	
+	$blockedDevicesInstanceArr = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 		$MDIDs=explode(",",getInstanceIDs("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device."));
 		$allowCnt=0;
 		$blockCnt=0;
 		$arrayAllowName=array();
 		$arrayBlockName=array();
+		$blockedDevicesInstance = array();
 		foreach ($MDIDs as $key=>$i) {
-			$type = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".Type");
+			$blockedDevicesInstance["$i"] = $blockedDevicesInstanceArr["$key"];
+		}
+		foreach ($MDIDs as $key=>$i) {
+			$type = $blockedDevicesInstance["$i"]["Type"]; 
 			if($type == "Allow") {
 				$arrayAllowID[$allowCnt] = $i;
-				$arrayAllowName[$allowCnt] = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".Description");
-				$arrayAllowMAC[$allowCnt] = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".MACAddress");
-				$blockStatus = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".AlwaysBlock");
+				$arrayAllowName[$allowCnt] = $blockedDevicesInstance["$i"]["Description"];
+				$arrayAllowMAC[$allowCnt] = $blockedDevicesInstance["$i"]["MACAddress"]; 
+				$blockStatus = $blockedDevicesInstance["$i"]["AlwaysBlock"]; 
 				if($blockStatus == "true")
 					$arrayAllowStatus[$allowCnt] = "Always";
 				else if($blockStatus == "false") {
 					//$arrayAllowStatus[$allowCnt] = "Period";
-					$stime = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$i.StartTime");
-					$etime = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$i.EndTime");
-					$bdays = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$i.BlockDays");
+					$stime = $blockedDevicesInstance["$i"]["StartTime"]; 
+					$etime = $blockedDevicesInstance["$i"]["EndTime"]; 
+					$bdays = $blockedDevicesInstance["$i"]["BlockDays"]; 
 				    $arrayAllowStatus[$allowCnt] = $stime."-".$etime.",".$bdays;
 				}
 					
@@ -228,16 +237,16 @@ $(document).ready(function() {
 			} 
 			else if($type == "Block") {
 				$arrayBlockID[$blockCnt] = $i;
-				$arrayBlockName[$blockCnt] = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".Description");
-				$arrayBlockMAC[$blockCnt] = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".MACAddress");
-				$blockStatus = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".AlwaysBlock");
+				$arrayBlockName[$blockCnt] = $blockedDevicesInstance["$i"]["Description"]; 
+				$arrayBlockMAC[$blockCnt] = $blockedDevicesInstance["$i"]["MACAddress"]; 
+				$blockStatus = $blockedDevicesInstance["$i"]["AlwaysBlock"]; 
 				if($blockStatus == "true")
 					$arrayBlockStatus[$blockCnt] = "Always";
 				else if($blockStatus == "false"){
 					//$arrayBlockStatus[$blockCnt] = "Period";
-					$stime = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$i.StartTime");
-					$etime = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$i.EndTime");
-					$bdays = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$i.BlockDays");
+					$stime = $blockedDevicesInstance["$i"]["StartTime"]; 
+					$etime = $blockedDevicesInstance["$i"]["EndTime"]; 
+					$bdays = $blockedDevicesInstance["$i"]["BlockDays"]; 
 				    $arrayBlockStatus[$blockCnt] = $stime."-".$etime.",".$bdays;
 				}
 				$blockCnt++;
@@ -269,7 +278,7 @@ $(document).ready(function() {
 						<td headers='allowed-mac-address'>".$arrayAllowMAC[$i]."</td>
 						<td headers='allowed-time'>".$arrayAllowStatus[$i]."</td>
 						<td headers='allowed-edit-button' class=\"edit\"><a tabindex='0' href=\"managed_devices_edit_allowed.php?id=$arrayAllowID[$i]\" class=\"btn\"  id=\"edit_$arrayAllowID[$i]\">Edit</a></td>
-						<td headers='allowed-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.php?del=$arrayAllowID[$i]\" class=\"btn confirm\" title=\"delete this device for ".getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$arrayAllowID[$i].".Description")." \" id=\"delete_$arrayAllowID[$i]\">x</a></td>
+						<td headers='allowed-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.php?del=$arrayAllowID[$i]\" class=\"btn confirm\" title=\"Delete this device\" id=\"delete_$arrayAllowID[$i]\">x</a></td>
 					</tr>"; 
 				} 
 			?>
@@ -312,7 +321,7 @@ $(document).ready(function() {
 						<td headers='blocked-mac-address'>".$arrayBlockMAC[$i]."</td>
 						<td headers='blocked-time'>".$arrayBlockStatus[$i]."</td>
 						<td headers='blocked-edit-button' class=\"edit\"><a tabindex='0' href=\"managed_devices_edit_blocked.php?id=$arrayBlockID[$i]\" class=\"btn\"  id=\"edit_$arrayBlockID[$i]\">Edit</a></td>
-						<td headers='blocked-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.php?del=$arrayBlockID[$i]\" class=\"btn confirm\" title=\"delete this device for ".getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$arrayBlockID[$i].".Description")." \" id=\"delete_$arrayBlockID[$i]\">x</a></td>
+						<td headers='blocked-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.php?del=$arrayBlockID[$i]\" class=\"btn confirm\" title=\"Delete this device\" id=\"delete_$arrayBlockID[$i]\">x</a></td>
 					</tr>"; 
 				} 
 			?>

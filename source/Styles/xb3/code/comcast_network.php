@@ -56,8 +56,35 @@ function sec2dhms($sec)
 	return "D: $day H: $hor M: $min S: $tmp[1]";
 }
 
-$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
-$cmStatus = getStr("Device.X_CISCO_COM_CableModem.CMStatus");
+	$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
+
+	$WANIPv4 = getStr($fistUSif."IPv4Address.1.IPAddress");
+
+	$ids = explode(",", getInstanceIds($fistUSif."IPv6Address."));
+	foreach ($ids as $i){
+		$val = getStr($fistUSif."IPv6Address.$i.IPAddress");
+		if (!strstr($val, "fe80::")){
+			$WANIPv6 = $val;
+				//DHCP Lease Expire Time (IPv6):
+				// echo $fistUSif."IPv6Address.$i.X_Comcast_com_LeaseTime";
+				$sec = getStr($fistUSif."IPv6Address.$i.X_CISCO_COM_PreferredLifetime");
+				$tmp = div_mod($sec, 24*60*60);
+				$day = $tmp[0];
+				$tmp = div_mod($tmp[1], 60*60);
+				$hor = $tmp[0];
+				$tmp = div_mod($tmp[1],    60);
+				$min = $tmp[0];
+				$DHCP_LET_IPv6 = $day."d:".$hor."h:".$min."m";
+		}
+		if (strstr($val, "fe80::")){
+			$WANIPv6LinkLocal = $val;
+		}
+	}
+
+	$sta_inet = ($WANIPv4 != "0.0.0.0" || strlen($WANIPv6) > 0) ? "true" : "false";
+
+	//in Bridge mode > Internet connectivity status is always active
+	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
 
 ?>
 
@@ -74,7 +101,7 @@ $cmStatus = getStr("Device.X_CISCO_COM_CableModem.CMStatus");
 	<h2>XFINITY Network</h2>
 	<div class="form-row">
 		<span class="readonlyLabel">Internet:</span>
-		<span class="value"><?php echo ("OPERATIONAL"==$cmStatus) ? "Active" : "Inactive";?></span>
+		<span class="value"><?php echo ($sta_inet=="true") ? "Active" : "Inactive";?></span>
 	</div>
 	<div class="form-row odd">
 		<span class="readonlyLabel">Local time:</span>
@@ -97,7 +124,7 @@ $cmStatus = getStr("Device.X_CISCO_COM_CableModem.CMStatus");
 	</div>
 	<div class="form-row odd">
 		<span class="readonlyLabel">WAN IP Address (IPv4):</span>
-		<span class="value"><?php echo getStr($fistUSif."IPv4Address.1.IPAddress");?></span>
+		<span class="value"><?php echo $WANIPv4;?></span>
 	</div>
 	<div class="form-row ">
 		<span class="readonlyLabel">WAN Default Gateway Address (IPv4):</span> <span class="value">
@@ -111,14 +138,7 @@ $cmStatus = getStr("Device.X_CISCO_COM_CableModem.CMStatus");
 	<div class="form-row odd">
 		<span class="readonlyLabel">WAN IP Address (IPv6):</span> <span class="value">
 		<?php
-		$ids = explode(",", getInstanceIds($fistUSif."IPv6Address."));
-		foreach ($ids as $i){
-			$val = getStr($fistUSif."IPv6Address.$i.IPAddress");
-			if (!strstr($val, "fe80::")){
-				echo $val;
-				break;
-			}
-		}
+			echo $WANIPv6;
 		?>
 		</span>
 	</div>	
@@ -178,14 +198,7 @@ $cmStatus = getStr("Device.X_CISCO_COM_CableModem.CMStatus");
 		<span class="readonlyLabel">WAN Link Local Address (IPv6):</span>
 		<span class="value">
 		<?php
-		$ids = explode(",", getInstanceIds($fistUSif."IPv6Address."));
-		foreach ($ids as $i){
-			$val = getStr($fistUSif."IPv6Address.$i.IPAddress");
-			if (strstr($val, "fe80::")){
-				echo $val;
-				break;
-			}
-		}
+			echo $WANIPv6LinkLocal;
 		?>
 		</span>
 	</div>
@@ -216,41 +229,36 @@ $cmStatus = getStr("Device.X_CISCO_COM_CableModem.CMStatus");
 	<div class="form-row ">
 		<span class="readonlyLabel">DHCP Lease Expire Time (IPv6):</span> <span class="value">
 		<?php
-		$ids = explode(",", getInstanceIds($fistUSif."IPv6Address."));
-		foreach ($ids as $i){
-			$val = getStr($fistUSif."IPv6Address.$i.IPAddress");
-			if (!strstr($val, "fe80::")){
-				$sec = getStr($fistUSif."IPv6Address.$i.X_CISCO_COM_PreferredLifetime");
-				$tmp = div_mod($sec, 24*60*60);
-				$day = $tmp[0];
-				$tmp = div_mod($tmp[1], 60*60);
-				$hor = $tmp[0];
-				$tmp = div_mod($tmp[1],    60);
-				$min = $tmp[0];
-				echo $day."d:".$hor."h:".$min."m";
-				break;
-			}
-		}
-		// echo $fistUSif."IPv6Address.$i.X_Comcast_com_LeaseTime";
+			echo $DHCP_LET_IPv6;
 		?>		
 		</span>
 	</div>
 	<div class="form-row odd">
 		<span class="readonlyLabel">WAN MAC:</span>
-		<span class="value"><?php echo strtoupper(getStr(getStr($fistUSif."LowerLayers").".MACAddress")); ?></span>
+		<span class="value">
+			<?php echo strtoupper(getStr(getStr(getStr($fistUSif."LowerLayers").".LowerLayers").".MACAddress")); ?>
+		</span>
 	</div>
 	<div class="form-row odd">
 		<span class="readonlyLabel">eMTA MAC:</span>
 		<span class="value"><?php echo strtoupper(getStr("Device.X_CISCO_COM_MTA.MACAddress"));?></span>
 	</div>
+	<?php
+		$CM_param = array(
+			"MACAddress"	=> "Device.X_CISCO_COM_CableModem.MACAddress",
+			"CMStatus"		=> "Device.X_CISCO_COM_CableModem.CMStatus",
+			"CoreVersion"	=> "Device.X_CISCO_COM_CableModem.CoreVersion",
+		);
+		$CM_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $CM_param);
+	?>
 	<div class="form-row ">
 		<span class="readonlyLabel">CM MAC:</span>
-		<span class="value"><?php echo strtoupper(getStr("Device.X_CISCO_COM_CableModem.MACAddress"));?></span>
+		<span class="value"><?php echo strtoupper($CM_value["MACAddress"]);?></span>
 	</div>
 </div>
 
 <?php
-
+$cmStatus = $CM_value["CMStatus"];
 $initStatus = array();
 if ("NOT_READY" == $cmStatus) {
 	$initStatus = array("NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted");
@@ -342,11 +350,12 @@ $cm_param = array(
 	"TimeOffset"			=> "Device.X_CISCO_COM_CableModem.TimeOffset",
 	"BootFileName"			=> "Device.X_CISCO_COM_CableModem.BootFileName",
 	"MDDIPOverride"			=> "Device.X_CISCO_COM_CableModem.MDDIPOverride",
+	"LearnedIPMode"			=> "Device.X_CISCO_COM_CableModem.ProvIpType",
 	"LeaseTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.LeaseTimeRemaining",
 	"RebindTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.RebindTimeRemaining",
 	"RenewTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.RenewTimeRemaining",
-	"PrimaryDHCPServer"		=> "Device.X_CISCO_COM_CableModem.PrimaryDHCPServer",
-	"SecondaryDHCPServer"	=> "Device.X_CISCO_COM_CableModem.SecondaryDHCPServer",
+//	"PrimaryDHCPServer"		=> "Device.X_CISCO_COM_MTA.PrimaryDHCPServer",
+//	"SecondaryDHCPServer"	=> "Device.X_CISCO_COM_MTA.SecondaryDHCPServer",
 	);
 $cm_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $cm_param);
 ?>
@@ -385,6 +394,10 @@ $cm_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $cm_param);
 		<span class="readonlyLabel">MDD IP Mode Override:</span>
 		<span class="value"><?php echo $cm_value['MDDIPOverride'];?></span>
 	</div>
+	<div class="form-row">
+		<span class="readonlyLabel">Learned IP Mode:</span>
+		<span class="value"><?php echo $cm_value['LearnedIPMode'];?></span>
+	</div>
 </div>
 
 <div class="module forms div_cm">
@@ -395,14 +408,15 @@ $cm_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $cm_param);
 	</div>
 	<div class="form-row odd">
 		<span class="readonlyLabel">DHCP Rebind Time:</span>
-		<span class="value"><?php echo ($cm_value['RebindTimeRemaining']);?></span>
+		<span class="value"><?php echo sec2dhms($cm_value['RebindTimeRemaining']);?></span>
 	</div>
 	<div class="form-row ">
 		<span class="readonlyLabel">DHCP Renew Time:</span>
-		<span class="value"><?php echo ($cm_value['RenewTimeRemaining']);?></span>
+		<span class="value"><?php echo sec2dhms($cm_value['RenewTimeRemaining']);?></span>
 	</div>
 </div>
 
+<!--
 <div class="module forms div_cm">
 	<h2>CM PacketCable Options</h2>
 	<div class="form-row ">
@@ -414,7 +428,7 @@ $cm_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $cm_param);
 		<span class="value"><?php echo $cm_value['SecondaryDHCPServer'];?></span>
 	</div>
 </div>
-
+-->
 <?php
 $mta_param = array(
 	"FQDN"					=> "Device.X_CISCO_COM_MTA.FQDN",
@@ -431,9 +445,23 @@ $mta_param = array(
 	"DHCPOption6"			=> "Device.X_CISCO_COM_MTA.DHCPOption6",
 	"DHCPOption7"			=> "Device.X_CISCO_COM_MTA.DHCPOption7",
 	"DHCPOption8"			=> "Device.X_CISCO_COM_MTA.DHCPOption8",
+	"PrimaryDHCPServer"		=> "Device.X_CISCO_COM_MTA.PrimaryDHCPServer",
+	"SecondaryDHCPServer"	=> "Device.X_CISCO_COM_MTA.SecondaryDHCPServer",
 	);
 $mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
 ?>
+
+<div class="module forms div_cm">
+	<h2>CM PacketCable Options</h2>
+	<div class="form-row ">
+		<span class="readonlyLabel">Sub-option 1 Service Provider's Primary DHCP:</span>
+		<span class="value"><?php echo $mta_value['PrimaryDHCPServer'];?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel">Sub-option 1 Service Provider's Secondary DHCP:</span>
+		<span class="value"><?php echo $mta_value['SecondaryDHCPServer'];?></span>
+	</div>
+</div>
 
 <div class="module forms div_mta">
 	<h2>MTA DHCP Parameters</h2>
@@ -548,7 +576,7 @@ $device_value["SerialNumber"] 				= getStr("Device.DeviceInfo.SerialNumber");
 	</div>
 	<div class="form-row odd">
 		<span class="readonlyLabel" style="text-align:left; color:#333333">Core Version:</span>
-		<span class="value"><?php echo getStr("Device.X_CISCO_COM_CableModem.CoreVersion");?></span>
+		<span class="value"><?php echo $CM_value["CoreVersion"];?></span>
 	</div>
 	<div class="form-row ">
 		<span class="readonlyLabel" style="text-align:left; color:#333333">Model:</span>
@@ -596,32 +624,32 @@ for ($i=1, $j=1; $i<count($ds_ids); $i++)
 	<thead>
 		<tr>
 			<td class="row-label acs-th"><div style="width: 100px">Downstream</div></td>
-			<td class="row-label acs-th" colspan="16">Channel Bonding Value</td>
+			<td class="row-label acs-th" colspan="<?php echo count($ds_ids);?>">Channel Bonding Value</td>
 		</tr>
 	</thead>
 	<tbody>
 		<tr class="">
-			<td class="row-label "><div style="width: 100px">Index</div></td>
+			<th class="row-label ">Index</td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$i.'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<td class="row-label "><div style="width: 100px">Lock Status</div></td>
+			<th class="row-label ">Lock Status</td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['LockStatus'].'</div></td>';?>
 		</tr>
 		<tr class="">
-			<td class="row-label "><div style="width: 100px">Frequency</div></td>
+			<th class="row-label ">Frequency</td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['Frequency'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<td class="row-label "><div style="width: 100px">SNR</div></td>
+			<th class="row-label ">SNR</td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['SNRLevel'].'</div></td>';?>
 		</tr>
 		<tr class="">
-			<td class="row-label "><div style="width: 100px">Power</div></td>
+			<th class="row-label ">Power Level</td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['PowerLevel'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<td class="row-label "><div style="width: 100px">Modulation</div></td>
+			<th class="row-label ">Modulation</td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['Modulation'].'</div></td>';?>
 		</tr>
 	</tbody>
@@ -650,61 +678,74 @@ for ($i=1, $j=1; $i<count($us_ids); $i++)
 	<thead>
 		<tr>
 			<td class="row-label acs-th"><div style="width: 100px">Upstream</div></td>
-			<td class="row-label acs-th" colspan="16">Channel Bonding Value</td>
+			<td class="row-label acs-th" colspan="<?php echo count($us_ids);?>">Channel Bonding Value</td>
 		</tr>
 	</thead>
 	<tbody>
 		<tr class="">
-			<td class="row-label "><div style="width: 100px">Index</div></td>
+			<th class="row-label ">Index</td>
 			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$i.'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<td class="row-label "><div style="width: 100px">Lock Status</div></td>
+			<th class="row-label ">Lock Status</td>
 			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$us_tab[$i]['LockStatus'].'</div></td>';?>
 		</tr>
 		<tr class="">
-			<td class="row-label "><div style="width: 100px">Frequency</div></td>
+			<th class="row-label ">Frequency</td>
 			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$us_tab[$i]['Frequency'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<td class="row-label "><div style="width: 100px">Symbol Rate</div></td>
+			<th class="row-label ">Symbol Rate</td>
 			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$us_tab[$i]['SymbolRate'].'</div></td>';?>
 		</tr>
 		<tr class="">
-			<td class="row-label "><div style="width: 100px">Power Level</div></td>
+			<th class="row-label ">Power Level</td>
 			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$us_tab[$i]['PowerLevel'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<td class="row-label "><div style="width: 100px">Modulation</div></td>
+			<th class="row-label ">Modulation</td>
 			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$us_tab[$i]['Modulation'].'</div></td>';?>
 		</tr>
-		<tr class="odd">
-			<td class="row-label "><div style="width: 100px">Channel ID</div></td>
-			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$us_tab[$i]['ChannelID'].'</div></td>';?>
+		<tr class="">
+			<th class="row-label ">Channel Type</td>
+			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$us_tab[$i]['ChannelType'].'</div></td>';?>
 		</tr>
 	</tbody>
 	</table>
 </div>
 
+<?php
+$ec_obj = "Device.X_CISCO_COM_CableModem.CMErrorCodewords.";
+$ec_val = DmExtGetStrsWithRootObj($ec_obj, array($ec_obj));
+$ec_ids = DmExtGetInstanceIds($ec_obj);
+$ec_tab = array();
+for ($i=1, $j=1; $i<count($ec_ids); $i++)
+{
+        $ec_tab[$i]['UnerroredCodewords']                = $ec_val[$j++][1];
+        $ec_tab[$i]['CorrectableCodewords']              = $ec_val[$j++][1];
+        $ec_tab[$i]['UncorrectableCodewords']            = $ec_val[$j++][1];
+}
+?>
+
 <div class="module" style="overflow:auto">
 	<table class="data" cellspacing="0" cellpadding="0">
 	<thead>
 		<tr>
-			<td class="row-label acs-th" colspan="16">CM Error Codewords</td>
+			<td class="row-label acs-th" colspan="<?php echo count($ds_ids);?>">CM Error Codewords</td>
 		</tr>
 	</thead>
 	<tbody>
 		<tr class="">
-			<td class="row-label "><div style="width: 100px">Unerrored Codewords</div></td>
-			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['Octets'].'</div></td>';?>
+			<th class="row-label ">Unerrored Codewords</td>
+			<?php for ($i=1; $i<count($ec_ids); $i++) echo '<td><div style="width: 100px">'.$ec_tab[$i]['UnerroredCodewords'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<td class="row-label "><div style="width: 100px">Correctable Codewords</div></td>
-			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['Correcteds'].'</div></td>';?>
+			<th class="row-label ">Correctable Codewords</td>
+			<?php for ($i=1; $i<count($ec_ids); $i++) echo '<td><div style="width: 100px">'.$ec_tab[$i]['CorrectableCodewords'].'</div></td>';?>
 		</tr>
 		<tr class="">
-			<td class="row-label "><div style="width: 100px">Uncorrectable Codewords</div></td>
-			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['Uncorrectables'].'</div></td>';?>
+			<th class="row-label ">Uncorrectable Codewords</td>
+			<?php for ($i=1; $i<count($ec_ids); $i++) echo '<td><div style="width: 100px">'.$ec_tab[$i]['UncorrectableCodewords'].'</div></td>';?>
 		</tr>
 	</tbody>
 	</table>

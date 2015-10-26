@@ -368,8 +368,9 @@ function showTracerouteDialog() {
 
 	<div id="educational-tip">
 		<p class="tip">Troubleshoot your network connectivity.</p>
-		<p class="hidden"><strong>Test Connectivity Results:</strong> Check your connectivity to the Internet.</p>
-		<p class="hidden"><strong>Check IPV4 and IPV6 Address Results:</strong> Identifies accessibility to specific IP addresses.</p>
+		<p class="hidden"><strong>Test Connectivity Results:</strong> Checks your connectivity to the Internet.</p>
+		<p class="hidden"><strong>Check IPv4 and IPv6 Address Results:</strong> Identifies accessibility to specific IP addresses.</p>
+		<p class="hidden"><strong>Traceroute Results:</strong> Displays the route of packets across an Internet Protocol (IP) network.</p>
 	</div>
 
 	<form method="post" id="pageForm1">
@@ -399,9 +400,9 @@ function showTracerouteDialog() {
 
 	<form method="post" id="pageForm2">
 	<div class="module forms">
-		<h2>Check for IPV4 Address Results</h2>
+		<h2>Check for IPv4 Address Results</h2>
 		<div class="form-row">
-			<label for="ipv4_address_1">IPV4 Address:</label>
+			<label for="ipv4_address_1">IPv4 Address:</label>
 			<input type="text" maxlength="3" id="ipv4_address_1" name="ipv4_address_1" class="gateway_address"  value="" />.
 			<label for="ipv4_address_2"  class="acs-hide"></label>
 			<input type="text" maxlength="3" id="ipv4_address_2" name="ipv4_address_2" class="gateway_address"  value="" />.
