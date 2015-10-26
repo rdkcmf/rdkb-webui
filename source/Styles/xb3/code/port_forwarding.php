@@ -12,10 +12,6 @@
 $PFEnable = getStr("Device.NAT.X_Comcast_com_EnablePortMapping");
 ?>
 
-<style>
-	td:not(.edit) {word-break: break-all;}
-</style>
-
 <script type="text/javascript">
 $(document).ready(function() {
 	comcast.page.init("Advanced > Port Forwarding", "nav-port-forwarding");
@@ -172,7 +168,7 @@ $(document).ready(function() {
 					<th id="start-port">Start Port</th>
 					<th id="end-port">End Port</th>
 					
-					<th id="server-ip">Server IP</th>
+					<th id="server-ip">Server IPv4</th>
 					<th id="server-ipv6">Server IPv6</th>
 					<th id="active">Active</th>
 					<th id="edit-button">&nbsp;</th>
@@ -203,8 +199,10 @@ $(document).ready(function() {
 						
 						$iclass = "";
 					    for ($i=0; $i < $IndexNums; $i++) { 
-
-					    	if (($resArray[$i]['InternalPort'] !== '0') || ($resArray[$i]['InternalClient'] === '0.0.0.0')) {
+							//zqiu
+					    	if (($resArray[$i]['InternalPort'] !== '0') || 
+								($resArray[$i]['InternalClient'] === '0.0.0.0') ||
+								(strpos($resArray[$i]['InternalClient'],'172.16.12.') !== false)) {
 					    		//filter out hs port forwarding entry whose internal port !== 0
 					    		continue;
 					    	}

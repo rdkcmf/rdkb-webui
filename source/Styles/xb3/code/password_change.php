@@ -73,6 +73,10 @@ function getInstanceNum()
 	}
 }
 
+function cancel_save(){
+	window.location = "at_a_glance.php";
+}
+
 function set_config(jsConfig)
 {
 	jProgress('This may take several seconds...', 60);
@@ -103,7 +107,7 @@ function next_step()
 	var oldPwd = $('#oldPassword').val();
 	var newPwd = $('#userPassword').val();
 	var intNum = getInstanceNum();
-	var jsConfig = '{"newPassword": "' + newPwd + '", "instanceNum": "' + intNum + '", "oldPassword": "' + oldPwd + '"}';
+	var jsConfig = '{"newPassword": "' + newPwd + '", "instanceNum": "' + intNum + '", "oldPassword": "' + oldPwd + '", "ChangePassword": "true"}';
 	
 	if (oldPwd == newPwd)
 	{
@@ -150,7 +154,7 @@ function next_step()
 	
 	<div class="form-row form-btn">
 		<input id="submit_pwd" type="submit" value="Save" class="btn" />
-		<input id="cancel_pwd" type="reset" value="Cancel" class="btn alt" />
+		<input id="cancel_pwd" type="reset" value="Cancel" onclick="cancel_save(this)" class="btn alt" />
 	</div>
 </form>
 

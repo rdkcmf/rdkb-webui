@@ -1,10 +1,8 @@
 ﻿<?php
 
 ini_set('upload_tmp_dir','/var/tmp/');
-$upload_file=$_FILES["file"]["tmp_name"];  //  /var/tmp/php...
-$upload_file_name=$_FILES["file"]["name"];  // backup_....cfg
-
-$file_dir="/var/tmp/";
+$target = "/var/tmp/";
+$target = $target.basename($_FILES['file']['name']);
 
 if($_FILES["file"]["error"]>0){
 	echo "Return Code: ".$_FILES["file"]["error"];
@@ -21,15 +19,18 @@ if($_FILES["file"]["error"]>0){
 		echo "Need to reboot after last restore!";
 		break;	
 	default:
-		exec('confPhp restore '.$upload_file,$output,$return_restore);
-		if ($return_restore==-1) echo "Error when to restore configuraion!";
-		else {
-			sleep(1);
-			do {
+		if(move_uploaded_file($_FILES['file']['tmp_name'], $target)){
+			exec('confPhp restore '.$target,$output,$return_restore);
+			if ($return_restore==-1) echo "Error when to restore configuraion!";
+			else {
 				sleep(1);
-				exec('confPhp status',$output,$return_var);
-			} while ($return_var==1);
+				do {
+					sleep(1);
+					exec('confPhp status',$output,$return_var);
+				} while ($return_var==1);
+			}
 		}
+		else { echo "Error when to restore configuraion!"; }
 	}
 }
 ?>
@@ -45,7 +46,8 @@ if($_FILES["file"]["error"]>0){
     <!--Main Container - Centers Everything-->
 	<div id="container">
 		<div id="main-content">
-		<?php 
+		<?php
+		echo "<h3>target $target</h3>";
 		switch ($return_var) {
 		case -1:
 			echo "<h3>Error, get restore status failure</h3>";

@@ -56,8 +56,11 @@ try {
 		}
 	}
 	else {
-		if (setStr($pLanBridgeHSPortEnablePath, "true", true) !== true
-			|| setStr($HSBridgePortEnablePath, "false", true) !== true) {
+		#zqiu: port should be removed first and then added to another vlan
+		#if (setStr($pLanBridgeHSPortEnablePath, "true", true) !== true
+		#	|| setStr($HSBridgePortEnablePath, "false", true) !== true) {
+		if (setStr($HSBridgePortEnablePath, "false", true) !== true
+                        || setStr($pLanBridgeHSPortEnablePath, "true", true) !== true) {
 			throw new Exception('failed to set parameters to backend');
 		}
 	}

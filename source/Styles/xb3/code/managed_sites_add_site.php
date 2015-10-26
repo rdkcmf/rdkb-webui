@@ -71,9 +71,14 @@ $(document).ready(function() {
                 }
             }
         },
+	onfocusout: false,
         messages:{
             url: "Please input a valid URL, start with 'http://' or 'https://'"
         }
+    });
+
+    $("#url").change(function(){
+        $("#pageForm").validate().element('#url');
     });
 
     $("#url").focus().val('http://');
@@ -147,8 +152,8 @@ $(document).ready(function() {
                 data: { BlockInfo: blockInfo },
                 success: function(data){            
                     jHide();
-                    if (data == "1") {
-                        jAlert("This site is already set!");
+                    if (data != "Success!") {
+                        jAlert(data);
                     }else{
                         window.location.href = "managed_sites.php";
                     }

@@ -23,7 +23,8 @@ default:
 		
 			$filesize=filesize("/var/tmp/".$filename);
 			header ("Content-Type: application/download"); 
-			header ("Content-Disposition: attachment; filename=backup_".date("YmdHis").".cfg"); 
+			//header ("Content-Disposition: attachment; filename=backup_".date("YmdHis").".cfg");
+			header ("Content-Disposition: attachment; filename=backup_latest.cfg"); 
 			header("Content-Length: ".$filesize); 
 
 			$fp=fopen("/var/tmp/".$filename,"r");

@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 <!-- $Id: managed_devices_add_computer_blocked.php 2943 2009-08-25 20:58:43Z slemoine $ -->
 
 <div id="sub-header">
@@ -10,7 +10,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Parental Control > Manage Devices > Add Blocked Device", "nav-devices");
+    comcast.page.init("Parental Control > Managed Devices > Add Blocked Device", "nav-devices");
     $("input[name='computer']").focus();
 
 /*	$("input[name='computer']").click(function(event,value) {
@@ -217,10 +217,10 @@ $(document).ready(function() {
 					});
 				} 
 			} else {
-				alert("MAC is not valid! Can not be saved.");
+				jAlert("MAC is not valid! Can not be saved.");
 			}
 		} else {
-				alert("Not valid! Can not be saved.");
+				jAlert("Not valid! Can not be saved.");
 		}
 	});
 	
@@ -228,7 +228,7 @@ $(document).ready(function() {
 </script>
 
 <div id="content">
-	<h1>Parental Control > Manage Devices > Add Blocked Device</h1>
+	<h1>Parental Control > Managed Devices > Add Blocked Device</h1>
 	<form id="pageForm" action="managed_devices.php" method="post">
 
 	<div class="module">
@@ -250,16 +250,25 @@ $(document).ready(function() {
 					if (empty($hostIDs) || empty($hostIDs[0])) {
 						$hostIDs = array();
 					}
+                    $rootObjName    = "Device.Hosts.Host.";
+                    $paramNameArray = array("Device.Hosts.Host.");
+                    $mapping_array  = array("HostName", "PhysAddress");
+		    $hostsInstance = array();
+                    $hostsInstanceArr = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+					foreach ($hostIDs as $key=>$i) {
+						$hostsInstance["$i"] = $hostsInstanceArr["$key"];
+					}
 					foreach ($hostIDs as $key=>$i) {
 						if ($iclass=="") {$iclass="odd";} else {$iclass="";}
-						$hostName = getStr("Device.Hosts.Host.".$i.".HostName");
-						$hostMac = getStr("Device.Hosts.Host.".$i.".PhysAddress");
-						echo "
-							<tr class=$iclass>
-								<th class=\"row-label alt\"><input name=\"computer\" id=\"$hostMac\" type=\"radio\" value=\"$hostName\" /></th>
-								<td>".$hostName."</td>
-								<td>".$hostMac."</td>
-							</tr>"; 
+						$hostName = $hostsInstance["$i"]["HostName"]; 
+						$hostMac = $hostsInstance["$i"]["PhysAddress"]; 
+						
+                                                echo "
+						<tr class=$iclass>
+							<th class=\"row-label alt\"><input name=\"computer\" id=\"$hostMac\" type=\"radio\" value=\"$hostName\" /></th>
+							<td>".$hostName."</td>
+							<td>".$hostMac."</td>
+						</tr>";
 					} 
 				?>
 
@@ -369,8 +378,9 @@ $(document).ready(function() {
             	<input type="button" id="btn-save" name="save" class="btn submit" value="Save"/>
             	<input type="button" id="btn-cancel" name="cancel" class="btn alt reset" value="Cancel"/>
             </div>
-    	</div> <!-- end .form -->
 	</div> <!-- end .module -->
+	</div>
+    	</div> <!-- end .form -->
     </form>
 </div><!-- end #content -->
 

@@ -13,7 +13,12 @@
 $(document).ready(function() {
     comcast.page.init("Troubleshooting > Reset / Restore Gateway", "nav-restore-reboot");
 
-	if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>") {
+	//Having only Reset and Restore Factory Defaults under troubleshooting page in bridge mode is good enough.
+	//hide 2 3 4 6
+	if ("router" != "<?php echo $_SESSION["lanMode"]; ?>") {
+		$("#div2, #div3, #div4, #div6").hide();
+	}
+	else if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>") {
 		$("#div6").hide();
 		$("#div5").addClass("odd");
 	}
@@ -237,27 +242,27 @@ function checkForRebooting() {
 	<div class="module forms" id="restore">
 		<h2>Reset / Restore Gateway</h2>
 		<div id="div1" class="form-row odd">
-			<span class="readonlyLabel"><a href="#" class="btn" id="btn1" title="Reset the Gateway">Reset</a></span> 
+			<span class="readonlyLabel"><a href="#" class="btn" id="btn1" title="Reset the Gateway" style="text-transform : none;">RESET</a></span> 
 			<span class="value">Press "Reset" button to restart the gateway.</span>
 		</div>
 		<div id="div2" class="form-row">
-			<span class="readonlyLabel"><a href="#" class="btn" id="btn2" title="Restore Wi-Fi Module">Reset Wi-Fi Module</a></span> 
+			<span class="readonlyLabel"><a href="#" class="btn" id="btn2" title="Reset Wi-Fi Module" style="text-transform : none;">RESET Wi-Fi MODULE</a></span> 
 			<span class="value">Press "Reset Wi-Fi Module" to restart just the Wi-Fi Module only.</span>
 		</div>
 		<div id="div3" class="form-row odd">
-			<span class="readonlyLabel"><a href="#" class="btn" id="btn3" title="Reset the Wi-Fi Gateway">Reset Wi-Fi Router</a></span> 
+			<span class="readonlyLabel"><a href="#" class="btn" id="btn3" title="Reset the Wi-Fi Gateway" style="text-transform : none;">RESET Wi-Fi ROUTER</a></span> 
 			<span class="value">Press "Reset Wi-Fi Router" to restart Wi-Fi and Router modules.</span>
 		</div>
 		<div id="div4" class="form-row">
-			<span class="readonlyLabel"><a href="#" class="btn" id="btn4" title="Restore manufacturer defaults for Wi-Fi Only">Restore Wi-Fi Settings</a></span> 
+			<span class="readonlyLabel"><a href="#" class="btn" id="btn4" title="Restore manufacturer defaults for Wi-Fi Only" style="text-transform : none;">RESTORE Wi-Fi SETTINGS</a></span> 
 			<span class="value">Press "Restore Wi-Fi Settings" to activate your Gateway <span style="padding-left:231px">Default Settings for Wi-Fi only. Only your Wi-Fi settings will be lost.</span></span>
 		</div>
 		<div id="div6" class="form-row odd">
-			<span class="readonlyLabel"><a href="#" class="btn" id="btn6" title="Reset Password">Reset Password</a></span> 
+			<span class="readonlyLabel"><a href="#" class="btn" id="btn6" title="Reset Password" style="text-transform : none;">RESET PASSWORD</a></span> 
 			<span class="value">Press "Reset Password" to reset User Admin tool password to factory <span style="padding-left:231px">default</span></span>
 		</div>
 		<div id="div5" class="form-row">
-			<span class="readonlyLabel"><a href="#" class="btn" id="btn5" title="Restore Factory settings">Restore Factory settings</a></span> 
+			<span class="readonlyLabel"><a href="#" class="btn" id="btn5" title="Restore Factory settings" style="text-transform : none;">RESTORE FACTORY SETTINGS</a></span> 
 			<span class="value">Press "Restore Factory Settings" to activate your Gateway <span style="padding-left:231px">Default Settings. All your previous settings will be lost.</span></span>
 		</div>
 	</div> <!-- end .module -->

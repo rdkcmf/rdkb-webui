@@ -258,6 +258,12 @@ $("#managed_sites_switch").change(function() {
 			$(btn).click(function(){
 				$('.main_content').hide();
 				$(edit).show();
+			
+	 $(function() {
+$.validator.addMethod("no_space", function(value, element, param) {
+		return !param || /^[a-zA-Z0-9]*$/i.test(value);
+	}, " No spaces. Case sensitive.");
+
 				$(pageFORM).validate({
 					rules: {
 						url: {
@@ -265,7 +271,8 @@ $("#managed_sites_switch").change(function() {
 							url2: true 
 						},
 						Keyword: {
-							required: true
+							 required: true,
+               						 no_space:true
 						},
 						day: {
 							required: function() {
@@ -278,7 +285,7 @@ $("#managed_sites_switch").change(function() {
 					}
 				});
 			});
-
+});
 			//=========================================================
 			var blockTime = "#block-time-" + k;  
 
@@ -440,7 +447,7 @@ $("#managed_sites_switch").change(function() {
     <p class="hidden"><strong>+ADD:</strong> Add a new website or keyword.</p>
     <p class="hidden"><strong>Blocked Sites:</strong> Deny access to specific websites (URLs).</p>
     <p class="hidden"><strong>Blocked Keywords:</strong> Deny access to websites containing specific words.</p>
-    <p class="hidden">The Gateway will block connections to websites on all untrusted computers, based on the specified rules. If you don't want restrictions for a particular computer, select <strong>Yes</strong> under Trusted Computers.</p>
+    <p class="hidden">The Gateway will block connections to websites on all untrusted computers, based on the specified rules. If you don't want restrictions for a particular computer, select <strong>Yes</strong> under <strong>Trusted Computers</strong>.</p>
 	</div>
 
 	<form action="managed_sites.php" method="post"  name="managed_sites">
@@ -454,23 +461,43 @@ $("#managed_sites_switch").change(function() {
 	</form>
 
 	<?php 
-
+	$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
+	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
+	$mapping_array  = array("BlockMethod", "Site", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
+	
+	$blockedSitesInstance = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+	
 	$blockedSitesInstanceArr = explode(",", getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite."));
-   // $blockedSitesNums = sizeof($blockedSitesInstanceArr);
+
+	//TrustedUser
+	$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.";
+	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.");
+	$mapping_array  = array("IPAddress", "Trusted");
+
+	$TrustedUser = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+
+	//Host
+	$rootObjName    = "Device.Hosts.Host.";
+	$paramNameArray = array("Device.Hosts.Host.");
+	$mapping_array  = array("HostName", "PhysAddress", "IPAddress", "IPv6Address.1.IPAddress");
+
+	$Host = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+
+   	// $blockedSitesNums = sizeof($blockedSitesInstanceArr);
 	$blockedSitesNums = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSiteNumberOfEntries");
-    //dump($blockedSitesNums);
+    	//dump($blockedSitesNums);
 	$blockedSitesURL = array();
 	$blockedSitesKeyWord = array();
 
 	for ($i=0,$j=0,$k=0; $i < $blockedSitesNums; $i++) { 
     	// retrieve info from backend
 
-		$blockedSites["$i"]['BlockMethod'] = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$blockedSitesInstanceArr["$i"]. ".BlockMethod");
-		$blockedSites["$i"]['Site'] = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$blockedSitesInstanceArr["$i"]. ".Site");
-		$blockedSites["$i"]['AlwaysBlock'] = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$blockedSitesInstanceArr["$i"]. ".AlwaysBlock");
-		$blockedSites["$i"]['StartTime'] = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$blockedSitesInstanceArr["$i"]. ".StartTime");
-		$blockedSites["$i"]['EndTime'] = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$blockedSitesInstanceArr["$i"]. ".EndTime");
-		$blockedSites["$i"]['BlockedDays'] = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$blockedSitesInstanceArr["$i"]. ".BlockDays");
+		$blockedSites["$i"]['BlockMethod'] = $blockedSitesInstance["$i"]['BlockMethod'];
+		$blockedSites["$i"]['Site'] = $blockedSitesInstance["$i"]['Site'];
+		$blockedSites["$i"]['AlwaysBlock'] = $blockedSitesInstance["$i"]['AlwaysBlock'];
+		$blockedSites["$i"]['StartTime'] = $blockedSitesInstance["$i"]['StartTime'];
+		$blockedSites["$i"]['EndTime'] = $blockedSitesInstance["$i"]['EndTime'];
+		$blockedSites["$i"]['BlockedDays'] = $blockedSitesInstance["$i"]['BlockDays'];
 
     	//process blockedSites info based on Blocked Method, URL/Keywords
 		if( !strcasecmp("URL", $blockedSites["$i"]['BlockMethod'])){
@@ -608,18 +635,7 @@ $("#managed_sites_switch").change(function() {
 
 			<input  type="hidden"  name="update_trusted_computers"  value="true" />
 
-		<?php 
-		$TrustedUserInstance = getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.");
-		$TrustedUserInstanceArr = explode(",", $TrustedUserInstance);
-		$TrustedUserNums = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUserNumberOfEntries");
-		$TrustedUser = array();
-
-		for ($i=0; $i < $TrustedUserNums; $i++) { 
-			//$TrustedUser["$i"]['instanceID'] = $TrustedUserInstanceArr["$i"];
-			$TrustedUser["$i"]['IPAddress']       = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser." .$TrustedUserInstanceArr["$i"]. ".IPAddress");
-			$TrustedUser["$i"]['Trusted']         = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser." .$TrustedUserInstanceArr["$i"]. ".Trusted");
-		}
-
+		<?php
 		$hostsInstance = getInstanceIds("Device.Hosts.Host.");
 		$hostsInstanceArr = explode(",", $hostsInstance);
 
@@ -628,17 +644,35 @@ $("#managed_sites_switch").change(function() {
 		$ipAddrArr = array();
 		$HostNameArr = array();
 
-		for ($i=0; $i < $hostNums; $i++) { 
+		for ($i=0; $i < $hostNums; $i++) {
 
-			$HostName = getStr("Device.Hosts.Host." .$hostsInstanceArr["$i"]. ".HostName");
+			$HostName = $Host[$i]["HostName"];
 			if (($HostName == "*") || (strlen($HostName) == 0)) {
-				$Host["$i"]['HostName'] = getStr("Device.Hosts.Host." .$hostsInstanceArr["$i"]. ".PhysAddress");
+				$Host["$i"]['HostName'] = $Host[$i]["PhysAddress"];
 			}
 			else {
 				$Host["$i"]['HostName'] = $HostName;
 			}
 
-			$Host["$i"]['IPAddress'] = getStr("Device.Hosts.Host." .$hostsInstanceArr["$i"]. ".IPAddress");
+			$Host["$i"]['IPAddress'] = $Host[$i]["IPAddress"];
+			$IPAddress = $Host["$i"]['IPAddress'];
+			//$IPv4Address	= getStr("Device.Hosts.Host." .$hostsInstanceArr["$i"]. ".IPv4Address.1.IPAddress");
+			$IPv6Address	= $Host[$i]["IPv6Address.1.IPAddress"];
+			
+			//"Device.Hosts.Host.'$i'.IPv4Address.1.IPAddress" is not updating on GW_IP Change
+			$IPv4Address = $IPAddress;
+
+			//In IPv6 only mode, IPv4=NA
+			if( strpos($IPv4Address, '.') === false ) $IPv4Address = 'NA';
+
+			if (substr($IPv6Address, 0, 5) == "2001:") {
+				$Host["$i"]['IPShow'] = $IPv4Address.'/'.$IPv6Address;
+			}
+			else {
+				//If IPv6 is not global then IPv6=NA
+				$Host["$i"]['IPShow'] = $IPv4Address.'/NA';
+			}
+
 			array_push($HostNameArr, $Host["$i"]['HostName']);
 			array_push($ipAddrArr, $Host["$i"]['IPAddress']);
 			$Host["$i"]['Trusted'] = false;
@@ -657,7 +691,7 @@ $("#managed_sites_switch").change(function() {
 			$HostNameArr = array("host1", "host2");
 			$ipAddrArr = array("1.1.1.1", "2.2.2.2");
 		}
-			
+
 		 ?>
 
 			<div class="module data">
@@ -679,8 +713,8 @@ $("#managed_sites_switch").change(function() {
 						echo "<tr $odd>
 						<td headers='number' class=\"row-label alt\">" .$k. "</td>
 						<td headers='device-name' id='HostName-" .$k. "' >" .$Host["$i"]['HostName']. "</td>
-						<td headers='IP' id='IPAddress-" .$k. "' >" .$Host["$i"]['IPAddress']. "</td>
-						<td headers='trusted-or-not'>
+						<td headers='IP' id='IPAddress-" .$k. "' >" .$Host["$i"]['IPShow']. "</td>
+						<td headers='trusted-or-not' style='min-width: 92px;'>
 						<span id=\"trusted_user_".$k."\" switch-val=\"".( $Host["$i"]['Trusted'] == 'true' ? "on" : "off" )."\"></span>
 						</td>
 						</tr>
@@ -714,7 +748,7 @@ $("#managed_sites_switch").change(function() {
 		var hostNums = '<?php echo $hostNums; ?>';
 		var hostNameArr = <?php echo json_encode($HostNameArr); ?>;
 		var ipAddrArr = <?php echo json_encode($ipAddrArr); ?>;
-
+//console.log(ipAddrArr);
 	</script>
 
 <?php 
@@ -811,13 +845,13 @@ $("#managed_sites_switch").change(function() {
         			<a rel=\"weekday\" href=\"#select_all\"  class=\"weekday_select_all\">Select All</a> | <a rel=\"weekday\"  href=\"#select_none\" class=\"weekday_select_none\">Select None</a>
                 </div>
         		<div class=\"form-row weekday\">
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"monday-" .$ID. "\"  value=\"Mon\"" . ( (stristr($block_days, "Mon") != false || $blockedInfo['AlwaysBlock'] == 'true') ? " checked='checked'" : "" ). "/><label class=\"checkbox\" for=\"monday-" .$ID. "\">Monday</label><br />
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"tuesday-" .$ID. "\"  value=\"Tue\"" . ( (stristr($block_days, "Tue") != false || $blockedInfo['AlwaysBlock'] == 'true') ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"tuesday-" .$ID. "\">Tuesday</label><br />
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"wednesday-" .$ID. "\"  value=\"Wed\"" . ((stristr($block_days, "Wed") != false || $blockedInfo['AlwaysBlock'] == 'true') ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"wednesday-" .$ID. "\">Wednesday</label><br />
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"thursday-" .$ID. "\"  value=\"Thu\"" . ( (stristr($block_days, "Thu") != false || $blockedInfo['AlwaysBlock'] == 'true') ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"thursday-" .$ID. "\">Thursday</label><br />
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"friday-" .$ID. "\"  value=\"Fri\"" . ( (stristr($block_days, "Fri") != false || $blockedInfo['AlwaysBlock'] == 'true') ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"friday-" .$ID. "\">Friday</label><br />
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"saturday-" .$ID. "\"  value=\"Sat\"" . ((stristr($block_days, "Sat") != false || $blockedInfo['AlwaysBlock'] == 'true') ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"saturday-" .$ID. "\">Saturday</label><br />
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"sunday-" .$ID. "\"  value=\"Sun\"" . ( (stristr($block_days, "Sun") != false || $blockedInfo['AlwaysBlock'] == 'true') ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"sunday-" .$ID. "\">Sunday</label>
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"monday-" .$ID. "\"  value=\"Mon\"" . ( (stristr($block_days, "Mon") != false) ? " checked='checked'" : "" ). "/><label class=\"checkbox\" for=\"monday-" .$ID. "\">Monday</label><br />
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"tuesday-" .$ID. "\"  value=\"Tue\"" . ( (stristr($block_days, "Tue") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"tuesday-" .$ID. "\">Tuesday</label><br />
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"wednesday-" .$ID. "\"  value=\"Wed\"" . ((stristr($block_days, "Wed") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"wednesday-" .$ID. "\">Wednesday</label><br />
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"thursday-" .$ID. "\"  value=\"Thu\"" . ( (stristr($block_days, "Thu") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"thursday-" .$ID. "\">Thursday</label><br />
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"friday-" .$ID. "\"  value=\"Fri\"" . ( (stristr($block_days, "Fri") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"friday-" .$ID. "\">Friday</label><br />
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"saturday-" .$ID. "\"  value=\"Sat\"" . ((stristr($block_days, "Sat") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"saturday-" .$ID. "\">Saturday</label><br />
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"sunday-" .$ID. "\"  value=\"Sun\"" . ( (stristr($block_days, "Sun") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"sunday-" .$ID. "\">Sunday</label>
         		</div>
         	</div> <!-- end #block-time -->
 

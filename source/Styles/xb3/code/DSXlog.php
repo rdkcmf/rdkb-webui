@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 <!-- $Id: firewall_settings.php 3158 2010-01-08 23:32:05Z slemoine $ -->
 
 <div id="sub-header">
@@ -34,9 +34,14 @@ $(document).ready(function() {
 		else
 		{
 			echo '<h2>MTA SIP Packet Log</h2><table class="data" summary="This table shows DSX logs"><thead><tr><th id="dsx_metrics">Metrics</th><th id="dsx_ds">Downstream</th><th id="dsx_us">Upstream</th></tr></thead>';
+			$rootObjName    = "Device.X_CISCO_COM_MTA.DSXLog.";
+			$paramNameArray = array("Device.X_CISCO_COM_MTA.DSXLog.");
+			$mapping_array  = array("Description");
+	
+			$dsxLogsInstance = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 			for ($i=1; $i<count($ids); $i++)
 			{
-				$item = array_values(array_filter(explode(" ", getStr("Device.X_CISCO_COM_MTA.DSXLog.$ids[$i].Description")), "del_blank"));
+				$item = array_values(array_filter(explode(" ", $dsxLogsInstance[$i]["Description"]), "del_blank"));
 				echo '<tr class="'.(($i%2)?'odd':'').'" >';
 				echo '<td headers="dsx_metrics">'.$item[0].' '.$item[1].'</td>';
 				echo '<td headers="dsx_ds">'.$item[2].'</td>';

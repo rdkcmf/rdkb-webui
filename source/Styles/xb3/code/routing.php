@@ -9,20 +9,21 @@
 
 <?php
 
-	$RIPEntry = array(
-		'ItfName'        => getStr("Device.Routing.RIP.InterfaceSetting.1.Interface"),
-		'SendVersion'    => getStr("Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_SendVersion"),
-		'ReceiveVersion' => getStr("Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_ReceiveVersion"),
-		'Interval'       => getStr("Device.Routing.RIP.X_CISCO_COM_UpdateInterval"),
-		'Metric'         => getStr("Device.Routing.RIP.X_CISCO_COM_DefaultMetric"),
-		'SimplePassword' => getStr("Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_SimplePassword"),
-		'AuthType'       => getStr("Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_AuthenticationType"),
-		'MD5KeyValue'    => getStr("Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_Md5KeyValue"),
-		'MD5KeyID'       => getStr("Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_Md5KeyID"),
-		'NeighborIP'     => getStr("Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_Neighbor"),
-		'SendRA'         => getStr("Device.Routing.RIP.InterfaceSetting.1.SendRA"),
-		'AcceptRA'       => getStr("Device.Routing.RIP.InterfaceSetting.1.AcceptRA")
+	$RIP_param = array(
+		'ItfName'        => "Device.Routing.RIP.InterfaceSetting.1.Interface",
+		'SendVersion'    => "Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_SendVersion",
+		'ReceiveVersion' => "Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_ReceiveVersion",
+		'SimplePassword' => "Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_SimplePassword",
+		'AuthType'       => "Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_AuthenticationType",
+		'MD5KeyValue'    => "Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_Md5KeyValue",
+		'MD5KeyID'       => "Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_Md5KeyID",
+		'NeighborIP'     => "Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_Neighbor",
+		'SendRA'         => "Device.Routing.RIP.InterfaceSetting.1.SendRA",
+		'AcceptRA'       => "Device.Routing.RIP.InterfaceSetting.1.AcceptRA",
+		'Interval'       => "Device.Routing.RIP.X_CISCO_COM_UpdateInterval",
+		'Metric'         => "Device.Routing.RIP.X_CISCO_COM_DefaultMetric",
 		);
+	$RIPEntry = KeyExtGet("Device.Routing.RIP.", $RIP_param);
 
 	/*$RIPEntry = array(
 		'Enable'         => 'True',
@@ -59,7 +60,6 @@ label{
 <script type="text/javascript">
 
 var jsRIPEntry = <?php echo $jsRIPEntry; ?>;
-//console.log(jsRIPEntry);
 
 $(document).ready(function() {
     comcast.page.init("Advanced > Routing", "nav-routing");
@@ -206,8 +206,7 @@ $(document).ready(function() {
 
 $('#save_btn').click(function() {
 
-	//var ifName      = $("#interface_name").val();
-	var ifName      = 'Ethernet';
+	var ifName      = $("#interface_name").val();
 	var sendVer     = $("#send_version").val();
 	var recVer      = $("#receive_version").val();
 	var interval    = $("#update_interval").val();
@@ -262,7 +261,7 @@ function saveRIP(information) {
 
 	<div id="educational-tip">
 		<p class="tip">The RIP protocol is used to exchange the routing information between the gateway and headend.</p>
-		<!-- <p class="hidden"><strong>Interface Name:</strong>Select the interface that the rip information will send from.</p> -->
+		<p class="hidden"><strong>Interface Name:</strong>Select the interface that the rip information will send from.</p>
 		<p class="hidden"><strong>RIP Send Version:</strong> Select the rip Send Version.</p>
 		<p class="hidden"> <strong>RIP Receive Version:</strong> Select the rip Receive Version.</p>
 		<p class="hidden"><strong>Update Interval:</strong> Enter the time that the rip information will resend.</p>
@@ -276,14 +275,6 @@ function saveRIP(information) {
 		<h2>RIP(Routing information Protocol)</h2>
 
 	<form id="pageForm" action="routing.php" method="post">
-
-		<!-- <div class="form-row">
-			<label for="interface_name" class="readonlyLabel">Interface Name:</label>
-			<select id="interface_name">
-				<option value="Cable">Cable</option>
-				<option value="Ethernet">Ethernet</option>
-			</select>
-		</div> -->
 
 	<!-- <div class="form-row">
 		<span class="readonlyLabel label">Status:</span>
@@ -304,6 +295,13 @@ function saveRIP(information) {
 	</div> -->
 
 	<div id="Routing-items">
+		<div class="form-row">
+			<label for="interface_name" class="readonlyLabel">Interface Name:</label>
+			<select id="interface_name">
+				<option value="Cable">Cable</option>
+				<option value="Ethernet">Ethernet</option>
+			</select>
+		</div>
 		<div class="form-row odd">
 			<label for="send_version" class="readonlyLabel">RIP Send Version:</label>
 			<select id="send_version">

@@ -153,27 +153,27 @@ comcast.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 		<!--div>Hazardous Potential:</div-->
 <span class="valuemta">Hazardous Potential:</span>
 		<label for="line1hp" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1hp">NotStarted</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1hp">Not Started</textarea>
 	</div>
 	<div class="form-row odd">
 		<div>Foreign EMF:</div>
 		<label for="line1femf" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1femf">NotStarted</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1femf">Not Started</textarea>
 	</div>
 	<div class="form-row">
 		<div>Resistive Faults:</div>
 		<label for="line1rf" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1rf">NotStarted</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1rf">Not Started</textarea>
 	</div>
 	<div class="form-row odd">
 		<div>Receiver Off Hook:</div>
 		<label for="line1roh" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1roh">NotStarted</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1roh">Not Started</textarea>
 	</div>
 	<div class="form-row">
 		<div>Ringer Equivalency:</div>
 		<label for="line1re" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1re">NotStarted</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1re">Not Started</textarea>
 	</div>
 	
 	<div class="form-btn odd">
@@ -191,27 +191,27 @@ comcast.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 	<div class="form-row">
 		<div>Hazardous Potential:</div>
 		<label for="line2hp" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2hp">NotStarted</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2hp">Not Started</textarea>
 	</div>
 	<div class="form-row odd">
 		<div>Foreign EMF:</div>
 		<label for="line2femf" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2femf">NotStarted</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2femf">Not Started</textarea>
 	</div>
 	<div class="form-row">
 		<div>Resistive Faults:</div>
 		<label for="line2rf" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2rf">NotStarted</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2rf">Not Started</textarea>
 	</div>
 	<div class="form-row odd">
 		<div>Receiver Off Hook:</div>
 		<label for="line2roh" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2roh">NotStarted</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2roh">Not Started</textarea>
 	</div>
 	<div class="form-row">
 		<div>Ringer Equivalency:</div>
 		<label for="line2re" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2re">NotStarted</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2re">Not Started</textarea>
 	</div>
 	
 	<div class="form-btn odd">

@@ -311,7 +311,7 @@ comcast.page = function() {
             document.title = title + " - " + document.title;
             setupLeftNavigation(navElementId);
             setupDeleteConfirmDialogs();
-			setupBatteryIndicator();
+			//setupBatteryIndicator();
 			setupEducationalTip();
 			setupFormValidation();
 			setupFirewallDisplay();

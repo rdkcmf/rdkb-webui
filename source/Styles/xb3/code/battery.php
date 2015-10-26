@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 <!-- $Id: battery.php 3158 2010-01-08 23:32:05Z slemoine $ -->
 
 <div id="sub-header">
@@ -7,12 +7,29 @@
 </div><!-- end #sub-header -->
 
 <?php include('includes/nav.php'); ?>
+<?php
 
+$battery_param = array(
+        "installed"   	=> "Device.X_CISCO_COM_MTA.Battery.Installed",
+        "bat_remain"   	=> "Device.X_CISCO_COM_MTA.Battery.RemainingCharge",
+	"remain_time"   => "Device.X_CISCO_COM_MTA.Battery.RemainingTime",
+	"bat_power"	=> "Device.X_CISCO_COM_MTA.Battery.PowerStatus",
+	"bat_condition"	=> "Device.X_CISCO_COM_MTA.Battery.Condition",
+	"bat_status"	=> "Device.X_CISCO_COM_MTA.Battery.Status",
+	"bat_life"	=> "Device.X_CISCO_COM_MTA.Battery.Life",
+	"bat_total"	=> "Device.X_CISCO_COM_MTA.Battery.TotalCapacity",
+	"bat_actual"	=> "Device.X_CISCO_COM_MTA.Battery.ActualCapacity",
+	"bat_cycles"	=> "Device.X_CISCO_COM_MTA.Battery.NumberofCycles",
+	"bat_model"	=> "Device.X_CISCO_COM_MTA.Battery.ModelNumber",
+	"bat_serial"	=> "Device.X_CISCO_COM_MTA.Battery.SerialNumber",
+	);
+    $battery_value = KeyExtGet("Device.X_CISCO_COM_MTA.Battery.", $battery_param);
+?>
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Hardware > Battery", "nav-battery");
 
-	if ("true" != "<?php echo getStr("Device.X_CISCO_COM_CableModem.Battery.Installed"); ?>"){
+	if ("true" != "<?php echo $battery_value['installed']; ?>"){
 		$(".div_battery [id^='bat_']").text("");
 		$("#bat_power").text("AC");
 		$("#bat_instal").text("No");
@@ -20,10 +37,10 @@ $(document).ready(function() {
 	}
 	
 	var percent	= $("#sta_batt").text().replace("Battery", "");
-	var bat_remain	= "<?php echo getStr("Device.X_CISCO_COM_CableModem.Battery.RemainingCharge"); ?>";
+	var bat_remain	= "<?php echo $battery_value['bat_remain']; ?>";
 	$("#bat_remain").text(bat_remain + ' mAh ('+percent+')');
 	
-	var remain_time		= "<?php echo getStr("Device.X_CISCO_COM_CableModem.Battery.RemainingTime"); ?>";
+	var remain_time		= "<?php echo $battery_value['remain_time']; ?>";
 	var bat_hours	= Math.round(parseInt(remain_time)/6).toString();
 	if (bat_hours.length <=1)
 	{
@@ -50,31 +67,31 @@ $(document).ready(function() {
 		</tr>
 		<tr class="odd">
 			<td headers="battery_metric" class="row-label">Power status:</td>
-			<td headers="battery_status" id="bat_power"><?php echo getStr("Device.X_CISCO_COM_CableModem.Battery.PowerStatus"); ?></td>
+			<td headers="battery_status" id="bat_power"><?php echo $battery_value["bat_power"]; ?></td>
 		</tr>
 		<tr>
 			<td headers="battery_metric" class="row-label">Battery Installed:</td>
-			<td headers="battery_status" id="bat_instal"><?php echo ("true"==getStr("Device.X_CISCO_COM_CableModem.Battery.Installed") ? "Yes" : "No"); ?></td>
+			<td headers="battery_status" id="bat_instal"><?php echo ("true"== $battery_value["bat_instal"] ? "Yes" : "No"); ?></td>
 		</tr>
 		<tr class="odd">
 			<td headers="battery_metric" class="row-label">Battery Condition:</td>
-			<td headers="battery_status" id="bat_condition"><?php echo getStr("Device.X_CISCO_COM_CableModem.Battery.Condition"); ?></td>
+			<td headers="battery_status" id="bat_condition"><?php echo $battery_value["bat_condition"]; ?></td>
 		</tr>
 		<tr>
 			<td headers="battery_metric" class="row-label">Battery Status:</td>
-			<td headers="battery_status" id="bat_status"><?php echo getStr("Device.X_CISCO_COM_CableModem.Battery.Status"); ?></td>
+			<td headers="battery_status" id="bat_status"><?php echo $battery_value["bat_status"]; ?></td>
 		</tr>
 		<tr class="odd">
 			<td headers="battery_metric" class="row-label">Battery Life:</td>
-			<td headers="battery_status" id="bat_life"><?php echo getStr("Device.X_CISCO_COM_CableModem.Battery.Life"); ?></td>
+			<td headers="battery_status" id="bat_life"><?php echo $battery_value["bat_life"]; ?></td>
 		</tr>
 		<tr>
 			<td headers="battery_metric" class="row-label">Total Capacity:</td>
-			<td headers="battery_status" id="bat_total"><?php echo getStr("Device.X_CISCO_COM_CableModem.Battery.TotalCapacity"); ?> mAh</td>
+			<td headers="battery_status" id="bat_total"><?php echo $battery_value["bat_total"]; ?> mAh</td>
 		</tr>
 		<tr class="odd">
 			<td headers="battery_metric" class="row-label">Actual Capacity:</td>
-			<td headers="battery_status" id="bat_actual"><?php echo getStr("Device.X_CISCO_COM_CableModem.Battery.ActualCapacity"); ?> mAh</td>
+			<td headers="battery_status" id="bat_actual"><?php echo $battery_value["bat_actual"]; ?> mAh</td>
 		</tr>
 		<tr>
 			<td headers="battery_metric" class="row-label">Remaining Charge:</td>
@@ -86,15 +103,15 @@ $(document).ready(function() {
 		</tr>
 		<tr>
 			<td headers="battery_metric" class="row-label">Number of Cycles to date:</td>
-			<td headers="battery_status" id="bat_cycles"><?php echo getStr("Device.X_CISCO_COM_CableModem.Battery.NumberofCycles"); ?></td>
+			<td headers="battery_status" id="bat_cycles"><?php echo $battery_value["bat_cycles"]; ?></td>
 		</tr>
 		<tr class="odd">
 			<td headers="battery_metric" class="row-label">Battery Model Number:</td>
-			<td headers="battery_status" id="bat_model"><?php echo getStr("Device.X_CISCO_COM_CableModem.Battery.ModelNumber"); ?></td>
+			<td headers="battery_status" id="bat_model"><?php echo $battery_value["bat_model"]; ?></td>
 		</tr>
 		<tr>
 			<td headers="battery_metric" class="row-label">Battery Serial Number:</td>
-			<td headers="battery_status" id="bat_serial"><?php echo getStr("Device.X_CISCO_COM_CableModem.Battery.SerialNumber"); ?></td>
+			<td headers="battery_status" id="bat_serial"><?php echo $battery_value["bat_serial"]; ?></td>
 		</tr>
 		</table>
 	</div><!-- end .module -->

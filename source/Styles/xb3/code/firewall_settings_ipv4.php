@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 <!-- $Id: firewall_settings.php 3158 2010-01-08 23:32:05Z slemoine $ -->
 
 <div id="sub-header">
@@ -45,11 +45,11 @@ $(document).ready(function() {
 	
 	$("#disable_firewall").change(function(){
 		if($("#disable_firewall").prop("checked")) {
-			$("#block_http").prop("disabled",true);
-			$("#block_icmp").prop("disabled",true);
-			$("#block_multicast").prop("disabled",true);
-			$("#block_peer").prop("disabled",true);
-			$("#block_ident").prop("disabled",true);
+			$("#block_http").prop("disabled",true).attr('checked', false);
+			$("#block_icmp").prop("disabled",true).attr('checked', false);
+			$("#block_multicast").prop("disabled",true).attr('checked', false);
+			$("#block_peer").prop("disabled",true).attr('checked', false);
+			$("#block_ident").prop("disabled",true).attr('checked', false);
 		}
 		else {
 			$("#block_http").prop("disabled",false);
@@ -192,7 +192,21 @@ $(document).ready(function() {
 		<input type="hidden" name="restore_factory_settings" id="restore_factory_settings" value="false" />
 		<h2>Firewall Security Level</h2>
 		<?php 
-			$SecurityLevel = getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel");	
+            $firewall_param = array(
+                "SecurityLevel"     => "Device.X_CISCO_COM_Security.Firewall.FirewallLevel",
+                "block_http"        => "Device.X_CISCO_COM_Security.Firewall.FilterHTTP",
+                "block_icmp"        => "Device.X_CISCO_COM_Security.Firewall.FilterAnonymousInternetRequests",
+                "block_multicast"   => "Device.X_CISCO_COM_Security.Firewall.FilterMulticast",
+                "block_peer"        => "Device.X_CISCO_COM_Security.Firewall.FilterP2P",
+                "block_ident"       => "Device.X_CISCO_COM_Security.Firewall.FilterIdent",
+            );
+            $firewall_value = KeyExtGet("Device.X_CISCO_COM_Security.Firewall.", $firewall_param);
+			$SecurityLevel = $firewall_value["SecurityLevel"]; //getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel");	
+            $block_http = $firewall_value["block_http"];
+            $block_icmp = $firewall_value["block_icmp"];
+            $block_multicast = $firewall_value["block_multicast"];
+            $block_peer = $firewall_value["block_peer"];
+            $block_ident = $firewall_value["block_ident"];
 		?>
 		<ul class="combo-group" id="security-level">
 			<li id="max">
@@ -253,23 +267,23 @@ $(document).ready(function() {
 
 				<p class="target disabled">
 				<input class="target disabled"  type="checkbox" id="block_http" name="block_http" 
-				<?php if ( !strcasecmp("true",  getStr("Device.X_CISCO_COM_Security.Firewall.FilterHTTP"))) echo "checked"; ?> /> 
+				<?php if ( !strcasecmp("true",  $block_http)) echo "checked"; ?> /> 
 				<label for="block_http">Block http (TCP port 80, 443)</label><br />
 
 				<input class="target disabled"  type="checkbox" id="block_icmp" name="block_icmp"
-				<?php if ( !strcasecmp("true",  getStr("Device.X_CISCO_COM_Security.Firewall.FilterAnonymousInternetRequests"))) echo "checked"; ?> />
+				<?php if ( !strcasecmp("true", $block_icmp )) echo "checked"; ?> />
 				<label for="block_icmp">Block ICMP</label><br />
 
 				<input class="target disabled"  type="checkbox" id="block_multicast" name="block_multicast"
-				<?php if ( !strcasecmp("true",  getStr("Device.X_CISCO_COM_Security.Firewall.FilterMulticast"))) echo "checked"; ?> /> 
+				<?php if ( !strcasecmp("true", $block_multicast)) echo "checked"; ?> /> 
 				<label for="block_multicast">Block Multicast</label><br />
 
 				<input class="target disabled"  type="checkbox" id="block_peer" name="block_peer" 
-				<?php if ( !strcasecmp("true",  getStr("Device.X_CISCO_COM_Security.Firewall.FilterP2P"))) echo "checked"; ?>  /> 
+				<?php if ( !strcasecmp("true", $block_peer)) echo "checked"; ?>  /> 
 				<label for="block_peer">Block Peer-to-peer applications</label><br />
 
 				<input class="target disabled" type="checkbox" id="block_ident" name="block_ident" 
-				<?php if ( !strcasecmp("true",  getStr("Device.X_CISCO_COM_Security.Firewall.FilterIdent"))) echo "checked"; ?>  /> 
+				<?php if ( !strcasecmp("true", $block_ident)) echo "checked"; ?>  /> 
 				<label for="block_ident">Block IDENT (port 113)</label><br />
 
 				<input class="target disabled" type="checkbox" id="disable_firewall" name="disable_firewall" 

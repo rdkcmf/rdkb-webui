@@ -63,16 +63,19 @@ else if ("pair_client" == $arConfig['target'])
 {
 	if ("PushButton" == $arConfig['pair_method']) 
 	{
-		setStr("Device.WiFi.AccessPoint.$i.WPS.X_CISCO_COM_ActivatePushButton", "true", true);
+		setStr("Device.WiFi.AccessPoint.1.WPS.X_CISCO_COM_ActivatePushButton", "true", true);
+		setStr("Device.WiFi.AccessPoint.2.WPS.X_CISCO_COM_ActivatePushButton", "true", true);
 	}
 	else 
 	{
-		setStr("Device.WiFi.AccessPoint.$i.WPS.X_CISCO_COM_ClientPin", $arConfig['pin_number'], true);
+		setStr("Device.WiFi.AccessPoint.1.WPS.X_CISCO_COM_ClientPin", $arConfig['pin_number'], true);
+		setStr("Device.WiFi.AccessPoint.2.WPS.X_CISCO_COM_ClientPin", $arConfig['pin_number'], true);
 	}
 }
 else if ("pair_cancel" == $arConfig['target'])
 {
-	setStr("Device.WiFi.AccessPoint.$i.WPS.X_CISCO_COM_CancelSession", "true", true);
+	setStr("Device.WiFi.AccessPoint.1.WPS.X_CISCO_COM_CancelSession", "true", true);
+	setStr("Device.WiFi.AccessPoint.2.WPS.X_CISCO_COM_CancelSession", "true", true);
 }
 sleep(1);
 echo $jsConfig;	

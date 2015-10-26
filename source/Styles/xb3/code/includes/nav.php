@@ -13,8 +13,8 @@ $dmz              	= TRUE;
 $port_forwarding  	= TRUE;
 $port_triggering  	= TRUE;
 $MoCA             	= TRUE;
-$battery            = TRUE;
-$cordless_handset 	= TRUE;
+$battery            	= TRUE;
+$cordless_handset 	= FALSE;
 $USB              	= FALSE;
 $network_storage  	= FALSE;
 $range_extenders  	= TRUE;
@@ -22,13 +22,15 @@ $radius_servers   	= FALSE;
 $media_sharing    	= FALSE;
 $file_sharing     	= FALSE;
 $local_users      	= FALSE;
-$remote_management  = TRUE;  //for xb3, all user will have this page, but different content
-$eMTA               = TRUE;  //for mso/cusadmin
+$remote_management  	= TRUE;  //for xb3, all user will have this page, but different content
+$eMTA               	= TRUE;  //for mso/cusadmin
 $routing          	= TRUE;  //for mso only
 $email_notify		= TRUE;  //for mso only
-$hs_port_forwarding = TRUE; //for mso only
-$dynamic_dns        = TRUE;  //for mso/cusadmin
+$hs_port_forwarding 	= TRUE; //for mso only
+$dynamic_dns        	= TRUE;  //for mso/cusadmin
 $nat		        = FALSE;  //for mso/cusadmin
+$password_change	= FALSE;  //for admin only
+$wizard        		= TRUE;
 
 if ($_DEBUG) {
 	$media_sharing = TRUE;
@@ -37,30 +39,32 @@ if ($_DEBUG) {
 /*
  * The difference between  bridge mode and router mode
  * In bridge mode, local ip config page, firewall page, parental control pages, 
- * routing page(mso), dmz page, port fowarding and port triggering pages removed
+ * routing page(mso), dmz page, wizard pages, port fowarding and port triggering pages removed
  */
 if (isset($_SESSION['lanMode']) && $_SESSION["lanMode"] == "bridge-static") {
-	$local_ip_config  = FALSE;
-	$firewall         = FALSE;
-	$parental_control = FALSE;
-	$routing          = FALSE;
-	$dmz              = FALSE;
-	$port_forwarding  = FALSE;
-	$port_triggering  = FALSE;
+	$local_ip_config  	= FALSE;
+	$firewall         	= FALSE;
+	$parental_control 	= FALSE;
+	$routing          	= FALSE;
+	$dmz              	= FALSE;
+	$port_forwarding  	= FALSE;
+	$port_triggering  	= FALSE;
 	$hs_port_forwarding = FALSE;
+	$wizard		 		= FALSE;
 }
 
 if (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'cusadmin') {
-	$routing			= FALSE;
+	$routing		= FALSE;
 	$email_notify		= FALSE;
-	$hs_port_forwarding = FALSE;
+	$hs_port_forwarding 	= FALSE;
 }
 elseif (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'admin') {
-	$eMTA 				= FALSE;	
-	$routing 			= FALSE;
+	$eMTA 			= FALSE;	
+	$routing 		= FALSE;
 	$email_notify		= FALSE;
 	$dynamic_dns 		= FALSE;
-	$hs_port_forwarding = FALSE;
+	$hs_port_forwarding	= FALSE;
+	$password_change	= TRUE;
 }
 
 /*
@@ -110,7 +114,10 @@ echo '<li class="nav-gateway">';
 		if($USB) echo '<li class="nav-usb"><a role="menuitem"  href="usb.php">USB</a></li>';
 		echo '</ul>';
 	echo '</li>';
-	echo '<li class="nav-wizard"><a role="menuitem"  href="wizard_step1.php">Wizard</a></li>';
+	if($wizard){
+		if($password_change) echo '<li class="nav-wizard"><a role="menuitem"  href="wizard_step1.php">Wizard</a></li>';
+		else echo '<li class="nav-wizard"><a role="menuitem"  href="wizard_step2.php">Wizard</a></li>';
+	}
 	echo '</ul>';
 echo '</li>';
 
@@ -178,7 +185,7 @@ echo '<li class="nav-troubleshooting">';
 		echo '<li class="nav-logs"><a role="menuitem"  href="troubleshooting_logs.php">Logs</a></li>';
 		echo '<li class="nav-diagnostic-tools"><a role="menuitem"  href="network_diagnostic_tools.php">Diagnostic Tools</a></li>';
 		echo '<li class="nav-restore-reboot"><a role="menuitem"  href="restore_reboot.php">Reset/Restore Gateway</a></li>';
-		echo '<li class="nav-password"><a role="menuitem"  href="password_change.php">Change Password</a></li>';
+		if($password_change) echo '<li class="nav-password"><a role="menuitem"  href="password_change.php">Change Password</a></li>';
 	echo '</ul>';
 echo '</li>';
 echo '</ul>';

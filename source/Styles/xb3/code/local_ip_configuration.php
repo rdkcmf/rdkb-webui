@@ -1,16 +1,59 @@
 ﻿<?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php') ?>
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
 
 <?php include('includes/nav.php'); ?>
 <?php 
-$LanGwIP    = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
-$DHCPTime   = getStr("Device.DHCPv4.Server.Pool.1.LeaseTime");
-$DHCPV6Time = getStr("Device.DHCPv6.Server.Pool.1.LeaseTime");
+
+$device_ctrl_param = array(
+        "LanGwIP"    => "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress",
+		"DeviceMode" => "Device.X_CISCO_COM_DeviceControl.DeviceMode",
+		"subnetmask" => "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask",
+	);
+    $device_ctrl_value = KeyExtGet("Device.X_CISCO_COM_DeviceControl.", $device_ctrl_param);
+
+
+$dhcpv4_param = array(
+        "DHCPTime"   			=> "Device.DHCPv4.Server.Pool.1.LeaseTime",
+        "WAN_GW_IPv4_Address" 	=> "Device.DHCPv4.Client.1.IPRouters",
+        "beginAddr" 			=> "Device.DHCPv4.Server.Pool.1.MinAddress",
+        "endAddr" 				=> "Device.DHCPv4.Server.Pool.1.MaxAddress",
+	);
+    $dhcpv4_value = KeyExtGet("Device.DHCPv4.", $dhcpv4_param);
+
+$dhcpv6_param = array(
+       	"DHCPV6Time" 	=> "Device.DHCPv6.Server.Pool.1.LeaseTime",
+       	"state" 		=> "Device.DHCPv6.Server.X_CISCO_COM_Type",
+       	"v6_begin_addr" => "Device.DHCPv6.Server.Pool.1.PrefixRangeBegin",
+       	"v6_end_addr" 	=> "Device.DHCPv6.Server.Pool.1.PrefixRangeEnd",
+	);
+    $dhcpv6_value = KeyExtGet("Device.DHCPv6.Server.", $dhcpv6_param);
+
+
+$LanGwIP    = $device_ctrl_value["LanGwIP"];
+$DHCPTime   = $dhcpv4_value["DHCPTime"];
+$DHCPV6Time = $dhcpv6_value["DHCPV6Time"];
 $ipv6_prefix = getStr("Device.IP.Interface.1.IPv6Prefix.1.Prefix");
 $interface = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstDownstreamIpInterface");
+$DeviceMode = $device_ctrl_value["DeviceMode"];
+
+//CM GW IP Address
+$CM_GW_IP_Address = getStr("Device.X_CISCO_COM_CableModem.Gateway");
+//WAN GW IP Address (IPv4)
+$WAN_GW_IPv4_Address = $dhcpv4_value["WAN_GW_IPv4_Address"];
+
+//Virtual LAN_GW_IPv4_Address
+exec("ifconfig lan0", $out);
+foreach ($out as $v){
+	if (strpos($v, 'inet addr')){
+		$tmp = explode('Bcast', $v);
+		$tmp = explode('addr:', $tmp[0]);
+		$LAN_GW_IPv4_Address = trim($tmp[1]);
+	}
+}
+
 // $interface = "Device.IP.Interface.2.";
 
 // initial some variable to suppress some error
@@ -52,15 +95,19 @@ label{
 $(document).ready(function() {
 	comcast.page.init("Gateway > Connection > Local IP Configuration", "nav-local-ip-network");
 
+
 	/*
 	** view management: if admin login, pop up alert msg if change gw ip addr
 	*/
 	var login_user = "<?php echo $_SESSION["loginuser"]; ?>";
     //console.log(login_user);
 
-    var jsGwIP = "<?php echo $LanGwIP; ?>";
-    var jsLeaseTime = "<?php echo $DHCPTime; ?>";
-    var jsV6LeaseTime = "<?php echo $DHCPV6Time; ?>";
+	var jsGwIP = "<?php echo $LanGwIP; ?>";
+	var jsLeaseTime = "<?php echo $DHCPTime; ?>";
+	var jsV6LeaseTime = "<?php echo $DHCPV6Time; ?>";
+
+	var old_beginning_ip4 = $("#ipv4_dhcp_beginning_address_4").val();
+	var old_ending_ip4 = $("#ipv4_dhcp_ending_address_4").val();
 
 	function updateIPv4() {
 		var ip1 = $("#ipv4_gateway_address_1").val();
@@ -76,19 +123,36 @@ $(document).ready(function() {
 		beginning_ip2 = ending_ip2 = parseInt(ip2);
 		beginning_ip3 = ending_ip3 = parseInt(ip3);
 
+		$("#ipv4_dhcp_beginning_address_1").val(beginning_ip1);
+		$("#ipv4_dhcp_ending_address_1").val(ending_ip1);
+
+		$("#ipv4_dhcp_beginning_address_2").val(beginning_ip2);
+		$("#ipv4_dhcp_ending_address_2").val(ending_ip2);
+
+		$("#ipv4_dhcp_beginning_address_3").val(beginning_ip3);
+		$("#ipv4_dhcp_ending_address_3").val(ending_ip3);
+
+
+		if (subnet == "255.255.255.252"){
+			 //cache old values
+			old_beginning_ip4 = $("#ipv4_dhcp_beginning_address_4").val();
+			old_ending_ip4 = $("#ipv4_dhcp_ending_address_4").val();		}
+		else {
+			$("#ipv4_dhcp_beginning_address_4").val(old_beginning_ip4);
+			$("#ipv4_dhcp_ending_address_4").val(old_ending_ip4);
+		}
+
 		if(subnet == "255.255.0.0") {
 			beginning_ip3 = "0";
 			beginning_ip4 = "2";
 			ending_ip3 = "255";
-			ending_ip4 = "254";
+			ending_ip4 = "253";
 			$("#ipv4_dhcp_beginning_address_1").prop("disabled", true);
 			$("#ipv4_dhcp_beginning_address_2").prop("disabled", true);
 			$("#ipv4_dhcp_ending_address_1").prop("disabled", true);
 			$("#ipv4_dhcp_ending_address_2").prop("disabled", true);
 			$("#ipv4_dhcp_beginning_address_3").prop("disabled", false);
-			$("#ipv4_dhcp_ending_address_3").prop("disabled", false);
-			$("#ipv4_dhcp_beginning_address_4").val(2);
-			$("#ipv4_dhcp_ending_address_4").val(254);
+			$("#ipv4_dhcp_ending_address_3").prop("disabled", false);			
 
 			$("#ipv4_gateway_address_2").prop("disabled", false);
 			$("#ipv4_gateway_address_3").prop("disabled", true);
@@ -96,15 +160,15 @@ $(document).ready(function() {
 		} 
 		else if (subnet == "255.255.255.128") {
 			beginning_ip4 = "2";
-			ending_ip4 = "126";
+			ending_ip4 = "2";
+			if($("#ipv4_dhcp_ending_address_4").val()>125) $("#ipv4_dhcp_ending_address_4").val(125);
 			$("#ipv4_dhcp_beginning_address_1").prop("disabled", true);
 			$("#ipv4_dhcp_beginning_address_2").prop("disabled", true);
 			$("#ipv4_dhcp_beginning_address_3").prop("disabled", true);
 			$("#ipv4_dhcp_ending_address_1").prop("disabled", true);
 			$("#ipv4_dhcp_ending_address_2").prop("disabled", true);
 			$("#ipv4_dhcp_ending_address_3").prop("disabled", true);
-			$("#ipv4_dhcp_beginning_address_4").val(2);
-			$("#ipv4_dhcp_ending_address_4").val(126);
+			
 			$("#ipv4_gateway_address_2").prop("disabled", false);
 			$("#ipv4_gateway_address_3").prop("disabled", false);
 		}
@@ -125,9 +189,9 @@ $(document).ready(function() {
 		}
 		else if (subnet == "255.0.0.0") {
 			beginning_ip3 = "0";
-			//beginning_ip4 = "2";
+			beginning_ip4 = "2";
 			ending_ip3 = "255";
-			//ending_ip4 = "254";
+			ending_ip4 = "253";
 			beginning_ip2 = "0";
 			ending_ip2 = "255";
 			$("#ipv4_dhcp_beginning_address_1").prop("disabled", true);
@@ -136,46 +200,25 @@ $(document).ready(function() {
 			$("#ipv4_dhcp_ending_address_1").prop("disabled", true);
 			$("#ipv4_dhcp_ending_address_2").prop("disabled", false);
 			$("#ipv4_dhcp_ending_address_3").prop("disabled", false);
-		    $("#ipv4_dhcp_beginning_address_4").val(2);
-			$("#ipv4_dhcp_ending_address_4").val(254);
-
 			$("#ipv4_gateway_address_2").prop("disabled", true);
 			$("#ipv4_gateway_address_3").prop("disabled", true);
 			$("#ipv4_gateway_address_4").prop("disabled", true);
 		}
 		else {
 			// 255.255.255.0   Default
+			beginning_ip4 = "2";
+			ending_ip4 = "253";
 			$("#ipv4_dhcp_beginning_address_1").prop("disabled", true);
 			$("#ipv4_dhcp_beginning_address_2").prop("disabled", true);
 			$("#ipv4_dhcp_beginning_address_3").prop("disabled", true);
 			$("#ipv4_dhcp_ending_address_1").prop("disabled", true);
 			$("#ipv4_dhcp_ending_address_2").prop("disabled", true);
 			$("#ipv4_dhcp_ending_address_3").prop("disabled", true);
-			$("#ipv4_dhcp_beginning_address_4").val(2);
-			$("#ipv4_dhcp_ending_address_4").val(253);
-			beginning_ip4 = "2";
-			ending_ip4 = "253";
+			
 			$("#ipv4_gateway_address_2").prop("disabled", false);
 			$("#ipv4_gateway_address_3").prop("disabled", false);
 		}
 
-		function replaceNaNwithEmptyString(value) {
-			if(isNaN(value)) {
-				return "";
-			} else {
-				return value;
-			}
-		}
-
-		$("#ipv4_dhcp_beginning_address_1").val(replaceNaNwithEmptyString(beginning_ip1));
-		$("#ipv4_dhcp_beginning_address_2").val(replaceNaNwithEmptyString(beginning_ip2));
-		$("#ipv4_dhcp_beginning_address_3").val(replaceNaNwithEmptyString(beginning_ip3));
-		//$("#ipv4_dhcp_beginning_address_4").val(replaceNaNwithEmptyString(beginning_ip4));
-
-		$("#ipv4_dhcp_ending_address_1").val(replaceNaNwithEmptyString(ending_ip1));
-		$("#ipv4_dhcp_ending_address_2").val(replaceNaNwithEmptyString(ending_ip2));
-		$("#ipv4_dhcp_ending_address_3").val(replaceNaNwithEmptyString(ending_ip3));
-		//$("#ipv4_dhcp_ending_address_4").val(replaceNaNwithEmptyString(ending_ip4));
 	}//end of updateIPv4
 
 	// Update range addresses automatically
@@ -310,7 +353,7 @@ $(document).ready(function() {
 		{
 			return true;
 		}
-	}, "DHCP ending address is beyond the valid range.");
+	}, "DHCP address is beyond the valid range.");
 
 	$.validator.addMethod("hexadecimal", function(value, element) {
 		return this.optional(element) || /^[a-fA-F0-9]+$/i.test(value);
@@ -369,7 +412,8 @@ $(document).ready(function() {
 			    required: true,
 				min: 2,
 				max: 254,
-				digits: true
+				digits: true,
+				checkMask: true
 			}
 			,ipv4_dhcp_ending_address_4: {
 			    required: true,
@@ -382,11 +426,15 @@ $(document).ready(function() {
 				required: function() {
 					return $("#ipv4_dhcp_lease_time_measure option:selected").val() != "forever";
 				},
-	            digits : true,
-	            min: 1
-	        }	        
+			    	digits : true,
+				min: function () {
+					if($("#ipv4_dhcp_lease_time_measure option:selected").val() == "seconds") return 120;
+					else if($("#ipv4_dhcp_lease_time_measure option:selected").val() == "minutes") return 2;
+					else return 1;
+				}
+	        	}
 		},
-	    highlight: function( element, errorClass, validClass ) {
+	    	highlight: function( element, errorClass, validClass ) {
 			$(element).closest(".form-row").find("input").addClass(errorClass).removeClass(validClass);
 		},
 		unhighlight: function( element, errorClass, validClass ) {
@@ -448,21 +496,32 @@ $(document).ready(function() {
 	            }
 	            ,hexadecimal: true
 	        }
-	        ,ipv6_dhcp_lease_time_amount: {
-	        	required: function() {
+		,ipv6_dhcp_lease_time_amount: {
+				required: function() {
 					return $("#ipv6_dhcp_lease_time_measure option:selected").val() != "forever";
 				},
-	            digits : true,
-	            min: 1
-	        }
+			    	digits : true,
+				min: function () {
+					if($("#ipv6_dhcp_lease_time_measure option:selected").val() == "seconds") return 120;
+					else if($("#ipv6_dhcp_lease_time_measure option:selected").val() == "minutes") return 2;
+					else return 1;
+				}
+	        	}
 		},
-	    highlight: function( element, errorClass, validClass ) {
+	    	highlight: function( element, errorClass, validClass ) {
 			$(element).closest(".form-row").find("input").addClass(errorClass).removeClass(validClass);
 		},
 		unhighlight: function( element, errorClass, validClass ) {
 			$(element).closest(".form-row").find("input").removeClass(errorClass).addClass(validClass);
 		}
 	}); //end of pageform v6
+
+	$("#ipv4_dhcp_lease_time_measure, #ipv4_dhcp_lease_time_amount").change(function() {
+	  	$("#pageForm").valid();
+	});
+	$("#ipv6_dhcp_lease_time_measure, #ipv6_dhcp_lease_time_amount").change(function() {
+		$("#pageFormV6").valid();
+	});
 
 	$("#restore-default-settings-ipv4").click(function(e) {
 		e.preventDefault();
@@ -634,12 +693,24 @@ $('#submit_ipv4').click(function(e){
 	var dhcp_lease_num = $('#ipv4_dhcp_lease_time_amount').val();
 	var dhcp_lease_unit = $('#ipv4_dhcp_lease_time_measure').val();
 	var dhcp_lease_time = calcuate_lease_time(dhcp_lease_num, dhcp_lease_unit);
-    //alert(dhcp_lease_time);
-    //alert(dhcp_lease_unit);
-    if ( ((dhcp_lease_unit=='seconds') && (dhcp_lease_num<120)) || ((dhcp_lease_unit=='minutes') && (dhcp_lease_num<2)) ) {
-    	jAlert("DHCP Lease time should be longer than 120 seconds.");
-    	return;
-    }
+
+	var CM_GW_IP_Address = "<?php echo $CM_GW_IP_Address;?>";
+	var WAN_GW_IPv4_Address = "<?php echo $WAN_GW_IPv4_Address;?>";
+	var LAN_GW_IPv4_Address = "<?php echo $LAN_GW_IPv4_Address;?>";
+
+	if(ipaddr == CM_GW_IP_Address){
+		jAlert("This IP address is reserved for CM Gateway IP Address, please input again!");
+	    	return;
+	}
+	else if(ipaddr == WAN_GW_IPv4_Address){
+		jAlert("This IP address is reserved for WAN Gateway IPv4 Address, please input again!");
+    		return;
+	}
+	else if(ipaddr == LAN_GW_IPv4_Address){
+		jAlert("This IP address is reserved for Virtual LAN IPv4 Address, please input again!");
+    		return;
+	}
+
     var IPv4Config = '{"Ipaddr":"' + ipaddr + '", "Subnet_mask":"' + subnet_mask + '", "Dhcp_begin_addr":"' + dhcp_begin_addr 
 			             + '", "manual_dns":"false", "Dhcp_end_addr":"' + dhcp_end_addr + '", "Dhcp_lease_time":"' + dhcp_lease_time + '"}';
     //alert(IPv4Config)
@@ -683,7 +754,6 @@ $('#submit_ipv4').click(function(e){
 function setIPconfiguration(configuration){
   
 	if($("#pageForm").valid()){
-
 		jProgress('This may take several seconds...', 120);
 		$.ajax({
 			type: "POST",
@@ -891,6 +961,8 @@ updateIPv6();
 
 $('#Stateful').click(function(){
 	updateIPv6();
+	$("#pageFormV6").valid();
+	$("#ipv6_dhcp_lease_time_amount").removeClass("error");
 })
 
 /* This function checks ending address should be larger than begin address */
@@ -947,11 +1019,6 @@ $('#submit_ipv6').click(function(e){
 	var dhcp_lease_unit = $('#ipv6_dhcp_lease_time_measure').val();
 	var dhcpv6_lease_time = calcuate_lease_time(dhcp_lease_num, dhcp_lease_unit);  
 
-	if ( ((dhcp_lease_unit=='seconds') && (dhcp_lease_num<120)) || ((dhcp_lease_unit=='minutes') && (dhcp_lease_num<2)) ) {
-    	jAlert("DHCP Lease time should be longer than 120 seconds.");
-    	return;
-    }
-
     var IPv6Config = '{"IPv6": "Yes", "Stateful": "' + Stateful + '", "dhcpv6_begin_addr": "' + dhcpv6_begin_addr + '", "dhcpv6_end_addr": "' + dhcpv6_end_addr +'", "dhcpv6_lease_time": "' + dhcpv6_lease_time + '"}';
 	
    	setIPv6configuration(IPv6Config);
@@ -987,6 +1054,22 @@ $('#restore_ipv6').click(function(e) {
 	}); //end of jconfirm
 });//end of click restore ipv6
 
+	//if DeviceMode is Ipv4 then DHCPv6 parameters should be grayed out on the page
+	var DeviceMode = "<?php echo $DeviceMode; ?>";
+	if(DeviceMode == "Ipv4"){
+		$('#Stateful').prop("disabled", true);
+		$('#DBA_5').prop("disabled", true);
+		$('#DBA_6').prop("disabled", true);
+		$('#DBA_7').prop("disabled", true);
+		$('#DBA_8').prop("disabled", true);
+		$('#DEA_5').prop("disabled", true);
+		$('#DEA_6').prop("disabled", true);
+		$('#DEA_7').prop("disabled", true);
+		$('#DEA_8').prop("disabled", true);
+		$('#ipv6_dhcp_lease_time_amount').prop("disabled", true);
+		$('#ipv6_dhcp_lease_time_measure').prop("disabled", true);
+	}
+
 }); //end of document ready
 
 </script>
@@ -1002,6 +1085,7 @@ $('#restore_ipv6').click(function(e) {
 			<p class="hidden"><strong>DHCP Lease time:</strong> The lease time is the length of time the Gateway offers an IP address to a connected device. The lease is renewed while it is connected to the network. After the time expires, the IP address is freed and may be assigned to any new device that connects to the Gateway.</p>
 	</div>
 
+
 	<form action="#TBD" method="post" id="pageForm">
     <div class="module forms">
    	    <h2>IPv4</h2>
@@ -1009,7 +1093,7 @@ $('#restore_ipv6').click(function(e) {
     		<div class="form-row">
     			<label for="ipv4_gateway_address_1">Gateway Address:</label>
     			<?php  
-    			   $ipv4_addr = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
+    			   $ipv4_addr = $LanGwIP;
     			   $ipArr = explode(".", $ipv4_addr);    			   
     			?>
                 <input type="text" size="3" maxlength="3"  value="<?php echo $ipArr['0']; ?>" id="ipv4_gateway_address_1" name="ipv4_gateway_address_1" class="gateway_address smallInput"> 
@@ -1023,7 +1107,7 @@ $('#restore_ipv6').click(function(e) {
     		<div class="form-row odd">
     			<label for="ipv4_subnet_mask">Subnet Mask:</label>
     			<?php 
-                    $subnetmask = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask");
+                    $subnetmask = $device_ctrl_value["subnetmask"];
     			?>
     			<select name="ipv4_subnet_mask" id="ipv4_subnet_mask">
     				<option id='mask1' value="255.255.255.0" <?php if("255.255.255.0" == $subnetmask) echo 'selected'; ?> >255.255.255.0</option>
@@ -1038,7 +1122,7 @@ $('#restore_ipv6').click(function(e) {
     			<label for="ipv4_dhcp_beginning_address_1">DHCP Beginning Address:</label>
 <!--     			<span id="ipv4_dhcp_beginning_address" class="readonlyValue"></span> -->
                 <?php  
-    			   $beginAddr = getStr("Device.DHCPv4.Server.Pool.1.MinAddress");
+    			   $beginAddr = $dhcpv4_value["beginAddr"];
     			   $beginArr = explode(".", $beginAddr);    			   
     			?>  
     			<input type="text" size="3" maxlength="3" value="<?php echo $beginArr['0']; ?>" id="ipv4_dhcp_beginning_address_1" name="ipv4_dhcp_beginning_address_1" class="smallInput" />
@@ -1052,7 +1136,7 @@ $('#restore_ipv6').click(function(e) {
     		<div class="form-row odd">
                 <label for="ipv4_dhcp_ending_address_1">DHCP Ending Address:</label>
                 <?php  
-    			   $endAddr = getStr("Device.DHCPv4.Server.Pool.1.MaxAddress");
+    			   $endAddr = $dhcpv4_value["endAddr"];
     			   $endArr = explode(".", $endAddr);    
     			?> 
 				<input type="text" size="3" maxlength="3" value="<?php echo $endArr['0']; ?>" id="ipv4_dhcp_ending_address_1" name="ipv4_dhcp_ending_address_1" class="smallInput" />
@@ -1064,7 +1148,7 @@ $('#restore_ipv6').click(function(e) {
     	        .<input type="text" size="3" maxlength="3" value="<?php echo $endArr['3']; ?>" id="ipv4_dhcp_ending_address_4" name="ipv4_dhcp_ending_address_4" class="smallInput"  />
     	       
     		 </div>
-    		<div class="form-row">
+    		<div class="form-row" id="ipv4_dhcp_lease_time">
     			<label for="ipv4_dhcp_lease_time_amount">DHCP Lease Time:</label>                 
     			<input type="text" maxlength="3" id="ipv4_dhcp_lease_time_amount" name="ipv4_dhcp_lease_time_amount" class="smallInput" />
     			<label for="ipv4_dhcp_lease_time_measure" class="acs-hide"></label>
@@ -1141,7 +1225,7 @@ $('#restore_ipv6').click(function(e) {
 			<div class="form-row odd">	<p><strong>LAN IPv6 Address Assignment</strong></p></div>
 			<div class="form-row ">
 			<?php 			    
-			    $state = getStr("Device.DHCPv6.Server.X_CISCO_COM_Type");
+			    $state = $dhcpv6_value["state"];
 			?>	
 				<input type="checkbox"  name="State" value="Stateless" checked="checked" id="Stateless" disabled="disabled" />
 				<label for="Stateless" class="acs-hide"></label> <b>Stateless(Auto-Config)</b>
@@ -1157,7 +1241,7 @@ $('#restore_ipv6').click(function(e) {
                   $ipv6_prefix_arr = explode(':', $prefix_arr[0]);
                   $ipa_size = count($ipv6_prefix_arr);
 
-			      $v6_begin_addr = getStr("Device.DHCPv6.Server.Pool.1.PrefixRangeBegin");
+			      $v6_begin_addr = $dhcpv6_value["v6_begin_addr"];
 			      $v6_beg_add_arr = explode(':', $v6_begin_addr);
 			    ?>	
 
@@ -1187,7 +1271,7 @@ $('#restore_ipv6').click(function(e) {
     	   <div class="form-row ">
 				
 				<?php  
-			      $v6_end_addr = getStr("Device.DHCPv6.Server.Pool.1.PrefixRangeEnd");
+			      $v6_end_addr = $dhcpv6_value["v6_end_addr"];
 			      $v6_end_add_arr = explode(':', $v6_end_addr);
 			    ?>	
 
@@ -1214,7 +1298,7 @@ $('#restore_ipv6').click(function(e) {
 				
 				</div> 		
 
-    		<div class="form-row odd">
+    		<div class="form-row odd" id="ipv6_dhcp_lease_time">
     			<label for="ipv6_dhcp_lease_time_amount">DHCPv6 Lease Time:</label>
     			<input type="text" size="3" maxlength="3" id="ipv6_dhcp_lease_time_amount" name="ipv6_dhcp_lease_time_amount" class="smallInput" />
                 <label for="ipv6_dhcp_lease_time_measure" class="acs-hide"></label>

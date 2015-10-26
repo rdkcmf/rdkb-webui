@@ -14,37 +14,42 @@ $reset	= isset($_GET['reset']) ? $_GET['reset'] : "n";
 $rf		= (2 - intval($id)%2);	//1,3,5,7 == 1(2.4G); 2,4,6,8 == 2(5G)
 $hhs_enable 	= getStr("Device.DeviceInfo.X_COMCAST_COM_xfinitywifiEnable");
 
+$radio_freq = ($id%2)?"2.4":"5";
+
 if (("5"!=$id && "6"!=$id) || "true"!=$hhs_enable) {
 	if (!$_SESSION['_DEBUG'])
-	echo '<script type="text/javascript">alert("HotSpot function is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page..."); location.href="wireless_network_configuration.php";</script>';
+	echo '<script type="text/javascript">alert("HotSpot function is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
+	exit(0);
 }
 
 if ("y" == $reset) {
 	//!!!!!!this is not DM in box, but the standard TR-181 DM in xml file!!!!!!
 	$gre_param = array(
 		"max_client"			=> "Device.WiFi.AccessPoint.$id.BssMaxNumSta",
-		"DSCPMarkPolicy"		=> "dmsb.hotspot.gre.1.DSCPMarkPolicy",
-		"RemoteEndpoints"		=> "dmsb.hotspot.gre.1.Endpoints",
-		"KeepAliveCount"		=> "dmsb.hotspot.gre.1.KeepAlive.Count",
-		"KeepAliveInterval"		=> "dmsb.hotspot.gre.1.KeepAlive.Interval",
-		"KeepAliveThreshold"	=> "dmsb.hotspot.gre.1.KeepAlive.Threshold",
-		"KeepAliveFailInterval"	=> "dmsb.hotspot.gre.1.KeepAlive.FailInterval",
-		"ReconnectPrimary"		=> "dmsb.hotspot.gre.1.ReconnPrimary",
-		"DHCPCircuitIDSSID"		=> "dmsb.hotspot.gre.1.DHCP.CircuitIDSSID",
-		"DHCPRemoteID"			=> "dmsb.hotspot.gre.1.DHCP.RemoteID",
+		"DSCPMarkPolicy"		=> "dmsb.hotspot.tunnel.1.DSCPMarkPolicy",
+		"PrimaryRemoteEndpoint"	=> "dmsb.hotspot.tunnel.1.PrimaryRemoteEndpoint",
+		"SecondaryRemoteEndpoint" => "dmsb.hotspot.tunnel.1.SecondaryRemoteEndpoint",
+		"KeepAliveCount"		=> "dmsb.hotspot.tunnel.1.RemoteEndpointHealthCheckPingCount",
+		"KeepAliveInterval"		=> "dmsb.hotspot.tunnel.1.RemoteEndpointHealthCheckPingInterval",
+		"KeepAliveThreshold"	=> "dmsb.hotspot.tunnel.1.RemoteEndpointHealthCheckPingFailThreshold",
+		"KeepAliveFailInterval"	=> "dmsb.hotspot.tunnel.1.RemoteEndpointHealthCheckPingIntervalInFailure",
+		"ReconnectPrimary"		=> "dmsb.hotspot.tunnel.1.ReconnectToPrimaryRemoteEndpoint",
+		"DHCPCircuitIDSSID"		=> "dmsb.hotspot.tunnel.1.EnableCircuitID",
+		"DHCPRemoteID"			=> "dmsb.hotspot.tunnel.1.EnableRemoteID",
 	);
 	$gre_value = getDefault('/fss/gw/usr/ccsp/config/bbhm_def_cfg.xml', $gre_param);
 	
-	$max_client				= $gre_value['max_client'];
-	$DSCPMarkPolicy 		= $gre_value['DSCPMarkPolicy']=="" ? "0" : $gre_value['DSCPMarkPolicy'];
-	$RemoteEndpoints 		= $gre_value['RemoteEndpoints'];
-	$KeepAliveCount 		= $gre_value['KeepAliveCount'];
-	$KeepAliveInterval 		= $gre_value['KeepAliveInterval'];
+	$max_client			= $gre_value['max_client'];
+	$DSCPMarkPolicy 	= $gre_value['DSCPMarkPolicy']=="" ? "0" : $gre_value['DSCPMarkPolicy'];
+	$PrimaryRemoteEndpoint 	= $gre_value['PrimaryRemoteEndpoint'];
+	$SecondaryRemoteEndpoint = $gre_value['SecondaryRemoteEndpoint'];
+	$KeepAliveCount 	= $gre_value['KeepAliveCount'];
+	$KeepAliveInterval 	= $gre_value['KeepAliveInterval'];
 	$KeepAliveThreshold 	= $gre_value['KeepAliveThreshold'];
 	$KeepAliveFailInterval 	= $gre_value['KeepAliveFailInterval'];
-	$ReconnectPrimary 		= $gre_value['ReconnectPrimary'];
-	$DHCPCircuitIDSSID 		= $gre_value['DHCPCircuitIDSSID']=="1" ? "true" : "false";
-	$DHCPRemoteID 			= $gre_value['DHCPRemoteID']=="1" ? "true" : "false";
+	$ReconnectPrimary 	= $gre_value['ReconnectPrimary'];
+	$DHCPCircuitIDSSID 	= $gre_value['DHCPCircuitIDSSID']=="1" ? "true" : "false";
+	$DHCPRemoteID 		= $gre_value['DHCPRemoteID']=="1" ? "true" : "false";
 	
 	$wifi_param = array(
 		"radio_enable"		=> "eRT.com.cisco.spvtg.ccsp.Device.WiFi.Radio.SSID.$id.WLANEnable",
@@ -71,8 +76,8 @@ if ("y" == $reset) {
 }
 else {
 	$wifi_param = array(
-		// "wireless_mode"		=> "Device.WiFi.Radio.".((intval($id)+1)%2+1).".OperatingStandards",
-		// "lower_layers"		=> "Device.WiFi.SSID.$id.LowerLayers",
+		// "wireless_mode"	=> "Device.WiFi.Radio.".((intval($id)+1)%2+1).".OperatingStandards",
+		// "lower_layers"	=> "Device.WiFi.SSID.$id.LowerLayers",
 		"radio_enable"		=> "Device.WiFi.SSID.$id.Enable",
 		"network_name"		=> "Device.WiFi.SSID.$id.SSID",
 		"encrypt_mode"		=> "Device.WiFi.AccessPoint.$id.Security.ModeEnabled",
@@ -84,6 +89,7 @@ else {
 		"enableWMM"			=> "Device.WiFi.AccessPoint.$id.WMMEnable",
 		"max_client"		=> "Device.WiFi.AccessPoint.$id.X_CISCO_COM_BssMaxNumSta",
 		// "max_client"		=> "Device.WiFi.AccessPoint.$id.MaxAssociatedDevices",
+		"Radio_".$rf."_Enable"	=> "Device.WiFi.Radio.$rf.Enable",
 	);
 	$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 
@@ -95,20 +101,36 @@ else {
 	$password_wep_64	= $wifi_value['password_wep_64'];
 	$password_wep_128	= $wifi_value['password_wep_128'];
 	$broadcastSSID 		= $wifi_value['broadcastSSID'];
-	$enableWMM			= $wifi_value['enableWMM'];
-	$max_client			= $wifi_value['max_client'];
-	$DSCPMarkPolicy 		= getStr("Device.X_COMCAST_COM_GRE.Interface.1.DSCPMarkPolicy");
-	$RemoteEndpoints 		= getStr("Device.X_COMCAST_COM_GRE.Interface.1.RemoteEndpoints");
-	$KeepAliveCount 		= getStr("Device.X_COMCAST_COM_GRE.Interface.1.KeepAliveCount");
-	$KeepAliveInterval 		= getStr("Device.X_COMCAST_COM_GRE.Interface.1.KeepAliveInterval");
-	$KeepAliveThreshold 	= getStr("Device.X_COMCAST_COM_GRE.Interface.1.KeepAliveThreshold");
-	$KeepAliveFailInterval 	= getStr("Device.X_COMCAST_COM_GRE.Interface.1.KeepAliveFailInterval");
-	$ReconnectPrimary 		= getStr("Device.X_COMCAST_COM_GRE.Interface.1.ReconnectPrimary");
-	$DHCPCircuitIDSSID 		= getStr("Device.X_COMCAST_COM_GRE.Interface.1.DHCPCircuitIDSSID");
-	$DHCPRemoteID 			= getStr("Device.X_COMCAST_COM_GRE.Interface.1.DHCPRemoteID");
-	
+	$enableWMM		= $wifi_value['enableWMM'];
+	$max_client		= $wifi_value['max_client'];
+
+	$GRE_Tunnel_param = array(
+		"DSCPMarkPolicy" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.DSCPMarkPolicy",
+		"PrimaryRemoteEndpoint" => "Device.X_COMCAST-COM_GRE.Tunnel.1.PrimaryRemoteEndpoint",
+		"SecondaryRemoteEndpoint" => "Device.X_COMCAST-COM_GRE.Tunnel.1.SecondaryRemoteEndpoint",
+		"KeepAliveCount" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingCount",
+		"KeepAliveInterval" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingInterval",
+		"KeepAliveThreshold" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingFailThreshold",
+		"KeepAliveFailInterval" => "Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingIntervalInFailure",
+		"ReconnectPrimary" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.ReconnectToPrimaryRemoteEndpoint",
+		"DHCPCircuitIDSSID" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.EnableCircuitID",
+		"DHCPRemoteID" 		=> "Device.X_COMCAST-COM_GRE.Tunnel.1.EnableRemoteID",
+	);
+	$GRE_Tunnel_value = KeyExtGet("Device.X_COMCAST-COM_GRE.Tunnel.1.", $GRE_Tunnel_param);
+
+	$DSCPMarkPolicy 	= $GRE_Tunnel_value["DSCPMarkPolicy"];
+	$PrimaryRemoteEndpoint 	= $GRE_Tunnel_value["PrimaryRemoteEndpoint"];
+	$SecondaryRemoteEndpoint = $GRE_Tunnel_value["SecondaryRemoteEndpoint"];
+	$KeepAliveCount 	= $GRE_Tunnel_value["KeepAliveCount"];
+	$KeepAliveInterval 	= $GRE_Tunnel_value["KeepAliveInterval"];
+	$KeepAliveThreshold 	= $GRE_Tunnel_value["KeepAliveThreshold"];
+	$KeepAliveFailInterval 	= $GRE_Tunnel_value["KeepAliveFailInterval"];
+	$ReconnectPrimary 	= $GRE_Tunnel_value["ReconnectPrimary"];
+	$DHCPCircuitIDSSID 	= $GRE_Tunnel_value["DHCPCircuitIDSSID"];
+	$DHCPRemoteID 		= $GRE_Tunnel_value["DHCPRemoteID"];
+
 	//if Radio.{i}.Enable is false, ALL SSIDs belong to that radio shows disabled, else depends on SSID.{i}.Enable
-	if ("false" == getStr("Device.WiFi.Radio.$rf.Enable")){
+	if ("false" == $wifi_value["Radio_".$rf."_Enable"]){
 		$radio_enable = "false";
 	}
 }
@@ -125,7 +147,8 @@ if ($_SESSION['_DEBUG']){
 	$enableWMM			= "false";
 	$max_client		 	= "32";
 	$DSCPMarkPolicy 		= "2";
-	$RemoteEndpoints 		= "www.cisco.com,,,www.google.com";
+	$PrimaryRemoteEndpoint 		= "www.comcast.com";
+	$SecondaryRemoteEndpoint	= "www.google.com";
 	$KeepAliveCount 		= "3";
 	$KeepAliveInterval 		= "60";
 	$KeepAliveThreshold 	= "5";
@@ -137,15 +160,12 @@ if ($_SESSION['_DEBUG']){
 
 $RemoteEndpointsV4	= array();
 $RemoteEndpointsV6	= array();
-$ips = explode(",", $RemoteEndpoints);
-foreach($ips as $v){
-	if (strpos($v, ".")){
-		array_push($RemoteEndpointsV4, $v);
-	}
-	else if (strpos($v, ":")){
-		array_push($RemoteEndpointsV6, $v);
-	}
-}
+
+array_push($RemoteEndpointsV4, $PrimaryRemoteEndpoint);
+array_push($RemoteEndpointsV4, $SecondaryRemoteEndpoint);
+
+array_push($RemoteEndpointsV6, $PrimaryRemoteEndpoint);
+array_push($RemoteEndpointsV6, $SecondaryRemoteEndpoint);
 
 ?>
 
@@ -194,19 +214,18 @@ $(document).ready(function() {
 	});
 
 	init_form();
-	
+
     $("#security").change(function() {
-		$("#network_password").prop("disabled", ($("#security").val()=="None"));
 		$("#add_with").prop("disabled", ($("#security").val().indexOf("WPA")==-1));
 		$("#netPassword-footnote").text($("option:selected", $(this)).attr("title"));
-		$("#add_with").change();
+		$("#network_password").prop("disabled", ($("#add_with").val()=="None" && $("#security").val().indexOf("WEP")==-1) || ($("#add_with").val()=="None"));
     });
 		
     $("#add_with").change(function() {
-		$("#network_password").prop("disabled", ($("#add_with").val()=="None" && $("#security").val().indexOf("WEP")==-1));
+		$("#network_password").prop("disabled", ($("#add_with").val()=="None" && $("#security").val().indexOf("WEP")==-1) || ($("#add_with").val()=="None"));
     });
 	
-	$("#password_show").change(function() {
+	/*$("#password_show").change(function() {
 		if ($("#password_show").is(":checked")) {
 			document.getElementById("password_field").innerHTML = 
 			'<input type="text"     size="23" id="network_password" name="network_password" class="text" value="' + $("#network_password").val() + '" />'
@@ -221,7 +240,7 @@ $(document).ready(function() {
 		else {
 			$("#network_password").prop("disabled", false);
 		}
-	});
+	});*/
 	
     $("#wireless_network_switch").change(function() {
 		if ($(this).radioswitch("getState").on === false) {
@@ -231,7 +250,7 @@ $(document).ready(function() {
 		else {
 			$(":input").not(".radioswitch_cont input").prop("disabled", false);
 			$("#circuit_switch, #remote_switch").radioswitch("doEnable", true);
-			$("#password_show").change();
+			//$("#password_show").change();
 			$("#security").change();
 		}
 	}).trigger("change");
@@ -257,6 +276,18 @@ $(document).ready(function() {
     $.validator.addMethod("ssid_name", function(value, element, param) {
 		return !param || /^[a-zA-Z0-9\-_.]{3,31}$/i.test(value);
 	}, "3 to 31 characters combined with alphabet, digit, underscore, hyphen and dot");
+
+    // XFSETUP HOME xfinitywifi cablewifi
+    // a term starting with the following combination of text in uppercase or lowercase should not be allowed
+
+    $.validator.addMethod("not_XFSETUP", function(value, element, param) {
+		return value.toLowerCase().indexOf("xfsetup") != 0;
+	}, 'SSID starting with "XFSETUP" is reserved !');
+
+    $.validator.addMethod("not_HOME", function(value, element, param) {
+		return value.toLowerCase().indexOf("home") != 0;
+	}, 'SSID starting with "HOME" is reserved !');
+
 /*
 wep 64 ==> 5 Ascii characters or 10 Hex digits
 wep 128 ==> 13 Ascii characters or 26 Hex digits
@@ -267,17 +298,19 @@ wpa2psk ==> 8 to 63 Ascii characters
 		errorElement: "div",
 		rules: {
 			network_name: {
-				ssid_name: true
+				ssid_name: true,
+				not_XFSETUP: true,
+				not_HOME: true
 			},
 			network_password: {
 				required: function() {
 					return ($("#security option:selected").val() != "None");
 				}
 				,wep_64: function() {
-					return ($("#security option:selected").val() == "WEP-64");
+					return ($("#security option:selected").val() == "WEP_64");
 				}
 				,wep_128: function() {
-					return ($("#security option:selected").val() == "WEP-128");
+					return ($("#security option:selected").val() == "WEP_128");
 				}
 				// ,wpa: function() {
 					// return ($("#security option:selected").val() == "WPA_PSK_TKIP" || $("#security option:selected").val() == "WPA_PSK_AES");
@@ -286,12 +319,14 @@ wpa2psk ==> 8 to 63 Ascii characters
 					// return ($("#security option:selected").val() == "WPA2_PSK_TKIP" || $("#security option:selected").val() == "WPA2_PSK_AES" || $("#security option:selected").val() == "WPA2_PSK_TKIPAES" || $("#security option:selected").val() == "WPAWPA2_PSK_TKIPAES");
 				// }
 				,wpa: function() {
-					return ($("#security option:selected").val() != "None" && $("#security option:selected").val() != "WEP-64" && $("#security option:selected").val() != "WEP-128");
+					return ($("#security option:selected").val() != "None" && $("#security option:selected").val() != "WEP_64" && $("#security option:selected").val() != "WEP_128");
 				}
 			},
 			max_client:{
 				required: true,
-				digits: true
+				digits: true,
+				max: 127,
+ 				min: 1
 			},
 			DSCPMarkPolicy:{
 				required: true,
@@ -315,7 +350,7 @@ wpa2psk ==> 8 to 63 Ascii characters
 			},
 			ReconnectPrimary:{
 				required: true,
-				digits: true
+				number: true
 			},
 			RemoteEndpointsV4_1:{
 				required: function(){return ($("#RemoteEndpointsV6_1").val().replace(/\s/g, '') == "")},
@@ -357,8 +392,9 @@ wpa2psk ==> 8 to 63 Ascii characters
 			encrypt_mode 	= security[0]+"-"+$("#add_with").val();
 			encrypt_method 	= security[1];		
 		}
-		var RemoteEndpoints = $("#RemoteEndpointsV4_1").val()+','+$("#RemoteEndpointsV6_1").val()+','+$("#RemoteEndpointsV4_2").val()+','+$("#RemoteEndpointsV6_2").val();
-	
+		var PrimaryRemoteEndpoint = $("#RemoteEndpointsV4_1").val();
+		var SecondaryRemoteEndpoint = $("#RemoteEndpointsV4_2").val();
+		
 		if($("#pageForm").valid()) {
 			jProgress('This may take several seconds...', 60);
 			$.ajax({
@@ -376,18 +412,23 @@ wpa2psk ==> 8 to 63 Ascii characters
 					enableWMM:			$("#enableWMM").prop("checked"),
 					max_client:			$("#max_client").val(), 
 					DSCPMarkPolicy:		$("#DSCPMarkPolicy").val(), 
-					RemoteEndpoints:	RemoteEndpoints.replace(/,+/g, ",").replace(/,$/g, ""), 
+					PrimaryRemoteEndpoint: $("#RemoteEndpointsV4_1").val(),
+					SecondaryRemoteEndpoint: $("#RemoteEndpointsV4_2").val(),
 					KeepAliveCount:		$("#KeepAliveCount").val(), 
 					KeepAliveInterval:	$("#KeepAliveInterval").val(), 
 					KeepAliveThreshold:	$("#KeepAliveThreshold").val(), 
-					KeepAliveFailInterval:			$("#KeepAliveFailInterval").val(),
-					ReconnectPrimary:	$("#ReconnectPrimary").val(),
+					KeepAliveFailInterval:	60*$("#KeepAliveFailInterval").val(),
+					ReconnectPrimary:	3600*$("#ReconnectPrimary").val(),
 					DHCPCircuitIDSSID:	$("#circuit_switch").radioswitch("getState").on,
-					DHCPRemoteID:		$("#remote_switch").radioswitch("getState").on					
+					DHCPRemoteID:		$("#remote_switch").radioswitch("getState").on
+					<?php if ("y" == $reset) {
+						echo ', radio_reset:	"true"';
+					}?>				
 				},
 				success:function(){
 					jHide();
-					location.href = location.href.replace(/&reset=y/g, "");
+					//location.href = location.href.replace(/&reset=y/g, "");
+					location.href = 'wireless_network_configuration.php';
 				},
 				error:function(){
 					jHide();
@@ -406,7 +447,7 @@ wpa2psk ==> 8 to 63 Ascii characters
 function init_form() {
 	//re-style each div
 	$('#pageForm > div').removeClass("odd");
-	$('#pageForm > div:visible:even').addClass("odd");
+	$('#pageForm > div:visible:odd').addClass("odd");
 
 	var network_name 		= "<?php echo $network_name; ?>";
 	var encrypt_mode 		= "<?php echo $encrypt_mode; ?>";
@@ -426,7 +467,9 @@ function init_form() {
 	var KeepAliveInterval 		= "<?php echo $KeepAliveInterval; ?>";
 	var KeepAliveThreshold 		= "<?php echo $KeepAliveThreshold; ?>";	
 	var KeepAliveFailInterval 	= "<?php echo $KeepAliveFailInterval; ?>";
+	KeepAliveFailInterval	= KeepAliveFailInterval/60;
 	var ReconnectPrimary 		= "<?php echo $ReconnectPrimary; ?>";
+	ReconnectPrimary = ReconnectPrimary/3600; //zqiu: translate it to hrs
 	
 	var sec_list = new Array(
 		["Open (risky)",	"None",				"Open networks do not have a password."],
@@ -457,11 +500,8 @@ function init_form() {
 	$("#KeepAliveThreshold").val(KeepAliveThreshold);
 	$("#KeepAliveFailInterval").val(KeepAliveFailInterval);
 	$("#ReconnectPrimary").val(ReconnectPrimary);
-	
+
 	//HomeSecurity and HotSpot Common Part
-	$("h1,h2,#educational-tip").each(function(){	
-		$(this).html($(this).html().replace(/loading/g, radio_freq));
-	});
 	$("#network_name").val(network_name);
 	$("#broadcastSSID").prop("checked", ("true"==broadcastSSID));
 	$("#enableWMM").prop("checked", ("true"==enableWMM));
@@ -502,6 +542,8 @@ function init_form() {
 	// disable radius server at this point
 	$("#add_with").find("[value='Enterprise']").prop("disabled", true);
 	
+	$("#security").change();
+
 	//wifi password
 	var network_password = password_wpa;
 	if ("WEP-64"==encrypt_mode){
@@ -536,28 +578,26 @@ label{
 </style>
 
 <div id="content">
-	<h1>Gateway > Connection >  Wi-Fi > Edit loading GHz</h1>
+	<h1>Gateway > Connection >  Wi-Fi > Edit <?php echo $radio_freq;?> GHz</h1>
 	<div id="educational-tip">
 		<p class="tip">Manage your Public Wi-Fi network settings.</p>
 		<p class="hidden"><strong>Network Name (SSID):</strong> Identifies your home Wi-Fi network from other nearby Wi-Fi networks. Your default name can be found on the bottom label of the Gateway, but can be changed for easier identification.</p>
-		<p class="hidden"><strong>Mode:</strong> loading GHz operates in b/g/n modes. Unless you have older Wi-Fi devices that use only 'b' mode, use the default 802.11 g/n for faster performance.</p>
+		<p class="hidden"><strong>Mode:</strong> <?php echo $radio_freq;?> GHz operates in b/g/n modes. Unless you have older Wi-Fi devices that use only 'b' mode, use the default 802.11 g/n for faster performance.</p>
 		<p class="hidden"><strong>Security Mode:</strong> Secures data between your Wi-Fi devices and the Gateway. The default WPAWPA2-PSK (TKIP/AES) setting is compatible with most computers and provides the best security and performance.</p>
 		<p class="hidden"><strong>Network Password (Key):</strong> Required by Wi-Fi devices to connect to your secure network. The default setting can be found on the bottom label of the Gateway. </p>
 		<p class="hidden"><strong>Broadcast Network Name (SSID):</strong>  If enabled, the Network Name (SSID) will be shown in the list of available networks. (If unchecked, you'll need to enter the exact Network Name (SSID) to connect.)</p>
-		<a class="tip-more" href="javascript:;">more</a>
 	</div>
 <!--HotSpot WiFi-->
 	<div class="module forms" id="div_hot_spot">	
 		<form  method="post" id="pageForm">
-			<h2>Public Wi-Fi Network Configuration (loading GHz)</h2>
+			<h2>Public Wi-Fi Network Configuration (<?php echo $radio_freq;?> GHz)</h2>
 			<div class="form-row odd">
 				<span class="readonlyLabel label">Wireless Network:</span>
 				<span id="wireless_network_switch"></span>
 			</div>
 			<div class="form-row">
 				<label for="network_name">Network Name (SSID):</label>
-				<!--span id="network_name" style="margin: 0 auto;" class="value"></span-->
-				<input id="network_name" style="margin: 0 auto;" class="value" value="xfinityWiFi" />
+				<input type="text" size="23" id="network_name" name="network_name" class="text" />
 			</div>
 			<div class="form-row">
 				<label for="encryption_method">Security Mode:</label>
@@ -574,10 +614,10 @@ label{
 				<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="" /></span>
 				<p id="netPassword-footnote" class="footnote">8-16 characters. Letter and numbers only. No spaces. Case sensitive.</p><br/>
 			</div>
-			<div class="form-row" id="div_password_show">
+			<!--div class="form-row" id="div_password_show">
 				<label for="password_show">Show Network Password:</label>
 				<span class="checkbox"><input type="checkbox" id="password_show" name="password_show" /></span>
-			</div>
+			</div-->
 			<div id="div_broadcastSSID" class="form-row odd">
 				<label for="broadcastSSID">Broadcast Network Name (SSID):</label>
 				<span class="checkbox"><input type="checkbox" id="broadcastSSID" name="broadcastSSID" /><b>Enabled</b></span>
@@ -593,28 +633,28 @@ label{
 			<div class="form-row"><label for="DSCPMarkPolicy">DSCP Value For Tunneled Packets:</label>
 				<input type="text" name="DSCPMarkPolicy" id="DSCPMarkPolicy">
 			</div>
-			<div class="form-row odd"><label for="RemoteEndpointsV4_1">WLAN GW Primary IP Address (IPv4):</label>
+			<div class="form-row odd"><label for="RemoteEndpointsV4_1">WLAN GW Primary IP Address (IPv4/IPV6):</label>
 				<input type="text" name="RemoteEndpointsV4_1" id="RemoteEndpointsV4_1">
-				<input type="text" name="RemoteEndpointsV6_1" id="RemoteEndpointsV6_1" style="display:none;" />
+				/<input type="text" name="RemoteEndpointsV6_1" id="RemoteEndpointsV6_1" />
 			</div>
-			<div class="form-row"><label for="RemoteEndpointsV4_2">WLAN GW Secondary IP Address (IPv4):</label>
+			<div class="form-row"><label for="RemoteEndpointsV4_2">WLAN GW Secondary IP Address (IPv4/IPV6):</label>
 				<input type="text" name="RemoteEndpointsV4_2" id="RemoteEndpointsV4_2">
-				<input type="text" name="RemoteEndpointsV6_2" id="RemoteEndpointsV6_2" style="display:none;" />
+				/<input type="text" name="RemoteEndpointsV6_2" id="RemoteEndpointsV6_2" />
 			</div>
 			<div class="form-row odd"><label for="KeepAliveCount">WLAN GW Ping Count:</label>
 				<input type="text" name="KeepAliveCount" id="KeepAliveCount">
 			</div>
 			<div class="form-row"><label for="KeepAliveInterval">WLAN GW Health Check Ping Interval:</label>
-				<input type="text" name="KeepAliveInterval" id="KeepAliveInterval">
+				<input type="text" name="KeepAliveInterval" id="KeepAliveInterval"><span>sec</span>
 			</div>
 			<div class="form-row odd"><label for="KeepAliveThreshold">WLAN GW Failover Threshold:</label>
 				<input type="text" name="KeepAliveThreshold" id="KeepAliveThreshold">
 			</div>
 			<div class="form-row"><label for="KeepAliveFailInterval">WLAN GW Failure Ping Interval:</label>
-				<input type="text" name="KeepAliveFailInterval" id="KeepAliveFailInterval">
+				<input type="text" name="KeepAliveFailInterval" id="KeepAliveFailInterval"><span>min</span>
 			</div>
 			<div class="form-row odd"><label for="ReconnectPrimary">Number Of Hours To Reattempt Connection To Primary WLAN GW:</label>
-				<input type="text" name="ReconnectPrimary" id="ReconnectPrimary">
+				<input type="text" name="ReconnectPrimary" id="ReconnectPrimary"><span>hrs</span>
 			</div>
 			<div class="form-row ctl-switch">
 				<span class="readonlyLabel label"> Circuit-ID SSID:</span>

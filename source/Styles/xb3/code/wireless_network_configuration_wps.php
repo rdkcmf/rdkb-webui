@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 <!-- $Id: wireless_network_configuration_wps.php 3159 2010-01-11 20:10:58Z slemoine $ -->
 
 <div id="sub-header">
@@ -10,20 +10,42 @@
 
 <?php
 // $ssids			= explode(",", getInstanceIds("Device.WiFi.SSID."));
-$ssids			= explode(",", "1,2");	//Currently, only SSID.1(2.4G) and SSID.2(5G) are involved with WPS
+$ssids		=array(1,2);	//Currently, only SSID.1(2.4G) and SSID.2(5G) are involved with WPS
 $wps_enabled	= "false";
-$wps_pin		= "";
-$wps_method		= "PushButton";
-$f_e_ssid		= "1";
+$wps_pin	= "";
+$wps_method	= "PushButton";
+$f_e_ssid	= "1";
 // $wps_enabled	= "true";
+
+$wifi_param = array(
+	//for index 1
+	"WPS_Enable1"	=> "Device.WiFi.AccessPoint.1.WPS.Enable",
+	"WPS_Pin1"	=> "Device.WiFi.AccessPoint.1.WPS.X_CISCO_COM_Pin",
+	"WPS_Config1"	=> "Device.WiFi.AccessPoint.1.WPS.ConfigMethodsEnabled",
+	"SSID_Enable1"	=> "Device.WiFi.SSID.1.Enable",
+	"Radio_Enable1"	=> "Device.WiFi.Radio.1.Enable",
+	"ModeEnabled1"	=> "Device.WiFi.AccessPoint.1.Security.ModeEnabled",
+	"EncrypMethod1"	=> "Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_EncryptionMethod",
+	"SSIDAdvert1"	=> "Device.WiFi.AccessPoint.1.SSIDAdvertisementEnabled",
+	//for index 2
+	"WPS_Enable2"	=> "Device.WiFi.AccessPoint.2.WPS.Enable",
+	"WPS_Pin2"	=> "Device.WiFi.AccessPoint.2.WPS.X_CISCO_COM_Pin",
+	"WPS_Config2"	=> "Device.WiFi.AccessPoint.2.WPS.ConfigMethodsEnabled",
+	"SSID_Enable2"	=> "Device.WiFi.SSID.2.Enable",
+	"Radio_Enable2"	=> "Device.WiFi.Radio.2.Enable",
+	"ModeEnabled2"	=> "Device.WiFi.AccessPoint.2.Security.ModeEnabled",
+	"EncrypMethod2"	=> "Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_EncryptionMethod",
+	"SSIDAdvert2"	=> "Device.WiFi.AccessPoint.2.SSIDAdvertisementEnabled",
+	);
+$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 
 //get the first WPS enabled SSID, in principle all WPS should be enabled or disabled simultaneously
 foreach ($ssids as $i){
-	if ("true" == getStr("Device.WiFi.AccessPoint.$i.WPS.Enable")){
+	if ("true" == $wifi_value['WPS_Enable'.$i]){
 		$wps_enabled	= "true";
-		$wps_pin		= getStr("Device.WiFi.AccessPoint.$i.WPS.X_CISCO_COM_Pin");
-		$wps_method		= getStr("Device.WiFi.AccessPoint.$i.WPS.ConfigMethodsEnabled");
-		$f_e_ssid		= $i;
+		$wps_pin	= $wifi_value['WPS_Pin'.$i];
+		$wps_method	= $wifi_value['WPS_Config'.$i];
+		$f_e_ssid	= $i;
 		break;
 	}
 }
@@ -31,18 +53,25 @@ foreach ($ssids as $i){
 //if wps_config is false, then show WPS disabled, and do not allow to enable it
 $wps_config = "false";
 foreach ($ssids as $i){
-	if ("true"==getStr("Device.WiFi.SSID.$i.Enable") && "true"==getStr("Device.WiFi.Radio.".(2-intval($i)%2).".Enable")){
+	if ("true"==$wifi_value['SSID_Enable'.$i] && "true"==$wifi_value['Radio_Enable'.$i]){
 		$wps_config	= "true";
-		$encrypt_mode	= getStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled");
-		$encrypt_method	= getStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_EncryptionMethod");
-		$broadcastSSID	= getStr("Device.WiFi.AccessPoint.$i.SSIDAdvertisementEnabled");
-		$filter_enable	= getStr("Device.WiFi.AccessPoint.$i.X_CISCO_COM_MACFilter.Enable");
-		if (strstr($encrypt_mode, "WEP") || (strstr($encrypt_mode, "WPA") && $encrypt_method=="TKIP") || "false"==$broadcastSSID || "true"==$filter_enable){
+		$encrypt_mode	= $wifi_value['ModeEnabled'.$i];
+		$encrypt_method	= $wifi_value['EncrypMethod'.$i];
+		//$broadcastSSID	= getStr("Device.WiFi.AccessPoint.$i.SSIDAdvertisementEnabled");
+		//$filter_enable	= getStr("Device.WiFi.AccessPoint.$i.X_CISCO_COM_MACFilter.Enable");
+		if (strstr($encrypt_mode, "WEP") || (strstr($encrypt_mode, "WPA") && $encrypt_method=="TKIP")){ //|| "false"==$broadcastSSID || "true"==$filter_enable){
 			$wps_config	= "false";
 			break;
 		}
 	}
 }
+
+//Currently, only SSID.1(2.4G) and SSID.2(5G) are involved with WPS
+$broadcastSSID_1 = $wifi_value['SSIDAdvert1'];
+$broadcastSSID_2 = $wifi_value['SSIDAdvert2'];
+
+if("false"==$broadcastSSID_1 && "false"==$broadcastSSID_2) $wps_config	= "false";
+
 // $wps_config = "true";
 if ($_DEBUG) {
 	$wps_enabled = "false";
@@ -57,7 +86,9 @@ if ($_DEBUG) {
 <script type="text/javascript">
 function validChecksum(PIN)
 {
-	if (""==PIN) return false;
+	if (PIN.search(/^(\d{4}|\d{8}|\d{4}[\-|\s]\d{4})$/) != 0) return false;
+	PIN = PIN.replace(" ","");
+	PIN = PIN.replace("-","");
 	var accum = 0;
 	accum += 3 * (parseInt(PIN / 10000000) % 10);
 	accum += 1 * (parseInt(PIN / 1000000) % 10);
@@ -99,7 +130,10 @@ function set_config(target)
 			}
 			if ("wps_enabled"==target || "wps_method"==target){
 				location.reload();
-			}			
+			}
+			if ("pair_cancel"==target){
+				window.location.href = "wireless_network_configuration.php";
+			}
 		},
 		error: function(){            
 			jHide();
@@ -208,17 +242,16 @@ $(document).ready(function() {
 	$("#pin_switch").trigger("change", [true]);
 	
 	if ("false"=="<?php echo $wps_config;?>"){
-	/*
-		$(".wps_config").html('<h2>Add Wi-Fi Client (WPS)</h2>\
-		<p style="color:red;font-size:130%;font-style:bold;">WPS function is disabled and can not be enabled now!</p>\
-		<p>You can take these steps to enable WPS:</p>\
-		<p/>(1) enable at least one private Wi-Fi interface</p>\
-		<p/>(2) its security mode is not WEP/WPA-TKIP/WPA2-TKIP</p>\
-		<p/>(3) its network name is not hidden</p>\
-		<p/>(4) its MAC filter function is not enabled</p>\
-		<p/>Then please refresh(or back to) this page and try again.</p>');
+		$(".wps_config").html('<h2>Add Wi-Fi Client (WPS)</h2>'
+		+'<p style="color:red;font-size:130%;font-style:bold;">WPS function is disabled and can not be enabled now!</p>'
+		+'<p style="color: #838c91;">You can take these steps to enable WPS:</p>'
+		+'<p style="color: #838c91;">(1) Enable at least one private Wi-Fi interface</p>'
+		+'<p style="color: #838c91;">(2) Its security mode is not WEP/WPA-TKIP/WPA2-TKIP</p>'
+		+'<p style="color: #838c91;">(3) Its network name is not hidden</p>'
+		+'<!--p style="color: #838c91;">(4) Its MAC filter function is not enabled</p-->'
+		+'<p style="color: #838c91;">Then please refresh(or back to) this page and try again.</p>');
 		return;
-	*/
+
 		$(".wps_config *").not(".radioswitch_cont, .radioswitch_cont *").unbind("click").prop("disabled", true).addClass("disabled").removeClass("selected");
 		$(".wps_config .radioswitch_cont").radioswitch("doEnable", false);
 	}

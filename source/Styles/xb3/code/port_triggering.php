@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-
+<?php include('includes/utility.php'); ?>
 <!-- $Id: port_triggering.php 3158 2010-01-08 23:32:05Z slemoine $ -->
 
 <div id="sub-header">
@@ -180,27 +180,35 @@ $(document).ready(function() {
 			<?php
 			if (getStr("Device.NAT.X_CISCO_COM_PortTriggers.TriggerNumberOfEntries")==0) {}
 			else{
+                    $rootObjName    = "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.";
+                    $paramNameArray = array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
+                    $mapping_array  = array("TriggerProtocol", "Description", "TriggerPortStart", "TriggerPortEnd", "ForwardPortStart", "ForwardPortEnd", "Enable");
+		    		$portTriggerValues = array();
+                    $portTriggerValuesArr = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 			$PTIDs=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."));
 			//var_dump(count($PTIDs));
 			$iclass="even";
 			foreach ($PTIDs as $key=>$i) {
+				$portTriggerValues["$i"] = $portTriggerValuesArr["$key"];
+			}
+			foreach ($PTIDs as $key=>$i) {
 				if ($iclass=="even") {$iclass="odd";} else {$iclass="even";}
-				$Protocol=getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerProtocol");
+				$Protocol =  $portTriggerValues["$i"]["TriggerProtocol"];
 				if ($Protocol=="BOTH") $Protocol="TCP/UDP";
 				echo "
 		    	<tr class=$iclass>
-		        <td headers='service-name'>".getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Description")."</td>
+		        <td headers='service-name'>".$portTriggerValues["$i"]["Description"]."</td>
 		        <td headers='service-type'>".$Protocol."</td>
-				<td headers='trigger-port'>".getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortStart")."~".getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortEnd")."</td>
-				<td headers='target-port'>".getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortStart")."~".getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortEnd")."</td>";
-				if (getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Enable")=="true") {
+				<td headers='trigger-port'>".$portTriggerValues["$i"]["TriggerPortStart"]."~".$portTriggerValues["$i"]["TriggerPortEnd"]."</td>
+				<td headers='target-port'>".$portTriggerValues["$i"]["ForwardPortStart"]."~".$portTriggerValues["$i"]["ForwardPortEnd"]."</td>";
+				if ($portTriggerValues["$i"]["Enable"]=="true") {
 					echo "<td headers='active'><input tabindex='0' type=\"checkbox\" id=\"PortActive_$i\" name=\"PortActive\" checked=\"checked\" /><label for=\"PortActive_$i\"  class='acs-hide'></label></td>";
 				} else {
 					echo "<td headers='active'><input tabindex='0' type=\"checkbox\" id=\"PortActive_$i\" name=\"PortActive\" /><label for=\"PortActive_$i\"  class='acs-hide'></label></td>";
 				}	
 				echo "
 	            <td headers='edit-button' class=\"edit\"><a tabindex='0' href=\"port_triggering_edit.php?id=$i\" class=\"btn\" id=\"edit_$i\">Edit</a></td>
-		        <td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_port_triggering.php?del=$i\" class=\"btn confirm\" title=\"delete port Triggering for ".getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Description")." \" id=\"delete_$i\">x</a></td>
+		        <td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_port_triggering.php?del=$i\" class=\"btn confirm\" title=\"delete port Triggering for ".$portTriggerValues["$i"]["Description"]." \" id=\"delete_$i\">x</a></td>
 		    </tr>";
 			} }?>
 

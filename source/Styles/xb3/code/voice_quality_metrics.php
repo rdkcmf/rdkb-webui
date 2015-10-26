@@ -89,7 +89,7 @@ $(document).ready(function() {
 <div id="content">
 	<h1>Gateway > Connection > Voice Quality Metrics</h1>
 	<div id="educational-tip">
-		<p class="tip">This Page displays the voice quality metrics of your Telephone lines.</p>
+		<p class="tip">This page displays the voice quality metrics of your Telephone lines.</p>
 	</div>
 	<div class="module data" style="margin-left:px">
 		<table  id="radius_tab" style="font-size:11px;">

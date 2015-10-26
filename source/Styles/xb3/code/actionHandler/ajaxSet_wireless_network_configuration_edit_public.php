@@ -54,8 +54,7 @@ function MiniApplySSID($ssid) {
 // change SSID status first, if disable, no need to configure following
 // setStr("Device.WiFi.SSID.$i.Enable", $_POST['radio_enable'], true);
 
-// !!!!!!for hotspot wifi, save all no matter ssid is enabled!!!!!!
-// if ("true" == $_POST['radio_enable'])
+if ("true" == $_POST['radio_enable'] || "true" == $_POST['radio_reset'])
 {
 	if ("None" == $_POST['encrypt_mode']) {
 		setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $_POST['encrypt_mode'], true);
@@ -98,25 +97,27 @@ function MiniApplySSID($ssid) {
 	}
 }
 
-// check if the LowerLayers radio is enabled
-if ("false" == getStr("Device.WiFi.Radio.$r.Enable") && "true" == $_POST['radio_enable']){
-	setStr("Device.WiFi.Radio.$r.Enable", "true", true);
-}
-setStr("Device.WiFi.SSID.$i.Enable", $_POST['radio_enable'], true);
+	// check if the LowerLayers radio is enabled
+	if ("false" == getStr("Device.WiFi.Radio.$r.Enable") && "true" == $_POST['radio_enable']){
+		setStr("Device.WiFi.Radio.$r.Enable", "true", true);
+	}
+	setStr("Device.WiFi.SSID.$i.Enable", $_POST['radio_enable'], true);
 
-if (intval($i) >= 5 ){
-	setStr("Device.WiFi.AccessPoint.$i.X_CISCO_COM_BssMaxNumSta", $_POST['max_client'], true);
-	//soft-gre
-	setStr("Device.X_COMCAST_COM_GRE.Interface.1.DSCPMarkPolicy", $_POST['DSCPMarkPolicy'], true);
-	setStr("Device.X_COMCAST_COM_GRE.Interface.1.RemoteEndpoints", $_POST['RemoteEndpoints'], true);
-	setStr("Device.X_COMCAST_COM_GRE.Interface.1.KeepAliveCount", $_POST['KeepAliveCount'], true);
-	setStr("Device.X_COMCAST_COM_GRE.Interface.1.KeepAliveInterval", $_POST['KeepAliveInterval'], true);
-	setStr("Device.X_COMCAST_COM_GRE.Interface.1.KeepAliveThreshold", $_POST['KeepAliveThreshold'], true);
-	setStr("Device.X_COMCAST_COM_GRE.Interface.1.KeepAliveFailInterval", $_POST['KeepAliveFailInterval'], true);
-	setStr("Device.X_COMCAST_COM_GRE.Interface.1.ReconnectPrimary", $_POST['ReconnectPrimary'], true);
-	setStr("Device.X_COMCAST_COM_GRE.Interface.1.DHCPCircuitIDSSID", $_POST['DHCPCircuitIDSSID'], true);
-	setStr("Device.X_COMCAST_COM_GRE.Interface.1.DHCPRemoteID", $_POST['DHCPRemoteID'], true);
-	// echo $i;
+	if (intval($i) >= 5 ){
+		setStr("Device.WiFi.AccessPoint.$i.X_CISCO_COM_BssMaxNumSta", $_POST['max_client'], true);
+		//soft-gre
+		setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.DSCPMarkPolicy", $_POST['DSCPMarkPolicy'], true);
+		setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.PrimaryRemoteEndpoint", $_POST['PrimaryRemoteEndpoint'], true);
+		setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.SecondaryRemoteEndpoint", $_POST['SecondaryRemoteEndpoint'], true);
+		setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingCount", $_POST['KeepAliveCount'], true);
+		setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingInterval", $_POST['KeepAliveInterval'], true);
+		setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingFailThreshold", $_POST['KeepAliveThreshold'], true);
+		setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingIntervalInFailure", $_POST['KeepAliveFailInterval'], true);
+		setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.ReconnectToPrimaryRemoteEndpoint", $_POST['ReconnectPrimary'], true);
+		setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.EnableCircuitID", $_POST['DHCPCircuitIDSSID'], true);
+		setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.EnableRemoteID", $_POST['DHCPRemoteID'], true);
+		// echo $i;
+	}
 }
 
 // if ("2.4" == $_POST['radio_freq']){

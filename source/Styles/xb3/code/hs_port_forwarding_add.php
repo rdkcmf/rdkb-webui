@@ -21,8 +21,8 @@ $(document).ready(function() {
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 1 && value <= 254);
 	}, "Please enter a valid IP address.");
 	jQuery.validator.addMethod("port",function(value,element){
-		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 65535);
-	}, "Please enter a port number less than 65536.");
+		return this.optional(element) || (value.match(/^\d+$/g) && value >= 1 && value <= 65535);
+	}, "Please enter a port number in range 1~65535.");
 	jQuery.validator.addMethod("ltstart",function(value,element){
 		return this.optional(element) || value>=parseInt($("#start_public_port").val());
 	}, "Please enter a value more than or equal to Start Public Port.");
@@ -113,9 +113,12 @@ $(document).ready(function() {
 <div id="content">
 	<h1>Advanced > HS Port Forwarding > Add Service</h1>
     <div id="educational-tip">
-        <p class="tip"> Some text about email notification and how they work.</p>
-        <p class="hidden">Some more text to help the customer understand about this content.</p>
-    </div>
+		<p class="tip">Add port forwarding related to Home Security Device.</p>
+   		<p class="hidden">Users can configure the RG to provide the port forwarding services which allow the Internet users to
+		access local services such as the Web server or FTP server at your local site. This is done by
+		redirecting the combination of the WAN IP address and the service port to the local private IP and its
+        service port.</p>
+	</div>
 
 	<form method="post" id="pageForm" action="">
 	<div class="module forms">
@@ -128,6 +131,7 @@ $(document).ready(function() {
 		<div class="form-row">
 			<label for="service_type">Service Type:</label>
 			<select id="service_type">
+				<option>TCP/UDP</option>
 				<option>TCP</option>
 				<option>UDP</option>
 			</select>
@@ -144,13 +148,13 @@ $(document).ready(function() {
 		</div>
 
 		<div class="form-row">
-			<label for="start_public_port"> Start Public Port:</label>  <input type="text" class="text" value="" id="start_public_port" name="start_public_port" size="10"/>
+			<label for="start_public_port"> Start Public Port:</label>  <input type="text" class="text" value="80" id="start_public_port" name="start_public_port" size="10"/>
 		</div>
 		<div class="form-row odd">
-			<label for="end_public_port">End Public Port:</label>  <input type="text" class="text" value="" id="end_public_port" name="end_public_port" disabled size="10"/>
+			<label for="end_public_port">End Public Port:</label>  <input type="text" class="text" value="80" id="end_public_port" name="end_public_port" disabled size="10"/>
 		</div>
 	    <div class="form-row ">
-			<label for="private_port">Private Port(s):</label>  <input type="text" class="text" value="" id="private_port" name="private_port" size="10" />
+			<label for="private_port">Private Port(s):</label>  <input type="text" class="text" value="8080" id="private_port" name="private_port" size="10" />
 		</div>
 		<div class="form-row odd">
 			<label for="enable_port_range">Enable Port Range: </label><input type="checkbox" id="enable_port_range" name="enable_port_range" value="Enable Private Port Range" disabled="disabled" /><b>  Enable Private Port Range </b>

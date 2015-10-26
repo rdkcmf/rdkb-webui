@@ -16,14 +16,42 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<?php
+﻿<?php
 
-// the log type of GUI wanted
-$mode	= $_POST['mode'];
-$timef	= $_POST['timef'];
+function str2time($str){
 
-// get Unix time of the target time point
-switch($timef) {
+	$MONTH = array("Jan"=>1,"Feb"=>2,"Mar"=>3,"Apr"=>4,"May"=>5,"Jun"=>6,"Jul"=>7,"Aug"=>8,"Sep"=>9,"Oct"=>10,"Nov"=>11,"Dec"=>12);
+	// $timeT = preg_replace('/\s(?=\s)/', '', $str);
+	// $timeTmp = explode(" ", $timeT);
+	$timeTmp = preg_split("/[\s,]+/", $str);
+	$time  = array();
+
+	if (! empty($timeTmp[3])) {
+		//log time contains 'year'
+		$time['formatted_time'] = $timeTmp[3] .'/'. $MONTH[$timeTmp[0]] .'/'. $timeTmp[1] .' '. $timeTmp[2]; 
+		$time['firewall_time']  = $timeTmp[3] .'/'. $MONTH[$timeTmp[0]] .'/'. $timeTmp[1] .' '. $timeTmp[2]; 
+		$time['timeU'] = mktime(0, 0, 0, $MONTH[$timeTmp[0]], $timeTmp[1], $timeTmp[3]);
+	}
+	else {
+		if ($MONTH[$timeTmp[0]] <= $MONTH[date("M")]) {
+			$time['timeU'] = mktime(0, 0, 0, $MONTH[$timeTmp[0]], $timeTmp[1], date("Y"));
+			$time['formatted_time'] = date("Y") .'/'. $MONTH[$timeTmp[0]] .'/'. $timeTmp[1] .' '. $timeTmp[2]; 
+			$time['firewall_time']  = date("Y") .'/'. $MONTH[$timeTmp[0]] .'/'. $timeTmp[1] .' '. $timeTmp[2]; 
+		} 
+		else {
+			$time['timeU'] = mktime(0, 0, 0, $MONTH[$timeTmp[0]], $timeTmp[1], date("Y")-1);
+			$time['formatted_time'] = date("Y")-1 .'/'. $MONTH[$timeTmp[0]] .'/'. $timeTmp[1] .' '. $timeTmp[2]; 
+			$time['firewall_time']  = date("Y")-1 .'/'. $MONTH[$timeTmp[0]] .'/'. $timeTmp[1] .' '. $timeTmp[2]; 
+		}
+	}
+	//var_dump($time);
+	return $time;
+}
+
+
+$mode=$_POST['mode'];
+$timef=$_POST['timef'];
+switch($timef){			//	[$mintime, $maxtime)
 	case "Today":
 		$maxtime=strtotime("now");
 		$mintime=strtotime("today");
@@ -46,63 +74,126 @@ switch($timef) {
 	break;
 }
 
-// find each log entry
-if ("system" == $mode) {
-	$allDM = "Device.X_CISCO_COM_Diagnostics.DumpAllSyslog";
-}
-else if ("event" == $mode) {
-	$allDM = "Device.X_CISCO_COM_Diagnostics.DumpAllEventlog";
-}
-else if ("firewall" == $mode) {
-	$allDM = "Device.X_CISCO_COM_Security.InternetAccess.DumpAllFWlog";
-}
+$pos = 50;		//global file pointer where to read the value in a line
 
-$MONTH = array("Jan"=>1,"Feb"=>2,"Mar"=>3,"Apr"=>4,"May"=>5,"Jun"=>6,"Jul"=>7,"Aug"=>8,"Sep"=>9,"Oct"=>10,"Nov"=>11,"Dec"=>12);
-$logs  = array();
+if ($mode=="system"){
 
-exec("ccsp_bus_client_tool eRT getv $allDM ", $raws);
+	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Diagnostics.Syslog.Entry. | grep 'type:' > /var/log_system.txt");
+	$file= fopen("/var/log_system.txt", "r");
+	$Log = array();
+	// for($i=0; !feof($file); $i++)
+	for($i=0; !feof($file); )
+	{
+		$time 	= substr(fgets($file),$pos);
+		$Tag	= substr(fgets($file),$pos);	//don't need, but have to read
+		$Level 	= substr(fgets($file),$pos);
+		$Des 	= substr(fgets($file),$pos);
 
-for ($i=6; $i<count($raws);)
-{
-	if ("firewall" == $mode) {
-		$Count		= $raws[$i++];	//attempts, count
-		$SourceIP	= $raws[$i++];	//source IP, not used
-		$User		= $raws[$i++];	//user, not used
-		$TargetIP	= $raws[$i++];	//target IP, not used
-		$Level		= $raws[$i++];	//action proceed by firewall
-		$time		= $raws[$i++];	//trigger time
-		$Des		= $raws[$i++].", $Count Attempts.";	//description
+		// $Log[$i] =	array("time"=>$time, "Level"=>$Level, "Des"=>$Des);
+
+		if (feof($file)) break;					//PHP read last line will return false, not EOF!
+		
+		$timeArr = str2time(trim($time));
+		$timeU = $timeArr['timeU'];
+
+		if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
+		
+		$Log[$i++] = array("time"=>$timeArr['formatted_time'], "Level"=>$Level, "Des"=>$Des);
 	}
-	else {
-		$time 		= $raws[$i++];	//system or event time
-		$Tag		= $raws[$i++];	//localxxx, not used
-		$Level 		= $raws[$i++];	//info, warning, error
-		$Des 		= $raws[$i++];	//description
-	}		
+	fclose($file);
+	// array_pop($Log);	
 	
-	$timeT = explode(' ', $time);	//Oct 10 17:09:17 2014
-	$timeU = mktime(0, 0, 0, $MONTH[$timeT[0]], $timeT[1], $timeT[3]);
-	if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
+	$sysLog = $Log;
+
+	//dump($sysLog);
 	
-	array_push($logs, array("time"=>$timeT[3].'/'.$MONTH[$timeT[0]].'/'.$timeT[1].' '.$timeT[2], "Level"=>$Level, "Des"=>$Des));
+	$fh=fopen("/var/tmp/troubleshooting_logs_".$mode."_".$timef.".txt","w+");
+	foreach ($sysLog as $key=>$value){
+		fwrite($fh, $value["Des"]."\t".$value["time"]."\t".$value["Level"]."\r\n");
+	}
+	fclose($fh);
+
+	header("Content-Type: application/json");
+	echo json_encode($sysLog);	
+
+}
+else if ($mode=="event") {
+	
+	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Diagnostics.Eventlog.Entry. | grep 'type:' > /var/log_event.txt");
+	$file= fopen("/var/log_event.txt", "r");
+	$Log = array();
+	// for($i=0; !feof($file); $i++)
+	for($i=0; !feof($file); )
+	{
+		$time 	= substr(fgets($file),$pos);
+		$ID 	= substr(fgets($file),$pos);	//don't need, but have to read
+		$Level 	= substr(fgets($file),$pos);
+		$Des 	= substr(fgets($file),$pos);
+
+		// $Log[$i] =	array("time"=>$time, "Level"=>$Level, "Des"=>$Des);
+
+		if (feof($file)) break;					//PHP read last line will return false, not EOF!
+		
+		$timeArr = str2time(trim($time));
+		$timeU = $timeArr['timeU'];
+		if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
+		
+		$Log[$i++] = array("time"=>$timeArr['formatted_time'], "Level"=>$Level, "Des"=>$Des);
+	}
+	fclose($file);
+	// array_pop($Log);	
+	
+	$docLog = $Log;
+		
+	$fh=fopen("/var/tmp/troubleshooting_logs_".$mode."_".$timef.".txt","w+");
+	foreach ($docLog as $key=>$value){
+		fwrite($fh, $value["Des"]."\t".$value["time"]."\t".$value["Level"]."\r\n");
+	}
+	fclose($fh);
+	
+	header("Content-Type: application/json");
+	echo json_encode($docLog);
+	
+}
+else {	
+
+	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /var/log_firewall.txt");
+	$file= fopen("/var/log_firewall.txt", "r");
+	$Log = array();
+	// for($i=0; !feof($file); $i++)
+	for($i=0; !feof($file); )
+	{
+		$Count		= substr(fgets($file),$pos);
+		$SourceIP	= substr(fgets($file),$pos);	//don't need, but have to read
+		$User		= substr(fgets($file),$pos);
+		$TargetIP	= substr(fgets($file),$pos);
+		$Type		= substr(fgets($file),$pos);
+		$time		= substr(fgets($file),$pos);
+		$Des		= substr(fgets($file),$pos);
+
+		// $Log[$i] =	array("time"=>$time, "Des"=>$Des, "Count"=>$Count, "Target"=>$TargetIP,"Source"=>$SourceIP,"Type"=>$Type);
+
+		if (feof($file)) break;						//PHP read last line will return false, not EOF!
+
+		$timeArr = str2time(trim($time));
+		$timeU = $timeArr['timeU'];
+		if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
+		
+		$Log[$i++] = array("time"=>$timeArr['firewall_time'], "Des"=>$Des, "Count"=>$Count, "Target"=>$TargetIP,"Source"=>$SourceIP,"Type"=>$Type);
+	}
+	fclose($file);
+	
+	$firewallLog = $Log;	
+	$fh=fopen("/var/tmp/troubleshooting_logs_".$mode."_".$timef.".txt","w+");
+
+	foreach ($firewallLog as $key=>$value){
+		fwrite($fh, $value["Des"].", ".$value["Count"]." Attemps, ".$value["time"]."\t".$value["Type"]."\r\n");
+	}
+	fclose($fh);
+	
+	header("Content-Type: application/json");
+	echo json_encode($firewallLog);
 }
 
-// last log shows first
-$logs = array_reverse($logs);
-
-// logic of download log file from GUI
-$fh=fopen("/var/tmp/troubleshooting_logs_".$mode."_".$timef.".txt","w");
-foreach ($logs as $key=>$value) {
-	fwrite($fh, $value["time"]."\t".$value["Level"]."\t".$value["Des"]."\r\n");
-}
-fclose($fh);
-
-// return results to GUI in json format
-header("Content-Type: application/json");
-echo json_encode($logs);	
-
-// exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Diagnostics.Syslog.Entry. | grep 'type:' > /var/log_system.txt");
-// exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Diagnostics.Eventlog.Entry. | grep 'type:' > /var/log_event.txt");
-// exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /var/log_firewall.txt");
 
 ?>

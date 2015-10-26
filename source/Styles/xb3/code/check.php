@@ -3,13 +3,14 @@
     if (isset($_POST["username"]))
 	{
 		session_start();
-		echo("You are logging...");
+		//echo("You are logging...");
 
-		$client_ip				= $_SERVER["REMOTE_ADDR"];			// $client_ip="::ffff:10.0.0.101";
-		$server_ip				= $_SERVER["SERVER_ADDR"];
-		$timeout_val 			= intval(getStr("Device.X_CISCO_COM_DeviceControl.WebUITimeout"));
-		$_SESSION["sid"]		= session_id();
-		$_SESSION["timeout"]	= ("" == $timeout_val ? 900 : $timeout_val);
+		$client_ip		= $_SERVER["REMOTE_ADDR"];			// $client_ip="::ffff:10.0.0.101";
+		$server_ip		= $_SERVER["SERVER_ADDR"];
+		$timeout_val 		= intval(getStr("Device.X_CISCO_COM_DeviceControl.WebUITimeout"));
+		("" == $timeout_val) && ($timeout_val = 900);
+		$_SESSION["timeout"]	= $timeout_val - 60;	//dmcli param is returning 900, GUI expects 840 - then GUI adds 60
+		$_SESSION["sid"]	= session_id();
 		$_SESSION["loginuser"]	= $_POST["username"];
 
 		/*=============================================*/
@@ -32,20 +33,21 @@
 		/*===============================================*/
 
         if ($_POST["username"] == "mso")
-		{
-			$curPwd1 = getStr("Device.Users.User.1.X_CISCO_COM_Password");
-			if ($_POST["password"] == $curPwd1)
+	{
+	   //triggering password validation in back end
+	   setStr("Device.Users.User.1.X_CISCO_COM_Password",$_POST["password"],true);
+	   sleep(1);
+	   $curPwd1 = getStr("Device.Users.User.1.X_CISCO_COM_Password");
+	   
+	    if ( innerIP($client_ip) || (if_type($server_ip)=="rg_ip") )
             {
-                if ( (if_type($server_ip)=="lan_ip") || (if_type($server_ip)=="rg_ip") )
-                {
-                    session_destroy();
-                    echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
-                }
-                else
-                {
-                    exec("/usr/bin/logger -t GUI -p local5.notice 'User:mso login'");
-                    header("location:at_a_glance.php");
-                }
+            	session_destroy();
+                echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
+            }
+            elseif ($curPwd1 == "Good_PWD")
+            {	
+            	exec("/usr/bin/logger -t GUI -p local5.notice 'User:mso login'");
+                header("location:at_a_glance.php");
             }
             elseif ("" == $curPwd1)
             {
@@ -53,34 +55,31 @@
 				echo '<script type="text/javascript"> alert("Can not get password for mso from backend!"); history.back(); </script>';
             }
             else
-            {
+          	{
 				session_destroy();
 				echo '<script type="text/javascript"> alert("Incorrect password for mso!"); history.back(); </script>';
             }
         }
         elseif ($_POST["username"] == "cusadmin")
 		{
-			$curPwd2 = getStr("Device.Users.User.2.X_CISCO_COM_Password");
-			if ($_POST["password"] == $curPwd2) 
+		$curPwd2 = getStr("Device.Users.User.2.X_CISCO_COM_Password");
+			if ( innerIP($client_ip) || (if_type($server_ip)=="rg_ip") )
+			{
+				session_destroy();
+				echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
+			}
+			elseif ($_POST["password"] == $curPwd2) 
             {
-				if ( (if_type($server_ip)=="lan_ip") || (if_type($server_ip)=="rg_ip") )
-				{
-					session_destroy();
-					echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
-				}
-				else
-				{
-					exec("/usr/bin/logger -t GUI -p local5.notice 'User:cusadmin login'");
-					header("location:at_a_glance.php");
-				}  
-            }
+				exec("/usr/bin/logger -t GUI -p local5.notice 'User:cusadmin login'");
+				header("location:at_a_glance.php");
+			}
             elseif ("" == $curPwd2)
             {
 				session_destroy();
 				echo '<script type="text/javascript"> alert("Can not get password for cusadmin from backend!"); history.back(); </script>';
             }
             else
-            {
+          	{
 				session_destroy();
 				echo '<script type="text/javascript"> alert("Incorrect password for cusadmin!"); history.back(); </script>';
             }
@@ -89,8 +88,8 @@
 		{
 			$curPwd3 = getStr("Device.Users.User.3.X_CISCO_COM_Password");
 			if ($_POST["password"] == $curPwd3) 
-            {
-				if ( (if_type($server_ip)!="lan_ip") && (if_type($server_ip)!="rg_ip") )
+			{
+				if ( !innerIP($client_ip) && (if_type($server_ip)!="rg_ip") )
 				{
 					session_destroy();
 					echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
@@ -98,79 +97,38 @@
 				else
 				{
 					exec("/usr/bin/logger -t GUI -p local5.notice 'User:admin login'");
+					setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_success",true);
 					if ($curPwd3 == 'password')
 					{
 						echo '<script type="text/javascript"> if (confirm("You are using a default password, would you like to change it?")) {location.href = "password_change.php";} else {location.href = "at_a_glance.php";} </script>';
 					}
 					else
-					{
-                        header("location:at_a_glance.php");
+					{	
+						header("location:at_a_glance.php");
 					}
 				}
-            }
-            elseif ("" == $curPwd3)
-            {
+            		}
+            		elseif ("" == $curPwd3)
+            		{
+				setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_failed",true);
 				session_destroy();
 				echo '<script type="text/javascript"> alert("Can not get password for admin from backend!"); history.back(); </script>';
-            }
-            else
-            {
+            		}
+            		else
+            		{
+				setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_failed",true);
 				session_destroy();
 				echo '<script type="text/javascript"> alert("Incorrect password for admin!"); history.back(); </script>';
-            }
+            		}
         }
         else
-		{
-			session_destroy();
-			echo '<script type="text/javascript"> alert("Incorrect user name!"); history.back(); </script>';
+	{
+		setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_failed",true);
+		session_destroy();
+		echo '<script type="text/javascript"> alert("Incorrect user name!"); history.back(); </script>';
         }
     }
-	
-	function get_ips($if_name){
-		$out = array();
-		$tmp = array();
-		$ret = array();
-	
-		exec("ip addr show ".$if_name, $out);
-		
-		foreach ($out as $v){
-			if (strstr($v, 'inet')){
-				$tmp = explode('/', $v);
-				$tmp = explode(' ', $tmp[0]);
-				array_push($ret, trim(array_pop($tmp)));
-			}
-		}
-		return $ret;
-	}
-	
-	function if_type($ip_addr){
-		$tmp	= array();
-		$lan_ip	= get_ips("brlan0");	//routed IPv4 and IPv6
-		$cm_ip	= get_ips("wan0");
-		$lan0_ip= get_ips("lan0");		//bridged lan0, v4 only
-		
-		//Note: 3939 has no static IP, so do not need workaround as 3939B
-		if (strstr($ip_addr, ".")){		//ipv4, something like "::ffff:10.1.10.1"
-			$tmp	 = explode(":", $ip_addr);
-			$ip_addr = array_pop($tmp);
-		}
-		
-		if (in_array($ip_addr, $lan_ip) || in_array($ip_addr, $lan0_ip)){
-			return "lan_ip";
-		}
-		else if (in_array($ip_addr, $cm_ip)){
-			return "cm_ip";
-		}
-		else{
-			return "rg_ip";
-		}
-		
-		// print_r($lan_ip);
-		// print_r($cm_ip);
-	}	
 
-	// innerIP 2nd edition, replaced by "ip addr show" at if_type()
-	/*
 	function innerIP($client_ip){		//for compatibility, $client_ip is not used
 		$out		= array();
 		$tmp		= array();
@@ -200,10 +158,50 @@
 		
 		return in_array($server_ip, $lan_ip);
 	}
-	*/
 
-	// innerIP 1st edition, replaced by "ifconfig" at 2nd edition
-	/*	
+	function get_ips($if_name){
+		$out = array();
+		$tmp = array();
+		$ret = array();
+	
+		exec("ip addr show ".$if_name, $out);
+		
+		foreach ($out as $v){
+			if (strstr($v, 'inet')){
+				$tmp = explode('/', $v);
+				$tmp = explode(' ', $tmp[0]);
+				array_push($ret, trim(array_pop($tmp)));
+			}
+		}
+		return $ret;
+	}
+	
+	function if_type($ip_addr){
+		$tmp	= array();
+		$lan_ip	= get_ips("brlan0");
+		$cm_ip	= get_ips("wan0");
+		
+		if (strstr($ip_addr, ".")){		//ipv4, something like "::ffff:10.1.10.1"
+			$tmp	 = explode(":", $ip_addr);
+			$ip_addr = array_pop($tmp);
+		}
+		
+		if (in_array($ip_addr, $lan_ip)){
+			return "lan_ip";
+		}
+		else if (in_array($ip_addr, $cm_ip)){
+			return "cm_ip";
+		}
+		else{
+			return "rg_ip";
+		}
+		
+		// print_r($lan_ip);
+		// print_r($cm_ip);
+	}
+
+
+/*	
 	function innerIP($client_ip)
 	{
 		if (strstr($client_ip, "192.168.100.") && ("bridge-static"==getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode")))
@@ -251,5 +249,5 @@
 		
 		return true;
 	}
-	*/
+*/
 ?>

@@ -9,8 +9,8 @@
 		exit(0);
 	}
 
-	$not_cusadmin_pages = array('email_notification.php', 'hs_port_forwarding.php', 'routing.php');
-	$not_admin_pages = array('email_notification.php', 'hs_port_forwarding.php', 'routing.php', 'dynamic_dns.php', 'mta');
+	$not_cusadmin_pages = array('email_notification.php', 'hs_port_forwarding', 'routing.php');
+	$not_admin_pages = array('email_notification.php', 'hs_port_forwarding', 'routing.php', 'dynamic_dns', 'mta');
 
 	if ($_SESSION['loginuser'] == 'cusadmin') {
 		foreach ($not_cusadmin_pages as $page) {
@@ -41,6 +41,15 @@
 	// disable timeout when debug mode
 	if ($_DEBUG) { $_SESSION["timeout"] = 100000; }
 
+	$header_param = array(
+		"Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode",
+		"Device.X_CISCO_COM_DeviceControl.PowerSavingModeStatus"
+	);
+	$header_value = DmExtGetStrsWithRootObj("Device.X_CISCO_COM_DeviceControl.", $header_param);
+
+	$lanMode 	= $header_value[1][1];
+	$psmMode 	= $header_value[2][1];
+
     /*
     ** is GW works in Bridge mode or not
     */
@@ -67,7 +76,7 @@
 
 
 <head>
-    <title>XFINITY</title>
+	<title>Xfinity</title>
 
 	<!--CSS-->
 	<link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/common-min.css?sid=<?php echo $_SESSION["sid"]; ?>" />
@@ -122,10 +131,16 @@
 
 		<!--Header-->
 		<div id="header">
-			<h2 id="logo"><img src="./cmn/img/logo_xfinity.png" alt="Xfinity" title="Xfinity" /></h2>
+			<?php
+				if($lanMode != "router")
+					echo '<p style="margin: 0">The Device is currently in Bridge Mode.</p>';
+				else
+					echo '<p style="margin: 0">&nbsp;</p>';
+			?>
+			<h2 id="logo" style="margin-top: 10px"><img src="./cmn/img/logo_xfinity.png" alt="Xfinity" title="Xfinity" /></h2>
 		</div> <!-- end #header -->
 
-		<div id='div-skip-to'>
+		<div id='div-skip-to' style="display: none;">
 			<a id="skip-link" name="skip-link" href="#content">Skip to content</a>
 		</div>
 		

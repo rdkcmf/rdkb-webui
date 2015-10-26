@@ -21,55 +21,93 @@
 /**
  *  Description: Judge whether the user input ip valid or not (based on current gw ip and subnetmask)
  *  parameter  : input IP address
- *  return     : bool(TRUE/FALSE)
+ *  return     : bool(TRUE/FALSE), string(message)
  */
-function isIPValid($IP){
+
+function isIPValid($IP, $MAC){
 
     $ret        = TRUE;
+    $msg 		= '';
     $LanSubMask = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask");
     $LanGwIP    = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
     $gwIP       = explode('.', $LanGwIP);
     $hostIP     = explode('.', $IP); 
 
     if ($LanGwIP == $IP) {
+        $msg = "This IP is reserved for Lan Gateway!";
         $ret = FALSE;
     }
     elseif (strstr($IP, '172.16.12')) {
-        //$msg = "This ip is reserved for home security";
+        $msg = "This IP is reserved for Home Security!";
         $ret = FALSE;
     }     
     elseif (strstr($LanSubMask, '255.255.255')) {
         //the first three field should be equal to gw ip field
         if (($gwIP[0] != $hostIP[0]) || ($gwIP[1] != $hostIP[1]) || ($gwIP[2] != $hostIP[2])) {
-           //$msg = "Input IP is not in valid range:\n" . "$gwIP[0].$gwIP[1].$gwIP[2].[2~254]";
+           $msg = "Input IP is not in valid range:\n" . "$gwIP[0].$gwIP[1].$gwIP[2].[2~254]!";
            $ret = FALSE;
         }      
     }
     elseif ($LanSubMask == '255.255.0.0') {
         if (($gwIP[0] != $hostIP[0]) || ($gwIP[1] != $hostIP[1])) {
-           //$msg = "Input IP is not in valid range:\n" . "$gwIP[0].$gwIP[1].[2~254].[2~254]";
+           $msg = "Input IP is not in valid range:\n" . "$gwIP[0].$gwIP[1].[2~254].[2~254]!";
            $ret = FALSE;
         }      
     } 
     else {
         if ($gwIP[0] != $hostIP[0]) {
-           //$msg = "Input IP is not in valid range:\n [10.0.0.2 ~ 10.255.255.254]";
+           $msg = "Input IP is not in valid range:\n [10.0.0.2 ~ 10.255.255.254]!";
            $ret = FALSE;
         } 
     } 
 
     if ($ret) {
-        //if above check pass, then check whether the IP have been used or not      
-        $idArr = explode(",", getInstanceIds("Device.DHCPv4.Server.Pool.1.StaticAddress."));
-        foreach ($idArr as $key => $value) {
-            if ( !strcasecmp(getStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$value.Yiaddr"), $IP) ) {
-                $ret = FALSE;
-                break;
-            }
-        }
-    }  
+		//if DHCP ==> ReservedIP, then check if DHCP with same MAC is there
+		$MDIDs=explode(",",getInstanceIDs("Device.Hosts.Host."));
+		$arrayDHCPMAC=array();
+		foreach ($MDIDs as $key=>$i) {
+			$type = getStr("Device.Hosts.Host.".$i.".AddressSource");
+			if($type == "DHCP") {
+				array_push($arrayDHCPMAC, strtoupper(getStr("Device.Hosts.Host.".$i.".PhysAddress")));
+			}
+		}
 
-    return $ret;
+		if(in_array(strtoupper($MAC), $arrayDHCPMAC)){
+			//DHCP with same MAC is there, no need to change IP
+			return array(TRUE, $msg);
+		}
+        
+		//if above check pass, then check whether the IP have been used or not in Online DHCP/ReservedIP     
+		$idArr = explode(",", getInstanceIds("Device.Hosts.Host."));
+		foreach ($idArr as $key => $value) {
+			if ( !strcasecmp(getStr("Device.Hosts.Host.$value.IPv4Address.1.IPAddress"), $IP) ) {
+				$msg = "IP has already been reserved for another device.\nPlease try using another IP address!";
+				$ret = FALSE;
+				break;
+			}
+		}
+
+		//for ReservedIP >> in "Server Pool-1"
+		//if above check pass, then check whether the IP have been used or not in "Server Pool-1"
+		$idArr = explode(",", getInstanceIds("Device.DHCPv4.Server.Pool.1.StaticAddress."));
+		foreach ($idArr as $key => $value) {
+		    	if ( !strcasecmp(getStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$value.Yiaddr"), $IP) ) {
+				if ( !strcasecmp(getStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$value.Chaddr"), $MAC) ) {
+					//if device is there with same mac and ip then its an EDIT of comments of ReservedIP
+					return array(TRUE, $msg);
+					break;
+				}
+				else {
+					$msg = "IP has already been reserved for another device.\nPlease try using another IP address!";
+					$ret = FALSE;
+					break;
+				}
+				
+		    	}
+		}
+    }
+
+    return array($ret, $msg);
 }
 
 $deviceInfo = json_decode($_REQUEST['DeviceInfo'], true);
@@ -82,6 +120,8 @@ if( !array_key_exists('delFlag', $deviceInfo) ) {
     $exist   = false;
     $macAddr = $deviceInfo['macAddress'];
     $ipAddr  = $deviceInfo['reseverd_ipAddr'];
+
+    $resp = isIPValid($ipAddr, $macAddr);
 
     if (array_key_exists('UpdateComments', $deviceInfo)){
         //from edit device page scenario: DHCP ==> DHCP
@@ -104,8 +144,8 @@ if( !array_key_exists('delFlag', $deviceInfo) ) {
     }//end of array_key_exist updateComments
 
     //First of all, check whether the user post IP address available or not
-    elseif (isIPValid($ipAddr) == FALSE) {
-        $result = "Invlid IP address, please input again.";
+    elseif ($resp[0] == FALSE) {
+        $result = $resp[1];
     }
     else{
 

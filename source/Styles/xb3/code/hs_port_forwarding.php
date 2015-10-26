@@ -14,9 +14,6 @@
 	}
 ?>
 
-<style>
-	td:not(.edit) {word-break: break-all;}
-</style>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -31,12 +28,37 @@ $(document).ready(function() {
 		title_off: "Disable HS port forwarding",
 		state: <?php echo ($HPEnable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});
-	
+
+	$("a.confirm").unbind('click');
+
+	function setupDeleteConfirmDialogs() {
+        /*
+         * Confirm dialog for delete action
+         */             
+        	$("a.confirm").click(function(e) {
+		    e.preventDefault();            
+		    var href = $(this).attr("href");
+		    var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+		   
+		    jConfirm(
+		        message
+		        ,"Are You Sure?"
+		        ,function(ret) {
+		            if(ret) {
+		                window.location = href;
+		            }    
+		     });
+        	});
+	}
+
 	var isUHSPDisabled = $("#hspf_switch").radioswitch("getState").on === false;
 	if(isUHSPDisabled) {
 		$("#hs-port-forwarding-items").prop("disabled",true).addClass("disabled");
 		$("a.btn").addClass("disabled").click(function(e){e.preventDefault();});
 		$("input[name='PortActive']").prop("disabled",true);
+	}
+	else{
+		setupDeleteConfirmDialogs();
 	}
 
 	$("#hspf_switch").change(function() {
@@ -62,10 +84,12 @@ $(document).ready(function() {
 					$("#hs-port-forwarding-items").prop("disabled",true).addClass("disabled");
 					$("a.btn").addClass("disabled").click(function(e){e.preventDefault();});
 					$("input[name='PortActive']").prop("disabled",true);
+					$("a.confirm").unbind('click');
 				} else {
 					$("#hs-port-forwarding-items").prop("disabled",false).removeClass("disabled");
 					$("a.btn").removeClass("disabled").unbind('click');
 					$("input[name='PortActive']").prop("disabled",false);
+					setupDeleteConfirmDialogs();
 					// window.location.href="hs_port_forwarding.php";
 				}
 			},
@@ -101,7 +125,7 @@ $(document).ready(function() {
 	<h1>Advanced > HS Port Forwarding</h1>
 
 	<div id="educational-tip">
-		<p class="tip">Add a rule for port forwarding services by user. </p>
+		<p class="tip">Add port forwarding related to Home Security Device.</p>
    		<p class="hidden">Users can configure the RG to provide the port forwarding services which allow the Internet users to
 		access local services such as the Web server or FTP server at your local site. This is done by
 		redirecting the combination of the WAN IP address and the service port to the local private IP and its
@@ -128,6 +152,8 @@ $(document).ready(function() {
 					<th id="private-port">Private Port</th>
 					<th id="server-ip">Server IP</th>
 					<th id="active">Active</th>
+					<th id="edit-button">&nbsp;</th>
+					<th id="delete-button">&nbsp;</th>
 				</tr>
 				<?php
 
@@ -165,8 +191,14 @@ $(document).ready(function() {
 
 					$iclass = ""; 
 					foreach ($resArray as $hspf_entry) {
-
-						if (($hspf_entry['LeaseDuration'] === '0') && ($hspf_entry['InternalPort'] !== '0')) {
+							//zqiu
+							if (($hspf_entry['InternalPort'] === '0') || 
+								($hspf_entry['InternalClient'] === '0.0.0.0') ||
+								(strpos($hspf_entry['InternalClient'],'172.16.12.') === false)
+								) {
+								//filter out hs port forwarding entry whose internal port !== 0
+								continue;
+							}								
 
 							$id = $hspf_entry['__id'];
 
@@ -183,9 +215,13 @@ $(document).ready(function() {
 							echo "<td headers='private-port'>" .$hspf_entry['InternalPort']. "</td>";
 							echo "<td headers='server-ip'>"    .$hspf_entry['InternalClient']. "</td>";
 							echo "<td headers='active'><input tabindex='0' type=\"checkbox\" id=\"PortActive_$id\" name=\"PortActive\" $checked/>
-							<label for=\"PortActive_$id\"></label></td>";					
+							<label for=\"PortActive_$id\"></label></td>";	
+							echo "<td headers='edit-button'  class=\"edit\"><a tabindex='0' href=\"hs_port_forwarding_edit.php?id=$id\" class=\"btn\"  id=\"edit_$id\">Edit</a></td>
+								<td headers='delete-button'  class=\"delete\"><a tabindex='0'  href=\"actionHandler/ajax_hs_port_forwarding.php?del=$id\" class=\"btn confirm\" 
+									title=\"delete this HS Port Forwading service for " . $hspf_entry['Description'] . " \" id=\"delete_$id\">x</a></td>
+								</tr>";
 							echo "</tr>";
-						}
+						
 					}//end of foreach
 				}//end of empty
 

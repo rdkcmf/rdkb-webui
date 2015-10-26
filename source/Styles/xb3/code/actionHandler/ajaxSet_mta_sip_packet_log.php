@@ -18,7 +18,7 @@
 -->
 <?php
 
-exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_CableModem.MTALog. > /var/log_mta.txt");
+exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_MTA.MTALog. > /var/log_mta.txt");
 
 $Log = array();
 
