@@ -1,18 +1,14 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: managed_devices.php 3158 2010-01-08 23:32:05Z slemoine $ -->
-
 <div  id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <?php 
 	$ret = init_psmMode("Parental Control > Managed Devices", "nav-devices");
 	if ("" != $ret){echo $ret;	return;}
 ?>
-
 <?php
 $enableMD = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Enable");
 $allowAll = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.AllowAll");
@@ -20,20 +16,15 @@ if ($_DEBUG) {
 	$enableMD = 'true';
 	$allowAll = 'true';
 }
-
 //add by shunjie
 ("" == $enableMD) && ($enableMD = "false");
 ("" == $allowAll) && ($allowAll = "false");
-
 ?>
-
 <script  type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Parental Control > Managed Devices", "nav-devices");
-
 	var jsEnableMD = <?php echo $enableMD ?>;
 	var jsAllowAll = <?php echo $allowAll ?>;
-
 	$("#managed_devices_switch").radioswitch({
 		id: "managed-devices-switch",
 		radio_name: "managed_devices",
@@ -43,7 +34,6 @@ $(document).ready(function() {
 		title_off: "Disable managed devices",
 		state: jsEnableMD ? "on" : "off"
 	});
-
 	$("#allow_block_switch").radioswitch({
 		id: "allow-block-switch",
 		radio_name: "access_type",
@@ -55,9 +45,7 @@ $(document).ready(function() {
 		label_off: "Block All",
 		state: jsAllowAll ? "on" : "off"
 	});
-
     $("a.confirm").unbind('click');
-	
 	$(".btn").click(function (e) {
 		e.preventDefault();
 		if ($(this).hasClass('disabled')) {
@@ -82,20 +70,17 @@ $(document).ready(function() {
 			}
 		}
 	});
-	
 	// only run once on init
 	if (false == jsEnableMD)
 	{
 		$('.main_content *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
 		$("#allow_block_switch").radioswitch("doEnable", false);
 	}	
-
 	if(jsAllowAll == true) {
 		updateAllowedDevicesVisibility("allow_all");
 	} else if(jsAllowAll == false) {
 		updateAllowedDevicesVisibility("block_all");
 	}
-
 	function updateAllowedDevicesVisibility(accessType) {
 		if(accessType == "allow_all") {
             $("#allowed-devices").hide();
@@ -105,7 +90,6 @@ $(document).ready(function() {
             $("#allowed-devices").show();
         }
 	}
-	
 	$("#managed_devices_switch").change(function() {
 		var UMDStatus = $("#managed_devices_switch").radioswitch("getState").on ? "Enabled" : "Disabled";
 		jProgress('This may take several seconds', 60);
@@ -139,16 +123,13 @@ $(document).ready(function() {
 				jAlert("Failure, please try again.");
 			}
 		});
-
 	});
-	
 	$("#allow_block_switch").change(function() {
 		var isAllowBlock = $("#allow_block_switch").radioswitch("getState").on;
 		if(isAllowBlock)
 			updateAllowedDevicesVisibility("allow_all");
 		else
 			updateAllowedDevicesVisibility("block_all");
-	
 		var AllowBlock = isAllowBlock ? "allow_all" : "block_all";
 		jProgress('This may take several seconds', 60);
 		$.ajax({
@@ -172,13 +153,9 @@ $(document).ready(function() {
 				jAlert("Failure, please try again.");
 			}
 		});
-
 	});
-
 });
-
 </script>
-
 <div  id="content" class="main_content">
 	<h1>Parental Control > Managed Devices</h1>
 	<div  id="educational-tip">
@@ -188,7 +165,6 @@ $(document).ready(function() {
 			<p class="hidden">If you want your devices to be restricted, select <strong>Block All.</strong> Click <strong>+ADD ALLOWED DEVICE</strong> to add the device you don't want to restrict.</p>
 	</div>
 	<div class="module forms enable">
-
 		<h2>Managed Devices</h2>
 		<div class="form-row">
 			<span class="readonlyLabel label">Managed Devices:</span>
@@ -198,14 +174,11 @@ $(document).ready(function() {
 			<label for="access_type">Access Type:</label>
 			<span id="allow_block_switch"></span>
 		</div>
-
 	</div>
-	
 	<?php 
     $rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.";
 	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.");
 	$mapping_array  = array("Type", "Description", "MACAddress", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
-	
 	$blockedDevicesInstanceArr = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 		$MDIDs=explode(",",getInstanceIDs("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device."));
 		$allowCnt=0;
@@ -232,7 +205,6 @@ $(document).ready(function() {
 					$bdays = $blockedDevicesInstance["$i"]["BlockDays"]; 
 				    $arrayAllowStatus[$allowCnt] = $stime."-".$etime.",".$bdays;
 				}
-					
 				$allowCnt++;
 			} 
 			else if($type == "Block") {
@@ -253,7 +225,6 @@ $(document).ready(function() {
 			}			
 		}
 	?>
-	
 	<div  id="allowed-devices" class="module data">
 		<h2>Allowed Devices</h2>
 		<p class="button"><a tabindex='0' href="managed_devices_add_computer_allowed.php" class="btn"  id="add-allowed-devices">+ ADD ALLOWED DEVICE</a></p>
@@ -282,7 +253,6 @@ $(document).ready(function() {
 					</tr>"; 
 				} 
 			?>
-
 		    <tfoot>
 				<tr class="acs-hide">
 					<td headers="allowed-number">null</td>
@@ -293,10 +263,8 @@ $(document).ready(function() {
 					<td headers="allowed-delete-button">null</td>
 				</tr>
 			</tfoot>
-
 		</table>
 	</div> <!-- end .module -->
-
 	<div  id="blocked-devices" class="module data">
 		<h2>Blocked Devices</h2>
 		<p class="button"><a tabindex='0' href="managed_devices_add_computer_blocked.php" class="btn"  id="add-blocked-devices">+ ADD BLOCKED DEVICE</a></p>
@@ -325,7 +293,6 @@ $(document).ready(function() {
 					</tr>"; 
 				} 
 			?>
-
 		    <tfoot>
 				<tr class="acs-hide">
 					<td headers="blocked-number">null</td>
@@ -336,9 +303,7 @@ $(document).ready(function() {
 					<td headers="blocked-delete-button">null</td>
 				</tr>
 			</tfoot>
-
 		</table>
 	</div> <!-- end .module -->
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

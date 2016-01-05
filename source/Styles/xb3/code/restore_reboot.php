@@ -1,18 +1,12 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: restore_reboot.php 3159 2010-01-11 20:10:58Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
-
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Troubleshooting > Reset / Restore Gateway", "nav-restore-reboot");
-
 	//Having only Reset and Restore Factory Defaults under troubleshooting page in bridge mode is good enough.
 	//hide 2 3 4 6
 	if ("router" != "<?php echo $_SESSION["lanMode"]; ?>") {
@@ -22,15 +16,12 @@ $(document).ready(function() {
 		$("#div6").hide();
 		$("#div5").addClass("odd");
 	}
-
 //start by licha
 $('#btn1').click(function(e) {
 	e.preventDefault();
-	
 	var href = $(this).attr("href");
 	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
 	var info = new Array("btn1", "Router,Wifi,VoIP,Dect,MoCA");
-
 	jConfirm(
 	message+"<br/><br/><strong>WARNING:</strong> Gateway will be rebooted!<br/>Incoming/outgoing call and internet connection will be interrupted!"
 	, "Are You Sure?"
@@ -65,14 +56,11 @@ $('#btn1').click(function(e) {
 	}
 	});	
 });
-
 $('#btn2').click(function(e) {
 	e.preventDefault();
-	
 	var href = $(this).attr("href");
 	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
 	var info = new Array("btn2", "Wifi");
-
 	jConfirm(
 	message+"<br/><br/><strong>WARNING:</strong> Wi-Fi will be unavailable for at least 30 seconds!"
 	, "Are You Sure?"
@@ -82,14 +70,11 @@ $('#btn2').click(function(e) {
 	}
 	});	
 });
-
 $('#btn3').click(function(e) {
 	e.preventDefault();
-	
 	var href = $(this).attr("href");
 	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
 	var info = new Array("btn3", "Wifi,Router");
-
 	jConfirm(
 	message+"<br/><br/><strong>WARNING:</strong> Wi-Fi will be unavailable for at least 30 seconds!"
 	, "Are You Sure?"
@@ -99,14 +84,11 @@ $('#btn3').click(function(e) {
 	}
 	});	
 });
-
 $('#btn4').click(function(e) {
 	e.preventDefault();
-	
 	var href = $(this).attr("href");
 	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
 	var info = new Array("btn4", "Wifi");
-
 	jConfirm(
 	message+"<br/><br/><strong>WARNING:</strong> Wi-Fi will be unavailable for at least 30 seconds!"
 	, "Are You Sure?"
@@ -116,14 +98,11 @@ $('#btn4').click(function(e) {
 	}
 	});	
 });
-
 $('#btn5').click(function(e) {
 	e.preventDefault();
-	
 	var href = $(this).attr("href");
 	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
 	var info = new Array("btn5", "Router,Wifi,VoIP,Dect,MoCA");
-
 	jConfirm(
 	message+"<br/><br/><strong>WARNING:</strong> Gateway will be rebooted!<br/>Incoming/outgoing call and internet connection will be interrupted!"
 	, "Are You Sure?"
@@ -158,14 +137,11 @@ $('#btn5').click(function(e) {
 	}
 	});	
 });
-
 $('#btn6').click(function(e) {
 	e.preventDefault();
-	
 	var href = $(this).attr("href");
 	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
 	var info = new Array("btn6", "password");
-
 	jConfirm(
 	message
 	, "Are You Sure?"
@@ -175,17 +151,14 @@ $('#btn6').click(function(e) {
 	}
 	});	
 });
-
 	if("Enabled"=="<?php echo $_SESSION["psmMode"]; ?>") {
 		$('#btn2,#btn3,#btn4').unbind("click").click(function(){
 			jAlert("Your device is in battery mode that can't reset or restore Wi-Fi.");
 		});
 	}
-
 function setResetInfo(info) {
 //	alert(info);
 	var jsonInfo = '["' + info[0] + '","' + info[1]+ '","' + "<?php echo $_SESSION["loginuser"]; ?>" + '"]';
-	
 	jProgress('This may take several seconds...', 60);
 	$.ajax({
 		type: "POST",
@@ -209,10 +182,8 @@ function setResetInfo(info) {
         }
 	});
 }
-
 //end by licha    
 });
-
 function checkForRebooting() {
 	$.ajax({
 		type: "GET",
@@ -229,14 +200,12 @@ function checkForRebooting() {
 	});
 }
 </script>
-
 <div id="content">
   	<h1>Troubleshooting > Reset / Restore Gateway</h1>
 	<div id="educational-tip">
 		<p class="tip">Reset or restore the Gateway.</p>
 		<p class="hidden">If you're having problems with the Gateway, click <strong>RESET</strong> to restart or <strong>RESTORE</strong> to the default factory settings.</p>
 		<p class="hidden">CAUTION:<strong> RESTORE </strong>will erase all your settings (passwords, parental controls, firewall).</p>
-
 	</div>
 	<form>
 	<div class="module forms" id="restore">

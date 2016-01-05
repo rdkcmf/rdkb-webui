@@ -1,17 +1,14 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: port_triggering_add.php 3117 2009-10-15 20:23:13Z cporto $ -->
-
 <div id="sub-header">
 <?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Port Triggering Add - Advanced", "nav-port-triggering");
     $('#service_name').focus();
-
 	jQuery.validator.addMethod("port",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 65535);
 	}, "Please enter a port number less than 65536.");
@@ -23,7 +20,6 @@ $(document).ready(function() {
 		var tstartport=parseInt($("#to_start_port").val());
 		return this.optional(element) || value>=tstartport;
 	}, "Please enter a value more than or equal to Target Starting Port.");	
-	
     $("#pageForm").validate({
         rules: {
             service_name: {
@@ -62,9 +58,7 @@ $(document).ready(function() {
 		,unhighlight: function( element, errorClass, validClass ) {
 			$(element).closest(".form-row").find("input").removeClass(errorClass).addClass(validClass);
 		}
-
     });
-
     $("#btn-cancel").click(function() {
     	window.location.href = "port_triggering.php";
     });
@@ -119,24 +113,18 @@ $(document).ready(function() {
 	<form method="post" id="pageForm" action="">
 	<div class="module forms">
 		<h2>Edit Port Trigger</h2>
-
 		<div class="form-row odd">
 			<label for="service_name">Service Name:</label> <input type="text" class="text" value="<?php echo $port_trigger_value["service_name"]; ?>" id="service_name" name="service_name" />
 		</div>
-
 		<div class="form-row">
 			<label for="service_type">Service Type:</label>
 			<select id="service_type">
-
 			<?php $type = $port_trigger_value["type"]; ?>
-
 			<option value="tcp_udp" <?php if($type === 'BOTH') echo 'selected'; ?>>TCP/UDP</option>
 			<option value="tcp" <?php if($type === 'TCP') echo 'selected'; ?>>TCP</option>
 			<option value="udp" <?php if($type === 'UDP') echo 'selected'; ?>>UDP</option>
-			
 			</select>
 		</div>
-
 		<div class="form-row odd">
 			<label for="from_start_port">Trigger From Starting Port:</label>  <input type="text" class="text" value="<?php echo $port_trigger_value["from_start_port"]; ?>" id="from_start_port" name="from_start_port" />
 		</div>
@@ -153,9 +141,7 @@ $(document).ready(function() {
 			<input type="button" id="btn-save" value="Save" class="btn submit"/>
 			<input type="reset" id="btn-cancel" value="Cancel" class="btn alt reset"/>
 		</div>
-
 	</div> <!-- end .module -->
 	</form>
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

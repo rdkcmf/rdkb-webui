@@ -1,18 +1,14 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: wireless_network_configuration.usg.php 3159 2010-01-11 20:10:58Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <?php 
 	$ret = init_psmMode("Gateway > Connection > Wi-Fi", "nav-wifi-config");
 	if ("" != $ret){echo $ret;	return;}
 ?>
-
 <?php
 /*********************get WiFi parameters***************************/
 $wifi_param = array(
@@ -108,7 +104,6 @@ $wifi_param = array(
 	"SSID_BSSID6"	=> "Device.WiFi.SSID.6.BSSID",
 	);
 $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
-
 $radio_enable		= $wifi_value['Radio_Enable1'];
 $network_name		= $wifi_value['network_name1'];
 $feq_band			= $wifi_value['feq_band'];
@@ -167,11 +162,8 @@ $STBC_enabled1		= $wifi_value['STBC_enabled1'];
 $WMM_power_save1	= $wifi_value['WMM_power_save1'];
 $enableWMM1			= $wifi_value['enableWMM1'];
 $possible_channels1	= $wifi_value['possible_channels1'];
-
 $DFS_Support1 = "false" ; //Remove/disable DFS channels, DFS_Support1 1-supported 0-not supported
-
 $support_mode_5g = $wifi_value['support_mode_5g'];
-
 /**********************get WPS status, manual-disabled or auto-disabled?*******************************/
 // $ssidsWPS			= explode(",", getInstanceIds("Device.WiFi.SSID."));
 $ssidsWPS			= explode(",", "1,2");	//Currently, only SSID.1(2.4G) and SSID.2(5G) are involved with WPS
@@ -180,7 +172,6 @@ $wps_pin		= "";
 $wps_method		= "PushButton";
 $f_e_ssid		= "1";
 // $wps_enabled	= "true";
-
 //get the first WPS enabled SSID, in principle all WPS should be enabled or disabled simultaneously
 foreach ($ssidsWPS as $i){
 	if ("true" == $wifi_value['WPS_Enable'.$i]){
@@ -191,7 +182,6 @@ foreach ($ssidsWPS as $i){
 		break;
 	}
 }
-
 //if wps_config is false, then show WPS disabled, and do not allow to enable it
 $wps_config = "false";
 foreach ($ssidsWPS as $i){
@@ -209,7 +199,6 @@ foreach ($ssidsWPS as $i){
 		}
 	}
 }
-
 if ($_SESSION['_DEBUG']){
 	$wps_config = "true";
 	$radio_enable = "true";
@@ -267,13 +256,10 @@ if ($_SESSION['_DEBUG']){
 	$support_mode_5g 	= "a,n,ac";
 	// $support_mode_5g 	= "a,n";
 }
-
 if ("1-11"==$possible_channels)
 $possible_channels = "1,2,3,4,5,6,7,8,9,10,11";
-
 // SSID 1,2 for Private, 3,4 for Home Security, 5,6 for Hot Spot, HotSpot share the same SSID as a service set
 //$ssids 		= explode(",", getInstanceIds("Device.WiFi.SSID.")); this will return all 16
-
 // Hardcoded for XB3-1.6
 if ("mso" != $_SESSION["loginuser"]) {
 	$ssids	= explode(",", "1,2");
@@ -285,51 +271,36 @@ else {
 		unset($ssids[5]);
 		unset($ssids[4]);
 	}
-
 	if(strstr($wifi_value['AccessPoint_Enable4'], "false")) unset($ssids[3]);
 }
-
 /*- In bridge mode don't show 'Mac filter settings ' -*/
 	if(strstr($_SESSION["lanMode"], "bridge-static")){
 		unset($ssids[1]);
 		unset($ssids[0]);
 	}
-
 ?>
-
-
 <style>
 .forms .readonlyLabel {
 	margin: 4px 40px;
 }
-
 #content {
 	display: none;
 }
-
 </style>
- 
 <script type="text/javascript">
-
 var G_radio_enable	= <?php echo ($radio_enable === "true" ? "true" : "false"); ?>;
 var G_radio_enable1	= <?php echo ($radio_enable1 === "true" ? "true" : "false"); ?>;
 var G_wps_enabled	= <?php echo ($wps_enabled === "true" ? "true" : "false"); ?>;
 var G_wps_method	= "<?php echo $wps_method; ?>";
-
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > WiFi", "nav-wifi-config");
-
     var isBridge = "<?php echo $_SESSION["lanMode"]; ?>";
-
-
     //Disable all the MAC filter options in user admin mode if bridge mode is enabled
     if (isBridge == 'bridge-static') {       
-
         $('.div_private_wifi *').addClass('disabled');
         $('.div_private_wifi .btn').click(function(e) {
             e.preventDefault();
         });
-
 	if ("mso" != "<?php echo $_SESSION["loginuser"]; ?>"){
 		$("#mac_admin").addClass('disabled');
 		$("#mac_ssid").addClass('disabled').prop('disabled',true);
@@ -339,9 +310,7 @@ $(document).ready(function() {
 		$("#add_manual").addClass('disabled').prop("disabled", true);
 		$("#save_filter").addClass('disabled').prop("disabled", true);
 	}
-
     };
-
 	$("#radio24_switch").radioswitch({
 		id: "radio24-switch",
 		radio_name: "at_a_glance",
@@ -382,7 +351,6 @@ $(document).ready(function() {
 		title_off: "Disable WPS PIN",
 		state: G_wps_method !== "PushButton" ? "on" : "off"
 	});
-
 	//DFS_Support1 1-supported 0-not supported
 	if("<?php echo $DFS_Support1;?>" == "true"){
 		if("<?php echo $channel_number1;?>" >= 52 && "<?php echo $channel_number1;?>" <= 140 ) {
@@ -393,19 +361,16 @@ $(document).ready(function() {
 	} else {
 		$('[name="DFS_Channel_Selection"]').prop("disabled", true);
 	}
-	
 	if("<?php echo $DCS_Supported;?>" == "true"){
 		$('[name="DCS_Channel_Selection"]').prop("disabled", false);		
 	} else {
 		$('[name="DCS_Channel_Selection"]').prop("disabled", true);
 	}
-	
 	if("<?php echo $DCS_Supported1;?>" == "true"){
 		$('[name="DCS_Channel_Selection1"]').prop("disabled", false);		
 	} else {
 		$('[name="DCS_Channel_Selection1"]').prop("disabled", true);
 	}
-
     $("[name='channel']").change(function() {
 		if($("#channel_automatic").is(":checked")) {
 			document.getElementById('channel_number').disabled = true;
@@ -420,7 +385,6 @@ $(document).ready(function() {
 			$("#auto_channel_number").hide();
 		}
 	}).trigger("change");
-	
     $("[name='channel1']").change(function() {
 		if($("#channel_automatic1").is(":checked")) {
 			document.getElementById('channel_number1').disabled = true;
@@ -433,7 +397,6 @@ $(document).ready(function() {
 			$("#auto_channel_number1").hide();
 		}
 	}).trigger("change");
-
     	$("#wireless_mode").change(function() {
 		if($(this).val() == "b,g,n") {
 			jConfirm(
@@ -454,7 +417,6 @@ $(document).ready(function() {
 			$("#operation_mode").prop("disabled", true);
 		}
 	});
-	
 	if("n"=='<?php echo $wireless_mode; ?>') {
 		$("#mixed_mode").prop("checked", true);
 		$("#operation_mode").prop("disabled", false);
@@ -463,7 +425,6 @@ $(document).ready(function() {
 		$("#mixed_mode").prop("checked", true);
 		$("#operation_mode").prop("disabled", true);
 	}
-
     $("#wireless_mode1").change(function() {
 		// for green field (no mixed radio mode)
 		if($("#wireless_mode1").val().indexOf(",") == -1) {
@@ -475,11 +436,9 @@ $(document).ready(function() {
 			$("#operation_mode1").prop("disabled", true);
 		}
 	}).trigger("change");
-	
     $("#channel_number").change(function() {
 		show_extch(document.getElementById("channel_number").value);
 	}).trigger("change");
-	
 	$("[name='channel_bandwidth']").change(function() {
 		if ($("#channel_bandwidth20").prop("checked")) {
 			$('div [id*="Ext"]').prop("disabled", true);
@@ -488,11 +447,9 @@ $(document).ready(function() {
 			$('div [id*="Ext"]').prop("disabled", false);
 		}
 	}).trigger("change");
-	
 	$("[name='channel_bandwidth1']").change(function() {
 		//enable all channel first
 		$("#channel_number1 option").prop("disabled", false);
-		
 		//disable some channel as per extension channel when NOT 20MHz in 5G (2.4G able to set channel and extension channel together)
 		if (!$("#channel_bandwidth201").prop("checked")) {
 			//40MHz
@@ -512,7 +469,6 @@ $(document).ready(function() {
 			$("#channel_number1").find("[value='165']").prop("disabled", true).prop("selected", false);
 		}
 	}).trigger("change");
-	
 	$("#pair_method_form").validate({
 		debug: true,
 		rules: {
@@ -532,32 +488,25 @@ $(document).ready(function() {
 			}
 		}
 	});
-
     $("#pin_switch").change(function(e, skipSave) {
 		var wps_method		= $(this).radioswitch("getState").on ? "PushButton,PIN" : "PushButton";
-
 		if ($("#wps_switch").radioswitch("getState").on === false) {
 			$(this).radioswitch("doSwitch", G_wps_method == "PushButton,PIN" ? "on" : "off").radioswitch("doEnable", false);
 			return;
 		}			
-		
 		if (wps_method != "PushButton") {
 			$("#div_method_pin input").prop("disabled", false);
 		}
 		else {
 			$("#div_method_pin input").prop("disabled", true);
 		}
-		
 		document.getElementById('pair_method_push').checked = true;
-
 		if (!skipSave) {
 			save_enable("wps_method");
 		}
 	});	
-
     $("#wps_switch").change(function(e, skipSave) {
 		var wps_enabled		= $(this).radioswitch("getState").on;
-
 		if (wps_enabled) {
 			$("#pair_method_form *").removeClass("disabled").prop("disabled", false);
 			$("#pin_switch").radioswitch("doEnable", true).trigger("change", [true]);
@@ -566,16 +515,12 @@ $(document).ready(function() {
 			$("#pair_method_form *").addClass("disabled").prop("disabled", true);
 			$("#pin_switch").radioswitch("doEnable", false);
 		}
-
 		if (!skipSave) {
 			save_enable("wps_enabled");
 		}
 	});	
-
 	$("#wps_switch").trigger("change", [true]);
-
 	// do not detect ACL for WPS at this time 0509
-	
 /* 	$("#filtering_mode").change(function() {
 			if ($("#filtering_mode").val()!="allow_all" && ("1"==$("#mac_ssid").val() || "2"==$("#mac_ssid").val()))
 			{
@@ -589,45 +534,36 @@ $(document).ready(function() {
 				});
 			}	
 	}); */
-
 	var doOnce = true;
-
     $("#mac_ssid").change(function() {
 		var ssid_number		= $("#mac_ssid").attr("value");
-		
 		var mac_ssid_GET	= "<?php echo $_GET['mac_ssid'];?>";
 		if(doOnce && mac_ssid_GET) {
 			ssid_number	= mac_ssid_GET;
 			$("#mac_ssid").val(mac_ssid_GET);
 			doOnce = false;
 		}
-
 		var jsConfig 	=	'{"ssid_number":"'+ssid_number+'", "target":"'+"mac_ssid"+'"}';	
-		
 		//jProgress('This may take several seconds...', 60);
 		$("#mac_admin_temp, #mac_admin").toggle();
-
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_wireless_network_configuration.php",
 			data: { configInfo: jsConfig },
 			success: function(msg) {
 				$("#filtering_mode").attr("value", msg.filtering_mode);
-				
 				//clear the previous filter_table when ssid changed
 				$("#filter_table > tbody").empty();
 				for (var i=0; i < msg.ft.length; i++)
 				{
 					add_row("filter_table", -1, msg.ft[i][0], msg.ft[i][1]);
 				}
-				
 				//clear the previous auto_table when ssid changed
 				$("#auto_table > tbody").empty();
 				for (var i=0; i < msg.at.length; i++)
 				{
 					add_row("auto_table", -1, msg.at[i][0], msg.at[i][1]);
 				}
-				
 				//jHide();
 				$("#mac_admin_temp, #mac_admin").toggle();
 			},
@@ -638,9 +574,7 @@ $(document).ready(function() {
 			}
 		});
 	}).trigger("change");
-
 	//==disable some radio mode as per security mode (configured on other page)==
-	
 	var sec_mod = document.getElementById("private_wifi").rows[1].cells[3].innerHTML;
 	// if (sec_mod.indexOf("WEP")!=-1 || sec_mod.indexOf("TKIP")!=-1){
 		// $("#wireless_mode option[value='n']").prop("disabled", true);
@@ -649,7 +583,6 @@ $(document).ready(function() {
 	if (sec_mod.indexOf("WEP")!=-1){
 		$("#wireless_mode option[value='n']").prop("disabled", true);
 	}
-
 	var sec_mod1 = document.getElementById("private_wifi").rows[2].cells[3].innerHTML;
 	// if (sec_mod1.indexOf("WEP")!=-1 || sec_mod1.indexOf("TKIP")!=-1){
 		// $("#wireless_mode1").find('[value="n"],[value="ac"],[value="n,ac"]').prop("disabled", true);
@@ -658,12 +591,10 @@ $(document).ready(function() {
 	if (sec_mod1.indexOf("WEP")!=-1){
 		$("#wireless_mode1").find('[value="n"],[value="ac"],[value="n,ac"]').prop("disabled", true);
 	}
-	
 	if ($("#public_wifi").find("tr").length <= 1)
 	{
 		$("#no_public_wifi").show();
 	}
-
 	// remove sections as per loginuser, content must be hidden before doc ready
 	if ("mso" != "<?php echo $_SESSION["loginuser"]; ?>"){
 		$(".div_enable_radio").remove();
@@ -674,7 +605,6 @@ $(document).ready(function() {
 	}
 	// xb3_R1_4: just for now, remove public WiFi
 	// $(".div_public_wifi").remove();
-
 	if ("false"=="<?php echo $wps_config;?>"){
 	/*
 		$(".wps_config").html('<h2>Wi-Fi Client Setup Configuration(WPS)</h2>\
@@ -690,12 +620,10 @@ $(document).ready(function() {
 		$(".wps_config *").not(".radioswitch_cont, .radioswitch_cont *").unbind("click").prop("disabled", true).addClass("disabled").removeClass("selected");
 		$(".wps_config .radioswitch_cont").radioswitch("doEnable", false);
 	}
-	
 	// disable NOT 20MHz channel if 165
 	// Warning for DFS channel (52-140)
 	$("#channel_number1").change(function(){
 		var channel = $("#channel_number1 option:selected").val();
-
 		if(channel >= 52 && channel <= 140 ) {
 			jConfirm(
 				"WARNING:<br/> You are selecting a Dynamic Frequency Selection (DFS) Channel (52-140). Some Wi-Fi devices do not support DFS channels in the 5 GHz band. For those devices that do not support DFS channels, the 5 GHz Wi-Fi Network Name (SSID) will not be displayed on the list of available networks. Do you wish to continue?"
@@ -706,7 +634,6 @@ $(document).ready(function() {
 					}
 			});
 		}
-
 		//DFS_Support1 1-supported 0-not supported
 		if("<?php echo $DFS_Support1;?>" == "true"){
 			if($("#channel_number1 option:selected").val() >= 52 && $("#channel_number1 option:selected").val() <= 140) {
@@ -717,7 +644,6 @@ $(document).ready(function() {
 		} else {
 			$('[name="DFS_Channel_Selection"]').prop("disabled", true);
 		}
-
 		if ("165" == $(this).val()){
 			$('[name="channel_bandwidth1"]:not([value="20MHz"])').prop("disabled", true);
 		}
@@ -725,7 +651,6 @@ $(document).ready(function() {
 			$('[name="channel_bandwidth1"]').prop("disabled", false);
 		}
 	});
-
 	// disable NOT 20MHz channel if 165	
 	if ( "true" != "<?php echo $channel_automatic1; ?>"  && "165" == "<?php echo $channel_number1; ?>"){
 		$('[name="channel_bandwidth1"]:not([value="20MHz"])').prop("disabled", true);
@@ -733,12 +658,9 @@ $(document).ready(function() {
 	else{
 		$('[name="channel_bandwidth1"]').prop("disabled", false);
 	}
-
 	// now we can show target content
 	$("#content").show();
-
 });
-
 function set_config(jsConfig)
 {
 	// alert(jsConfig);
@@ -757,7 +679,6 @@ function set_config(jsConfig)
 		}
 	});
 }
-
 function show_extch(ch)
 {
 	for (var i=0; i<12; i++)
@@ -772,7 +693,6 @@ function show_extch(ch)
 		}
 	}
 }
-
 function check_add()
 {
 	var name = $("#device_name").val();
@@ -783,7 +703,6 @@ function check_add()
 		  +":"+$("#mac_address_5").attr("value")
 		  +":"+$("#mac_address_6").attr("value");
 	var sHex = $("#mac_address_1").attr("value");
-		  
 	if ("" == name.replace(/\s/g, '')) {
 		return ["ERROR", "Please enter device name!"];
 	}
@@ -792,7 +711,6 @@ function check_add()
 		|| (parseInt(sHex,16)%2 != 0) ) {
 		return ["ERROR", "Please enter valid MAC address! \n First byte must be even. \n Each character must be [0-9a-fA-F]."];
 	}
-	
 	$("#device_name").val("");
 	$("#mac_address_1").val("");
 	$("#mac_address_2").val("");
@@ -800,10 +718,8 @@ function check_add()
 	$("#mac_address_4").val("");
 	$("#mac_address_5").val("");
 	$("#mac_address_6").val("");
-
 	return [name, addr];
 }
-
 function adjust_row(tid)
 {
 	// var tb = document.getElementById(tid);
@@ -816,13 +732,11 @@ function adjust_row(tid)
 			// tr.cells[0].innerHTML = i;
 		// }
 	// }
-
 	var i=1;
 	$("#"+tid+" > tbody > tr").each(function(){
 		if ("filter_table" == tid){
 			$(this).find("td:eq(0)").text(i);
 		}
-		
 		if (i++ % 2){
 			$(this).addClass("odd");
 		}
@@ -831,12 +745,10 @@ function adjust_row(tid)
 		}	
 	});
 }
-
 function add_row(tid, idex, name, addr) 
 {
 	var tb  = document.getElementById(tid);
 	var len = tb.rows.length;
-	
 	if (len == -1) {
 		idex = tb.rows.length;
 	}
@@ -844,7 +756,6 @@ function add_row(tid, idex, name, addr)
 		jAlert("No more than 16 devices can be added!");
 		return;
 	}
-	
 	if ("filter_table" == tid) {
 		for (var i=1; i < tb.rows.length; i++) {
 			if (addr == tb.rows[i].cells[2].innerHTML) {
@@ -852,7 +763,6 @@ function add_row(tid, idex, name, addr)
 				return;
 			}
 		}
-
 		$("#filter_table").append('<tr><td headers="acl-Index">'+idex+'</td><td headers="acl-Name">'+name+'</td><td headers="acl-MAC">'+addr+
 		'</td><td  headers="acl-Blank" class="delete"><input class="btn" type="button" value="   X   " onclick="del_row(this)"/></td></tr>');
 	}
@@ -863,14 +773,11 @@ function add_row(tid, idex, name, addr)
 				return;
 			}
 		}
-
 		$("#auto_table").append('<tr><td headers="auto-Name">'+name+'</td><td headers="auto-MAC">'+addr+
 		'</td><td headers="auto-Blank" class="edit"><input class="btn" type="button" value="ADD" onclick="add_auto(this)"/></td></tr>');
 	}
-	
 	adjust_row(tid);
 }
-
 function del_row(row) 
 {
 	jConfirm(
@@ -884,16 +791,13 @@ function del_row(row)
 			}
 		}
 	);
-
 }
-
 function add_auto(row)
 {
 	var idex = row.parentNode.parentNode.rowIndex;
 	var tr = document.getElementById("auto_table").rows[idex];
 	add_row("filter_table", -1, tr.cells[0].innerHTML, tr.cells[1].innerHTML);
 }
-
 function add_manual()
 {
 	var ret = check_add();
@@ -906,35 +810,28 @@ function add_manual()
 		add_row("filter_table", -1, ret[0], ret[1]);
 	}
 }
-
 function save_filter()
 {
 	var ssid_number	=	$("#mac_ssid").attr("value");
 	var ft = new Array();
 	// var tb = document.getElementById("filter_table");
 	var filtering_mode = $("#filtering_mode").attr("value");
-	
 	// for (var i=1, j=0; i < tb.rows.length; i++, j++)
 	// {
 		// var tr = tb.rows[i];
 		// ft[i-1]=[tr.cells[1].innerHTML, tr.cells[2].innerHTML];
 	// }
-	
 	var i=0;
 	$("#filter_table > tbody > tr").each(function(){
 		ft[i++]=[$(this).find("td:eq(1)").text(), $(this).find("td:eq(2)").text()];
 	});
-	
 	//notice the "''" with array var	
 	var jsConfig 	=	'{"ssid_number":"'+ssid_number+'", "filtering_mode":"'+filtering_mode+'", "ft":'+JSON.stringify(ft)+', "target":"'+"save_filter"+'"}';	
-	
 	set_config(jsConfig);
 }
-
 function save_config(ssid_number, sub_target)
 {
 	var suf = (("2"==ssid_number) ? "1" : "");
-	
 	var wireless_mode 	= $("#wireless_mode"+suf).attr("value");
 	var transmit_power 	= $("#transmit_power"+suf).attr("value");
 	var channel_automatic 	= $("#channel_automatic"+suf).prop("checked");
@@ -955,7 +852,6 @@ function save_config(ssid_number, sub_target)
 	var HT_RxStream 	= $("#HT_RxStream"+suf).attr("value");
 	var WMM_power_save 	= $("#WMM_power_save"+suf).prop("checked");
 	var STBC_enabled 	= $("#STBC_enabled"+suf).prop("checked");
-
 	var jsConfig = '{"wireless_mode":"'+wireless_mode+'", "transmit_power":"'+transmit_power+'", "channel_automatic":"'+channel_automatic
 					+'", "channel_number":"'+channel_number+'", "BG_protect_mode":"'+BG_protect_mode
 					+'", "IGMP_Snooping":"'+IGMP_Snooping+'", "operation_mode":"'+operation_mode
@@ -966,17 +862,14 @@ function save_config(ssid_number, sub_target)
 					+'", "HT_TxStream":"'+HT_TxStream+'", "HT_RxStream":"'+HT_RxStream
 					+'", "WMM_power_save":"'+WMM_power_save+'", "STBC_enabled":"'+STBC_enabled
 					+'", "target":"'+"save_config"+'", "ssid_number":"'+ssid_number+'", "sub_target":"'+sub_target+'"}';
-		
 	set_config(jsConfig);
 }
-
 function save_enable(sub_target)
 {
 	var radio_enable	= $("#radio24_switch").radioswitch("getState").on;
 	var ssid_number		= $("#wps_ssid").attr("value");
 	var wps_enabled		= $("#wps_switch").radioswitch("getState").on;
 	var wps_method		= $("#pin_switch").radioswitch("getState").on ? "PushButton,PIN" : "PushButton";
-
 	if ("radio_enable" == sub_target) {
 		ssid_number = "1";
 		if (G_radio_enable == radio_enable) return;
@@ -997,13 +890,10 @@ function save_enable(sub_target)
 		if (G_wps_method == wps_method || !wps_enabled) return;
 		G_wps_method = wps_method;
 	}
-	
 	var jsConfig = '{"radio_enable":"'+radio_enable+'", "wps_enabled":"'+wps_enabled+'", "wps_method":"'+wps_method
 					+'", "target":"'+"save_enable"+'", "sub_target":"'+sub_target+'", "ssid_number":"'+ssid_number+'"}';	
-	
 	set_config(jsConfig);	
 }
-
 function validChecksum(PIN)
 {
 	if (PIN.search(/^(\d{4}|\d{8}|\d{4}[\-|\s]\d{4})$/) != 0) return false;
@@ -1020,23 +910,18 @@ function validChecksum(PIN)
 	accum += 1 * (parseInt(PIN / 1) % 10);
 	return (0 == (accum % 10));
 }
-
-
 function pair_client()
 {
 	var ssid_number	=	$("#wps_ssid").attr("value");
 	var pair_method =	$('[name="pair_method"]:checked').attr("value");
 	var pin_number = 	$("#pin_number").attr("value");
-	
 	var jsConfig = '{"ssid_number":"'+ssid_number+'", "pair_method":"'+pair_method+'", "pin_number":"'+pin_number
 					+'", "target":"'+"pair_client"+'"}';	
-	
 	if ("PushButton"!=pair_method && !validChecksum(pin_number))
 	{
 		jAlert("Invalid PIN!");
 		return;
 	}
-	
 	jProgress('This may take several seconds...', 60);
 	$.ajax({
 		type: "POST",
@@ -1060,19 +945,15 @@ function pair_client()
 		}
 	});	
 }
-
 function pair_cancel()
 {
 	var ssid_number		= $("#wps_ssid").attr("value");
 	var wps_enabled		= $("#wps_switch").radioswitch("getState").on;
-	
 	var jsConfig = '{"ssid_number":"'+ssid_number+'", "target":"'+"pair_cancel"+'"}';	
-
 	if (!wps_enabled) {
 		jAlert("Please enable WPS first!");
 		return;
 	}	
-	
 	jConfirm(
 		"Are you sure you want to cancel WPS progress?"
 		,"Confirm:"
@@ -1096,9 +977,7 @@ function pair_cancel()
 		}
 	);	
 }
-
 </script>
-
 <div id="content">
 <h1>Gateway > Connection > Wi-Fi</h1>
 <div id="educational-tip">
@@ -1112,21 +991,18 @@ function pair_cancel()
 	<p class="hidden" style="position:relative; top:-20px ; left: 2px;"><strong>Auto-Learned Wireless Devices</strong> are currently connected to the Gateway. </p>
 	<p class="hidden" style="position:relative; top:-20px ; left: 2px;"><strong>Manually-Added Wireless Devices:</strong> Enter a unique name and MAC address for the wireless device you want to manually add, then click <strong>ADD.</strong> </p>
 </div>
-
 <div class="module div_enable_radio">
 	<div class="select-row">
 	<span class="readonlyLabel label">Wi-Fi Radio(2.4 GHz)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>
 	<span id="radio24_switch"></span>
 	</div>
 </div>
-
 <div class="module div_enable_radio">
 	<div class="select-row">
 	<span class="readonlyLabel label">Wi-Fi Radio(5 GHz)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>
 	<span id="radio5_switch"></span>
 	</div>
 </div>
-
 <div class="module data data div_private_wifi">
 	<h2>Private Wi-Fi Network</h2>
 	<table class="data" id="private_wifi" summary="Private Wi-Fi Network">
@@ -1156,8 +1032,6 @@ function pair_cancel()
 		<a href="wireless_network_configuration_wps.php" class="btn">Add Wi-Fi Protected Setup (WPS) Client</a>
 	</div>
 </div> <!-- end .module -->
-
-
 <div class="module data data div_public_wifi">
 	<h2>Public Wi-Fi Network</h2>
 	<table class="data" id="public_wifi" summary="Public Wi-Fi Network">
@@ -1169,12 +1043,10 @@ function pair_cancel()
 			<th id="public-Security" width="30%" class="security">Security Mode</th>
 			<th id="public-Blank" width="10%" class="edit">&nbsp;</th>
 		</tr>
-
 		<?php
 		//$ssids 		= explode(",", getInstanceIds("Device.WiFi.SSID."));
 		$public_v	= array();
 		$odd 		= true;
-
 		foreach ($ssids as $i)
 		{
 			if (intval($i)<3 || intval($i)>6){		//SSID 1,2 for Private, 3,4 for Home Security, 5,6 for Hot Spot
@@ -1189,7 +1061,6 @@ function pair_cancel()
 				'secur'	=> encrypt_map($wifi_value['ModeEnabled'.$i], $wifi_value['EncrypMethod'.$i])
 				));
 		}
-
 		for ($j=0; $j<count($public_v); $j++)
 		{
 			echo '<tr class="'.(($odd=!$odd)?"odd":"even").'">';
@@ -1207,9 +1078,6 @@ function pair_cancel()
 		<p>There are no valid public Wi-Fi found!</p>
 	</div>
 </div>
-
-
-
 <div class="module data data div_radio_setting">
 	<h2>2.4GHz Wireless Basic Setting</h2>
 	<div class="form-row">
@@ -1258,9 +1126,6 @@ function pair_cancel()
 		</div>
 	</div>
 </div>
-
-
-
 <div class="module data data div_radio_setting">
 	<h2>2.4GHz Wireless Advanced Setting</h2><br/>
 	<div class="form-row">
@@ -1377,7 +1242,6 @@ function pair_cancel()
 		<option value="Auto" selected="selected">Auto</option>
 		</select>
 	</div>
-
 	<div class="form-row odd">
 		<label for="Aggregation_MSDU(A-MSDU)_disabled">Aggregation MSDU(A-MSDU)</label>
 		<input type="radio"  name="Aggregation_MSDU(A-MSDU)" value="disabled" id="Aggregation_MSDU(A-MSDU)_disabled" checked="checked" /><b>Disable</b>
@@ -1412,7 +1276,6 @@ function pair_cancel()
 		<option value="1" <?php if ("1"==$HT_RxStream) echo 'selected="selected"';?> >1</option>
 		</select>
 	</div>
-
 	<div class="form-row">
 		<label for="WMM_power_save">WMM Power Save:</label>
 		<input type="checkbox" id="WMM_power_save" name="WMM_power_save" <?php if ("true"==$WMM_power_save) echo 'checked="checked"';?> <?php if ("false"==$enableWMM) echo 'disabled="disabled"';?> /> 
@@ -1437,7 +1300,6 @@ function pair_cancel()
 		</div>
 	</div>
 </div>
-
 <div class="module data data div_radio_setting">
 	<h2>5GHz Wireless Basic Setting</h2>
 	<div class="form-row">
@@ -1492,9 +1354,6 @@ function pair_cancel()
 		</div>
 	</div>
 </div>
-
-
-
 <div class="module data data div_radio_setting">
 	<h2>5GHz Wireless Advanced Setting</h2><br/>
 	<div class="form-row odd" style="display:none;">
@@ -1607,14 +1466,12 @@ function pair_cancel()
 		</div>
 	</div>
 </div>
-
 <div class="module data" id="mac_admin_temp" style="display: none;">
 	<h2>MAC Filter Setting</h2>
 	<div>
 		<p>This may take several seconds...</p>
 	</div>
 </div>
-
 <div class="module data" id="mac_admin">
 	<h2>MAC Filter Setting</h2>
 	<div>
@@ -1640,7 +1497,6 @@ function pair_cancel()
 			<option value="deny"      id="deny">Deny</option>
 		</select>
 	</div>	
-	
 	<div class="form-row">
 		<p><strong>Wi-Fi Control List(up to 16 items)</strong></p>
 		<table class="data" id="filter_table" summary="Wi-Fi Control List">
@@ -1669,7 +1525,6 @@ function pair_cancel()
 				</tr>
 			</tfoot>
 		</table><br>
-
 		<p><strong>Auto-Learned Wi-Fi Devices</strong></p>
 		<table class="data" id="auto_table" summary="Auto-Learned Wi-Fi Devices">
 			<thead>
@@ -1695,7 +1550,6 @@ function pair_cancel()
 			</tfoot>
 		</table>
 		<br>
-
 		<p><strong>Manually-Added Wi-Fi Devices</strong></p>
 		<table class="wireless data" id="manual_table" summary="Manually-Added Wi-Fi Devices">
 			<thead>
@@ -1734,13 +1588,11 @@ function pair_cancel()
 			</tfoot>
 		</table>
 		<br>
-
 		<div class="form-row odd">
 			<p class="form-btn"><input type="submit" id="save_filter" value="SAVE FILTER SETTING" class="btn right" size="1" onclick="save_filter()"/></p>
 		</div>
 	</div>
 </div>			
-
 <div class="module forms enable div_wps_setting wps_config">
 	<h2>Wi-Fi Client Setup Configuration(WPS)</h2>
 	<div class="form-row"><p>You must enable WPS to connect your device to this device</p></div>
@@ -1778,7 +1630,6 @@ function pair_cancel()
 		<span id="pin_switch"></span>
 	</div>
 </div>
-
 <form id="pair_method_form">
 <div class="module data div_wps_setting wps_config" id="jjj">
 	<h2>Connect to your WPS-supported device</h2><br/>
@@ -1814,5 +1665,4 @@ function pair_cancel()
 </div>
 </form>
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); //sleep(3);?>

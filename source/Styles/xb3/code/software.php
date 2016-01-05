@@ -1,13 +1,10 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: software.php 3159 2010-01-11 20:10:58Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Gateway > Software", "nav-software");
@@ -51,6 +48,4 @@ $(document).ready(function() {
 		</div>
 	</div> <!-- end .module -->
 </div><!-- end #content -->
-
-
 <?php include('includes/footer.php'); ?>

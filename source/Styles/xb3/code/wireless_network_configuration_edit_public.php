@@ -1,27 +1,21 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: wireless_network_configuration_edit.php 3160 2010-01-11 23:10:33Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <?php
 $id		= isset($_GET['id']) ? $_GET['id'] : "5";
 $reset	= isset($_GET['reset']) ? $_GET['reset'] : "n";
 $rf		= (2 - intval($id)%2);	//1,3,5,7 == 1(2.4G); 2,4,6,8 == 2(5G)
 $hhs_enable 	= getStr("Device.DeviceInfo.X_COMCAST_COM_xfinitywifiEnable");
-
 $radio_freq = ($id%2)?"2.4":"5";
-
 if (("5"!=$id && "6"!=$id) || "true"!=$hhs_enable) {
 	if (!$_SESSION['_DEBUG'])
 	echo '<script type="text/javascript">alert("HotSpot function is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
 	exit(0);
 }
-
 if ("y" == $reset) {
 	//!!!!!!this is not DM in box, but the standard TR-181 DM in xml file!!!!!!
 	$gre_param = array(
@@ -38,7 +32,6 @@ if ("y" == $reset) {
 		"DHCPRemoteID"			=> "dmsb.hotspot.tunnel.1.EnableRemoteID",
 	);
 	$gre_value = getDefault('/fss/gw/usr/ccsp/config/bbhm_def_cfg.xml', $gre_param);
-	
 	$max_client			= $gre_value['max_client'];
 	$DSCPMarkPolicy 	= $gre_value['DSCPMarkPolicy']=="" ? "0" : $gre_value['DSCPMarkPolicy'];
 	$PrimaryRemoteEndpoint 	= $gre_value['PrimaryRemoteEndpoint'];
@@ -50,7 +43,6 @@ if ("y" == $reset) {
 	$ReconnectPrimary 	= $gre_value['ReconnectPrimary'];
 	$DHCPCircuitIDSSID 	= $gre_value['DHCPCircuitIDSSID']=="1" ? "true" : "false";
 	$DHCPRemoteID 		= $gre_value['DHCPRemoteID']=="1" ? "true" : "false";
-	
 	$wifi_param = array(
 		"radio_enable"		=> "eRT.com.cisco.spvtg.ccsp.Device.WiFi.Radio.SSID.$id.WLANEnable",
 		"network_name"		=> "eRT.com.cisco.spvtg.ccsp.Device.WiFi.Radio.SSID.$id.SSID",
@@ -63,7 +55,6 @@ if ("y" == $reset) {
 		"enableWMM"			=> "eRT.com.cisco.spvtg.ccsp.Device.WiFi.Radio.SSID.$id.WMMEnable",
 	);
 	$wifi_value = getDefault('/nvram/bbhm_cur_cfg.xml', $wifi_param);
-
 	$radio_enable		= $wifi_value['radio_enable']=="1" ? "true" : "false";
 	$network_name		= $wifi_value['network_name'];
 	$encrypt_mode		= "None";
@@ -92,7 +83,6 @@ else {
 		"Radio_".$rf."_Enable"	=> "Device.WiFi.Radio.$rf.Enable",
 	);
 	$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
-
 	$radio_enable		= $wifi_value['radio_enable'];
 	$network_name		= $wifi_value['network_name'];
 	$encrypt_mode		= $wifi_value['encrypt_mode'];
@@ -103,7 +93,6 @@ else {
 	$broadcastSSID 		= $wifi_value['broadcastSSID'];
 	$enableWMM		= $wifi_value['enableWMM'];
 	$max_client		= $wifi_value['max_client'];
-
 	$GRE_Tunnel_param = array(
 		"DSCPMarkPolicy" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.DSCPMarkPolicy",
 		"PrimaryRemoteEndpoint" => "Device.X_COMCAST-COM_GRE.Tunnel.1.PrimaryRemoteEndpoint",
@@ -117,7 +106,6 @@ else {
 		"DHCPRemoteID" 		=> "Device.X_COMCAST-COM_GRE.Tunnel.1.EnableRemoteID",
 	);
 	$GRE_Tunnel_value = KeyExtGet("Device.X_COMCAST-COM_GRE.Tunnel.1.", $GRE_Tunnel_param);
-
 	$DSCPMarkPolicy 	= $GRE_Tunnel_value["DSCPMarkPolicy"];
 	$PrimaryRemoteEndpoint 	= $GRE_Tunnel_value["PrimaryRemoteEndpoint"];
 	$SecondaryRemoteEndpoint = $GRE_Tunnel_value["SecondaryRemoteEndpoint"];
@@ -128,13 +116,11 @@ else {
 	$ReconnectPrimary 	= $GRE_Tunnel_value["ReconnectPrimary"];
 	$DHCPCircuitIDSSID 	= $GRE_Tunnel_value["DHCPCircuitIDSSID"];
 	$DHCPRemoteID 		= $GRE_Tunnel_value["DHCPRemoteID"];
-
 	//if Radio.{i}.Enable is false, ALL SSIDs belong to that radio shows disabled, else depends on SSID.{i}.Enable
 	if ("false" == $wifi_value["Radio_".$rf."_Enable"]){
 		$radio_enable = "false";
 	}
 }
-
 if ($_SESSION['_DEBUG']){
 	$radio_enable		= "true";
 	$network_name		= "xfinityWiFi";
@@ -157,18 +143,13 @@ if ($_SESSION['_DEBUG']){
 	$DHCPCircuitIDSSID 		= "true";
 	$DHCPRemoteID 			= "false";
 }
-
 $RemoteEndpointsV4	= array();
 $RemoteEndpointsV6	= array();
-
 array_push($RemoteEndpointsV4, $PrimaryRemoteEndpoint);
 array_push($RemoteEndpointsV4, $SecondaryRemoteEndpoint);
-
 array_push($RemoteEndpointsV6, $PrimaryRemoteEndpoint);
 array_push($RemoteEndpointsV6, $SecondaryRemoteEndpoint);
-
 ?>
-
 <style>
 .error{
 	display: inline;
@@ -177,12 +158,10 @@ array_push($RemoteEndpointsV6, $SecondaryRemoteEndpoint);
 	margin: 6px 40px 0 0;
 }
 </style>
-
 <script type="text/javascript">
 //global ssid number value
 var ssid_number = "<?php echo $id; ?>";
 var radio_freq	= (parseInt(ssid_number)%2)?"2.4":"5";
-
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > Wireless > Edit "+radio_freq+" GHz", "nav-wifi-config");
 	$("#wireless_network_switch").radioswitch({
@@ -212,19 +191,15 @@ $(document).ready(function() {
 		title_off: "Disable Remote-ID",
 		state: <?php echo ($DHCPRemoteID === "true" ? "true" : "false");?> ? "on" : "off"
 	});
-
 	init_form();
-
     $("#security").change(function() {
 		$("#add_with").prop("disabled", ($("#security").val().indexOf("WPA")==-1));
 		$("#netPassword-footnote").text($("option:selected", $(this)).attr("title"));
 		$("#network_password").prop("disabled", ($("#add_with").val()=="None" && $("#security").val().indexOf("WEP")==-1) || ($("#add_with").val()=="None"));
     });
-		
     $("#add_with").change(function() {
 		$("#network_password").prop("disabled", ($("#add_with").val()=="None" && $("#security").val().indexOf("WEP")==-1) || ($("#add_with").val()=="None"));
     });
-	
 	/*$("#password_show").change(function() {
 		if ($("#password_show").is(":checked")) {
 			document.getElementById("password_field").innerHTML = 
@@ -241,7 +216,6 @@ $(document).ready(function() {
 			$("#network_password").prop("disabled", false);
 		}
 	});*/
-	
     $("#wireless_network_switch").change(function() {
 		if ($(this).radioswitch("getState").on === false) {
 			$(":input:not('.btn')").not(".radioswitch_cont input").prop("disabled", true);
@@ -254,7 +228,6 @@ $(document).ready(function() {
 			$("#security").change();
 		}
 	}).trigger("change");
-
 /*
  *  Manage password field: open wep networks don't use passwords
  */
@@ -276,18 +249,14 @@ $(document).ready(function() {
     $.validator.addMethod("ssid_name", function(value, element, param) {
 		return !param || /^[a-zA-Z0-9\-_.]{3,31}$/i.test(value);
 	}, "3 to 31 characters combined with alphabet, digit, underscore, hyphen and dot");
-
     // XFSETUP HOME xfinitywifi cablewifi
     // a term starting with the following combination of text in uppercase or lowercase should not be allowed
-
     $.validator.addMethod("not_XFSETUP", function(value, element, param) {
 		return value.toLowerCase().indexOf("xfsetup") != 0;
 	}, 'SSID starting with "XFSETUP" is reserved !');
-
     $.validator.addMethod("not_HOME", function(value, element, param) {
 		return value.toLowerCase().indexOf("home") != 0;
 	}, 'SSID starting with "HOME" is reserved !');
-
 /*
 wep 64 ==> 5 Ascii characters or 10 Hex digits
 wep 128 ==> 13 Ascii characters or 26 Hex digits
@@ -366,7 +335,6 @@ wpa2psk ==> 8 to 63 Ascii characters
 			}		
 		}
     });	
-
 	$("#restore_settings").click(function(){
 		jConfirm(
 			"This will change your settings in this page to default values. Are you sure you want to change the settings to the default values? (take effect immediately)"
@@ -383,7 +351,6 @@ wpa2psk ==> 8 to 63 Ascii characters
 			}
 		);
 	});
-	
 	$("#save_settings").click(function(){	
 		var security 		= $("#security").val().split(".");
 		var encrypt_mode 	= security[0];
@@ -394,7 +361,6 @@ wpa2psk ==> 8 to 63 Ascii characters
 		}
 		var PrimaryRemoteEndpoint = $("#RemoteEndpointsV4_1").val();
 		var SecondaryRemoteEndpoint = $("#RemoteEndpointsV4_2").val();
-		
 		if($("#pageForm").valid()) {
 			jProgress('This may take several seconds...', 60);
 			$.ajax({
@@ -437,18 +403,15 @@ wpa2psk ==> 8 to 63 Ascii characters
 			});
 		}
 	});
-	
 	//do apply right after press "restore default" button
 	if ("y" == "<?php echo $reset; ?>"){
 		$("#save_settings").click();
 	}
 });
-
 function init_form() {
 	//re-style each div
 	$('#pageForm > div').removeClass("odd");
 	$('#pageForm > div:visible:odd').addClass("odd");
-
 	var network_name 		= "<?php echo $network_name; ?>";
 	var encrypt_mode 		= "<?php echo $encrypt_mode; ?>";
 	var encrypt_method 		= "<?php echo $encrypt_method; ?>";
@@ -470,7 +433,6 @@ function init_form() {
 	KeepAliveFailInterval	= KeepAliveFailInterval/60;
 	var ReconnectPrimary 		= "<?php echo $ReconnectPrimary; ?>";
 	ReconnectPrimary = ReconnectPrimary/3600; //zqiu: translate it to hrs
-	
 	var sec_list = new Array(
 		["Open (risky)",	"None",				"Open networks do not have a password."],
 		["WEP 64 (risky)",	"WEP-64",			"WEP 64 requires a 5 ASCII character or 10 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."],
@@ -481,13 +443,11 @@ function init_form() {
 		["WPA2 (AES)",		"WPA2.AES",			"WPA2 requires a 8-63 ASCII character password."],
 		["WPA2 (TKIP/AES)",	"WPA2.AES+TKIP",	"WPA2 requires a 8-63 ASCII character password."],
 		["WPAWPA2(TKIP/AES) (recommended)", 	"WPA-WPA2.AES+TKIP", "WPA2 requires a 8-63 ASCII character password."]);
-
 	var add_list = new Array(
 		["NONE",		"None", 		""],
 		["PSK",			"Personal", 	""],
 		["EAP/DOT1x",	"Enterprise", 	""],
 		["DOT1x-OPEN",	"None", 		""]);
-		
 	//soft-gre
 	$("#max_client").val(max_client);
 	$("#DSCPMarkPolicy").val(DSCPMarkPolicy);
@@ -500,12 +460,10 @@ function init_form() {
 	$("#KeepAliveThreshold").val(KeepAliveThreshold);
 	$("#KeepAliveFailInterval").val(KeepAliveFailInterval);
 	$("#ReconnectPrimary").val(ReconnectPrimary);
-
 	//HomeSecurity and HotSpot Common Part
 	$("#network_name").val(network_name);
 	$("#broadcastSSID").prop("checked", ("true"==broadcastSSID));
 	$("#enableWMM").prop("checked", ("true"==enableWMM));
-	
 	//security mode
 	var sec_val = encrypt_mode;
 	if (encrypt_mode.indexOf("WPA-WPA2")!=-1){
@@ -526,7 +484,6 @@ function init_form() {
 	else{
 		$("#security").val(sec_val);
 	}
-	
 	//addtional mode
 	var add_val = "None";
 	if (encrypt_mode.indexOf("Personal")!=-1){
@@ -541,9 +498,7 @@ function init_form() {
 	$("#add_with").val(add_val);
 	// disable radius server at this point
 	$("#add_with").find("[value='Enterprise']").prop("disabled", true);
-	
 	$("#security").change();
-
 	//wifi password
 	var network_password = password_wpa;
 	if ("WEP-64"==encrypt_mode){
@@ -553,7 +508,6 @@ function init_form() {
 		network_password = password_wep_128;
 	}		
 	$("#network_password").val(network_password);
-	
 	//for UI-4.0, remove some security options
     if ("2.4"==radio_freq){
         $("#security").find("[value='WPA.TKIP'],[value='WPA.AES'],[value='WPA2.TKIP'],[value='WPA2.AES+TKIP']").remove();
@@ -562,9 +516,7 @@ function init_form() {
         $("#security").find("[value='WPA.TKIP'],[value='WPA.AES'],[value='WPA2.TKIP'],[value='WPA2.AES+TKIP'],[value='WEP-64'],[value='WEP-128']").remove();
     }   
 }
-
 </script>
-
 <style type="text/css">
 label{
 	margin-right: 10px !important;
@@ -576,7 +528,6 @@ label{
 	margin-left: -30px !important;
 }
 </style>
-
 <div id="content">
 	<h1>Gateway > Connection >  Wi-Fi > Edit <?php echo $radio_freq;?> GHz</h1>
 	<div id="educational-tip">

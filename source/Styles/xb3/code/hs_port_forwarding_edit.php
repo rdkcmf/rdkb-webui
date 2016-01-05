@@ -1,13 +1,10 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php') ?>
 <!-- $Id: port_triggering_add.php 3117 2009-10-15 20:23:13Z cporto $ -->
-
 <div id="sub-header">
 <?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php
-
 $i = $_GET['id'];
 $portMapping_param = array(
         "service_name" 		=> "Device.NAT.PortMapping.$i.Description",
@@ -26,17 +23,12 @@ $Start_Public_Port	= $portMapping_value["Start_Public_Port"];
 $End_Public_Port	= $portMapping_value["End_Public_Port"];
 $Private_Ports		= $portMapping_value["Private_Ports"];
 $Enable_Port_Range	= $portMapping_value["Enable_Port_Range"];
-
 ?>
-
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
- 
 	comcast.page.init("Port Forwarding Add ", "nav-HS-port-forwarding");
-
 	$('#service_name').focus();
-
 	jQuery.validator.addMethod("ip",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 255);
 	}, "Please enter a valid IP address.");
@@ -49,7 +41,6 @@ $(document).ready(function() {
 	jQuery.validator.addMethod("ltstart",function(value,element){
 		return this.optional(element) || value>=parseInt($("#start_public_port").val());
 	}, "Please enter a value more than or equal to Start Public Port.");
-	
     $("#pageForm").validate({
 		rules: {
             service_name: {
@@ -90,18 +81,14 @@ $(document).ready(function() {
 		,unhighlight: function( element, errorClass, validClass ) {
 			$(element).closest(".form-row").find("input").removeClass(errorClass).addClass(validClass);
 		}
-
     });
-
     $("#btn-cancel").click(function() {
     	window.location = "hs_port_forwarding.php";
     });
-
     $('#start_public_port').change(function(){
     	var endport = $('#start_public_port').val();
     	$('#end_public_port').val(endport);
     });
-    
 	$("#btn-save").click(function(){
 		var id='<?php echo $i; ?>';
 		var name=$('#service_name').val();
@@ -111,7 +98,6 @@ $(document).ready(function() {
 		var endport=$('#end_public_port').val();
 		var priport=$('#private_port').val();
 		var enportrange=$('#enable_port_range').is(':checked'); // true or false (bool)
-
 		if($("#pageForm").valid()){
 			jProgress('This may take several seconds.',60);
 			$.ajax({
@@ -133,7 +119,6 @@ $(document).ready(function() {
 	});
 });
 </script>
-
 <div id="content">
 	<h1>Advanced > HS Port Forwarding > Edit Service</h1>
     <div id="educational-tip">
@@ -143,15 +128,12 @@ $(document).ready(function() {
 		redirecting the combination of the WAN IP address and the service port to the local private IP and its
         service port.</p>
 	</div>
-
 	<form method="post" id="pageForm" action="">
 	<div class="module forms">
 		<h2>Edit HS Port Forward</h2>
-
 		<div class="form-row odd">
 			<label for="service_name">Service Name:</label> <input type="text" class="text" value="<?php echo $service_name; ?>" id="service_name" name="service_name" />
 		</div>
-
 		<div class="form-row">
 			<label for="service_type">Service Type:</label>
 			<select id="service_type">
@@ -160,7 +142,6 @@ $(document).ready(function() {
 				<option <?php if($Service_Type == "UDP") echo 'selected'; ?> >UDP</option>
 			</select>
 		</div>
-		
 		<?php
 			$ip = explode(".",$Server_IP_Address);
 		?>
@@ -174,7 +155,6 @@ $(document).ready(function() {
             <label for="ip_address_4" class="acs-hide"></label>
 	        .<input type="text" size="2" id="ip_address_4" name="ip_address_4" value="<?php echo$ip[3]; ?>" class="" />
 		</div>
-
 		<div class="form-row">
 			<label for="start_public_port"> Start Public Port:</label>  <input type="text" class="text" value="<?php echo $Start_Public_Port; ?>" id="start_public_port" name="start_public_port" size="10"/>
 		</div>
@@ -194,5 +174,4 @@ $(document).ready(function() {
 	</div> <!-- end .module -->
 	</form>
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

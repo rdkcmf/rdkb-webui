@@ -1,22 +1,15 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: managed_apps.php 2943 2009-08-25 20:58:43Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Parental Control > Managed Applications", "nav-applications");
-    
     $(".radio-btns").radioToButton({ autoSubmitForm:true });
-
 });
 </script>
-
 <div id="content">
 	<h1>Parental Control > Managed Applications</h1>
 	<div id="educational-tip">
@@ -47,7 +40,6 @@ $(document).ready(function() {
 	       </tr>
 		</table>
 	</div> <!-- end .module -->
-
 	<form action="managed_apps.php" method="post">
 	<input type="hidden" name="update_trusted_computers" value="true" />
 	<div class="module data">
@@ -84,7 +76,5 @@ $(document).ready(function() {
 		</table>
 	</div> <!-- end .module -->
 	</form>
-
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

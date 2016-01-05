@@ -1,13 +1,10 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: wireless_network_configuration_wps.php 3159 2010-01-11 20:10:58Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <?php
 // $ssids			= explode(",", getInstanceIds("Device.WiFi.SSID."));
 $ssids		=array(1,2);	//Currently, only SSID.1(2.4G) and SSID.2(5G) are involved with WPS
@@ -16,7 +13,6 @@ $wps_pin	= "";
 $wps_method	= "PushButton";
 $f_e_ssid	= "1";
 // $wps_enabled	= "true";
-
 $wifi_param = array(
 	//for index 1
 	"WPS_Enable1"	=> "Device.WiFi.AccessPoint.1.WPS.Enable",
@@ -38,7 +34,6 @@ $wifi_param = array(
 	"SSIDAdvert2"	=> "Device.WiFi.AccessPoint.2.SSIDAdvertisementEnabled",
 	);
 $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
-
 //get the first WPS enabled SSID, in principle all WPS should be enabled or disabled simultaneously
 foreach ($ssids as $i){
 	if ("true" == $wifi_value['WPS_Enable'.$i]){
@@ -49,7 +44,6 @@ foreach ($ssids as $i){
 		break;
 	}
 }
-
 //if wps_config is false, then show WPS disabled, and do not allow to enable it
 $wps_config = "false";
 foreach ($ssids as $i){
@@ -65,13 +59,10 @@ foreach ($ssids as $i){
 		}
 	}
 }
-
 //Currently, only SSID.1(2.4G) and SSID.2(5G) are involved with WPS
 $broadcastSSID_1 = $wifi_value['SSIDAdvert1'];
 $broadcastSSID_2 = $wifi_value['SSIDAdvert2'];
-
 if("false"==$broadcastSSID_1 && "false"==$broadcastSSID_2) $wps_config	= "false";
-
 // $wps_config = "true";
 if ($_DEBUG) {
 	$wps_enabled = "false";
@@ -80,9 +71,7 @@ if ($_DEBUG) {
 	$f_e_ssid = "1";
 	$wps_config = "false";
 }
-
 ?>
-
 <script type="text/javascript">
 function validChecksum(PIN)
 {
@@ -100,7 +89,6 @@ function validChecksum(PIN)
 	accum += 1 * (parseInt(PIN / 1) % 10);
 	return (0 == (accum % 10));
 }
-
 function set_config(target)
 {
 	var ssid_number	= $("#wps_ssid").attr("value");
@@ -108,7 +96,6 @@ function set_config(target)
 	var wps_method	= $("#pin_switch").radioswitch("getState").on ? "PushButton,PIN" : "PushButton";
 	var pair_method = $("#connection_options").val();
 	var pin_number	= $("#pin_number").attr("value");
-		
 	var jsConfig 	=	'{"ssid_number":"'+ssid_number
 		+'", "target":"'+target
 		+'", "wps_enabled":"'+wps_enabled
@@ -116,9 +103,7 @@ function set_config(target)
 		+'", "pair_method":"'+pair_method
 		+'", "pin_number":"'+pin_number
 		+'"}';
-			
 	jProgress('This may take several seconds...', 60);
-	
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_wps_config.php",
@@ -141,13 +126,10 @@ function set_config(target)
 		}
 	});
 }
-
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > Wireless > Add Wireless Client", "nav-wifi-config");
-
 	var G_wps_enabled	= <?php echo ($wps_enabled === "true" ? "true" : "false"); ?>;
 	var G_wps_method	= "<?php echo $wps_method; ?>";
-
 	$("#wps_switch").radioswitch({
 		id: "wps-switch",
 		radio_name: "wps",
@@ -166,10 +148,8 @@ $(document).ready(function() {
 		title_off: "Disable WPS PIN",
 		state: G_wps_method !== "PushButton" ? "on" : "off"
 	});
-	
     $("#wps_switch").change(function(e, skipSave) {
 		var wps_enabled = $(this).radioswitch("getState").on;
-
 		if (wps_enabled) {
 			$("#wps_form *").not(".radioswitch_cont, .radioswitch_cont *").removeClass("disabled").prop("disabled", false);
 			$("#pin_switch").radioswitch("doEnable", true);
@@ -179,37 +159,28 @@ $(document).ready(function() {
 			$("#pin_switch").radioswitch("doEnable", false);
 			$("#wps_switch").radioswitch("doEnable", true);		//enable wps switch itself when keyboard
 		}
-		
 		if (skipSave) return;
-		
 		if (wps_enabled == G_wps_enabled) return;
 		set_config("wps_enabled");
 		G_wps_enabled = wps_enabled;	
 	});
-	
     $("#pin_switch").change(function(e, skipSave) {
 		var wps_method = $(this).radioswitch("getState").on ? "PushButton,PIN" : "PushButton";
-		
 		$("#connection_options").val("PushButton");	//swtich to default
 		$("#div_pin_number").hide();
-		
 		if (wps_method != "PushButton") {	//means PIN is enabled
 			$("#pair_method_pin").prop("disabled", false);
 		}
 		else {
 			$("#pair_method_pin").prop("disabled", true);
 		}
-		
 		if (skipSave) return;
-
 		if (wps_method == G_wps_method) return;		
 		set_config("wps_method");
 		G_wps_method = wps_method;
 	});
-	
     $("#connection_options").change(function() {
 		var pair_method = $("#connection_options").val();
-	
 		if (pair_method != "PushButton") {	//means PIN is current method
 			$("#div_pin_number").show();
 		}
@@ -217,7 +188,6 @@ $(document).ready(function() {
 			$("#div_pin_number").hide();
 		}
 	});	
-	
 	$("#wps_pair").click(function(){
 		if (("PushButton" != $("#connection_options").val()) && !validChecksum($("#pin_number").attr("value")) ){
 			jAlert("Invalid PIN!");
@@ -225,7 +195,6 @@ $(document).ready(function() {
 		}
 		set_config("pair_client");
 	});
-	
 	$("#wps_cancel").click(function(){
 		jConfirm(
 			"Are you sure you want to cancel WPS progress?"
@@ -237,10 +206,8 @@ $(document).ready(function() {
 			}
 		);
 	});
-
 	$("#wps_switch").trigger("change", [true]);
 	$("#pin_switch").trigger("change", [true]);
-	
 	if ("false"=="<?php echo $wps_config;?>"){
 		$(".wps_config").html('<h2>Add Wi-Fi Client (WPS)</h2>'
 		+'<p style="color:red;font-size:130%;font-style:bold;">WPS function is disabled and can not be enabled now!</p>'
@@ -251,13 +218,11 @@ $(document).ready(function() {
 		+'<!--p style="color: #838c91;">(4) Its MAC filter function is not enabled</p-->'
 		+'<p style="color: #838c91;">Then please refresh(or back to) this page and try again.</p>');
 		return;
-
 		$(".wps_config *").not(".radioswitch_cont, .radioswitch_cont *").unbind("click").prop("disabled", true).addClass("disabled").removeClass("selected");
 		$(".wps_config .radioswitch_cont").radioswitch("doEnable", false);
 	}
 });
 </script>
-
 <div id="content">
 	<h1>Gateway > Connection > Wi-Fi > Add Wi-Fi Client</h1>
 	<div id="educational-tip">
@@ -266,7 +231,6 @@ $(document).ready(function() {
 		<p class="hidden"><strong>Push Button:</strong> Press the WPS Button on the Gateway's top panel, or click the PAIR  button on this page. Within 2 minutes, press the WPS push button (either a physical button or a virtual button via software) on the Wi-Fi device to connect to the Gateway.</p>
 		<p class="hidden"><strong>PIN Connectivity:</strong> For WPS capable devices supporting PIN, select <i>PIN Number</i> for <strong>Connection Options.</strong> Enter the PIN number generated by the wireless device in the <strong>Wireless Client's PIN</strong> field and click PAIR. If prompted for a PIN, enter the PIN from the label on the Gateway's bottom panel.</p>
 	</div>
-
 	<form method="post" id="wps_form">
 		<div class="module forms enable wps_config">
 			<h2>Add Wi-Fi Client (WPS)</h2>
@@ -307,5 +271,4 @@ $(document).ready(function() {
 		</div>
 	</form>
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

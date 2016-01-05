@@ -1,18 +1,12 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: wizard_step1.php 2943 2009-08-25 20:58:43Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <script type="text/javascript">
 $(document).ready(function() {
-
     comcast.page.init("Parental Control > Managed Applications > Add Blocked Application", "nav-applications");
-    
     $("input:radio[name='block']").click(function() {
         if($(this).is(":checked") && $(this).val() == "no") {
             $("#block-time").find("input,label,h3,select").prop("disabled", false).removeClass("disabled");
@@ -21,15 +15,12 @@ $(document).ready(function() {
         }
     });
      $("input:radio[name='block']:checked").trigger("click");
-    
 	$("#weekday_select_all").click(function() {
 	   $("#weekday input").prop("checked", true);
 	});
-	
     $("#weekday_select_none").click(function() {
 	   $("#weekday input").prop("checked", false);
 	});
-	
 	$("#pageForm").validate({
 	   rules: {
 	       service: {
@@ -45,24 +36,18 @@ $(document).ready(function() {
 	       }
 	   }
 	});
-	
 	$("#cancel-btn").click(function() {
 		window.location = "managed_apps.php";
 	});
 });
 </script>
-
 <div id="content">
-	
 	<h1>Parental Control > Managed Applications > Add Blocked Application</h1>
-
 	<div id="educational-tip">
 		<p class="tip"> Some useful help text needed here.</p>
 		<p class="hidden">Some more useful text might be needed here.</p>
 	</div>
-	
 	<form id="pageForm" action="managed_sites.php" method="post">
-
 	<div class="module data">
 		<div class="forms">
 			<h2>Add Application to be Blocked</h2>
@@ -122,7 +107,6 @@ $(document).ready(function() {
 				<label for="service">Service Name:</label>
 				<input type="text" id="user_defined_service" name="user_defined_service" class="text" />
 			</div>
-			
 			<div class="form-row">
 				<label for="protocol">Protocol:</label>
 				<select name="protocol" id="protocol">
@@ -130,17 +114,14 @@ $(document).ready(function() {
 				    <option value="tcp_udp">TCP/UDP</option>
 				</select>
 			</div>
-			
 			<div class="form-row">
 				<label for="start_port">Start Port:</label>
 				<input type="text" id="start_port" name="start_port" class="text" />
 			</div>
-
             <div class="form-row">
 				<label for="end_port">End Port:</label>
 				<input type="text" id="end_port" name="end_port" class="text" />
 			</div>
-			
 			<div class="form-row">
 				<label for="">Always Block?</label>
 				<span class="value">
@@ -148,10 +129,8 @@ $(document).ready(function() {
 				<input type="radio" checked="checked" value="no" name="block" class="radio radio-off"/> <label class="radio" for="no">No</label>
 				</span>
 			</div>
-
         	<div id="block-time">
         		<h3>Set Block Time</h3>
-        
         		<div class="form-row">
         	<label for="time_start_hour">Start from:</label>
            <select id="time_start_hour" name="time_start_hour">
@@ -211,7 +190,6 @@ $(document).ready(function() {
                 <option value"PM" selected="selected">PM</option>
         </select>
         </div>
-
 <h3>Set Blocked Days</h3>
 <div class="select_all_none">
    <a rel="weekday" href="#select_all" id="weekday_select_all" class="">Select All</a> | <a rel="weekday" id="weekday_select_none" href="#select_none" class="">Select None</a>
@@ -226,7 +204,6 @@ $(document).ready(function() {
    <input class="blockedDay" type="checkbox" name="day" id="sunday" value="Sun" checked="checked" /><label class="checkbox" for="sunday">Sunday</label>
 </div>
 </div> <!-- end #block-time -->
-
             <div class="form-row form-btn">
             	<input type="button" class="btn submit" value="Save"/>
             	<input type="button" id="cancel-btn" class="btn alt reset" value="Cancel"/>
@@ -235,5 +212,4 @@ $(document).ready(function() {
 	</div> <!-- end .module -->
     </form>
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

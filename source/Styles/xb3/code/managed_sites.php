@@ -1,11 +1,9 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: managed_sites.php 3158 2010-01-08 23:32:05Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
 <?php
 $isManageEnabled = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.Enable");
@@ -13,30 +11,23 @@ if ($_DEBUG) {
 	$isManageEnabled = "true";
 }
 ?>
-
 <?php 
 	$ret = init_psmMode("Parental Control > Managed Sites", "nav-sites");
 	if ("" != $ret){echo $ret;	return;}
 ?>
-
 <script  type="text/javascript">
-
 $(document).ready(function() {
 	comcast.page.init("Parental Control > Managed Sites", "nav-sites");
-    
     jQuery.validator.addMethod("url2", function(value, element, param) {
        if (value.indexOf('//www.') > 0) {
             value = value.replace("//www.","//");
         }
-
         return this.optional(element) || (value.match(".$") != '.') && /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value)
         || /^(https?|s?ftp):\/\/\[((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))]?(\:[0-9]+)*(\/($|[a-zA-Z0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$/i.test(value);  
     }, jQuery.validator.messages.url);
-
     $(".edit-URL").hide();
     $(".edit-Keyword").hide();
     $("a.confirm").unbind('click');
-   
 	$("#managed_sites_switch").radioswitch({
 		id: "managed-sites-switch",
 		radio_name: "managed_sites",
@@ -46,12 +37,10 @@ $(document).ready(function() {
 		title_off: "Disable managed sites",
 		state: isManageEnabled === 'true' ? "on" : "off"
 	});
-
 	$("span[id^=trusted_user_]").each(function(){
 		var $this = $(this);
 		var idx = this.id.match(/trusted_user_(.+)$/)[1];
 		var val = $this.attr("switch-val");
-
 		$this.radioswitch({
 			id: "trusted-user-"+idx,
 			radio_name: "device_trusted-"+idx,
@@ -83,12 +72,10 @@ $(document).ready(function() {
 			});
     	});
 	});
-
 	$("span[id^=blockRadio_]").each(function(){
 		var $this = $(this);
 		var idx = this.id.match(/blockRadio_(.+)$/)[1];
 		var val = $this.attr("switch-val");
-
 		$this.radioswitch({
 			id: "blockRadio-"+idx,
 			radio_name: "block-"+idx,
@@ -108,7 +95,6 @@ $(document).ready(function() {
 				$("#block-time-"+idx).find("*").prop("disabled", false).removeClass("disabled");
 		});
 	});
-
     $('.add-btn').click(function (e) {
     	e.preventDefault();
     	if ($(this).hasClass('disabled'))
@@ -116,7 +102,6 @@ $(document).ready(function() {
         else
 	        window.location.href = $(this).attr('href');
 	});
-
     $(".weekday_select_all").click(function() {
     	if(!$(this).is(".disabled")) {
     		$(".weekday input").prop("checked", true);
@@ -127,15 +112,11 @@ $(document).ready(function() {
     		$(".weekday input").prop("checked", false);
     	}
     });
-
     $(".edit-cancel").click(function() {
     	window.location.href = "managed_sites.php";
     });
-
     $(".del-btn").unbind('click').click(function(e){
-
 	e.preventDefault();
-            
     var href = $(this).attr("href");
     var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
     var InstanceID = $(this).attr("id");
@@ -145,7 +126,6 @@ $(document).ready(function() {
         ,"Are You Sure?"
         ,function(ret) {
             if(ret) {
-
 				jProgress('This may take several seconds', 60); 
 				$.ajax({                   
 					type: "POST",
@@ -163,16 +143,13 @@ $(document).ready(function() {
             }    
         });
 });
-
 if(isManageEnabled != 'true'){
 	$('.main_content *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
 	$(".main_content .radioswitch_cont:not(#managed_sites_switch)").radioswitch("doEnable", false);
 	$(".btn").prop("disabled", true);
 	$('.del-btn').unbind('click');
 }
-
 $("#managed_sites_switch").change(function() {
-
  	var isManageDisabled = $("#managed_sites_switch").radioswitch("getState").on === false;
 	if(isManageDisabled) {
 		$('.main_content *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
@@ -186,7 +163,6 @@ $("#managed_sites_switch").change(function() {
  		$(".btn").prop("disabled", false);
 		$("a.confirm").click(function(e) {
 			e.preventDefault();
-
 			var href = $(this).attr("href");
 			var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
 			var InstanceID = $(this).attr("id");
@@ -195,7 +171,6 @@ $("#managed_sites_switch").change(function() {
 				,"Are You Sure?"
 				,function(ret) {
 					if(ret) {
-
 						jProgress('This may take several seconds', 60); 
 						$.ajax({
 							type: "POST",
@@ -214,10 +189,8 @@ $("#managed_sites_switch").change(function() {
 				});
 		});
  	}//end of else
-
  	var enable = $("#managed_sites_switch").radioswitch("getState").on;
  	//alert(enable);
-
 	jProgress('This may take several seconds', 60); 
 	$.ajax({
 		type: "POST",
@@ -233,9 +206,7 @@ $("#managed_sites_switch").change(function() {
 		}
 	});
 });// end of function
-
 //===========================================================
-
 	for (var i=0, k=1; i<editNums; i++, k++) {  
 		( 
 		 function(x) {
@@ -254,16 +225,13 @@ $("#managed_sites_switch").change(function() {
 			var pageFORM = "#pageForm-" + k;
 			var blockRadio = "#blockRadio_" + k;
 			//alert(butn);
-
 			$(btn).click(function(){
 				$('.main_content').hide();
 				$(edit).show();
-			
 	 $(function() {
 $.validator.addMethod("no_space", function(value, element, param) {
 		return !param || /^[a-zA-Z0-9]*$/i.test(value);
 	}, " No spaces. Case sensitive.");
-
 				$(pageFORM).validate({
 					rules: {
 						url: {
@@ -288,132 +256,108 @@ $.validator.addMethod("no_space", function(value, element, param) {
 });
 			//=========================================================
 			var blockTime = "#block-time-" + k;  
-
 			if ($(blockRadio).radioswitch("getState").on)
 				$(blockTime).find("*").prop("disabled", true).addClass("disabled");
 			else
 				$(blockTime).find("*").prop("disabled", false).removeClass("disabled");
-
 			//========================================================
-
 			//========================================================
 			$(saveEdit).click(function(){ 
 				var InstanceID = $(this).attr("name");
 				//alert(InstanceID);
-
 				if( $(edit).hasClass('edit-URL') ){
 					//this is going to submit a edit URL form
-
 					var URL = $(url).val();
 					var alwaysBlock = $(blockRadio).radioswitch("getState").on; 
 					//alert($(yes).prop("checked"));  true or false
-
 					var startTime_unit = $(time_start_ampm).val();
 					var endTime_unit   = $(time_end_ampm).val();
 					var startHour = parseInt($(time_start_hour).val());
 					var endHour   = parseInt($(time_end_hour).val());
 					var sminute   = parseInt($(time_start_minute).val());
 					var eminute   = parseInt($(time_end_minute).val());
-
 					if (startTime_unit === "PM" && startHour !== 12) {      
 						startHour += 12;
 					}
 					else if (startTime_unit === "AM" && startHour === 12) {
 						startHour = 0;
 					}
-
 					if (endTime_unit === "PM" && endHour !== 12) {      
 						endHour += 12;
 					}
 					else if (endTime_unit === "AM" && endHour === 12) {
 						endHour = 0;
 					}
-
 					if(! alwaysBlock){
 						if ((startHour>endHour) || ((startHour==endHour) && (sminute>=eminute))) {
 							jAlert("Start time should be smaller than End time !");
 							return;
 						} 
 					}
-
 					(0 === startHour) && (startHour = '00');
 					(0 === endHour)   && (endHour   = '00');
 					(0 === sminute)   && (sminute   = '00');
 					(0 === eminute)   && (eminute   = '00');
-
 					var StartTime = startHour + ':' + sminute;
 					var EndTime   = endHour   + ':' + eminute;
-
 					var blockedDays="";
 					$(blockedDay).each(function(){ if($(this).prop("checked") == true) blockedDays += $(this).val()+','; });
 					blockedDays = blockedDays.slice(0, -1); //trim the last,
 					//alert(blockedDays);
 					//$(".blockedDay").each(function(){ alert($(this).val());});
-
 					if( alwaysBlock )
 						var blockInfo = '{"URL": "'+URL+'", "InstanceID": "'+InstanceID+'", "alwaysBlock": "'+alwaysBlock+'"}';
 					else
 						var blockInfo = '{"URL": "'+URL+'", "InstanceID": "'+InstanceID+'", "alwaysBlock": "'+alwaysBlock+'", "StartTime": "'+StartTime+'", "EndTime": "'+EndTime+'", "blockedDays": "'+blockedDays+'"}';
 					//alert(blockInfo);
-
 				} //end of if edit-url
 				else{
 					//this is going to submit a edit keyword form
 					var Keyword = $(keyword).val();
 					var alwaysBlock = $(blockRadio).radioswitch("getState").on; 
 					//alert($(yes).prop("checked"));  true or false
-
 					var startTime_unit = $(time_start_ampm).val();
 					var endTime_unit   = $(time_end_ampm).val();
 					var startHour = parseInt($(time_start_hour).val());
 					var endHour   = parseInt($(time_end_hour).val());
 					var sminute   = parseInt($(time_start_minute).val());
 					var eminute   = parseInt($(time_end_minute).val());
-
 					if (startTime_unit === "PM" && startHour !== 12) {      
 						startHour += 12;
 					}
 					else if (startTime_unit === "AM" && startHour === 12) {
 						startHour = 0;
 					}
-
 					if (endTime_unit === "PM" && endHour !== 12) {      
 						endHour += 12;
 					}
 					else if (endTime_unit === "AM" && endHour === 12) {
 						endHour = 0;
 					}
-
 					if(! alwaysBlock){
 						if ((startHour>endHour) || ((startHour==endHour) && (sminute>=eminute))) {
 							jAlert("Start time should be smaller than End time !");
 							return;
 						} 
 					}
-
 					(0 === startHour) && (startHour = '00');
 					(0 === endHour)   && (endHour   = '00');
 					(0 === sminute)   && (sminute   = '00');
 					(0 === eminute)   && (eminute   = '00');
-
 					var StartTime = startHour + ':' + sminute;
 					var EndTime   = endHour   + ':' + eminute;
-
 					var blockedDays="";
 					$(blockedDay).each(function(){ if($(this).prop("checked") == true) blockedDays += $(this).val()+','; });
 					blockedDays = blockedDays.slice(0, -1); //trim the last,
 					//alert(blockedDays);
 					//$(".blockedDay").each(function(){ alert($(this).val());});
-
 					if( alwaysBlock )
 						var blockInfo = '{"Keyword": "'+Keyword+'", "InstanceID": "'+InstanceID+'", "alwaysBlock": "'+alwaysBlock+'"}';
 					else
 						var blockInfo = '{"Keyword": "'+Keyword+'", "InstanceID": "'+InstanceID+'", "alwaysBlock": "'+alwaysBlock+'", "StartTime": "'+StartTime+'", "EndTime": "'+EndTime+'", "blockedDays": "'+blockedDays+'"}';
 					//alert(blockInfo); 
 	    		}//end of else
-
 				if($(pageFORM).valid()){
-
 					jProgress('This may take several seconds', 60);
 					$.ajax({
 						type: "POST",
@@ -429,18 +373,13 @@ $.validator.addMethod("no_space", function(value, element, param) {
 						}
 					});
 				}
-
 			});
 		}) (i); 
 	}; // end of for loop
 });
-
 </script>
-
 <div id="content" class="main_content">
-
 <h1>Parental Control > Managed Sites</h1>
-
 	<div id="educational-tip">
 		<p class="tip">Manage access to specific websites by network devices.</p>
     <p class="hidden">Select <strong>Enable</strong> to manage sites, or <strong>Disable</strong> to turn off.</p>
@@ -449,9 +388,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
     <p class="hidden"><strong>Blocked Keywords:</strong> Deny access to websites containing specific words.</p>
     <p class="hidden">The Gateway will block connections to websites on all untrusted computers, based on the specified rules. If you don't want restrictions for a particular computer, select <strong>Yes</strong> under <strong>Trusted Computers</strong>.</p>
 	</div>
-
 	<form action="managed_sites.php" method="post"  name="managed_sites">
-
 	<div class="module">
 		<div class="select-row">
  	    	<span class="readonlyLabel label">Managed Sites:</span>
@@ -459,46 +396,35 @@ $.validator.addMethod("no_space", function(value, element, param) {
 		</div>
 	</div>
 	</form>
-
 	<?php 
 	$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
 	$mapping_array  = array("BlockMethod", "Site", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
-	
 	$blockedSitesInstance = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-	
 	$blockedSitesInstanceArr = explode(",", getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite."));
-
 	//TrustedUser
 	$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.";
 	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.");
 	$mapping_array  = array("IPAddress", "Trusted");
-
 	$TrustedUser = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-
 	//Host
 	$rootObjName    = "Device.Hosts.Host.";
 	$paramNameArray = array("Device.Hosts.Host.");
 	$mapping_array  = array("HostName", "PhysAddress", "IPAddress", "IPv6Address.1.IPAddress");
-
 	$Host = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-
    	// $blockedSitesNums = sizeof($blockedSitesInstanceArr);
 	$blockedSitesNums = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSiteNumberOfEntries");
     	//dump($blockedSitesNums);
 	$blockedSitesURL = array();
 	$blockedSitesKeyWord = array();
-
 	for ($i=0,$j=0,$k=0; $i < $blockedSitesNums; $i++) { 
     	// retrieve info from backend
-
 		$blockedSites["$i"]['BlockMethod'] = $blockedSitesInstance["$i"]['BlockMethod'];
 		$blockedSites["$i"]['Site'] = $blockedSitesInstance["$i"]['Site'];
 		$blockedSites["$i"]['AlwaysBlock'] = $blockedSitesInstance["$i"]['AlwaysBlock'];
 		$blockedSites["$i"]['StartTime'] = $blockedSitesInstance["$i"]['StartTime'];
 		$blockedSites["$i"]['EndTime'] = $blockedSitesInstance["$i"]['EndTime'];
 		$blockedSites["$i"]['BlockedDays'] = $blockedSitesInstance["$i"]['BlockDays'];
-
     	//process blockedSites info based on Blocked Method, URL/Keywords
 		if( !strcasecmp("URL", $blockedSites["$i"]['BlockMethod'])){
 			$blockedSitesURL["$j"]['InstanceID'] = $i + 1;
@@ -532,13 +458,11 @@ $.validator.addMethod("no_space", function(value, element, param) {
 			array("InstanceID"=>4, "RealID"=>"4", "Site"=>"keyword2", "AlwaysBlock"=>"false", "StartTime"=>"8:00", "EndTime"=>"15:00", "BlockedDays"=>"Mon"),
 			);
 	}
-
 	$URLNums = sizeof($blockedSitesURL);
 	$KeywordNums = sizeof($blockedSitesKeyWord);
     //dump($URLNums);
     //dump($KeywordNums);
 	?>
-
 	<div id="managed-sites-items">
 		<div class="module data">
 			<h2>Blocked Sites</h2>
@@ -551,12 +475,10 @@ $.validator.addMethod("no_space", function(value, element, param) {
 					<th id="edit-url" class="edit">&nbsp;</th>
 					<th id="delete-url" class="delete">&nbsp;</th>
 				</tr>
-
 			<?php 
 				for ($i=0,$k=1; $i < $URLNums; $i++,$k++) { 
 					$URLAlwaysBlock = $blockedSitesURL["$i"]['AlwaysBlock'];
 					$URLBlockTime = $blockedSitesURL["$i"]['StartTime']. " - " .$blockedSitesURL["$i"]['EndTime']. ",  " .$blockedSitesURL["$i"]['BlockedDays'];
-					
 					if($k % 2) $odd = "class='odd'";
 					else $odd = "";
 					echo "<tr $odd>
@@ -569,7 +491,6 @@ $.validator.addMethod("no_space", function(value, element, param) {
 					";
 				}
 			?>
-
       <tfoot>
           <tr class="acs-hide">
             <td headers="url-number">null</td>
@@ -579,14 +500,11 @@ $.validator.addMethod("no_space", function(value, element, param) {
             <td headers="delete-url">null</td>            
           </tr>
         </tfoot>
-
 			</table>
 		</div> <!-- end blocked URL .module -->
-
 		<div class="module data">
 			<h2>Blocked Keywords</h2>
 			<p class="button"><a tabindex='0' href="managed_sites_add_keyword.php" class="btn add-btn" id="add-blocked-keywords">+ Add</a></p>
-
 			<table class="data" summary="This table lists blocked Keywords">
 				<tr>
 					<th id="keyword-number" class="number">&nbsp;</th>
@@ -595,13 +513,10 @@ $.validator.addMethod("no_space", function(value, element, param) {
 					<th id="edit-keyword" class="edit">&nbsp;</th>
 					<th id="delete-keyword" class="delete">&nbsp;</th>
 				</tr>
-
 			<?php 
-
 				for ($i=0,$k=1; $i < $KeywordNums; $i++,$k++) {
 					$KeywordAlwaysBlock = $blockedSitesKeyWord["$i"]['AlwaysBlock'];
 					$KeywordBlockTime = $blockedSitesKeyWord["$i"]['StartTime']. " - " .$blockedSitesKeyWord["$i"]['EndTime']. ",  " .$blockedSitesKeyWord["$i"]['BlockedDays'];
-					
 					if($k % 2) $odd = "class='odd'";
 					else $odd = "";
 					echo "<tr $odd>
@@ -613,9 +528,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 					</tr>
 					";
 				}
-
 			?>
-
         <tfoot>
           <tr class="acs-hide">
             <td headers="keyword-number">null</td>
@@ -625,27 +538,19 @@ $.validator.addMethod("no_space", function(value, element, param) {
             <td headers="delete-keyword">null</td>            
           </tr>
         </tfoot>
-
 			</table>
 		</div> <!-- end blocked Keywords.module -->
-
 		<form action="managed_sites.php" method="post">
       <fieldset>
       <legend class="acs-hide">Trusted devices management</legend>
-
 			<input  type="hidden"  name="update_trusted_computers"  value="true" />
-
 		<?php
 		$hostsInstance = getInstanceIds("Device.Hosts.Host.");
 		$hostsInstanceArr = explode(",", $hostsInstance);
-
 		$hostNums = getStr("Device.Hosts.HostNumberOfEntries");
-
 		$ipAddrArr = array();
 		$HostNameArr = array();
-
 		for ($i=0; $i < $hostNums; $i++) {
-
 			$HostName = $Host[$i]["HostName"];
 			if (($HostName == "*") || (strlen($HostName) == 0)) {
 				$Host["$i"]['HostName'] = $Host[$i]["PhysAddress"];
@@ -653,18 +558,14 @@ $.validator.addMethod("no_space", function(value, element, param) {
 			else {
 				$Host["$i"]['HostName'] = $HostName;
 			}
-
 			$Host["$i"]['IPAddress'] = $Host[$i]["IPAddress"];
 			$IPAddress = $Host["$i"]['IPAddress'];
 			//$IPv4Address	= getStr("Device.Hosts.Host." .$hostsInstanceArr["$i"]. ".IPv4Address.1.IPAddress");
 			$IPv6Address	= $Host[$i]["IPv6Address.1.IPAddress"];
-			
 			//"Device.Hosts.Host.'$i'.IPv4Address.1.IPAddress" is not updating on GW_IP Change
 			$IPv4Address = $IPAddress;
-
 			//In IPv6 only mode, IPv4=NA
 			if( strpos($IPv4Address, '.') === false ) $IPv4Address = 'NA';
-
 			if (substr($IPv6Address, 0, 5) == "2001:") {
 				$Host["$i"]['IPShow'] = $IPv4Address.'/'.$IPv6Address;
 			}
@@ -672,13 +573,11 @@ $.validator.addMethod("no_space", function(value, element, param) {
 				//If IPv6 is not global then IPv6=NA
 				$Host["$i"]['IPShow'] = $IPv4Address.'/NA';
 			}
-
 			array_push($HostNameArr, $Host["$i"]['HostName']);
 			array_push($ipAddrArr, $Host["$i"]['IPAddress']);
 			$Host["$i"]['Trusted'] = false;
 			foreach( $TrustedUser as $key => $value ){
 				if ( $value['IPAddress'] == $Host["$i"]['IPAddress']){
-
 					$Host["$i"]['Trusted'] = $value['Trusted']; 
 					break;
 				}
@@ -691,12 +590,9 @@ $.validator.addMethod("no_space", function(value, element, param) {
 			$HostNameArr = array("host1", "host2");
 			$ipAddrArr = array("1.1.1.1", "2.2.2.2");
 		}
-
 		 ?>
-
 			<div class="module data">
 				<h2>Trusted Computers</h2>		
-
         <table  id="trusted_computers" class="data" summary="This table allows you to set trusted or untrusted devices for above blocked URLs or Keywords">
           <tr>
             <th id="number" class="number">&nbsp;</th>
@@ -704,10 +600,8 @@ $.validator.addMethod("no_space", function(value, element, param) {
             <th id="IP" class="ip">IP</th>
             <th id="trusted-or-not" class="trusted">Trusted</th>
           </tr>  
-
 					<?php 
 					for ($i=0,$k=1; $i < $hostNums; $i++,$k++) {
-
 						if($k % 2) $odd = "class='odd'";
 						else $odd = "";
 						echo "<tr $odd>
@@ -721,7 +615,6 @@ $.validator.addMethod("no_space", function(value, element, param) {
 						";
 					}
 					?>
-
           <tfoot>
           <tr class="acs-hide">
             <td headers="number">null</td>
@@ -730,15 +623,12 @@ $.validator.addMethod("no_space", function(value, element, param) {
             <td headers="trusted-or-not">null</td>            
           </tr>
         </tfoot>
-
 				</table>
 			</div> <!-- end .module -->
     </fieldset>
 		</form><!--end trusted computers -->
 	</div><!-- end managed-sites -->
-
 </div><!-- end #content -->
-
 	<script  type="text/javascript">
 	    var isManageEnabled = '<?php echo $isManageEnabled; ?>';
 	    //alert(isManageEnabled);
@@ -750,13 +640,9 @@ $.validator.addMethod("no_space", function(value, element, param) {
 		var ipAddrArr = <?php echo json_encode($ipAddrArr); ?>;
 //console.log(ipAddrArr);
 	</script>
-
 <?php 
-
 	function generateEditPart($blockedInfo){
-
     $ID = $blockedInfo['InstanceID'];
-   
     $st_time = explode(":", $blockedInfo['StartTime']);	
     $st_hour = $st_time['0'];
     $st_min  = $st_time['1'];
@@ -766,19 +652,15 @@ $.validator.addMethod("no_space", function(value, element, param) {
     $rel_st_hour =  ((int)$st_hour)>12 ? $st_hour-12 : $st_hour;
     $rel_end_hour =  ((int)$end_hour)>12 ? $end_hour-12 : $end_hour;
     $block_days = $blockedInfo['BlockedDays'];
-
     if((int)$rel_st_hour == 0) 
     	$rel_st_hour = 12;
     if((int)$rel_end_hour == 0) 
     	$rel_end_hour = 12;
-
         $str_edit = "<div class=\"form-row\">
 				<label for=\"on\">Always Block?</label>
 				<span id=\"blockRadio_".$ID."\" switch-val=\"".($blockedInfo['AlwaysBlock'] == 'true' ? "on" : "off")."\"></span>
 			</div>
-
         	<div id=\"block-time-" .$ID. "\" class=\"block-time\">
-
         		<h3>Set Block Time</h3>
         		<div class=\"form-row\">
         			<label for=\"time_start_hour-" .$ID. "\">Start from:</label> 
@@ -839,7 +721,6 @@ $.validator.addMethod("no_space", function(value, element, param) {
                         <option  value=\"PM\"" . ( $end_hour < 12 ? "" : " selected='selected'"). ">PM</option>
         			</select>
         		</div>
-
         		<h3>Set Blocked Days</h3>
         		<div class=\"select_all_none\">
         			<a rel=\"weekday\" href=\"#select_all\"  class=\"weekday_select_all\">Select All</a> | <a rel=\"weekday\"  href=\"#select_none\" class=\"weekday_select_none\">Select None</a>
@@ -854,15 +735,12 @@ $.validator.addMethod("no_space", function(value, element, param) {
         			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"sunday-" .$ID. "\"  value=\"Sun\"" . ( (stristr($block_days, "Sun") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"sunday-" .$ID. "\">Sunday</label>
         		</div>
         	</div> <!-- end #block-time -->
-
             <div class=\"form-row form-btn\">
             	<input  type=\"button\"  name='" .$blockedInfo['RealID']. "' id=\"save-edit-" .$ID. "\" class=\"btn submit\"  value=\"Save\"/>
             	<input  type=\"button\"  class=\"btn alt reset edit-cancel\"  value=\"Cancel\"/>
             </div>";
-
             return $str_edit;
 	}
-
     for($i=0; $i<$URLNums; $i++){
      //generate edit blocked URL part 
     	echo "<div id=\"edit-" . $blockedSitesURL["$i"]['InstanceID'] . "\" class=\"edit-URL content\" style='display:none'>
@@ -882,7 +760,6 @@ $.validator.addMethod("no_space", function(value, element, param) {
         </div><!-- end #content --> "
     	;
     }
-
     for($i=0; $i<$KeywordNums; $i++){
      //generate edit blocked Keyword part 
     	echo "<div id=\"edit-" . $blockedSitesKeyWord["$i"]['InstanceID'] . "\" class=\"edit-Keyword content\" style='display:none'>
@@ -902,8 +779,5 @@ $.validator.addMethod("no_space", function(value, element, param) {
         </div><!-- end #content --> "
     	;
     }
-
 ?>
-
-
 <?php include('includes/footer.php'); ?>

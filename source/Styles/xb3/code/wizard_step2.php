@@ -1,20 +1,16 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: wizard_step2.php 2943 2009-08-25 20:58:43Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <?php
 	if("admin" == $_SESSION["loginuser"] && !$_POST["userPassword"]){
 		echo '<script type="text/javascript"> alert("Please finish Wizard - Step 1 first."); window.location = "wizard_step1.php";</script>';
 		exit;
 	}
 ?>
-
 <?php
 	$wifi_param = array(
 		//get DefaultSSID & DefaultKeyPassphrase
@@ -38,18 +34,14 @@
 		"network_pass_128_1"	=> "Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_WEPKey128Bit.1.WEPKey",
 		);
 	$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
-
 	$ret = init_psmMode("Gateway > Home Network Wizard - Step 2", "nav-wizard");
 	if ("" != $ret){echo $ret;	return;}
-
 	//get DefaultSSID & DefaultKeyPassphrase
 	$defaultSSID1		= $wifi_value['defaultSSID1'];
 	$defaultKeyPassphrase1	= $wifi_value['defaultKeyPassphrase1'];
-
 	$defaultSSID2		= $wifi_value['defaultSSID2'];
 	$defaultKeyPassphrase2	= $wifi_value['defaultKeyPassphrase2'];
 ?>
-
 <script type="text/javascript">
 $(document).ready(function() {
 	<?php
@@ -63,63 +55,50 @@ $(document).ready(function() {
     /*
      *  Manage password field: open wep networks don't use passwords
      */
-
     $("#security").change(function() {
 		var $select = $(this);
     	var $selected_option = $("option:selected", $select);
-
     	if($selected_option.val() == "None") {
     		$("#netPassword").find("*").addClass("disabled").filter("input").attr("disabled", "disabled").val("");
     	} else {
     		$("#netPassword").find("*").removeClass("disabled").filter("input").attr("disabled", false);
     	}
-		
     	// Update footnote to display password validation rules
     	$("#netPassword-footnote").text($selected_option.attr("title"));
     }).trigger("change");
-	
 	$("#security1").change(function() {
 		var $select1 = $(this);
 		var $selected_option1 = $("option:selected", $select1);
-
 		if($selected_option1.val() == "None") {
 			$("#netPassword1").find("*").addClass("disabled").filter("input").attr("disabled", "disabled").val("");
 		} else {
 			$("#netPassword1").find("*").removeClass("disabled").filter("input").attr("disabled", false);
 		}
-
 		// Update footnote to display password validation rules
 		$("#netPassword-footnote1").text($selected_option1.attr("title"));
 	}).trigger("change");
-
     $.validator.addMethod("wep_64", function(value, element, param) {
     	//console.log("wep64" + param);
 		return !param || /^[a-fA-F0-9]{10}$|^[\S]{5}$/i.test(value);
 	}, "5 Ascii characters or 10 Hex digits.");
-
     $.validator.addMethod("wep_128", function(value, element, param) {
     	//console.log("wep128");
 		return !param || /^[a-fA-F0-9]{26}$|^[\S]{13}$/i.test(value);
 	}, "13 Ascii characters or 26 Hex digits.");
-
     $.validator.addMethod("wpa", function(value, element, param) {
     	//console.log("wpa");
 		return !param || /^[a-fA-F0-9]{64}$|^[\S]{8,63}$/i.test(value);
 	}, "8 to 63 Ascii characters or 64 Hex digits.");
-
     $.validator.addMethod("wpa2", function(value, element, param) {
 		return !param || /^[\S]{8,63}$/i.test(value);
 	}, "8 to 63 Ascii characters.");
-	
     $.validator.addMethod("ssid_name", function(value, element, param) {
 		return !param || /^[a-zA-Z0-9\-_.]{3,63}$/i.test(value);
 	}, "3 to 63 characters combined with alphabet, digit, underscore, hyphen and dot");
-
     $.validator.addMethod("not_hhs", function(value, element, param) {
 		//prevent users to set XHSXXX or Xfinityxxx as ssid
 		return value.toLowerCase().indexOf("xhs")==-1 && value.toLowerCase().indexOf("xfinity")==-1;
 	}, 'SSID containing "XHS" and "Xfinity" are reserved !');
-
     $.validator.addMethod("not_hhs2", function(value, element, param) {
 		//prevent users to set optimumwifi or TWCWiFi  or CableWiFi as ssid
 		//zqiu:
@@ -127,45 +106,36 @@ $(document).ready(function() {
 		return str.indexOf("wifi") == -1 || str.indexOf("cable") == -1 && str.indexOf("twc") == -1 && str.indexOf("optimum") == -1 && str.indexOf("cox") == -1 && str.indexOf("bhn") == -1;
 		//return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
 	}, 'SSID containing "optimumwifi", "TWCWiFi", "CoxWiFi", "BHNWiFi" and "CableWiFi" are reserved !');
-
     $.validator.addMethod("not_defaulSSID1", function(value, element, param) {
 		//prevent users to set defaul-SSID as ssid
 		return value.toLowerCase() != "<?php echo $defaultSSID1; ?>".toLowerCase();
 	}, 'Choose a different Network Name (SSID) (2.4GHz) than the one provided on your gateway.');
-
     $.validator.addMethod("not_defaulPassword1", function(value, element, param) {
 		//prevent users to set defaul-Password as Password
 		return value != "<?php echo $defaultKeyPassphrase1; ?>";
 	}, 'Choose a different Network Password (2.4GHz) than the one provided on your gateway.');
-
     $.validator.addMethod("not_defaulSSID2", function(value, element, param) {
 		//prevent users to set defaul-SSID as ssid
 		return value.toLowerCase() != "<?php echo $defaultSSID2; ?>".toLowerCase();
 	}, 'Choose a different Network Name (SSID) (5 GHz) than the one provided on your gateway.');
-
     $.validator.addMethod("not_defaulPassword2", function(value, element, param) {
 		//prevent users to set defaul-Password as Password
 		return value != "<?php echo $defaultKeyPassphrase2; ?>";
 	}, 'Choose a different Network Password (5 GHz) than the one provided on your gateway.');
-
     // XFSETUP HOME xfinitywifi cablewifi
     // a term starting with the following combination of text in uppercase or lowercase should not be allowed
-
     $.validator.addMethod("not_XFSETUP", function(value, element, param) {
 		return value.toLowerCase().indexOf("xfsetup") != 0;
 	}, 'SSID starting with "XFSETUP" is reserved !');
-
     $.validator.addMethod("not_HOME", function(value, element, param) {
 		return value.toLowerCase().indexOf("home") != 0;
 	}, 'SSID starting with "HOME" is reserved !');
-
 /*
 wep 64 ==> 5 Ascii characters or 10 Hex digits
 wep 128 ==> 13 Ascii characters or 26 Hex digits
 wpapsk ==> 8 to 63 Ascii characters or 64 Hex digits
 wpa2psk ==> 8 to 63 Ascii characters
 */
-
     $("#pageForm").validate({
     	debug: true,
     	rules: {
@@ -228,13 +198,11 @@ wpa2psk ==> 8 to 63 Ascii characters
     			}
 	    	}
     	},
-		
 		submitHandler:function(form){
 			click_save();
 			// location.reload();
 		}
     });
-	
 	if ("n" == "<?php echo $wifi_value['OperatingStandards1']; ?>")
 	{
 		$("#security option").attr("disabled", true);
@@ -249,7 +217,6 @@ wpa2psk ==> 8 to 63 Ascii characters
 			$("#security").val("None");
 		}
 	}
-	
 	if ("n" == "<?php echo $wifi_value['OperatingStandards2']; ?>")
 	{
 		$("#security1 option").attr("disabled", true);
@@ -264,10 +231,7 @@ wpa2psk ==> 8 to 63 Ascii characters
 			$("#security1").val("None");
 		}
 	}
-	
 });
-
-
 function set_config(jsConfig)
 {
 	// alert(jsConfig);
@@ -288,18 +252,15 @@ function set_config(jsConfig)
 			?>
 		});
 }
-
 function click_save()
 {
 	var network_name = 		$("#network_name").val();
 	var security = 			$("#security").val();
 	var network_password = 	$("#network_password").val();
-	
 	var network_name1 = 	$("#network_name1").val();
 	var security1 = 		$("#security1").val();
 	var network_password1 = $("#network_password1").val();
 	var newPassword	= '<?php if("admin" == $_SESSION["loginuser"]) echo $_POST["userPassword"]; ?>';
-
 	if(newPassword){
 		var jsConfig = '{"network_name":"'+network_name+'", "security":"'+security+'", "network_password":"'+network_password 
 			+'", "network_name1":"'+network_name1+'", "security1":"'+security1+'", "network_password1":"'+network_password1
@@ -310,14 +271,10 @@ function click_save()
 			+'", "network_name1":"'+network_name1+'", "security1":"'+security1+'", "network_password1":"'+network_password1
 			+'"}';
 	}
-
 	set_config(jsConfig);
 }
-
 </script>
-
 <?php
-
 //WiFi 2.4G**************************************************************************************
 $network_name		= $wifi_value['network_name'];
 $encrypt_mode		= $wifi_value['encrypt_mode'];
@@ -325,14 +282,12 @@ $encrypt_method		= $wifi_value['encrypt_method'];
 $network_password	= $wifi_value['network_password'];
 $network_pass_64	= $wifi_value['network_pass_64'];
 $network_pass_128	= $wifi_value['network_pass_128'];
-
 // $network_name 		= "string";
 // $encrypt_mode 		= "WPA-Personal";
 // $encrypt_method		= "TKIP";
 // $network_password 	= "abc123456";
 // $network_pass_64		= "wep64";
 // $network_pass_128	= "wep128";
-
 $security = "None";
 if ("WEP-64" == $encrypt_mode){
 		$security = "WEP_64";
@@ -359,7 +314,6 @@ if ("WEP-64" == $encrypt_mode){
 }else{
 		$security = "None";
 }
-
 //WiFi 5G**************************************************************************************
 $network_name1		= $wifi_value['network_name1'];
 $encrypt_mode1		= $wifi_value['encrypt_mode1'];
@@ -367,14 +321,12 @@ $encrypt_method1	= $wifi_value['encrypt_method1'];
 $network_password1	= $wifi_value['network_password1'];
 $network_pass_64	= $wifi_value['network_pass_64_1'];
 $network_pass_128	= $wifi_value['network_pass_128_1'];
-
 // $network_name1 		= "string";
 // $encrypt_mode1 		= "WPA-Personal";
 // $encrypt_method1		= "TKIP";
 // $network_password1 	= "abc123456";
 // $network_pass_64		= "wep64";
 // $network_pass_128	= "wep128";
-
 $security1 = "None";
 if ("WEP-64" == $encrypt_mode1){
 		$security1 = "WEP_64";
@@ -401,9 +353,7 @@ if ("WEP-64" == $encrypt_mode1){
 }else{
 		$security1 = "None";
 }
-
 ?>
-
 <div id="content">
 	<?php
 		if("admin" == $_SESSION["loginuser"]){
@@ -413,7 +363,6 @@ if ("WEP-64" == $encrypt_mode1){
 			echo '<h1>Gateway > Home Network Wizard</h1>';
 		}
 	?>
-
 	<div id="educational-tip">
 		<p class="tip">You may want to edit information about your Wi-Fi network for both 2.4 GHz and 5 GHz Wi-Fi bands.</p>
 		<p class="hidden"><strong>Wi-Fi Network Name:</strong> Names of the 2.4 GHz and 5 GHz Wi-Fi networks of your Gateway. The default Network Names (SSIDs), located on the bottom label of the Gateway, is unique to this Gateway.</p>
@@ -421,7 +370,6 @@ if ("WEP-64" == $encrypt_mode1){
 		<p class="hidden"><strong>Network Password:</strong> The default Password (key), located on the bottom label of the Gateway, is unique to this Gateway.</p>
 		<p class="hidden"><strong>Note:</strong> If you change any of the default settings, you'll need to reconnect Wi-Fi products on your network (using the new information).</p>
 	</div>
-
 	<div class="module forms">
 		<form action="at_a_glance.php" method="post" id="pageForm">
 			<?php
@@ -433,7 +381,6 @@ if ("WEP-64" == $encrypt_mode1){
 				}
 			?>
 			<p class="summary">Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi B, G, N) and 5GHz(Wi-Fi A, N) compatible devices.</p>
-			
 			<div class="form-row odd">
 				<label for="network_name">Wi-Fi Network Name (2.4GHz):</label>
 				<input type="text" size="23" value="<?php echo $network_name;?>" id="network_name" name="network_name" class="text" />
@@ -459,8 +406,6 @@ if ("WEP-64" == $encrypt_mode1){
 				</div>
 				<p id="netPassword-footnote" class="footnote">8-16 characters. Letter and numbers only. No spaces. Case sensitive.</p>
 			</div>
-
-
 			<div class="form-row odd">
 				<label for="network_name1">Wi-Fi Network Name (5 GHz):</label>
 				<input type="text" size="23" value="<?php echo $network_name1;?>" id="network_name1" name="network_name1" class="text" />
@@ -486,11 +431,9 @@ if ("WEP-64" == $encrypt_mode1){
 				</div>
 				<p id="netPassword-footnote1" class="footnote">8-16 characters. Letter and numbers only. No spaces. Case sensitive.</p>
 			</div>
-			
 			<div id="wizard-form-buttons" class="form-row form-btn">
 				<input type="submit" value="Finish" class="btn" />
 			</div>
-			
 		</form>
 	</div> <!-- end .module -->
 </div><!-- end #content -->

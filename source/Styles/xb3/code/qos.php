@@ -1,16 +1,12 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: firewall_settings.php 3158 2010-01-08 23:32:05Z slemoine $ -->
-
 <div id="sub-header">
     <?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > CallP/QoS ", "nav-qos");
-
 	$('#show_DSXlog').click(function(){
 		jConfirm(
 		"This action may take more than one minute. Do you want to continue?", 
@@ -21,7 +17,6 @@ $(document).ready(function() {
 			}
 		});
     });
-
 	$('#show_callsignallog').click(function(){
 		jConfirm(
 		"This action may take more than one minute. Do you want to continue?", 
@@ -33,11 +28,9 @@ $(document).ready(function() {
 		});
     });
 });
-
 function save_config(target)
 {
 	var jsConfig = "";
-	
 	if ("switch_callsignallog" == target) {
 		if ($('#switch_callsignallog').attr("value")=="Enable Logging")	{
 			$('#switch_callsignallog').attr("value", "Disable Logging");
@@ -81,7 +74,6 @@ function save_config(target)
 		});
 	}
 }	
-
 function set_config(jsConfig)
 {
 	// alert(jsConfig);
@@ -100,15 +92,12 @@ function set_config(jsConfig)
 		}
 	});
 }
-
 </script>
-
 <div id="content">
     <h1>Gateway > Connection >CallP/QoS </h1>
     <div id="educational-tip">
 		<p class="tip">This Page shows CallP/QoS statistics of USG.</p>
     </div>
-
     <div class="module data">
 		<h2>CALLP </h2>
 		<table class="data">
@@ -132,13 +121,11 @@ function set_config(jsConfig)
 			</tr>
 		</table>
     </div> <!-- end .module -->
-
 	<div class="btn-group">
 		&nbsp;&nbsp;&nbsp;&nbsp;<input id="show_callsignallog" name="show_callsignallog" type="button"  value="Show Call Signalling Log" class="btn" />
 		<input id="switch_callsignallog" type="button" onClick="save_config('switch_callsignallog')"  value="<?php echo getStr('Device.X_CISCO_COM_MTA.CallSignallingLogEnable')!='true'?'Enable':'Disable'; ?> Logging" class="btn alt" />
         <input id="clear_callsignallog"  type="submit" onClick="save_config('clear_callsignallog')"   value="Clear" class="btn" />
     </div>
-	
 	<div class="module data">
 		<h2>QoS </h2>
 		<table class="data">
@@ -167,13 +154,10 @@ function set_config(jsConfig)
 			?>
 		</table>
     </div> <!-- end .module -->
-
     <div class="btn-group">
 		&nbsp;&nbsp;&nbsp;&nbsp;<input id="show_DSXlog" name="show_DSXlog" type="button"   value="Show DSX Log" class="btn" />
         <input id="switch_DSXlog" type="button" onClick="save_config('switch_DSXlog')" value="<?php echo getStr('Device.X_CISCO_COM_MTA.DSXLogEnable')!='true'?'Enable':'Disable'; ?> Logging" class="btn alt" />
         <input id="clear_DSXlog"  type="submit" onClick="save_config('clear_DSXlog')"  value="Clear" class="btn" />
     </div>
 </div><!-- end #content -->
-
-
 <?php include('includes/footer.php'); ?>

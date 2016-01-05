@@ -1,13 +1,10 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: managed_devices_add_computer.php 2943 2009-08-25 20:58:43Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <?php
 	$i=$_GET['id'];
 //	echo "<script>var ID=".$i.";</script>";
@@ -20,30 +17,24 @@
         "days"          => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".BlockDays",
 	);
     $managed_devices_value = KeyExtGet("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.", $managed_devices_param);
-
 	$name = $managed_devices_value["name"]; 
 	$mac = $managed_devices_value["mac"]; 
 	$blockStatus = $managed_devices_value["blockStatus"]; 
-	
 	global $startTime, $endTime, $days;
 	if($blockStatus == "false") {
 		$startTime = $managed_devices_value["startTime"]; 
 		$endTime = $managed_devices_value["endTime"]; 
 		$days = $managed_devices_value["days"]; 
 	}
-
 	($blockStatus == "") && ($blockStatus = "true");
 ?>
-
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Parental Control > Managed Devices > Add Allowed Device", "nav-devices");
-
 	var ID = "<?php echo $i ?>";
 	var jsName = "<?php echo $name ?>";
 	var jsMac = "<?php echo $mac ?>";
 	var jsBlockStatus = <?php echo $blockStatus ?>;
-	
 	var jsStartTime, jsEndTime, jsDays;
 	if(jsBlockStatus == false) {
 		jsStartTime = "<?php echo $startTime ?>".split(":");
@@ -66,11 +57,9 @@ $(document).ready(function() {
 	}).change(function(event, data) {
 		updateAllowTimeVisibility($("#always_switch").radioswitch("getState").on ? "yes" : "no")
 	});
-	
 	function init() {
 		$("#computer_name").val(jsName);
 		$('#mac_address').val(jsMac);
-		
 		if(jsBlockStatus == false) {
 			updateAllowTimeVisibility("no");
 			if((parseInt(jsStartTime[0])>=12)) {
@@ -97,7 +86,6 @@ $(document).ready(function() {
 				$('#time_end_minute').val(jsEndTime[1]);
 				$('#time_end_ampm').val("AM");
 			}
-			
 			$("#weekday input").prop("checked", false);
 			var checkObject = document.getElementsByName("day");                          
 			for(var j = 0; j < jsDays.length; j++)             
@@ -111,14 +99,11 @@ $(document).ready(function() {
 				    }             
 				}             
 			}  
-	
 		} else {
 			updateAllowTimeVisibility("yes");
 		}
 	}
-
 	init();
-
 	function updateAllowTimeVisibility(isAllowed) {
 		if(isAllowed == "yes") {
             $("#allow-time *").prop("disabled", true).addClass("disabled");
@@ -126,19 +111,16 @@ $(document).ready(function() {
             $("#allow-time *").prop("disabled", false).removeClass("disabled");
         }
 	}
-
 	$("#weekday_select_all").click(function() {
 		if(!$(this).is(".disabled")) {
 			$("#weekday input").prop("checked", true);
 		}
 	});
-
     $("#weekday_select_none").click(function() {
 	   	if(!$(this).is(".disabled")) {
 		   $("#weekday input").prop("checked", false);
 		}
 	});
-
 	$("#pageForm").validate({
 		debug: true,
 		/*errorElement : "div",
@@ -168,22 +150,18 @@ $(document).ready(function() {
 	       }
 		}
 	});
-
 	$("#btn-cancel").click(function() {
 		window.location = "managed_devices.php";
 	});
-	
 	$("#btn-save").click(function(){
 		if($("#pageForm").valid()) {
 			var name = $('#computer_name').val();
 			var mac = $('#mac_address').val();
 			var block = $('#always_switch').radioswitch("getState").on;
 	//		alert(name+";"+mac+";"+block);
-			
 			var isMacValid = true;
 			if(parseInt(mac.split(":")[0], 16)%2 || mac=="00:00:00:00:00:00")
 				isMacValid = false;
-			
 			if(isMacValid) {
 				if(block) {
 					jProgress('This may take several seconds', 60);
@@ -203,41 +181,34 @@ $(document).ready(function() {
 						}
 					});
 				} else {
-				  
 				  var startTime_unit = $('#time_start_ampm').val();
 				  var endTime_unit   = $('#time_end_ampm').val();
 				  var startHour = parseInt($('#time_start_hour').val());
 				  var endHour   = parseInt($('#time_end_hour').val());
 				  var sminute   = parseInt($('#time_start_minute').val());
 				  var eminute   = parseInt($('#time_end_minute').val());
-
 				  if (startTime_unit === "PM" && startHour !== 12) {      
 				        startHour += 12;
 				  }
 				  else if (startTime_unit === "AM" && startHour === 12) {
 				        startHour = 0;
 				  }
-
 				  if (endTime_unit === "PM" && endHour !== 12) {      
 				        endHour += 12;
 				  }
 				  else if (endTime_unit === "AM" && endHour === 12) {
 				        endHour = 0;
 				  }
-
 				  if ((startHour>endHour) || ((startHour==endHour) && (sminute>=eminute))) {
 			         jAlert("Start time should be smaller than End time !");
 			         return;
 			      } 	
-
 				  (0 === startHour) && (startHour = '00');
 				  (0 === endHour)   && (endHour   = '00');
 				  (0 === sminute)   && (sminute   = '00');
 				  (0 === eminute)   && (eminute   = '00');
-
 				  var startTime = startHour + ':' + sminute;
 				  var endTime   = endHour   + ':' + eminute;
-					
 					var days = "";//Mon, Tue, Wed, Thu, Fri, Sat, Sun.
 					var len = $("input[name='day']:checked").length;
 					$("input[name='day']:checked").each(function(){
@@ -246,7 +217,6 @@ $(document).ready(function() {
 							days += ",";
 					});
 		//			alert(name+";"+mac+";"+block+";"+startTime+";"+endTime+";"+days);
-					
 					jProgress('This may take several seconds', 60);
 					$.ajax({
 						type:"POST",
@@ -271,36 +241,28 @@ $(document).ready(function() {
 				jAlert("Not valid! Can not be saved.");
 		}
 	});
-	
 });
 </script>
-
 <div id="content">
 	<h1>Parental Control > Managed Devices > Edit Allowed Device</h1>
 	<form id="pageForm"  method="post"> 
-
 	<div class="module">
 		<div class="forms">
 			<h2>Edit Device to be Allowed</h2>
-
             <div class="form-row">
 				<label for="device">Computer Name:</label>
 				<input type="text" id="computer_name" value="name" name="computer_name" class="text" />
 			</div>
-			
 			<div class="form-row">
 				<label for="device">MAC Address:</label>
 				<input type="text" id="mac_address" value="mac" name="mac_address" class="text" />
 			</div>
-			
 			<div class="form-row">
 				<label for="on">Always Allow?</label>
 				<span id="always_switch"></span>
 			</div>
-
         	<div id="allow-time">
         		<h3>Set Allow Time</h3>
-
         		<div class="form-row">
         	<label for="time_start_hour">Start from:</label>
            <select id="time_start_hour" name="time_start_hour">
@@ -360,7 +322,6 @@ $(document).ready(function() {
                 <option value"PM" selected="selected">PM</option>
         </select>
         </div>
-
 <h3>Set Allow Days</h3>
 <div class="select_all_none">
    <a rel="weekday" href="#select_all" id="weekday_select_all" class="">Select All</a> | <a rel="weekday" id="weekday_select_none" href="#select_none" class="">Select None</a>
@@ -375,7 +336,6 @@ $(document).ready(function() {
    <input type="checkbox" name="day" id="sunday" value="Sun" checked="checked" /><label class="checkbox" for="sunday">Sunday</label>
 </div>
 </div> <!-- end #block-time -->
-
             <div class="form-row form-btn">
             	<input type="button" id="btn-save" name="save" class="btn submit" value="Save"/>
             	<input type="button" id="btn-cancel" name="cancel" class="btn alt reset" value="Cancel"/>
@@ -384,5 +344,4 @@ $(document).ready(function() {
 	</div> <!-- end .module -->
     </form> 
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

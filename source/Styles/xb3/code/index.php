@@ -1,47 +1,38 @@
 <?php include('includes/utility.php'); ?>
 <?php
 session_start();
-
 $DeviceInfo_param = array(
 	"ConfigureWiFi"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi",
 	"CloudUIEnable"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable",
 	"CloudUIWebURL"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIWebURL",
 	);
 $DeviceInfo_value = KeyExtGet("Device.DeviceInfo.", $DeviceInfo_param);
-
 $DeviceControl_param = array(
 	"LanGwIPv4"	=> "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress",
 	"lanMode"	=> "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode",
 	"psmMode"	=> "Device.X_CISCO_COM_DeviceControl.PowerSavingModeStatus",
 	);
 $DeviceControl_value = KeyExtGet("Device.X_CISCO_COM_DeviceControl.", $DeviceControl_param);
-
 $CONFIGUREWIFI	= $DeviceInfo_value["ConfigureWiFi"];
 $Cloud_Enabled	= $DeviceInfo_value["CloudUIEnable"];
 $Cloud_WebURL	= $DeviceInfo_value["CloudUIWebURL"];
-
 $url = $_SERVER['HTTP_HOST'];
 $Wan_IPv4 = getStr("Device.X_CISCO_COM_CableModem.IPAddress");
 $Wan_IPv6 = getStr("Device.X_CISCO_COM_CableModem.IPv6Address");
-
 //if user is entering literal IPv6 address then remove "[" and "]"
 $url = str_replace("[","",$url);
 $url = str_replace("]","",$url);
-
 if(!strcmp($url, $Wan_IPv4) || !strcmp($url, $Wan_IPv6)){
 	$isMSO  = true;
 }
 else {
 	$isMSO  = false;
 }
-
 $lanMode = $DeviceControl_value['lanMode'];
 $psmMode = $DeviceControl_value['psmMode'];
-
 /*-------- redirection logic - uncomment the code below while checking in --------*/
 	//$LanGwIPv4
 	$LanGwIPv4 = $DeviceControl_value['LanGwIPv4'];
-
 	//$LanGwIPv6
 	$interface = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstDownstreamIpInterface");
 	$idArr = explode(",", getInstanceIds($interface."IPv6Address."));
@@ -54,7 +45,6 @@ $psmMode = $DeviceControl_value['psmMode'];
 			$LanGwIPv6 = $ipv6addr;
 		}
 	}
-
 if(!$isMSO) {
         setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_access",true);
 	//If Cloud redirection is set, then everything through local GW should be redirected
@@ -63,22 +53,18 @@ if(!$isMSO) {
 		header("Location: $Cloud_WebURL");
 		exit;
 	}
-
 	if(strstr($CONFIGUREWIFI, "true")) {
 		$SERVER_ADDR = $_SERVER['SERVER_ADDR'];
-		
 		$ip_addr = strpos($SERVER_ADDR, ":") == false ? $LanGwIPv4 : $LanGwIPv6 ;
 		header('Location:http://'.$ip_addr.'/captiveportal.php');
 	}
 }
-
 ?>
 <?php
 //----------Ported from includes/header.php for new login page
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-
 <?php
 /*
 ** is GW works in Bridge mode or not
@@ -89,7 +75,6 @@ if ("bridge-static" != $lanMode && "router" != $lanMode){
 }
 // doc lanMode into session, for directly use it in function
 $_SESSION["lanMode"] = $lanMode;
-
 /*
 ** is GW works in PSM mode or not
 */
@@ -99,13 +84,9 @@ if ("Enabled" != $psmMode && "Disabled" != $psmMode){
 }
 // doc psmMode into session, for directly use it in function
 $_SESSION["psmMode"] = $psmMode;
-
 ?>
-
-
 <head>
 	<title>Xfinity</title>
-
 	<!--CSS-->
 	<link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/common-min.css" />
 	<!--[if IE 6]>
@@ -116,10 +97,8 @@ $_SESSION["psmMode"] = $psmMode;
 	<![endif]-->
 	<link rel="stylesheet" type="text/css" media="print" href="./cmn/css/print.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/lib/jquery.radioswitch.css" />
-
 	<!--Character Encoding-->
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-
 	<script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery-migrate-1.2.1.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.validate.js"></script>
@@ -129,22 +108,18 @@ $_SESSION["psmMode"] = $psmMode;
 	<script type="text/javascript" src="./cmn/js/lib/jquery.highContrastDetect.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.radioswitch.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.virtualDialog.js"></script>
-
 	<script type="text/javascript" src="./cmn/js/utilityFunctions.js"></script>
 	<script type="text/javascript" src="./cmn/js/comcast.js"></script>
-
 	<style>
 		#div-skip-to {
 			position:relative;
 			left: 150px;
 			top: -300px;
 		}
-
 		#div-skip-to a {
 			position: absolute;
 			top: 0;
 		}
-
 		#div-skip-to a:active, #div-skip-to a:focus {
 			top: 300px;
 			color: #0000FF;
@@ -152,20 +127,16 @@ $_SESSION["psmMode"] = $psmMode;
 		}
 	</style>
 </head>
-
 <body>
 	<!--Main Container - Centers Everything-->
 	<div id="container">
-
 		<!--Header-->
 		<div id="header">
 			<h2 id="logo"><img src="./cmn/img/logo_xfinity.png" alt="Xfinity" title="Xfinity" /></h2>
 		</div> <!-- end #header -->
-
 		<div id='div-skip-to' style="display: none;">
 			<a id="skip-link" name="skip-link" href="#content">Skip to content</a>
 		</div>
-
 		<!--Main Content-->
 		<div id="main-content">
 <?php
@@ -177,12 +148,10 @@ $_SESSION["psmMode"] = $psmMode;
 //----------Ported from userbar.php for new index page
 ?>
 	<!--dynamic generate user bar icon and tips-->
-
 	<?php
 	$a = getStr("Device.X_CISCO_COM_MTA.Battery.RemainingCharge");
 	$b = getStr("Device.X_CISCO_COM_MTA.Battery.ActualCapacity");
 	$sta_batt = ($a<=$b && $a && $b) ? round(100*$a/$b) : 0;
-
 	//$sta_batt = "61";
 	//find battery class manually
 	if($sta_batt > 90) { $battery_class = "bat-100"; }
@@ -191,11 +160,8 @@ $_SESSION["psmMode"] = $psmMode;
 	elseif($sta_batt > 18) { $battery_class = "bat-25"; }
 	elseif($sta_batt > 8) { $battery_class = "bat-10"; }
 	else { $battery_class = "bat-0"; }
-
 	$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
-
 	$WANIPv4 = getStr($fistUSif."IPv4Address.1.IPAddress");
-
 	$ids = explode(",", getInstanceIds($fistUSif."IPv6Address."));
 	foreach ($ids as $i){
 		$val = getStr($fistUSif."IPv6Address.$i.IPAddress");
@@ -204,12 +170,9 @@ $_SESSION["psmMode"] = $psmMode;
 			break;
 		}
 	}
-
 	$sta_inet = ($WANIPv4 != "0.0.0.0" || strlen($WANIPv6) > 0) ? "true" : "false";
-
 	//in Bridge mode > Internet connectivity status is always active
 	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
-
 	$sta_wifi = "false";
 	if("Disabled"==$_SESSION["psmMode"]){
 		$ssids = explode(",", getInstanceIds("Device.WiFi.SSID."));
@@ -221,18 +184,15 @@ $_SESSION["psmMode"] = $psmMode;
 			}
 		}
 	}
-
 	if("Disabled"==$_SESSION["psmMode"]) { $sta_moca = getStr("Device.MoCA.Interface.1.Enable"); }
 	//$sta_dect = getStr("Device.X_CISCO_COM_MTA.Dect.Enable");
 	$sta_fire = getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel");
-
 	$_SESSION['sta_inet'] = $sta_inet;
 	$_SESSION['sta_wifi'] = $sta_wifi;
 	$_SESSION['sta_moca'] = $sta_moca;
 	$_SESSION['sta_fire'] = $sta_fire;
 	$_SESSION['sta_batt'] = $sta_batt;
 	$_SESSION['battery_class'] = $battery_class;
-
 	//$sta_batt = "58";
 	//$sta_inet = "true";
 	//$sta_wifi = "false";
@@ -240,22 +200,18 @@ $_SESSION["psmMode"] = $psmMode;
 	//$sta_dect = "false"; //false
 	//$sta_fire = "Low"; //Medium Low High
 	?>
-
 	<script type="text/javascript">
 	$(document).ready(function() {
-
 		var sta_batt = "<?php echo $sta_batt; ?>";
 		var sta_inet = "<?php echo $sta_inet; ?>";
 		var sta_wifi = "<?php echo $sta_wifi; ?>";
 		var sta_moca = "<?php echo $sta_moca; ?>";
 		var sta_fire = "<?php echo $sta_fire; ?>";
-
 		/*
 		* get status when hover or tab focused one by one
 		* but for screen reader we have to load all status once
 		* below code can easily rollback
 		*/
-
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_userbar.php",
@@ -272,58 +228,47 @@ $_SESSION["psmMode"] = $psmMode;
 			}
 		});
 		// });
-
 		// show pop-up info when focus
 		$("#status a").focus(function() {
 			$(this).mouseenter();
 		});
-
 		// disappear previous pop-up
 		$("#status a").blur(function() {
 			$(".tooltip").hide();
 		});
-
 	});
-
 </script>
-
 <style>
 	#status a:link, #status a:visited {
 		text-decoration: none;
 		color: #808080;
 	}
 </style>
-
 <ul id="status">
 	<?php
 	echo '<li id="sta_batt" class="battery first-child"><div class="sprite_cont"><span class="'.$battery_class.'" ><img src="./cmn/img/icn_battery.png"  alt="Battery icon" title="Battery icon" /></span></div><a role="toolbar" href="javascript: void(0);" tabindex="0">'.$sta_batt.'%</a>
 		<!-- NOTE: When this value changes JS will set the battery icon -->
 	</li>';
-
 	if ("true"==$sta_inet) {
 		echo '<li id="sta_inet" class="internet"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Internet Online" /></span><a href="javascript: void(0);" tabindex="0">Internet<div class="tooltip">Loading...</div></a></li>';
 	} else {
 		echo '<li id="sta_inet" class="internet off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Internet Offline" /></span><a href="javascript: void(0);" tabindex="0">Internet<div class="tooltip">Loading...</div></a></li>';
 	}
-
 	if ("true"==$sta_wifi) {
 		echo '<li id="sta_wifi" class="wifi"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Wi-Fi Online" /></span><a href="javascript: void(0);" tabindex="0">Wi-Fi<div class="tooltip">Loading...</div></a></li>';
 	} else {
 		echo '<li id="sta_wifi" class="wifi off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Wi-Fi Offline" /></span><a href="javascript: void(0);" tabindex="0">Wi-Fi<div class="tooltip">Loading...</div></a></li>';
 	}
-
 	if ("true"==$sta_moca) {
 		echo '<li id="sta_moca" class="MoCA"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="MoCA Online" /></span><a href="javascript: void(0);" tabindex="0">MoCA<div class="tooltip">Loading...</div></a></li>';
 	} else {
 		echo '<li id="sta_moca" class="MoCA off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="MoCA Offline" /></span><a href="javascript: void(0);" tabindex="0">MoCA<div class="tooltip">Loading...</div></a></li>';
 	}
-
 	/*if ("true"==$sta_dect) {
 		echo '<li id="sta_dect" class="DECT"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="DECT Online" /></span><a href="javascript: void(0);" tabindex="0">DECT<div class="tooltip">Loading...</div></a></li>';
 	} else {
 		echo '<li id="sta_dect" class="DECT off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="DECT Offline" /></span><a href="javascript: void(0);" tabindex="0">DECT<div class="tooltip">Loading...</div></a></li>';
 	}*/
-
 	if (("High"==$sta_fire) || ("Medium"==$sta_fire)) {
 		echo '<li id="sta_fire" class="security last"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Security On" /></span><a href="javascript: void(0);" tabindex="0"><span>'.$sta_fire.' Security</span><div class="tooltip">Loading...</div></a></li>';
 	} else {
@@ -335,12 +280,10 @@ $_SESSION["psmMode"] = $psmMode;
 //----------End port of userbar code for new index page
 ?>
 </div><!-- end #sub-header -->
-
 <?php
 //Old Nav Bar. Put new login here.
 //include('includes/nav.php');
 ?>
-
 <!--div id="nav"-->
 <div style="float: left; margin: 0 20px 20px 0; width: 182px;">
 	<form action="check.php" method="post" id="pageForm"  onsubmit="return f();">
@@ -361,11 +304,9 @@ $_SESSION["psmMode"] = $psmMode;
 	</div>
 </form>
 </div>
-
 <script type="text/javascript">
 $(document).ready(function() {
 	comcast.page.init("Login", "nav-login");
-
 	$("#pageForm").validate({
 		errorElement : "p"
 		,errorContainer : "#error-msg-box"
@@ -399,12 +340,10 @@ $(document).ready(function() {
 			}
 		}
 	});
-
 	$("#username").focus();
 	$("#username").val("");
 	$("#password").val("");
 });
-
 function f()
 {
 	var username;
@@ -416,10 +355,8 @@ function f()
 	return true;
 }
 </script>
-
 <div id="content">
 	<h1>Gateway > Login</h1>
-
 	<div id="educational-tip">
 		<p class="tip">Please login to view your Wi-Fi passkey or to view and edit detailed network settings.</p>
 	</div>
@@ -436,23 +373,19 @@ function f()
 			"wifi_50_ssid"		=> "Device.WiFi.SSID.2.SSID",
 			"wifi_50_passkey"	=> "Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_KeyPassphrase",
 		);
-		
 		$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
-
 		$wifi_24_enabled 	= $wifi_value["wifi_24_enabled"];
 		$wifi_24_ssid 		= $wifi_value["wifi_24_ssid"];
 		$wifi_24_passkey 	= $wifi_value["wifi_24_passkey"];
 		$wifi_50_enabled 	= $wifi_value["wifi_50_enabled"];
 		$wifi_50_ssid 		= $wifi_value["wifi_50_ssid"];
 		$wifi_50_passkey 	= $wifi_value["wifi_50_passkey"];
-
 		//If at least one private SSID is enabled
 		if ( $lanMode == "router" && ("true" == $wifi_24_enabled || "true" == $wifi_50_enabled) ) {
 			echo '<div class="module block" id="wifi-config">';
 				echo '<div>';
 					echo '<h2>Wi-Fi Configuration</h2>';
 				echo '</div>';
-		
 			//If both 2.4ghz and 5ghz ssid's and passkeys are the same, or only one is active, then just show one row
 			if ((($wifi_24_ssid == $wifi_50_ssid) && ($wifi_24_passkey == $wifi_50_passkey)) || !("true" == $wifi_24_enabled && "true" == $wifi_50_enabled)) {
 				//Figure out whice one is active
@@ -484,10 +417,8 @@ function f()
 					echo '</div>';
 				echo '</div>';
 				}
-
 			//Else if they are both enabled and different SSID's or passkeys, we need 2 rows
 			} else {
-
 				if($isMSO) {
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
@@ -535,7 +466,6 @@ function f()
 			echo '</div>';
 		echo '</div>';
 	}
-
 	echo '<div class="module block" id="home-network">';
 		echo '<div>';
 			echo '<h2>Home Network</h2>';
@@ -551,30 +481,25 @@ function f()
 				} else {
 					echo "<div class=\"form-row off\"><span class=\"on-off\">Off</span> <span class=\"readonlyLabel\">Ethernet</span></div>";
 				}*/
-
 				$ids = explode(",", getInstanceIds("Device.Ethernet.Interface."));
 				$ethEnable = false;
-
 				foreach ($ids as $i){
 					if ("true" == getStr("Device.Ethernet.Interface.".$i.".Enable")){
 						$ethEnable = true;
 						break;
 					}
 				}
-
 				if ($ethEnable) {
 					echo "<div class=\"form-row\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Ethernet On' /></span> <span class=\"readonlyLabel\">Ethernet</span></div>";
 				} else {
 					echo "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Ethernet Off' /></span> <span class=\"readonlyLabel\">Ethernet</span></div>";
 				}
-
 				// if (getStr("Device.WiFi.SSID.1.Enable")=="true" || getStr("Device.WiFi.SSID.2.Enable")=="true") {
 				if ("true" == $sta_wifi) {		// define in userhar, should have defined every componet status in userbar
 					echo "<div class=\"form-row odd\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Wi-Fi On' /></span> <span class=\"readonlyLabel\">Wi-Fi</span></div>";
 				} else {
 					echo "<div class=\"form-row odd off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Wi-Fi Off' /></span> <span class=\"readonlyLabel\">Wi-Fi</span></div>";
 				}
-
 				if (getStr("Device.MoCA.Interface.1.Enable")=="true") {
 					echo "<div class=\"form-row\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='MoCA On' /></span> <span class=\"readonlyLabel\">MoCA</span></div>";
 				} else {
@@ -592,7 +517,6 @@ function f()
 			</div>
 		</div>
 	</div> <!-- end .module -->
-
 	<div id="internet-usage" class="module form">
 		<h2 style="margin-bottom: -5px;">Connected Devices</h2>
 		<table class="data" summary="This table displays Online Devices connected">
@@ -604,9 +528,7 @@ function f()
 		    </tr>
 		<?php
 		if ("Disabled"==$_SESSION["psmMode"]) {
-
 			function ProcessLay1Interface($interface){
-		   
 				if (stristr($interface, "WiFi")){
 					if (stristr($interface, "WiFi.SSID.1")) {
 						//$host['networkType'] = "Private";
@@ -633,27 +555,21 @@ function f()
 					$host['connectionType'] = "Unknown";
 					//$host['networkType'] = "Private";
 				}
-		    
 		    	return $host;
 			}
 			$rootObjName    = "Device.Hosts.Host.";
 			$paramNameArray = array("Device.Hosts.Host.");
 			$mapping_array  = array("PhysAddress", "HostName", "Active", "Layer1Interface");
-
 			$HostIndexArr = DmExtGetInstanceIds("Device.Hosts.Host.");
 			if(0 == $HostIndexArr[0]){
 				// status code 0 = success
 				$HostNum = count($HostIndexArr) - 1;
 			}
-
 			if(!empty($HostNum)){
-
 				$Host = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 				//this is to construct host info array
-
 				$j = 1;
 				if(!empty($Host)){
-
 					foreach ($Host as $key => $value) {
 						if (!strcasecmp("true", $value['Active'])) {
 							$HostInfo[$j]['HostName']	= $value['HostName'];
@@ -663,22 +579,17 @@ function f()
 							$j += 1;
 						}
 					}// end of foreach
-
 					//restrict the listing of connected devices to 10 or 15
 					for($i=1; $i<$j && $i<16; $i++) {
-
 						if( $i%2 ) {$divClass="class='form-row '";}
 							else {$divClass="class='form-row odd'";}
-
 						$HostName = $HostInfo[$i]['HostName'];
 						$ConnectionType = ProcessLay1Interface($HostInfo[$i]['Layer1Interface']);
 						$ConnectionType = $ConnectionType['connectionType'];
-
 						if (($HostName == "*") || (strlen($HostName) == 0)) {
 							//$HostName = strtoupper($HostInfo[$i]['PhysAddress']);
 							$HostName = "";
 						}
-
 						echo "<tr $divClass>
 							<td width='5%' class='readonlyLabel' headers='active-icon'><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Host On' /></span></td>
 							<td width='40%' class='readonlyLabel' headers='host-name'>$HostName</td>
@@ -686,7 +597,6 @@ function f()
 							<td width='' class='readonlyLabel' headers='connection-type'>$ConnectionType</td>
 						      </tr>
 						";
-
 					}//end of for
 				}//end of empty $host
 			}//end of if empty $hostnum
@@ -695,7 +605,6 @@ function f()
 		</table>
 		<?php if((isset($j)) && ($j > 15)) echo "<div>Maximum of 15 connected devices are listed. Please login to view all! </div>" ?>
 	</div> <!-- end .module -->
-
 	<!--div class="module">
 		<div class="select-row">
 			<span class="readonlyLabel label">IGMP Snooping:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
@@ -728,6 +637,5 @@ function f()
 			<?php } ?>
 		</div>
 	</div-->
-
 </div><!-- end #content -->
 <?php include('includes/footer.php'); ?>

@@ -1,18 +1,13 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: managed_services_add.php 2943 2009-08-25 20:58:43Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Parental Control > Managed Services > Add Blocked Service", "nav-services");
     $('#user_defined_service').focus();
-
 	$("#always_switch").radioswitch({
 		id: "always-switch",
 		radio_name: "block",
@@ -28,7 +23,6 @@ $(document).ready(function() {
 	}).change(function(event, data) {
 		updateBlockTimeVisibility($("#always_switch").radioswitch("getState").on ? "yes" : "no")
 	});
-
 	function updateBlockTimeVisibility(isBlocked) {
 		if(isBlocked == "yes") {
             $("#block-time *").prop("disabled", true).addClass("disabled");
@@ -37,23 +31,19 @@ $(document).ready(function() {
         }
 	}
 	updateBlockTimeVisibility($("#always_switch").radioswitch("getState").on ? "yes" : "no")
-
 	$("#weekday_select_all").click(function() {
 		if(!$(this).is(".disabled")) {
 			$("#weekday input").prop("checked", true);
 		}
 	});
-
     $("#weekday_select_none").click(function() {
 		if(!$(this).is(".disabled")) {
 			$("#weekday input").prop("checked", false);
 		}
 	});
-
 	jQuery.validator.addMethod("ltstart",function(value,element){
 		return this.optional(element) || parseInt(value)>=parseInt($("#start_port").val());
 	}, "Please enter a value more than or equal to Start Port.");
-	
 	$("#pageForm").validate({
 	   rules: {
 	       user_defined_service: {
@@ -79,12 +69,9 @@ $(document).ready(function() {
 	       }
 	   }
 	});
-
-
 	$("#btn-cancel").click(function() {
 		window.location = "managed_services.php";
 	});
-	
 	$("#btn-save").click(function(){
 		if($("#pageForm").valid()) {
 			var service = $('#user_defined_service').val();
@@ -92,7 +79,6 @@ $(document).ready(function() {
 			var startPort = $('#start_port').val();
 			var endPort = $('#end_port').val();
 			var block = $("#always_switch").radioswitch("getState").on;
-			
 			if(block) {
 				jProgress('This may take several seconds', 60);
 				$.ajax({
@@ -112,41 +98,34 @@ $(document).ready(function() {
 				});
 			} 
 			else {
-			
 				var startTime_unit = $('#time_start_ampm').val();
 				var endTime_unit   = $('#time_end_ampm').val();
 				var startHour = parseInt($('#time_start_hour').val());
 				var endHour   = parseInt($('#time_end_hour').val());
 				var sminute   = parseInt($('#time_start_minute').val());
 				var eminute   = parseInt($('#time_end_minute').val());
-
 				if (startTime_unit === "PM" && startHour !== 12) {      
 					startHour += 12;
 				}
 				else if (startTime_unit === "AM" && startHour === 12) {
 					startHour = 0;
 				}
-
 				if (endTime_unit === "PM" && endHour !== 12) {      
 					endHour += 12;
 				}
 				else if (endTime_unit === "AM" && endHour === 12) {
 					endHour = 0;
 				}
-
 				if ((startHour>endHour) || ((startHour==endHour) && (sminute>=eminute))) {
 					jAlert("Start time should be smaller than End time !");
 					return;
 				} 			 
-
 				(0 === startHour) && (startHour = '00');
 				(0 === endHour)   && (endHour   = '00');
 				(0 === sminute)   && (sminute   = '00');
 				(0 === eminute)   && (eminute   = '00');
-
 				var startTime = startHour + ':' + sminute;
 				var endTime   = endHour   + ':' + eminute;
-
 				var days = "";//Mon, Tue, Wed, Thu, Fri, Sat, Sun.
 				var len = $("input[name='day']:checked").length;
 				$("input[name='day']:checked").each(function(){
@@ -155,7 +134,6 @@ $(document).ready(function() {
 						days += ",";
 				});
 	//			alert(service+";"+protocol+";"+startPort+";"+endPort+";"+block+";"+startTime+";"+endTime+";"+days);
-				
 				jProgress('This may take several seconds', 60);
 				$.ajax({
 					type:"POST",
@@ -179,21 +157,16 @@ $(document).ready(function() {
 	});
 });
 </script>
-
 <div id="content">
-
 	<h1>Parental Control > Managed Services > Add Blocked Service</h1>
 <form id="pageForm"  method="post">
-
 	<div class="module">
 		<div class="forms">
 			<h2>Add Service to be Blocked</h2>
-
             <div class="form-row">
 				<label for="user_defined_service">User Defined Service:</label>
 				<input type="text" id="user_defined_service" value="" name="user_defined_service" class="text" />
 			</div>
-
 			<div class="form-row">
 				<label for="protocol">Protocol:</label>
 				<select name="protocol" id="protocol">
@@ -202,25 +175,20 @@ $(document).ready(function() {
 				    <option value="BOTH">TCP/UDP</option>
 				</select>
 			</div>
-
 			<div class="form-row">
 				<label for="start_port">Start Port:</label>
 				<input type="text" id="start_port" name="start_port" class="text" />
 			</div>
-
             <div class="form-row">
 				<label for="end_port">End Port:</label>
 				<input type="text" id="end_port" name="end_port" class="text" />
 			</div>
-
 			<div class="form-row">
 				<label for="on">Always Block?</label>
 				<span id="always_switch"></span>
 			</div>
-
         	<div id="block-time">
         		<h3>Set Block Time</h3>
-
         		<div class="form-row">
            <label for="time_start_hour">Start from:</label>
            <select id="time_start_hour" name="time_start_hour">
@@ -280,7 +248,6 @@ $(document).ready(function() {
                 <option value"PM" selected="selected">PM</option>
         </select>
         </div>
-
 <h3>Set Blocked Days</h3>
 <div class="select_all_none">
    <a rel="weekday" href="#select_all" id="weekday_select_all" class="">Select All</a> | <a rel="weekday" id="weekday_select_none" href="#select_none" class="">Select None</a>
@@ -295,7 +262,6 @@ $(document).ready(function() {
    <input class="blockedDay" type="checkbox" name="day" id="sunday" value="Sun" checked="checked" /><label class="checkbox" for="sunday">Sunday</label>
 </div>
 </div> <!-- end #block-time -->
-
             <div class="form-row form-btn">
             	<input type="button" id="btn-save" class="btn submit" value="Save"/>
             	<input type="button" id="btn-cancel" class="btn alt reset" value="Cancel"/>
@@ -304,5 +270,4 @@ $(document).ready(function() {
 	</div> <!-- end .module -->
 </form>
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

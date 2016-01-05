@@ -1,10 +1,7 @@
 <?php include('includes/header.php'); ?>
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
-	
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
 <?php include('includes/utility.php'); ?>
 <?php 
@@ -13,12 +10,9 @@
 		$HPEnable = 'true';
 	}
 ?>
-
-
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Advanced > HS Port Forwarding", "nav-HS-port-forwarding");
-
 	$("#hspf_switch").radioswitch({
 		id: "hs-forwarding-switch",
 		radio_name: "hs-forwarding",
@@ -28,9 +22,7 @@ $(document).ready(function() {
 		title_off: "Disable HS port forwarding",
 		state: <?php echo ($HPEnable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});
-
 	$("a.confirm").unbind('click');
-
 	function setupDeleteConfirmDialogs() {
         /*
          * Confirm dialog for delete action
@@ -39,7 +31,6 @@ $(document).ready(function() {
 		    e.preventDefault();            
 		    var href = $(this).attr("href");
 		    var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
-		   
 		    jConfirm(
 		        message
 		        ,"Are You Sure?"
@@ -50,7 +41,6 @@ $(document).ready(function() {
 		     });
         	});
 	}
-
 	var isUHSPDisabled = $("#hspf_switch").radioswitch("getState").on === false;
 	if(isUHSPDisabled) {
 		$("#hs-port-forwarding-items").prop("disabled",true).addClass("disabled");
@@ -60,7 +50,6 @@ $(document).ready(function() {
 	else{
 		setupDeleteConfirmDialogs();
 	}
-
 	$("#hspf_switch").change(function() {
 		var UHSPStatus = $("#hspf_switch").radioswitch("getState").on ? "Enabled" : "Disabled";
 		var isUHSPDisabled = $("#hspf_switch").radioswitch("getState").on === false;
@@ -99,7 +88,6 @@ $(document).ready(function() {
 			}
 		});
 	});
-	
 	$("input[name='PortActive']").change(function(){
 		var isChecked=$(this).is(":checked");
 		var id=$(this).prop("id").split("_");
@@ -120,10 +108,8 @@ $(document).ready(function() {
 	});
 });
 </script>
-
 <div id="content">
 	<h1>Advanced > HS Port Forwarding</h1>
-
 	<div id="educational-tip">
 		<p class="tip">Add port forwarding related to Home Security Device.</p>
    		<p class="hidden">Users can configure the RG to provide the port forwarding services which allow the Internet users to
@@ -131,15 +117,12 @@ $(document).ready(function() {
 		redirecting the combination of the WAN IP address and the service port to the local private IP and its
         service port.</p>
 	</div>
-
 	<div class="module">
-
 		<div class="select-row">
     		<span class="readonlyLabel label">HS Port Forwarding:</span>
     		<span id="hspf_switch"></span>
     	</div>
 	</div>
-
 	<div id="hs-port-forwarding-items">
 		<div class="module data">
 			<h2>HS Port Forwarding</h2>
@@ -156,12 +139,10 @@ $(document).ready(function() {
 					<th id="delete-button">&nbsp;</th>
 				</tr>
 				<?php
-
 				$rootObjName    = "Device.NAT.PortMapping.";
 				$paramNameArray = array("Device.NAT.PortMapping.");
 				$mapping_array  = array("LeaseDuration", "InternalPort", "Protocol", "Description",
 					                    "ExternalPort", "ExternalPortEndRange", "InternalClient", "Enable");
-
 				$resArray = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);				
 				if ($_DEBUG) {
 					$resArray = array(
@@ -186,9 +167,7 @@ $(document).ready(function() {
 					 );
 				}
 				//dump($resArray);
-
 				if(!empty($resArray)){
-
 					$iclass = ""; 
 					foreach ($resArray as $hspf_entry) {
 							//zqiu
@@ -199,15 +178,10 @@ $(document).ready(function() {
 								//filter out hs port forwarding entry whose internal port !== 0
 								continue;
 							}								
-
 							$id = $hspf_entry['__id'];
-
 							$iclass = ($iclass === "") ? "odd" : "";
-
 							($hspf_entry['Protocol'] === "BOTH") && ($hspf_entry['Protocol'] = "TCP/UDP");
-
 							$checked = $hspf_entry['Enable'] === "true" ? "checked" : "";
-
 							echo "<tr class=$iclass>";
 							echo "<td headers='service-name'>" .$hspf_entry['Description']. "</td>";
 							echo "<td headers='service-type'>" .$hspf_entry['Protocol']. "</td>";
@@ -221,10 +195,8 @@ $(document).ready(function() {
 									title=\"delete this HS Port Forwading service for " . $hspf_entry['Description'] . " \" id=\"delete_$id\">x</a></td>
 								</tr>";
 							echo "</tr>";
-						
 					}//end of foreach
 				}//end of empty
-
 				/*foreach($HPIDs as $key=>$i) {
 					if (getStr("Device.NAT.PortMapping.".$i.".LeaseDuration")==0 && getStr("Device.NAT.PortMapping.".$i.".InternalPort")!=0){
 						if ($iclass=="") {$iclass="odd";} else {$iclass="";}
@@ -244,7 +216,6 @@ $(document).ready(function() {
 						echo "
 						<td headers='private-port'>".getStr("Device.NAT.PortMapping.".$i.".InternalPort")."</td>
 						<td headers='server-ip'>".getStr("Device.NAT.PortMapping.".$i.".InternalClient")."</td>";
-
 						if (getStr("Device.NAT.PortMapping.".$i.".Enable")=="true") {
 							echo "
 							<td headers='active'><input tabindex='0' type=\"checkbox\" id=\"PortActive_$i\" name=\"PortActive\" checked=\"checked\" />
@@ -258,9 +229,7 @@ $(document).ready(function() {
 						</tr>";
 					} 
 				}*/
-
 				?>
-
 				<tfoot>
 				<tr class="acs-hide">
 					<td headers="service-name">null</td>
@@ -271,10 +240,8 @@ $(document).ready(function() {
 					<td headers="active">null</td>
 				</tr>
 				</tfoot>
-
 			</table>
 		</div> <!-- end .module -->
 	</div>
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>
