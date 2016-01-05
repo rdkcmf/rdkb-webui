@@ -1,14 +1,11 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: battery.php 3158 2010-01-08 23:32:05Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
 <?php
-
 $battery_param = array(
         "installed"   	=> "Device.X_CISCO_COM_MTA.Battery.Installed",
         "bat_remain"   	=> "Device.X_CISCO_COM_MTA.Battery.RemainingCharge",
@@ -28,37 +25,30 @@ $battery_param = array(
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Hardware > Battery", "nav-battery");
-
 	if ("true" != "<?php echo $battery_value['installed']; ?>"){
 		$(".div_battery [id^='bat_']").text("");
 		$("#bat_power").text("AC");
 		$("#bat_instal").text("No");
 		return;
 	}
-	
 	var percent	= $("#sta_batt").text().replace("Battery", "");
 	var bat_remain	= "<?php echo $battery_value['bat_remain']; ?>";
 	$("#bat_remain").text(bat_remain + ' mAh ('+percent+')');
-	
 	var remain_time		= "<?php echo $battery_value['remain_time']; ?>";
 	var bat_hours	= Math.round(parseInt(remain_time)/6).toString();
 	if (bat_hours.length <=1)
 	{
 		bat_hours = '0'+bat_hours;
 	}
-
 	$("#bat_hours").text(bat_hours.slice(0, -1) + "."+bat_hours.slice(-1) + ' hours');
-
 });
 </script>
-
 <div id="content">
 	<h1>Hardware > Battery</h1>
 	<div id="educational-tip">
 		<p class="tip">View information about the Gateway's battery status. </p>
 		<p class="hidden">Battery power is for voice service only.</p>
 	</div>
-
 	<div class="module forms data div_battery">
 		<table cellspacing="0" cellpadding="0" class="data" summary="This table shows battery status" >
 		<tr>
@@ -116,5 +106,4 @@ $(document).ready(function() {
 		</table>
 	</div><!-- end .module -->
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

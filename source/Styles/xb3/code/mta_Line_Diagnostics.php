@@ -1,26 +1,19 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: managed_services_add.php 2943 2009-08-25 20:58:43Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
- 
 <script type="text/javascript">
 $(document).ready(function() {
 comcast.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line-diagnostics");
-
 	$("#start_diagnostics1").click(function(){
-	
 		var isTest1	= true;
 		document.getElementById('line1hp').value	= "InProgress";
 		document.getElementById('line1femf').value	= "InProgress";
 		document.getElementById('line1rf').value	= "InProgress";
 		document.getElementById('line1roh').value	= "InProgress";
 		document.getElementById('line1re').value	= "InProgress";
-		
 		jProgress('Check telephony line status, please wait...', 60);
 		$.post(
 			"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
@@ -73,14 +66,12 @@ comcast.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 			"json"     
 		);
 	});
-	
 	$("#start_diagnostics2").click(function(){
 		document.getElementById('line2hp').value	= "InProgress";
 		document.getElementById('line2femf').value	= "InProgress";
 		document.getElementById('line2rf').value	= "InProgress";
 		document.getElementById('line2roh').value	= "InProgress";
 		document.getElementById('line2re').value	= "InProgress";
-		
 		jProgress('Check telephony line status, please wait...', 60);
 		$.post(
 			"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
@@ -134,20 +125,16 @@ comcast.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 		);
 	});
 });
-
 </script>
-
 <div id="content">
 <h1>Gateway > Connection > MTA > Line Diagnostics</h1>
 <div id="educational-tip">
 <p class="tip">Information related to the MTA Line Diagnostics.</p>
 </div>
-
 <div class="module forms">
 	<input type="hidden" value="mta_line_diagnostics" name="file"/>
 	<input type="hidden" value="admin/" name="dir"/>
 	<input type="hidden" name="line1" id="line1_name" value="1" />
-
 	<h2>MTA Line 1 Diagnostics</h2>
 	<div class="form-row">
 		<!--div>Hazardous Potential:</div-->
@@ -175,18 +162,15 @@ comcast.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 		<label for="line1re" class="acs-hide"></label>
 		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1re">Not Started</textarea>
 	</div>
-	
 	<div class="form-btn odd">
 		<input id="start_diagnostics1" type="button" value="Start Diagnostics" class="btn" />
 	</div>
 	<input type="hidden" name="webcheck">
 </div> <!-- end .module -->
-
 <div class="module forms">
 	<input type="hidden" value="mta_line_diagnostics" name="file"/>
 	<input type="hidden" value="admin/" name="dir"/>
 	<input type="hidden" name="line2" id="line2_name" value="1" />
-
 	<h2>MTA Line 2 Diagnostics</h2>
 	<div class="form-row">
 		<div>Hazardous Potential:</div>
@@ -213,16 +197,11 @@ comcast.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 		<label for="line2re" class="acs-hide"></label>
 		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2re">Not Started</textarea>
 	</div>
-	
 	<div class="form-btn odd">
 		<input id="start_diagnostics2" type="button" value="Start Diagnostics" class="btn" />
 	</div>
 	<input type="hidden" name="webcheck">
 </div> <!-- end .module -->
-
-
 </div><!-- end #content -->
-
 <!-- Page Specific Script -->
-
 <?php include('includes/footer.php'); ?>

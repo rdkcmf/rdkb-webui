@@ -1,17 +1,13 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: port_forwarding.php 3158 2010-01-08 23:32:05Z slemoine $ -->
-
 <div  id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
 <?php include('includes/utility.php'); ?>
 <?php 
 $PFEnable = getStr("Device.NAT.X_Comcast_com_EnablePortMapping");
 ?>
-
 <script type="text/javascript">
 $(document).ready(function() {
 	comcast.page.init("Advanced > Port Forwarding", "nav-port-forwarding");
@@ -24,9 +20,7 @@ $(document).ready(function() {
 		title_off: "Disable port forwarding",
 		state: <?php echo ($PFEnable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});
-
 	$("a.confirm").unbind('click');
-
 	function setupDeleteConfirmDialogs() {
         /*
          * Confirm dialog for delete action
@@ -35,7 +29,6 @@ $(document).ready(function() {
             e.preventDefault();            
             var href = $(this).attr("href");
             var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
-           
             jConfirm(
                 message
                 ,"Are You Sure?"
@@ -46,7 +39,6 @@ $(document).ready(function() {
                 });
         });
     }
-
 	var isUFWDDisabled = $("#pf_switch").radioswitch("getState").on === false;
 	if(isUFWDDisabled) { 
 		$("a.confirm").unbind('click');
@@ -58,7 +50,6 @@ $(document).ready(function() {
 	else{
 		setupDeleteConfirmDialogs();
 	}
-
 	$("#pf_switch").change(function() {
 		var UFWDStatus = $("#pf_switch").radioswitch("getState").on ? "Enabled" : "Disabled";
 		var isUFWDDisabled = $("#pf_switch").radioswitch("getState").on === false;
@@ -76,7 +67,6 @@ $(document).ready(function() {
 			setupDeleteConfirmDialogs();
 			$(':checkbox').removeClass("disabled").prop("disabled", false);
 		}
-
 		jProgress("This may take several seconds.",60);
 		$.ajax({
 			type:"POST",
@@ -114,7 +104,6 @@ $(document).ready(function() {
 			}
 		}); //end of ajax
 	});//end of change
-	
 	$("input[name='PortActive']").change(function(){
 		var isChecked=$(this).is(":checked");
 		var id=$(this).attr("id").split("_");
@@ -133,11 +122,8 @@ $(document).ready(function() {
 			}
 		});
 	});
-	
 });
-
 </script>
-
 <div  id="content">
 	<h1>Advanced > Port Forwarding</h1>
 	<div  id="educational-tip">
@@ -147,56 +133,43 @@ $(document).ready(function() {
 		<p class="hidden">Click <strong>+ADD SERVICE</strong> to add new port forwarding rules.</p>
 		<p class="hidden">Port forwarding settings can affect the Gateway's performance.</p>
 	</div>
-
 	<div class="module">
-
 		<div class="select-row">
     		<span class="readonlyLabel label">Port Forwarding:</span>
 			<span id="pf_switch"></span>
     	</div>
 	</div>
-	
 	<div  id=forwarding-items>
 		<div class="module data">
 		<h2>Port Forwarding</h2>
 			<p class="button"><a tabindex='0'  href="port_forwarding_add.php" class="btn"  id="add-service">+ ADD SERVICE</a></p>
-
 			<table class="data" summary="This table list available port forwarding entries">
 				<tr>
 					<th id="service-name">Service Name</th>
 					<th id="service-type">Type</th>
 					<th id="start-port">Start Port</th>
 					<th id="end-port">End Port</th>
-					
 					<th id="server-ip">Server IPv4</th>
 					<th id="server-ipv6">Server IPv6</th>
 					<th id="active">Active</th>
 					<th id="edit-button">&nbsp;</th>
 					<th id="delete-button">&nbsp;</th>
 				</tr>
-				
 				<?php 				
-
 				$rootObjName    = "Device.NAT.PortMapping.";
 				$paramNameArray = array("Device.NAT.PortMapping.");
 				$mapping_array  = array("LeaseDuration", "InternalPort", "Protocol", "Description",
 					                    "ExternalPort", "ExternalPortEndRange", "InternalClient", "X_CISCO_COM_InternalClientV6", "Enable");
-
 				//$EntryNums = getStr("Device.NAT.PortMappingNumberOfEntries");
 				$IndexArr  = DmExtGetInstanceIds("Device.NAT.PortMapping.");
-
 				if(0 == $IndexArr[0]){  
 				    // status code 0 = success   
 					$IndexNums = count($IndexArr) - 1;
 				}
-
 				if(!empty($IndexNums)){
-
 					$resArray = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 					//dump($resArray);
-                    
                     if (!empty($resArray)){
-						
 						$iclass = "";
 					    for ($i=0; $i < $IndexNums; $i++) { 
 							//zqiu
@@ -206,15 +179,12 @@ $(document).ready(function() {
 					    		//filter out hs port forwarding entry whose internal port !== 0
 					    		continue;
 					    	}
-					    	
 	                        $index = $IndexArr[$i+1];
-
 					    	if ($iclass == "") {
 					    		$iclass = "odd";
 					    	} else {
 					    		$iclass = "";
 					    	}
-
 					    	if ($resArray[$i]['Protocol'] == "BOTH") {
 					    		$resArray[$i]['Protocol'] = "TCP/UDP";
 					    	}	
@@ -224,13 +194,11 @@ $(document).ready(function() {
 					    	else{
 					    		$checked = "";
 					    	}
-
 							if ($resArray[$i]['InternalClient'] === '255.255.255.255') {
 								$resArray[$i]['InternalClient'] = '';
 							}
 					    	if ($resArray[$i]['X_CISCO_COM_InternalClientV6'] == 'x')
 					    		$resArray[$i]['X_CISCO_COM_InternalClientV6'] = '';
-
 					    	echo "
 					    	    <tr class='" . $iclass. "'>
 								<td headers='service-name'>" . $resArray[$i]['Description'] . "</td>
@@ -248,9 +216,7 @@ $(document).ready(function() {
 					    }//end of for
 					} //end if empty resArray
 				}//end if empty entry nums
-
 				?>
-
 			<tfoot>
 				<tr class="acs-hide">
 					<td headers="service-name">null</td>
@@ -262,9 +228,7 @@ $(document).ready(function() {
 					<td headers="delete-button">null</td>
 				</tr>
 			</tfoot>
-			
 			</table>
-
 		</div> <!-- end .module -->
 	</div>
 </div><!-- end #content -->

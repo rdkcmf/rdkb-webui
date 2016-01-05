@@ -1,13 +1,10 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: firewall_settings.php 3158 2010-01-08 23:32:05Z slemoine $ -->
-
 <div id="sub-header">
     <?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
- 
 <script type="text/javascript" src="./cmn/js/lib/jquery.alerts.progress.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -15,11 +12,9 @@ $(document).ready(function() {
     /*
      * Toggles Custom Security Checkboxes based on if the Custom Security is selected or not
      */
-	
 	//for IPv6
 	$("#max, #medium, #low").hide(); 
 	$("#default").show();
-
     $("input[name='firewall_level']").change(function() {
         if($("input[name='firewall_level']:checked").val() == 'Custom') {
             $("#custom .target").removeClass("disabled").prop("disabled", false);
@@ -27,7 +22,6 @@ $(document).ready(function() {
             $("#custom .target").addClass("disabled").prop("disabled", true);
         }
     }).trigger("change");
-	
 	$("#disable_firewall").change(function(){
 		if($("#disable_firewall").prop("checked")) {
 			$("#block_http").prop("disabled",true).attr('checked', false);
@@ -44,15 +38,12 @@ $(document).ready(function() {
 			$("#block_ident").prop("disabled",false);
 		}
 	}).trigger("change");
-
     function keyboard_toggle(){
     	//var $link = $("#security-level label");
     	var $link = $("input[name='firewall_level']");
 		var $div = $("#security-level .hide");
-
 		// toggle slide		
 		$($link).keypress(function(ev) {
-
 	    	var keycode = (ev.keyCode ? ev.keyCode : ev.which);
 	        if (keycode == '13') {
 	        	//e.preventDefault();
@@ -60,18 +51,13 @@ $(document).ready(function() {
 	        }
     	});
     }
-
     keyboard_toggle();	
-
     /*
      * Confirm dialog for restore to factory settings. If confirmed, the hiddin field (restore_factory_settings) is set to true
      */
-
     $("#restore-default-settings").click(function(e) {
         e.preventDefault();
-
         var currentSetting = $("input[name=firewall_level]:checked").parent().find("label:first").text();
-
         jConfirm(
             "The firewall security level is currently set to " + currentSetting + ". Are you sure you want the change to default settings?"
             ,"Reset Default Firewall Settings"
@@ -82,8 +68,6 @@ $(document).ready(function() {
                 }
             });
     });
-
-    
     $('#submit_firewall').click(function(){
 		var firewallLevel	= $("input[name='firewall_level']:checked").val();
         var blockHttp		= $("#block_http").prop("checked"); 
@@ -91,19 +75,14 @@ $(document).ready(function() {
         var blockMulticast	= $("#block_multicast").prop("checked"); 
         var blockPeer		= $("#block_peer").prop("checked"); 
         var blockIdent		= $("#block_ident").prop("checked"); 
-
 		if ("Custom" == firewallLevel && $("#disable_firewall").prop("checked")){
 			firewallLevel = "None";
 		}
-        
         var firewallCfg = '{"firewallLevel": "' + firewallLevel + '", "block_http": "' + blockHttp + '", "block_icmp": "' + blockIcmp +
                                  '", "block_multicast": "' + blockMulticast + '", "block_peer": "' + blockPeer + '", "block_ident": "' + blockIdent + '"} ';
-            
        // alert(firewallCfg);
         setFirewall(firewallCfg);
-
     });
-
     function setFirewall(configuration){
 		jProgress('This may take several seconds...', 60);
 		$.ajax({
@@ -122,7 +101,6 @@ $(document).ready(function() {
     }
 });
 </script>
-
 <div id="content">
     <h1>Gateway > Firewall > IPv6</h1>
 	<div id="educational-tip">
@@ -133,7 +111,6 @@ $(document).ready(function() {
 	</div>
     <div class="module">
 		<form id="pageForm">
-		
 		<input type="hidden" name="restore_factory_settings" id="restore_factory_settings" value="false" />
 		<h2>Firewall Security Level</h2>
 		<?php 
@@ -152,7 +129,6 @@ $(document).ready(function() {
             $block_multicast = $firewall_value["block_multicast"];
             $block_peer = $firewall_value["block_peer"];
             $block_ident = $firewall_value["block_ident"];
-
 			//$SecurityLevel = getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevelV6");	
 		?>
 		<ul class="combo-group" id="security-level">
@@ -220,28 +196,22 @@ $(document).ready(function() {
 				<div class="hide">
 				<p><strong>LAN-to-WAN :</strong> Allow all.</p>
 				<p><strong>WAN-to-LAN :</strong> IDS Enabled and block as per selections below.</p>
-
 				<p class="target disabled">
 				<input class="target disabled"  type="checkbox" id="block_http" name="block_http" 
 				<?php if ( !strcasecmp("true", $block_http)) echo "checked"; ?> /> 
 				<label for="block_http">Block http (TCP port 80, 443)</label><br />
-
 				<input class="target disabled"  type="checkbox" id="block_icmp" name="block_icmp"
 				<?php if ( !strcasecmp("true", $block_icmp)) echo "checked"; ?> />
 				<label for="block_icmp">Block ICMP</label><br />
-
 				<input class="target disabled"  type="checkbox" id="block_multicast" name="block_multicast"
 				<?php if ( !strcasecmp("true", $block_multicast)) echo "checked"; ?> /> 
 				<label for="block_multicast">Block Multicast</label><br />
-
 				<input class="target disabled"  type="checkbox" id="block_peer" name="block_peer" 
 				<?php if ( !strcasecmp("true", $block_peer)) echo "checked"; ?>  /> 
 				<label for="block_peer">Block Peer-to-peer applications</label><br />
-
 				<input class="target disabled" type="checkbox" id="block_ident" name="block_ident" 
 				<?php if ( !strcasecmp("true", $block_ident)) echo "checked"; ?>  /> 
 				<label for="block_ident">Block IDENT (port 113)</label><br />
-
 				<input class="target disabled" type="checkbox" id="disable_firewall" name="disable_firewall" 
 				<?php if ( !strcasecmp("None", $SecurityLevel)) echo "checked"; ?>   />
 				<label for="disable_firewall">Disable entire firewall</label>
@@ -249,13 +219,11 @@ $(document).ready(function() {
 				</div>
 			</li>
 		</ul>
-
 		<div class="form-btn"> 
 			<input id="submit_firewall"  type="button" value="Save Settings" class="btn" />
 			<input id="restore-default-settings" type="button" value="Restore Default Settings" class="btn alt" />
 		</div>
 		</form>
-
     </div> <!-- end .module -->
 </div><!-- end #content -->
 <?php include('includes/footer.php'); ?>

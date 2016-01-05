@@ -1,17 +1,12 @@
  <?php include('includes/header.php'); ?>
-
 <!-- $Id: samba_server_config.php 3146 2009-12-11 20:08:47Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Advanced > File Sharing", "nav-file-sharing");
-
 	$("#sharing-switch").change(function() {
 		if($("#filesharing_disabled").is(":checked")) {
 			$("#sharing-items").prop("disabled",true).addClass("disabled");
@@ -21,21 +16,17 @@ $(document).ready(function() {
 			$("btn").removeClass("disabled");
 		}
 	});
-
 	$(".radio-btns").radioToButton();
 });
 </script>
-
 <div id="content">
 	<h1>Advanced > File Sharing</h1>
-
     <div id="educational-tip">
 	        <p class="tip">Manage File Sharing options.</p>
 	        <p class="hidden">Select <strong>Enable</strong> to allow File Sharing on your network.</p>
 	        <p class="hidden">Click <strong> + ADD SHARE</strong> to add new shares to your network.</p>
 	        <p class="hidden">Click <strong> MANAGE USERS</strong>  to add, delete, or edit users for shared folders access.</p>
     </div>
-
     <div class="module ">
     	<h2>File Sharing</h2>
         <div class="select-row">
@@ -55,7 +46,6 @@ $(document).ready(function() {
 		    			<span class="readonlyLabel label">Network Device Name:</span>
                 <input type="text" size="15" maxlength="8" id="authentication_key" name="authentication_key" class="authentication_key" value="HomeShare" /></div>
     </div> <!-- end .module -->
-
 	<div class="module data" id="sharing-items">
 		<h2>Shares</h2>
 		<p class="button"><a href="samba_server_add.php" class="btn" id="add_share">+ Add Share</a></p>
@@ -105,12 +95,8 @@ $(document).ready(function() {
 			</tbody>
 		</table>
 		</div> <!-- End Module -->
-
 		<div class="form-btn">
 			<a href="local_users.php" class="btn" id="Manage_users">Manage Users</a>
 		</div>
-
 </div><!-- end #content -->
-
-
 <?php include('includes/footer.php'); ?>

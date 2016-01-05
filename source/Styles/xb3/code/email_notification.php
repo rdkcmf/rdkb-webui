@@ -1,14 +1,11 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: at_a_glance.dory.php 2943 2009-08-25 20:58:43Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
 <?php
-
 $email_notif_param = array(
         "recipient_mail"    => "Device.X_CISCO_COM_Security.EmailSendTo",
         "firewall_breach"   => "Device.X_CISCO_COM_Security.EmailFirewallBreach",
@@ -19,11 +16,8 @@ $email_notif_param = array(
         "comcast_address"   => "Device.X_CISCO_COM_Security.EmailFromAddress",
         "comcast_username"  => "Device.X_CISCO_COM_Security.EmailUserName",
         "comcast_password"  => "Device.X_CISCO_COM_Security.EmailPassword",
-
 	);
     $email_notif_value = KeyExtGet("Device.X_CISCO_COM_Security.", $email_notif_param);
-
-
 $recipient_mail = 	$email_notif_value["recipient_mail"]; //getStr("Device.X_CISCO_COM_Security.EmailSendTo");
 $firewall_breach = 	$email_notif_value["firewall_breach"]; //getStr("Device.X_CISCO_COM_Security.EmailFirewallBreach");
 $parental_breach = 	$email_notif_value["parental_breach"]; //getStr("Device.X_CISCO_COM_Security.EmailParentalControlBreach");
@@ -33,7 +27,6 @@ $smtp_address = 	$email_notif_value["smtp_address"]; //getStr("Device.X_CISCO_CO
 $comcast_address = 	$email_notif_value["comcast_address"]; //getStr("Device.X_CISCO_COM_Security.EmailFromAddress");
 $comcast_username = $email_notif_value["comcast_username"]; //getStr("Device.X_CISCO_COM_Security.EmailUserName");
 $comcast_password = $email_notif_value["comcast_password"]; //getStr("Device.X_CISCO_COM_Security.EmailPassword");
-
 // $recipient_mail = 	"string1";
 // $firewall_breach = 	"true";
 // $parental_breach = 	"true";
@@ -44,16 +37,13 @@ $comcast_password = $email_notif_value["comcast_password"]; //getStr("Device.X_C
 // $comcast_username = "string4";
 // $comcast_password = "string5";
 ?>
- 
 <script type="text/javascript">
 var o_firewallbreach = <?php echo $firewall_breach === 'true' ? 'true' : 'false';?>;
 var o_pcbreach = <?php echo $parental_breach === 'true' ? 'true' : 'false';?>;
 var o_alertwarning = <?php echo $alerts_warnings === 'true' ? 'true' : 'false';?>;
 var o_sendlogs = <?php echo $send_logs === 'true' ? 'true' : 'false';?>;
-
 $(document).ready(function() {
 	comcast.page.init("Gateway > Email Notification", "nav-email-notification");	
-
 	$("#firewallbreach_switch").radioswitch({
 		id: "firewallbreach-switch",
 		radio_name: "block1",
@@ -67,7 +57,6 @@ $(document).ready(function() {
 		revertOrder: true,
 		state: o_firewallbreach ? "on" : "off"
 	});
-
 	$("#pcbreach_switch").radioswitch({
 		id: "pcbreach-switch",
 		radio_name: "block2",
@@ -81,7 +70,6 @@ $(document).ready(function() {
 		revertOrder: true,
 		state: o_pcbreach ? "on" : "off"
 	});
-
 	$("#alert_switch").radioswitch({
 		id: "alert-switch",
 		radio_name: "block3",
@@ -95,7 +83,6 @@ $(document).ready(function() {
 		revertOrder: true,
 		state: o_alertwarning ? "on" : "off"
 	});
-
 	$("#log_switch").radioswitch({
 		id: "log-switch",
 		radio_name: "block",
@@ -109,24 +96,20 @@ $(document).ready(function() {
 		revertOrder: true,
 		state: o_sendlogs ? "on" : "off"
 	});
-	
 	jQuery.validator.addMethod (
 		"isIP", 
 		function(value, element) { 
 			var ip = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/; 
 			var ipArr = value.split(".");
-			
 			if ((ipArr[0] == 0 && ipArr[1] == 0 && ipArr[2] == 0 && ipArr[3] == 0) ||
 				(ipArr[0] == 255 && ipArr[1] == 255 && ipArr[2] == 255 && ipArr[3] == 255) ) 
 			{
 				return false
 			}
-
 			return this.optional(element) || ip.test(value);
 		}, 
 		"IP format must be 0.0.0.0~255.255.255.255"
 	); 
-
 	jQuery.validator.addMethod (
 		"email_domain", 
 		function(value, element) {
@@ -136,7 +119,6 @@ $(document).ready(function() {
 		}, 
 		'Email address must be in the format of name@domain.com, upto 60 char'
 	); 
-	
 	$("#pageForm").validate({
     	debug: true,
 		rules: {
@@ -169,9 +151,7 @@ $(document).ready(function() {
 			button_save();
 		}
 	});
-	
 });
-
 function button_save()
 {
 	var recipient_mail = 	$("#recipient_mail").val();
@@ -183,11 +163,9 @@ function button_save()
 	var comcast_address = 	$("#comcast_address").val();
 	var comcast_username = 	$("#comcast_username").val();
 	var comcast_password = 	$("#comcast_password").val();
-
 	var jsConfig = '{"recipient_mail":"'+recipient_mail+'", "firewall_breach":"'+firewall_breach+'", "parental_breach":"'+parental_breach 
 		+'", "alerts_warnings":"'+alerts_warnings+'", "send_logs":"'+send_logs+'", "smtp_address":"'+smtp_address 
 		+'", "comcast_address":"'+comcast_address+'", "comcast_username":"'+comcast_username+'", "comcast_password":"'+comcast_password+'"}';	
-		
 	// alert(jsConfig);
 	jProgress('This may take several seconds...', 60);
 	$.ajax({
@@ -204,20 +182,15 @@ function button_save()
 		}
 	});
 }
-
-
 </script>
-
 <div id="content">
 	<h1>Gateway > Email Notification</h1>
-	
 	<div id="educational-tip">
 		<p class="tip">Configure email notification.</p>
 		<p class="hidden"> <strong>Recepient Email:</strong> Enter the Recipient Email to receive the log.</p>
 		<p class="hidden"> <strong>Notification Types:</strong> Click the button to select the notification types of log to send or not.</p>
 		<p class="hidden"> <strong>Mail Server Configuration:</strong> Configure the mail server settings</p>
 	</div>
-	
 	<div class="module">
 		<form action="#TBD" id="pageForm" method="post">
 			<div class="forms">
@@ -254,7 +227,6 @@ function button_save()
 					</table>
 				</div>
 			</div> <!-- end .form -->
-			
 			<div class="forms data">
 				<h2>Mail Server Configuration</h2>
 				<div class="form-row"><label for="smtp_address">SMTP Server Address:</label>
@@ -270,16 +242,11 @@ function button_save()
 					<input type="password" id="comcast_password" name="comcast_password" value="<?php echo $comcast_password;?>" >
 				</div>
 			</div> <!-- end .module -->
-			
 			<div class="form-btn">
 				<input type="submit" class="btn submit"    value="Save"   id="button_save" />
 				<input type="button" class="btn alt reset" value="Cancel" id="button_cancel" name="button_cancel" onClick="location.reload();" />
 			</div>		
 		</form>
 	</div><!-- end #content -->
-
 </div>
-
-
 <?php include('includes/footer.php'); ?>
-

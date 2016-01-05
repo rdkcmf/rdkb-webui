@@ -1,19 +1,13 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: port_triggering_add.php 3117 2009-10-15 20:23:13Z cporto $ -->
-
 <div id="sub-header">
 <?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
- 
 	comcast.page.init("Port Forwarding Add ", "nav-HS-port-forwarding");
-
 	$('#service_name').focus();
-
 	jQuery.validator.addMethod("ip",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 255);
 	}, "Please enter a valid IP address.");
@@ -26,7 +20,6 @@ $(document).ready(function() {
 	jQuery.validator.addMethod("ltstart",function(value,element){
 		return this.optional(element) || value>=parseInt($("#start_public_port").val());
 	}, "Please enter a value more than or equal to Start Public Port.");
-	
     $("#pageForm").validate({
 		rules: {
             service_name: {
@@ -67,18 +60,14 @@ $(document).ready(function() {
 		,unhighlight: function( element, errorClass, validClass ) {
 			$(element).closest(".form-row").find("input").removeClass(errorClass).addClass(validClass);
 		}
-
     });
-
     $("#btn-cancel").click(function() {
     	window.location = "hs_port_forwarding.php";
     });
-
     $('#start_public_port').change(function(){
     	var endport = $('#start_public_port').val();
     	$('#end_public_port').val(endport);
     });
-    
 	$("#btn-save").click(function(){
 		var name=$('#service_name').val();
 		var type=$('#service_type').find("option:selected").text();
@@ -87,7 +76,6 @@ $(document).ready(function() {
 		var endport=$('#end_public_port').val();
 		var priport=$('#private_port').val();
 		var enportrange=$('#enable_port_range').is(':checked'); // true or false (bool)
-
 		if($("#pageForm").valid()){
 			jProgress('This may take several seconds.',60);
 			$.ajax({
@@ -109,7 +97,6 @@ $(document).ready(function() {
 	});
 });
 </script>
-
 <div id="content">
 	<h1>Advanced > HS Port Forwarding > Add Service</h1>
     <div id="educational-tip">
@@ -119,15 +106,12 @@ $(document).ready(function() {
 		redirecting the combination of the WAN IP address and the service port to the local private IP and its
         service port.</p>
 	</div>
-
 	<form method="post" id="pageForm" action="">
 	<div class="module forms">
 		<h2>Add HS Port	Forward</h2>
-
 		<div class="form-row odd">
 			<label for="service_name">Service Name:</label> <input type="text" class="text" value="" id="service_name" name="service_name" />
 		</div>
-
 		<div class="form-row">
 			<label for="service_type">Service Type:</label>
 			<select id="service_type">
@@ -146,7 +130,6 @@ $(document).ready(function() {
             <label for="ip_address_4" class="acs-hide"></label>
 	        .<input type="text" size="2" id="ip_address_4" name="ip_address_4" class="" />
 		</div>
-
 		<div class="form-row">
 			<label for="start_public_port"> Start Public Port:</label>  <input type="text" class="text" value="80" id="start_public_port" name="start_public_port" size="10"/>
 		</div>
@@ -166,5 +149,4 @@ $(document).ready(function() {
 	</div> <!-- end .module -->
 	</form>
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

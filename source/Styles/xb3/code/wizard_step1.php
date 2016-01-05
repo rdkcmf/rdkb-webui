@@ -1,18 +1,12 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: wizard_step1.php 2943 2009-08-25 20:58:43Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <script type="text/javascript">
-
 $(document).ready(function() {
     comcast.page.init("Gateway > Home Network Wizard - Step 1", "nav-wizard");
-
     $("#pageForm").validate({
 		debug: false,
 		rules: {
@@ -36,16 +30,13 @@ $(document).ready(function() {
 				,equalTo: "#userPassword"
 			}
 		},
-		
 		submitHandler:function(form){
 			next_step();
 		}
     });
-	
 	$("#oldPassword").val("");
 	$("#userPassword").val("");
 	$("#verifyPassword").val("");
-	
 	//Fix for IE8 browser issue, IE8 changeing type from "text" to "password" is not supported
  	$("#password_show").change(function() {
 		if ($("#password_show").is(":checked")) {
@@ -65,9 +56,7 @@ $(document).ready(function() {
 			'<input type="password" size="23" id="verifyPassword" name="verifyPassword" class="text" value="' + $("#verifyPassword").val() + '" />';
 		}
 	});
-	
 });
-
 function getInstanceNum()
 {
 	var thisUser = "<?php echo $_SESSION["loginuser"]; ?>";
@@ -82,7 +71,6 @@ function getInstanceNum()
 	default: return 0;
 	}
 }
-
 function set_config(jsConfig)
 {
 	jProgress('This may take several seconds...', 60);
@@ -108,14 +96,12 @@ function set_config(jsConfig)
 		"json"     
 	);
 }
-
 function next_step()
 {
 	var oldPwd = $('#oldPassword').val();
 	var newPwd = $('#userPassword').val();
 	var intNum = getInstanceNum();
 	var jsConfig = '{"newPassword": "' + newPwd + '", "instanceNum": "' + intNum + '", "oldPassword": "' + oldPwd + '"}';
-	
 	if (oldPwd == newPwd)
 	{
 		jAlert("Current Password and New Password Can't Be Same!");
@@ -125,43 +111,34 @@ function next_step()
 		set_config(jsConfig);
 	}
 }
-
 </script>
-
 <div id="content">
 	<h1>Gateway > Home Network Wizard - Step 1</h1>
-
 	<div id="educational-tip">
 		<p class="tip">The Home Network Wizard walks you through settings you may want to change for better network security.</p>
 		<p class="hidden">If you have never changed the default information, the <strong>Current Password </strong>is <i>password</i>. Step 1 changes the Admin Tool password (the password to log into this site in the future) .</p>
 	</div>
-	
 	<div class="module forms">
 		<!--form action="wizard_step2.php" method="post" id="pageForm"-->
 		<form action="wizard_step2.php" method="post" id="pageForm">
 			<h2>Step 1 of 2</h2>
 			<p class="summary">To configure your home network, we need some basic information</p>
-			
 			<div class="form-row password">
 				<label for="oldPassword">Current Password:</label>
 				<span id="password_field_1"><input type="password" size="23" id="oldPassword" name="oldPassword" class="text" value=""></span>
    			</div>
-			
 			<div class="form-row odd password">
 				<label for="userPassword">New Password:</label>
 				<span id="password_field_2"><input type="password" size="23" id="userPassword" name="userPassword" class="text" value=""></span>
 			</div>
-			
 			<div class="form-row password">
 				<label for="verifyPassword">Re-enter New Password:</label>
 				<span id="password_field_3"><input type="password" size="23" id="verifyPassword" name="verifyPassword" class="text" value=""></span>
 			</div>
-
 			<div class="form-row odd">
 				<label for="password_show">Show Typed Password:</label>
 				<span class="checkbox"><input type="checkbox" id="password_show" name="password_show" /></span>
 			</div> 
-
 			<p class="footnote">8-20 characters. Alphanumeric only. No spaces. Case sensitive.</p>
 			<div class="form-row form-btn">
 				<input id="submit_pwd" type="submit" value="Next Step" class="btn" />

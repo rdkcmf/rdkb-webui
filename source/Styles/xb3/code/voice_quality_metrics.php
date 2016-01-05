@@ -1,43 +1,32 @@
 <?php include('includes/header.php'); ?>
-
 <div id="pop_mask" style="z-index:100; position: fixed; height: 100%; width: 100%;">
 <img style="position: fixed; left: 50%; top: 16%;" src="./cmn/img/loading.gif"  alt="Loading..."/><br>
 </div>
-
 <div id="sub-header">
     <?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <?php 
-
 $line	= "1";
 $call	= "table";
 $action	= "display";
-
 if (isset($_GET['line']))
 {
 	$line	= $_GET['line'];
 	$call	= $_GET['call'];
 	$action	= $_GET['action'];
 }
-
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > Voice Quality Metrics", "nav-comcast-voice");
-
 	var line	= "<?php echo $line;?>";
 	var call	= "<?php echo $call;?>";
 	var action	= "<?php echo $action;?>";
-	
 	$("#line_number").val(line);
 	$("#call_number").val(call);
 	$("#action").val(action);
-
 	$("[name='show_hide']:visible").hide();	
-	
 	switch(action)
 	{
 		case "display":
@@ -62,20 +51,15 @@ $(document).ready(function() {
 				$("#msg_no_data"+line).show();
 			}
 		}break;
-		
 		case "clear_line":
 		{
 		}break;
-		
 		case "clear_all":
 		{
 		}break;
-		
 		default:break;
 	}
-
 	$("#pop_mask").hide();
-
 	$("#submit").click(function() {
 		window.location.href = 'voice_quality_metrics.php'
 		+ '?line=' + $("#line_number").val() 
@@ -83,9 +67,7 @@ $(document).ready(function() {
 		+ '&action=' + $("#action").val();
 	});
 });
-
 </script>
-
 <div id="content">
 	<h1>Gateway > Connection > Voice Quality Metrics</h1>
 	<div id="educational-tip">
@@ -125,9 +107,7 @@ $(document).ready(function() {
 		<div name="show_hide" id="msg_no_data1" style="display:none"><br/>There is no data to display for Line 1.</div>
 		<div name="show_hide" id="msg_no_data2" style="display:none"><br/>There is no data to display for Line 2.</div>
 	</div>
-
 <?php
-
 $locale = array();
 $remote = array();
 $metric = array(
@@ -178,7 +158,6 @@ $metric = array(
 ,"Originator"
 ,"Remote Interval Jitter"
 );
-
 $mmmmmm = array(
  "--"
 ,"--"
@@ -227,10 +206,8 @@ $mmmmmm = array(
 ,"--"
 ,"--"
 );
-
 // $line = array_filter(explode(",", getInstanceIds("Device.X_CISCO_COM_MTA.LineTable.")));
 // $line = array(1,2);
-
 // for ($i=0; $i<count($line); $i++)
 if ("display" == $action)
 {
@@ -239,7 +216,6 @@ if ("display" == $action)
 	$call	= array_filter(explode(",", getInstanceIds($dmroot)));
 	// sleep(3);
 	$t		= 66;					//total parameters number in a call
-	
 	for ($j=0; $j<count($call); $j++)
 	{
 		//locale metric for line 1 of this call number
@@ -291,7 +267,6 @@ if ("display" == $action)
 		,$dmval[$j*$t + 8][1]		//("LineTable.$line.VQM.Calls.$call[$j].Originator")
 		,$dmval[$j*$t + 66][1]		//("LineTable.$line.VQM.Calls.$call[$j].RemoteIntervalJitter")
 		);
-
 		//remote metric for line 1 of this call number
 		$remote[$j] = array(
 		 "--"
@@ -344,7 +319,6 @@ if ("display" == $action)
 	}
 }
 ?>
-
 <?php
 // for ($n=0; $n<count($line); $n++)
 if (count($call))
@@ -359,7 +333,6 @@ if (count($call))
 			echo '<th><div style="width: 150px">'.($i+1).'(Remote)</div></th>';
 		}
 		echo '</tr>';
-
 		for ($i=0; $i<count($metric); $i++)
 		{
 			echo '<tr>';
@@ -373,7 +346,6 @@ if (count($call))
 		}			
 	echo '</table>';
 	echo '</div>';
-
 	for ($i=0; $i<count($call); $i++)
 	{
 		echo '<div name="show_hide" class="module forms" id="line'.$line.'call'.($i+1).'" style="display:none">';
@@ -401,7 +373,5 @@ if (count($call))
 	}
 }
 ?>
-
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

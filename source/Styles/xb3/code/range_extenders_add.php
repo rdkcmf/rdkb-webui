@@ -1,39 +1,27 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: connected_devices_computers.php 3158 2010-01-08 23:32:05Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Connected Devices - Range Extenders - add Range Extenders ", "nav-range-extenders");
 	$("#security-mode").change(function() {
 	        var $security_select = $(this);
-
 			var $network_password = $("#network_password");
-
 	        if($security_select.find("option:selected").val() != "NONE") {
-
 				$network_password.val("");
 				$network_password.prop("disabled", false);
-
 	        } else {
-
 	            $network_password.val("");
 	            $network_password.prop("disabled", true);
 	        }
     }).trigger("change");
 });
-
 </script>
-
 <div id="content">
 	<h1>Connected Devices > Range Extender >Add Range Extenders</h1>
-
     <div class="module forms">
     <h2> Add Range Extenders</h2>
 	<div class="form-row odd">
@@ -56,7 +44,6 @@ $(document).ready(function() {
 						<option>9</option>
 						<option>10</option>
 						<option>11</option>
-
 					</select>
 					</div>
 					<div class="form-row">
@@ -69,8 +56,6 @@ $(document).ready(function() {
 											<option>WPA-AES</option>
 											<option>WPA2-TKIP</option>
 											<option>WPA2-AES</option>
-
-
 										</select>
 					</div>
 					<div class="form-row odd">
@@ -80,14 +65,6 @@ $(document).ready(function() {
 					            	<a href="range_extenders.php" class="btn" title="">Add</a>
 					            	<input type="button" id="btn-cancel" class="btn alt reset" value="Cancel"/>
             			</div>
-
-
-
-
 		</div>
-
-
-
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

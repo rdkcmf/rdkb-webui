@@ -1,11 +1,9 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: port_triggering.php 3158 2010-01-08 23:32:05Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
 <?php
 $PTEnable=getStr("Device.NAT.X_CISCO_COM_PortTriggers.Enable");
@@ -13,15 +11,12 @@ if ($_DEBUG) {
 	$PTEnable = "true";
 }
 ?>
-
 <style>
 	td:not(.edit) {word-break: break-all;}
 </style>
-
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Advanced > Port Triggering", "nav-port-triggering");
-
 	$("#pt_switch").radioswitch({
 		id: "port-triggering-switch",
 		radio_name: "triggering",
@@ -32,7 +27,6 @@ $(document).ready(function() {
 		state: <?php echo ($PTEnable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});
 	$("a.confirm").unbind('click');
-
 	function setupDeleteConfirmDialogs() {
         /*
          * Confirm dialog for delete action
@@ -41,7 +35,6 @@ $(document).ready(function() {
             e.preventDefault();            
             var href = $(this).attr("href");
             var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
-           
             jConfirm(
                 message
                 ,"Are You Sure?"
@@ -52,7 +45,6 @@ $(document).ready(function() {
                 });
         });
     }
-	
 	var isUPTRDisabled = $("#pt_switch").radioswitch("getState").on === false;
 	if(isUPTRDisabled) { 
 		$("a.confirm").unbind('click');
@@ -64,7 +56,6 @@ $(document).ready(function() {
 	else {
 		setupDeleteConfirmDialogs();
 	}
-	
 	$("#pt_switch").change(function() {
 		var UPTRStatus = $("#pt_switch").radioswitch("getState").on ? "Enabled" : "Disabled";
 		var isUPTRDisabled = $("#pt_switch").radioswitch("getState").on === false;
@@ -81,7 +72,6 @@ $(document).ready(function() {
 			$("input[name='PortActive']").prop("disabled",false);
 			setupDeleteConfirmDialogs();
 		}
-	
 		jProgress('This may take several seconds.',60);
 		$.ajax({
 			type:"POST",
@@ -117,7 +107,6 @@ $(document).ready(function() {
 			}
 		});
 	});
-	
 	$("input[name='PortActive']").change(function(){
 		var isChecked=$(this).is(":checked");
 		var id=$(this).attr("id").split("_");
@@ -138,10 +127,8 @@ $(document).ready(function() {
 	});
 });
 </script>
-
 <div id="content">
 	<h1>Advanced > Port Triggering</h1>
-
 	<div id="educational-tip">
 		<p class="tip">Manage external access to specific ports on your network.</p>
 		<p class="hidden">Port triggering monitors outbound traffic on your network. When traffic is detected on a particular outbound port, the Gateway remembers that computer's IP address, triggers the inbound port to accept the incoming traffic, and directs the communications to the same computer.</p>
@@ -149,7 +136,6 @@ $(document).ready(function() {
 		<p class="hidden">Click <strong>+ADD PORT TRIGGER</strong> to add new port triggering rules.</p>
 		<p class="hidden">Port triggering settings can affect the Gateway's performance.</p>
 	</div>
-
 	<form action="port_triggering.php" method="post">
 	<div class="module">
 		<div class="select-row">
@@ -159,8 +145,6 @@ $(document).ready(function() {
 		<!--div class="select-row" style="color:red">Switch this button will make all service Active/Inactive</div-->
 	</div>
 	</form>
-
-
 	<div id="port-triggering-items">
 	<div class="module data">
 		<h2>Port Triggering</h2>
@@ -175,7 +159,6 @@ $(document).ready(function() {
 				<!-- <th id="edit-or-delete" colspan="2">&nbsp;</th> -->
 				<th id="edit-button">&nbsp;</th>
 				<th id="delete-button">&nbsp;</th>
-
 		    </tr>
 			<?php
 			if (getStr("Device.NAT.X_CISCO_COM_PortTriggers.TriggerNumberOfEntries")==0) {}
@@ -211,7 +194,6 @@ $(document).ready(function() {
 		        <td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_port_triggering.php?del=$i\" class=\"btn confirm\" title=\"delete port Triggering for ".$portTriggerValues["$i"]["Description"]." \" id=\"delete_$i\">x</a></td>
 		    </tr>";
 			} }?>
-
 			<tfoot>
 				<tr class="acs-hide">
 					<td headers="service-name">null</td>
@@ -224,10 +206,7 @@ $(document).ready(function() {
 				</tr>
 			</tfoot>
 		</table>
-
 	</div> <!-- end .module -->
 	</div>
-
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

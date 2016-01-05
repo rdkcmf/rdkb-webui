@@ -1,13 +1,9 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: troubleshooting_logs.php 3159 2010-01-11 20:10:58Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <script type="text/javascript" src="./cmn/js/lib/smartpaginator.js"></script>
 <link rel="stylesheet" type="text/css" href="./cmn/css/lib/smartpaginator.css"/>
 <script type="text/javascript">
@@ -16,33 +12,25 @@ $(document).ready(function() {
 	$("#site").hide();
 	$("#service").hide();
 	$("#device").hide();
-
 	$("#all_report_today").show();
 	$("#all_report_yesterday").hide();
 	$("#all_report_week").hide();
 	$("#all_report_month").hide();
 	$("#all_report_last").hide();
-	
 	$('input[value="Print"]').prop("disabled",true).addClass("disabled");
 	$('input[value="Download"]').prop("disabled",true).addClass("disabled");
-	
 	comcast.page.init("Parental Control > Reports", "nav-parental-reports");
-
     $('input[value="Print"]').click(function() {
     	window.print();
     });
-
     $("#generate-report").click(function() {
-		
 		var mode=$("select#report_type").val();
 		var timef=$("select#time_frame").val();
-		
 		jConfirm(
 		'This action may take more than one minute. Do you want to continue?'
 		,'Are You Sure?'
 		,function(ret){
 			if(ret){
-
 		if(mode == "site") {
 			$("#device").hide();
 			$("#all").hide();
@@ -232,24 +220,17 @@ $(document).ready(function() {
 				$("#device_report_last").show();
 			}
 		}
-		
 		$('input[value="Print"]:visible').prop("disabled",true).addClass("disabled");
 		$('input[value="Download"]:visible').prop("disabled",true).addClass("disabled");
-		
 		ajaxDo(mode,timef);
-		
 			}
 		});
     });
 }); //end of document ready
-
-
 function adjust_acs_tb(tb_summary, th_array){
 	var theTable = $("table:visible");
-	
 	//summary the table
 	theTable.attr("summary", tb_summary);
-	
 	//replace td with th, assign id to th (must in a thead)
 	var str = theTable.find("thead > tr").text();
 	for (var i=0; i<th_array.length; i++){
@@ -261,7 +242,6 @@ function adjust_acs_tb(tb_summary, th_array){
 		}
 	}
 	theTable.find("thead > tr").html(str);
-	
 	//assign headers to td (must in a tbody)
 	theTable.find("tbody > tr").each(function(){
 		for (var i=0; i<th_array.length; i++){
@@ -269,7 +249,6 @@ function adjust_acs_tb(tb_summary, th_array){
 		}
 	});
 }
-
 function ajaxDo(mode,timef){
 	switch(timef){
 			case "Today":
@@ -297,7 +276,6 @@ function ajaxDo(mode,timef){
 			jHide();
 			var length=0;
 			var trClass="odd";
-			
 			$("#"+mode+"_report_"+timef2+" > tbody").empty();
 			$.each(results,function(key,value){
 				$("#"+mode+"_report_"+timef2+" > tbody").append("<tr class='"+trClass+"'><td>"+value.Des+", "+value.Count+" Attemps, "+value.time+"</td><td>"+value.Type+"</td></tr>");
@@ -330,18 +308,14 @@ function ajaxDo(mode,timef){
 	});
 }; //end of ajaxDo
 </script>
-
 <div id="content">
 	<h1>Parental Control > Reports</h1>
 	<div id="educational-tip" class="noprint">
 		<p class="tip">Generate, download, and print reports based on your parental controls. </p>
 	</div>
-
 	<div class="module noprint">
 		<h2>Report Filters</h2>
-
 <form action="parental_reports_sample.php" method="post">
-
 			<label for="report_type" class="readonlyLabel">Report Type:</label>
 			<select id="report_type" name="report_type">
 				<option value="all" selected="selected">All</option>
@@ -349,7 +323,6 @@ function ajaxDo(mode,timef){
 				<option value="service">Managed Services</option>
 				<option value="device">Managed Devices</option>
 			</select>
-
 			<label for="time_frame" class="readonlyLabel">Time Frame:</label>
 			<select id="time_frame" name="time_frame">
 				<option selected="selected">Today</option>
@@ -359,12 +332,9 @@ function ajaxDo(mode,timef){
 				<option>Last 90 days</option>
 			</select>
 			<input  id="generate-report" type="button" value="GENERATE REPORT" class="btn"/>
-			
 	</div>
-
 	<div class="module forms data" id="site">
 		<h2>Managed Sites Reports</h2>
-
 		<table id="site_report_today" cellpadding="0" cellspacing="0" class="data" style="display:none" >
 			<thead>
 				<tr>
@@ -374,7 +344,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-
 		<table id="site_report_yesterday" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
@@ -384,7 +353,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-
 		<table id="site_report_week" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
@@ -394,7 +362,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-
 		<table id="site_report_month" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
@@ -404,7 +371,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-
 		<table id="site_report_last" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
@@ -420,7 +386,6 @@ function ajaxDo(mode,timef){
 			<input type="submit" value="Download" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
-
 	<div class="module forms data" id="service">
 		<h2>Managed Services Reports</h2>
 		<table id="service_report_today" cellpadding="0" cellspacing="0" class="data" >
@@ -450,7 +415,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-
 		<table id="service_report_month" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
@@ -460,7 +424,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-
 		<table id="service_report_last" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
@@ -470,17 +433,14 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-
 		<div class="smart_paginator"></div>
 		<div class="btn-group">
 			<input type="button" value="Print" class="btn alt"/>
 			<input type="submit" value="Download" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
-
 	<div class="module forms data" id="all">
 		<h2>All Reports</h2>
-
 		<table id="all_report_today" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
@@ -508,7 +468,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-
 		<table id="all_report_month" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
@@ -518,7 +477,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-
 		<table id="all_report_last" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
@@ -528,17 +486,14 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-
 		<div class="smart_paginator"></div>
 		<div class="btn-group">
 			<input type="button" value="Print" class="btn alt"/>
 			<input type="submit" value="Download" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
-
 	<div class="module forms data" id="device">
 		<h2>Managed Devices Reports</h2>
-
 		<table id="device_report_today" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
@@ -548,7 +503,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		
 		<table id="device_report_yesterday" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
@@ -558,7 +512,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		
 		<table id="device_report_week" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
@@ -568,7 +521,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		
 		<table id="device_report_month" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
@@ -578,7 +530,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		
 		<table id="device_report_last" cellpadding="0" cellspacing="0" class="data" >
 			<thead>
 				<tr>
@@ -588,7 +539,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		
 		<div class="smart_paginator"></div>
 		<div class="btn-group">
 			<input type="button" value="Print" class="btn alt"/>
@@ -597,5 +547,4 @@ function ajaxDo(mode,timef){
 	</div> <!-- end .module -->
 </form>
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

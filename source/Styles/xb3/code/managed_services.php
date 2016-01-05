@@ -1,18 +1,14 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: managed_services.php 2943 2009-08-25 20:58:43Z slemoine $ -->
-
 <div  id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <?php 
 	$ret = init_psmMode("Parental Control > Managed Services", "nav-services");
 	if ("" != $ret){echo $ret;	return;}
 ?>
-
 <?php
 $enableMS = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Enable");
 if ($_DEBUG) {
@@ -21,15 +17,11 @@ if ($_DEBUG) {
 // $enableMS = "false";
 //add by shunjie
 ("" == $enableMS) && ($enableMS = "false");
-
 ?>
-
 <script  type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Parental Control > Managed Services", "nav-services");
-	
 	jsEnableMS = <?php echo $enableMS ?>;
-
 	$("#managed_services_switch").radioswitch({
 		id: "managed-services-switch",
 		radio_name: "managed_services",
@@ -39,12 +31,10 @@ $(document).ready(function() {
 		title_off: "Disable managed services",
 		state: jsEnableMS ? "on" : "off"
 	});
-
 	$("span[id^=trusted_user_]").each(function(){
 		var $this = $(this);
 		var idx = this.id.match(/trusted_user_(.+)$/)[1];
 		var val = $this.attr("switch-val");
-
 		$this.radioswitch({
 			id: "trusted-user-"+idx,
 			radio_name: "device_trusted-"+idx,
@@ -76,9 +66,7 @@ $(document).ready(function() {
 			});
     	});
 	});
-
     $("a.confirm").unbind('click');
-	
 	$(".btn").click(function (e) {
 		e.preventDefault();
 		if ($(this).hasClass('disabled')) {
@@ -103,14 +91,12 @@ $(document).ready(function() {
 			}
 		}
 	});
-	
 	// only run once on init
 	if (false == jsEnableMS)
 	{
 		$('.main_content *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
 		$(".main_content .radioswitch_cont:not(#managed_services_switch)").radioswitch("doEnable", false);
 	}	
-	
  // If Enable UPnP is not checked, disable the next two form fields
 	$("#managed_services_switch").change(function() {
 		var UMSStatus = $("#managed_services_switch").radioswitch("getState").on ? "Enabled" : "Disabled";
@@ -144,7 +130,6 @@ $(document).ready(function() {
 			}
 		});
 	});
-	
 	$("ul[ name='trust-user-switch']").change(function(event, data) {
 		var target = event.target; 
 //		alert(target.getAttribute("id")+";"+data);
@@ -168,36 +153,25 @@ $(document).ready(function() {
 						else{$(this).parent().removeClass("selected");$(this).prop("checked",false);}
 					});
 				}*/
-				
 			}
 		});
 	});
 });
-
-
-
 </script>
-
 <div  id="content" class="main_content">
-
-
 	<h1>Parental Control > Managed Services</h1>
-
-
 	<div  id="educational-tip">
         <p class="tip">Manage access to specific services and applications by network devices.</p>
 		<p class="hidden">Select <strong>Enable</strong> to manage services and applications, or <strong> Disable</strong>  to turn off.</p>
 		<p class="hidden"><strong>+ADD:</strong> Add to block a new service or application.</p>
 		<p class="hidden">The Gateway will block services and applications on all untrusted computers, based on the specified rules. If you don't want restrictions for a particular computer, select <strong>Yes</strong> under <strong>Trusted Computers</strong>.</p>
     </div>
-
 	<div class="module">
 		<div class="select-row">
 		<span class="readonlyLabel label">Managed Services:</span>
 		<span id="managed_services_switch"></span>
 		</div>
 	</div>
-
 	<div  id="managed-services-items">
 	<div class="module data">
 		<h2>Blocked Services</h2>
@@ -219,22 +193,16 @@ $(document).ready(function() {
 	           	$mapping_array  = array("Protocol", "AlwaysBlock", "Description", "StartPort", "EndPort","StartTime", "EndTime", "BlockDays");
 		   		$blockedServicesInstance = array();
 	           	$blockedServicesInstanceArr = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-
 				//TrustedUser
 				$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser.";
 				$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser.");
 				$mapping_array  = array("IPAddress", "Trusted");
-
 				$TrustedUser = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-
 				//Host
 				$rootObjName    = "Device.Hosts.Host.";
 				$paramNameArray = array("Device.Hosts.Host.");
 				$mapping_array  = array("HostName", "PhysAddress", "IPAddress", "IPv6Address.1.IPAddress");
-
 				$HostParam = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-
-
 				$num=getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.ServiceNumberOfEntries");
 				if($num!=0) {
 					$MSIDs=explode(",",getInstanceIDs("Device.X_Comcast_com_ParentalControl.ManagedServices.Service."));
@@ -257,10 +225,8 @@ $(document).ready(function() {
 							$stime = $blockedServicesInstance["$i"]["StartTime"];
 							$etime = $blockedServicesInstance["$i"]["EndTime"];
 							$bdays = $blockedServicesInstance["$i"]["BlockDays"];
-					
 					        $blockStatus = $stime."-".$etime.",".$bdays;
 						}
-
 						echo "
 					<tr class=$iclass>
 						<td headers='service-number' class=\"row-label alt number\">$j</td>
@@ -275,7 +241,6 @@ $(document).ready(function() {
 					} 
 				}
 		?>
-
 	       <tfoot>
 				<tr class="acs-hide">
 					<td headers="service-number">null</td>
@@ -288,25 +253,17 @@ $(document).ready(function() {
 					<td headers="delete-button">null</td>
 				</tr>
 			</tfoot>
-
 		</table>
 	</div> <!-- end .module -->
-
-	
 		<form action="managed_services.php" method="post">
 			<input  type="hidden"  name="update_trusted_computers"  value="true" />
-
 		<?php
 			$hostsInstance = getInstanceIds("Device.Hosts.Host.");
 			$hostsInstanceArr = explode(",", $hostsInstance);
-
 			$hostNums = getStr("Device.Hosts.HostNumberOfEntries");
-
 			$ipAddrArr = array();
 			$HostNameArr = array();
-
 			for ($i=0; $i < $hostNums; $i++) { 
-            
 				$HostName = $HostParam[$i]["HostName"];
 		        if (($HostName == "*") || (strlen($HostName) == 0)) {
 		            $Host["$i"]['HostName'] = $HostParam[$i]["PhysAddress"];
@@ -314,18 +271,14 @@ $(document).ready(function() {
 		        else {
 					$Host["$i"]['HostName'] = $HostName;
 		        }
-
 			$Host["$i"]['IPAddress'] = $HostParam[$i]["IPAddress"];
 			$IPAddress = $HostParam["$i"]['IPAddress'];
 			//$IPv4Address	= getStr("Device.Hosts.Host." .$hostsInstanceArr["$i"]. ".IPv4Address.1.IPAddress");
 			$IPv6Address	= $HostParam[$i]["IPv6Address.1.IPAddress"];
-			
 			//for now as "Device.Hosts.Host.'$i'.IPv4Address.1.IPAddress" is not updating on GW_IP Change
 			$IPv4Address = $IPAddress;
-
 			//In IPv6 only mode, IPv4=NA
 			if( strpos($IPv4Address, '.') === false ) $IPv4Address = 'NA';
-
 			if (substr($IPv6Address, 0, 5) == "2001:") {
 				$Host["$i"]['IPShow'] = $IPv4Address.'/'.$IPv6Address;
 			}
@@ -333,13 +286,11 @@ $(document).ready(function() {
 				//If IPv6 is not global then IPv6=NA
 				$Host["$i"]['IPShow'] = $IPv4Address.'/NA';
 			}
-
 				array_push($HostNameArr, $Host["$i"]['HostName']);
 				array_push($ipAddrArr, $Host["$i"]['IPAddress']);
                 $Host["$i"]['Trusted'] = false;
                 foreach( $TrustedUser as $key => $value ){
                     if ( $value['IPAddress'] == $Host["$i"]['IPAddress']){
-
                         $Host["$i"]['Trusted'] = $value['Trusted']; 
                         break;
                     }
@@ -352,9 +303,7 @@ $(document).ready(function() {
 				$HostNameArr = array("host1", "host2");
 				$ipAddrArr = array("1.1.1.1", "2.2.2.2");
 			}
-			
 		 ?>
-
 			<div class="module data">
 				<h2>Trusted Computers</h2>
 				<table  id="trusted_computers" class="data" summary="This table allows you to set trusted or untrusted devices for above managed services">
@@ -364,10 +313,8 @@ $(document).ready(function() {
 						<th id="IP" class="ip">IP</th>
 						<th id="trusted-or-not" class="trusted">Trusted</th>
 					</tr>
-
 					<?php 
 					for ($i=0,$k=1; $i < $hostNums; $i++,$k++) {
-
 						if($k % 2) $odd = "class='odd'";
 						else $odd = "";
 						echo "<tr $odd>
@@ -381,7 +328,6 @@ $(document).ready(function() {
 						";
 					}
 					?>
-
 				<tfoot>
 					<tr class="acs-hide">
 						<td headers="number">null</td>
@@ -390,20 +336,14 @@ $(document).ready(function() {
 						<td headers="trusted-or-not">null</td>						
 					</tr>
 				</tfoot>
-
 				</table>
 			</div> <!-- end .module -->
 		</form><!--end trusted computers -->
-	
 	</div>
-
-
 </div><!-- end #content -->
-
 <script  type="text/javascript">
 	var hostNums = '<?php echo $hostNums; ?>';
 	var hostNameArr = <?php echo json_encode($HostNameArr); ?>;
 	var ipAddrArr = <?php echo json_encode($ipAddrArr); ?>;
 </script>
-
 <?php include('includes/footer.php'); ?>

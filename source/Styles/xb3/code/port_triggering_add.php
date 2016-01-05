@@ -1,17 +1,13 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: port_triggering_add.php 3117 2009-10-15 20:23:13Z cporto $ -->
-
 <div id="sub-header">
 <?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Port Triggering Add - Advanced", "nav-port-triggering");
     $('#service_name').focus();
-	
 	jQuery.validator.addMethod("port",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 65535);
 	}, "Please enter a port number less than 65536.");
@@ -23,7 +19,6 @@ $(document).ready(function() {
 		var tstartport=parseInt($("#to_start_port").val());
 		return this.optional(element) || value>=tstartport;
 	}, "Please enter a value more than or equal to Target Port From.");
-	
     $("#pageForm").validate({
         rules: {
             service_name: {
@@ -62,13 +57,10 @@ $(document).ready(function() {
 		,unhighlight: function( element, errorClass, validClass ) {
 			$(element).closest(".form-row").find("input").removeClass(errorClass).addClass(validClass);
 		}
-
     });
-
     $("#btn-cancel").click(function() {
     	window.location = "port_triggering.php";
     });
-	
 	$("#btn-save").click(function(){
 		var name=$('#service_name').val();
 		var type=$('#service_type').find("option:selected").text();
@@ -98,7 +90,6 @@ $(document).ready(function() {
 	});
 });
 </script>
-
 <div id="content">
 	<h1>Advanced > Port Triggering > Add Port Trigger</h1>
     <div id="educational-tip">
@@ -109,11 +100,9 @@ $(document).ready(function() {
 	<form method="post" id="pageForm" action="">
 	<div class="module forms">
 		<h2>Add Port Trigger</h2>
-
 		<div class="form-row odd">
 			<label for="service_name">Service Name:</label> <input tabindex='0' type="text" class="text" value="" id="service_name" name="service_name" />
 		</div>
-
 		<div class="form-row">
 			<label for="service_type">Service Type:</label>
 			<select id="service_type">
@@ -122,7 +111,6 @@ $(document).ready(function() {
 				<option value="udp">UDP</option>
 			</select>
 		</div>
-
 		<div class="form-row odd">
 			<label for="from_start_port">Trigger Port From:</label>  <input tabindex='0' type="text" class="text" value="" id="from_start_port" name="from_start_port" />
 		</div>
@@ -139,9 +127,7 @@ $(document).ready(function() {
 			<input tabindex='0' type="button" id="btn-save" value="Add" class="btn submit"/>
 			<input tabindex='0' type="reset" id="btn-cancel" value="Cancel" class="btn alt reset"/>
 		</div>
-
 	</div> <!-- end .module -->
 	</form>
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>

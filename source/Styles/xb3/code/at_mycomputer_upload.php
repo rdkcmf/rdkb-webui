@@ -1,14 +1,11 @@
-﻿<?php
-
+<?php
 ini_set('upload_tmp_dir','/var/tmp/');
 $target = "/var/tmp/";
 $target = $target.basename($_FILES['file']['name']);
-
 if($_FILES["file"]["error"]>0){
 	echo "Return Code: ".$_FILES["file"]["error"];
 	exit;
 } else {
-
 	exec('confPhp status',$output,$return_status);
 	switch ($return_status)
 	{	
@@ -34,10 +31,8 @@ if($_FILES["file"]["error"]>0){
 	}
 }
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!-- $Id: header.php 3167 2010-03-03 18:11:27Z slemoine $ -->
-
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title>XFINITY</title>

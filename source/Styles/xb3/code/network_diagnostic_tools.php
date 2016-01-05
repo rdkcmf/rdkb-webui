@@ -1,35 +1,26 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: network_diagnostic_tools.php 3158 2010-01-08 23:32:05Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <style type="text/css">
 .gateway_address{
 	width: 31px;
 }
-
 label{
 	margin-right: 10px !important;
 }
-
 #pageForm3 span, #pageForm3 label, #pageForm4 label{
 	width: 100px;
 }
 </style>
-
 <script type="text/javascript">
 $(document).ready(function() {
 	comcast.page.init("Troubleshooting > Network Diagnostic Tools", "nav-diagnostic-tools");
-	
 	$.validator.addMethod("url_no_http", function(value, element) {
 		return this.optional(element)||/^(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
 	}, "Please enter a valid URL.");
-
     $("#pageForm1").validate({
 		debug: true,
 		rules: {
@@ -43,7 +34,6 @@ $(document).ready(function() {
 			}
 		}
     });	
-	
     $("#pageForm2").validate({
 		debug: true,
 		groups: {
@@ -77,7 +67,6 @@ $(document).ready(function() {
 			}
 		}
     });	
-	
     $("#pageForm3").validate({
 		debug: true,
 		groups: {
@@ -123,7 +112,6 @@ $(document).ready(function() {
 			}			
 		}
     });	
-	
     $("#pageForm4").validate({
 		debug: true,
 		groups: {
@@ -185,8 +173,6 @@ $(document).ready(function() {
 			}
 		}
     });	
-	
-	
 	$("#test_connectivity").click(function(){
 		if ($("#pageForm1").valid()) {
 			var destination_address=$("#destination_address").val();
@@ -210,7 +196,6 @@ $(document).ready(function() {
 			});	
 		}
 	});
-	
 	$("#check_ipv4").click(function(){
 		if ($("#pageForm2").valid()) {
 			var destination_ipv4=$("#ipv4_address_1").val()+"."+$("#ipv4_address_2").val()+"."+$("#ipv4_address_3").val()+"."+$("#ipv4_address_4").val();
@@ -232,7 +217,6 @@ $(document).ready(function() {
 			});
 		}
 	});
-	
 	$("#check_ipv6").click(function(){
 		if ($("#pageForm3").valid()) {
 			var destination_ipv6=$("#ipv6_address_1").val()
@@ -243,7 +227,6 @@ $(document).ready(function() {
 			+":"+$("#ipv6_address_6").val()
 			+":"+$("#ipv6_address_7").val()
 			+":"+$("#ipv6_address_8").val();
-			
 			var count3=$("#count3").val();
 			jProgress('This may take several seconds...',120);
 			ajaxrequest=$.ajax({
@@ -262,14 +245,12 @@ $(document).ready(function() {
 			});
 		}
 	});
-
 	$("#trace_ipv4").click(function(){
 		if ($("#pageForm4 input[id^='trace_ipv4_']").valid()) {
 			var trace_ipv4_dst=$("#trace_ipv4_address_1").val()
 			+"."+$("#trace_ipv4_address_2").val()
 			+"."+$("#trace_ipv4_address_3").val()
 			+"."+$("#trace_ipv4_address_4").val();
-			
 			jProgress('This may take several seconds...',120);
 			// if another var name, jprogress can't auto abort, but have to abort manually.
 			ajaxrequest = $.ajax({
@@ -280,11 +261,9 @@ $(document).ready(function() {
 				success:function(results){
 					var trace_ipv4_status = results.trace_ipv4_status;
 					var trace_ipv4_result = results.trace_ipv4_result;
-					
 					$("#pop_trace").text("Status: "+trace_ipv4_status+" !\n");
 					jHide();				
 					showTracerouteDialog();
-					
 					if ("Complete" == trace_ipv4_status){
 						var i = 0;
 						var hInt = setInterval(function(){
@@ -302,7 +281,6 @@ $(document).ready(function() {
 			});
 		}
 	});
-
 	$("#trace_ipv6").click(function(){
 		if ($("#pageForm4 input[id^='trace_ipv6_']").valid()) {
 			var trace_ipv6_dst=$("#trace_ipv6_address_1").val()
@@ -313,7 +291,6 @@ $(document).ready(function() {
 			+":"+$("#trace_ipv6_address_6").val()
 			+":"+$("#trace_ipv6_address_7").val()
 			+":"+$("#trace_ipv6_address_8").val();
-			
 			jProgress('This may take several seconds...',120);
 			// if another var name, jprogress can't auto abort, but have to abort manually.
 			ajaxrequest = $.ajax({
@@ -324,11 +301,9 @@ $(document).ready(function() {
 				success:function(results){
 					var trace_ipv6_status = results.trace_ipv6_status;
 					var trace_ipv6_result = results.trace_ipv6_result;
-					
 					$("#pop_trace").text("Status: "+trace_ipv6_status+" !\n");
 					jHide();				
 					showTracerouteDialog();
-					
 					if ("Complete" == trace_ipv6_status){
 						var i = 0;
 						var hInt = setInterval(function(){
@@ -346,9 +321,7 @@ $(document).ready(function() {
 			});
 		}
 	});	
-	
 });
-
 function showTracerouteDialog() {
 	$.virtualDialog({
 		title: "Traceroute Tool",
@@ -360,19 +333,15 @@ function showTracerouteDialog() {
 		$.virtualDialog("hide");
 	});
 }
-
 </script>
-
 <div id="content">
 	<h1>Troubleshooting > Network Diagnostic Tools</h1>
-
 	<div id="educational-tip">
 		<p class="tip">Troubleshoot your network connectivity.</p>
 		<p class="hidden"><strong>Test Connectivity Results:</strong> Checks your connectivity to the Internet.</p>
 		<p class="hidden"><strong>Check IPv4 and IPv6 Address Results:</strong> Identifies accessibility to specific IP addresses.</p>
 		<p class="hidden"><strong>Traceroute Results:</strong> Displays the route of packets across an Internet Protocol (IP) network.</p>
 	</div>
-
 	<form method="post" id="pageForm1">
 	<div class="module forms">
 		<h2>Test Connectivity Results</h2>
@@ -397,7 +366,6 @@ function showTracerouteDialog() {
 		</div>
 	</div> <!-- end .module -->
 	</form>
-
 	<form method="post" id="pageForm2">
 	<div class="module forms">
 		<h2>Check for IPv4 Address Results</h2>
@@ -422,7 +390,6 @@ function showTracerouteDialog() {
 		</div>
 	</div> <!-- end .module -->
 	</form>
-
 	<form method="post" id="pageForm3">
 <?php 
 	// $interface = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstDownstreamIpInterface");
@@ -462,7 +429,6 @@ function showTracerouteDialog() {
 			</div>
 	</div>	
 	</form>
-	
 	<form method="post" id="pageForm4">
 	<div class="module forms">
 			<h2>Traceroute Results</h2>	
@@ -498,14 +464,11 @@ function showTracerouteDialog() {
 	   		</div>			
 	</div> <!-- end .module -->	
 	</form>
-	
 </div><!-- end #content -->
-
 <div id="traceroute_dialog" class="content_message" style="display: none;">
 	<p>Traceroute Results:</p>
 	<label for="pop_trace" class="acs-hide"></label>
 	<textarea id="pop_trace" name="pop_trace" readonly="readonly" cols="69" rows="16" style="resize: none;">Loading...
 	</textarea>
 </div>
-
 <?php include('includes/footer.php'); ?>

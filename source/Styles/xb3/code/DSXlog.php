@@ -1,26 +1,18 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: firewall_settings.php 3158 2010-01-08 23:32:05Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <!--link rel="stylesheet" type="text/css" href="../cmn/css/lib/smartpaginator.css"/-->
 <!--script type="text/javascript" src="../cmn/js/lib/smartpaginator.js"></script-->
 <!--script type="text/javascript" src="../cmn/js/lib/jquery.alerts.progress.js"></script-->
-
 <script type="text/javascript">
-
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > QoS", "nav-qos");
 });
-
 </script>
-
-
 <div id="content">
 	<h1>Gateway > Connection > QoS > DSX logs</h1>
 	<div class="module forms data" id="event">
@@ -37,7 +29,6 @@ $(document).ready(function() {
 			$rootObjName    = "Device.X_CISCO_COM_MTA.DSXLog.";
 			$paramNameArray = array("Device.X_CISCO_COM_MTA.DSXLog.");
 			$mapping_array  = array("Description");
-	
 			$dsxLogsInstance = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 			for ($i=1; $i<count($ids); $i++)
 			{
@@ -54,5 +45,4 @@ $(document).ready(function() {
 	?>
 	</div>
 </div> <!-- end #container -->
-
 <?php include('includes/footer.php'); ?>

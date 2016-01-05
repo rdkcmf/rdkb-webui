@@ -1,17 +1,13 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: wireless_network_configuration.usg.php 3159 2010-01-11 20:10:58Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <?php 
 	$ret = init_psmMode("Gateway > Connection > MoCA", "nav-moca");
 	if ("" != $ret){echo $ret;	return;}
-
 	$MoCA_param = array(
 		"moca_enable"	=> "Device.MoCA.Interface.1.Enable",
 		"scan_method"	=> "Device.MoCA.Interface.1.X_CISCO_COM_ChannelScanning",
@@ -26,9 +22,7 @@
 		"MACAddress"	=> "Device.MoCA.Interface.1.MACAddress",
 		"NC_MACAddress"	=> "Device.MoCA.Interface.1.X_CISCO_NetworkCoordinatorMACAddress",
 	);
-
 	$MoCA_value = KeyExtGet("Device.MoCA.Interface.1.", $MoCA_param);
-
 	$moca_enable	= $MoCA_value['moca_enable'];
 	$scan_method	= $MoCA_value['scan_method'];
 	$channel	= $MoCA_value['channel'];
@@ -37,11 +31,9 @@
 	$nc_enable	= $MoCA_value['nc_enable'];
 	$privacy_enable	= $MoCA_value['privacy_enable'];
 	$net_password	= $MoCA_value['net_password'];
-
 	//$qos_enable 	= "true";
 	// $taboo_enable	= getStr("Device.MoCA.Interface.1.X_CISCO_COM_EnableTabooBit");
 	// $qos_enable 	= getStr("Device.MoCA.Interface.1.QoS.X_CISCO_COM_Enabled");
-
 	// $moca_enable	= "false";
 	// $scan_method	= "true";
 	// $channel		= "1275"; 
@@ -52,28 +44,21 @@
 	// $privacy_enable	= "false";
 	// $net_password	= "1234567891011";
 ?>
-
 <style type="text/css">
-
 label{
 	margin-right: 10px !important;
 }
-
 #content {
 	display: none;
 }
-
 .moca_row1 {
 }
-
 .moca_row2 {
 }
 </style>
-
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > MoCA", "nav-moca");
-	
 	$("#moca_switch").radioswitch({
 		id: "moca-switch",
 		radio_name: "enable_moca",
@@ -83,7 +68,6 @@ $(document).ready(function() {
 		title_off: "Disable MoCA",
 		state: <?php echo ($moca_enable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});
-
 	/*$("#qos_switch").radioswitch({
 		id: "qos-switch",
 		radio_name: "enable_moca1",
@@ -93,7 +77,6 @@ $(document).ready(function() {
 		title_off: "Disable QoS for MoCA",
 		state: <?php echo ($qos_enable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});*/
-
 	// $('#div_channel_switch').change(function()	//this is not compatible with IE8
 	$(':input[name="channel_switch"]').change(function() //this will act twice
 	{
@@ -107,16 +90,13 @@ $(document).ready(function() {
 			$("#mode_option").prop("disabled", false);
 			$('[id^="tf_"]').prop("disabled", false);
 			var channel = $('#mode_option').val();
-			
 			var tf_channel;
 			if(channel%50 != 0) tf_channel = (channel - 1025)/25;
 			else tf_channel = (channel - 1000)/25;
-
 			$('[id^="tf_"]').prop("disabled", false).attr('checked', true);
 			$("#tf_"+tf_channel).prop("disabled", true).attr('checked', false);
 		}
 	});
-	
 	$(':input[name="privacy_switch"]').change(function()
 	{
 		if ($("#privacy_enable").prop("checked"))
@@ -130,19 +110,15 @@ $(document).ready(function() {
 			$('#password_show').prop("disabled", true);
 		}
 	});
-
 	$('#mode_option').change(function()
 	{
 		var channel = $('#mode_option').val();
-		
 		var tf_channel;
 		if(channel%50 != 0) tf_channel = (channel - 1025)/25;
 		else tf_channel = (channel - 1000)/25;
-
 		$('[id^="tf_"]').prop("disabled", false).attr('checked', true);
 		$("#tf_"+tf_channel).prop("disabled", true).attr('checked', false);
 	});
-
 	$("#password_show").change(function() {
 		if($("#password_show").prop("checked")) {
 			document.getElementById("password_field").innerHTML = 
@@ -153,7 +129,6 @@ $(document).ready(function() {
 			'<input type="password" size="23" id="net_password" name="net_password" class="text" value="' + $("#net_password").val() + '" />'
 		}
 	});
-	
 	//do has order!!!
 	$("#moca_switch").change(function()
 	{
@@ -169,7 +144,6 @@ $(document).ready(function() {
 			$(':input:not("#submit_moca")').not(".radioswitch_cont input").prop("disabled", true);
 		}	
 	}).trigger("change");
-
     $("#pageForm").validate({
 		rules: {
 			net_password: {
@@ -179,12 +153,10 @@ $(document).ready(function() {
 				,minlength: 12
 			}
 		},
-		
 		submitHandler:function(form){
 			next_step();
 		}
     });
-
 	// remove sections as per loginuser, content must be hidden before doc ready
 	if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>"){
 		$("#div_channel_switch").hide();
@@ -203,15 +175,12 @@ $(document).ready(function() {
 		// for GUI version 3.0
 		$("#div_qos_switch").hide();
 	}*/
-	
 	//re-style each div
 	$('.module div').removeClass("odd");
 	$('.module > div:odd').addClass("odd");
-	
 	// now we can show target content
 	$("#content").show();
 });
-
 function next_step() 
 {
 	var moca_enable		= $("#moca_switch").radioswitch("getState").on;
@@ -224,7 +193,6 @@ function next_step()
 	var privacy_enable	= $("#privacy_enable").prop("checked");
 	var net_password	= $('#net_password').attr("value");
 	//var qos_enable 		= $("#qos_switch").radioswitch("getState").on;
-	
 	var cahnnel_obj = {
 		"1150":"0000000000004000",
 		"1175":"0000000000008000",
@@ -247,9 +215,7 @@ function next_step()
 		"1600":"0000000100000000",
 		"1625":"0000000200000000"
 	};
-
 	channel = cahnnel_obj[channel];
-
 	function js_str_and(a, b)	//js bit-and limited to 32, I have to write this
 	{
 		var c = String("");
@@ -259,24 +225,20 @@ function next_step()
 		}
 		return c;
 	}
-	
 	for (var i=1; i<25; i++)
 	{
 		$("#tf_"+i).prop("checked") && (taboo_freq = js_str_and(taboo_freq, $("#tf_"+i).val()));
 	}
-	
 	/*if (false==scan_method && js_str_and(channel, taboo_freq) == taboo_freq)
 	{
 		jAlert("In manual mode: Taboo frequency must exclude current channel!");
 		return;
 	}
-	
 	if ($(".moca11:not(:checked)").length < 1 || $(".moca20:not(:checked)").length < 1)
 	{
 		jAlert("Can't disable all MoCA 1.1 (or 2.0) frequency at the same time!");
 		return;
 	}*/
-
 	var jsConfig = '{"moca_enable": "' + moca_enable 
 	+ '", "scan_method": "' + scan_method 
 	+ '", "channel": "' + channel 
@@ -289,7 +251,6 @@ function next_step()
 	//+ '", "qos_enable": "' + qos_enable 
 	+'", "thisUser":"'+"<?php echo $_SESSION["loginuser"]; ?>"
 	+ '"} ';
-
 	// alert(jsConfig);
 	jProgress('Waiting for backend fully executed, please be patient...', 100);
 	$.ajax({
@@ -308,9 +269,7 @@ function next_step()
 		}
 	});
 }
-
 </script>
-
 <div id="content" >
     <h1>Gateway > Connection > MoCA</h1>
 	<div id="educational-tip">
@@ -324,15 +283,12 @@ function next_step()
     <form id="pageForm">
 	<fieldset>
     <legend class="acs-hide">MoCA information</legend>
-
     <div class="module forms enable">
         <h2>MoCA</h2>
-
 		<div class="select-row">
 			<label>MoCA:</label>
 			<span id="moca_switch"></span>
 		</div>
-		
 		<div class="form-row odd" id="div_channel_switch">
 			<label for="channel_selection">Channel Selection:</label>
 			<input tabindex='0' id="scan_auto"   type="radio" value="auto"   name="channel_switch" checked="checked">
@@ -342,7 +298,6 @@ function next_step()
 			<label for="scan_manual" class="acs-hide"></label>
 			<b>Manual</b>
 		</div>
-		
 		<div class="form-row" id="div_channel_select">
 			<label for="mode_option">Channel:</label>
 			<select id="mode_option" disabled="disabled">
@@ -370,7 +325,6 @@ function next_step()
 				<option id="d10a" value="1625"  <?php if ($channel == "1625") echo 'selected="selected"'; ?> >D10a(1625 MHz)</option> 
 			</select>
 		</div>
-
 		<?php	$channel_show = "D1(1150 MHz)";
 			if ($channel == "1200") $channel_show = "D2(1200 MHz)";
 			else if ($channel == "1250") $channel_show = "D3(1250 MHz)";
@@ -391,16 +345,13 @@ function next_step()
 			else if ($channel == "1575") $channel_show = "D9a(1575 MHz)";
 			else if ($channel == "1600") $channel_show = "D10(1600 MHz)";
 			else if ($channel == "1625") $channel_show = "D10a(1625 MHz)";
-
 			if("true"==$nc_enable) $PNC_Show = "Yes";
 			else $PNC_Show = "No";
-			
 			if("admin" == $_SESSION["loginuser"]) {
 				echo '<div class="form-row"> <label >Channel:</label> <span class="readonlyValue">'.$channel_show.'</span> </div>';
 				echo '<div class="form-row "> <label>Preferred Network Controller:</label> <span class="readonlyValue">'.$PNC_Show.'</span> </div>';
 			}
 		?>
-
 		<div class="form-row odd" id="div_beacon_select">
 			<label for="beacon_power">Beacon Power Reduction(dB):</label>
 			<select id="beacon_power">
@@ -412,7 +363,6 @@ function next_step()
 				<option <?php if ($beacon_power == 15) echo 'selected="selected"'; ?> >15</option>
 			</select>
 		</div>
-
 		<div class="form-row odd" id="div_taboo_list">
 			<label>Taboo Frequency:</label>
 			<div class="moca_row1" style="position:relative;top:0px;right:0px">
@@ -421,34 +371,29 @@ function next_step()
 				<input class="moca11" type="checkbox" id="tf_6"  value="0000000000004000" <?php if (php_str_and($taboo_freq, "0000000000004000") == "0000000000004000") echo "checked=\"checked\""; ?> /> <label for="6" class="acs-hide"></label> <b>1150MHz</b>&nbsp;&nbsp;
 				<input class="moca11" type="checkbox" id="tf_8"  value="0000000000010000" <?php if (php_str_and($taboo_freq, "0000000000010000") == "0000000000010000") echo "checked=\"checked\""; ?> /> <label for="8" class="acs-hide"></label> <b>1200MHz</b>
 			</div>
-
 			<div class="moca_row1" style="position:relative;top:0px;right:0px">
 				<input class="moca11" type="checkbox" id="tf_10" value="0000000000040000" <?php if (php_str_and($taboo_freq, "0000000000040000") == "0000000000040000") echo "checked=\"checked\""; ?> /> <label for="10" class="acs-hide"></label> <b>1250MHz</b>&nbsp;&nbsp;
 				<input class="moca11" type="checkbox" id="tf_12" value="0000000000100000" <?php if (php_str_and($taboo_freq, "0000000000100000") == "0000000000100000") echo "checked=\"checked\""; ?> /> <label for="12" class="acs-hide"></label> <b>1300MHz</b>&nbsp;&nbsp;
 				<input class="moca11" type="checkbox" id="tf_14" value="0000000000400000" <?php if (php_str_and($taboo_freq, "0000000000400000") == "0000000000400000") echo "checked=\"checked\""; ?> /> <label for="14" class="acs-hide"></label> <b>1350MHz</b>&nbsp;&nbsp;
 				<input class="moca11" type="checkbox" id="tf_16" value="0000000001000000" <?php if (php_str_and($taboo_freq, "0000000001000000") == "0000000001000000") echo "checked=\"checked\""; ?> /> <label for="16" class="acs-hide"></label> <b>1400MHz</b>
 			</div>
-
 			<div class="moca_row1" style="position:relative;top:0px;right:-230px">
 				<input class="moca11" type="checkbox" id="tf_18" value="0000000004000000" <?php if (php_str_and($taboo_freq, "0000000004000000") == "0000000004000000") echo "checked=\"checked\""; ?> /> <label for="18" class="acs-hide"></label> <b>1450MHz</b>&nbsp;&nbsp;
 				<input class="moca11" type="checkbox" id="tf_20" value="0000000010000000" <?php if (php_str_and($taboo_freq, "0000000010000000") == "0000000010000000") echo "checked=\"checked\""; ?> /> <label for="20" class="acs-hide"></label> <b>1500MHz</b>&nbsp;&nbsp;
 				<input class="moca11" type="checkbox" id="tf_24" value="0000000100000000" <?php if (php_str_and($taboo_freq, "0000000100000000") == "0000000100000000") echo "checked=\"checked\""; ?> /> <label for="24" class="acs-hide"></label> <b>1600MHz</b>
 			</div>
-
 			<div class="moca_row2" style="position:relative;top:0px;right:-230px">
 				<input class="moca20" type="checkbox" id="tf_1"  value="0000000000000200" <?php if (php_str_and($taboo_freq, "0000000000000200") == "0000000000000200") echo "checked=\"checked\""; ?> /> <label for="1" class="acs-hide"></label> <b>1025MHz</b>&nbsp;&nbsp;
 				<input class="moca20" type="checkbox" id="tf_3"  value="0000000000000800" <?php if (php_str_and($taboo_freq, "0000000000000800") == "0000000000000800") echo "checked=\"checked\""; ?> /> <label for="3" class="acs-hide"></label> <b>1075MHz</b>&nbsp;&nbsp;
 				<input class="moca20" type="checkbox" id="tf_5"  value="0000000000002000" <?php if (php_str_and($taboo_freq, "0000000000002000") == "0000000000002000") echo "checked=\"checked\""; ?> /> <label for="5" class="acs-hide"></label> <b>1125MHz</b>&nbsp;&nbsp;
 				<input class="moca20" type="checkbox" id="tf_7"  value="0000000000008000" <?php if (php_str_and($taboo_freq, "0000000000008000") == "0000000000008000") echo "checked=\"checked\""; ?> /> <label for="7" class="acs-hide"></label> <b>1175MHz</b>
 			</div>
-
 			<div class="moca_row2" style="position:relative;top:0px;right:-230px">
 				<input class="moca20" type="checkbox" id="tf_9"  value="0000000000020000" <?php if (php_str_and($taboo_freq, "0000000000020000") == "0000000000020000") echo "checked=\"checked\""; ?> /> <label for="9"  class="acs-hide"></label> <b>1225MHz</b>&nbsp;&nbsp;
 				<input class="moca20" type="checkbox" id="tf_11" value="0000000000080000" <?php if (php_str_and($taboo_freq, "0000000000080000") == "0000000000080000") echo "checked=\"checked\""; ?> /> <label for="11" class="acs-hide"></label> <b>1275MHz</b>&nbsp;&nbsp;
 				<input class="moca20" type="checkbox" id="tf_13" value="0000000000200000" <?php if (php_str_and($taboo_freq, "0000000000200000") == "0000000000200000") echo "checked=\"checked\""; ?> /> <label for="13" class="acs-hide"></label> <b>1325MHz</b>&nbsp;&nbsp;
 				<input class="moca20" type="checkbox" id="tf_15" value="0000000000800000" <?php if (php_str_and($taboo_freq, "0000000000800000") == "0000000000800000") echo "checked=\"checked\""; ?> /> <label for="15" class="acs-hide"></label> <b>1375MHz</b>
 			</div>
-
 			<div class="moca_row2" style="position:relative;top:0px;right:-230px">
 				<input class="moca20" type="checkbox" id="tf_17" value="0000000002000000" <?php if (php_str_and($taboo_freq, "0000000002000000") == "0000000002000000") echo "checked=\"checked\""; ?> /> <label for="17" class="acs-hide"></label> <b>1425MHz</b>&nbsp;&nbsp;
 				<input class="moca20" type="checkbox" id="tf_19" value="0000000008000000" <?php if (php_str_and($taboo_freq, "0000000008000000") == "0000000008000000") echo "checked=\"checked\""; ?> /> <label for="19" class="acs-hide"></label> <b>1475MHz</b>&nbsp;&nbsp;
@@ -457,32 +402,26 @@ function next_step()
 				<input class="moca20" type="checkbox" id="tf_23" value="0000000080000000" <?php if (php_str_and($taboo_freq, "0000000080000000") == "0000000080000000") echo "checked=\"checked\""; ?> /> <label for="23" class="acs-hide"></label> <b>1575MHz</b>
 			</div>
 		</div>
-
 		<div class="form-row " id="div_nc_switch">
 			<label>Preferred Network Controller:</label>
 			<input type="radio"  id="nc_enable"  name="Network" value="enabled"  checked="checked" /> <label for="nc_enable" class="acs-hide"></label><b>Enabled</b>
 			<input type="radio"  id="nc_disable" name="Network" value="disabled" <?php if ("false"==$nc_enable) echo 'checked="checked"'; ?> /> <label for="nc_disable" class="acs-hide"></label><b>Disabled</b>
 		</div>
-
 		<div class="form-row" id="privacy_switch" >
 			<label for="Privacy">MoCA Privacy:</label>
 			<input type="radio"  id="privacy_enable"  name="privacy_switch" value="enabled"  checked="checked" /> <label for="privacy_enable" class="acs-hide"></label><b>Enabled</b>
 			<input type="radio"  id="privacy_disable" name="privacy_switch" value="disabled" <?php if ("false"==$privacy_enable) echo 'checked="checked"'; ?> /> <label for="privacy_disable" class="acs-hide"></label><b>Disabled</b>
 		</div>
-
 		<div class="form-row add" id="net_password_top">
 			<label for="net_password">Network Password:</label>
 			<span id="password_field">
 				<input type="password" size="23" id="net_password" name="net_password" class="text" value="<?php echo $net_password; ?>" />
 			</span>&nbsp;<span style="font-size: .8em;">12 Digits Min,17 Digits Max<span/>
 		</div>
-		
 		<div class="form-row" id="password_show_top">
 			<label for="password_show">Show Network Password:</label>
 			<span class="checkbox" style="margin: 0"><input type="checkbox" id="password_show" name="password_show" /> </span>
 		</div> 
-		
-
 		<div class="form-row odd">
 			<label for="network_controller_mac">Network Controller MAC:</label>
 			<span id="network_controller_mac" class="readonlyValue"><?php
@@ -496,12 +435,10 @@ function next_step()
 				}
 			?></span>
 		</div>
-		
 		<!--div class="select-row odd" id="div_qos_switch">
 			<label>QoS for MoCA:</label>
 			<span id="qos_switch"></span>
 		</div-->
-
 		<div class="form-btn">
 			<input id="submit_moca" type="submit" value="Save" class="btn" />
 		</div>
@@ -509,5 +446,4 @@ function next_step()
 	</fieldset>
     </form>
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); //sleep(3);?>

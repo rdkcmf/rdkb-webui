@@ -16,7 +16,6 @@ $RemoteAccess_param = array(
 	"end_ipv6"	=> "Device.UserInterface.X_CISCO_COM_RemoteAccess.EndIpV6",
 	);
 $RemoteAccess_value = KeyExtGet("Device.UserInterface.X_CISCO_COM_RemoteAccess.", $RemoteAccess_param);
-
 $DeviceControl_param = array(
 	"http_port"	=> "Device.X_CISCO_COM_DeviceControl.HTTPPort",
 	"https_port"	=> "Device.X_CISCO_COM_DeviceControl.HTTPSPort",
@@ -26,7 +25,6 @@ $DeviceControl_param = array(
 	"ipv4_smask"	=> "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask",
 	);
 $DeviceControl_value = KeyExtGet("Device.X_CISCO_COM_DeviceControl.", $DeviceControl_param);
-
 $http_mode	= $RemoteAccess_value['http_mode'];
 $https_mode	= $RemoteAccess_value['https_mode'];
 $allow_type	= $RemoteAccess_value['allow_type'];
@@ -34,7 +32,6 @@ $start_ip	= $RemoteAccess_value['start_ip'];
 $end_ip		= $RemoteAccess_value['end_ip'];
 $start_ipv6	= $RemoteAccess_value['start_ipv6'];
 $end_ipv6	= $RemoteAccess_value['end_ipv6'];
-
 $http_port	= $DeviceControl_value['http_port'];
 $https_port	= $DeviceControl_value['https_port'];
 $telnet_mode	= $DeviceControl_value['telnet_mode'];
@@ -42,30 +39,23 @@ $ssh_mode	= $DeviceControl_value['ssh_mode'];
 $ipv4_gw	= $DeviceControl_value['ipv4_gw'];
 $ipv4_smask	= $DeviceControl_value['ipv4_smask'];
 ?>
-
 <style type="text/css">
-
 .ipv6-input{
 	width: 35px;
 }
-
 label{
 	margin-right: 10px !important;
 }
-
 </style>
-
 <script type="text/javascript">
 $(document).ready(function() {
 	comcast.page.init("Advanced > Remote Management", "nav-remote-management");
-
 	var HTTP = <?php echo ($http_mode === 'true' ? "true" : "false"); ?>;
 	var HTTPPORT = "<?php echo $http_port;?>";
 	var HTTPS = <?php echo ($https_mode === 'true' ? "true" : "false"); ?>;
 	var HTTPSPORT = "<?php echo $https_port;?>";
 	var TELNET = <?php echo ($telnet_mode === 'true' ? "true" : "false"); ?>;
 	var SSH = <?php echo ($ssh_mode === 'true' ? "true" : "false"); ?>;
-
 	$("#http_switch").radioswitch({
 		id: "http-switch",
 		radio_name: "http",
@@ -99,7 +89,6 @@ $(document).ready(function() {
 		}
 	});
 	$("#http").val(HTTPPORT).prop("disabled", !HTTP);
-
 	$("#https_switch").radioswitch({
 		id: "https-switch",
 		radio_name: "https",
@@ -133,7 +122,6 @@ $(document).ready(function() {
 		}
 	});
 	$("#https").val(HTTPSPORT).prop("disabled", !HTTPS);
-
 	$("#telnet1_switch").radioswitch({
 		id: "telnet1-switch",
 		radio_name: "telnet1",
@@ -150,7 +138,6 @@ $(document).ready(function() {
 			//document.getElementById('telnet').disabled = false;
 		}
 	});
-
 	$("#ssh1_switch").radioswitch({
 		id: "ssh1-switch",
 		radio_name: "ssh1",
@@ -167,7 +154,6 @@ $(document).ready(function() {
 			//document.getElementById('ssh').disabled = false;
 		}
 	});
-
 var ALLOWTYPE=$('input[name="single"]:radio:checked').val();
 switch (ALLOWTYPE) {
 	case "single":
@@ -183,7 +169,6 @@ switch (ALLOWTYPE) {
 		var ENDIP="notset";
 	break;
 }
-
 /*********************
 $("#snmp-switch").change(function() {
 	var isUSNMPDisabled = $("#snmp_disabled").is(":checked");
@@ -245,12 +230,10 @@ $("input[name='single']").click(function() {
 		$("[id^='endipv6_']").prop("disabled", true);
 	}
 });
-
 jQuery.validator.addMethod("ip",function(value,element){
 	var id=$(element).attr("id").split("_")[2];
 	return this.optional(element) || (value.match(/^\d+$/g) && (id==1?value>0:value >= 0) && (id==4?value<255:value <= 255));
 }, "Please enter a valid IP address.");
-
 jQuery.validator.addMethod("rangeip",function(value,element){
 	var id=$(element).attr("id").split("_")[2];
 	var s=0, e=0;
@@ -260,15 +243,12 @@ jQuery.validator.addMethod("rangeip",function(value,element){
 	}
 	return this.optional(element) || (id==4?s<e:s<=e) ;
 }, "Please enter valid IP address (Note: Start IP must be less than end IP !)");
-
 jQuery.validator.addMethod("port",function(value,element){
 	return this.optional(element) || (value.match(/^\d+$/g) && value >= 1025 && value <= 65535);
 }, "Please enter a port number 1025 ~ 65535.");
-
 jQuery.validator.addMethod("notEqual",function(value,element){
 	return this.optional(element) || (value != $('#http').val());
 }, "Please enter a different port.");
-
 var validator = $("#pageForm").validate({
 	groups:{
 		ip_address_x:		"ip_address_1 ip_address_2 ip_address_3 ip_address_4",
@@ -445,103 +425,80 @@ var validator = $("#pageForm").validate({
 		$(element).closest(".form-row").find("input").removeClass(errorClass).addClass(validClass);
 	}
 });
-
 $("#https").keydown(function(){	validator.element($(this)); });
 $("#http").keydown(function() {	validator.element($(this)); });
-
 // $(":text").val("");
 var snetCal = {
-
 	getsnetRange : function( ip, snetMask )
 	{
 		var ipNum = snetCal.toDeci( ip );
 		var snetMaskNum = snetCal.toDeci( snetMask );
-	
 		var prefix = 0;
 		var newPrefix = 0;
 		var prefixSize;
-	
 		for( prefixSize = 0; prefixSize < 32; prefixSize++ )
 		{
 			newPrefix = ( prefix + ( 1 << ( 32 - ( prefixSize + 1 ) ) ) ) >>> 0;
-		
 			if( ( ( snetMaskNum & newPrefix ) >>> 0 ) !== newPrefix )
 			{
 				break;
 			}
-		
 			prefix = newPrefix;		
 		} 
-		
 		return snetCal.getMaskRange( ipNum, prefixSize );		 
 	},
-
 	getMaskRange : function( ipNum, prefixSize )
 	{
 		var prefixMask = snetCal.getPrefixMask( prefixSize );
 		var lowMask = snetCal.getMask( 32 - prefixSize );
-		
 		var ipLow = ( ipNum & prefixMask ) >>> 0;
 		var ipHigh = ( ( ( ipNum & prefixMask ) >>> 0 ) + lowMask ) >>> 0;
-		
 		return {
 			'ipLow'		: snetCal.toStr( ipLow ),
 			'ipHigh'	: snetCal.toStr( ipHigh )
 		};
 	},
-
 	getPrefixMask : function( prefixSize )
 	{
 		var mask = 0;
 		var i;
-		
 		for( i = 0; i < prefixSize; i++ )
 		{
 			mask += ( 1 << ( 32 - ( i + 1 ) ) ) >>> 0;
 		}
-		
 		return mask;
 	},
-	
 	getMask : function( maskSize )
 	{
 		var mask = 0;
 		var i;
-		
 		for( i = 0; i < maskSize; i++ )
 		{
 			mask += ( 1 << i ) >>> 0;
 		}
-		
 		return mask;
 	},
-	
 	toDeci : function( ipString )
 	{
 		var d = ipString.split( '.' );
 		return ( ( ( ( ( ( +d[ 0 ] ) * 256 ) + ( +d [ 1 ] ) ) * 256 ) + ( +d[ 2 ] ) ) * 256 ) + ( +d[ 3 ] );
 	},
-	
 	toStr : function( ipNum )
 	{	
 		var d = ipNum % 256;
-		
 		for( var i = 3; i > 0; i-- )
 		{ 
 			ipNum   = Math.floor( ipNum / 256 );
 			d       = ipNum % 256 + '.' + d;
 		}
-		
 		return d;
 	}
 };
 $(".btn").click(function(){
 	var isValid = true;
 	$("p.error").remove();
-
 	var http_enabled  = $("#http_switch").radioswitch("getState").on;
 	var https_enabled = $("#https_switch").radioswitch("getState").on;
-
 	if(http_enabled || https_enabled){
 		if ($(":radio[value='single']").prop("checked")){
 			if (IsBlank("ip_address_") && IsBlank("ipv6_address_")){
@@ -598,33 +555,27 @@ $(".btn").click(function(){
 				isValid = false;
 			}
 		}
-	
 		if (!isValid) return;
 	}
-
 	if ($("#telnet1_switch").radioswitch("getState").on && $("#ssh1_switch").radioswitch("getState").on)
 	{
 		jAlert("Telnet and SSH can not be enabled at the same time.\r\nPlease disable at least one of them.");
 		return;
 	}
-	
 	var telnet = $("#telnet1_switch").radioswitch("getState").on;
 	if (TELNET==telnet) telnet="notset";
 	var ssh = $("#ssh1_switch").radioswitch("getState").on;
 	if (SSH==ssh) ssh="notset";
-
  	var http = $("#http_switch").radioswitch("getState").on;
 	if (HTTP==http) http="notset";
 	var httpport=$('#http').val();
 	// if (HTTPPORT==httpport || HTTP=="false") httpport="notset";
 	if (HTTPPORT==httpport) httpport="notset";
-	
 	var https = $("#https_switch").radioswitch("getState").on;
 	if (HTTPS==https) https="notset";
 	var httpsport=$('#https').val();
 	// if (HTTPSPORT==httpsport || HTTPS=="false") httpsport="notset";
 	if (HTTPSPORT==httpsport) httpsport="notset";
-
 	if(!http && !https){
 		allowtype	="notset";
 		startIP		="notset";
@@ -673,18 +624,15 @@ $(".btn").click(function(){
 			if (allowtype=="any") allowtype=true;
 			else allowtype=false;
 		}
-
 		var ipv4_gw 	= "<?php echo $ipv4_gw;?>";
 		var ipv4_smask 	= "<?php echo $ipv4_smask;?>";
 		var lanRange 	= snetCal.getsnetRange( ipv4_gw, ipv4_smask );
 		var ipv4_rhigh 	= lanRange["ipHigh"];
 		var ipv4_rlow 	= lanRange["ipLow"];
-
 		var allowtype_Compare=$('input[name="single"]:radio:checked').val();
 		var startIP_single=$("#ip_address_1").val()+"."+$("#ip_address_2").val()+"."+$("#ip_address_3").val()+"."+$("#ip_address_4").val();
 		var startIP_Compare=$("#rangeip_address_1").val()+"."+$("#rangeip_address_2").val()+"."+$("#rangeip_address_3").val()+"."+$("#rangeip_address_4").val();
 		var endIP_Compare=$("#endip_address_1").val()+"."+$("#endip_address_2").val()+"."+$("#endip_address_3").val()+"."+$("#endip_address_4").val();
-
 		if(allowtype_Compare == "single"){
 			if( (snetCal.toDeci(startIP_single) > snetCal.toDeci(ipv4_rlow)) && (snetCal.toDeci(startIP_single) < snetCal.toDeci(ipv4_rhigh)) ){
 				jAlert("Invalid IPv4 Address.");
@@ -699,10 +647,8 @@ $(".btn").click(function(){
 				jAlert("Invalid IPv4 End Address.");
 				return;
 			}
-				
 		}
 	}
-
 	// if($("#pageForm").valid()) {	
 		jProgress('This will take several seconds!', 60);
 		$.ajax({
@@ -735,7 +681,6 @@ $(".btn").click(function(){
 		});
 	// }
 });
-
 function IsBlank(id_prefix){
 	var ret = true;
 	$('[id^="'+id_prefix+'"]').each(function(){
@@ -745,7 +690,6 @@ function IsBlank(id_prefix){
 	});
 	return ret;
 }
-
 function GetAddress(separator, id_prefix){
 	var ret = "";
 	$('[id^="'+id_prefix+'"]').each(function(){
@@ -753,17 +697,14 @@ function GetAddress(separator, id_prefix){
 	});
 	return ret.replace(eval('/'+separator+'$/'), '');
 }
-
 	if ("cusadmin" == "<?php echo $_SESSION["loginuser"]; ?>"){
 		$(".div_global").hide();
 	}
 	else if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>"){
 		$(".div_global").hide();
 	}
-
 function remote_access_block(){
 	$("#single, #range, #any").attr('disabled', true);
-
 	$("#ip_address_1").prop("disabled", true);
    	$("#ip_address_2").prop("disabled", true);
 	$("#ip_address_3").prop("disabled", true);
@@ -779,19 +720,14 @@ function remote_access_block(){
 	$("[id^='ipv6_']").prop("disabled", true);
 	$("[id^='rangeipv6_']").prop("disabled", true);
 	$("[id^='endipv6_']").prop("disabled", true);
-	
 	$("#message_note").show();
 }
-
 	$("#message_note").hide();
-
 	if(!HTTP && !HTTPS){remote_access_block();}
-	
 	function remote_access_allowe(){
 		var http_enabled  = $("#http_switch").radioswitch("getState").on;
 		var https_enabled = $("#https_switch").radioswitch("getState").on;
 		var allowtype	  =$('input[name="single"]:radio:checked').val();
-
 		if(http_enabled || https_enabled){
 			$("#message_note").hide();
 			$("#"+allowtype).trigger("click");
@@ -800,7 +736,6 @@ function remote_access_block(){
 		remote_access_block();
 		}
 	}
-
 });
 </script>
 <div id="content">
@@ -815,7 +750,6 @@ function remote_access_block(){
 	<form method="" id="pageForm" action="">
 	<div class="module forms">
 		<h2>Remote Management</h2>
-
 		<div class="form-row">
 			<label for="http">HTTP: <input type="text" value="" name="http"  maxlength="5" size=7 id="http" /></label>
 			<span id="http_switch"></span>
@@ -926,20 +860,16 @@ function remote_access_block(){
 		</div>
 		<h3><input type="radio"  name="single" value="any" id="any" checked="checked" /><label for="any" class="acs-hide"></label><b>Any Computer</b></h3>
 		<?php } else {
-
 			$start_ip	= $RemoteAccess_value['start_ip'];
 			$end_ip		= $RemoteAccess_value['end_ip'];
-
 			$start_ipv6	= $RemoteAccess_value['start_ipv6'];
 			$end_ipv6	= $RemoteAccess_value['end_ipv6'];
-
 			// $start_ip="10.0.0.111";
 			// $end_ip="10.0.0.222";
 			// $end_ip="255.255.255.255";
 			// $start_ipv6="0:0:0:0:0:0:0:1";
 			// $end_ipv6="0:0:0:0:0:0:0:2";
 			// $end_ipv6="x";
-			
 			if ("255.255.255.255"==$start_ip || "255.255.255.255"==$end_ip){
 				$start_ip = $end_ip = "...";
 				// $start_ip	= getStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.iprange.1.StartIP");
@@ -948,7 +878,6 @@ function remote_access_block(){
 			if ("x"==$start_ipv6 || "x"==$end_ipv6){
 				$start_ipv6 = $end_ipv6 = ":::::::";
 			}
-			
 			if ($start_ip==$end_ip && $start_ipv6==$end_ipv6) {
 				$single_ip=explode(".",$start_ip); 
 				$single_ipv6=explode(":",$start_ipv6); 
@@ -1097,7 +1026,6 @@ function remote_access_block(){
 	<div class="form-btn">
 		<input type="button" value="Save" class="btn" />
 	</div>
-    
 	</form>
 </div><!-- end #content -->
 <?php include('includes/footer.php'); ?>

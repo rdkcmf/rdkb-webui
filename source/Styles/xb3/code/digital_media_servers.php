@@ -1,33 +1,22 @@
 <?php include('includes/header.php'); ?>
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <?php 
-
 	$dms = array(
 		'AllowedTypes' => getStr("Device.DLNA.X_CISCO_COM_DMS.AllowedMediaTypes"),
 		'AllowedSource' => getStr("Device.DLNA.X_CISCO_COM_DMS.AllowMediaSource"),
 		'MediaIndexPath' => getStr("Device.DLNA.X_CISCO_COM_DMS.MediaIndexPath"),
-
 	);
-
 	$js_dms = json_encode($dms);
-
  ?>
-
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Advanced > Media Sharing > DLNA > Digital Media Servers", "nav-dlna-media-servers");
-
     var js_dms = <?php echo $js_dms; ?>;
     //judge if allowed_types is a substr of js_dms.AllowedTypes
     var allowed_types = [];
-    
-
     $("input[name='path']").click(function() {
     	var mode = $(this).val();
     	if(mode == "USB1") {
@@ -39,22 +28,16 @@ $(document).ready(function() {
     		$("#index_path").val("Internal");
     	}
     });
-
 });
-
 </script>
-
 <div id="content">
     <h1>Advanced > Media Sharing > DLNA > Digital Media Servers</h1>
-
     <div id="educational-tip">
     	<p class="tip">Configure the DLNA Media Server.</p>
     	<p class="hidden">Select the media types that the Gateway should serve over DLNA. </p>
     	<p class="hidden">Choose the media sources the Gateway should accept (USB, shared network drives, or both).  </p>
     	<p class="hidden">For a large collection of media (pictures, video, music), use the connected USB drive as the media index path.</p>
-
     </div>
-
     <form  method="post" id="pageForm">
     	<div class="module data data">
     		<h2>Digital Media Server</h2>
@@ -64,7 +47,6 @@ $(document).ready(function() {
     			<input type="checkbox"  id="Media_Types_Audio" checked="checked"><b>Audio</b></input>
     			<input type="checkbox"  id="Media_Types_Pictures" checked="checked"><b>Pictures</b></input>
     			<input type="checkbox"  id="Media_Types_Recorded TV " checked="checked"><b>Recorded TV </b></input>
-
     		</div>
     		<div class="form-row odd">
     			<label for="Media_Sources_USB">Select Allowed Media Sources:</label>
@@ -74,20 +56,15 @@ $(document).ready(function() {
     		<div class="form-row " id="hid1">
     			<label for="Media_Index">Select the Media Index path:</label>
     			<input type="text" id="index_path" value="Internal" size="8" disabled="disabled"> </input>
-
     		</div>
     		<div id="hid" >
     			<input type="radio"  name="path" id="USB1" value="USB1" ><b> USB1 </b></input></br>
     			<input type="radio"  name="path" id="USB2"  value="USB2"><b> USB2</b></input></br>
     			<input type="radio"  name="path" id="Internal" value="Internal" checked="checked"  ><b>Internal</b></input></br>
-
     			<div class="form-btn">
     				<input  type="button" value="Save Setting" id="save" name="save" class="btn" />
     			</div>
     		</div>
-
     	</form>
 </div><!-- end #content -->
-
-
 <?php include('includes/footer.php'); ?>

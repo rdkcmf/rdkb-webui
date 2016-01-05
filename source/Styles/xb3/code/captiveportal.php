@@ -8,10 +8,8 @@
 		<title>XFINITY Smart Internet</title>
 		<link rel="stylesheet" href="cmn/css/styles.css">
 	</head>
-
 <!-- for Dual Band Network -->
 <style>
-
 .confirm-text{
 	font-family: 'xfinSansLt';
 	font-size: 14px;
@@ -19,7 +17,6 @@
 	color: #fff;
 	-webkit-font-smoothing: antialiased;
 }
-
 .left-settings	{
 	padding: 10px 30px 0px 0px;
 	text-align: right;
@@ -29,23 +26,18 @@
 	color: #fff;
 	-webkit-font-smoothing: antialiased;
 }
-
 </style>
-
 <?php include('includes/utility.php'); ?>
 <?php
 	// should we allow to Configure WiFi
 	// redirection logic - uncomment the code below while checking in
-
 	$DeviceInfo_param = array(
 		"CONFIGUREWIFI" => "Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi",
 		"EMS_ServerURL" => "Device.DeviceInfo.X_COMCAST-COM_EMS_ServerURL",
 	);
 	$DeviceInfo_value	= KeyExtGet("Device.DeviceInfo.", $DeviceInfo_param);
-
 	$CONFIGUREWIFI = $DeviceInfo_value["CONFIGUREWIFI"];
 	if(strstr($CONFIGUREWIFI, "false"))	header('Location:index.php');
-
 	//WiFi Defaults are same for 2.4Ghz and 5Ghz
 	$wifi_param = array(
 		"network_name"	 => "Device.WiFi.SSID.1.SSID",
@@ -53,22 +45,17 @@
 		"KeyPassphrase"	 => "Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_KeyPassphrase",
 		"KeyPassphrase1" => "Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_KeyPassphrase",
 	);
-	
 	$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
-	
 	$network_name	= $wifi_value['network_name'];
 	$network_pass	= $wifi_value['KeyPassphrase'];
 	$network_name1	= $wifi_value['network_name1'];
 	$network_pass1	= $wifi_value['KeyPassphrase1'];
-
 	$ipv4_addr 	= getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
-
 	// logic to figure out LAN or WiFi from Connected Devices List
 	// get clients IP
 	// Known prefix
 	$v4mapped_prefix_hex = '00000000000000000000ffff';
 	$v4mapped_prefix_bin = pack("H*", $v4mapped_prefix_hex);
-
 	// Parse
 	$addr = $_SERVER['REMOTE_ADDR'];
 	$addr_bin = inet_pton($addr);
@@ -76,19 +63,15 @@
 	  // Unparsable? How did they connect?!?
 	  die('Invalid IP address');
 	}
-
 	// Check prefix
 	if( substr($addr_bin, 0, strlen($v4mapped_prefix_bin)) == $v4mapped_prefix_bin) {
 	  // Strip prefix
 	  $addr_bin = substr($addr_bin, strlen($v4mapped_prefix_bin));
 	}
-
 	// Convert back to printable address in canonical form
 	$clientIP = inet_ntop($addr_bin);
-
 	// cross check IP in Connected Devices List
 	function ProcessLay1Interface($interface){
-   
 		if (stristr($interface, "WiFi")){
 			if (stristr($interface, "WiFi.SSID.1")) {
 				$host['networkType'] = "Private";
@@ -115,16 +98,12 @@
 			$host['connectionType'] = "Unknown";
 			$host['networkType'] = "Private";
 		}
-    
     	return $host;
 	}
-
 	$connectionType = "none";
-
 	$rootObjName    = "Device.Hosts.Host.";
 	$paramNameArray = array("Device.Hosts.Host.");
 	$mapping_array  = array("IPAddress", "Layer1Interface");
-
 	$HostIndexArr = DmExtGetInstanceIds("Device.Hosts.Host.");
 	if(0 == $HostIndexArr[0]){  
 	    // status code 0 = success   
@@ -144,7 +123,6 @@
 			}
 		}//end of if empty host
 	}//end of if empty hostNums
-
 	//allow redirect config only over Ethernet, Private WiFi 2.4G or 5G
 	/*allow redirection for all
 	if(!(stristr($connectionType, "Ethernet") || stristr($connectionType, "WiFi"))){
@@ -152,42 +130,32 @@
 		exit(0);
 	}
 	*/
-
 ?>
-
 <script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
-
 <script>
 $(document).ready(function(){
-
 	// logic t0 figure out LAN or WiFi from Connected Devices List
 	var connectionType	= "<?php echo $connectionType;?>"; //"Ethernet", "WiFi", "none"
-
 	var goNextName		= false;
 	var goNextPassword	= false;
 	var goNextName5		= false;
 	var goNextPassword5	= false;
 	var goNextphoneNumber	= true;
-
 	function GWReachable(){
 		//location.href = "http://xfinity.com";
 		// Handle IE and more capable browsers
 		var xhr = new ( window.ActiveXObject || XMLHttpRequest )( "Microsoft.XMLHTTP" );
 		var status;
 		var pingTest;
-
 		var isGWReachable = false;
-
 		function pingGW(){
 			/* 
 				https://xhr.spec.whatwg.org/
 				Synchronous XMLHttpRequest outside of workers is in the process of being removed from
 				the web platform as it has detrimental effects to the end user's experience.
 			*/
-
 			// Open new request as a HEAD to the root hostname with a random param to bust the cache
 			xhr.open( "HEAD", "http://<?php echo $ipv4_addr; ?>/check.php" );// + (new Date).getTime()
-
 			// Issue request and handle response
 			try {
 				xhr.send();
@@ -202,7 +170,6 @@ $(document).ready(function(){
 				isGWReachable = false;
 			}
 		}
-
 		pingTest = pingGW();
 		setInterval(function () {
 			if(isGWReachable){
@@ -215,7 +182,6 @@ $(document).ready(function(){
 			}
 		}, 5000);
 	}
-
 	function goToReady(){
 		if(connectionType == "WiFi"){ //"Ethernet", "WiFi", "none"
 			setTimeout(function(){ GWReachable(); }, 2000);
@@ -225,7 +191,6 @@ $(document).ready(function(){
 			setTimeout(function(){ location.href = "http://xfinity.com"; }, 5000);
 		}
 	}
-
 	function EMS_mobileNumber(){
 		//call EMS Service
 		if($("#text_sms").css('display') == "block"){
@@ -233,7 +198,6 @@ $(document).ready(function(){
 				// Notify if concent_check is not checked
 					return '0000000000';
 			}
-
 			//+01(111)-111-1111 or +01 111 111 1111 or others, so keep only 10 last numbers
 			var phoneNumber = $("#phoneNumber").val().replace(/\D+/g, '').slice(-10);
 			return phoneNumber;
@@ -242,21 +206,18 @@ $(document).ready(function(){
 			return '0000000000';
 		}
 	}
-
 	function saveConfig(){
 		var network_name 	= $("#WiFi_Name").val();
 		var network_password 	= $("#WiFi_Password").val();
 		var network5_name 	= $("#WiFi5_Name").val();
 		var network5_password 	= $("#WiFi5_Password").val();
 		var jsConfig;
-
 		if($("#dualSettings").css('display') == "block" && !$("#selectSettings" ).is(":checked")){
 			jsConfig = '{"dualband":"true", "network_name":"'+network_name+'", "network_password":"'+network_password+'", "network5_name":"'+network5_name+'", "network5_password":"'+network5_password+'", "phoneNumber":"'+EMS_mobileNumber()+'"}';
 		}
 		else {
 			jsConfig = '{"dualband":"false", "network_name":"'+network_name+'", "network_password":"'+network_password+'", "phoneNumber":"'+EMS_mobileNumber()+'"}';
 		}
-
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_wireless_network_configuration_redirection.php",
@@ -267,14 +228,11 @@ $(document).ready(function(){
 		});
 		setTimeout(function(){ goToReady(); }, 25000);
 	}
-
 	var NameTimeout, PasswordTimeout, Name5Timeout, Password5Timeout, phoneNumberTimeout;
-
 	function messageHandler(target, topMessage, bottomMessage){
 		//target	- "name", "password", "name5", "password5", "phoneNumber"
 		//topMessage	- top message to show
 		//bottomMessage	- bottom message to show
-
 		if(target == "name"){
 			$("#NameContainer").fadeIn("slow");
 			clearTimeout(NameTimeout);
@@ -311,7 +269,6 @@ $(document).ready(function(){
 			$("#phoneNumberMessageBottom").text(bottomMessage);
 		}
 	}
-
 	function passStars(val){
 		var textVal="";
 		for (i = 0; i < val.length; i++) {
@@ -319,13 +276,10 @@ $(document).ready(function(){
 		}
 		return textVal;
 	}
-
 	function toShowNext(){
-
 		//is NOT Dual Band Network
 		var selectSettings	= $("#selectSettings").is(":checked");
 		var notDualSettings	= $("#dualSettings").css('display') == "block" ? selectSettings : true ;
-
 		if(goNextName && goNextPassword && notDualSettings){
 			setTimeout(function(){
 				$("#NameContainer").hide();
@@ -347,7 +301,6 @@ $(document).ready(function(){
 			$("#WiFi_Name_01").text($("#WiFi_Name").val());
 			$("#WiFi_Password_01").text($("#WiFi_Password").val());
 			$("#WiFi_Password_pass_01").text(passStars($("#WiFi_Password").val()));
-
 			//for Dual Band Network
 			$("#WiFi5_Name_01").text($("#WiFi5_Name").val());
 			$("#WiFi5_Password_01").text($("#WiFi5_Password").val());
@@ -356,28 +309,20 @@ $(document).ready(function(){
 		else {
 			$("#button_next").hide();
 		}
-
 	}
-
 	function showPasswordStrength(element, isValidPassword){
 		//passwordStrength >> 0-progress-bg, 1&2-weak-red 3-average-yellow 4-strong-green 5-too-long
-
 		$passVal 	= $("#WiFi"+element+"_Password");
 		$passStrength 	= $("#passwordStrength"+element);
 		$passInfo 	= $("#passwordInfo"+element);
-
 		var val  = $passVal.val();
-
 		var nums 	= val.search(/\d/) === -1 ? 0 : 1 ;	//numbers
 		var lowers 	= val.search(/[a-z]/) === -1 ? 0 : 1 ;	//lower case
 		var uppers 	= val.search(/[A-Z]/) === -1 ? 0 : 1 ;	//upper case
 		var specials 	= val.search(/[\-_.]/) === -1 ? 0 : 1 ;	//special characters
-
 		var strength = nums+lowers+uppers+specials;
-
 		strength = val.length > 7 ? strength : 0 ;
 		strength = val.length < 64 ? strength : 5 ;
-
 		if(isValidPassword){
 			switch (strength) {
 			    case 0:
@@ -411,37 +356,30 @@ $(document).ready(function(){
 			passTeext = $passVal.val().length > 7 ? "" : " yet" ;
 			$passInfo.text("Your password does not meet the requirements"+passTeext+".");
 		}
-
 	if($passVal.val().length > 7){
 		$("#passwordIndicator"+element).show();
 	}
 	else{
 		$("#passwordIndicator"+element).hide();
 	}
-
 	}
-
 	$("#button_next").click(function(){
 		//button >> personalize
 		$("#personalize").hide();
 		$("#confirm").show();
 	});
-
 	$("#button_previous_01").click(function(){
 		//button >> confirm - Previous
 		$("#personalize").show();
 		$("#confirm").hide();
 	});
-
 	$("#button_next_01").click(function(){
 		$("[id^='WiFi_Name_0']").text($("#WiFi_Name").val());
 		$("[id^='WiFi_Password_0']").text($("#WiFi_Password").val());
 		$("[id^='WiFi_Password_pass_0']").text(passStars($("#WiFi_Password").val()));
-
 		$("[id^='WiFi5_Name_0']").text($("#WiFi5_Name").val());
 		$("[id^='WiFi5_Password_0']").text($("#WiFi5_Password").val());
 		$("[id^='WiFi5_Password_pass_0']").text(passStars($("#WiFi5_Password").val()));
-
 		if(connectionType == "WiFi"){ //"Ethernet", "WiFi", "none"
 			$("#setup").show();
 			$("#confirm").hide();
@@ -452,40 +390,30 @@ $(document).ready(function(){
 			setTimeout(function(){ saveConfig(); }, 2000);
 		}
 	});
-
 	$("#visit_xfinity").click(function(){
 		location.href = "http://XFINITY.net";
 	});
-
 	$("#WiFi_Name").bind("focusin keyup change input",(function() {
-		
 		//VALIDATION for wifi_name
 		/*return !param || /^[a-zA-Z0-9\-_.]{3,32}$/i.test(value);
 		"3 to 32 characters combined with alphabet, digit, underscore, hyphen and dot");
-
 		return value.toLowerCase().indexOf("xhs")==-1 && value.toLowerCase().indexOf("xfinitywifi")==-1;
 		'SSID containing "XHS" and "Xfinitywifi" are reserved !'
-
 		return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
 		'SSID containing "optimumwifi", "TWCWiFi" and "CableWiFi" are reserved !');*/
-
 		var val	= $(this).val();
-		
 		isValid		= /^[a-zA-Z0-9\-_.]{3,32}$/i.test(val);
 		valLowerCase	= val.toLowerCase();
 		isXHS		= valLowerCase.indexOf("xhs")==-1;
 		isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
 		isHOME 		= valLowerCase.indexOf("home") != 0;
 		isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
-
 		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
 		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=\-_`~()\s]/g,'').toLowerCase();
 		isOther	= str.indexOf("wifi") == -1 || str.indexOf("cable") == -1 && str.indexOf("twc") == -1 && str.indexOf("optimum") == -1 && str.indexOf("cox") == -1 && str.indexOf("bhn") == -1;
-
 		if(val == ""){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			
 			messageHandler("name", "Wi-Fi Name", "Please enter Wi-Fi Name.");
 		}
 		else if("<?php echo $network_name;?>".toLowerCase() == val.toLowerCase()){
@@ -535,19 +463,14 @@ $(document).ready(function(){
 		}
 		toShowNext();
 	}));
-
 	$("#password_field").bind("focusin keyup change input",(function() {
 		/*
 			return !param || /^[a-zA-Z0-9\-_.]{8,63}$/i.test(value); "8-20 characters. Alphanumeric only. No spaces. Case sensitive."
 		*/
-
 		//VALIDATION for WiFi_Password
-
 		$WiFiPass = $("#WiFi_Password");
 		var val = $WiFiPass.val();
-
 		isValid	= /^[a-zA-Z0-9\-_.]{8,63}$/i.test(val);
-
 		if(val == ""){
 			goNextPassword	= false;
 			$WiFiPass.addClass("error").removeClass("success");
@@ -574,41 +497,30 @@ $(document).ready(function(){
 			messageHandler("password", "Wi-Fi Password", "Passwords are case sensitive and should include 8-63 alphanumeric characters with no spaces.");
 		}
 		toShowNext();
-
 		showPasswordStrength("", goNextPassword);
-
 	}));
-
 	//for Dual Band Network
 	$("#WiFi5_Name").bind("focusin keyup change input",(function() {
-		
 		//VALIDATION for wifi_name
 		/*return !param || /^[a-zA-Z0-9\-_.]{3,32}$/i.test(value);
 		"3 to 32 characters combined with alphabet, digit, underscore, hyphen and dot");
-
 		return value.toLowerCase().indexOf("xhs")==-1 && value.toLowerCase().indexOf("xfinitywifi")==-1;
 		'SSID containing "XHS" and "Xfinitywifi" are reserved !'
-
 		return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
 		'SSID containing "optimumwifi", "TWCWiFi" and "CableWiFi" are reserved !');*/
-
 		var val	= $(this).val();
-		
 		isValid		= /^[a-zA-Z0-9\-_.]{3,32}$/i.test(val);
 		valLowerCase	= val.toLowerCase();
 		isXHS		= valLowerCase.indexOf("xhs")==-1;
 		isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
 		isHOME 		= valLowerCase.indexOf("home") != 0;
 		isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
-
 		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
 		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=\-_`~()\s]/g,'').toLowerCase();
 		isOther	= str.indexOf("wifi") == -1 || str.indexOf("cable") == -1 && str.indexOf("twc") == -1 && str.indexOf("optimum") == -1 && str.indexOf("cox") == -1 && str.indexOf("bhn") == -1;
-
 		if(val == ""){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
-			
 			messageHandler("name5", "Wi-Fi Name", "Please enter Wi-Fi Name.");
 		}
 		else if("<?php echo $network_name1;?>".toLowerCase() == val.toLowerCase()){
@@ -658,19 +570,14 @@ $(document).ready(function(){
 		}
 		toShowNext();
 	}));
-
 	$("#password5_field").bind("focusin keyup change input",(function() {
 		/*
 			return !param || /^[a-zA-Z0-9\-_.]{8,63}$/i.test(value); "8-20 characters. Alphanumeric only. No spaces. Case sensitive."
 		*/
-
 		//VALIDATION for WiFi_Password
-
 		$WiFiPass = $("#WiFi5_Password");
 		var val = $WiFiPass.val();
-
 		isValid	= /^[a-zA-Z0-9\-_.]{8,63}$/i.test(val);
-
 		if(val == ""){
 			goNextPassword5	= false;
 			$WiFiPass.addClass("error").removeClass("success");
@@ -697,19 +604,13 @@ $(document).ready(function(){
 			messageHandler("password5", "Wi-Fi Password", "Passwords are case sensitive and should include 8-63 alphanumeric characters with no spaces.");
 		}
 		toShowNext();
-
 		showPasswordStrength("5", goNextPassword5);
-
 	}));
-
-
 	$("#phoneNumber").bind("keyup",(function() {
 		if($("#text_sms").css('display') == "block"){
 			$phoneNumber = $("#phoneNumber");
 			var val = $phoneNumber.val();
-
 			isValid	= /^(\+?0?1?\s?)?(\(\d{3}\)|\d{3})[\s-]?\d{3}[\s-]?\d{4}$/.test(val);
-
 			if(val == ""){
 				goNextphoneNumber = true;
 				$phoneNumber.removeClass("success").removeClass("error");
@@ -728,12 +629,10 @@ $(document).ready(function(){
 			}
 		}
 	}));
-
 	//to show password on click
 	$("#showPass").change(function() {
 		passwordVal = $("#WiFi_Password").val();
 		classVal = $("#WiFi_Password").attr('class');
-
 		if ($("#check").is(":checked")) {
 			$("[id^='showPass']").each(function() {
 				$(this).find('label').addClass('checkLabel');
@@ -752,13 +651,10 @@ $(document).ready(function(){
 			$("[id^='WiFi_Password_pass_0']").show();
 			$("[id^='check']").prop('checked', false);
 		}
-		
 		$("#WiFi_Password").val(passwordVal).addClass(classVal);
-
 		//for Dual Band Network
 			password5Val = $("#WiFi5_Password").val();
 			class5Val = $("#WiFi5_Password").attr('class');
-
 			if ($("#check").is(":checked")) {
 				document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="63" class="">';
 				$("[id^='WiFi5_Password_0']").show();
@@ -769,10 +665,8 @@ $(document).ready(function(){
 				$("[id^='WiFi5_Password_0']").hide();
 				$("[id^='WiFi5_Password_pass_0']").show();
 			}
-		
 			$("#WiFi5_Password").val(password5Val).addClass(class5Val);
 	});
-
 	$("[id^='showPass0']").change(function() {
 		varid = this.id.split("0");
 		if ($("#check_0"+varid[1]).is(":checked")) {
@@ -782,7 +676,6 @@ $(document).ready(function(){
 			$("[id^='WiFi_Password_0']").show();
 			$("[id^='WiFi_Password_pass_0']").hide();
 			$("[id^='check']").prop('checked', true);
-
 			//for Dual Band Network
 				$("[id^='WiFi5_Password_0']").show();
 				$("[id^='WiFi5_Password_pass_0']").hide();
@@ -794,23 +687,19 @@ $(document).ready(function(){
 			$("[id^='WiFi_Password_0']").hide();
 			$("[id^='WiFi_Password_pass_0']").show();
 			$("[id^='check']").prop('checked', false);
-
 			//for Dual Band Network
 				$("[id^='WiFi5_Password_0']").hide();
 				$("[id^='WiFi5_Password_pass_0']").show();
 		}
 		$("#showPass").trigger("change");
 	});
-
 	//check all the check boxes by default
 	$("[id^='check']").prop('checked', true);
 	$("#selectSettings").prop('checked', true);
 	$("[id^='showPass0']").trigger("change");
 	$("#showPass").trigger("change");
-
 	$("#showDual").click(function(){
 		$("#dualSettings").toggle();
-
 		if($("#dualSettings").css('display') == "block"){
 			$("#selectSettings").prop('checked', true);
 			$("#selectSettings").siblings('label').addClass('checkLabel');
@@ -824,11 +713,9 @@ $(document).ready(function(){
 			$("#WiFi_Name, #password_field").change();
 			$("#selectSettings").siblings('label').removeClass('checkLabel');
 		}
-
 		$("#showDualText").text(($("#dualSettings").css('display') != "block")?"Show More Settings":"Show Less Settings");
 		toShowNext();
 	});
-
 	$("#selectSettings").change(function() {
 		if ($(this).is(":checked")) {
 			$(this).siblings('label').addClass('checkLabel');
@@ -844,29 +731,24 @@ $(document).ready(function(){
 		}
 		toShowNext();
 	});
-
 	$("#share_link, #concent").click(function(){
 		$("#text_sms, #concent_check").fadeToggle("slow", "linear");
-
 		$("#concent").prop("checked", true);
 		$("#phoneNumber").val("").keyup().removeClass();
 		$("#phoneNumberContainer").hide();
 	});
-
 /*
 	$( window ).resize(function() {
 		$("#append").append( '<div class="container" >'+$(document).width()+'</div>');
 		$("#topbar").width($(document).width());
 	});
 */
-
 	//for Dual Band Network
 	$("[name=dualBand]").hide();
 	$("[id^='WiFi_Password_pass_0']").hide();
 	$("[id^='WiFi5_Password_pass_0']").hide();
 });
 </script>
-
 	<body>
 		<div id="topbar">
 			<img src="cmn/img/logo.png"/>

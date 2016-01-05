@@ -1,11 +1,8 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: lan.php 3158 2010-01-08 23:32:05Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
 <?php include('includes/utility.php'); ?>
 <?php
@@ -13,35 +10,26 @@ function getPort4XHSEnabled() {
 	$rootObjName = "Device.X_CISCO_COM_MultiLAN.";
 	$paramNameArray = array("Device.X_CISCO_COM_MultiLAN.");
 	$mapping_array  = array("PrimaryLANBridge", "PrimaryLANBridgeHSPorts", "HomeSecurityBridge", "HomeSecurityBridgePorts");
-
 	$multiLan = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 	if (!empty($multiLan)) {
 		$pLanBridgeHSPortEnable = getStr($multiLan[0]["PrimaryLANBridge"].".Port.".$multiLan[0]["PrimaryLANBridgeHSPorts"].".Enable");
 		$HSBridgePortEnable = getStr($multiLan[0]["HomeSecurityBridge"].".Port.".$multiLan[0]["HomeSecurityBridgePorts"].".Enable");
 		return ($pLanBridgeHSPortEnable === 'false' && $HSBridgePortEnable === 'true');
 	}
-
 	return false;
 }
-
 $isPort4XHSEnabled = getPort4XHSEnabled();
-
 $rootObjName = "Device.Ethernet.Interface.";
 $paramNameArray = array("Device.Ethernet.Interface.");
 $mapping_array  = array("Upstream", "Status", "MACAddress", "MaxBitRate");
-
 $ethernetParam = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
 ?>
-
 <script type="text/javascript">
 var o_isPort4XHSEnabled = <?php echo $isPort4XHSEnabled ? 'true' : 'false'; ?>;
-
 function onsavePort4() {
 	var postData = {};
-
 	postData.op = "savePort4XHS";
 	postData.enable = $("#port4").prop("checked");
-
 	jProgress('This may take several seconds', 60);
 	$.ajax({
 		type: 'POST',
@@ -55,7 +43,6 @@ function onsavePort4() {
 				if (data.msg) {
 					str += '\nMessage: ' + data.msg;
 				}
-
 				jAlert(str);
 				return;
 			}
@@ -70,29 +57,22 @@ function onsavePort4() {
 		}
 	});
 }
-
 function initEvents() {
 	$("#saveXHSBtn").unbind("click").click(onsavePort4);
 }
-
 $(document).ready(function() {
     comcast.page.init("Gateway > Hardware > LAN Ethernet", "nav-lan");
-
 	$("#port4").prop("checked", o_isPort4XHSEnabled);
-
 	initEvents();
 });
 </script>
-
 <div id="content">
 	<h1>Gateway > Hardware > LAN Ethernet</h1>
 	<div id="educational-tip">
 		<p class="tip">View information about the Gateway's Ethernet Ports. </p>
 		<p class="hidden">The Gateway has 4 Gigabit (GbE) Ethernet Ports. When a device is connected to the Gateway with an Ethernet cable, you'll see an <i>Active</i> status for that port.</p>
 	</div>
-
 	<?php
-	
 	function NameMap($str)
 	{
 		switch ($str)
@@ -107,7 +87,6 @@ $(document).ready(function() {
 				return $str;
 		}
 	}
-	
 	$ids = array_filter(explode(",",getInstanceIds("Device.Ethernet.Interface.")));
 	if ($_DEBUG) {
 		$ids = array("1", "2", "3", "4");
@@ -119,12 +98,10 @@ $(document).ready(function() {
 		}
 		echo '<div class="module forms block">';
 		echo '<h2>LAN Ethernet Port '.$ids[$id].'</h2>';
-
 		$dm = array(
 			array("LAN Ethernet link status:", null, $ethernetParam[$id]["Status"]),
 			array("MAC Address:", null, $ethernetParam[$id]["MACAddress"])
 		);
-
 		/* link speed */
 		$lspeed = $ethernetParam[$id]["MaxBitRate"];
 		$lunit = " Mbps";
@@ -143,16 +120,13 @@ $(document).ready(function() {
 		} 
 		*/
 		array_push($dm, array("Connection Speed:", $lspeed.$lunit));
-		
 		for ($m=0, $i=0; $i<count($dm); $i++)
 		{
 			echo '<div class="form-row '.(($m++ % 2)?'odd':'').'" >';
 			echo '<span class="readonlyLabel">'.$dm[$i][0].'</span>';
 			echo '<span class="value">'.($dm[$i][1] === null ? NameMap($dm[$i][2]) : $dm[$i][1]).'</span>';
-			
 			echo '</div>';
 		}
-
 		if ($ids[$id] === "4") {
 			/* port 4 as home security port */
 			echo '<div class="form-row odd ">'.
@@ -164,12 +138,8 @@ $(document).ready(function() {
 					'<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="Save" class="btn submit" /></div>'.
 				'</div>';
 		}
-
 		echo '</div>';
 	}
 	?>
-	
 </div><!-- end #content -->
-
 <?php include('includes/footer.php'); ?>
-

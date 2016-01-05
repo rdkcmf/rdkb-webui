@@ -1,22 +1,15 @@
 <?php include('includes/header.php'); ?>
-
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <?php
 $enable = getStr("Device.X_CISCO_COM_DDNS.Enable");
 ?>
-
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");
-
 	var jsEnable = <?php echo $enable === "true" ? "true" : "false"; ?>;
-	
 	$("#ddns_switch").radioswitch({
 		id: "Dynamic-DNS-switch",
 		radio_name: "DNS",
@@ -26,9 +19,7 @@ $(document).ready(function() {
 		title_off: "Disable Dynamic DNS",
 		state: jsEnable ? "on" : "off"
 	});
-
 	$("a.confirm").unbind('click');
-
 	function setupDeleteConfirmDialogs() {
 	/*
 	 * Confirm dialog for delete action
@@ -37,7 +28,6 @@ $(document).ready(function() {
 			e.preventDefault();            
 			var href = $(this).attr("href");
 		    	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
-			   
 			jConfirm(
 				message
 				,"Are You Sure?"
@@ -48,10 +38,8 @@ $(document).ready(function() {
 			});
 		});
     	}
-
 	function enableHandler() {
 		var isUDNSDisabled = $("#ddns_switch").radioswitch("getState").on === false;
-
 		if(isUDNSDisabled) {
 			$("a.confirm").unbind('click');
 			$('.module *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
@@ -62,11 +50,8 @@ $(document).ready(function() {
 			setupDeleteConfirmDialogs();
 		}
 	}
-	
 	enableHandler();
-	
 	$("#ddns_switch").change(function() {
-
 		var status = ($("#ddns_switch").radioswitch("getState").on ? "Enabled" : "Disabled");
 		var isUDNSDisabled = $("#ddns_switch").radioswitch("getState").on === false;
 		if(isUDNSDisabled){
@@ -100,10 +85,8 @@ $(document).ready(function() {
 			}
 		});
 	});
-
 });
 </script>
-
 <script>
 	//Don't allow user to add morethan 4 rules as only 4 Service Provider are allowed
 	function add_service() {
@@ -115,10 +98,8 @@ $(document).ready(function() {
 		}
 	}
 </script>
-
 <div id="content">
    	<h1>Advanced > Dynamic DNS</h1>
-
     <div id="educational-tip">
         <p class="tip">Configure the Gateway's router functionality as a Dynamic DNS client. </p>
         <p class="hidden"><strong>Service Provider:</strong> Dynamic DNS Service Provider Domain name</p>
@@ -126,18 +107,14 @@ $(document).ready(function() {
         <p class="hidden"><strong>Password:</strong> Password registered with the service provider</p>
         <p class="hidden"><strong>Host Name:</strong> Host Name registered with the service provider</p>
     </div>
-
 <form action="dynamic_dns.php" method="post">
 	<div class="module">
-
 		<div class="select-row">
     		<span class="readonlyLabel label">Dynamic DNS:</span>
 			<span id="ddns_switch"></span>
     	</div>
-
 	</div>
 	</form>
-
 <div id="DNS-items">
 <div class="module data">
 		<h2>Dynamic DNS</h2>
@@ -150,7 +127,6 @@ $(document).ready(function() {
 				<td class="acs-th">HostName(s)</td>
 				<td class="acs-th" colspan="2">&nbsp;</td>
 			</tr>
-					
 			<?php 
 				$num=getStr("Device.X_CISCO_COM_DDNS.ServiceNumberOfEntries");
 				if($num!=0) {
@@ -183,10 +159,6 @@ $(document).ready(function() {
 			?>
 		</table>
 		</div> <!-- end .module -->
-
 </div>
 </div><!-- end #content -->
-
-
-
 <?php include('includes/footer.php'); ?>

@@ -1,13 +1,9 @@
 <?php include('includes/header.php'); ?>
-
 <!-- $Id: troubleshooting_logs.php 3159 2010-01-11 20:10:58Z slemoine $ -->
-
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <link rel="stylesheet" type="text/css" href="./cmn/css/lib/smartpaginator.css"/>
 <script type="text/javascript" src="./cmn/js/lib/smartpaginator.js"></script>
 <script type="text/javascript">
@@ -15,33 +11,25 @@ $(document).ready(function() {
 	$("#system").show();
 	$("#event").hide();
 	$("#firewall").hide();
-	
 	$("#system_logs_today").show();
 	$("#system_logs_yesterday").hide();
 	$("#system_logs_week").hide();
 	$("#system_logs_month").hide();
 	$("#system_logs_last").hide();
-	
 	comcast.page.init("Troubleshooting > Logs", "nav-logs");
-	
 	$('input[value="Print"]').prop("disabled",true).addClass("disabled");
 	$('input[value="Download"]').prop("disabled",true).addClass("disabled");
-	
 	$('input[value="Print"]').click(function() {
     		window.print();
 	});
-
 	$("#showlogs").click(function() {
-	
 		var mode=$("select#log_type").val();
 		var timef=$("select#time_frame").val();
-		
 		jConfirm(
 		'This action may take more than one minute. Do you want to continue?'
 		, 'Are You Sure?'
 		, function(ret){
 			if(ret){
-			
 		if(mode == "system") {
 			$("#event").hide();
 			$("#firewall").hide();
@@ -167,22 +155,17 @@ $(document).ready(function() {
 				$("#firewall_logs_last").show();
 			}
 	    }
-		
 		$('input[value="Print"]:visible').prop("disabled",true).addClass("disabled");
 		$('input[value="Download"]:visible').prop("disabled",true).addClass("disabled");		
-		
 		ajaxDo(mode,timef);
 			}
 		});
 	});
 });
-
 function adjust_acs_tb(tb_summary, th_array){
 	var theTable = $("table:visible");
-	
 	//summary the table
 	theTable.attr("summary", tb_summary);
-	
 	//replace td with th, assign id to th (must in a thead)
 	var str = theTable.find("thead > tr").text();
 	for (var i=0; i<th_array.length; i++){
@@ -194,7 +177,6 @@ function adjust_acs_tb(tb_summary, th_array){
 		}
 	}
 	theTable.find("thead > tr").html(str);
-	
 	//assign headers to td (must in a tbody)
 	theTable.find("tbody > tr").each(function(){
 		for (var i=0; i<th_array.length; i++){
@@ -202,7 +184,6 @@ function adjust_acs_tb(tb_summary, th_array){
 		}
 	});
 }
-
 function ajaxDo(mode,timef){
 	switch(timef){
 		case "Today":
@@ -242,7 +223,6 @@ function ajaxDo(mode,timef){
 				trClass=((trClass=="")?"odd":"");
 				length++;
 			});
-			
 			if(length>0){
 				$('input[value="Print"]:visible').prop("disabled",false).removeClass("disabled");
 				$('input[value="Download"]:visible').prop("disabled",false).removeClass("disabled");
@@ -271,19 +251,14 @@ function ajaxDo(mode,timef){
 	});
 }
 </script>
-
 <div id="content">
-
 	<h1>Troubleshooting > Logs</h1>
 	<div id="educational-tip" class="noprint">
 		<p class="tip">View information about the Gateway's performance and system operation.</p>
 		<p class="hidden">Use the logs to troubleshoot issues and to identify potential security risks.</p>
 	</div>
-
-
 	<div class="module noprint">
 		<h2>Log Filters</h2>
-
     <form action="troubleshooting_logs_sample.php" method="post">
 			<label for="log_type" class="readonlyLabel">Log Type:</label>
 			<select id="log_type" name="log_type">
@@ -291,7 +266,6 @@ function ajaxDo(mode,timef){
 				<option value="event">Event Logs</option>
 				<option value="firewall">Firewall Logs</option>
 			</select>
-
 			<label for="time_frame" class="readonlyLabel">Time Frame:</label>
 			<select id="time_frame" name="time_frame">
 				<option selected="selected">Today</option>
@@ -300,13 +274,10 @@ function ajaxDo(mode,timef){
 				<option>Last month</option>
 				<option>Last 90 days</option>
 			</select>
-
 			<input  id="showlogs" type="button" value="Show Logs" class="btn alt" />
 	</div>
-
 	<div class="module forms data" id="system">
 		<h2>System Logs</h2>
-
 		<table id="system_logs_today" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
@@ -316,7 +287,6 @@ function ajaxDo(mode,timef){
 				<tbody>
 			</tbody>
 		</table>
-		
 		<table id="system_logs_yesterday" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
@@ -326,7 +296,6 @@ function ajaxDo(mode,timef){
 				<tbody>
 			</tbody>
 		</table>
-
 		<table id="system_logs_week" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
@@ -336,7 +305,6 @@ function ajaxDo(mode,timef){
 				<tbody>
 			</tbody>
 		</table>
-
 		<table id="system_logs_month" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
@@ -346,7 +314,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-
 		<table id="system_logs_last" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
@@ -356,17 +323,14 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-
 		<div class="smart_paginator"></div>
 		<div class="btn-group">
 			<input type="button" value="Print" class="btn alt"/>
 			<input type="submit" value="Download" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
-
 	<div class="module forms data" id="event">
 		<h2>Event Logs</h2>
-
 		<table id="event_logs_today" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
@@ -394,7 +358,6 @@ function ajaxDo(mode,timef){
 				<tbody>
 				</tbody>
 		</table>
-
 		<table id="event_logs_month" cellpadding="0" cellspacing="0" class="data">
 				<thead>
 					<tr>
@@ -404,7 +367,6 @@ function ajaxDo(mode,timef){
 				<tbody>
 				</tbody>
 		</table>
-
 		<table id="event_logs_last" cellpadding="0" cellspacing="0" class="data">
 				<thead>
 					<tr>
@@ -421,10 +383,8 @@ function ajaxDo(mode,timef){
 			<!--a  id="download_event_logs" href="#" class="btn alt">Download</a-->
 		</div>
 	</div> <!-- end .module -->
-
 	<div class="module forms data" id="firewall">
 		<h2>Firewall Logs</h2>
-
 		<table id="firewall_logs_today" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
@@ -434,7 +394,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		
 		<table id="firewall_logs_yesterday" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
@@ -471,16 +430,12 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		
 		<div class="smart_paginator"></div>
 		<div class="btn-group">
 			<input type="button" value="Print" class="btn alt"/>
 			<input type="submit" value="Download" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
-
 </form>
 </div><!-- end #content -->
-
-
 <?php include('includes/footer.php'); ?>

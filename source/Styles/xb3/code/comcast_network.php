@@ -3,21 +3,15 @@
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
-
 <?php include('includes/nav.php'); ?>
-
 <style type="text/css">
-
 #content {
 	display: none;
 }
-
 </style>
-
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > XFINITY Network", "nav-comcast-network");
-
 	if ("cusadmin" == "<?php echo $_SESSION["loginuser"]; ?>"){
 		$(".div_cm").remove();
 	}
@@ -25,15 +19,11 @@ $(document).ready(function() {
 		$(".div_cm").remove();
 		$(".div_mta").remove();
 	}
-	
 	// now we can show target content
 	$("#content").show();
-
 });
 </script>
-
 <?php
-
 function div_mod($n, $m)
 {
 	if (!is_numeric($n) || !is_numeric($m) || (0==$m)){
@@ -44,7 +34,6 @@ function div_mod($n, $m)
 	}	
 	return array($i, $n);
 }
-
 function sec2dhms($sec)
 {
 	$tmp = div_mod($sec, 24*60*60);
@@ -55,11 +44,8 @@ function sec2dhms($sec)
 	$min = $tmp[0];
 	return "D: $day H: $hor M: $min S: $tmp[1]";
 }
-
 	$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
-
 	$WANIPv4 = getStr($fistUSif."IPv4Address.1.IPAddress");
-
 	$ids = explode(",", getInstanceIds($fistUSif."IPv6Address."));
 	foreach ($ids as $i){
 		$val = getStr($fistUSif."IPv6Address.$i.IPAddress");
@@ -80,23 +66,16 @@ function sec2dhms($sec)
 			$WANIPv6LinkLocal = $val;
 		}
 	}
-
 	$sta_inet = ($WANIPv4 != "0.0.0.0" || strlen($WANIPv6) > 0) ? "true" : "false";
-
 	//in Bridge mode > Internet connectivity status is always active
 	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
-
 ?>
-
 <div id="content">
-
 <h1>Gateway > Connection > XFINITY Network</h1>
-
 <div id="educational-tip">
 	<p class="tip">View technical information related to your XFINITY network connection.</p>
 	<p class="hidden">You may need this information if you contact Comcast for troubleshooting assistance.</p>
 </div>
-
 <div class="module forms">
 	<h2>XFINITY Network</h2>
 	<div class="form-row">
@@ -256,7 +235,6 @@ function sec2dhms($sec)
 		<span class="value"><?php echo strtoupper($CM_value["MACAddress"]);?></span>
 	</div>
 </div>
-
 <?php
 $cmStatus = $CM_value["CMStatus"];
 $initStatus = array();
@@ -305,9 +283,7 @@ elseif ("REGISTRATION_COMPLETE" == $cmStatus || "OPERATIONAL" == $cmStatus) {
 else {
 	$initStatus = array("NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted");
 }
-
 ?>
-
 <div class="module forms">
 	<h2>Initialization Procedure</h2>
 	<div class="form-row ">
@@ -339,7 +315,6 @@ else {
 		<span class="value"><?php echo $initStatus[6];?></span>
 	</div>
 </div>
-
 <?php
 $cm_param = array(
 	"IPAddress"				=> "Device.X_CISCO_COM_CableModem.IPAddress",
@@ -359,7 +334,6 @@ $cm_param = array(
 	);
 $cm_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $cm_param);
 ?>
-
 <div class="module forms div_cm">
 	<h2>CM DHCP Parameters</h2>
 	<div class="form-row ">
@@ -399,7 +373,6 @@ $cm_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $cm_param);
 		<span class="value"><?php echo $cm_value['LearnedIPMode'];?></span>
 	</div>
 </div>
-
 <div class="module forms div_cm">
 	<h2>CM IP Time Remaining</h2>
 	<div class="form-row ">
@@ -415,7 +388,6 @@ $cm_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $cm_param);
 		<span class="value"><?php echo sec2dhms($cm_value['RenewTimeRemaining']);?></span>
 	</div>
 </div>
-
 <!--
 <div class="module forms div_cm">
 	<h2>CM PacketCable Options</h2>
@@ -450,7 +422,6 @@ $mta_param = array(
 	);
 $mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
 ?>
-
 <div class="module forms div_cm">
 	<h2>CM PacketCable Options</h2>
 	<div class="form-row ">
@@ -462,7 +433,6 @@ $mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
 		<span class="value"><?php echo $mta_value['SecondaryDHCPServer'];?></span>
 	</div>
 </div>
-
 <div class="module forms div_mta">
 	<h2>MTA DHCP Parameters</h2>
 	<div class="form-row ">
@@ -486,7 +456,6 @@ $mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
 		<span class="value"><?php echo $mta_value['BootFileName'];?></span>
 	</div>
 </div>
-
 <div class="module forms div_mta">
 	<h2>MTA IP Time Remaining</h2>
 	<div class="form-row ">
@@ -502,7 +471,6 @@ $mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
 		<span class="value"><?php echo sec2dhms($mta_value['RenewTimeRemaining']);?></span>
 	</div>
 </div>
-
 <div class="module forms div_mta">
 	<h2>MTA DHCP Option 6</h2>
 	<div class="form-row ">
@@ -514,7 +482,6 @@ $mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
 		<span class="value"><?php echo $mta_value['SecondaryDNS'];?></span>
 	</div>
 </div>
-
 <div class="module forms div_mta">
 	<h2>MTA PacketCable Options(Option 122)</h2>
 	<div class="form-row ">
@@ -534,7 +501,6 @@ $mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
 		<span class="value"><?php echo $mta_value['DHCPOption8'];?></span>
 	</div>
 </div>
-
 <?php
 // $device_param = array(
 	// "HardwareVersion"			=> "Device.DeviceInfo.HardwareVersion",
@@ -547,7 +513,6 @@ $mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
 	// "SerialNumber"				=> "Device.DeviceInfo.SerialNumber",
 	// );
 // $device_value = KeyExtGet("Device.DeviceInfo.", $device_param);
-
 // there are bugs in native DmExtGetStrsWithRootObj when geting DeviceInfo, have to get one by one
 $device_value["HardwareVersion"] 			= getStr("Device.DeviceInfo.HardwareVersion");
 $device_value["Manufacturer"] 				= getStr("Device.DeviceInfo.Manufacturer");
@@ -557,9 +522,7 @@ $device_value["ProductClass"] 				= getStr("Device.DeviceInfo.ProductClass");
 $device_value["Hardware"] 					= getStr("Device.DeviceInfo.Hardware");
 $device_value["AdditionalSoftwareVersion"] 	= getStr("Device.DeviceInfo.AdditionalSoftwareVersion");
 $device_value["SerialNumber"] 				= getStr("Device.DeviceInfo.SerialNumber");
-
 ?>
-
 <div class="module forms">
 	<h2>Cable Modem</h2>
 	<div class="form-row ">
@@ -599,7 +562,6 @@ $device_value["SerialNumber"] 				= getStr("Device.DeviceInfo.SerialNumber");
 		<span class="value"><?php echo $device_value['SerialNumber'];?></span>
 	</div>
 </div>
-
 <?php
 $ds_obj = "Device.X_CISCO_COM_CableModem.DownstreamChannel.";
 $ds_val = DmExtGetStrsWithRootObj($ds_obj, array($ds_obj));
@@ -618,7 +580,6 @@ for ($i=1, $j=1; $i<count($ds_ids); $i++)
 	$ds_tab[$i]['LockStatus']		= $ds_val[$j++][1];
 }
 ?>
-
 <div class="module" style="overflow:auto">
 	<table class="data" cellspacing="0" cellpadding="0">
 	<thead>
@@ -655,7 +616,6 @@ for ($i=1, $j=1; $i<count($ds_ids); $i++)
 	</tbody>
 	</table>
 </div>
-
 <?php
 $us_obj = "Device.X_CISCO_COM_CableModem.UpstreamChannel.";
 $us_val = DmExtGetStrsWithRootObj($us_obj, array($us_obj));
@@ -672,7 +632,6 @@ for ($i=1, $j=1; $i<count($us_ids); $i++)
 	$us_tab[$i]['LockStatus']		= $us_val[$j++][1];
 }
 ?>
-
 <div class="module" style="overflow:auto">
 	<table class="data" cellspacing="0" cellpadding="0">
 	<thead>
@@ -713,7 +672,6 @@ for ($i=1, $j=1; $i<count($us_ids); $i++)
 	</tbody>
 	</table>
 </div>
-
 <?php
 $ec_obj = "Device.X_CISCO_COM_CableModem.CMErrorCodewords.";
 $ec_val = DmExtGetStrsWithRootObj($ec_obj, array($ec_obj));
@@ -726,7 +684,6 @@ for ($i=1, $j=1; $i<count($ec_ids); $i++)
         $ec_tab[$i]['UncorrectableCodewords']            = $ec_val[$j++][1];
 }
 ?>
-
 <div class="module" style="overflow:auto">
 	<table class="data" cellspacing="0" cellpadding="0">
 	<thead>
@@ -751,5 +708,4 @@ for ($i=1, $j=1; $i<count($ec_ids); $i++)
 	</table>
 </div>
 </div> <!-- end #container -->
-
 <?php include('includes/footer.php'); ?>
