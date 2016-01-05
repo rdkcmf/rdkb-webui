@@ -1,35 +1,28 @@
-﻿<!--
+<?php
+/*
  If not stated otherwise in this file or this component's Licenses.txt file the
  following copyright and licenses apply:
-
  Copyright 2015 RDK Management
-
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
-
  http://www.apache.org/licenses/LICENSE-2.0
-
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
--->
-﻿<?php include('../includes/utility.php') ?>
+*/
+?>
+<?php include('../includes/utility.php') ?>
 <?php
-
 $result="";
-
 function PORTTEST($sp,$ep,$arraySp,$arrayEp){
-
 	if ( $sp>=$arraySp && $sp<=$arrayEp ) return 1;
 	else if ( $ep>=$arraySp && $ep<=$arrayEp ) return 1;
 	else if ( $sp<$arraySp && $ep>$arrayEp ) return 1;
 	else return 0;
-
 }
-
 if (isset($_POST['set'])){
 	$UPTRStatus=(($_POST['UPTRStatus']=="Enabled")?"true":"false");
 	setStr("Device.NAT.X_CISCO_COM_PortTriggers.Enable",$UPTRStatus,true);
@@ -37,9 +30,7 @@ if (isset($_POST['set'])){
 	//$UPTRStatus=((getStr("Device.NAT.X_CISCO_COM_PortTriggers.Enable")=="true")?"Enabled":"Disabled");
 	//echo json_encode($UPTRStatus);
 }
-
 if (isset($_POST['add'])){
-	
 	$name=$_POST['name'];
 	$type=$_POST['type'];
 	if ($type=="TCP/UDP") $type="BOTH";
@@ -47,7 +38,6 @@ if (isset($_POST['add'])){
 	$fep=$_POST['fep'];
 	$tsp=$_POST['tsp'];
 	$tep=$_POST['tep'];
-	
 	if (getStr("Device.NAT.X_CISCO_COM_PortTriggers.TriggerNumberOfEntries")==0) { //need to test
 		addTblObj("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
 		$IDs=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."));
@@ -60,7 +50,6 @@ if (isset($_POST['add'])){
 		// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortEnd",$tep,false);
 		// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Description",$name,false);
 		// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Enable","true",true);
-		
 		$rootObjName ="Device.NAT.X_CISCO_COM_PortTriggers.Trigger.";
 		$paramArray = 
 			array (
@@ -75,18 +64,14 @@ if (isset($_POST['add'])){
 			);
 		$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);	
 		if (!$retStatus){$result="Success!";}
-		
 		// echo json_encode("Success!");
 	} else {
 		// $result="";
 		$rootObjName    = "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.";
 		$paramNameArray = array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
 		$mapping_array  = array("Description", "TriggerProtocol", "TriggerPortStart", "TriggerPortEnd", "ForwardPortStart", "ForwardPortEnd");
-
 		$portTriggerValues = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-
 		//$ids=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."));
-
 		foreach ($portTriggerValues as $key) {
 			$arrayName = $key["Description"];
 			$arrayType = $key["TriggerProtocol"];
@@ -106,7 +91,6 @@ if (isset($_POST['add'])){
 				}
 			}
 		}
-
 		if ($result=="") {
 			/*
 			* this piece of code is going to check forward start port and end port not overlapped with port forwarding entry
@@ -117,7 +101,6 @@ if (isset($_POST['add'])){
 					$portMappingType=getStr("Device.NAT.PortMapping.".$j.".Protocol");
 					$arraySPort=getStr("Device.NAT.PortMapping.".$j.".ExternalPort");
 					$arrayEPort=getStr("Device.NAT.PortMapping.".$j.".ExternalPortEndRange");
-					
 					if($type=="BOTH" || $portMappingType=="BOTH" || $type==$portMappingType){
 						$porttest=PORTTEST($tsp,$tep,$arraySPort,$arrayEPort);
 						if ($porttest==1) {
@@ -128,7 +111,6 @@ if (isset($_POST['add'])){
 				}
 			} //end of foreach		
 		}
-
 		if ($result=="") {
 			addTblObj("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
 			$IDs=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."));
@@ -142,7 +124,6 @@ if (isset($_POST['add'])){
 			// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Description",$name,false);
 			// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Enable","true",true);
 			// $result="Success!";
-			
 			$rootObjName ="Device.NAT.X_CISCO_COM_PortTriggers.Trigger.";
 			$paramArray = 
 				array (
@@ -161,7 +142,6 @@ if (isset($_POST['add'])){
 		// echo json_encode($result);
 	}
 }
-
 if (isset($_POST['edit'])){
 	$i=$_POST['ID'];
 	$name=$_POST['name'];
@@ -171,15 +151,12 @@ if (isset($_POST['edit'])){
 	$fep=$_POST['fep'];
 	$tsp=$_POST['tsp'];
 	$tep=$_POST['tep'];
-	
 	$results="";
 	//$ids=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."));
 	$rootObjName    = "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.";
 		$paramNameArray = array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
 		$mapping_array  = array("Description", "TriggerProtocol", "TriggerPortStart", "TriggerPortEnd", "ForwardPortStart", "ForwardPortEnd");
-
 		$portTriggerValues = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
-
 	foreach ($portTriggerValues as $key) {
 		$j = $key["__id"];
 		if ($i==$j) continue;
@@ -201,7 +178,6 @@ if (isset($_POST['edit'])){
 			}
 		}
 	}
-
     if ($result=="") {
 		/*
 		* this piece of code is going to check forward start port and end port not overlapped with port forwarding entry
@@ -212,7 +188,6 @@ if (isset($_POST['edit'])){
 				$portMappingType=getStr("Device.NAT.PortMapping.".$j.".Protocol");
 				$arraySPort=getStr("Device.NAT.PortMapping.".$j.".ExternalPort");
 				$arrayEPort=getStr("Device.NAT.PortMapping.".$j.".ExternalPortEndRange");
-				
 				if($type=="BOTH" || $portMappingType=="BOTH" || $type==$portMappingType){
 					$porttest=PORTTEST($tsp,$tep,$arraySPort,$arrayEPort);
 					if ($porttest==1) {
@@ -223,7 +198,6 @@ if (isset($_POST['edit'])){
 			}
 		} //end of foreach		
 	}
-		
 	if ($result=="") {
 		// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortStart",$fsp,false);//from start port
 		// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortEnd",$fep,false);
@@ -234,7 +208,6 @@ if (isset($_POST['edit'])){
 		// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Description",$name,false);
 		// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Enable","true",true);
 		// $result="Success!";
-		
 		$rootObjName ="Device.NAT.X_CISCO_COM_PortTriggers.Trigger.";
 		$paramArray = 
 			array (
@@ -252,19 +225,16 @@ if (isset($_POST['edit'])){
 	}
 	// echo json_encode($result);
 }
-
 if (isset($_POST['active'])){
 	$isChecked=$_POST['isChecked'];
 	$i=$_POST['id'];
 	setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Enable",$isChecked,true);
 }
-
 if (isset($_GET['del'])){
 	delTblObj("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$_GET['del'].".");
 	Header("Location:../port_triggering.php");
 	exit;
 }
-
 if ($result=="") { 
 //the set operation failure due to conflict with port forwarding rules or ...
 //so need to remove the '0~0,0~0' entry
@@ -277,7 +247,5 @@ $ids=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."))
         }
 	} //end of foreach
 } //end of if
-
 echo json_encode($result);
-
 ?>
