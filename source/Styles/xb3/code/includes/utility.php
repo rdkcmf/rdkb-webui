@@ -1,7 +1,6 @@
 <?php
 // enable _SESSION var
 // session_start();		// already start in head.php
-
 //wrap for PSM mode
 function php_getstr($str)
 {
@@ -16,7 +15,6 @@ function php_getstr($str)
 	}
 	return getStr($str);
 }
-
 //wrap for PSM mode
 function php_getinstanceids($str)
 {
@@ -31,7 +29,6 @@ function php_getinstanceids($str)
 	}
 	return getInstanceIds($str);
 }
-
 //now you can use key to index the array
 function KeyExtGet($root, $param)
 {
@@ -46,7 +43,6 @@ function KeyExtGet($root, $param)
 	}
 	return $key_ret;
 }
-
 //return a string of encryption type
 function encrypt_map($mode, $method)
 {
@@ -75,7 +71,6 @@ function encrypt_map($mode, $method)
 		return "WPAWPA2-PSK (TKIP/AES)";
 	}
 }
-
 /**
  * Discription: 
  *     This function is used to get the corresponding leaf name called by getParaValues
@@ -93,7 +88,6 @@ function encrypt_map($mode, $method)
  * author: yaowu@cisco.com
  */
 function getLeafName($str, $root){
-					
 	if (!empty($str)){	
 		$str = str_replace($root, "", $str);
 		$pos = strpos($str, '.');
@@ -101,11 +95,9 @@ function getLeafName($str, $root){
 			/* if no further {i}. can be found, the leaf is just the remaining string */
 			return $str;
 		}
-
 		return substr($str, $pos+1);
 	}
 } 
-
 /**
  * Extract the id ({i}) portion in a DM path given the root obj path.
  * e.g. $str = Device.Hosts.Host.{i}.Active, $root = Device.Hosts.Host.,
@@ -119,11 +111,9 @@ function getObjIdInPath($str, $root) {
 		if ($pos === false) {
 			return NULL;
 		}
-
 		return substr($str, 0, $pos);
 	}
 }
-
 /**
  * Discription: 
  *     This function is a wrapper for Dinghua's group get api call, enabling caller
@@ -147,19 +137,15 @@ function getObjIdInPath($str, $root) {
  * author: yaowu@cisco.com
  */
 function getParaValues($root, $paramArray, $mapping_array, $includeId=false) {
-
 	$key_ret = array();
 	$i = 0;
 	$cId = NULL;
 	$pId = NULL;
 	$mapping_array_size = count($mapping_array);
-
 	$raw_ret = DmExtGetStrsWithRootObj($root, $paramArray);
 	if(isset($raw_ret)){
 		foreach ($raw_ret as $key => $value) {
-
 			$leafValueName = getLeafName($value[0], $root);  //value[0] is like Device.Hosts.Host.MACAddress
-
 			if(in_array($leafValueName, $mapping_array)){
 				$pId = getObjIdInPath($value[0], $root);
 				if (!isset($cId)) $cId = $pId;
@@ -167,7 +153,6 @@ function getParaValues($root, $paramArray, $mapping_array, $includeId=false) {
 					$cId = $pId;
 					$i++;
 				}
-
 				$key_ret[$i][$leafValueName] = $value[1];
 				if ($includeId && !isset($key_ret[$i]['__id'])) {
 					$key_ret[$i]['__id'] = $pId;
@@ -178,7 +163,6 @@ function getParaValues($root, $paramArray, $mapping_array, $includeId=false) {
 	//dump($key_ret);
 	return $key_ret;
 }
-
 /**
  * Discription: 
  *     This function is used to display dump info in a beautiful manner
@@ -199,7 +183,6 @@ function dump($vars, $label = '', $return = false)
         echo $content;
     return null;
 }
-
 //show a PSM mode notification webpage, (then exit current script)
 function init_psmMode($title, $navElementId)
 {
@@ -220,7 +203,6 @@ function init_psmMode($title, $navElementId)
 	}
 	return $msg;
 }
-
 //bit-and limited to 32, I have to write this
 function php_str_and($a, $b)
 {
@@ -231,7 +213,6 @@ function php_str_and($a, $b)
 	}
 	return $c;
 }
-
 //delete front-tail blank of element, and delete empty element
 function array_trim($arr){
 	$ret = array();
@@ -243,7 +224,6 @@ function array_trim($arr){
 	}
 	return $ret;
 }
-
 // get array of default value from DB file, do not use simpleXML method!
 function getDefault($xmlFile, $arrName)
 {
@@ -267,5 +247,4 @@ function getDefault($xmlFile, $arrName)
 	}
 	return $key_ret;
 }
-
 ?>
