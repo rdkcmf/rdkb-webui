@@ -1,28 +1,23 @@
-﻿<!--
+<?php
+/*
  If not stated otherwise in this file or this component's Licenses.txt file the
  following copyright and licenses apply:
-
  Copyright 2015 RDK Management
-
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
-
  http://www.apache.org/licenses/LICENSE-2.0
-
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
--->
-﻿<?php include('../includes/utility.php') ?>
+*/
+?>
+<?php include('../includes/utility.php') ?>
 <?php
-
 function PORTTEST($sport,$eport,$arraySPort,$arrayEPort) {
-	
 	//echo $sport."  ".$eport."  ".$arraySPort."  ".$arrayEPort."<hr/>";
-
 	if ( ($sport>=$arraySPort) && ($sport<=$arrayEPort) ){
 		return 1;
 	}
@@ -35,12 +30,10 @@ function PORTTEST($sport,$eport,$arraySPort,$arrayEPort) {
 	else 
 		return 0;
 }
-
 function time_date_conflict($TD1, $TD2) {
 	$ret = false;
 	$days1 = explode(",", $TD1[2]);
 	$days2 = explode(",", $TD2[2]);
-
 	foreach ($days1 as &$value) {
 		if (in_array($value, $days2)) {
 			//deMorgan's law - to find if ranges are overlapping
@@ -53,7 +46,6 @@ function time_date_conflict($TD1, $TD2) {
 	}
 	return $ret;
 }
-
 if (isset($_POST['set'])){
 	$UMSStatus=(($_POST['UMSStatus']=="Enabled")?"true":"false");
 	setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Enable",$UMSStatus,true);
@@ -63,7 +55,6 @@ if (isset($_POST['set'])){
 	echo json_encode($UMSStatus);
 //	echo json_encode("Disabled");
 }
-
 if (isset($_POST['trust_not'])){
 	$ID=$_POST['ID'];
 	setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser.".$ID.".Trusted",$_POST['status'],true);
@@ -73,9 +64,7 @@ if (isset($_POST['trust_not'])){
 	echo json_encode($status);
 //	echo json_encode("Disabled");
 }
-
 if (isset($_POST['add'])){
-
 	$service=$_POST['service'];
 	$protocol=$_POST['protocol'];
 	$startPort=$_POST['startPort'];
@@ -84,12 +73,10 @@ if (isset($_POST['add'])){
 	$startTime=$_POST['startTime'];
 	$endTime=$_POST['endTime'];
 	$blockDays=$_POST['days'];
-
 	if ($protocol == "TCP/UDP") 
 		$type = "BOTH";
 	else
 		$type = $protocol;
-	
 	$ids=explode(",",getInstanceIDs("Device.X_Comcast_com_ParentalControl.ManagedServices.Service."));
 	if (count($ids)==0) {	//no table, need test whether it equals 0
 		addTblObj("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.");
@@ -113,11 +100,8 @@ if (isset($_POST['add'])){
 		$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.";
 		$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.");
 		$mapping_array  = array("Description", "StartPort", "EndPort", "Protocol", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
-
 		$managedServicesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-
 		foreach ($managedServicesValues as $key) {
-
 			$serviceName = $key["Description"];
 			$stport = $key["StartPort"];
 			$edport = $key["EndPort"];
@@ -126,7 +110,6 @@ if (isset($_POST['add'])){
 			$start_Time = $key["StartTime"];
 			$end_Time = $key["EndTime"];
 			$block_Days = $key["BlockDays"];
-
 			if ($service == $serviceName) {
 				$result .= "Service Name has been used!\n";
 				break;
@@ -144,7 +127,6 @@ if (isset($_POST['add'])){
 				}
 			}
 		}
-		
 		if ($result=="") {
 			addTblObj("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.");
 			$IDs=explode(",",getInstanceIDs("Device.X_Comcast_com_ParentalControl.ManagedServices.Service."));
@@ -165,7 +147,6 @@ if (isset($_POST['add'])){
 		echo json_encode($result);
 	}
 }
-
 if (isset($_POST['edit'])){
 	$i=$_POST['ID'];
 	$service=$_POST['service'];
@@ -176,19 +157,16 @@ if (isset($_POST['edit'])){
 	$startTime=$_POST['startTime'];
 	$endTime=$_POST['endTime'];
 	$blockDays=$_POST['days'];
-
 	if ($protocol == "TCP/UDP") 
 		$type = "BOTH";
 	else
 		$type = $protocol;
-	
 	$ids=explode(",",getInstanceIDs("Device.X_Comcast_com_ParentalControl.ManagedServices.Service."));
 	$result="";
 	$result="";
 	$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.";
 	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.");
 	$mapping_array  = array("Description", "StartPort", "EndPort", "Protocol", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
-
 	$managedServicesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
 	foreach ($managedServicesValues as $key) {
 		$j = $key["__id"];
@@ -201,7 +179,6 @@ if (isset($_POST['edit'])){
 		$start_Time = $key["StartTime"];
 		$end_Time = $key["EndTime"];
 		$block_Days = $key["BlockDays"];
-
 		if ($service == $serviceName) {
 			$result .= "Service Name has been used!\n";
 			break;
@@ -219,7 +196,6 @@ if (isset($_POST['edit'])){
 			}
 		}
 	}
-	
 	if ($result=="") {
 		setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".Description",$service,false);
 		setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".Protocol",$protocol,false);
@@ -236,7 +212,6 @@ if (isset($_POST['edit'])){
 	header("Content-Type: application/json");
 	echo json_encode($result);
 }
-
 if (isset($_GET['del'])){
 	delTblObj("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$_GET['del'].".");
 	Header("Location:../managed_services.php");
