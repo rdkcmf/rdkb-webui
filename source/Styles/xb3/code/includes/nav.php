@@ -1,7 +1,5 @@
 <!-- $Id: nav.dory.php 3155 2010-01-06 19:36:01Z slemoine $ -->
-
 <!--Nav-->
-
 <?php 
 /*
  *  set initial value for all pages to true(display)
@@ -31,11 +29,9 @@ $dynamic_dns        	= TRUE;  //for mso/cusadmin
 $nat		        = FALSE;  //for mso/cusadmin
 $password_change	= FALSE;  //for admin only
 $wizard        		= TRUE;
-
 if ($_DEBUG) {
 	$media_sharing = TRUE;
 }
-
 /*
  * The difference between  bridge mode and router mode
  * In bridge mode, local ip config page, firewall page, parental control pages, 
@@ -52,7 +48,6 @@ if (isset($_SESSION['lanMode']) && $_SESSION["lanMode"] == "bridge-static") {
 	$hs_port_forwarding = FALSE;
 	$wizard		 		= FALSE;
 }
-
 if (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'cusadmin') {
 	$routing		= FALSE;
 	$email_notify		= FALSE;
@@ -66,7 +61,6 @@ elseif (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'admin') {
 	$hs_port_forwarding	= FALSE;
 	$password_change	= TRUE;
 }
-
 /*
  * generate menu and submenu accroding to above configuration
  */
@@ -120,7 +114,6 @@ echo '<li class="nav-gateway">';
 	}
 	echo '</ul>';
 echo '</li>';
-
 echo '<li class="nav-connected-devices">';
 	echo '<a role="menuitem"  title="click to toggle sub menu"  class="top-level" href="connected_devices_computers.php">Connected Devices</a>';
 	echo '<ul>';
@@ -130,7 +123,6 @@ echo '<li class="nav-connected-devices">';
 	if($range_extenders)  echo '<li class="nav-range-extenders"><a role="menuitem"  href="range_extenders.php">Range Extenders</a></li>';
 	echo '</ul>';
 echo '</li>';
-	
 if($parental_control){
  echo '<li class="nav-parental-control">';
 	echo '<a role="menuitem"  title="click to toggle sub menu"  class="top-level" href="managed_sites.php">Parental Control</a>';
@@ -142,7 +134,6 @@ if($parental_control){
 	echo '</ul>';
 echo '</li>';
 }
-
 echo '<li class="nav-advanced">';
 	if ($_SESSION["lanMode"] == "bridge-static") echo '<a role="menuitem"  title="click to toggle sub menu"  class="top-level" href="dynamic_dns.php">Advanced</a>';
 		else echo '<a role="menuitem"  title="click to toggle sub menu"  class="top-level" href="port_forwarding.php">Advanced</a>';
@@ -158,7 +149,6 @@ echo '<li class="nav-advanced">';
 	if($dynamic_dns) echo '<li class="nav-Dynamic-dns"><a role="menuitem"  href="dynamic_dns.php">Dynamic DNS</a></li>';
 	echo '<li class="nav-device-discovery"><a role="menuitem"  href="device_discovery.php">Device Discovery</a></li>';
 	if($radius_servers) echo '<li class="nav-radius-servers"><a role="menuitem"  href="radius_servers.php">Radius Servers</a></li>';
-	
 	if($media_sharing) {
 		echo '<li class="nav-media-sharing"><a role="menuitem"  title="click to toggle sub menu"  href="javascript:;">Media Sharing</a>';
 		echo '<ul>';
@@ -173,12 +163,10 @@ echo '<li class="nav-advanced">';
 		echo '</ul>';
 		echo '</li>';
 	}
-
 	if($file_sharing) echo '<li class="nav-file-sharing"><a role="menuitem"  href="samba_server_config.php">File Sharing</a></li>';
 	if($local_users)  echo '<li class="nav-local-users"><a role="menuitem"  href="local_users.php">Local Users</a></li>';
 	echo '</ul>';
 echo '</li>';
-
 echo '<li class="nav-troubleshooting">';
 	echo '<a role="menuitem"  title="click to toggle sub menu"  class="top-level" href="troubleshooting_logs.php">Troubleshooting</a>';
 	echo '<ul>';
@@ -190,5 +178,4 @@ echo '<li class="nav-troubleshooting">';
 echo '</li>';
 echo '</ul>';
 echo '</div>';
-
 ?>

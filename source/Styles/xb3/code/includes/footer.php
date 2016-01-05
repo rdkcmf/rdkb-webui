@@ -1,6 +1,5 @@
 <!-- $Id: footer.php 2976 2009-09-02 21:42:51Z cporto $ -->
 		</div> <!-- end #main-content-->
-		
 		<!--Footer-->
 		<div id="footer">
 			<ul id="footer-links">
@@ -17,7 +16,6 @@ $(document).ready(function() {
 	$("#skip-link").click(function () {
         $('#content').attr('tabIndex', -1).focus();  //this is to fix skip-link doesn't work on webkit-based Chrome
     });
-
 	// change radio-btn status and do ajax when press "enter"
 	//$(".radio-btns a").keydown(function(event){
 	$(".radio-btns a").keypress(function(event){
@@ -32,7 +30,6 @@ $(document).ready(function() {
 			$(this).parent(".radio-btns").radioToButton();
 		}
 	});
-	
 	// press Esc to skip menu and goto first control of content
 	// Esc:keypress:which is zero in FF, Esc:keypress is not work in Chrome
 	$("#nav").keydown(function(event){
@@ -44,7 +41,6 @@ $(document).ready(function() {
 		}
 		// alert(event.keyCode+"---"+event.which+"---"+event.charCode);		
 	});
-	
 	/* changes for high contrast mode */
 	$.highContrastDetect({useExtraCss: true, debugInNormalMode: false});
 	if ($.__isHighContrast) {
@@ -63,7 +59,6 @@ $(document).ready(function() {
 			}
 		});
 	}
-
 	/*
 	*	these 3 sections for radio-btn accessibility, as a workaround, maybe should put at the front of .ready().
 	*/
@@ -71,19 +66,16 @@ $(document).ready(function() {
 	$(".radio-btns a").each(function(){
 		$(this).attr("role", "radio").attr("title", $(this).closest("ul").prev().text() + $(this).find("label").text());
 	});
-	
 	// monitor "aria-checked" status for JAWS, NOTE: better depends on input element
 	$(".radio-btns").change(function(){
 		$(this).find("a").each(function(){
 			$(this).attr("aria-checked", $(this).find("input").attr("checked") ? "true" : "false");
 		});
 	});
-	
 	//give the initial status, do not trigger change above
 	$(".radio-btns").find("a").each(function(){
 		$(this).attr("aria-checked", $(this).find("input").attr("checked") ? "true" : "false");
 	});
-
 });
 </script>	
 </body>
