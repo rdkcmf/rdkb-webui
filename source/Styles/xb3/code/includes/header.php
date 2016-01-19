@@ -44,7 +44,6 @@
     /*
     ** is GW works in Bridge mode or not
     */
-	$lanMode = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode");
 	// $lanMode = 'bridge-static';
 	if ("bridge-static" != $lanMode && "router" != $lanMode){
 		$lanMode = "router";
@@ -54,7 +53,6 @@
     /*
     ** is GW works in PSM mode or not
     */
-	$psmMode = getStr("Device.X_CISCO_COM_DeviceControl.PowerSavingModeStatus");
 	// $psmMode = "Enabled";
 	if ("Enabled" != $psmMode && "Disabled" != $psmMode){
 		$psmMode = "Disabled";
