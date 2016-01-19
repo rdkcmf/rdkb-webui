@@ -88,6 +88,7 @@ switch ($infoArray[0]) {
 	case "btn5" :
 		$ret["reboot"] = true;
 		echo json_encode($ret);
+		setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","factory_reset",true);
 		setStr("Device.X_CISCO_COM_DeviceControl.FactoryReset", $infoArray[1],true);
 		exit(0);
 	case "btn6" :
