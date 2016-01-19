@@ -35,21 +35,66 @@ if($_FILES["file"]["error"]>0){
 <!-- $Id: header.php 3167 2010-03-03 18:11:27Z slemoine $ -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <title>XFINITY</title>
+	<title>XFINITY</title>
+	<!--CSS-->
+	<link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/common-min.css" />
+	<!--[if IE 6]>
+	<link rel="stylesheet" type="text/css" href="./cmn/css/ie6-min.css" />
+	<![endif]-->
+	<!--[if IE 7]>
+	<link rel="stylesheet" type="text/css" href="./cmn/css/ie7-min.css" />
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" media="print" href="./cmn/css/print.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/lib/jquery.radioswitch.css" />
+	<!--Character Encoding-->
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="./cmn/js/lib/jquery-migrate-1.2.1.js"></script>
+    <script type="text/javascript" src="./cmn/js/lib/jquery.alerts.js"></script>
+	<script type="text/javascript" src="./cmn/js/lib/jquery.alerts.progress.js"></script>
 </head>
 <body>
+<script type="text/javascript">
+$(document).ready(function() {
+	if(2 == "<?php echo $return_var; ?>"){	//Need Reboot to restore the saved configuration.
+		var info = new Array("btn1", "Router,Wifi,VoIP,Dect,MoCA");
+		var jsonInfo = '["' + info[0] + '","' + info[1]+ '"]';
+		jProgress("Please wait for rebooting ...", 999999);
+		$.ajax({
+			type: "POST",
+			url: "actionHandler/ajaxSet_Reset_Restore.php",
+			data: { resetInfo: jsonInfo }
+		});
+		setTimeout(checkForRebooting, 4 * 60 * 1000);
+	}
+});
+function checkForRebooting() {
+	$.ajax({
+		type: "GET",
+		url: "index.php",
+		timeout: 10000,
+		success: function() {
+			/* goto login page */
+			window.open ("index.php");
+			setTimeout(window.close(),1000);
+		},
+		error: function() {
+			/* retry after 2 minutes */
+			setTimeout(checkForRebooting, 30 * 1000);
+		}
+	});
+}
+</script>
     <!--Main Container - Centers Everything-->
 	<div id="container">
 		<div id="main-content">
 		<?php
-		echo "<h3>target $target</h3>";
 		switch ($return_var) {
 		case -1:
 			echo "<h3>Error, get restore status failure</h3>";
 			break;
 		case 2:
 			echo "<h3>Need Reboot to restore the saved configuration.</h3>";
-			setStr("Device.X_CISCO_COM_DeviceControl.RebootDevice","Router,Wifi,VoIP,Dect,MoCA",true);
 			break;
 		case 3:
 			echo "<h3>Error, restore configuration failure!</h3>";
