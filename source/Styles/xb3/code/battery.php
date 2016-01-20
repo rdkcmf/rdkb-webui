@@ -48,6 +48,7 @@ $(document).ready(function() {
 	<div id="educational-tip">
 		<p class="tip">View information about the Gateway's battery status. </p>
 		<p class="hidden">Battery power is for voice service only.</p>
+		<p class="hidden"><strong>Number of Cycles to date:</strong> Indicates how many discharge and charge cycles the battery has gone through from the day it was inserted.</p>
 	</div>
 	<div class="module forms data div_battery">
 		<table cellspacing="0" cellpadding="0" class="data" summary="This table shows battery status" >
@@ -56,7 +57,7 @@ $(document).ready(function() {
 			<th id="battery_status">&nbsp;</th>
 		</tr>
 		<tr class="odd">
-			<td headers="battery_metric" class="row-label">Power status:</td>
+			<td headers="battery_metric" class="row-label">Power Status:</td>
 			<td headers="battery_status" id="bat_power"><?php echo $battery_value["bat_power"]; ?></td>
 		</tr>
 		<tr>
