@@ -106,7 +106,7 @@ if ("true" == $arConfig['radio_enable'])
 		DmExtSetStrsWithRootObj("Device.WiFi.", true, array(
 			array("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", "string", $encrypt_mode), 
 			array("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_EncryptionMethod", "string", $encrypt_method)));
-		setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_KeyPassphrase", $arConfig['network_password'], true);
+		setStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_KeyPassphrase", $arConfig['network_password'], true);
 	}
 	setStr("Device.WiFi.SSID.$i.SSID", $arConfig['network_name'], true);
 	setStr("Device.WiFi.AccessPoint.$i.SSIDAdvertisementEnabled", $arConfig['broadcastSSID'], true);

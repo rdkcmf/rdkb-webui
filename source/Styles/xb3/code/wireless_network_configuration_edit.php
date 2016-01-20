@@ -14,9 +14,6 @@ $id		= isset($_GET['id']) ? $_GET['id'] : "1";
 $rf		= (2 - intval($id)%2);	//1,3,5,7 == 1(2.4G); 2,4,6,8 == 2(5G)
 $radio_band	= (1 == $rf) ? "2.4" : "5";
 $valid_ids	= array(1,2,3,4);
-if( $_SESSION["loginuser"] == "mso" ) {
-	$valid_ids	= array(1,2,3,4,5,6);
-}
 function KeyExtGet($root, $param)
 {
 	$raw_ret = DmExtGetStrsWithRootObj($root, $param);
@@ -38,7 +35,7 @@ $wifi_param = array(
 	"encrypt_method"	=> "Device.WiFi.AccessPoint.$id.Security.X_CISCO_COM_EncryptionMethod",
 	"channel_automatic"	=> "Device.WiFi.Radio.$rf.AutoChannelEnable",
 	"channel_number"	=> "Device.WiFi.Radio.$rf.Channel",
-	"network_password"	=> "Device.WiFi.AccessPoint.$id.Security.X_CISCO_COM_KeyPassphrase",
+	"network_password"	=> "Device.WiFi.AccessPoint.$id.Security.X_COMCAST-COM_KeyPassphrase",
 	"broadcastSSID"		=> "Device.WiFi.AccessPoint.$id.SSIDAdvertisementEnabled",
 	"enableWMM"			=> "Device.WiFi.AccessPoint.$id.WMMEnable",
 	"channel_bandwidth"	=> "Device.WiFi.Radio.$rf.OperatingChannelBandwidth",
@@ -70,13 +67,15 @@ $network_pass_128	= $wifi_value['network_pass_128'];
 $possible_channels	= $wifi_value['possible_channels'];
 $defaultSSID		= ($id == 3)?"":$wifi_value['DefaultSSID'];
 $defaultKeyPassphrase	= ($id == 3)?"":$wifi_value['DefaultKeyPassphrase'];
-/*- if AccessPoint is not up then don't show in GUI -*/
-if(strstr($wifi_value['AccessPoint_4_Enable'], "false")) unset($valid_ids[3]);
 /*- In bridge mode don't show 'Mac filter settings ' -*/
-	if(strstr($_SESSION["lanMode"], "bridge-static")){
-		unset($valid_ids[1]);
-		unset($valid_ids[0]);
-	}
+if(strstr($_SESSION["lanMode"], "bridge-static")){
+	unset($valid_ids[3]);
+	unset($valid_ids[2]);
+	unset($valid_ids[1]);
+	unset($valid_ids[0]);
+}
+/*- if AccessPoint is not up then don't show in GUI -*/
+else if(strstr($wifi_value['AccessPoint_4_Enable'], "false")) unset($valid_ids[3]);
 if (!in_array($id, $valid_ids)) {
 	echo '<script type="text/javascript">history.back();</script>';
 	exit(0);
@@ -286,13 +285,16 @@ $(document).ready(function() {
 		fromOther = false;
     	});
 	$("#password_show").change(function() {
+		var pass_val = $("#network_password").val();
 		if ($("#password_show").is(":checked")) {
 			document.getElementById("password_field").innerHTML = 
-			'<input type="text"     size="23" id="network_password" name="network_password" class="text" value="' + $("#network_password").val() + '" />'
+			'<input type="text"     size="23" id="network_password" name="network_password" class="text" value="" />';
+			$("#network_password").val(pass_val);
 		}
 		else {
 			document.getElementById("password_field").innerHTML = 
-			'<input type="password" size="23" id="network_password" name="network_password" class="text" value="' + $("#network_password").val() + '" />'
+			'<input type="password" size="23" id="network_password" name="network_password" class="text" value="" />';
+			$("#network_password").val(pass_val);
 		}
 		if ("None" == $("#security").val()) {
 			$("#network_password").prop("disabled", true);
@@ -449,34 +451,31 @@ $(document).ready(function() {
  *  Manage password field: open wep networks don't use passwords
  */
     $.validator.addMethod("wep_64", function(value, element, param) {
-    	//console.log("wep64" + param);
 		return !param || /^[a-fA-F0-9]{10}$|^[\S]{5}$/i.test(value);
 	}, "5 Ascii characters or 10 Hex digits.");
     $.validator.addMethod("wep_128", function(value, element, param) {
-    	//console.log("wep128");
 		return !param || /^[a-fA-F0-9]{26}$|^[\S]{13}$/i.test(value);
 	}, "13 Ascii characters or 26 Hex digits.");
     $.validator.addMethod("wpa", function(value, element, param) {
-    	//console.log("wpa");
-		return !param || /^[a-fA-F0-9]{64}$|^[\S]{8,63}$/i.test(value);
-	}, "8 to 63 Ascii characters or 64 Hex digits.");
+		return !param || /^[ -~]{8,63}$/i.test(value);
+	}, "8 to 63 ASCII characters.");
     $.validator.addMethod("wpa2", function(value, element, param) {
 		return !param || /^[\S]{8,63}$/i.test(value);
-	}, "8 to 63 Ascii characters.");
+	}, "8 to 63 ASCII characters.");
     $.validator.addMethod("ssid_name", function(value, element, param) {
-		return !param || /^[a-zA-Z0-9\-_.]{3,31}$/i.test(value);
-	}, "3 to 31 characters combined with alphabet, digit, underscore, hyphen and dot");
+		return !param || /^[ -~]{3,32}$/i.test(value);
+	}, "3 to 32 ASCII characters.");
     $.validator.addMethod("not_hhs", function(value, element, param) {
 		//prevent users to set XHSXXX or Xfinityxxx as ssid
-		return value.toLowerCase().indexOf("xhs")==-1 && value.toLowerCase().indexOf("xfinity")==-1;
-	}, 'SSID containing "XHS" and "Xfinity" are reserved !');
+		return value.toLowerCase().indexOf("xhs-") != 0 && value.toLowerCase().indexOf("xh-") != 0;
+	}, 'SSID containing "XHS-" and "XH-" are reserved !');
     $.validator.addMethod("not_hhs2", function(value, element, param) {
 		//prevent users to set optimumwifi or TWCWiFi  or CableWiFi or CoxWiFi or BHNWifi as ssid
 		//zqiu:
 		var str = value.replace(/[\.,-\/#@!$%\^&\*;:{}=\-_`~()\s]/g,'').toLowerCase();
-		return str.indexOf("wifi") == -1 || str.indexOf("cable") == -1 && str.indexOf("twc") == -1 && str.indexOf("optimum") == -1 && str.indexOf("cox") == -1 && str.indexOf("bhn") == -1;
+		return str.indexOf("wifi") == -1 || str.indexOf("cable") == -1 && str.indexOf("twc") == -1 && str.indexOf("optimum") == -1 && str.indexOf("xfinity") == -1 ;
 		//return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
-	}, 'SSID containing "optimumwifi", "TWCWiFi", "CoxWiFi", "BHNWiFi" and "CableWiFi" are reserved !');
+	}, 'SSID containing "optimumwifi", "TWCWiFi", "CoxWiFi" and "xfinitywifi" are reserved !');
     $.validator.addMethod("not_defaulSSID", function(value, element, param) {
 		//prevent users to set defaul-SSID as ssid
 		return value.toLowerCase() != "<?php echo $defaultSSID; ?>".toLowerCase();
@@ -490,9 +489,10 @@ $(document).ready(function() {
     $.validator.addMethod("not_XFSETUP", function(value, element, param) {
 		return value.toLowerCase().indexOf("xfsetup") != 0;
 	}, 'SSID starting with "XFSETUP" is reserved !');
-    $.validator.addMethod("not_HOME", function(value, element, param) {
+   /* $.validator.addMethod("not_HOME", function(value, element, param) {
 		return value.toLowerCase().indexOf("home") != 0;
 	}, 'SSID starting with "HOME" is reserved !');
+*/
 /*
 wep 64 ==> 5 Ascii characters or 10 Hex digits
 wep 128 ==> 13 Ascii characters or 26 Hex digits
@@ -507,7 +507,6 @@ wpa2psk ==> 8 to 63 Ascii characters
 				not_hhs: true,
 				not_hhs2: true,
 				not_XFSETUP: true,
-				not_HOME: true,
 				not_defaulSSID: true
 			},
     		network_password: {
@@ -635,17 +634,20 @@ function init_form()
 	}
 	$("#security").val(security);
 }
+function addslashes( str ) {
+	return (str + '').replace(/[\\]/g, '\\$&').replace(/["]/g, '\\\$&').replace(/\u0000/g, '\\0');
+}
 function click_save()
 {
 	var radio_enable		= $("#wireless_network_switch").radioswitch("getState").on;
-	var network_name		= $("#network_name").val();
+	var network_name		= addslashes($("#network_name").val());
 	var wireless_mode		= $("#wireless_mode").attr("value");
 	//var security			= $("#security").val();
-	var security_id = document.getElementById("security");
-	var security = security_id.options[security_id.selectedIndex].value;
+	var security_id 		= document.getElementById("security");
+	var security 			= security_id.options[security_id.selectedIndex].value;
 	var channel_automatic	= $("#channel_automatic").prop("checked");
 	var channel_number		= $("#channel_number").attr("value");
-	var network_password	= $("#network_password").val();
+	var network_password	= addslashes($("#network_password").val());
 	var broadcastSSID		= $("#broadcastSSID").prop("checked");
 	var enableWMM			= $("#enableWMM").prop("checked");
 	var jsConfig = '{"radio_enable":"'+radio_enable
@@ -718,7 +720,7 @@ function setResetInfo(info) {
 		</div>		
 		<div class="form-row _network_name">
 			<label for="network_name">Network Name (SSID):</label>
-			<input type="text" size="23" value="<?php echo $network_name;?>" id="network_name" name="network_name" class="text" />
+			<input type="text" size="23" value="<?php echo htmlspecialchars($network_name);?>" id="network_name" name="network_name" class="text" />
 		</div>
 		<div class="form-row odd" id="div_wireless_mode">
 			<label for="wireless_mode">Mode:</label>
@@ -753,9 +755,9 @@ function setResetInfo(info) {
 				<option value="WPA_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_TKIP"==$security)        echo "selected";?> >WPA-PSK (TKIP)</option>
 				<option value="WPA_PSK_AES" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_AES"==$security)         echo "selected";?> >WPA-PSK (AES)</option>
 				<option value="WPA2_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIP"==$security)       echo "selected";?> >WPA2-PSK (TKIP)</option>
-				<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_AES"==$security)        echo "selected";?> >WPA2-PSK (AES)</option>
-				<option value="WPA2_PSK_TKIPAES" 	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIPAES"==$security)    echo "selected";?> >WPA2-PSK (TKIP/AES)</option>
-				<option value="WPAWPA2_PSK_TKIPAES" title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPAWPA2_PSK_TKIPAES"==$security) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)(Recommended)</option>
+				<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password." <?php if ("WPA2_PSK_AES"==$security)        echo "selected";?> >WPA2-PSK (AES)</option>
+				<option value="WPA2_PSK_TKIPAES"	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIPAES"==$security)    echo "selected";?> >WPA2-PSK (TKIP/AES)</option>
+				<option value="WPAWPA2_PSK_TKIPAES" title="WPA requires an 8-63 ASCII character password." <?php if ("WPAWPA2_PSK_TKIPAES"==$security) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)(Recommended)</option>
 			</select>
 			<p id="tip_security_mode" class="footnote">
 			<?php
@@ -791,7 +793,7 @@ function setResetInfo(info) {
 		</div>
 		<div class="form-row odd" id="div_network_password">
 			<label for="network_password">Network Password:</label>
-			<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="<?php echo $network_password; ?>" /></span>
+			<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="<?php echo htmlspecialchars($network_password); ?>" /></span>
 			<p id="netPassword-footnote" class="footnote">8-16 characters. Letter and numbers only. No spaces. Case sensitive.</p>
 		</div>
 		<div class="form-row" id="div_password_show">
@@ -808,7 +810,7 @@ function setResetInfo(info) {
 		</div>
 		<div class="form-row odd form-btn">
 			<input type="submit" class="btn confirm" id="save_settings" name="save_settings" value="Save Settings" />
-			<!--input href="#" title="Restore Wi-Fi Module" id="restore-default-settings" name="restore_default_settings" type="button" value="Restore Wi-Fi Settings" class="btn alt" /-->
+			<!--input href="#" title="Restore Wi-Fi Module" id="restore-default-settings" name="restore_default_settings" type="button" style="text-transform: none;" value="RESTORE Wi-Fi SETTINGS" class="btn alt" /-->
 		</div>
 		</form>
 	</div> <!-- end .module -->

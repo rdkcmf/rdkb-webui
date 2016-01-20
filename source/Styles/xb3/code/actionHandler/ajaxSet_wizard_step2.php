@@ -84,7 +84,7 @@ else {	//no open, no wep
 		DmExtSetStrsWithRootObj("Device.WiFi.", true, array(
 			array("Device.WiFi.AccessPoint.1.Security.ModeEnabled", "string", $encrypt_mode), 
 			array("Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_EncryptionMethod", "string", $encrypt_method)));
-		setStr("Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_KeyPassphrase", $arConfig['network_password'], true);
+		setStr("Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase", $arConfig['network_password'], true);
 	}
 // setStr("Device.WiFi.Radio.1.X_CISCO_COM_ApplySetting", "true", true);
 MiniApplySSID(1);
@@ -146,7 +146,7 @@ else {	//no open, no wep
 		DmExtSetStrsWithRootObj("Device.WiFi.", true, array(
 			array("Device.WiFi.AccessPoint.2.Security.ModeEnabled", "string", $encrypt_mode), 
 			array("Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_EncryptionMethod", "string", $encrypt_method)));
-		setStr("Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_KeyPassphrase", $arConfig['network_password1'], true);
+		setStr("Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase", $arConfig['network_password1'], true);
 	}
 // setStr("Device.WiFi.Radio.2.X_CISCO_COM_ApplySetting", "true", true);
 MiniApplySSID(2);

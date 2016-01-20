@@ -73,7 +73,7 @@ else {
 		"network_name"		=> "Device.WiFi.SSID.$id.SSID",
 		"encrypt_mode"		=> "Device.WiFi.AccessPoint.$id.Security.ModeEnabled",
 		"encrypt_method"	=> "Device.WiFi.AccessPoint.$id.Security.X_CISCO_COM_EncryptionMethod",
-		"password_wpa"		=> "Device.WiFi.AccessPoint.$id.Security.X_CISCO_COM_KeyPassphrase",
+		"password_wpa"		=> "Device.WiFi.AccessPoint.$id.Security.X_COMCAST-COM_KeyPassphrase",
 		"password_wep_64"	=> "Device.WiFi.AccessPoint.$id.Security.X_CISCO_COM_WEPKey64Bit.1.WEPKey",
 		"password_wep_128"	=> "Device.WiFi.AccessPoint.$id.Security.X_CISCO_COM_WEPKey128Bit.1.WEPKey",
 		"broadcastSSID"		=> "Device.WiFi.AccessPoint.$id.SSIDAdvertisementEnabled",
@@ -149,6 +149,14 @@ array_push($RemoteEndpointsV4, $PrimaryRemoteEndpoint);
 array_push($RemoteEndpointsV4, $SecondaryRemoteEndpoint);
 array_push($RemoteEndpointsV6, $PrimaryRemoteEndpoint);
 array_push($RemoteEndpointsV6, $SecondaryRemoteEndpoint);
+	//wifi password
+	$network_password = $password_wpa;
+	if ("WEP-64"==$encrypt_mode){
+		$network_password = $password_wep_64;
+	}
+	else if (("WEP-128"==$encrypt_mode)){
+		$network_password = $password_wep_128;
+	}
 ?>
 <style>
 .error{
@@ -232,23 +240,20 @@ $(document).ready(function() {
  *  Manage password field: open wep networks don't use passwords
  */
     $.validator.addMethod("wep_64", function(value, element, param) {
-    	//console.log("wep64" + param);
 		return !param || /^[a-fA-F0-9]{10}$|^[\S]{5}$/i.test(value);
 	}, "5 Ascii characters or 10 Hex digits.");
     $.validator.addMethod("wep_128", function(value, element, param) {
-    	//console.log("wep128");
 		return !param || /^[a-fA-F0-9]{26}$|^[\S]{13}$/i.test(value);
 	}, "13 Ascii characters or 26 Hex digits.");
     $.validator.addMethod("wpa", function(value, element, param) {
-    	//console.log("wpa");
-		return !param || /^[a-fA-F0-9]{64}$|^[\S]{8,63}$/i.test(value);
-	}, "8 to 63 Ascii characters or 64 Hex digits.");
+		return !param || /^[ -~]{8,63}$/i.test(value);
+	}, "8 to 63 ASCII characters.");
     $.validator.addMethod("wpa2", function(value, element, param) {
 		return !param || /^[\S]{8,63}$/i.test(value);
 	}, "8 to 63 Ascii characters.");
     $.validator.addMethod("ssid_name", function(value, element, param) {
-		return !param || /^[a-zA-Z0-9\-_.]{3,31}$/i.test(value);
-	}, "3 to 31 characters combined with alphabet, digit, underscore, hyphen and dot");
+		return !param || /^[ -~]{3,32}$/i.test(value);
+	}, "3 to 32 ASCII characters.");
     // XFSETUP HOME xfinitywifi cablewifi
     // a term starting with the following combination of text in uppercase or lowercase should not be allowed
     $.validator.addMethod("not_XFSETUP", function(value, element, param) {
@@ -351,6 +356,9 @@ wpa2psk ==> 8 to 63 Ascii characters
 			}
 		);
 	});
+	function addslashes( str ) {
+		return (str + '').replace(/[\\]/g, '\\$&').replace(/["]/g, '\\\$&').replace(/\u0000/g, '\\0');
+	}
 	$("#save_settings").click(function(){	
 		var security 		= $("#security").val().split(".");
 		var encrypt_mode 	= security[0];
@@ -361,36 +369,35 @@ wpa2psk ==> 8 to 63 Ascii characters
 		}
 		var PrimaryRemoteEndpoint = $("#RemoteEndpointsV4_1").val();
 		var SecondaryRemoteEndpoint = $("#RemoteEndpointsV4_2").val();
+		var jsConfig = '{"radio_enable":"'+$("#wireless_network_switch").radioswitch("getState").on
+						+'", "radio_freq":"'+radio_freq
+						+'", "network_name":"'+addslashes($("#network_name").val())
+						+'", "encrypt_mode":"'+encrypt_mode
+						+'", "encrypt_method":"'+encrypt_method
+						+'", "network_password":"'+addslashes($("#network_password").val())
+						+'", "broadcastSSID":"'+$("#broadcastSSID").prop("checked")
+						+'", "enableWMM":"'+$("#enableWMM").prop("checked")
+						+'", "ssid_number":"'+ssid_number
+						+'", "max_client":"'+$("#max_client").val()
+						+'", "DSCPMarkPolicy":"'+$("#DSCPMarkPolicy").val()
+						+'", "PrimaryRemoteEndpoint":"'+$("#RemoteEndpointsV4_1").val()
+						+'", "SecondaryRemoteEndpoint":"'+$("#RemoteEndpointsV4_2").val()
+						+'", "KeepAliveCount":"'+$("#KeepAliveCount").val()
+						+'", "KeepAliveInterval":"'+$("#KeepAliveInterval").val()
+						+'", "KeepAliveThreshold":"'+$("#KeepAliveThreshold").val()
+						+'", "KeepAliveFailInterval":"'+60*$("#KeepAliveFailInterval").val()
+						+'", "ReconnectPrimary":"'+3600*$("#ReconnectPrimary").val()
+						+'", "DHCPCircuitIDSSID":"'+$("#circuit_switch").radioswitch("getState").on
+						+'", "DHCPRemoteID":"'+$("#remote_switch").radioswitch("getState").on
+						 <?php if ("y" == $reset) {
+						echo ', "radio_reset":	"true"';
+					}?>	+'"}';	
 		if($("#pageForm").valid()) {
 			jProgress('This may take several seconds...', 60);
 			$.ajax({
 				type:"POST",
 				url:"actionHandler/ajaxSet_wireless_network_configuration_edit_public.php",
-				data:{
-					ssid_number:		ssid_number, 
-					radio_freq:			radio_freq, 
-					radio_enable:		$("#wireless_network_switch").radioswitch("getState").on,
-					network_name:		$("#network_name").val(), 
-					encrypt_mode:		encrypt_mode, 
-					encrypt_method:		encrypt_method,
-					network_password:	$("#network_password").val(),
-					broadcastSSID:		$("#broadcastSSID").prop("checked"),
-					enableWMM:			$("#enableWMM").prop("checked"),
-					max_client:			$("#max_client").val(), 
-					DSCPMarkPolicy:		$("#DSCPMarkPolicy").val(), 
-					PrimaryRemoteEndpoint: $("#RemoteEndpointsV4_1").val(),
-					SecondaryRemoteEndpoint: $("#RemoteEndpointsV4_2").val(),
-					KeepAliveCount:		$("#KeepAliveCount").val(), 
-					KeepAliveInterval:	$("#KeepAliveInterval").val(), 
-					KeepAliveThreshold:	$("#KeepAliveThreshold").val(), 
-					KeepAliveFailInterval:	60*$("#KeepAliveFailInterval").val(),
-					ReconnectPrimary:	3600*$("#ReconnectPrimary").val(),
-					DHCPCircuitIDSSID:	$("#circuit_switch").radioswitch("getState").on,
-					DHCPRemoteID:		$("#remote_switch").radioswitch("getState").on
-					<?php if ("y" == $reset) {
-						echo ', radio_reset:	"true"';
-					}?>				
-				},
+				data: { configInfo: jsConfig },
 				success:function(){
 					jHide();
 					//location.href = location.href.replace(/&reset=y/g, "");
@@ -412,10 +419,10 @@ function init_form() {
 	//re-style each div
 	$('#pageForm > div').removeClass("odd");
 	$('#pageForm > div:visible:odd').addClass("odd");
-	var network_name 		= "<?php echo $network_name; ?>";
+	var network_name 		= "<?php echo htmlspecialchars($network_name); ?>";
 	var encrypt_mode 		= "<?php echo $encrypt_mode; ?>";
 	var encrypt_method 		= "<?php echo $encrypt_method; ?>";
-	var password_wpa 		= "<?php echo $password_wpa; ?>";
+	//var password_wpa 		= "<?php echo htmlspecialchars($password_wpa); ?>";
 	var password_wep_64 	= "<?php echo $password_wep_64; ?>";
 	var password_wep_128 	= "<?php echo $password_wep_128; ?>";
 	var broadcastSSID 		= "<?php echo $broadcastSSID; ?>";
@@ -499,15 +506,6 @@ function init_form() {
 	// disable radius server at this point
 	$("#add_with").find("[value='Enterprise']").prop("disabled", true);
 	$("#security").change();
-	//wifi password
-	var network_password = password_wpa;
-	if ("WEP-64"==encrypt_mode){
-		network_password = password_wep_64;
-	}
-	else if (("WEP-128"==encrypt_mode)){
-		network_password = password_wep_128;
-	}		
-	$("#network_password").val(network_password);
 	//for UI-4.0, remove some security options
     if ("2.4"==radio_freq){
         $("#security").find("[value='WPA.TKIP'],[value='WPA.AES'],[value='WPA2.TKIP'],[value='WPA2.AES+TKIP']").remove();
@@ -562,8 +560,8 @@ label{
 			</div>
 			<div class="form-row odd" id="div_network_password">
 				<label for="network_password">Network Password:</label>
-				<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="" /></span>
-				<p id="netPassword-footnote" class="footnote">8-16 characters. Letter and numbers only. No spaces. Case sensitive.</p><br/>
+				<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="<?php echo htmlspecialchars($network_password);?>" /></span>
+				<p id="netPassword-footnote" class="footnote">8 to 63 ASCII characters.</p><br/>
 			</div>
 			<!--div class="form-row" id="div_password_show">
 				<label for="password_show">Show Network Password:</label>
