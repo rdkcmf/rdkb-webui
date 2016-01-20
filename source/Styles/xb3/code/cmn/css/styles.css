@@ -132,9 +132,31 @@ input::-webkit-input-placeholder {
   font-family: 'xfinSansLt';
   color: #fff;
   opacity: .2;
-  text-align: center;
+  text-align: left;
+  text-indent: 20px;
 }
-#link_example{
+:-moz-placeholder { /* Firefox 18- */
+  font-family: 'xfinSansLt';
+  color: #fff;
+  opacity: .2;
+  text-align: left;
+  text-indent: 20px;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+  font-family: 'xfinSansLt';
+  color: #fff;
+  opacity: .2;
+  text-align: left;
+  text-indent: 20px;
+}
+:-ms-input-placeholder {
+  font-family: 'xfinSansLt';
+  color: #fff;
+  opacity: .2;
+  text-align: left;
+  text-indent: 20px;
+}
+.link_example{
   margin:50px 0;
 }
 a{

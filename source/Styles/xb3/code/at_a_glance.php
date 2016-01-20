@@ -1,5 +1,58 @@
 <?php include('includes/header.php'); ?>
 <!-- $Id: at_a_glance.dory.php 2943 2009-08-25 20:58:43Z slemoine $ -->
+<?php
+session_start();
+	$a = getStr("Device.X_CISCO_COM_MTA.Battery.RemainingCharge");
+	$b = getStr("Device.X_CISCO_COM_MTA.Battery.ActualCapacity");
+	$sta_batt = ($a<=$b && $a && $b) ? round(100*$a/$b) : 0;
+	//$sta_batt = "61";
+	//find battery class manually	
+	if($sta_batt > 90) { $battery_class = "bat-100"; }
+	elseif($sta_batt > 60) { $battery_class = "bat-75"; }
+	elseif($sta_batt > 39) { $battery_class = "bat-50"; }
+	elseif($sta_batt > 18) { $battery_class = "bat-25"; }
+	elseif($sta_batt > 8) { $battery_class = "bat-10"; }
+	else { $battery_class = "bat-0"; }
+	$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
+	$WANIPv4 = getStr($fistUSif."IPv4Address.1.IPAddress");
+	$ids = explode(",", getInstanceIds($fistUSif."IPv6Address."));
+	foreach ($ids as $i){
+		$val = getStr($fistUSif."IPv6Address.$i.IPAddress");
+		if (!strstr($val, "fe80::")){
+			$WANIPv6 = $val;
+			break;
+		}
+	}
+	$sta_inet = ($WANIPv4 != "0.0.0.0" || strlen($WANIPv6) > 0) ? "true" : "false";
+	//in Bridge mode > Internet connectivity status is always active
+	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
+	$sta_wifi = "false";
+	if("Disabled"==$_SESSION["psmMode"]){
+		$ssids = explode(",", getInstanceIds("Device.WiFi.SSID."));
+		foreach ($ssids as $i){
+			$r = (2 - intval($i)%2);	//1,3,5,7==1(2.4G); 2,4,6,8==2(5G)
+			if ("true" == getStr("Device.WiFi.Radio.$r.Enable") && "true" == getStr("Device.WiFi.SSID.$i.Enable")){	//bwg has radio.enable, active status is “at least one SSID and its Radio is enabled”
+				$sta_wifi = "true";
+				break;
+			}
+		}	
+	}
+	if("Disabled"==$_SESSION["psmMode"]) { $sta_moca = getStr("Device.MoCA.Interface.1.Enable"); }
+	$sta_dect = getStr("Device.X_CISCO_COM_MTA.Dect.Enable");
+	$sta_fire = getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel");
+	$arConfig = array(
+		"target" => "sta_inet,sta_wifi,sta_moca,sta_fire",
+		"status" => $sta_inet.",".$sta_wifi.",".$sta_moca.",".$sta_fire,
+	);
+	//to update main status
+	$mainStatus = array($sta_inet,$sta_wifi,$sta_moca,$sta_fire,$sta_batt,$battery_class);
+	$_SESSION['sta_inet'] = $sta_inet;
+	$_SESSION['sta_wifi'] = $sta_wifi;
+	$_SESSION['sta_moca'] = $sta_moca;
+	$_SESSION['sta_fire'] = $sta_fire;
+	$_SESSION['sta_batt'] = $sta_batt;
+	$_SESSION['battery_class'] = $battery_class;
+?>
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
@@ -105,10 +158,10 @@ function popUp(URL) {
 		$wifi_param = array(
 	        "wifi_24_enabled" 	=> "Device.WiFi.SSID.1.Enable",
 			"wifi_24_ssid" 		=> "Device.WiFi.SSID.1.SSID",
-			"wifi_24_passkey" 	=> "Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_KeyPassphrase",
+			"wifi_24_passkey" 	=> "Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase",
 			"wifi_50_enabled" 	=> "Device.WiFi.SSID.2.Enable",
 			"wifi_50_ssid" 		=> "Device.WiFi.SSID.2.SSID",
-			"wifi_50_passkey" 	=> "Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_KeyPassphrase",
+			"wifi_50_passkey" 	=> "Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase",
 		);
 	    $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 		$wifi_24_enabled = $wifi_value["wifi_24_enabled"];
@@ -148,24 +201,24 @@ function popUp(URL) {
 				} else {
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (2.4Ghz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID (2.4GHz):</span>';
 						echo '<span class="value">';echo $wifi_24_ssid;echo '</span>';
 					echo '</div>';
 					if ("admin" == $_SESSION["loginuser"]) {
 						echo '<div class="form-row even">';
-							echo '<span class="readonlyLabel">Wi-Fi Passkey (2.4Ghz):</span>';
+							echo '<span class="readonlyLabel">Wi-Fi Passkey (2.4GHz):</span>';
 							echo '<span class="value">';echo $wifi_24_passkey;echo '</span>';
 						echo '</div>';
 					}
 				echo '</div>';
 				echo '<div class="form-row odd">';
 					echo '<div class="form-row odd">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (5Ghz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID (5GHz):</span>';
 						echo '<span class="value">';echo $wifi_50_ssid;echo '</span>';
 					echo '</div>';
 					if ("admin" == $_SESSION["loginuser"]) { 
 						echo '<div class="form-row odd">';
-							echo '<span class="readonlyLabel">Wi-Fi Passkey (5Ghz):</span>';
+							echo '<span class="readonlyLabel">Wi-Fi Passkey (5GHz):</span>';
 							echo '<span class="value">';echo $wifi_50_passkey;echo '</span>';
 						echo '</div>';
 					}

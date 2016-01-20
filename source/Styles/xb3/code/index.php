@@ -1,10 +1,10 @@
 <?php include('includes/utility.php'); ?>
 <?php
-session_start();
 $DeviceInfo_param = array(
 	"ConfigureWiFi"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi",
 	"CloudUIEnable"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable",
 	"CloudUIWebURL"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIWebURL",
+	"CaptivePortalEnable"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CaptivePortalEnable",
 	);
 $DeviceInfo_value = KeyExtGet("Device.DeviceInfo.", $DeviceInfo_param);
 $DeviceControl_param = array(
@@ -16,6 +16,7 @@ $DeviceControl_value = KeyExtGet("Device.X_CISCO_COM_DeviceControl.", $DeviceCon
 $CONFIGUREWIFI	= $DeviceInfo_value["ConfigureWiFi"];
 $Cloud_Enabled	= $DeviceInfo_value["CloudUIEnable"];
 $Cloud_WebURL	= $DeviceInfo_value["CloudUIWebURL"];
+$CaptivePortalEnable	= $DeviceInfo_value["CaptivePortalEnable"];
 $url = $_SERVER['HTTP_HOST'];
 $Wan_IPv4 = getStr("Device.X_CISCO_COM_CableModem.IPAddress");
 $Wan_IPv6 = getStr("Device.X_CISCO_COM_CableModem.IPv6Address");
@@ -48,15 +49,18 @@ $psmMode = $DeviceControl_value['psmMode'];
 if(!$isMSO) {
         setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_access",true);
 	//If Cloud redirection is set, then everything through local GW should be redirected
-	if(strstr($Cloud_Enabled, "true"))	
+	if(!strcmp($Cloud_Enabled, "true"))	
 	{
 		header("Location: $Cloud_WebURL");
 		exit;
 	}
-	if(strstr($CONFIGUREWIFI, "true")) {
-		$SERVER_ADDR = $_SERVER['SERVER_ADDR'];
-		$ip_addr = strpos($SERVER_ADDR, ":") == false ? $LanGwIPv4 : $LanGwIPv6 ;
-		header('Location:http://'.$ip_addr.'/captiveportal.php');
+	if(!strcmp($CaptivePortalEnable, "true")) {
+		if(!strcmp($CONFIGUREWIFI, "true")) {
+			$SERVER_ADDR = $_SERVER['SERVER_ADDR'];
+			$ip_addr = strpos($SERVER_ADDR, ":") == false ? $LanGwIPv4 : $LanGwIPv6 ;
+			header('Location:http://'.$ip_addr.'/captiveportal.php');
+			exit;
+		}
 	}
 }
 ?>
@@ -187,12 +191,6 @@ $_SESSION["psmMode"] = $psmMode;
 	if("Disabled"==$_SESSION["psmMode"]) { $sta_moca = getStr("Device.MoCA.Interface.1.Enable"); }
 	//$sta_dect = getStr("Device.X_CISCO_COM_MTA.Dect.Enable");
 	$sta_fire = getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel");
-	$_SESSION['sta_inet'] = $sta_inet;
-	$_SESSION['sta_wifi'] = $sta_wifi;
-	$_SESSION['sta_moca'] = $sta_moca;
-	$_SESSION['sta_fire'] = $sta_fire;
-	$_SESSION['sta_batt'] = $sta_batt;
-	$_SESSION['battery_class'] = $battery_class;
 	//$sta_batt = "58";
 	//$sta_inet = "true";
 	//$sta_wifi = "false";
@@ -212,10 +210,17 @@ $_SESSION["psmMode"] = $psmMode;
 		* but for screen reader we have to load all status once
 		* below code can easily rollback
 		*/
+		// $("[id^='sta_']:not(#sta_batt)").one("mouseenter",function(){
+		// var theObj = $(this);
+		// var target = theObj.attr("id");
+		// var status = ("sta_fire"==target)? sta_fire : !(theObj.hasClass("off"));
+		// var jsConfig = '{"status":"'+status+'", "target":"'+target+'"}';
+		var jsConfig = '{"target":"'+"sta_inet,sta_wifi,sta_moca,sta_fire"
+		+'", "status":"'+sta_inet+','+sta_wifi+','+sta_moca+','+sta_fire+'"}';
 		$.ajax({
 			type: "POST",
-			url: "actionHandler/ajaxSet_userbar.php",
-			data: { configInfo: "noData" },
+			url: "actionHandler/ajaxSet_index_userbar.php",
+			data: { configInfo: jsConfig },
 			dataType: "json",
 			success: function(msg) {
 				// theObj.find(".tooltip").html(msg.tips);
@@ -368,10 +373,10 @@ function f()
 		$wifi_param = array(
 			"wifi_24_enabled"	=> "Device.WiFi.SSID.1.Enable",
 			"wifi_24_ssid"		=> "Device.WiFi.SSID.1.SSID",
-			"wifi_24_passkey"	=> "Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_KeyPassphrase",
+			"wifi_24_passkey"	=> "Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase",
 			"wifi_50_enabled"	=> "Device.WiFi.SSID.2.Enable",
 			"wifi_50_ssid"		=> "Device.WiFi.SSID.2.SSID",
-			"wifi_50_passkey"	=> "Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_KeyPassphrase",
+			"wifi_50_passkey"	=> "Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase",
 		);
 		$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 		$wifi_24_enabled 	= $wifi_value["wifi_24_enabled"];
@@ -422,13 +427,13 @@ function f()
 				if($isMSO) {
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (2.4Ghz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID (2.4GHz):</span>';
 						echo '<span style="font-weight: bold;" class="value">'.$wifi_24_ssid.'</span>';
 					echo '</div>';
 				echo '</div>';
 				echo '<div class="form-row odd">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (5Ghz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID (5GHz):</span>';
 						echo '<span style="font-weight: bold;" class="value">'.$wifi_50_ssid.'</span>';
 					echo '</div>';
 				echo '</div>';
@@ -436,21 +441,21 @@ function f()
 				else{
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (2.4Ghz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID (2.4GHz):</span>';
 						echo '<span style="font-weight: bold;" class="value">'.$wifi_24_ssid.'</span>';
 					echo '</div>';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi Passkey (2.4Ghz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi Passkey (2.4GHz):</span>';
 						echo '<span class="value">Log in to view passkey</span>';
 					echo '</div>';
 				echo '</div>';
 				echo '<div class="form-row odd">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (5Ghz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID (5GHz):</span>';
 						echo '<span style="font-weight: bold;" class="value">'.$wifi_50_ssid.'</span>';
 					echo '</div>';
 					echo '<div class="form-row odd">';
-						echo '<span class="readonlyLabel">Wi-Fi Passkey (5Ghz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi Passkey (5GHz):</span>';
 						echo '<span class="value">Log in to view passkey</span>';
 					echo '</div>';
 				echo '</div>';

@@ -10,7 +10,7 @@ if(strstr($CONFIGUREWIFI, "false"))	header('Location:index.php');
 $network_name	= getStr("Device.WiFi.SSID.1.SSID");
 $network_name 	= explode('-2.4', $network_name);
 $network_name	= $network_name[0];
-$network_pass	= getStr("Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_KeyPassphrase");
+$network_pass	= getStr("Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase");
 $ipv4_addr = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
 ?>
 <script type="text/javascript" src="cmn/js/lib/jquery.alerts.progress.js"></script>

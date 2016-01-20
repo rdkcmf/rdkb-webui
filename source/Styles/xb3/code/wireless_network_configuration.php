@@ -660,6 +660,34 @@ $(document).ready(function() {
 	}
 	// now we can show target content
 	$("#content").show();
+	if (isBridge == 'bridge-static') { 
+   		if ("mso" == "<?php echo $_SESSION["loginuser"]; ?>"){
+	        $(".div_wps_setting input, .div_wps_setting select").addClass('disabled').attr('disabled',true);
+	        $("#radio24_switch, #radio5_switch, #wps_switch, #pin_switch").radioswitch("doEnable", false);
+   			$('.div_public_wifi *').addClass('disabled');
+	        $('.div_public_wifi .btn').click(function(e) {
+	            e.preventDefault();
+	        });
+	        $("#wireless_mode, #transmit_power, #channel_switch, #channel_number, #channel_manual, #channel_automatic").addClass('disabled').attr('disabled',true);
+	        $('.div_radio_setting *').addClass('disabled');
+	        $('.div_radio_setting .btn').prop('disabled',true);
+	        $('.div_radio_setting .btn').click(function(e) {
+	            e.preventDefault();
+	        });
+	     	$(".div_radio_setting input, .div_radio_setting select").addClass('disabled').attr('disabled',true);
+			$('#mac_admin *').addClass('disabled');
+	        $('#mac_admin .btn').prop('disabled',true);
+	        $('#mac_admin .btn').click(function(e) {
+	            e.preventDefault();
+	        });
+			$("#mac_admin input, #mac_admin select").addClass('disabled').attr('disabled',true);
+			$('.div_wps_setting *').addClass('disabled');
+	        $('.div_wps_setting .btn').prop('disabled',true);
+	        $('.div_wps_setting .btn').click(function(e) {
+	            e.preventDefault();
+	        });
+		}
+	}
 });
 function set_config(jsConfig)
 {

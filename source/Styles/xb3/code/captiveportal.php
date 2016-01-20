@@ -23,7 +23,7 @@
 	font-family: 'xfinSansLt';
 	font-size: 14px;
 	line-height: 24px;
-	color: #fff;
+	color: #888;
 	-webkit-font-smoothing: antialiased;
 }
 </style>
@@ -33,17 +33,21 @@
 	// redirection logic - uncomment the code below while checking in
 	$DeviceInfo_param = array(
 		"CONFIGUREWIFI" => "Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi",
-		"EMS_ServerURL" => "Device.DeviceInfo.X_COMCAST-COM_EMS_ServerURL",
+		"CaptivePortalEnable"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CaptivePortalEnable",
 	);
 	$DeviceInfo_value	= KeyExtGet("Device.DeviceInfo.", $DeviceInfo_param);
 	$CONFIGUREWIFI = $DeviceInfo_value["CONFIGUREWIFI"];
-	if(strstr($CONFIGUREWIFI, "false"))	header('Location:index.php');
+	$CaptivePortalEnable	= $DeviceInfo_value["CaptivePortalEnable"];
+	if(!strcmp($CaptivePortalEnable, "false") || !strcmp($CONFIGUREWIFI, "false")) {
+		header('Location:index.php');
+		exit;
+	}
 	//WiFi Defaults are same for 2.4Ghz and 5Ghz
 	$wifi_param = array(
 		"network_name"	 => "Device.WiFi.SSID.1.SSID",
 		"network_name1"	 => "Device.WiFi.SSID.2.SSID",
-		"KeyPassphrase"	 => "Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_KeyPassphrase",
-		"KeyPassphrase1" => "Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_KeyPassphrase",
+		"KeyPassphrase"	 => "Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase",
+		"KeyPassphrase1" => "Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase",
 	);
 	$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 	$network_name	= $wifi_value['network_name'];
@@ -140,7 +144,6 @@ $(document).ready(function(){
 	var goNextPassword	= false;
 	var goNextName5		= false;
 	var goNextPassword5	= false;
-	var goNextphoneNumber	= true;
 	function GWReachable(){
 		//location.href = "http://xfinity.com";
 		// Handle IE and more capable browsers
@@ -184,11 +187,12 @@ $(document).ready(function(){
 	}
 	function goToReady(){
 		if(connectionType == "WiFi"){ //"Ethernet", "WiFi", "none"
+			$("#setup_started").hide();
+			$("#setup_completed").show();
 			setTimeout(function(){ GWReachable(); }, 2000);
 		} else {
 			$("#ready").show();
 			$("#complete").hide();
-			setTimeout(function(){ location.href = "http://xfinity.com"; }, 5000);
 		}
 	}
 	function EMS_mobileNumber(){
@@ -206,11 +210,14 @@ $(document).ready(function(){
 			return '0000000000';
 		}
 	}
+	function addslashes( str ) {
+		return (str + '').replace(/[\\]/g, '\\$&').replace(/["]/g, '\\\$&').replace(/\u0000/g, '\\0');
+	}
 	function saveConfig(){
-		var network_name 	= $("#WiFi_Name").val();
-		var network_password 	= $("#WiFi_Password").val();
-		var network5_name 	= $("#WiFi5_Name").val();
-		var network5_password 	= $("#WiFi5_Password").val();
+		var network_name 	= addslashes($("#WiFi_Name").val());
+		var network_password 	= addslashes($("#WiFi_Password").val());
+		var network5_name 	= addslashes($("#WiFi5_Name").val());
+		var network5_password 	= addslashes($("#WiFi5_Password").val());
 		var jsConfig;
 		if($("#dualSettings").css('display') == "block" && !$("#selectSettings" ).is(":checked")){
 			jsConfig = '{"dualband":"true", "network_name":"'+network_name+'", "network_password":"'+network_password+'", "network5_name":"'+network5_name+'", "network5_password":"'+network5_password+'", "phoneNumber":"'+EMS_mobileNumber()+'"}';
@@ -224,11 +231,20 @@ $(document).ready(function(){
 			data: { rediection_Info: jsConfig },
 			success: function (msg, status, jqXHR) {
 				//msg is the response
+				msg = JSON.parse(msg);
+				if(msg[0] == "outOfCaptivePortal")
+				{
+					setTimeout(function(){ 
+						location.href="index.php"; 
+					}, 10000);
+				}
 			}
 		});
-		setTimeout(function(){ goToReady(); }, 25000);
+		if(connectionType != "WiFi"){
+			setTimeout(function(){ goToReady(); }, 25000);
+		}
 	}
-	var NameTimeout, PasswordTimeout, Name5Timeout, Password5Timeout, phoneNumberTimeout;
+	var NameTimeout, PasswordTimeout, Name5Timeout, Password5Timeout, phoneNumberTimeout, agreementTimeout;
 	function messageHandler(target, topMessage, bottomMessage){
 		//target	- "name", "password", "name5", "password5", "phoneNumber"
 		//topMessage	- top message to show
@@ -263,10 +279,19 @@ $(document).ready(function(){
 		}
 		else if(target == "phoneNumber"){
 			$("#phoneNumberContainer").fadeIn("slow");
+			$("#agreementContainer").hide();
 			clearTimeout(phoneNumberTimeout);
 			phoneNumberTimeout = setTimeout(function(){ $("#phoneNumberContainer").fadeOut("slow"); }, 5000);
 			$("#phoneNumberMessageTop").text(topMessage);
 			$("#phoneNumberMessageBottom").text(bottomMessage);
+		}
+		else if(target == "concent_check"){
+			$("#agreementContainer").fadeIn("slow");
+			$("#phoneNumberContainer").hide();
+			clearTimeout(agreementTimeout);
+			agreementTimeout = setTimeout(function(){ $("#agreementContainer").fadeOut("slow"); }, 5000);
+			$("#agreementMessageTop").text(topMessage);
+			$("#agreementMessageBottom").text(bottomMessage);
 		}
 	}
 	function passStars(val){
@@ -319,7 +344,7 @@ $(document).ready(function(){
 		var nums 	= val.search(/\d/) === -1 ? 0 : 1 ;	//numbers
 		var lowers 	= val.search(/[a-z]/) === -1 ? 0 : 1 ;	//lower case
 		var uppers 	= val.search(/[A-Z]/) === -1 ? 0 : 1 ;	//upper case
-		var specials 	= val.search(/[\-_.]/) === -1 ? 0 : 1 ;	//special characters
+		var specials 	= val.search(/(?![a-zA-Z0-9])[!-~]/) === -1 ? 0 : 1 ;	//All "Special Characters" in the ASCII Table
 		var strength = nums+lowers+uppers+specials;
 		strength = val.length > 7 ? strength : 0 ;
 		strength = val.length < 64 ? strength : 5 ;
@@ -363,6 +388,11 @@ $(document).ready(function(){
 		$("#passwordIndicator"+element).hide();
 	}
 	}
+	$("#get_set_up").click(function(){
+		//button >> get_set_up
+		$("#set_up").hide();
+		$("#personalize").show();
+	});
 	$("#button_next").click(function(){
 		//button >> personalize
 		$("#personalize").hide();
@@ -395,22 +425,22 @@ $(document).ready(function(){
 	});
 	$("#WiFi_Name").bind("focusin keyup change input",(function() {
 		//VALIDATION for wifi_name
-		/*return !param || /^[a-zA-Z0-9\-_.]{3,32}$/i.test(value);
-		"3 to 32 characters combined with alphabet, digit, underscore, hyphen and dot");
+		/*return !param || /^[ -~]{3,32}$/i.test(value);
+		"3-32 ASCII Printable Characters");
 		return value.toLowerCase().indexOf("xhs")==-1 && value.toLowerCase().indexOf("xfinitywifi")==-1;
 		'SSID containing "XHS" and "Xfinitywifi" are reserved !'
 		return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
 		'SSID containing "optimumwifi", "TWCWiFi" and "CableWiFi" are reserved !');*/
 		var val	= $(this).val();
-		isValid		= /^[a-zA-Z0-9\-_.]{3,32}$/i.test(val);
+		isValid		= /^[ -~]{3,32}$/i.test(val);
 		valLowerCase	= val.toLowerCase();
-		isXHS		= valLowerCase.indexOf("xhs")==-1;
+		isXHS		= valLowerCase.indexOf("xhs-") !=0 && valLowerCase.indexOf("xh-") !=0;
 		isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
 		isHOME 		= valLowerCase.indexOf("home") != 0;
 		isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
 		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
 		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=\-_`~()\s]/g,'').toLowerCase();
-		isOther	= str.indexOf("wifi") == -1 || str.indexOf("cable") == -1 && str.indexOf("twc") == -1 && str.indexOf("optimum") == -1 && str.indexOf("cox") == -1 && str.indexOf("bhn") == -1;
+		isOther	= str.indexOf("wifi") == -1 || str.indexOf("cable") == -1 && str.indexOf("twc") == -1 && str.indexOf("optimum") == -1 && str.indexOf("xfinity") == -1;
 		if(val == ""){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
@@ -426,16 +456,6 @@ $(document).ready(function(){
 			$(this).addClass("error").removeClass("success");
 			messageHandler("name", "Let's try that again", 'SSID starting with "XFSETUP" is reserved !');
 		}
-		else if(!isHOME){
-			goNextName = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", 'SSID starting with "HOME" is reserved !');
-		}
-		else if(!isXFINITY){
-			goNextName = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", 'SSID is invalid/reserved.');
-		}
 		else if(!isXHS){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
@@ -449,12 +469,12 @@ $(document).ready(function(){
 		else if(!isValid){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", "3 to 32 characters combined with alphabet, digit, underscore, hyphen and dot");
+			messageHandler("name", "Let's try that again", "3 to 32 ASCII characters.");
 		}
 		else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi5_Name").val()){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", "Network Name for both bands cannot be the same.");
+			messageHandler("name", "Let's try that again", "This name is already in use. Please choose a different name.");
 		}
 		else {
 			goNextName = true;
@@ -465,12 +485,12 @@ $(document).ready(function(){
 	}));
 	$("#password_field").bind("focusin keyup change input",(function() {
 		/*
-			return !param || /^[a-zA-Z0-9\-_.]{8,63}$/i.test(value); "8-20 characters. Alphanumeric only. No spaces. Case sensitive."
+			return !param || /^[ -~]{8,63}$/i.test(value); "8-63 ASCII characters or a 64 hex character password"
 		*/
 		//VALIDATION for WiFi_Password
 		$WiFiPass = $("#WiFi_Password");
 		var val = $WiFiPass.val();
-		isValid	= /^[a-zA-Z0-9\-_.]{8,63}$/i.test(val);
+		isValid	= /^[ -~]{8,63}$/i.test(val);
 		if(val == ""){
 			goNextPassword	= false;
 			$WiFiPass.addClass("error").removeClass("success");
@@ -484,7 +504,7 @@ $(document).ready(function(){
 		else if(!isValid){
 			goNextPassword	= false;
 			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password", "Let's try that again", "Passwords are case sensitive and should include 8-63 alphanumeric characters with no spaces.");
+			messageHandler("password", "Let's try that again", "Passwords are case sensitive and should include 8-63 ASCII characters.");
 		}
 		/*else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi5_Password").val()){
 			goNextPassword = false;
@@ -494,7 +514,7 @@ $(document).ready(function(){
 		else {
 			goNextPassword	= true;
 			$WiFiPass.addClass("success").removeClass("error");
-			messageHandler("password", "Wi-Fi Password", "Passwords are case sensitive and should include 8-63 alphanumeric characters with no spaces.");
+			messageHandler("password", "Wi-Fi Password", "Passwords are case sensitive and should include 8-63 ASCII characters.");
 		}
 		toShowNext();
 		showPasswordStrength("", goNextPassword);
@@ -502,22 +522,22 @@ $(document).ready(function(){
 	//for Dual Band Network
 	$("#WiFi5_Name").bind("focusin keyup change input",(function() {
 		//VALIDATION for wifi_name
-		/*return !param || /^[a-zA-Z0-9\-_.]{3,32}$/i.test(value);
-		"3 to 32 characters combined with alphabet, digit, underscore, hyphen and dot");
+		/*return !param || /^[ -~]{3,32}$/i.test(value);
+		"3-32 ASCII Printable Characters");
 		return value.toLowerCase().indexOf("xhs")==-1 && value.toLowerCase().indexOf("xfinitywifi")==-1;
 		'SSID containing "XHS" and "Xfinitywifi" are reserved !'
 		return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
 		'SSID containing "optimumwifi", "TWCWiFi" and "CableWiFi" are reserved !');*/
 		var val	= $(this).val();
-		isValid		= /^[a-zA-Z0-9\-_.]{3,32}$/i.test(val);
+		isValid		= /^[ -~]{3,32}$/i.test(val);
 		valLowerCase	= val.toLowerCase();
-		isXHS		= valLowerCase.indexOf("xhs")==-1;
+		isXHS		= valLowerCase.indexOf("xhs-") !=0 && valLowerCase.indexOf("xh-") != 0;
 		isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
 		isHOME 		= valLowerCase.indexOf("home") != 0;
 		isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
 		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
 		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=\-_`~()\s]/g,'').toLowerCase();
-		isOther	= str.indexOf("wifi") == -1 || str.indexOf("cable") == -1 && str.indexOf("twc") == -1 && str.indexOf("optimum") == -1 && str.indexOf("cox") == -1 && str.indexOf("bhn") == -1;
+		isOther	= str.indexOf("wifi") == -1 || str.indexOf("cable") == -1 && str.indexOf("twc") == -1 && str.indexOf("optimum") == -1 && str.indexOf("xfinity") == -1;
 		if(val == ""){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
@@ -533,16 +553,6 @@ $(document).ready(function(){
 			$(this).addClass("error").removeClass("success");
 			messageHandler("name5", "Let's try that again", 'SSID starting with "XFSETUP" is reserved !');
 		}
-		else if(!isHOME){
-			goNextName5 = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Let's try that again", 'SSID starting with "HOME" is reserved !');
-		}
-		else if(!isXFINITY){
-			goNextName5 = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Let's try that again", 'SSID is invalid/reserved.');
-		}
 		else if(!isXHS){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
@@ -556,12 +566,12 @@ $(document).ready(function(){
 		else if(!isValid){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Let's try that again", "3 to 32 characters combined with alphabet, digit, underscore, hyphen and dot");
+			messageHandler("name5", "Let's try that again", "3 to 32 ASCII characters.");
 		}
 		else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi_Name").val()){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Let's try that again", "Network Name for both bands cannot be the same.");
+			messageHandler("name5", "Let's try that again", "This name is already in use. Please choose a different name.");
 		}
 		else {
 			goNextName5 = true;
@@ -572,12 +582,12 @@ $(document).ready(function(){
 	}));
 	$("#password5_field").bind("focusin keyup change input",(function() {
 		/*
-			return !param || /^[a-zA-Z0-9\-_.]{8,63}$/i.test(value); "8-20 characters. Alphanumeric only. No spaces. Case sensitive."
+			return !param || /^[ -~]{8,63}$/i.test(value); "8-63 ASCII characters or a 64 hex character password"
 		*/
 		//VALIDATION for WiFi_Password
 		$WiFiPass = $("#WiFi5_Password");
 		var val = $WiFiPass.val();
-		isValid	= /^[a-zA-Z0-9\-_.]{8,63}$/i.test(val);
+		isValid	= /^[ -~]{8,63}$/i.test(val);
 		if(val == ""){
 			goNextPassword5	= false;
 			$WiFiPass.addClass("error").removeClass("success");
@@ -591,7 +601,7 @@ $(document).ready(function(){
 		else if(!isValid){
 			goNextPassword5	= false;
 			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password5", "Let's try that again", "Passwords are case sensitive and should include 8-63 alphanumeric characters with no spaces.");
+			messageHandler("password5", "Let's try that again", "Passwords are case sensitive and should include 8-63 ASCII characters.");
 		}
 		/*else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi_Password").val()){
 			goNextPassword5 = false;
@@ -601,103 +611,96 @@ $(document).ready(function(){
 		else {
 			goNextPassword5	= true;
 			$WiFiPass.addClass("success").removeClass("error");
-			messageHandler("password5", "Wi-Fi Password", "Passwords are case sensitive and should include 8-63 alphanumeric characters with no spaces.");
+			messageHandler("password5", "Wi-Fi Password", "Passwords are case sensitive and should include 8-63 ASCII characters.");
 		}
 		toShowNext();
 		showPasswordStrength("5", goNextPassword5);
 	}));
+	function goNextphoneNumber(value){
+		if(value){
+			$("#button_next_01").show();
+		}
+		else{
+			$("#button_next_01").hide();
+		}
+	}
+	function checkValidPhoneNumber(phNo)
+	{
+		isValid	= /^(\+?0?1?\s?)?(\(\d{3}\)|\d{3})[\s-]?\d{3}[\s-]?\d{4}$/.test(phNo);
+		return isValid;
+	}
 	$("#phoneNumber").bind("keyup",(function() {
 		if($("#text_sms").css('display') == "block"){
 			$phoneNumber = $("#phoneNumber");
 			var val = $phoneNumber.val();
-			isValid	= /^(\+?0?1?\s?)?(\(\d{3}\)|\d{3})[\s-]?\d{3}[\s-]?\d{4}$/.test(val);
+			isValid	= checkValidPhoneNumber(val);
 			if(val == ""){
-				goNextphoneNumber = true;
+				goNextphoneNumber(true);
 				$phoneNumber.removeClass("success").removeClass("error");
 				//messageHandler("phoneNumber", "Text (SMS)", "Passwords are case sensitive and should include 8-63 alphanumeric characters with no spaces.");
 				$("#phoneNumberContainer").fadeOut("slow");
 			}
 			else if(!isValid){
-				goNextphoneNumber = false;
+				goNextphoneNumber(false);
 				$phoneNumber.addClass("error").removeClass("success");
 				messageHandler("phoneNumber", "Let's try that again", "Please enter the 10 digit Phone Number.");
 			}
 			else {
-				goNextphoneNumber = true;
+				//goNextphoneNumber(true);
 				$phoneNumber.addClass("success").removeClass("error");
-				messageHandler("phoneNumber", "Text (SMS)", "Textes are not encrypted. You can always view Wi-Fi name/password under My Account instead.");
+				if ($("#concent").is(":checked"))
+				{
+					goNextphoneNumber(true);
+				}
+				else
+					messageHandler("concent_check", "Confirmation", "Please confirm your agreement to receive a text message.");
 			}
 		}
 	}));
 	//to show password on click
-	$("#showPass").change(function() {
+	$("#showPass").click(function() {
 		passwordVal = $("#WiFi_Password").val();
 		classVal = $("#WiFi_Password").attr('class');
-		if ($("#check").is(":checked")) {
-			$("[id^='showPass']").each(function() {
-				$(this).find('label').addClass('checkLabel');
-			});
-			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="63" class="">';
-			$("[id^='WiFi_Password_0']").show();
-			$("[id^='WiFi_Password_pass_0']").hide();
-			$("[id^='check']").prop('checked', true);
-		}
-		else {
-			$("[id^='showPass']").each(function() {
-				$(this).find('label').removeClass('checkLabel');
-			});
+		if ($("#showPass").children().text() == "Hide ") {
+			$("[id^='showPass']").children().text("Show");
 			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="password" placeholder="Minimum Eight Characters" maxlength="63" class="">';
 			$("[id^='WiFi_Password_0']").hide();
 			$("[id^='WiFi_Password_pass_0']").show();
-			$("[id^='check']").prop('checked', false);
-		}
-		$("#WiFi_Password").val(passwordVal).addClass(classVal);
-		//for Dual Band Network
-			password5Val = $("#WiFi5_Password").val();
-			class5Val = $("#WiFi5_Password").attr('class');
-			if ($("#check").is(":checked")) {
-				document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="63" class="">';
-				$("[id^='WiFi5_Password_0']").show();
-				$("[id^='WiFi5_Password_pass_0']").hide();
-			}
-			else {
-				document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="password" placeholder="Minimum Eight Characters" maxlength="63" class="">';
-				$("[id^='WiFi5_Password_0']").hide();
-				$("[id^='WiFi5_Password_pass_0']").show();
-			}
-			$("#WiFi5_Password").val(password5Val).addClass(class5Val);
-	});
-	$("[id^='showPass0']").change(function() {
-		varid = this.id.split("0");
-		if ($("#check_0"+varid[1]).is(":checked")) {
-			$("[id^='showPass']").each(function() {
-				$(this).find('label').addClass('checkLabel');
-			});
-			$("[id^='WiFi_Password_0']").show();
-			$("[id^='WiFi_Password_pass_0']").hide();
-			$("[id^='check']").prop('checked', true);
-			//for Dual Band Network
-				$("[id^='WiFi5_Password_0']").show();
-				$("[id^='WiFi5_Password_pass_0']").hide();
 		}
 		else {
-			$("[id^='showPass']").each(function() {
-				$(this).find('label').removeClass('checkLabel');
-			});
-			$("[id^='WiFi_Password_0']").hide();
-			$("[id^='WiFi_Password_pass_0']").show();
-			$("[id^='check']").prop('checked', false);
-			//for Dual Band Network
-				$("[id^='WiFi5_Password_0']").hide();
-				$("[id^='WiFi5_Password_pass_0']").show();
+			$("[id^='showPass']").children().text("Hide ");
+			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="63" class="">';
+			$("[id^='WiFi_Password_0']").show();
+			$("[id^='WiFi_Password_pass_0']").hide();
 		}
-		$("#showPass").trigger("change");
+		$("#WiFi_Password").val(passwordVal).addClass(classVal);
+	});
+	//for Dual Band Network
+	$("#show5Pass").click(function() {
+		password5Val = $("#WiFi5_Password").val();
+		class5Val = $("#WiFi5_Password").attr('class');
+		if ($("#show5Pass").children().text() == "Hide ") {
+			$("[id^='show5Pass']").children().text("Show");
+			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="password" placeholder="Minimum Eight Characters" maxlength="63" class="">';
+			$("[id^='WiFi5_Password_0']").hide();
+			$("[id^='WiFi5_Password_pass_0']").show();
+		}
+		else {
+			$("[id^='show5Pass']").children().text("Hide ");
+			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="63" class="">';
+			$("[id^='WiFi5_Password_0']").show();
+			$("[id^='WiFi5_Password_pass_0']").hide();
+		}
+		$("#WiFi5_Password").val(password5Val).addClass(class5Val);
+	});
+	$("[id^='showPass0']").click(function() {
+		$("#showPass").trigger("click");
+	});
+	$("[id^='show5Pass0']").click(function() {
+		$("#show5Pass").trigger("click");
 	});
 	//check all the check boxes by default
-	$("[id^='check']").prop('checked', true);
 	$("#selectSettings").prop('checked', true);
-	$("[id^='showPass0']").trigger("change");
-	$("#showPass").trigger("change");
 	$("#showDual").click(function(){
 		$("#dualSettings").toggle();
 		if($("#dualSettings").css('display') == "block"){
@@ -731,11 +734,27 @@ $(document).ready(function(){
 		}
 		toShowNext();
 	});
-	$("#share_link, #concent").click(function(){
-		$("#text_sms, #concent_check").fadeToggle("slow", "linear");
-		$("#concent").prop("checked", true);
-		$("#phoneNumber").val("").keyup().removeClass();
-		$("#phoneNumberContainer").hide();
+	$("#concent_check").change(function(){
+		if ($("#concent").is(":checked")) {
+			$(this).find('label').addClass('checkLabel');
+			$("#phoneNumber").keyup();
+			var val = $("#phoneNumber").val();
+			if(val !== "")
+			{
+				isValid	= checkValidPhoneNumber(val);
+				goNextphoneNumber(isValid);
+			}
+			else{
+				goNextphoneNumber(false);
+				$phoneNumber.addClass("error").removeClass("success");
+				messageHandler("phoneNumber", "Let's try that again", "Please enter the 10 digit Phone Number.");
+			}
+		}
+		else {
+			$(this).find('label').removeClass('checkLabel');
+			$("#phoneNumber").val("").keyup().removeClass();
+			$("#phoneNumberContainer").hide();
+		}
 	});
 /*
 	$( window ).resize(function() {
@@ -753,11 +772,28 @@ $(document).ready(function(){
 		<div id="topbar">
 			<img src="cmn/img/logo.png"/>
 		</div>
-		<div id="personalize" class="portal">
-			<h1>Set Up Your Wi-Fi</h1>
+		<div id="set_up" class="portal">
+			<h1>Welcome to XFINITY Internet</h1>
+			<hr>
+			<p>
+			<b>This step is required to get your devices online</b><br><br>
+				Your connection has been activated, but now we need to create your<br>
+				personal <b>Wi-Fi Name and Password</b>.
+			</p>
+			<hr>
+			<div>
+				<button id="get_set_up">Let's Get Set Up</button>
+			</div>
+			<br><br>
+		</div>
+		<div id="personalize" style="display: none;" class="portal">
+			<br>
+			<h1 style="margin: 20px auto 0 auto;">
+				Create Your Wi-Fi Name & Password
+			</h1>
 			<p style="width: 500px;">
-				Create a Wi-Fi name and password to access the Internet.<br>
-				This step is required so choose something you'll remember.
+				This step is <b style="color: #DC4343;">required</b>, so choose something that you will easily remember.<br>
+				You'll have to reconnect your devices using the new credentials.
 			</p>
 			<hr>
 				<p name="dualBand" style="margin: 1px 40px 0 0;">2.4 GHz Network</p>
@@ -778,13 +814,15 @@ $(document).ready(function(){
 						<div class="arrow"></div>
 					</div>
 				</div>
-				<p style="display:inline; margin: 1px 40px 0 0; text-align: right;">Wi-Fi Password</p>
-				<span style="display:inline; margin: 4px 0 0 -30px;" id="password_field"><input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="63" class="" ></span>
+				<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;">Wi-Fi Password</p>
+				<span style="display:inline; margin: 4px 0 0 -26px;" id="password_field"><input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="63" class="" ></span>
+				<div id="showPass" style="display:inline-table; margin: 4px 0 0 -90px;">
+					<a href="javascript:void(0)" style="white-space: pre;">Hide </a>
+			    </div>
 				<div id="passwordIndicator" style="display: none;">
 					<div class="progress-bg"><div id="passwordStrength"></div></div>
 					<p id="passwordInfo" class="password-text"></p>
 				</div>
-				<br>
 				<div name="dualBand" id="showDualConfig">
 				<br>
 					<p style="margin: 10px 40px 0 -10px;">5 GHz Network</p>
@@ -805,29 +843,26 @@ $(document).ready(function(){
 							<div class="arrow"></div>
 						</div>
 					</div>
-					<p style="display:inline; margin: 1px 40px 0 0; text-align: right;">Wi-Fi Password</p>
-					<span style="display:inline; margin: 4px 0 0 -30px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="63" class="" ></span>
+					<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;">Wi-Fi Password</p>
+					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="63" class="" ></span>
+					<div id="show5Pass" style="display:inline-table; margin: 4px 0 0 -90px;">
+						<a href="javascript:void(0)" style="white-space: pre;">Hide </a>
+				    </div>
 					<div id="passwordIndicator5" style="display: none;">
 						<div class="progress-bg"><div id="passwordStrength5"></div></div>
 						<p id="passwordInfo5" class="password-text"></p>
 					</div>
-					<br><br>
 				</div>
 			<hr>
-			<div id="showPass" class="checkbox" style="display:inline; margin:0 50px;" >
-				<input id="check" type="checkbox" name="check">  
-			    	<label for="check" class="insertBox checkLabel"></label> 
-			    	<div class="check-copy">Display Password</div>
-		    	</div>
-			<div id="showDual" style="display:inline; margin:0 50px;" >
+			<div id="showDual" style="display:inline; margin:0 260px 0 0;">
 				<a id="showDualText" href="javascript:void(0)">Show More Settings</a>
 			</div>
 			<br>
-			<div id="dualSettings" class="checkbox" style="margin:0 50px; display: none;" >
+			<div id="dualSettings" class="checkbox" style="margin:0 50px; display: none;">
 				<br><br>
 				<input id="selectSettings" type="checkbox" name="selectSettings">
 			    	<label for="selectSettings" class="insertBox checkLabel"></label> 
-			    	<div class="check-copy">Use same settings for 2.4GHz and 5GHz Wi-Fi networks.</div>
+			    	<div class="check-copy" style="color: #888;">Use same settings for 2.4GHz and 5GHz Wi-Fi networks.</div>
 		    	</div>
 			<br><br>
 			<div>
@@ -846,11 +881,15 @@ $(document).ready(function(){
 				<tr>
 					<td class="left-settings" >Wi-Fi Name</td>
 					<td class="final-settings" id="WiFi_Name_01" ></td>
+					<td></td>
 				</tr>
 				<tr>
 					<td class="left-settings" >Wi-Fi Password</td>
 					<td class="final-settings" id="WiFi_Password_01" ></td>
 					<td class="final-settings" id="WiFi_Password_pass_01" ></td>
+					<td id="showPass01">
+						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+				    </td>
 				</tr>
 				<tr>
 					<td><br></td>
@@ -862,40 +901,47 @@ $(document).ready(function(){
 				<tr name="dualBand">
 					<td class="left-settings" >Wi-Fi Name</td>
 					<td class="final-settings" id="WiFi5_Name_01" ></td>
+					<td></td>
 				</tr>
 				<tr name="dualBand">
 					<td class="left-settings" >Wi-Fi Password</td>
 					<td class="final-settings" id="WiFi5_Password_01" ></td>
 					<td class="final-settings" id="WiFi5_Password_pass_01" ></td>
+					<td id="show5Pass01">
+						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+				    </td>
 				</tr>
 			</table>
-			<div id="showPass01" class="checkbox">
-				<input id="check_01" type="checkbox" name="check_01">  
-			    	<label for="check_01" class="insertBox checkLabel"></label>
-			    	<div class="check-copy">Display Password</div>
-		    	</div>
 			<hr>
-			<div <?php echo strlen($DeviceInfo_value["EMS_ServerURL"]) > 0 ? '' : 'style="display: none;"' ; ?>id="share_link">
-				<a href="javascript:void(0)">Share your new Wi-Fi name and password with your family and friends. (optional)</a>
-			</div>
+			<p style="text-align: left; margin: 13px 0 0 115px;">
+				Send yourself a text with your Wi-Fi name and password.<br>
+				This is an optional one-time-only text.
+			</p>
 			<div id="phoneNumberContainer" class="container" style="display: none;">
 				<div class="requirements" style="top: 20px; left: 495px;">
 					<div id="phoneNumberMessageTop" class="top">Text (SMS)</div>
-					<div id="phoneNumberMessageBottom" class="bottom">Textes are not encrypted. You can always view Wi-Fi name/password under My Account instead.</div>
+					<div id="phoneNumberMessageBottom" class="bottom">Texts are not encrypted. You can always view Wi-Fi name/password under My Account instead.</div>
 					<div class="arrow"></div>
 				</div>
 			</div>
-			<div id="text_sms" style="display: none;">
-				<h2>Phone Number</h2>
+			<div id="text_sms">
+				<p style="text-align: left; margin: 27px 0 0 115px;">Your Mobile Number (<b>Optional</b>)</p>
 				<input id="phoneNumber" type="text" placeholder="1(  )  -  " class=""><br/><br/>
 			</div>
-			<div id="concent_check" class="checkbox" style="display: none;">
-				<input id="concent" type="checkbox" name="concent" checked>
-			    	<label for="concent" class="insertBox checkLabel"></label>
-			    	<div class="check-copy">
-					I agree to receive a text message from Comcast at<br/>
-					the number above, containing my Wi-Fi network<br/>
-					name and password. Message and data rates apply.<br/>
+			<div id="agreementContainer" class="container" style="display: none;">
+				<div class="requirements" style="top: -6px; left: 509px;">
+					<div id="agreementMessageTop" class="top">Confirmation</div>
+					<div id="agreementMessageBottom" class="bottom">Please confirm your agreement to receive a text message.</div>
+					<div class="arrow"></div>
+				</div>
+				</div>
+			<div id="concent_check" class="checkbox">
+				<input id="concent" type="checkbox" name="concent">
+			    	<label for="concent" class="insertBox" style="margin: -40px 10px 0 15px;"></label>
+			    	<div class="check-copy" style="text-align: left; color: #888;">
+					I agree to receive a text message from Comcast via<br/>
+					automated technology to my mobile number provided<br/>
+					regarding my Wi-Fi name and password.<br/>
 				</div>
 		    	</div>
 			<br/><br/>
@@ -906,11 +952,9 @@ $(document).ready(function(){
 			<br><br>
 		</div>
 		<div id="setup" style="display: none;" class="portal">
-			<h1>Almost there...</h1>
-			<img src="cmn/img/progress.gif" height="75" width="75"/>
-			<p>
-				Your WiFi will begin broadcasting in about a minute<br>
-				and then you'll be able to connect using the info below.
+			<h1>Join your new Wi-Fi Network</h1>
+			<p>Your Wi-Fi will begin broadcasting in about a minute.<br>
+				<b>You'll have to reconnect your device using the new credentials.</b>
 			</p>
 			<hr>
 			<table align="center" border="0">
@@ -926,6 +970,9 @@ $(document).ready(function(){
 					<td class="left-settings" >Wi-Fi Password</td>
 					<td class="final-settings" id="WiFi_Password_02" ></td>
 					<td class="final-settings" id="WiFi_Password_pass_02" ></td>
+					<td id="showPass02">
+						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+				    </td>
 				</tr>
 				<tr>
 					<td><br></td>
@@ -942,22 +989,36 @@ $(document).ready(function(){
 					<td class="left-settings" >Wi-Fi Password</td>
 					<td class="final-settings" id="WiFi5_Password_02" ></td>
 					<td class="final-settings" id="WiFi5_Password_pass_02" ></td>
+					<td id="show5Pass02">
+						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+				    </td>
 				</tr>
 			</table>
-			<div id="showPass02" class="checkbox">
-				<input id="check_02" type="checkbox" name="check_02">
-			    	<label for="check_02" class="insertBox checkLabel"></label> 
-			    	<div class="check-copy">Display Password</div>
-		    	</div>
 			<hr>
+			<div class="access-box">
+				<div style="float: left; padding-bottom: 50px;">
+					<a href="http://xfinity.com">
+						<img class="img-hover" src="cmn/img/xfinity_My_Account.png" style="margin: 10px 20px 0 20px;" height="100px"/>
+					</a>
+				</div>
+				<div>
+					<p style="margin: 10px 0 0 0; text-align: left; width: 380px; font-size: large;">
+						Want to change your settings at any time?
+					</p>
+					<p style="margin: 10px 0 0 0; text-align: left; width: 400px;">
+						Download the XFINITY My Account app to access these settings and other features of your service.
+					</p>
+				</div>
+			</div>
 			<br><br>
 		</div>
 		<div id="complete" style="display: none;" class="portal">
 			<h1>Your Wi-Fi is Nearly Complete</h1>
 			<img src="cmn/img/progress.gif" height="75" width="75"/>
-			<div id="link_example">
+			<div class="link_example">
 				<p>We'll have this finished up shortly.<br>
-				Once complete, you can start connecting devices.</p>
+					Once complete, you can start connecting devices.
+				</p>
 			</div>
 			<hr>
 			<table align="center" border="0">
@@ -973,6 +1034,9 @@ $(document).ready(function(){
 					<td class="left-settings" >Wi-Fi Password</td>
 					<td class="final-settings" id="WiFi_Password_04" ></td>
 					<td class="final-settings" id="WiFi_Password_pass_04" ></td>
+					<td id="showPass03">
+						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+				    </td>
 				</tr>
 				<tr>
 					<td><br></td>
@@ -989,20 +1053,36 @@ $(document).ready(function(){
 					<td class="left-settings" >Wi-Fi Password</td>
 					<td class="final-settings" id="WiFi5_Password_04" ></td>
 					<td class="final-settings" id="WiFi5_Password_pass_04" ></td>
+					<td id="show5Pass03">
+						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+				    </td>
 				</tr>
 			</table>
-			<div id="showPass04" class="checkbox">
-				<input id="check_04" type="checkbox" name="check_04">
-			    	<label for="check_04" class="insertBox checkLabel"></label>
-			    	<div class="check-copy">Display Password</div>
-		    	</div>
 			<hr>
+			<div class="access-box">
+				<div style="float: left; padding-bottom: 50px;">
+					<a href="http://xfinity.com">
+						<img class="img-hover" src="cmn/img/xfinity_My_Account.png" style="margin: 10px 20px 0 20px;" height="100px"/>
+					</a>
+				</div>
+				<div>
+					<p style="margin: 10px 0 0 0; text-align: left; width: 380px; font-size: large;">
+						Want to change your settings at any time?
+					</p>
+					<p style="margin: 10px 0 0 0; text-align: left; width: 400px;">
+						Download the XFINITY My Account app to access these settings and other features of your service.
+					</p>
+				</div>
+			</div>
+			<br><br>
 		</div>
 		<div id="ready" style="display: none;" class="portal">
 			<h1>Your Wi-Fi is Ready</h1>
 			<img src="cmn/img/success_lg.png"/>
-			<div id="link_example">
-				<p>Start using your new Wi-Fi whenever you'd like.</p>
+			<div class="link_example">
+				<p>You may begin using your Wi-Fi.<br>
+				<b>You'll have to reconnect your device using the new credentials.</b>
+				</p>
 			</div>
 			<hr>
 			<table align="center" border="0">
@@ -1018,6 +1098,9 @@ $(document).ready(function(){
 					<td class="left-settings" >Wi-Fi Password</td>
 					<td class="final-settings" id="WiFi_Password_05" ></td>
 					<td class="final-settings" id="WiFi_Password_pass_05" ></td>
+					<td id="showPass04">
+						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+				    </td>
 				</tr>
 				<tr>
 					<td><br></td>
@@ -1034,20 +1117,28 @@ $(document).ready(function(){
 					<td class="left-settings" >Wi-Fi Password</td>
 					<td class="final-settings" id="WiFi5_Password_05" ></td>
 					<td class="final-settings" id="WiFi5_Password_pass_05" ></td>
+					<td id="show5Pass04">
+						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+				    </td>
 				</tr>
 			</table>
-			<div id="showPass05" class="checkbox">
-				<input id="check_05" type="checkbox" name="check_05">
-			    	<label for="check_05" class="insertBox checkLabel"></label>
-			    	<div class="check-copy">Display Password</div>
-		    	</div>
 			<hr>
-			<div>
-				<button id="visit_xfinity" style="text-align: center; width: 215px;">Visit XFINITY</button>
+			<div class="access-box">
+				<div style="float: left; padding-bottom: 50px;">
+					<a href="http://xfinity.com">
+						<img class="img-hover" src="cmn/img/xfinity_My_Account.png" style="margin: 10px 20px 0 20px;" height="100px"/>
+					</a>
+				</div>
+				<div>
+					<p style="margin: 10px 0 0 0; text-align: left; width: 380px; font-size: large;">
+						Want to change your settings at any time?
+					</p>
+					<p style="margin: 10px 0 0 0; text-align: left; width: 400px;">
+						Download the XFINITY My Account app to access these settings and other features of your service.
+					</p>
+				</div>
 			</div>
 			<br><br>
-			<a href="http://customer.xfinity.com/help-and-support/Wireless-Gateway/">Learn how to join your WiFi</a>
-			<br><br><br><br>
 		</div>
 	</body>
 </html>
