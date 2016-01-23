@@ -50,6 +50,7 @@
 
 # start lighttpd
 source /etc/utopia/service.d/log_capture_path.sh
+source /fss/gw/etc/utopia/service.d/log_env_var.sh
 REVERT_FLAG="/nvram/reverted"
 
 LIGHTTPD_PID=`pidof lighttpd`
@@ -118,8 +119,25 @@ if [ "$WIFIUNCONFIGURED" = "true" ]
 then
 	if [ "$NETWORKRESPONSEVALUE" = "204" ] && [ "$SET_CONFIGURE_FLAG" = "true" ]
 	then
-		echo "WEBGUI : WiFi is not configured,setting ConfigureWiFi to true"	
-		dmcli eRT setvalues Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi bool TRUE
+		while : ; do
+		echo "WEBGUI : Waiting for PandM to initalize completely to set ConfigureWiFi flag"
+		CHECK_PAM_INITIALIZED=`find /tmp/ -name "pam_initialized"`
+		echo "CHECK_PAM_INITIALIZED is $CHECK_PAM_INITIALIZED"
+  	        	if [ "$CHECK_PAM_INITIALIZED" != "" ]
+   			then
+			   echo "WEBGUI : WiFi is not configured, setting ConfigureWiFi to true"
+	         	   output=`dmcli eRT setvalues Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi bool TRUE`
+			   check_success=`echo $output | grep  "Execution succeed."`
+  	        		if [ "$check_success" != "" ]
+   				then
+     			 	   echo "WEBGUI : Setting ConfigureWiFi to true is success"
+ 	       			fi
+      			   break
+ 	       		fi
+		sleep 2
+		done
+	
+
 	else
 		echo "WEBGUI : WiFi is already configured"
 		if [ ! -e "$REVERT_FLAG" ] && [ "$NETWORKRESPONSEVALUE" = "204" ]
@@ -133,6 +151,13 @@ fi
 
 #echo "\$SERVER[\"socket\"] == \"$INTERFACE:10443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" server.document-root = \"/fss/gw/usr/walled_garden/parcon/siteblk\" server.error-handler-404 = \"/index.php\" }" >> /var/lighttpd.conf
 #echo "\$SERVER[\"socket\"] == \"$INTERFACE:18080\" { server.use-ipv6 = \"enable\"  server.document-root = \"/fss/gw/usr/walled_garden/parcon/siteblk\" server.error-handler-404 = \"/index.php\" }" >> /var/lighttpd.conf
+
+LOG_PATH_OLD="/var/tmp/logs/"
+
+if [ "$LOG_PATH_OLD" != "$LOG_PATH" ]
+then
+	sed -i "s|${LOG_PATH_OLD}|${LOG_PATH}|g" /etc/lighttpd.conf
+fi
 
 LD_LIBRARY_PATH=/fss/gw/usr/ccsp:$LD_LIBRARY_PATH lighttpd -f /etc/lighttpd.conf
 
