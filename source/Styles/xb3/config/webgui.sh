@@ -52,6 +52,8 @@
 source /etc/utopia/service.d/log_capture_path.sh
 source /fss/gw/etc/utopia/service.d/log_env_var.sh
 REVERT_FLAG="/nvram/reverted"
+LIGHTTPD_CONF="/var/lighttpd.conf"
+LIGHTTPD_DEF_CONF="/etc/lighttpd.conf"
 
 LIGHTTPD_PID=`pidof lighttpd`
 if [ "$LIGHTTPD_PID" != "" ]; then
@@ -70,32 +72,32 @@ else
     INTERFACE="brlan0"
 fi
 
+cp $LIGHTTPD_DEF_CONF $LIGHTTPD_CONF
 
-#cp /etc/lighttpd.conf /var
 #sed -i "s/^server.port.*/server.port = $HTTP_PORT/" /var/lighttpd.conf
 #sed -i "s#^\$SERVER\[.*\].*#\$SERVER[\"socket\"] == \":$HTTPS_PORT\" {#" /var/lighttpd.conf
 
-echo "server.port = $HTTP_ADMIN_PORT" >> /etc/lighttpd.conf
-echo "server.bind = \"$INTERFACE\"" >> /etc/lighttpd.conf
-echo "\$SERVER[\"socket\"] == \"wan0:80\" { server.use-ipv6 = \"enable\" }" >> /etc/lighttpd.conf
+echo "server.port = $HTTP_ADMIN_PORT" >> $LIGHTTPD_CONF
+echo "server.bind = \"$INTERFACE\"" >> $LIGHTTPD_CONF
+echo "\$SERVER[\"socket\"] == \"wan0:80\" { server.use-ipv6 = \"enable\" }" >> $LIGHTTPD_CONF
 
 if [ "x$HTTP_PORT_ERT" != "x" ];then
-    echo "\$SERVER[\"socket\"] == \"erouter0:$HTTP_PORT_ERT\" { server.use-ipv6 = \"enable\" }" >> /etc/lighttpd.conf
+    echo "\$SERVER[\"socket\"] == \"erouter0:$HTTP_PORT_ERT\" { server.use-ipv6 = \"enable\" }" >> $LIGHTTPD_CONF
 else
-    echo "\$SERVER[\"socket\"] == \"erouter0:$HTTP_PORT\" { server.use-ipv6 = \"enable\" }" >> /etc/lighttpd.conf
+    echo "\$SERVER[\"socket\"] == \"erouter0:$HTTP_PORT\" { server.use-ipv6 = \"enable\" }" >> $LIGHTTPD_CONF
 fi
 
-echo "\$SERVER[\"socket\"] == \"$INTERFACE:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> /etc/lighttpd.conf
-echo "\$SERVER[\"socket\"] == \"wan0:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> /etc/lighttpd.conf
+echo "\$SERVER[\"socket\"] == \"$INTERFACE:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
+echo "\$SERVER[\"socket\"] == \"wan0:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
 if [ $HTTPS_PORT -ne 0 ]
 then
-    echo "\$SERVER[\"socket\"] == \"erouter0:$HTTPS_PORT\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> /etc/lighttpd.conf
+    echo "\$SERVER[\"socket\"] == \"erouter0:$HTTPS_PORT\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
 else
     # When the httpsport is set to NULL. Always put default value into database.
     syscfg set mgmt_wan_httpsport 8081
     syscfg commit
     HTTPS_PORT=`syscfg get mgmt_wan_httpsport`
-    echo "\$SERVER[\"socket\"] == \"erouter0:$HTTPS_PORT\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> /etc/lighttpd.conf
+    echo "\$SERVER[\"socket\"] == \"erouter0:$HTTPS_PORT\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
 fi
 
  
@@ -156,10 +158,10 @@ LOG_PATH_OLD="/var/tmp/logs/"
 
 if [ "$LOG_PATH_OLD" != "$LOG_PATH" ]
 then
-	sed -i "s|${LOG_PATH_OLD}|${LOG_PATH}|g" /etc/lighttpd.conf
+	sed -i "s|${LOG_PATH_OLD}|${LOG_PATH}|g" $LIGHTTPD_CONF
 fi
 
-LD_LIBRARY_PATH=/fss/gw/usr/ccsp:$LD_LIBRARY_PATH lighttpd -f /etc/lighttpd.conf
+LD_LIBRARY_PATH=/fss/gw/usr/ccsp:$LD_LIBRARY_PATH lighttpd -f $LIGHTTPD_CONF
 
 echo "WEBGUI : Set event"
 sysevent set webserver started
