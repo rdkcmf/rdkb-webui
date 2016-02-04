@@ -90,8 +90,12 @@ $(document).ready(function() {
 		return !param || /^[\S]{8,63}$/i.test(value);
 	}, "8 to 63 ASCII characters.");
     $.validator.addMethod("ssid_name", function(value, element, param) {
-		return !param || /^[ -~]{3,32}$/i.test(value);
-	}, "3 to 32 ASCII characters.");
+		return !param || /^[ -~]{1,32}$/i.test(value);
+	}, "1 to 32 ASCII characters.");
+	$.validator.addMethod("not_only_spaces", function(value, element, param) {
+    	var res = /^\s+$/.test(value);
+    	return !res;
+    }, "SSID name cannot contain only spaces");
     $.validator.addMethod("not_hhs", function(value, element, param) {
 		//prevent users to set XHSXXX or Xfinityxxx as ssid
 		return value.toLowerCase().indexOf("xhs-") !=0 && value.toLowerCase().indexOf("xh-") !=0;
@@ -99,10 +103,10 @@ $(document).ready(function() {
     $.validator.addMethod("not_hhs2", function(value, element, param) {
 		//prevent users to set optimumwifi or TWCWiFi  or CableWiFi as ssid
 		//zqiu:
-                var str = value.replace(/[\.,-\/#@!$%\^&\*;:{}=\-_`~()\s]/g,'').toLowerCase();
-		return str.indexOf("wifi") == -1 || str.indexOf("cable") == -1 && str.indexOf("twc") == -1 && str.indexOf("optimum") == -1 && str.indexOf("xfinity") == -1 ;
+                var str = value.replace(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/g,'').toLowerCase();
+		return str.indexOf("cablewifi") == -1 && str.indexOf("twcwifi") == -1 && str.indexOf("optimumwifi") == -1 && str.indexOf("xfinitywifi") == -1 ;
 		//return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
-	}, 'SSID containing "optimumwifi", "TWCWiFi", "CoxWiFi", and "xfinitywifi" are reserved !');
+	}, 'SSID containing "optimumwifi", "TWCWiFi", "cablewifi" and "xfinitywifi" are reserved !');
     $.validator.addMethod("not_defaulSSID1", function(value, element, param) {
 		//prevent users to set defaul-SSID as ssid
 		return value.toLowerCase() != "<?php echo $defaultSSID1; ?>".toLowerCase();
@@ -121,9 +125,9 @@ $(document).ready(function() {
 	}, 'Choose a different Network Password (5 GHz) than the one provided on your gateway.');
     // XFSETUP HOME xfinitywifi cablewifi
     // a term starting with the following combination of text in uppercase or lowercase should not be allowed
-    $.validator.addMethod("not_XFSETUP", function(value, element, param) {
+   /* $.validator.addMethod("not_XFSETUP", function(value, element, param) {
 		return value.toLowerCase().indexOf("xfsetup") != 0;
-	}, 'SSID starting with "XFSETUP" is reserved !');
+	}, 'SSID starting with "XFSETUP" is reserved !');*/
   /*  $.validator.addMethod("not_HOME", function(value, element, param) {
 		return value.toLowerCase().indexOf("home") != 0;
 	}, 'SSID starting with "HOME" is reserved !');*/
@@ -140,14 +144,14 @@ wpa2psk ==> 8 to 63 Ascii characters
 				ssid_name: true,
 				not_hhs: true,
 				not_hhs2: true,
-				not_XFSETUP: true,
+				not_only_spaces: true,
 				not_defaulSSID1: true
 			},
 			network_name1: {
 				ssid_name: true,
 				not_hhs: true,
 				not_hhs2: true,
-				not_XFSETUP: true,
+				not_only_spaces: true,
 				not_defaulSSID2: true
 			},
     		network_password: {

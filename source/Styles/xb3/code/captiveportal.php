@@ -432,29 +432,31 @@ $(document).ready(function(){
 		return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
 		'SSID containing "optimumwifi", "TWCWiFi" and "CableWiFi" are reserved !');*/
 		var val	= $(this).val();
-		isValid		= /^[ -~]{3,32}$/i.test(val);
+		isValid		= /^[ -~]{1,32}$/i.test(val);
 		valLowerCase	= val.toLowerCase();
 		isXHS		= valLowerCase.indexOf("xhs-") !=0 && valLowerCase.indexOf("xh-") !=0;
 		isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
 		isHOME 		= valLowerCase.indexOf("home") != 0;
 		isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
+		isOnlySpaces = /^\s+$/.test(valLowerCase);
 		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
-		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=\-_`~()\s]/g,'').toLowerCase();
-		isOther	= str.indexOf("wifi") == -1 || str.indexOf("cable") == -1 && str.indexOf("twc") == -1 && str.indexOf("optimum") == -1 && str.indexOf("xfinity") == -1;
+		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/g,'').toLowerCase();
+		isOther	= str.indexOf("cablewifi") == -1 && str.indexOf("twcwifi") == -1 && str.indexOf("optimumwifi") == -1 && str.indexOf("xfinitywifi") == -1;
 		if(val == ""){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
 			messageHandler("name", "Wi-Fi Name", "Please enter Wi-Fi Name.");
 		}
+		else if(isOnlySpaces)
+		{
+			goNextName = false;
+			$(this).addClass("error").removeClass("success");
+			messageHandler("name", "Let's try that again", "Wifi Name cannot contain only spaces.");
+		}
 		else if("<?php echo $network_name;?>".toLowerCase() == val.toLowerCase()){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
 			messageHandler("name", "Let's try that again", "Choose a different name than the one provided on your gateway.");
-		}
-		else if(!isXFSETUP){
-			goNextName = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", 'SSID starting with "XFSETUP" is reserved !');
 		}
 		else if(!isXHS){
 			goNextName = false;
@@ -469,7 +471,7 @@ $(document).ready(function(){
 		else if(!isValid){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", "3 to 32 ASCII characters.");
+			messageHandler("name", "Let's try that again", "1 to 32 ASCII characters.");
 		}
 		else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi5_Name").val()){
 			goNextName = false;
@@ -529,29 +531,31 @@ $(document).ready(function(){
 		return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
 		'SSID containing "optimumwifi", "TWCWiFi" and "CableWiFi" are reserved !');*/
 		var val	= $(this).val();
-		isValid		= /^[ -~]{3,32}$/i.test(val);
+		isValid		= /^[ -~]{1,32}$/i.test(val);
 		valLowerCase	= val.toLowerCase();
 		isXHS		= valLowerCase.indexOf("xhs-") !=0 && valLowerCase.indexOf("xh-") != 0;
 		isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
 		isHOME 		= valLowerCase.indexOf("home") != 0;
 		isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
+		isOnlySpaces = /^\s+$/.test(valLowerCase);
 		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
-		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=\-_`~()\s]/g,'').toLowerCase();
-		isOther	= str.indexOf("wifi") == -1 || str.indexOf("cable") == -1 && str.indexOf("twc") == -1 && str.indexOf("optimum") == -1 && str.indexOf("xfinity") == -1;
+		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/g,'').toLowerCase();
+		isOther	= str.indexOf("cablewifi") == -1 && str.indexOf("twcwifi") == -1 && str.indexOf("optimumwifi") == -1 && str.indexOf("xfinitywifi") == -1;
 		if(val == ""){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
 			messageHandler("name5", "Wi-Fi Name", "Please enter Wi-Fi Name.");
 		}
+		else if(isOnlySpaces)
+		{
+			goNextName = false;
+			$(this).addClass("error").removeClass("success");
+			messageHandler("name5", "Let's try that again", "Wifi Name cannot contain only spaces.");
+		}
 		else if("<?php echo $network_name1;?>".toLowerCase() == val.toLowerCase()){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
 			messageHandler("name5", "Let's try that again", "Choose a different name than the one provided on your gateway.");
-		}
-		else if(!isXFSETUP){
-			goNextName5 = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Let's try that again", 'SSID starting with "XFSETUP" is reserved !');
 		}
 		else if(!isXHS){
 			goNextName5 = false;
@@ -566,7 +570,7 @@ $(document).ready(function(){
 		else if(!isValid){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Let's try that again", "3 to 32 ASCII characters.");
+			messageHandler("name5", "Let's try that again", "1 to 32 ASCII characters.");
 		}
 		else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi_Name").val()){
 			goNextName5 = false;
