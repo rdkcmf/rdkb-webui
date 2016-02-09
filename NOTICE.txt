@@ -1,0 +1,22 @@
+
+Copyright 2015 RDK Management
+Licensed under the Apache License, Version 2.0
+
+Copyright 2014 Cisco Systems, Inc.
+Licensed under the Apache License, Version 2.0
+
+Copyright (c) 2009, Yahoo! Inc. 
+Licensed under the BSD 3-clause License
+
+Copyright 2008,2009 A Beautiful Site, LLC
+Licensed under the MIT License
+
+Copyright (c) 2005, 2012, 2013 jQuery Foundation, Inc. and other contributors
+Licensed under the MIT License
+
+Copyright 2006-2008, 2013 Jörn Zaefferer
+Licensed under the MIT License
+
+Copyright Unknown
+https://code.google.com/p/jscomponentes/
+Licensed under the MIT License
