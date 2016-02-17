@@ -316,6 +316,28 @@ $(document).ready(function() {
 		}
 		$("#security").change();
     });
+	$("[name='channel_bandwidth1']").change(function() {
+		//enable all channel first
+		$("#channel_number option").prop("disabled", false);
+		//disable some channel as per extension channel when NOT 20MHz in 5G (2.4G able to set channel and extension channel together)
+		if (!$("#channel_bandwidth201").prop("checked")) {
+			//40MHz
+			if ($("#channel_bandwidth1").prop("checked")) {
+				if ("BelowControlChannel" == "<?php echo $ext_channel; ?>"){
+					$("#channel_number").find("[value='36'],[value='44'],[value='52'],[value='60'],[value='100'],[value='108'],[value='116'],[value='132'],[value='140'],[value='144'],[value='149'],[value='157'],[value='165']").prop("disabled", true).prop("selected", false);
+				}	
+				else{	//AboveControlChannel or Auto  //zqiu: exclude 116,140
+					$("#channel_number1").find("[value='40'],[value='48'],[value='56'],[value='64'],[value='104'],[value='112'],[value='116'],[value='136'],[value='140'],[value='144'],[value='153'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);
+				}
+			} 
+			//80MHz
+			else if ($("#channel_bandwidth2").prop("checked")) {
+				$("#channel_number").find("[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144'],[value='165']").prop("disabled", true).prop("selected", false);			
+			}
+			// NOT 20MHz, disable channel 165
+			$("#channel_number").find("[value='165']").prop("disabled", true).prop("selected", false);
+		}
+	}).trigger("change");
     $("#wireless_network_switch").change(function() {
 		if ($(this).radioswitch("getState").on === false) {
 			$(":input:not('#save_settings, #restore-default-settings')").not(".radioswitch_cont input").prop("disabled", true);
@@ -643,6 +665,7 @@ function addslashes( str ) {
 }
 function click_save()
 {
+	var rf = "<?php echo $rf == 1? "": 1; ?>";
 	var radio_enable		= $("#wireless_network_switch").radioswitch("getState").on;
 	var network_name		= addslashes($("#network_name").val());
 	var wireless_mode		= $("#wireless_mode").attr("value");
@@ -654,6 +677,7 @@ function click_save()
 	var network_password	= addslashes($("#network_password").val());
 	var broadcastSSID		= $("#broadcastSSID").prop("checked");
 	var enableWMM			= $("#enableWMM").prop("checked");
+	var channel_bandwidth	= $('[name="channel_bandwidth'+rf+'"]:checked').attr("value");
 	var jsConfig = '{"radio_enable":"'+radio_enable
 	+'", "network_name":"'+network_name
 	+'", "wireless_mode":"'+wireless_mode
@@ -662,6 +686,7 @@ function click_save()
 	+'", "channel_number":"'+channel_number
 	+'", "network_password":"'+network_password
 	+'", "broadcastSSID":"'+broadcastSSID
+	+'", "channel_bandwidth":"'+channel_bandwidth
 	+'", "enableWMM":"'+enableWMM
 	+'", "ssid_number":"'+"<?php echo $id; ?>"
 	+'", "thisUser":"'+"<?php echo $_SESSION["loginuser"]; ?>"
@@ -795,24 +820,44 @@ function setResetInfo(info) {
 			<label for="auto_channel_number" class="acs-hide"></label>
 			<select id="auto_channel_number" disabled="disabled"><option selected="selected" ><?php echo $channel_number; ?></option></select>
 		</div>
-		<div class="form-row odd" id="div_network_password">
+		<div class="form-row odd" id="bandwidth_switch" style="<?php if ('mso'==$_SESSION['loginuser']) {echo 'display:none'; } else {echo 'display:block'; } ?>" >
+		<?php if($rf == 1 ) { ?>
+			<label for="channel_bandwidth20">Channel Bandwidth:</label>
+			<input type="radio"  name="channel_bandwidth" value="20MHz" id="channel_bandwidth20" checked="checked" /><b>20</b>
+			<label for="channel_bandwidth" class="acs-hide"></label>
+			<input type="radio"  name="channel_bandwidth" value="40MHz" id="channel_bandwidth" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
+		<?php } else { ?>
+			<label for="channel_bandwidth201">Channel Bandwidth:</label>
+			<input type="radio"  name="channel_bandwidth1" value="20MHz" id="channel_bandwidth201" checked="checked" /><b>20</b>
+			<?php if (strstr($support_mode_5g, "ac")){ ?>
+				<label for="channel_bandwidth1" class="acs-hide"></label>
+				<input type="radio"  name="channel_bandwidth1" value="40MHz"  id="channel_bandwidth1" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
+				<label for="channel_bandwidth2" class="acs-hide"></label>
+				<input type="radio"  name="channel_bandwidth1" value="80MHz"  id="channel_bandwidth2" <?php if ("80MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40/80</b>
+			<?php } else{ ?>
+				<label for="channel_bandwidth1" class="acs-hide"></label>
+				<input type="radio"  name="channel_bandwidth1" value="40MHz"  id="channel_bandwidth1" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
+			<?php }	?>
+		<?php } ?>
+		</div>
+		<div class="form-row" id="div_network_password">
 			<label for="network_password">Network Password:</label>
 			<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="<?php echo htmlspecialchars($network_password); ?>" /></span>
 			<p id="netPassword-footnote" class="footnote">8-16 characters. Letter and numbers only. No spaces. Case sensitive.</p>
 		</div>
-		<div class="form-row" id="div_password_show">
+		<div class="form-row odd" id="div_password_show">
 			<label for="password_show">Show Network Password:</label>
 			<span class="checkbox"><input type="checkbox" id="password_show" name="password_show" /></span>
 		</div>
-		<div id="div_broadcastSSID" class="form-row odd">
+		<div id="div_broadcastSSID" class="form-row">
 			<label for="broadcastSSID">Broadcast Network Name (SSID):</label>
 			<span class="checkbox"><input type="checkbox" id="broadcastSSID" name="broadcastSSID" <?php if ("true" == $broadcastSSID) echo 'checked="checked"';?> /><b>Enabled</b></span>
 		</div>
-		<div id="div_enableWMM" class="form-row">
+		<div id="div_enableWMM" class="form-row odd">
 			<label for="enableWMM">Enable WMM:</label>
 			<span class="checkbox"><input type="checkbox" id="enableWMM" name="enableWMM"  <?php if ("true" == $enableWMM) echo 'checked="checked"';?> /><b>Enabled</b></span>
 		</div>
-		<div class="form-row odd form-btn">
+		<div class="form-row form-btn">
 			<input type="submit" class="btn confirm" id="save_settings" name="save_settings" value="Save Settings" />
 			<!--input href="#" title="Restore Wi-Fi Module" id="restore-default-settings" name="restore_default_settings" type="button" style="text-transform: none;" value="RESTORE Wi-Fi SETTINGS" class="btn alt" /-->
 		</div>

@@ -78,6 +78,7 @@ if ("true" == $arConfig['radio_enable'])
 	}
 	// User "mso" have another page to configure this
 	if ("mso" != $thisUser){
+		setStr("Device.WiFi.Radio.$i.OperatingChannelBandwidth", $arConfig['channel_bandwidth'], false);
 		setStr("Device.WiFi.Radio.$i.OperatingStandards", $arConfig['wireless_mode'], true);
 		setStr("Device.WiFi.Radio.$i.AutoChannelEnable", $arConfig['channel_automatic'], true);
 		if ("false"==$arConfig['channel_automatic']){
