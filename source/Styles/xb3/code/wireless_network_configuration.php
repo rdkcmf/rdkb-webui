@@ -32,8 +32,6 @@ $wifi_param = array(
 	"HT_TxStream"			=> "Device.WiFi.Radio.1.X_CISCO_COM_HTTxStream",
 	"HT_RxStream"			=> "Device.WiFi.Radio.1.X_CISCO_COM_HTRxStream",
 	"STBC_enabled" 			=> "Device.WiFi.Radio.1.X_CISCO_COM_STBCEnable",
-	"IEEE80211hSupported"	=> "Device.WiFi.Radio.1.X_COMCAST_COM_IEEE80211hSupported",
-	"RDG_Supported"			=> "Device.WiFi.Radio.1.X_COMCAST_COM_ReverseDirectionGrantSupported",
 	"possible_channels"		=> "Device.WiFi.Radio.1.PossibleChannels",
 	"feq_band1" 			=> "Device.WiFi.Radio.2.OperatingFrequencyBand",
 	"wireless_mode1"		=> "Device.WiFi.Radio.2.OperatingStandards",
@@ -57,8 +55,6 @@ $wifi_param = array(
 	"HT_TxStream1"			=> "Device.WiFi.Radio.2.X_CISCO_COM_HTTxStream",
 	"HT_RxStream1"			=> "Device.WiFi.Radio.2.X_CISCO_COM_HTRxStream",
 	"STBC_enabled1" 		=> "Device.WiFi.Radio.2.X_CISCO_COM_STBCEnable",
-	"IEEE80211hSupported1"	=> "Device.WiFi.Radio.2.X_COMCAST_COM_IEEE80211hSupported",
-	"RDG_Supported1"			=> "Device.WiFi.Radio.2.X_COMCAST_COM_ReverseDirectionGrantSupported",
 	"possible_channels1"		=> "Device.WiFi.Radio.2.PossibleChannels",
 	//WiFi radio status
 	"Radio_Enable1"			=> "Device.WiFi.Radio.1.Enable",
@@ -135,8 +131,6 @@ $HT_RxStream		= $wifi_value['HT_RxStream'];
 $STBC_enabled		= $wifi_value['STBC_enabled'];
 $WMM_power_save		= $wifi_value['WMM_power_save'];
 $enableWMM			= $wifi_value['enableWMM'];
-$IEEE80211hSupported = $wifi_value['IEEE80211hSupported'];
-$RDG_Supported 		= $wifi_value['RDG_Supported'];
 $possible_channels	= $wifi_value['possible_channels'];
 $radio_enable1		= $wifi_value['Radio_Enable2'];
 $network_name1		= $wifi_value['network_name2'];
@@ -167,8 +161,6 @@ $HT_RxStream1		= $wifi_value['HT_RxStream1'];
 $STBC_enabled1		= $wifi_value['STBC_enabled1'];
 $WMM_power_save1	= $wifi_value['WMM_power_save1'];
 $enableWMM1			= $wifi_value['enableWMM1'];
-$IEEE80211hSupported1 = $wifi_value['IEEE80211hSupported1'];
-$RDG_Supported1 	= $wifi_value['RDG_Supported1'];
 $possible_channels1	= $wifi_value['possible_channels1'];
 $DFS_Support1 = "false" ; //Remove/disable DFS channels, DFS_Support1 1-supported 0-not supported
 $support_mode_5g = $wifi_value['support_mode_5g'];
@@ -610,29 +602,6 @@ $(document).ready(function() {
 		$(".div_radio_setting").remove();
 		$(".div_wps_setting").remove();
 		$(".btn-group").show();
-	}
-	else
-	{
-		if("<?php echo $IEEE80211hSupported; ?>" == "false")
-		{
-			$("input[name='operation_mode']").parent(".form-row").addClass('disabled').attr('disabled',true);
-			$("input[name='operation_mode']").addClass('disabled').attr('disabled',true);
-		}
-		if("<?php echo $IEEE80211hSupported1; ?>" == "false")
-		{
-			$("input[name='operation_mode1']").parent(".form-row").addClass('disabled').attr('disabled',true);
-			$("input[name='operation_mode1']").addClass('disabled').attr('disabled',true);
-		}
-		if("<?php echo $RDG_Supported; ?>" == "false")
-		{
-			$("input[name='Reverse_Direction_Grant']").parent(".form-row").addClass('disabled').attr('disabled',true);
-			$("input[name='Reverse_Direction_Grant']").addClass('disabled').attr('disabled',true);
-		}
-		if("<?php echo $RDG_Supported1; ?>" == "false")
-		{
-			$("input[name='Reverse_Direction_Grant1']").parent(".form-row").addClass('disabled').attr('disabled',true);
-			$("input[name='Reverse_Direction_Grant1']").addClass('disabled').attr('disabled',true);
-		}
 	}
 	// xb3_R1_4: just for now, remove public WiFi
 	// $(".div_public_wifi").remove();
