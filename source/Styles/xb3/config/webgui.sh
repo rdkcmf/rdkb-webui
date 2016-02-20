@@ -141,13 +141,13 @@ then
 	
 
 	else
-		echo "WEBGUI : WiFi is already personalized setting redirection_flag to false"
-		# We reached here as redirection_flag is "true". But WiFi is configured already as per notification status.
-		# Set syscfg value to false now.
-		syscfg set redirection_flag false
-		syscfg commit
 		if [ ! -e "$REVERT_FLAG" ] && [ "$NETWORKRESPONSEVALUE" = "204" ]
 		then
+			# We reached here as redirection_flag is "true". But WiFi is configured already as per notification status.
+			# Set syscfg value to false now.
+			echo "WEBGUI : WiFi is already personalized... Setting redirection_flag to false"
+			syscfg set redirection_flag false
+			syscfg commit
 			echo "WEBGUI: WiFi is already personalized. Set reverted flag in nvram"	
 			touch $REVERT_FLAG
 		fi
