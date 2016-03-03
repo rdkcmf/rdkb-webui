@@ -20,7 +20,7 @@ $DeviceControl_param = array(
 	"http_port"	=> "Device.X_CISCO_COM_DeviceControl.HTTPPort",
 	"https_port"	=> "Device.X_CISCO_COM_DeviceControl.HTTPSPort",
 	"telnet_mode"	=> "Device.X_CISCO_COM_DeviceControl.TelnetEnable",
-	"ssh_mode"	=> "Device.X_CISCO_COM_DeviceControl.SSHEnable",
+	//"ssh_mode"	=> "Device.X_CISCO_COM_DeviceControl.SSHEnable",
 	"ipv4_gw"	=> "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress",
 	"ipv4_smask"	=> "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask",
 	);
@@ -35,7 +35,7 @@ $end_ipv6	= $RemoteAccess_value['end_ipv6'];
 $http_port	= $DeviceControl_value['http_port'];
 $https_port	= $DeviceControl_value['https_port'];
 $telnet_mode	= $DeviceControl_value['telnet_mode'];
-$ssh_mode	= $DeviceControl_value['ssh_mode'];
+//$ssh_mode	= $DeviceControl_value['ssh_mode'];
 $ipv4_gw	= $DeviceControl_value['ipv4_gw'];
 $ipv4_smask	= $DeviceControl_value['ipv4_smask'];
 ?>
@@ -55,7 +55,7 @@ $(document).ready(function() {
 	var HTTPS = <?php echo ($https_mode === 'true' ? "true" : "false"); ?>;
 	var HTTPSPORT = "<?php echo $https_port;?>";
 	var TELNET = <?php echo ($telnet_mode === 'true' ? "true" : "false"); ?>;
-	var SSH = <?php echo ($ssh_mode === 'true' ? "true" : "false"); ?>;
+	//var SSH = <?php echo ($ssh_mode === 'true' ? "true" : "false"); ?>;
 	$("#http_switch").radioswitch({
 		id: "http-switch",
 		radio_name: "http",
@@ -138,7 +138,7 @@ $(document).ready(function() {
 			//document.getElementById('telnet').disabled = false;
 		}
 	});
-	$("#ssh1_switch").radioswitch({
+	/*$("#ssh1_switch").radioswitch({
 		id: "ssh1-switch",
 		radio_name: "ssh1",
 		id_on: "ssh1_enabled",
@@ -153,7 +153,7 @@ $(document).ready(function() {
 		} else {
 			//document.getElementById('ssh').disabled = false;
 		}
-	});
+	});*/
 var ALLOWTYPE=$('input[name="single"]:radio:checked').val();
 switch (ALLOWTYPE) {
 	case "single":
@@ -557,15 +557,15 @@ $(".btn").click(function(){
 		}
 		if (!isValid) return;
 	}
-	if ($("#telnet1_switch").radioswitch("getState").on && $("#ssh1_switch").radioswitch("getState").on)
+	/*if ($("#telnet1_switch").radioswitch("getState").on && $("#ssh1_switch").radioswitch("getState").on)
 	{
 		jAlert("Telnet and SSH can not be enabled at the same time.\r\nPlease disable at least one of them.");
 		return;
-	}
+	}*/
 	var telnet = $("#telnet1_switch").radioswitch("getState").on;
 	if (TELNET==telnet) telnet="notset";
-	var ssh = $("#ssh1_switch").radioswitch("getState").on;
-	if (SSH==ssh) ssh="notset";
+	/*var ssh = $("#ssh1_switch").radioswitch("getState").on;
+	if (SSH==ssh) ssh="notset";*/
  	var http = $("#http_switch").radioswitch("getState").on;
 	if (HTTP==http) http="notset";
 	var httpport=$('#http').val();
@@ -656,8 +656,9 @@ $(".btn").click(function(){
 			url:"actionHandler/ajax_remote_management.php",
 			data:{http:http, httpport:httpport, https:https, httpsport:httpsport,
 					allowtype:allowtype, startIP:startIP, endIP:endIP,
-					telnet:telnet, ssh:ssh, startIPv6:startIPv6, endIPv6:endIPv6
+					telnet:telnet, startIPv6:startIPv6, endIPv6:endIPv6
 					/*
+					ssh:ssh,
 					mso_mgmt:$("#mso_mgmt").prop("checked"),
 					cus_mgmt:$("#cus_mgmt").prop("checked")
 					*/
@@ -1018,10 +1019,10 @@ function remote_access_block(){
 				<label for="telnet1-switch">Telnet:</label>
 				<span id="telnet1_switch"></span>
 			</div>
-			<div class="form-row ">
+			<!--div class="form-row ">
 			  	<label for="ssh1-switch">SSH:</label>
 				<span id="ssh1_switch"></span>
-			</div>
+			</div-->
 	</div> <!-- end .module -->
 	<div class="form-btn">
 		<input type="button" value="Save" class="btn" />
