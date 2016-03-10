@@ -102,6 +102,15 @@ $wifi_param = array(
 	"SSID_BSSID5"	=> "Device.WiFi.SSID.5.BSSID",
 	"SSID_SSID6"	=> "Device.WiFi.SSID.6.SSID",
 	"SSID_BSSID6"	=> "Device.WiFi.SSID.6.BSSID",
+	//BandSteering
+	"BS_Capability"	=> "Device.WiFi.X_RDKCENTRAL-COM_BandSteering.Capability",
+	"BandSteeringEnable"	=> "Device.WiFi.X_RDKCENTRAL-COM_BandSteering.Enable",
+	"UtilzThreshold1"	=> "Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.1.UtilizationThreshold",
+	"RSSIThreshold1"	=> "Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.1.RSSIThreshold",
+	"PhyRateThreshold1"	=> "Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.1.PhyRateThreshold",
+	"UtilzThreshold2"	=> "Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.UtilizationThreshold",
+	"RSSIThreshold2"	=> "Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.RSSIThreshold",
+	"PhyRateThreshold2"	=> "Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.PhyRateThreshold"
 	);
 $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 $radio_enable		= $wifi_value['Radio_Enable1'];
@@ -164,6 +173,15 @@ $enableWMM1			= $wifi_value['enableWMM1'];
 $possible_channels1	= $wifi_value['possible_channels1'];
 $DFS_Support1 = "false" ; //Remove/disable DFS channels, DFS_Support1 1-supported 0-not supported
 $support_mode_5g = $wifi_value['support_mode_5g'];
+//BandSteering
+$BS_Capability			= $wifi_value['BS_Capability'];
+$BandSteeringEnable		= $wifi_value['BandSteeringEnable'];
+$UtilzThreshold1		= $wifi_value['UtilzThreshold1'];
+$RSSIThreshold1			= $wifi_value['RSSIThreshold1'];
+$PhyRateThreshold1		= $wifi_value['PhyRateThreshold1'];
+$UtilzThreshold2		= $wifi_value['UtilzThreshold2'];
+$RSSIThreshold2			= $wifi_value['RSSIThreshold2'];
+$PhyRateThreshold2		= $wifi_value['PhyRateThreshold2'];
 /**********************get WPS status, manual-disabled or auto-disabled?*******************************/
 // $ssidsWPS			= explode(",", getInstanceIds("Device.WiFi.SSID."));
 $ssidsWPS			= explode(",", "1,2");	//Currently, only SSID.1(2.4G) and SSID.2(5G) are involved with WPS
@@ -601,6 +619,7 @@ $(document).ready(function() {
 		$(".div_public_wifi").remove();
 		$(".div_radio_setting").remove();
 		$(".div_wps_setting").remove();
+		$(".band_steering").remove();
 		$(".btn-group").show();
 	}
 	// xb3_R1_4: just for now, remove public WiFi
@@ -687,6 +706,17 @@ $(document).ready(function() {
 	            e.preventDefault();
 	        });
 		}
+	}
+	//BS_Capability to grey out
+	var BS_Capability = <?php echo $BS_Capability; ?>;
+	if(!BS_Capability)
+	{
+		$('.band_steering *').addClass('disabled');
+	        $('.band_steering input ').prop('disabled',true);
+	        $('.band_steering .btn ').prop('disabled',true);
+	        $('.band_steering .btn').click(function(e) {
+	            e.preventDefault();
+	        });
 	}
 });
 function set_config(jsConfig)
@@ -1004,6 +1034,77 @@ function pair_cancel()
 			}
 		}
 	);	
+}
+function showSteeringHistoryDialog() {
+		$.virtualDialog({
+			title: "Band Steering History",
+			content: $("#band_steering_history_content"),
+			footer: '<input id="pop_button" type="button" value="Close" style="float: right;" />',
+			width: "600px"
+		});
+		$("#pop_button").off("click").on("click", function(){
+			$.virtualDialog("hide");
+		});
+	}
+function steering_history() {
+	jProgress('This may take several seconds...', 60);
+	$.ajax({
+			type: "POST",
+			url: "actionHandler/ajaxSet_wireless_network_configuration.php",
+			data: { configInfo: '{"band_steering_history": "true", "band_steering": "true"}' },
+			success: function(result) {
+				jHide();
+				bandHistory = result.split("\n");
+				console.log(bandHistory);
+				$('#table_band_steering').find('tr:gt(0)').remove();
+				var table = $("#table_band_steering");
+				for(var i = 0; i< bandHistory.length; i++)
+				{
+					var tr = $("<tr/>");
+					table.append(tr);
+					var values = bandHistory[i].split("|");
+					for(var j=0; j< values.length; j++)
+					{
+						tr.append("<td>" + values[j]+"</td>")
+					}
+				}
+				showSteeringHistoryDialog();
+				},
+			failure: function(result) {
+					jHide();
+					jAlert("Failure, please try again.");
+				}
+
+			});
+}
+function saveBandSteeringSettings()
+{
+	jProgress('This may take several seconds...', 60);
+	var bs_enable = $("#BS_enabled").prop("checked");
+	var UtilzThreshold1 = $("#UtilzThreshold1").val();
+	var RSSIThreshold1 = $("#RSSIThreshold1").val();
+	var PhyRateThreshold1 = $("#PhyRateThreshold1").val();
+	var UtilzThreshold2 = $("#UtilzThreshold2").val();
+	var RSSIThreshold2 = $("#RSSIThreshold2").val();
+	var PhyRateThreshold2 = $("#PhyRateThreshold2").val();
+	var jsConfig = '{"bs_enable":"'+bs_enable+'", "UtilzThreshold1":"'+UtilzThreshold1+'", "RSSIThreshold1":"'+RSSIThreshold1
+				+'", "PhyRateThreshold1":"'+PhyRateThreshold1+'", "UtilzThreshold2":"'+UtilzThreshold2
+				+'", "RSSIThreshold2":"'+RSSIThreshold2+'", "PhyRateThreshold2":"'+PhyRateThreshold2
+				+'", "save_steering_settings":"true", "band_steering": "true",  "band_steering_history": "false"}';
+	$.ajax({
+		type: "POST",
+		url: "actionHandler/ajaxSet_wireless_network_configuration.php",
+		data: { configInfo: jsConfig },
+		success: function(result) {
+			jHide();
+			window.location.href = "wireless_network_configuration.php";
+		},
+		failure: function(result)
+		{
+			jHide();
+			jAlert("Failure, please try again.");
+		}
+	});
 }
 </script>
 <div id="content">
@@ -1491,6 +1592,62 @@ function pair_cancel()
 		<div class="form-btn">
 		<label for="save_advance1" class="acs-hide"></label>
 			<input type="submit" id="save_advance1" value="Save Advanced Settings" class="btn" onclick="save_config('2', 'save_advance');"/>
+		</div>
+	</div>
+</div>
+<div class="module band_steering">
+	<h2>Band Setting</h2>
+	<div class="form-row ">
+		<label for="BS_disabled">Enable:</label>
+		<input type="radio"  name="BS" value="disabled" id="BS_disabled" checked="checked" /><b>Disable</b>
+		<label for="BS_enabled" class="acs-hide"></label>
+		<input type="radio"  name="BS" value="enabled"  id="BS_enabled" <?php if ("true"==$BandSteeringEnable) echo 'checked="checked"';?> /><b>Enable</b>
+	</div>
+	<div class="form-row odd">
+		<label for="BS_Logging">Logging:</label>
+		<input type="button" id="BS_Logging" value="Steering History" class="btn" onclick="steering_history()"/>
+	</div>
+	<div class="form-row ">
+		<label for="BS_Logging">Utilzation Threshold(2.4GHz):</label>
+		<input type="text" id="UtilzThreshold1" value="<?php echo $UtilzThreshold1; ?>"/>
+	</div>
+	<div class="form-row odd">
+		<label for="BS_Logging">RSSI Threshold(2.4GHz):</label>
+		<input type="text" id="RSSIThreshold1" value="<?php echo $RSSIThreshold1; ?>"/>
+	</div>
+	<div class="form-row ">
+		<label for="BS_Logging">Physical Rate Threshold(2.4GHz):</label>
+		<input type="text" id="PhyRateThreshold1" value="<?php echo $PhyRateThreshold1; ?>"/>
+	</div>
+	<div class="form-row odd">
+		<label for="BS_Logging">Utilzation Threshold(5GHz):</label>
+		<input type="text" id="UtilzThreshold2" value="<?php echo $UtilzThreshold2; ?>"/>
+	</div>
+	<div class="form-row ">
+		<label for="BS_Logging">RSSI Threshold(5GHz):</label>
+		<input type="text" id="RSSIThreshold2" value="<?php echo $RSSIThreshold2; ?>"/>
+	</div>
+	<div class="form-row odd">
+		<label for="BS_Logging">Physical Rate Threshold(5GHz):</label>
+		<input type="text" id="PhyRateThreshold2" value="<?php echo $PhyRateThreshold2; ?>"/>
+	</div>
+	<div class="form-row " id="band_steering_history_content" class="content_message" style="display: none;">
+	
+		<table class="data" id="table_band_steering" >
+		<tr>
+			<th id="steeringTime"  width="20%">SteeringTime</th>
+			<th id="clientMAC"  width="20%">ClientMAC</th>
+			<th id="SourceSSIDIndex"  width="20%">Source SSID Index</th>
+			<th id="DestSSIDIndex" width="30%">Destination SSID Index</th>
+			<th id="SteeringReason"  width="30%">SteeringReason</th>
+		</tr>
+		
+		</table>
+	</div>
+	<div class="form-row "> 
+		<div class="form-btn">
+		<label for="save_steering" class="acs-hide"></label>
+			<input type="submit" id="save_steering" value="Save Band Steering Settings" class="btn" onclick="saveBandSteeringSettings();"/>
 		</div>
 	</div>
 </div>
