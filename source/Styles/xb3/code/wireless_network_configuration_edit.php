@@ -68,11 +68,19 @@ $possible_channels	= $wifi_value['possible_channels'];
 $defaultSSID		= ($id == 3)?"":$wifi_value['DefaultSSID'];
 $defaultKeyPassphrase	= ($id == 3)?"":$wifi_value['DefaultKeyPassphrase'];
 /*- In bridge mode don't show 'Mac filter settings ' -*/
-if(strstr($_SESSION["lanMode"], "bridge-static")){
-	unset($valid_ids[3]);
-	unset($valid_ids[2]);
-	unset($valid_ids[1]);
-	unset($valid_ids[0]);
+if(strstr($_SESSION["lanMode"], "bridge-static") ) {
+	if($_SESSION["loginuser"] != "mso")
+	{
+		unset($valid_ids[3]);
+		unset($valid_ids[2]);
+		unset($valid_ids[1]);
+		unset($valid_ids[0]);
+	}
+	else
+	{
+		unset($valid_ids[1]);
+		unset($valid_ids[0]);
+	}
 }
 /*- if AccessPoint is not up then don't show in GUI -*/
 else if(strstr($wifi_value['AccessPoint_4_Enable'], "false")) unset($valid_ids[3]);

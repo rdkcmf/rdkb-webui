@@ -551,18 +551,22 @@ $(document).ready(function() {
 			url: "actionHandler/ajaxSet_wireless_network_configuration.php",
 			data: { configInfo: jsConfig },
 			success: function(msg) {
-				$("#filtering_mode").attr("value", msg.filtering_mode);
-				//clear the previous filter_table when ssid changed
-				$("#filter_table > tbody").empty();
-				for (var i=0; i < msg.ft.length; i++)
-				{
-					add_row("filter_table", -1, msg.ft[i][0], msg.ft[i][1]);
-				}
-				//clear the previous auto_table when ssid changed
-				$("#auto_table > tbody").empty();
-				for (var i=0; i < msg.at.length; i++)
-				{
-					add_row("auto_table", -1, msg.at[i][0], msg.at[i][1]);
+			if (isBridge != 'bridge-static' || "mso" == "<?php echo $_SESSION["loginuser"]; ?>") {
+					$("#filtering_mode").attr("value", msg.filtering_mode);
+					
+					//clear the previous filter_table when ssid changed
+					$("#filter_table > tbody").empty();
+					for (var i=0; i < msg.ft.length; i++)
+					{
+						add_row("filter_table", -1, msg.ft[i][0], msg.ft[i][1]);
+					}
+					
+					//clear the previous auto_table when ssid changed
+					$("#auto_table > tbody").empty();
+					for (var i=0; i < msg.at.length; i++)
+					{
+						add_row("auto_table", -1, msg.at[i][0], msg.at[i][1]);
+					}
 				}
 				//jHide();
 				$("#mac_admin_temp, #mac_admin").toggle();
@@ -663,24 +667,8 @@ $(document).ready(function() {
 	if (isBridge == 'bridge-static') { 
    		if ("mso" == "<?php echo $_SESSION["loginuser"]; ?>"){
 	        $(".div_wps_setting input, .div_wps_setting select").addClass('disabled').attr('disabled',true);
-	        $("#radio24_switch, #radio5_switch, #wps_switch, #pin_switch").radioswitch("doEnable", false);
-   			$('.div_public_wifi *').addClass('disabled');
-	        $('.div_public_wifi .btn').click(function(e) {
-	            e.preventDefault();
-	        });
-	        $("#wireless_mode, #transmit_power, #channel_switch, #channel_number, #channel_manual, #channel_automatic").addClass('disabled').attr('disabled',true);
-	        $('.div_radio_setting *').addClass('disabled');
-	        $('.div_radio_setting .btn').prop('disabled',true);
-	        $('.div_radio_setting .btn').click(function(e) {
-	            e.preventDefault();
-	        });
-	     	$(".div_radio_setting input, .div_radio_setting select").addClass('disabled').attr('disabled',true);
-			$('#mac_admin *').addClass('disabled');
-	        $('#mac_admin .btn').prop('disabled',true);
-	        $('#mac_admin .btn').click(function(e) {
-	            e.preventDefault();
-	        });
-			$("#mac_admin input, #mac_admin select").addClass('disabled').attr('disabled',true);
+	        $("#wps_switch, #pin_switch").radioswitch("doEnable", false);
+			$("#mac_admin option[value = '1'], #mac_admin option[value = '2']").addClass('disabled').attr('disabled',true);
 			$('.div_wps_setting *').addClass('disabled');
 	        $('.div_wps_setting .btn').prop('disabled',true);
 	        $('.div_wps_setting .btn').click(function(e) {
@@ -1511,8 +1499,10 @@ function pair_cancel()
 			<!--option value="1" selected="selected"><?php //echo $network_name;?></option>
 			<option value="2" ><?php //echo $network_name1;?></option-->
 			<?php
+				 $isBridge = $_SESSION["lanMode"];
 				foreach ($ssids as $i) {
-					echo '<option value="'.$i.'" '.(("1"==$i)?'selected="selected"':"").'>'.getStr("Device.WiFi.SSID.$i.SSID").'</option>';
+				$id = ($isBridge == 'bridge-static' && "mso" == $_SESSION["loginuser"])? 3:1;
+					echo '<option value="'.$i.'" '.(($id==$i)?'selected="selected"':"").'>'.getStr("Device.WiFi.SSID.$i.SSID").'</option>';
 				}
 			?>		
 		</select>
