@@ -15,6 +15,11 @@
 */
 ?>
 <?php
+session_start();
+if (!isset($_SESSION["loginuser"])) {
+	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	exit(0);
+}
 $myfile = fopen("/var/tmp/Wifi_Spectrum_Analyzer_Table.html", "w");
 fwrite($myfile, "<style>table th tr {}</style>");
 fwrite($myfile, "<style>");

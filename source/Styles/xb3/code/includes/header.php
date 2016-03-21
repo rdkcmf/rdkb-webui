@@ -6,8 +6,10 @@
 		echo '<script type="text/javascript">alert("Please Login First!"); location.href="home_loggedout.php";</script>';
 		exit(0);
 	}
-	$not_cusadmin_pages = array('email_notification.php', 'hs_port_forwarding', 'routing.php');
-	$not_admin_pages = array('email_notification.php', 'hs_port_forwarding', 'routing.php', 'dynamic_dns', 'mta');
+	$not_cusadmin_pages = array('email_notification.php', 'hs_port_forwarding', 'routing.php', 'change_password.php');
+	$not_admin_pages = array('email_notification.php', 'hs_port_forwarding', 'routing.php', 'dynamic_dns', 'mta', 'voice_quality_metrics' ,'qos');
+	$not_mso_pages = array('change_password.php');
+	$not_bridge_static_pages = array('local_ip', 'firewall', 'managed', 'parental', 'forwarding', 'triggering', 'dmz', 'routing');
 	if ($_SESSION['loginuser'] == 'cusadmin') {
 		foreach ($not_cusadmin_pages as $page) {
 			if (strstr($_SERVER['SCRIPT_FILENAME'], $page)) {
@@ -16,8 +18,24 @@
 			}
 		}
 	}
-	if ($_SESSION['loginuser'] == 'admin') {
+	else if ($_SESSION['loginuser'] == 'admin') {
 		foreach ($not_admin_pages as $page) {
+			if (strstr($_SERVER['SCRIPT_FILENAME'], $page)) {
+				echo '<script type="text/javascript"> alert("Access Denied!"); window.history.back(); </script>';
+				exit(0);	
+			}
+		}
+	}
+	else if ($_SESSION['loginuser'] == 'mso') {
+		foreach ($not_mso_pages as $page) {
+			if (strstr($_SERVER['SCRIPT_FILENAME'], $page)) {
+				echo '<script type="text/javascript"> alert("Access Denied!"); window.history.back(); </script>';
+				exit(0);	
+			}
+		}
+	}
+	if (isset($_SESSION['lanMode']) && $_SESSION["lanMode"] == "bridge-static") {
+		foreach ($not_bridge_static_pages as $page) {
 			if (strstr($_SERVER['SCRIPT_FILENAME'], $page)) {
 				echo '<script type="text/javascript"> alert("Access Denied!"); window.history.back(); </script>';
 				exit(0);	
