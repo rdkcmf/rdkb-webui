@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION["loginuser"])) {
+	echo '<script type="text/javascript">alert("Please Login First!"); location.href="index.php";</script>';
+	exit(0);
+}
 exec('confPhp status',$output,$return_status);
 switch ($return_status)
 {

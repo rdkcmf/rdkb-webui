@@ -2,7 +2,7 @@
 /*
  If not stated otherwise in this file or this component's Licenses.txt file the
  following copyright and licenses apply:
- Copyright 2015 RDK Management
+ Copyright 2016 RDK Management
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -14,7 +14,12 @@
  limitations under the License.
 */
 ?>
-<?php 
+<?php
+session_start();
+if (!isset($_SESSION["loginuser"])) {
+	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	exit(0);
+}
 $jsConfig = $_REQUEST['configInfo'];
 //$jsConfig = '{"moca_enable": "true", "scan_method": "true", "channel": "0000000001000000", "beacon_power": "0", "taboo_enable": "false", "taboo_freq": "00000003ffffc000", "nc_enable": "false", "privacy_enable": "false", "net_password": "", "qos_enable": "false"}'; 
 $arConfig = json_decode($jsConfig, true);

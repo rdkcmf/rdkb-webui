@@ -58,6 +58,7 @@ elseif (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'admin') {
 	$eMTA 			= FALSE;	
 	$routing 		= FALSE;
 	$email_notify		= FALSE;
+	$nat				= FALSE;
 	$dynamic_dns 		= FALSE;
 	$hs_port_forwarding	= FALSE;
 	$password_change	= TRUE;

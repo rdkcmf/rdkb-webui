@@ -16,6 +16,11 @@
 ?>
 <?php include('../includes/utility.php'); ?>
 <?php
+session_start();
+if (!isset($_SESSION["loginuser"])) {
+	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	exit(0);
+}
 function array_msort($array, $cols)
 {
     $colarr = array();

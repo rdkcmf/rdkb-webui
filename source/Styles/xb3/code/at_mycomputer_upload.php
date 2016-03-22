@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION["loginuser"])) {
+	echo '<script type="text/javascript">alert("Please Login First!"); location.href="index.php";</script>';
+	exit(0);
+}
 ini_set('upload_tmp_dir','/var/tmp/');
 $target = "/var/tmp/";
 $target = $target.basename($_FILES['file']['name']);

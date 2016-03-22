@@ -2,7 +2,7 @@
 /*
  If not stated otherwise in this file or this component's Licenses.txt file the
  following copyright and licenses apply:
- Copyright 2015 RDK Management
+ Copyright 2016 RDK Management
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -15,6 +15,11 @@
 */
 ?>
 <?php 
+session_start();
+if (!isset($_SESSION["loginuser"])) {
+	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	exit(0);
+}
 header("Content-Type: application/json");
 $infoArray = json_decode($_REQUEST['resetInfo'], true);
 // sleep(10);
