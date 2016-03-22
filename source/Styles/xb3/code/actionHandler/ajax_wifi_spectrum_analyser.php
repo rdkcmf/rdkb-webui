@@ -109,7 +109,7 @@ function get_results()
 	}
 }
 $WiFiDiagnostic_enable = getStr("Device.WiFi.NeighboringWiFiDiagnostic.Enable");
-if($WiFiDiagnostic_enable == false)
+if($WiFiDiagnostic_enable == "false")
 {
 	setStr("Device.WiFi.NeighboringWiFiDiagnostic.Enable", true, true);
 	setStr("Device.WiFi.NeighboringWiFiDiagnostic.DiagnosticsState", "Requested", true);
