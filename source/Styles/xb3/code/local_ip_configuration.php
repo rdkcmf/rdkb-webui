@@ -296,49 +296,17 @@ $(document).ready(function() {
 		var netmask = $('#ipv4_subnet_mask').val();
 		var ipaddr = $('#ipv4_gateway_address_1').val() + "." + $('#ipv4_gateway_address_2').val() + "." + $('#ipv4_gateway_address_3').val() + ".1";
 		var dhcp_addr = $('#ipv4_dhcp_beginning_address_1').val() + "." + $('#ipv4_dhcp_beginning_address_2').val() + "." + $('#ipv4_dhcp_beginning_address_3').val() + "." + $('#ipv4_dhcp_beginning_address_4').val();
-		dhcp_addr_bin = ip4StrToBin(dhcp_addr);
-		ipaddr_bin = ip4StrToBin(ipaddr);
-		netmask_bin = ip4StrToBin(netmask);
-		//isIp4ValidInSubnet(ip4Bin, subnetIpBin, subnetMaskBin)
-		isIp4Valid = isIp4ValidInSubnet(dhcp_addr_bin, ipaddr_bin, netmask_bin);
+		isIp4Valid = ValidIp4Addr(dhcp_addr, ipaddr, netmask);
 		$("p:contains('DHCP Beginning address is beyond the valid range.'):visible").remove();
-		if(isIp4Valid)
-		{
-			if(dhcp_addr != "10.0.0.1")  
-				return true;
-			else
-				return false ;
-		}
-		else
-			return false;
+		return isIp4Valid;
 	}, "DHCP Beginning address is beyond the valid range.");
 	jQuery.validator.addMethod("checkMaskEnd",function(value,element){		
 		var netmask = $('#ipv4_subnet_mask').val();
 		var ipaddr = $('#ipv4_gateway_address_1').val() + "." + $('#ipv4_gateway_address_2').val() + "." + $('#ipv4_gateway_address_3').val() + ".1";
-			var dhcp_addr = $('#ipv4_dhcp_ending_address_1').val() + "." + $('#ipv4_dhcp_ending_address_2').val() + "." + $('#ipv4_dhcp_ending_address_3').val() + "." + $('#ipv4_dhcp_ending_address_4').val();
-		dhcp_addr_bin = ip4StrToBin(dhcp_addr);
-		ipaddr_bin = ip4StrToBin(ipaddr);
-		netmask_bin = ip4StrToBin(netmask);
-		//isIp4ValidInSubnet(ip4Bin, subnetIpBin, subnetMaskBin)
-		isIp4Valid = isIp4ValidInSubnet(dhcp_addr_bin, ipaddr_bin, netmask_bin);
-		var not_allowed_endings = {
-			'255.255.255.0': '10.0.0.254',
-			'255.255.255.128': '10.0.0.127',
-			'255.255.0.0': '10.0.255.254',
-			'255.0.0.0': '10.255.255.254'
-		};
-		$("p:contains('DHCP Ending address is beyond the valid range'):visible").remove();
-		if(isIp4Valid)
-		{
-			if((dhcp_addr != not_allowed_endings[netmask]) && (dhcp_addr != "10.0.0.1"))
-			{
-				return true;
-			}
-			else
-				return false;
-		}
-		else
-			return false;
+		var dhcp_addr = $('#ipv4_dhcp_ending_address_1').val() + "." + $('#ipv4_dhcp_ending_address_2').val() + "." + $('#ipv4_dhcp_ending_address_3').val() + "." + $('#ipv4_dhcp_ending_address_4').val();
+		isIp4Valid = ValidIp4Addr(dhcp_addr, ipaddr, netmask);
+		$("p:contains('DHCP Ending address is beyond the valid range.'):visible").remove();
+		return isIp4Valid;
 	}, "DHCP Ending address is beyond the valid range.");
 	$.validator.addMethod("hexadecimal", function(value, element) {
 		return this.optional(element) || /^[a-fA-F0-9]+$/i.test(value);

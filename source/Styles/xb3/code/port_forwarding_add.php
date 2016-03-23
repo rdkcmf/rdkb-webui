@@ -233,20 +233,13 @@ function isIp4AddrRequired()
 		}
 		if (!IsBlank("server_ip_address_")) {
 			//to check if "Server IPv4 Address" is in "DHCP Pool range"
-			var IPv4_not_valid = false;
-			for(i=0;i<4;i++){
-				j = i+1;
-				if(parseInt(beginArr[i]) > parseInt($("#server_ip_address_"+j).val()) || parseInt($("#server_ip_address_"+j).val()) > parseInt(endArr[i])){
-					IPv4_not_valid = true;
-					break;
-				}
-			}
+			var IPv4_valid = ValidIp4Addr(ip, jsGatewayIP, jsNetMask);
 			//IPv4 validation
 			if (ip == jsGatewayIP){
 				jAlert("Server IP can't be equal to the Gateway IP address !");
 				return;
-			} else if(IPv4_not_valid){
-				jAlert("Server IP addr is not in valid range:\n"+beginAddr+" ~ "+endAddr);
+			} else if(!IPv4_valid){
+				jAlert("Server IP addr is not in valid range !");
 				return;
 			}
 		}
