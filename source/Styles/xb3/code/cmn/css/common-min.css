@@ -2,7 +2,7 @@
  * If not stated otherwise in this file or this component's Licenses.txt file the
  * following copyright and licenses apply:
  *
- * Copyright 2015 RDK Management
+ * Copyright 2016 RDK Management
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -912,7 +912,7 @@ table.data .number {
 }
 
 table#blocked-apps .apps,table#blocked-services .services {
-	width: 50%;
+	width: 18%;
 }
 
 table#blocked-services .when {
