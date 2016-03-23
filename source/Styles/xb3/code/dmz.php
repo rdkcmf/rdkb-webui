@@ -118,6 +118,14 @@ function populateIPv6Addr(v6addr){
 	$.validator.addMethod("hexadecimal", function(value, element) {
 		return this.optional(element) || /^[a-fA-F0-9]+$/i.test(value);
 	}, "Only hexadecimal characters are valid. Acceptable characters are ABCDEF0123456789.");
+	$.validator.addMethod("isIp4ValidSubnet",function(value,element){		
+		var netmask = jsNetMask;
+		var ipaddr = jsGatewayIP;
+		var dhcp_addr = $("#dmz_host_address_1").val() + "." + $("#dmz_host_address_2").val() + "." + $("#dmz_host_address_3").val() + "." + $("#dmz_host_address_4").val();
+		isIp4Valid = ValidIp4Addr(dhcp_addr, ipaddr, netmask);
+		$("p:contains('DMZ v4 Host address is beyond the valid range.'):visible").remove();
+		return isIp4Valid;
+	}, "DMZ v4 Host address is beyond the valid range.");
 	var validator =	$("#pageForm").validate({
 		debug: true,
 		onfocusout: false,
@@ -133,8 +141,9 @@ function populateIPv6Addr(v6addr){
 		$(this).rules( "add", {
 			required: isIp4AddrRequired,
 			min: 0,
-			max: 255-((3==index)?2:0),
-			digits: true
+			//max: 255-((3==index)?2:0),
+			digits: true,
+			isIp4ValidSubnet: true
 		});
 	});	
 	$('[id^=ip6_address_r]').each(function(){

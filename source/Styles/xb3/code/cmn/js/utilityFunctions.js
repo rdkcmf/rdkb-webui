@@ -2,7 +2,7 @@
  * If not stated otherwise in this file or this component's Licenses.txt file the
  * following copyright and licenses apply:
  *
- * Copyright 2015 RDK Management
+ * Copyright 2016 RDK Management
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -126,3 +126,29 @@ function isValidIp6Str(v6Str) {
 	return true;
 }
 
+function ValidIp4Addr(ip4Dec, subnetIpDec, subnetMaskDec){
+	//to check if "Server IPv4 Address" is in "DHCP Pool range"
+	ip4Bin			= ip4StrToBin(ip4Dec);
+	subnetIpBin		= ip4StrToBin(subnetIpDec);
+	subnetMaskBin	= ip4StrToBin(subnetMaskDec);
+
+	isIp4ValidRange = isIp4ValidInSubnet(ip4Bin, subnetIpBin, subnetMaskBin);
+
+	if(isIp4ValidRange){
+		//Reserve last IP of subnet for ATOM process communication
+		var bcAddr = (subnetIpBin & subnetMaskBin) + ((~subnetMaskBin) & 0xfffffffe);
+		console.log(bcAddr);
+		if (ip4Bin == bcAddr) {
+			return false;
+		}
+		//for blocking GW IP
+		else if(ip4Bin == subnetIpBin){
+			return false;
+		}
+		return true;
+	}
+	else {
+		return false;
+	}
+
+}

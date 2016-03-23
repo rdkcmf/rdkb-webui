@@ -43,13 +43,13 @@ function isIPValid($IP, $MAC){
     elseif (strstr($LanSubMask, '255.255.255')) {
         //the first three field should be equal to gw ip field
         if (($gwIP[0] != $hostIP[0]) || ($gwIP[1] != $hostIP[1]) || ($gwIP[2] != $hostIP[2])) {
-           $msg = "Input IP is not in valid range:\n" . "$gwIP[0].$gwIP[1].$gwIP[2].[2~254]!";
+           $msg = "Input IP is not in valid range:\n" . "$gwIP[0].$gwIP[1].$gwIP[2].[2~253]!";
            $ret = FALSE;
         }      
     }
     elseif ($LanSubMask == '255.255.0.0') {
         if (($gwIP[0] != $hostIP[0]) || ($gwIP[1] != $hostIP[1])) {
-           $msg = "Input IP is not in valid range:\n" . "$gwIP[0].$gwIP[1].[2~254].[2~254]!";
+           $msg = "Input IP is not in valid range:\n" . "$gwIP[0].$gwIP[1].0.1 - $gwIP[0].$gwIP[1].255.254 !";
            $ret = FALSE;
         }      
     } 
