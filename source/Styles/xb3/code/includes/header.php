@@ -120,6 +120,17 @@
 	}
 	</style>	
 </head>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("table.data td").each(function() {
+			if($(this).text().split("\n")[0].length > 25)
+			{
+				$(this).closest('table').css("table-layout", "fixed");
+				$(this).css("word-wrap", "break-word");
+			}
+		});
+	});
+</script>
 <body>
     <!--Main Container - Centers Everything-->
 	<div id="container">
