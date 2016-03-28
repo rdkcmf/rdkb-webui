@@ -20,12 +20,6 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="index.php";</script>';
 	exit(0);
 }
-	$file = "/var/tmp/Wifi_Spectrum_Analyzer_Table.html";
-	header("Content-type: text/html");
-   	header("Content-Disposition: attachment; filename=Wifi_Spectrum_Analyzer_Table.html");
-   	if(file_exists($file))
-   	{
-		readfile($file);
-		unlink($file);
-	}
+	echo '<meta http-equiv=REFRESH CONTENT="0.1; url=trigger_spectrum_download.php">';
+	echo "<h3>Wi-Fi spectrum analyzer results has been saved to your local machine.</h3>";
 ?>
