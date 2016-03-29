@@ -25,22 +25,8 @@ default:
 		if ($return_var==-1) echo "<h3>Error, get save status failure! </h3>";
 		else if ($return_var==3) echo "<h3>Error, get current configuration failure! </h3>";
 		else {				//no case 2 when getting
-			$filesize=filesize("/var/tmp/".$filename);
-			header ("Content-Type: application/download"); 
-			//header ("Content-Disposition: attachment; filename=backup_".date("YmdHis").".cfg");
-			header ("Content-Disposition: attachment; filename=backup_latest.cfg"); 
-			header("Content-Length: ".$filesize); 
-			$fp=fopen("/var/tmp/".$filename,"r");
-			$buffersize=1024*1024;
-			$curpos=0;
-			while(!feof($fp) && $filesize-$curpos>$buffersize){
-				$buffer=fread($fp,$buffersize);
-				echo $buffer;
-				$curpos+=$buffersize;
-			}
-			$buffer=fread($fp,$filesize-$curpos);
-			echo $buffer;
-			fclose($fp);
+			echo '<meta http-equiv=REFRESH CONTENT="0.1; url=trigger_download.php">';
+			echo "<h3>The current configuration has been saved as a backup file in your local machine.</h3>";
 		}
 	}
 }
