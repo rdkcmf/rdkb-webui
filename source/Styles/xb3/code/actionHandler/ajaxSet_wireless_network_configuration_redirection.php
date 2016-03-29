@@ -14,12 +14,7 @@
  limitations under the License.
 */
 ?>
-<?php 
-session_start();
-if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
-	exit(0);
-}
+<?php
 $isCaptiveMode = false;
 $CONFIGUREWIFI = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi");
 $CaptivePortalEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CaptivePortalEnable");
