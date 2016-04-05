@@ -344,7 +344,7 @@ $(document).ready(function(){
 		var nums 	= val.search(/\d/) === -1 ? 0 : 1 ;	//numbers
 		var lowers 	= val.search(/[a-z]/) === -1 ? 0 : 1 ;	//lower case
 		var uppers 	= val.search(/[A-Z]/) === -1 ? 0 : 1 ;	//upper case
-		var specials 	= val.search(/(?![a-zA-Z0-9])[!-~]/) === -1 ? 0 : 1 ;	//All "Special Characters" in the ASCII Table
+		var specials 	= val.search(/(?![a-zA-Z0-9])[ -~]/) === -1 ? 0 : 1 ;	//All "Special Characters" in the ASCII Table
 		var strength = nums+lowers+uppers+specials;
 		strength = val.length > 7 ? strength : 0 ;
 		strength = val.length < 64 ? strength : 5 ;

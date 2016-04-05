@@ -156,10 +156,10 @@ wpa2psk ==> 8 to 63 Ascii characters
 			},
     		network_password: {
 			not_defaulPassword1: true,
-    			required: function() {
+    			/*required: function() {
     				return ($("#security").val() != "None");
     			}
-    			,wep_64: function() {
+    			,*/wep_64: function() {
     				return ($("#security").val() == "WEP_64");
     			}
     			,wep_128: function() {
@@ -177,10 +177,10 @@ wpa2psk ==> 8 to 63 Ascii characters
 	    	},
     		network_password1: {
 			not_defaulPassword2: true,
-    			required: function() {
+    			/*required: function() {
     				return ($("#security1").val() != "None");
     			}
-    			,wep_64: function() {
+    			,*/wep_64: function() {
     				return ($("#security1").val() == "WEP_64");
     			}
     			,wep_128: function() {

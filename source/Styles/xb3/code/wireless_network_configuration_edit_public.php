@@ -277,10 +277,10 @@ wpa2psk ==> 8 to 63 Ascii characters
 				not_HOME: true
 			},
 			network_password: {
-				required: function() {
+				/*required: function() {
 					return ($("#security option:selected").val() != "None");
 				}
-				,wep_64: function() {
+				,*/wep_64: function() {
 					return ($("#security option:selected").val() == "WEP_64");
 				}
 				,wep_128: function() {
