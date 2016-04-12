@@ -347,7 +347,7 @@ $(document).ready(function(){
 		var specials 	= val.search(/(?![a-zA-Z0-9])[!-~]/) === -1 ? 0 : 1 ;	//All "Special Characters" in the ASCII Table
 		var strength = nums+lowers+uppers+specials;
 		strength = val.length > 7 ? strength : 0 ;
-		strength = val.length < 64 ? strength : 5 ;
+		strength = val.length < 65 ? strength : 5 ;
 		if(isValidPassword){
 			switch (strength) {
 			    case 0:
@@ -492,7 +492,7 @@ $(document).ready(function(){
 		//VALIDATION for WiFi_Password
 		$WiFiPass = $("#WiFi_Password");
 		var val = $WiFiPass.val();
-		isValid	= /^[ -~]{8,63}$/i.test(val);
+		isValid	= /^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i.test(val);
 		if(val == ""){
 			goNextPassword	= false;
 			$WiFiPass.addClass("error").removeClass("success");
@@ -506,7 +506,7 @@ $(document).ready(function(){
 		else if(!isValid){
 			goNextPassword	= false;
 			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password", "Let's try that again", "Passwords are case sensitive and should include 8-63 ASCII characters.");
+			messageHandler("password", "Let's try that again", "Passwords are case sensitive and should include 8-63 ASCII characters or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.");
 		}
 		/*else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi5_Password").val()){
 			goNextPassword = false;
@@ -516,7 +516,7 @@ $(document).ready(function(){
 		else {
 			goNextPassword	= true;
 			$WiFiPass.addClass("success").removeClass("error");
-			messageHandler("password", "Wi-Fi Password", "Passwords are case sensitive and should include 8-63 ASCII characters.");
+			messageHandler("password", "Wi-Fi Password", "Passwords are case sensitive and should include 8-63 ASCII characters or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.");
 		}
 		toShowNext();
 		showPasswordStrength("", goNextPassword);
@@ -591,7 +591,7 @@ $(document).ready(function(){
 		//VALIDATION for WiFi_Password
 		$WiFiPass = $("#WiFi5_Password");
 		var val = $WiFiPass.val();
-		isValid	= /^[ -~]{8,63}$/i.test(val);
+		isValid	= /^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i.test(val);
 		if(val == ""){
 			goNextPassword5	= false;
 			$WiFiPass.addClass("error").removeClass("success");
@@ -605,7 +605,7 @@ $(document).ready(function(){
 		else if(!isValid){
 			goNextPassword5	= false;
 			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password5", "Let's try that again", "Passwords are case sensitive and should include 8-63 ASCII characters.");
+			messageHandler("password5", "Let's try that again", "Passwords are case sensitive and should include 8-63 ASCII characters or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.");
 		}
 		/*else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi_Password").val()){
 			goNextPassword5 = false;
@@ -615,7 +615,7 @@ $(document).ready(function(){
 		else {
 			goNextPassword5	= true;
 			$WiFiPass.addClass("success").removeClass("error");
-			messageHandler("password5", "Wi-Fi Password", "Passwords are case sensitive and should include 8-63 ASCII characters.");
+			messageHandler("password5", "Wi-Fi Password", "Passwords are case sensitive and should include 8-63 ASCII characters or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.");
 		}
 		toShowNext();
 		showPasswordStrength("5", goNextPassword5);
@@ -667,13 +667,13 @@ $(document).ready(function(){
 		classVal = $("#WiFi_Password").attr('class');
 		if ($("#showPass").children().text() == "Hide ") {
 			$("[id^='showPass']").children().text("Show");
-			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="password" placeholder="Minimum Eight Characters" maxlength="63" class="">';
+			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="password" placeholder="Minimum Eight Characters" maxlength="64" class="">';
 			$("[id^='WiFi_Password_0']").hide();
 			$("[id^='WiFi_Password_pass_0']").show();
 		}
 		else {
 			$("[id^='showPass']").children().text("Hide ");
-			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="63" class="">';
+			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="">';
 			$("[id^='WiFi_Password_0']").show();
 			$("[id^='WiFi_Password_pass_0']").hide();
 		}
@@ -685,13 +685,13 @@ $(document).ready(function(){
 		class5Val = $("#WiFi5_Password").attr('class');
 		if ($("#show5Pass").children().text() == "Hide ") {
 			$("[id^='show5Pass']").children().text("Show");
-			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="password" placeholder="Minimum Eight Characters" maxlength="63" class="">';
+			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="password" placeholder="Minimum Eight Characters" maxlength="64" class="">';
 			$("[id^='WiFi5_Password_0']").hide();
 			$("[id^='WiFi5_Password_pass_0']").show();
 		}
 		else {
 			$("[id^='show5Pass']").children().text("Hide ");
-			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="63" class="">';
+			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="">';
 			$("[id^='WiFi5_Password_0']").show();
 			$("[id^='WiFi5_Password_pass_0']").hide();
 		}
@@ -819,7 +819,7 @@ $(document).ready(function(){
 					</div>
 				</div>
 				<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;">Wi-Fi Password</p>
-				<span style="display:inline; margin: 4px 0 0 -26px;" id="password_field"><input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="63" class="" ></span>
+				<span style="display:inline; margin: 4px 0 0 -26px;" id="password_field"><input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" ></span>
 				<div id="showPass" style="display:inline-table; margin: 4px 0 0 -90px;">
 					<a href="javascript:void(0)" style="white-space: pre;">Hide </a>
 			    </div>
@@ -848,7 +848,7 @@ $(document).ready(function(){
 						</div>
 					</div>
 					<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;">Wi-Fi Password</p>
-					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="63" class="" ></span>
+					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" ></span>
 					<div id="show5Pass" style="display:inline-table; margin: 4px 0 0 -90px;">
 						<a href="javascript:void(0)" style="white-space: pre;">Hide </a>
 				    </div>

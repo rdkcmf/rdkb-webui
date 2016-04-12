@@ -84,8 +84,8 @@ $(document).ready(function() {
 		return !param || /^[a-fA-F0-9]{26}$|^[\S]{13}$/i.test(value);
 	}, "13 Ascii characters or 26 Hex digits.");
     $.validator.addMethod("wpa", function(value, element, param) {
-		return !param || /^[ -~]{8,63}$/i.test(value);
-	}, "8 to 63 ASCII characters.");
+		return !param || /^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i.test(value);
+	}, "8 to 63 ASCII characters or a 64 hex character password.");
     $.validator.addMethod("wpa2", function(value, element, param) {
 		return !param || /^[\S]{8,63}$/i.test(value);
 	}, "8 to 63 ASCII characters.");
@@ -396,9 +396,9 @@ if ("WEP-64" == $encrypt_mode1){
 					<!--option value="WPA_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_TKIP"==$security)        echo "selected";?> >WPA-PSK (TKIP)</option-->
 					<!--option value="WPA_PSK_AES" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_AES"==$security)         echo "selected";?> >WPA-PSK (AES)</option-->
 					<!--option value="WPA2_PSK_TKIP" 	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIP"==$security)       echo "selected";?> >WPA2-PSK (TKIP)</option-->
-					<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password." <?php if ("WPA2_PSK_AES"==$security)        echo "selected";?> >WPA2-PSK (AES)</option>
+					<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_AES"==$security)        echo "selected";?> >WPA2-PSK (AES)</option>
 					<!--option value="WPA2_PSK_TKIPAES" 	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIPAES"==$security)    echo "selected";?> >WPA2-PSK (TKIP/AES)</option-->
-					<option value="WPAWPA2_PSK_TKIPAES" 	title="WPA requires an 8-63 ASCII character password." <?php if ("WPAWPA2_PSK_TKIPAES"==$security) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)(Recommended)</option>
+					<option value="WPAWPA2_PSK_TKIPAES" 	title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPAWPA2_PSK_TKIPAES"==$security) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)(Recommended)</option>
 				</select>
 			</div>
 			<div id="netPassword">
@@ -406,7 +406,7 @@ if ("WEP-64" == $encrypt_mode1){
 					<label for="network_password">Network Password (2.4GHz):</label>
 					<input type="text" size="23" id="network_password" name="network_password" class="text" value="<?php echo htmlspecialchars($network_password); ?>"/>
 				</div>
-				<p id="netPassword-footnote" class="footnote">8-16 characters. Letter and numbers only. No spaces. Case sensitive.</p>
+				<p id="netPassword-footnote" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
 			</div>
 			<div class="form-row odd">
 				<label for="network_name1">Wi-Fi Network Name (5 GHz):</label>
@@ -421,9 +421,9 @@ if ("WEP-64" == $encrypt_mode1){
 					<!--option value="WPA_PSK_TKIP" 	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_TKIP"==$security1)        echo "selected";?> >WPA-PSK (TKIP)</option-->
 					<!--option value="WPA_PSK_AES" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_AES"==$security1)         echo "selected";?> >WPA-PSK (AES)</option-->
 					<!--option value="WPA2_PSK_TKIP" 	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIP"==$security1)       echo "selected";?> >WPA2-PSK (TKIP)</option-->
-					<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password." <?php if ("WPA2_PSK_AES"==$security1)        echo "selected";?> >WPA2-PSK (AES)</option>
+					<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_AES"==$security1)        echo "selected";?> >WPA2-PSK (AES)</option>
 					<!--option value="WPA2_PSK_TKIPAES" 	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIPAES"==$security1)    echo "selected";?> >WPA2-PSK (TKIP/AES)</option-->
-					<option value="WPAWPA2_PSK_TKIPAES" 	title="WPA requires an 8-63 ASCII character password." <?php if ("WPAWPA2_PSK_TKIPAES"==$security1) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)(Recommended)</option>
+					<option value="WPAWPA2_PSK_TKIPAES" 	title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPAWPA2_PSK_TKIPAES"==$security1) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)(Recommended)</option>
 				</select>
 			</div>
 			<div id="netPassword1">
@@ -431,7 +431,7 @@ if ("WEP-64" == $encrypt_mode1){
 					<label for="network_password1">Network Password (5 GHz):</label>
 					<input type="text" size="23" id="network_password1" name="network_password1" class="text" value="<?php echo htmlspecialchars($network_password1); ?>" />
 				</div>
-				<p id="netPassword-footnote1" class="footnote">8-16 characters. Letter and numbers only. No spaces. Case sensitive.</p>
+				<p id="netPassword-footnote1" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
 			</div>
 			<div id="wizard-form-buttons" class="form-row form-btn">
 				<input type="submit" value="Finish" class="btn" />

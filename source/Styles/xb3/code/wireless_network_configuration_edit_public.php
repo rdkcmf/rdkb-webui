@@ -246,8 +246,8 @@ $(document).ready(function() {
 		return !param || /^[a-fA-F0-9]{26}$|^[\S]{13}$/i.test(value);
 	}, "13 Ascii characters or 26 Hex digits.");
     $.validator.addMethod("wpa", function(value, element, param) {
-		return !param || /^[ -~]{8,63}$/i.test(value);
-	}, "8 to 63 ASCII characters.");
+		return !param || /^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i.test(value);
+	}, "8 to 63 ASCII characters or a 64 hex character password.");
     $.validator.addMethod("wpa2", function(value, element, param) {
 		return !param || /^[\S]{8,63}$/i.test(value);
 	}, "8 to 63 Ascii characters.");
@@ -447,9 +447,9 @@ function init_form() {
 		["WPA (TKIP)",		"WPA.TKIP",			"WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."],
 		["WPA (AES)",		"WPA.AES",			"WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."],
 		["WPA2 (TKIP)",		"WPA2.TKIP",		"WPA2 requires a 8-63 ASCII character password."],
-		["WPA2 (AES)",		"WPA2.AES",			"WPA2 requires a 8-63 ASCII character password."],
+		["WPA2 (AES)",		"WPA2.AES",			"WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."],
 		["WPA2 (TKIP/AES)",	"WPA2.AES+TKIP",	"WPA2 requires a 8-63 ASCII character password."],
-		["WPAWPA2(TKIP/AES) (recommended)", 	"WPA-WPA2.AES+TKIP", "WPA2 requires a 8-63 ASCII character password."]);
+		["WPAWPA2(TKIP/AES) (recommended)", 	"WPA-WPA2.AES+TKIP", "WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."]);
 	var add_list = new Array(
 		["NONE",		"None", 		""],
 		["PSK",			"Personal", 	""],
@@ -561,7 +561,7 @@ label{
 			<div class="form-row odd" id="div_network_password">
 				<label for="network_password">Network Password:</label>
 				<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="<?php echo htmlspecialchars($network_password);?>" /></span>
-				<p id="netPassword-footnote" class="footnote">8 to 63 ASCII characters.</p><br/>
+				<p id="netPassword-footnote" class="footnote">8 to 63 ASCII characters or a 64 hex character password.</p><br/>
 			</div>
 			<!--div class="form-row" id="div_password_show">
 				<label for="password_show">Show Network Password:</label>
