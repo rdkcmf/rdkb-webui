@@ -251,7 +251,6 @@ $(document).ready(function() {
 	});
 	$security_val = '<?php echo $security; ?>';
     	$("#security").change(function() {
-		//console.log('fromOther > '+fromOther);
 		if ("more" == $("#security").val()) {
 			// only private(1,2) SSID have show-more option
 			showDialog();
@@ -545,10 +544,10 @@ wpa2psk ==> 8 to 63 Ascii characters
 			},
     		network_password: {
 			not_defaulPassword: true,
-			required: function() {
+			/*required: function() {
     				return ($("#security option:selected").val() != "None");
     			}
-    			,wep_64: function() {
+    			,*/wep_64: function() {
     				return ($("#security option:selected").val() == "WEP_64");
     			}
     			,wep_128: function() {
