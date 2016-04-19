@@ -184,7 +184,7 @@ $(document).ready(function() {
 					<dd>DNS (TCP/UDP port 53)</dd>
 					<dd>NTP (TCP port 119, 123)</dd>
 					<dd>email (TCP port 25, 110, 143, 465, 587, 993, 995)</dd>
-					<dd>VPN (GRE, UDP 500, TCP 1723)</dd>
+					<dd>VPN (GRE, UDP 500, 4500, 62515, TCP 1723)</dd>
 					<dd>iTunes (TCP port 3689)</dd>
 					</dl>
 					<p><strong>WAN-to-LAN:</strong> Block all unrelated traffic and enable IDS.</p>
