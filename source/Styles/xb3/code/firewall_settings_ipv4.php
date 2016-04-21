@@ -36,11 +36,23 @@ $(document).ready(function() {
     }).trigger("change");
 	$("#disable_firewall").change(function(){
 		if($("#disable_firewall").prop("checked")) {
-			$("#block_http").prop("disabled",true).attr('checked', false);
-			$("#block_icmp").prop("disabled",true).attr('checked', false);
-			$("#block_multicast").prop("disabled",true).attr('checked', false);
-			$("#block_peer").prop("disabled",true).attr('checked', false);
-			$("#block_ident").prop("disabled",true).attr('checked', false);
+			var message = "You are trying to disable the firewall. It is a security risk. \nAre you sure you want to continue?";
+            jConfirm(
+                message
+                ,"Are you sure?"
+                ,function(ret) {
+                    if(ret) {
+                        $("#block_http").prop("disabled",true).attr('checked', false);
+						$("#block_icmp").prop("disabled",true).attr('checked', false);
+						$("#block_multicast").prop("disabled",true).attr('checked', false);
+						$("#block_peer").prop("disabled",true).attr('checked', false);
+						$("#block_ident").prop("disabled",true).attr('checked', false);
+                    }  
+                    else
+                    {
+                    	$("#disable_firewall").prop('checked', false);
+                    }  
+                });
 		}
 		else {
 			$("#block_http").prop("disabled",false);
