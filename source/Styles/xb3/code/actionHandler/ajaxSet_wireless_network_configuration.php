@@ -40,7 +40,7 @@ if (array_key_exists('band_steering', $arConfig))
 		setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.1.PhyRateThreshold", $arConfig['PhyRateThreshold1'], false);
 		setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.UtilizationThreshold", $arConfig['UtilzThreshold2'], false);
 		setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.RSSIThreshold", $arConfig['RSSIThreshold2'], false);
-		setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.PhyRateThreshold", $arConfig['PhyRateThreshold2'], false);
+		setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.PhyRateThreshold", $arConfig['PhyRateThreshold2'], true);
 		echo $jsConfig;
 	}
 }
