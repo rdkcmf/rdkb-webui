@@ -69,7 +69,7 @@ $(document).ready(function() {
 <div id="content">
 	<h1>Gateway > Hardware > LAN Ethernet</h1>
 	<div id="educational-tip">
-		<p class="tip">  Sangeeta Modified View information about the Gateway's Ethernet Ports. </p>
+		<p class="tip"> View information about the Gateway's Ethernet Ports. </p>
 		<p class="hidden">The Gateway has 4 Gigabit (GbE) Ethernet Ports. When a device is connected to the Gateway with an Ethernet cable, you'll see an <i>Active</i> status for that port.</p>
 	</div>
 	<?php
@@ -88,14 +88,11 @@ $(document).ready(function() {
 		}
 	}
 	$ids = array_filter(explode(",",getInstanceIds("Device.Ethernet.Interface.")));
-	echo '******SANG1 $ids ***********'
-	
 	if ($_DEBUG) {
-		$ids = array("1", "2", "3", "4");
+		$ids = array("1", "2");
 	}
 	foreach ($ethernetParam as $id => $value)
-	{
-	    echo ' *******SANG2 =$id value = $value **************' 
+	{	     
 		if ("true" == $ethernetParam[$id]["Upstream"]){
 			continue;		
 		}
@@ -130,7 +127,7 @@ $(document).ready(function() {
 			echo '<span class="value">'.($dm[$i][1] === null ? NameMap($dm[$i][2]) : $dm[$i][1]).'</span>';
 			echo '</div>';
 		}
-		if ($ids[$id] === "4") {
+		if ($ids[$id] === "2") {
 			/* port 4 as home security port */
 			echo '<div class="form-row odd ">'.
 					'<label for="channel_selection">Associate Ethernet Port 4 to XFINITY HOME Network:</label>'.
