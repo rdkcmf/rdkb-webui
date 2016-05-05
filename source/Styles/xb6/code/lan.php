@@ -128,11 +128,11 @@ $(document).ready(function() {
 			echo '</div>';
 		}
 		if ($ids[$id] === "2") {
-			/* port 4 as home security port */
+			/* port 2 as home security port */
 			echo '<div class="form-row odd ">'.
-					'<label for="channel_selection">Associate Ethernet Port 4 to XFINITY HOME Network:</label>'.
-					'<span class="checkbox"><input type="checkbox" id="port4" name="port4" /></span></br></br></br></br>'.
-					'Note: Associating Ethernet Port 4 to XFINITY HOME network will remove the port from your home network.</br></br>'.
+					'<label for="channel_selection">Associate Ethernet Port 2 to XFINITY HOME Network:</label>'.
+					'<span class="checkbox"><input type="checkbox" id="port2" name="port2" /></span></br></br></br></br>'.
+					'Note: Associating Ethernet Port 2 to XFINITY HOME network will remove the port from your home network.</br></br>'.
 				'</div>'.
 				'<div class="form-row odd" >'.
 					'<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="Save" class="btn submit" /></div>'.
