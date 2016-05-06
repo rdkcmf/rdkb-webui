@@ -29,8 +29,8 @@ $wifi_param = array(
 	"blockBA_enabled"		=> "Device.WiFi.Radio.1.X_CISCO_COM_DeclineBARequest",
 	"DCS_Supported"			=> "Device.WiFi.Radio.1.X_COMCAST-COM_DCSSupported", //1-supported 0-not supported
 	"DCS_Enable"			=> "Device.WiFi.Radio.1.X_COMCAST-COM_DCSEnable",
-	"HT_TxStream"			=> "Device.WiFi.Radio.1.X_CISCO_COM_HTTxStream",
-	"HT_RxStream"			=> "Device.WiFi.Radio.1.X_CISCO_COM_HTRxStream",
+	//"HT_TxStream"			=> "Device.WiFi.Radio.1.X_CISCO_COM_HTTxStream",
+	//"HT_RxStream"			=> "Device.WiFi.Radio.1.X_CISCO_COM_HTRxStream",
 	"STBC_enabled" 			=> "Device.WiFi.Radio.1.X_CISCO_COM_STBCEnable",
 	"possible_channels"		=> "Device.WiFi.Radio.1.PossibleChannels",
 	"feq_band1" 			=> "Device.WiFi.Radio.2.OperatingFrequencyBand",
@@ -52,8 +52,8 @@ $wifi_param = array(
 	"DFS_Enable1"			=> "Device.WiFi.Radio.2.X_COMCAST_COM_DFSEnable",
 	"DCS_Supported1"		=> "Device.WiFi.Radio.2.X_COMCAST-COM_DCSSupported", //1-supported 0-not supported
 	"DCS_Enable1"			=> "Device.WiFi.Radio.2.X_COMCAST-COM_DCSEnable",
-	"HT_TxStream1"			=> "Device.WiFi.Radio.2.X_CISCO_COM_HTTxStream",
-	"HT_RxStream1"			=> "Device.WiFi.Radio.2.X_CISCO_COM_HTRxStream",
+	//"HT_TxStream1"			=> "Device.WiFi.Radio.2.X_CISCO_COM_HTTxStream",
+	//"HT_RxStream1"			=> "Device.WiFi.Radio.2.X_CISCO_COM_HTRxStream",
 	"STBC_enabled1" 		=> "Device.WiFi.Radio.2.X_CISCO_COM_STBCEnable",
 	"possible_channels1"		=> "Device.WiFi.Radio.2.PossibleChannels",
 	//WiFi radio status
@@ -135,8 +135,8 @@ $blockACK_enabled	= $wifi_value['blockACK_enabled'];
 $blockBA_enabled	= $wifi_value['blockBA_enabled'];
 $DCS_Supported		= $wifi_value['DCS_Supported'];
 $DCS_Enable			= $wifi_value['DCS_Enable'];
-$HT_TxStream		= $wifi_value['HT_TxStream'];
-$HT_RxStream		= $wifi_value['HT_RxStream'];
+//$HT_TxStream		= $wifi_value['HT_TxStream'];
+//$HT_RxStream		= $wifi_value['HT_RxStream'];
 $STBC_enabled		= $wifi_value['STBC_enabled'];
 $WMM_power_save		= $wifi_value['WMM_power_save'];
 $enableWMM			= $wifi_value['enableWMM'];
@@ -165,8 +165,8 @@ $DFS_Support1		= $wifi_value['DFS_Support1'];
 $DFS_Enable1		= $wifi_value['DFS_Enable1'];
 $DCS_Supported1		= $wifi_value['DCS_Supported1'];
 $DCS_Enable1		= $wifi_value['DCS_Enable1'];
-$HT_TxStream1		= $wifi_value['HT_TxStream1'];
-$HT_RxStream1		= $wifi_value['HT_RxStream1'];
+//$HT_TxStream1		= $wifi_value['HT_TxStream1'];
+//$HT_RxStream1		= $wifi_value['HT_RxStream1'];
 $STBC_enabled1		= $wifi_value['STBC_enabled1'];
 $WMM_power_save1	= $wifi_value['WMM_power_save1'];
 $enableWMM1			= $wifi_value['enableWMM1'];
@@ -894,8 +894,8 @@ function save_config(ssid_number, sub_target)
 	var blockBA_enabled 	= $("#blockBA_enabled"+suf).prop("checked");
 	var DFS_Selection	= $("#DFS_Channel_Selection_enabled").prop("checked");
 	var DCS_Selection	= $("#DCS_Channel_Selection_enabled"+suf).prop("checked");
-	var HT_TxStream 	= $("#HT_TxStream"+suf).attr("value");
-	var HT_RxStream 	= $("#HT_RxStream"+suf).attr("value");
+	//var HT_TxStream 	= $("#HT_TxStream"+suf).attr("value");
+	//var HT_RxStream 	= $("#HT_RxStream"+suf).attr("value");
 	var WMM_power_save 	= $("#WMM_power_save"+suf).prop("checked");
 	var STBC_enabled 	= $("#STBC_enabled"+suf).prop("checked");
 	var jsConfig = '{"wireless_mode":"'+wireless_mode+'", "transmit_power":"'+transmit_power+'", "channel_automatic":"'+channel_automatic
@@ -1377,7 +1377,7 @@ function saveBandSteeringSettings()
 		<label for="blockBA_enabled" class="acs-hide"></label>
 		<input type="radio"  name="Decline_BA_Request" value="enabled"  id="blockBA_enabled" <?php if ("true"==$blockBA_enabled) echo 'checked="checked"';?> /><b>Enable</b>
 	</div>
-	<div class="form-row">
+<!-- 	<div class="form-row">
 		<label for="HT_TxStream">HT TxStream:</label>
 		<select name="HT_TxStream" id="HT_TxStream">
 		<option value="3" selected="selected" >3</option>
@@ -1392,7 +1392,7 @@ function saveBandSteeringSettings()
 		<option value="2" <?php if ("2"==$HT_RxStream) echo 'selected="selected"';?> >2</option>
 		<option value="1" <?php if ("1"==$HT_RxStream) echo 'selected="selected"';?> >1</option>
 		</select>
-	</div>
+	</div> -->
 	<div class="form-row">
 		<label for="WMM_power_save">WMM Power Save:</label>
 		<input type="checkbox" id="WMM_power_save" name="WMM_power_save" <?php if ("true"==$WMM_power_save) echo 'checked="checked"';?> <?php if ("false"==$enableWMM) echo 'disabled="disabled"';?> /> 
@@ -1543,14 +1543,14 @@ function saveBandSteeringSettings()
 		<label for="DFS_Channel_Selection_enabled" class="acs-hide"></label>
 		<input type="radio"  name="DFS_Channel_Selection" value="enabled"  id="DFS_Channel_Selection_enabled" <?php if ("true"==$DFS_Enable1) echo 'checked="checked"';?> /><b>Enable</b>
 	</div>
-	<div class="form-row odd">
+<!-- 	<div class="form-row odd">
 	<label for="HT_TxStream1">HT TxStream:</label>
 		<select name="HT_TxStream1" id="HT_TxStream1">
 		<option value="3" selected="selected" >3</option>
 		<option value="2" <?php if ("2"==$HT_TxStream1) echo 'selected="selected"';?> >2</option>
 		<option value="1" <?php if ("1"==$HT_TxStream1) echo 'selected="selected"';?> >1</option>
 		</select>
-	</div>
+	</div> 
 	<div class="form-row ">
 		<label for="HT_RxStream1">HT RxStream:</label>
 		<select name="HT_RxStream1" id="HT_RxStream1">
@@ -1558,7 +1558,7 @@ function saveBandSteeringSettings()
 		<option value="2" <?php if ("2"==$HT_RxStream1) echo 'selected="selected"';?> >2</option>
 		<option value="1" <?php if ("1"==$HT_RxStream1) echo 'selected="selected"';?> >1</option>
 		</select>
-	</div>
+	</div>-->
 	<div class="form-row odd">
 		<label for="WMM_power_save1">WMM Power Save:</label>
 		<input type="checkbox" id="WMM_power_save1" name="WMM_power_save1" <?php if ("true"==$WMM_power_save1) echo 'checked="checked"';?> <?php if ("false"==$enableWMM1) echo 'disabled="disabled"';?> />

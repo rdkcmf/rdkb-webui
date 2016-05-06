@@ -76,8 +76,8 @@ else
 				setStr("Device.WiFi.Radio.$i.X_COMCAST_COM_DFSEnable", $arConfig['DFS_Selection'], false);
 			}
 			setStr("Device.WiFi.Radio.$i.X_COMCAST-COM_DCSEnable", $arConfig['DCS_Selection'], false);
-			setStr("Device.WiFi.Radio.$i.X_CISCO_COM_HTTxStream", $arConfig['HT_TxStream'], false);
-			setStr("Device.WiFi.Radio.$i.X_CISCO_COM_HTRxStream", $arConfig['HT_RxStream'], false);
+			//setStr("Device.WiFi.Radio.$i.X_CISCO_COM_HTTxStream", $arConfig['HT_TxStream'], false);
+			//setStr("Device.WiFi.Radio.$i.X_CISCO_COM_HTRxStream", $arConfig['HT_RxStream'], false);
 			setStr("Device.WiFi.Radio.$i.X_CISCO_COM_STBCEnable", $arConfig['STBC_enabled'], false);
 			setStr("Device.WiFi.AccessPoint.$i.UAPSDEnable", $arConfig['WMM_power_save'], true);	
 		}
