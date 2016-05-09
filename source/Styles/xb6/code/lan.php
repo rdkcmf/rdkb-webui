@@ -29,7 +29,7 @@ var o_isPort4XHSEnabled = <?php echo $isPort4XHSEnabled ? 'true' : 'false'; ?>;
 function onsavePort4() {
 	var postData = {};
 	postData.op = "savePort4XHS";
-	postData.enable = $("#port4").prop("checked");
+	postData.enable = $("#port2").prop("checked");
 	jProgress('This may take several seconds', 60);
 	$.ajax({
 		type: 'POST',
@@ -62,7 +62,7 @@ function initEvents() {
 }
 $(document).ready(function() {
     comcast.page.init("Gateway > Hardware > LAN Ethernet", "nav-lan");
-	$("#port4").prop("checked", o_isPort4XHSEnabled);
+	$("#port2").prop("checked", o_isPort4XHSEnabled);
 	initEvents();
 });
 </script>
