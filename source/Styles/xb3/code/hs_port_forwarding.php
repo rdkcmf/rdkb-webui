@@ -192,7 +192,7 @@ $(document).ready(function() {
 							<label for=\"PortActive_$id\"></label></td>";	
 							echo "<td headers='edit-button'  class=\"edit\"><a tabindex='0' href=\"hs_port_forwarding_edit.php?id=$id\" class=\"btn\"  id=\"edit_$id\">Edit</a></td>
 								<td headers='delete-button'  class=\"delete\"><a tabindex='0'  href=\"actionHandler/ajax_hs_port_forwarding.php?del=$id\" class=\"btn confirm\" 
-									title=\"delete this HS Port Forwading service for " . $hspf_entry['Description'] . " \" id=\"delete_$id\">x</a></td>
+									title=\"delete this HS Port Forwarding service for " . $hspf_entry['Description'] . " \" id=\"delete_$id\">x</a></td>
 								</tr>";
 							echo "</tr>";
 					}//end of foreach
