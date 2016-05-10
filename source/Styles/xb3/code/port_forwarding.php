@@ -210,7 +210,7 @@ $(document).ready(function() {
 								<td headers='active'><input type=\"checkbox\" id=\"PortActive_$index\" name=\"PortActive\" $checked /></td>
 								<td headers='edit-button'  class=\"edit\"><a tabindex='0' href=\"port_forwarding_edit.php?id=$index\" class=\"btn\"  id=\"edit_$index\">Edit</a></td>
 								<td headers='delete-button'  class=\"delete\"><a tabindex='0'  href=\"actionHandler/ajax_port_forwarding.php?del=$index\" class=\"btn confirm\" 
-								    title=\"delete this Port Forwading service for " . $resArray[$i]['Description'] . " \" id=\"delete_$index\">x</a></td>
+								    title=\"delete this Port Forwarding service for " . $resArray[$i]['Description'] . " \" id=\"delete_$index\">x</a></td>
 								</tr>
 					    	    ";
 					    }//end of for
