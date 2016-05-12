@@ -576,14 +576,14 @@ $(document).ready(function() {
 					$("#filter_table > tbody").empty();
 					for (var i=0; i < msg.ft.length; i++)
 					{
-						add_row("filter_table", -1, msg.ft[i][0], msg.ft[i][1]);
+						add_row("filter_table", -1, msg.ft[i][0], msg.ft[i][1].toUpperCase());
 					}
 					
 					//clear the previous auto_table when ssid changed
 					$("#auto_table > tbody").empty();
 					for (var i=0; i < msg.at.length; i++)
 					{
-						add_row("auto_table", -1, msg.at[i][0], msg.at[i][1]);
+						add_row("auto_table", -1, msg.at[i][0], msg.at[i][1].toUpperCase());
 					}
 				}
 				//jHide();
@@ -804,7 +804,7 @@ function add_row(tid, idex, name, addr)
 	}
 	if ("filter_table" == tid) {
 		for (var i=1; i < tb.rows.length; i++) {
-			if (addr == tb.rows[i].cells[2].innerHTML) {
+			if (addr.toLowerCase() == tb.rows[i].cells[2].innerHTML.toLowerCase()) {
 				jAlert("MAC address already exist!");
 				return;
 			}
@@ -814,7 +814,7 @@ function add_row(tid, idex, name, addr)
 	}
 	else if ("auto_table" == tid) {
 		for (var i=1; i < tb.rows.length; i++) {
-			if (addr == tb.rows[i].cells[1].innerHTML) {
+			if (addr.toLowerCase() == tb.rows[i].cells[1].innerHTML.toLowerCase()) {
 				jAlert("MAC address already exist!");
 				return;
 			}
