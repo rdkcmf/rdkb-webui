@@ -1,3 +1,10 @@
+<?php
+$CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
+	if($CloudUIEnable == "true"){
+		header('Location:static_page.php');
+		exit;
+	}
+?>
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
 <!-- $Id: managed_devices_add_computer_blocked.php 2943 2009-08-25 20:58:43Z slemoine $ -->
