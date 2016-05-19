@@ -30,7 +30,7 @@ $(document).ready(function() {
                 ,"Are You Sure?"
                 ,function(ret) {
                     if(ret) {
-                       $("#block_http").prop("disabled",true).attr('checked', false);
+						$("#block_http").prop("disabled",true).attr('checked', false);
 						$("#block_icmp").prop("disabled",true).attr('checked', false);
 						$("#block_multicast").prop("disabled",true).attr('checked', false);
 						$("#block_peer").prop("disabled",true).attr('checked', false);
@@ -49,7 +49,21 @@ $(document).ready(function() {
 			$("#block_peer").prop("disabled",false);
 			$("#block_ident").prop("disabled",false);
 		}
-	}).trigger("change");
+	});
+	if($("#disable_firewall").prop("checked")) {
+		$("#block_http").prop("disabled",true).attr('checked', false);
+		$("#block_icmp").prop("disabled",true).attr('checked', false);
+		$("#block_multicast").prop("disabled",true).attr('checked', false);
+		$("#block_peer").prop("disabled",true).attr('checked', false);
+		$("#block_ident").prop("disabled",true).attr('checked', false);
+    }
+	else {
+		$("#block_http").prop("disabled",false);
+		$("#block_icmp").prop("disabled",false);
+		$("#block_multicast").prop("disabled",false);
+		$("#block_peer").prop("disabled",false);
+		$("#block_ident").prop("disabled",false);
+	}
     function keyboard_toggle(){
     	//var $link = $("#security-level label");
     	var $link = $("input[name='firewall_level']");

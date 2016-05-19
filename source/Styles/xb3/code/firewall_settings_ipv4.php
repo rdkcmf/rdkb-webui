@@ -42,7 +42,7 @@ $(document).ready(function() {
                 ,"Are you sure?"
                 ,function(ret) {
                     if(ret) {
-                        $("#block_http").prop("disabled",true).attr('checked', false);
+						$("#block_http").prop("disabled",true).attr('checked', false);
 						$("#block_icmp").prop("disabled",true).attr('checked', false);
 						$("#block_multicast").prop("disabled",true).attr('checked', false);
 						$("#block_peer").prop("disabled",true).attr('checked', false);
@@ -61,7 +61,21 @@ $(document).ready(function() {
 			$("#block_peer").prop("disabled",false);
 			$("#block_ident").prop("disabled",false);
 		}
-	}).trigger("change");
+	});
+	if($("#disable_firewall").prop("checked")) {
+		$("#block_http").prop("disabled",true).attr('checked', false);
+		$("#block_icmp").prop("disabled",true).attr('checked', false);
+		$("#block_multicast").prop("disabled",true).attr('checked', false);
+		$("#block_peer").prop("disabled",true).attr('checked', false);
+		$("#block_ident").prop("disabled",true).attr('checked', false);
+	}
+	else {
+		$("#block_http").prop("disabled",false);
+		$("#block_icmp").prop("disabled",false);
+		$("#block_multicast").prop("disabled",false);
+		$("#block_peer").prop("disabled",false);
+		$("#block_ident").prop("disabled",false);
+	}
     /*
      * Confirm dialog for restore to factory settings. If confirmed, the hiddin field (restore_factory_settings) is set to true
      */
