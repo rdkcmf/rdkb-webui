@@ -90,10 +90,24 @@ $(document).ready(function() {
 	}
 	$("#pop_mask").hide();
 	$("#submit").click(function() {
-		window.location.href = 'voice_quality_metrics.php'
-		+ '?line=' + $("#line_number").val() 
-		+ '&call=' + $("#call_number").val()
-		+ '&action=' + $("#action").val();
+		jProgress('This may take several seconds', 60);
+		$.ajax({
+			type:"POST",
+			url:"actionHandler/ajaxSet_voice_quality_metrics.php",
+			data:{line:$("#line_number").val(),call:$("#call_number").val(),action:$("#action").val()},
+			success:function(results){
+				//jAlert(results);
+				jHide();
+				window.location.href = 'voice_quality_metrics.php'
+					+ '?line=' + $("#line_number").val() 
+					+ '&call=' + $("#call_number").val()
+					+ '&action=' + $("#action").val();
+			},
+			error:function(){
+				jHide();
+				jAlert("Failure, please try again.");
+			}
+		});
 	});
 });
 </script>

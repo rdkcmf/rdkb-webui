@@ -14,6 +14,7 @@
  limitations under the License.
 */
 ?>
+<<<<<<< HEAD
 <?php include('../includes/actionHandlerUtility.php') ?>
 <?php 
 
@@ -25,6 +26,18 @@ if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] != 'mso') {
 $line = $_POST['line'];
 $call = $_POST['call'];
 $action = $_POST['action'];
+=======
+<?php 
+session_start();
+if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] == 'admin') {
+	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	exit(0);
+}
+//data:{line:$("#line_number").val(),call:$("#call_number").val(),action:$("#action").val()},
+$line = $_REQUEST['line'];
+$call = $_REQUEST['call'];
+$action = $_REQUEST['action'];
+>>>>>>> 6de60517... RDKB-5786: Develop Code - GUI
 if("display" == $action){
 	//display part is handled in main page
 }
