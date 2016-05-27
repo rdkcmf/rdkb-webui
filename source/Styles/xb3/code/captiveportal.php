@@ -34,10 +34,12 @@
 	$DeviceInfo_param = array(
 		"CONFIGUREWIFI" => "Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi",
 		"CaptivePortalEnable"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CaptivePortalEnable",
+		"CloudPersonalizationURL"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudPersonalizationURL",
 	);
 	$DeviceInfo_value	= KeyExtGet("Device.DeviceInfo.", $DeviceInfo_param);
 	$CONFIGUREWIFI = $DeviceInfo_value["CONFIGUREWIFI"];
 	$CaptivePortalEnable	= $DeviceInfo_value["CaptivePortalEnable"];
+	$CloudPersonalizationURL	= $DeviceInfo_value["CloudPersonalizationURL"];
 	if(!strcmp($CaptivePortalEnable, "false") || !strcmp($CONFIGUREWIFI, "false")) {
 		header('Location:index.php');
 		exit;
@@ -138,6 +140,45 @@
 <script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
 <script>
 $(document).ready(function(){
+	$CloudPersonalizationURL = "<?php echo $CloudPersonalizationURL;?>";
+	function cloudRedirection(cloudReachable){
+		if(cloudReachable){
+			location.href = $CloudPersonalizationURL;
+		}
+		else{
+			$("#redirect_process").hide();
+			$("#set_up").show();
+		}
+	}
+	if($CloudPersonalizationURL){
+		$.ajax($CloudPersonalizationURL, {
+			type: "HEAD",
+			dataType: 'jsonp',
+			jsonp: false,
+			crossDomain: true,
+			cache: false,
+			success: function(data, textStatus, xhr)
+			{
+				if( xhr.status >= 200 && xhr.status < 304 ){
+					cloudRedirection(true);
+				} else {
+					cloudRedirection(false);
+				}
+			},
+			error: function(request, status, error)
+			{
+				if(request.status >= 200 && request.status < 304 ){
+					cloudRedirection(true);
+				} else {
+					cloudRedirection(false);
+				}
+			},
+			timeout: 10000 // sets timeout to 10 seconds
+		});
+	}
+	else {
+		cloudRedirection(false);
+	}
 	// logic t0 figure out LAN or WiFi from Connected Devices List
 	var connectionType	= "<?php echo $connectionType;?>"; //"Ethernet", "WiFi", "none"
 	var goNextName		= false;
@@ -776,7 +817,11 @@ $(document).ready(function(){
 		<div id="topbar">
 			<img src="cmn/img/logo.png"/>
 		</div>
-		<div id="set_up" class="portal">
+		<div id="redirect_process">
+			<br><br><br>
+			<img src="cmn/img/progress.gif" height="75" width="75"/>
+		</div>
+		<div id="set_up" style="display: none;" class="portal">
 			<h1>Welcome to XFINITY Internet</h1>
 			<hr>
 			<p>
