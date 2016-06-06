@@ -10,6 +10,7 @@
 	$beginAddr 	= getStr("Device.DHCPv4.Server.Pool.1.MinAddress");
 	$endAddr 	= getStr("Device.DHCPv4.Server.Pool.1.MaxAddress");
 	$loginuser = $_SESSION["loginuser"];
+	$CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
 ?>
 <style>
 table a:link, table a:visited {
@@ -413,7 +414,7 @@ $(document).ready(function() {
          	$dev_name = $onlinePrivateNetworkHost["$x"]['HostName'];
          	$mac_addr = $onlinePrivateNetworkHost["$x"]['PhysAddress'];
          	$AddrSrc  = $onlinePrivateNetworkHost["$x"]['AddressSource'];
-		if($onlinePrivateNetworkHost["$x"]['Blocked']) $style = "&nbsp;";
+		if(($CloudUIEnable == "true" ) || $onlinePrivateNetworkHost["$x"]['Blocked']) $style = "&nbsp;";
 		else $style = "<input type='button' id=" . "'online-X-" .$k. "'" . " value='X' tabindex='0' title=\"add this device to Blocked Devices List \" name='{\"dev_name\":\"$dev_name\", \"mac_addr\":\"$mac_addr\"}'  class=\"btn confirm private\"></input>";
          	if($k % 2)  $odd = "";
 				else $odd = " class='odd'";
@@ -469,7 +470,7 @@ $(document).ready(function() {
     	$dev_name = $offlinePrivateNetworkHost["$x"]['HostName'];
     	$mac_addr = $offlinePrivateNetworkHost["$x"]['PhysAddress'];
     	$AddrSrc  = $offlinePrivateNetworkHost["$x"]['AddressSource'];
-		if($offlinePrivateNetworkHost["$x"]['Blocked']) $style = "&nbsp;";
+		if(($CloudUIEnable == "true" ) || $offlinePrivateNetworkHost["$x"]['Blocked']) $style = "&nbsp;";
 		else $style = "<input type='button' id=" . "'offline-X-" .$k. "'" . " value='X' tabindex='0' title=\"remove computer named $dev_name\" name='{\"dev_name\":\"$dev_name\", \"mac_addr\":\"$mac_addr\"}'  class=\"btn confirm private\"></input>";
     	if($k % 2) $odd = "";
     	else $odd = " class='odd'";
