@@ -905,7 +905,7 @@ function save_config(ssid_number, sub_target)
 					+'", "ext_channel":"'+ext_channel+'", "MSDU_enabled":"'+MSDU_enabled+'", "blockACK_enabled":"'+blockACK_enabled
 					+'", "blockBA_enabled":"'+blockBA_enabled+'", "DFS_Selection":"'+DFS_Selection
 					+'", "DCS_Selection":"'+DCS_Selection
-					+'", "HT_TxStream":"'+HT_TxStream+'", "HT_RxStream":"'+HT_RxStream
+					//+'", "HT_TxStream":"'+HT_TxStream+'", "HT_RxStream":"'+HT_RxStream
 					+'", "WMM_power_save":"'+WMM_power_save+'", "STBC_enabled":"'+STBC_enabled
 					+'", "target":"'+"save_config"+'", "ssid_number":"'+ssid_number+'", "sub_target":"'+sub_target+'"}';
 	set_config(jsConfig);
