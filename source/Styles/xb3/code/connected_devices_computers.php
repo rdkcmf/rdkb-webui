@@ -361,7 +361,7 @@ $(document).ready(function() {
                     $onlinePrivateNetworkHost["$j"]['AddressSource'] = $Host["$i"]['AddressSource'];
                     $onlinePrivateNetworkHost["$j"]['Connection'] = $tmpHost['connectionType'];
                     $onlinePrivateNetworkHost["$j"]['Comments'] = $Host["$i"]['Comments'];
-                    if (stristr($tmpHost['connectionType'], 'Wi-Fi')) {
+                    if (stristr($tmpHost['connectionType'], 'Wi-Fi') || stristr($tmpHost['connectionType'], 'MoCA')) {
                        $onlinePrivateNetworkHost[$j]['RSSI'] = $Host[$i]['X_CISCO_COM_RSSI']." dBm";
                     }
                     else {
