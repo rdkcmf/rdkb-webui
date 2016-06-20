@@ -775,7 +775,7 @@ function setResetInfo(info) {
 					}
 				}
 				else {
-					//echo '<option value="n" ';     echo (    "n"==$wireless_mode)? 'selected':'';  echo '>802.11 n</option>';
+					echo '<option value="n" ';     echo (    "n"==$wireless_mode)? 'selected':'';  echo '>802.11 n</option>';
 					echo '<option value="g,n" ';   echo (  "g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 g/n</option>';
 					//echo '<option value="b,g,n" '; echo ("b,g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 b/g/n</option>';
 				}

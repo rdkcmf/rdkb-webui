@@ -1201,9 +1201,9 @@ function saveBandSteeringSettings()
 	<div class="form-row">
 		<label for="wireless_mode">Mode:</label>
 		<select name="wireless_mode" id="wireless_mode">
-		<!--option value="n"  		<?php //if ("n" == $wireless_mode) echo 'selected="selected"';?> >802.11 n</option-->
+		<option value="n"  		<?php if ("n" == $wireless_mode) echo 'selected="selected"';?> >802.11 n</option>
 		<option value="g,n" 	<?php if ("g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 g/n</option>
-		<! -- option value="b,g,n" 	<?php //if ("b,g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 b/g/n</option-->
+		<!-- option value="b,g,n" 	<?php //if ("b,g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 b/g/n</option-->
 		</select>
 	</div>
 	<div class="form-row odd">
