@@ -62,10 +62,10 @@ $(document).ready(function(){
 				        tr.append("<td headers='band_id' class='band_id'>" + Radio_val+ "</td>");
 				        tr.append("<td headers='channel_number' class='channel_number'>" + spec_values["Channel"]+ "</td>");
 				        tr.append("<td headers='mac_id' class='mac_id'>" + spec_values["BSSID"]+ "</td>");
-				        tr.append("<td headers='ssid_name' class='ssid_name'>" + spec_values["SSID"]+ "</td>");
-				        tr.append("<td headers='Signal_level' class='Signal_level'>" + spec_values["SignalStrength"]+ "</td>");
-				        tr.append("<td headers='mode' class='mode'>" + spec_values["SecurityModeEnabled"]+ "</td>");
-				        tr.append("<td headers='security' class='security'>" + spec_values["SupportedStandards"]+ "</td>");
+						tr.append("<td headers='ssid_name' class='ssid_name'>" + spec_values["SSID"]+ "</td>");
+				        tr.append("<td headers='Signal_level' class='Signal_level'>" + spec_values["SignalStrength"]+" dBm"+ "</td>");
+				        tr.append("<td headers='mode' class='mode'>" + spec_values["SupportedStandards"]+ "</td>");
+				        tr.append("<td headers='security' class='security'>" + spec_values["SecurityModeEnabled"]+ "</td>");
 				        tr.append("<td headers='max_rate' class='max_rate'>" + spec_values["SupportedDataTransferRates"]+ "</td>");
 					}
 					spanTable($('#spec_capture_table tr:has(td)'),0,2);
@@ -123,18 +123,20 @@ $(document).ready(function(){
 	</div>
 	<div id="table_WSA" class="module data">
 		<h2>Wi-Fi Spectrum Analyzer Data</h2>
-		<table class="data" summary="Wi-Fi Spectrum Analyzer" id="spec_capture_table">
-			<tr>
-				<th id="band_id">Band</th>
-				<th id="channel_number" >Channel</th>
-				<th id="mac_id">MAC</th>
-				<th id="ssid_name">SSID</th>
-				<th id="Signal_level">SignalLevel</th>
-				<th id="mode">Mode</th>
-				<th id="security">Security</th>
-				<th id="max_rate">MaxRate</th>
-			</tr>
-		</table>
+		<div style="overflow: auto;">
+			<table class="data" summary="Wi-Fi Spectrum Analyzer" id="spec_capture_table">
+				<tr>
+					<th id="band_id">Band</th>
+					<th id="channel_number" >Channel</th>
+					<th id="mac_id">MAC</th>
+					<th id="ssid_name">SSID</th>
+					<th id="Signal_level">SignalLevel</th>
+					<th id="mode">Mode</th>
+					<th id="security">Security</th>
+					<th id="max_rate">MaxRate</th>
+				</tr>
+			</table>
+		</div>			
 	</div>
 </div>
 <?php include('includes/footer.php'); ?>
