@@ -21,7 +21,7 @@ $('#btn1').click(function(e) {
 	e.preventDefault();
 	var href = $(this).attr("href");
 	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
-	var info = new Array("btn1", "Router,Wifi,VoIP,Dect,MoCA");
+	var info = new Array("btn1", "Device");
 	jConfirm(
 	message+"<br/><br/><strong>WARNING:</strong> Gateway will be rebooted!<br/>Incoming/outgoing call and internet connection will be interrupted!"
 	, "Are You Sure?"
