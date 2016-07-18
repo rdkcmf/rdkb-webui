@@ -43,6 +43,7 @@ $(document).ready(function(){
 		$("#save_result").hide();
 		$("#scan_status").html("Scanning...").show();
 		$("#start_scan").hide();
+		$("#spec_capture_table tr").slice(1).remove()
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajax_wifi_spectrum_analyser.php",
@@ -52,7 +53,10 @@ $(document).ready(function(){
 				{
 					$("#scan_status").hide();
 					var wifi_spec_values = result["data"];
-					$('#spec_capture_table tbody').remove('tr');
+					function compareChannel(a,b) {
+						return a['Channel']-b['Channel'];
+					}
+					wifi_spec_values.sort(compareChannel);
 					var table = $('#spec_capture_table tbody');
 					for (var index in wifi_spec_values)
 					{
@@ -110,6 +114,7 @@ $(document).ready(function(){
 			}
 		});
 	});
+	ajax_spec_analyzer();
 });
 </script>
 <div id="content" class="main_content">

@@ -21,56 +21,6 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-function array_msort($array, $cols)
-{
-    $colarr = array();
-    foreach ($cols as $col => $order) 
-    {
-        $colarr[$col] = array();
-        foreach ($array as $k => $row) 
-        { 
-            $colarr[$col]['_'.$k] = strtolower($row[$col]); 
-        }
-    }
-    $params = array();
-    foreach ($cols as $col => $order) 
-    {
-    
-        $params[] =&$colarr[$col];
-        $order=(array)$order;
-        foreach($order as $order_element)
-        {
-            //pass by reference, as required by php 5.3
-            $params[]=&$order_element;
-        }
-    }
-    call_user_func_array('array_multisort', $params);
-    $ret = array();
-    $keys = array();
-    $first = true;
-    $idx = 0;
-    foreach ($colarr as $col => $arr) 
-    {
-        foreach ($arr as $k => $v) 
-        {
-            if ($first) 
-            { 
-                $keys[$k] = substr($k,1); 
-            }
-            $k = $keys[$k];
-            
-            if (!isset($ret[$k]))
-            {
-                $ret[$k] = $array[$k];
-            }
-            $ret[$k][$col] = $array[$k][$col];
-	        $ret[$k]['idx'] = $idx;
-	        $idx++;
-        }
-        $first = false;
-    }
-    return $ret;
-}
 function mac_translate($mac){
 	//to change mac from 16cfe213c610 to 16:CF:E2:13:C6:10	
 	$mac = strtoupper($mac);
@@ -102,7 +52,6 @@ function get_results()
 	}
 	else
 	{
-		$wifi_spec_values = array_msort($wifi_spec_values, array('Channel' => SORT_ASC));
 		$new_array = array();
 		foreach ($wifi_spec_values as $i => $spec_values) {
 			$wifi_spec_values[$i]["BSSID"] = mac_translate($spec_values["BSSID"]);
