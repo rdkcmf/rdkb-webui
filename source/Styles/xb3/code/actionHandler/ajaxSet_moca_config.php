@@ -24,7 +24,7 @@ $jsConfig = $_REQUEST['configInfo'];
 //$jsConfig = '{"moca_enable": "true", "scan_method": "true", "channel": "0000000001000000", "beacon_power": "0", "taboo_enable": "false", "taboo_freq": "00000003ffffc000", "nc_enable": "false", "privacy_enable": "false", "net_password": "", "qos_enable": "false"}'; 
 $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);
-$thisUser = $arConfig['thisUser'];
+$thisUser = $_SESSION["loginuser"];
 if ("true" == $arConfig['moca_enable']){
 	if ("admin" != $thisUser){
 		setStr("Device.MoCA.Interface.1.X_CISCO_COM_ChannelScanning", $arConfig['scan_method'], false);

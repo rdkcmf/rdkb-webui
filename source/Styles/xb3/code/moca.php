@@ -43,6 +43,7 @@
 	// $nc_enable		= "false";
 	// $privacy_enable	= "false";
 	// $net_password	= "1234567891011";
+	$isNotAdmin = ("admin" != $_SESSION["loginuser"])?true:false;
 ?>
 <style type="text/css">
 label{
@@ -159,21 +160,21 @@ $(document).ready(function() {
     });
 	// remove sections as per loginuser, content must be hidden before doc ready
 	if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>"){
-		$("#div_channel_switch").hide();
-		$("#div_channel_select").hide();
-		$("#div_beacon_select").hide();
-		$("#div_taboo_list").hide();
-		$("#div_nc_switch").hide();
-		//$("#div_qos_switch").hide();
+		$("#div_channel_switch").remove();
+		$("#div_channel_select").remove();
+		$("#div_beacon_select").remove();
+		$("#div_taboo_list").remove();
+		$("#div_nc_switch").remove();
+		//$("#div_qos_switch").remove();
 		// for GUI version 3.0
-		$("#privacy_switch").hide();
-		$("#net_password_top").hide();
+		$("#privacy_switch").remove();
+		$("#net_password_top").remove();
 		$("#net_password").prop("disabled", true);
-		$("#password_show_top").hide();
+		$("#password_show_top").remove();
 	}
 	/*else{
 		// for GUI version 3.0
-		$("#div_qos_switch").hide();
+		$("#div_qos_switch").remove();
 	}*/
 	//re-style each div
 	$('.module div').removeClass("odd");
@@ -239,7 +240,10 @@ function next_step()
 		jAlert("Can't disable all MoCA 1.1 (or 2.0) frequency at the same time!");
 		return;
 	}*/
-	var jsConfig = '{"moca_enable": "' + moca_enable 
+	var jsConfig_admin = '{"moca_enable": "' + moca_enable
+	+'", "thisUser":"'+"<?php echo $_SESSION["loginuser"]; ?>"
+	+ '"} ';
+	var jsConfig_others = '{"moca_enable": "' + moca_enable 
 	+ '", "scan_method": "' + scan_method 
 	+ '", "channel": "' + channel 
 	+ '", "beacon_power": "' + beacon_power 
@@ -251,6 +255,7 @@ function next_step()
 	//+ '", "qos_enable": "' + qos_enable 
 	+'", "thisUser":"'+"<?php echo $_SESSION["loginuser"]; ?>"
 	+ '"} ';
+	var jsConfig = ("admin" == "<?php echo $_SESSION["loginuser"]; ?>")?jsConfig_admin:jsConfig_others;
 	// alert(jsConfig);
 	jProgress('Waiting for backend fully executed, please be patient...', 100);
 	$.ajax({
@@ -294,7 +299,7 @@ function next_step()
 			<input tabindex='0' id="scan_auto"   type="radio" value="auto"   name="channel_switch" checked="checked">
 			<label for="scan_auto" class="acs-hide"></label>
 			<b>Scan</b>
-			<input id="scan_manual" type="radio" value="manual" name="channel_switch" <?php if ("false"==$scan_method) echo 'checked="checked"'; ?> />
+			<input id="scan_manual" type="radio" value="manual" name="channel_switch" <?php if (("false"==$scan_method) && $isNotAdmin) echo 'checked="checked"'; ?> />
 			<label for="scan_manual" class="acs-hide"></label>
 			<b>Manual</b>
 		</div>
@@ -302,27 +307,27 @@ function next_step()
 			<label for="mode_option">Channel:</label>
 			<select id="mode_option" disabled="disabled">
 				<option disabled="disabled">-- MoCA 1.1 --</option>
-				<option id="d1"   value="1150"  selected="selected"                                          >D1(1150 MHz)</option>       
-				<option id="d2"   value="1200"  <?php if ($channel == "1200") echo 'selected="selected"'; ?> >D2(1200 MHz)</option>       
-				<option id="d3"   value="1250"  <?php if ($channel == "1250") echo 'selected="selected"'; ?> >D3(1250 MHz)</option>       
-				<option id="d4"   value="1300"  <?php if ($channel == "1300") echo 'selected="selected"'; ?> >D4(1300 MHz)</option>       
-				<option id="d5"   value="1350"  <?php if ($channel == "1350") echo 'selected="selected"'; ?> >D5(1350 MHz)</option>       
-				<option id="d6"   value="1400"  <?php if ($channel == "1400") echo 'selected="selected"'; ?> >D6(1400 MHz)</option>       
-				<option id="d7"   value="1450"  <?php if ($channel == "1450") echo 'selected="selected"'; ?> >D7(1450 MHz)</option>       
-				<option id="d8"   value="1500"  <?php if ($channel == "1500") echo 'selected="selected"'; ?> >D8(1500 MHz)</option>       
+				<option id="d1"   value="1150"  selected="selected"                                          >D1(1150 MHz)</option>
+				<option id="d2"   value="1200"  <?php if (($channel == "1200") && $isNotAdmin) echo 'selected="selected"'; ?> >D2(1200 MHz)</option>      
+				<option id="d3"   value="1250"  <?php if (($channel == "1250") && $isNotAdmin) echo 'selected="selected"'; ?> >D3(1250 MHz)</option>      
+				<option id="d4"   value="1300"  <?php if (($channel == "1300") && $isNotAdmin) echo 'selected="selected"'; ?> >D4(1300 MHz)</option>      
+				<option id="d5"   value="1350"  <?php if (($channel == "1350") && $isNotAdmin) echo 'selected="selected"'; ?> >D5(1350 MHz)</option>      
+				<option id="d6"   value="1400"  <?php if (($channel == "1400") && $isNotAdmin) echo 'selected="selected"'; ?> >D6(1400 MHz)</option>      
+				<option id="d7"   value="1450"  <?php if (($channel == "1450") && $isNotAdmin) echo 'selected="selected"'; ?> >D7(1450 MHz)</option>      
+				<option id="d8"   value="1500"  <?php if (($channel == "1500") && $isNotAdmin) echo 'selected="selected"'; ?> >D8(1500 MHz)</option>      
 				<option disabled="disabled">-- MoCA 2.0 --</option>                                                         
-				<option id="d1a"  value="1175"  <?php if ($channel == "1175") echo 'selected="selected"'; ?> >D1a(1175 MHz)</option>    
-				<option id="d2a"  value="1225"  <?php if ($channel == "1225") echo 'selected="selected"'; ?> >D2a(1225 MHz)</option>    
-				<option id="d3a"  value="1275"  <?php if ($channel == "1275") echo 'selected="selected"'; ?> >D3a(1275 MHz)</option>    
-				<option id="d4a"  value="1325"  <?php if ($channel == "1325") echo 'selected="selected"'; ?> >D4a(1325 MHz)</option>    
-				<option id="d5a"  value="1375"  <?php if ($channel == "1375") echo 'selected="selected"'; ?> >D5a(1375 MHz)</option>    
-				<option id="d6a"  value="1425"  <?php if ($channel == "1425") echo 'selected="selected"'; ?> >D6a(1425 MHz)</option>    
-				<option id="d7a"  value="1475"  <?php if ($channel == "1475") echo 'selected="selected"'; ?> >D7a(1475 MHz)</option>    
-				<option id="d8a"  value="1525"  <?php if ($channel == "1525") echo 'selected="selected"'; ?> >D8a(1525 MHz)</option>
-				<option id="d9"   value="1550"  <?php if ($channel == "1550") echo 'selected="selected"'; ?> >D9(1550 MHz)</option>				
-				<option id="d9a"  value="1575"  <?php if ($channel == "1575") echo 'selected="selected"'; ?> >D9a(1575 MHz)</option>
-				<option id="d10"  value="1600"  <?php if ($channel == "1600") echo 'selected="selected"'; ?> >D10(1600 MHz)</option>				
-				<option id="d10a" value="1625"  <?php if ($channel == "1625") echo 'selected="selected"'; ?> >D10a(1625 MHz)</option> 
+				<option id="d1a"  value="1175"  <?php if (($channel == "1175") && $isNotAdmin) echo 'selected="selected"'; ?> >D1a(1175 MHz)</option>
+				<option id="d2a"  value="1225"  <?php if (($channel == "1225") && $isNotAdmin) echo 'selected="selected"'; ?> >D2a(1225 MHz)</option>
+				<option id="d3a"  value="1275"  <?php if (($channel == "1275") && $isNotAdmin) echo 'selected="selected"'; ?> >D3a(1275 MHz)</option>
+				<option id="d4a"  value="1325"  <?php if (($channel == "1325") && $isNotAdmin) echo 'selected="selected"'; ?> >D4a(1325 MHz)</option>
+				<option id="d5a"  value="1375"  <?php if (($channel == "1375") && $isNotAdmin) echo 'selected="selected"'; ?> >D5a(1375 MHz)</option>
+				<option id="d6a"  value="1425"  <?php if (($channel == "1425") && $isNotAdmin) echo 'selected="selected"'; ?> >D6a(1425 MHz)</option>
+				<option id="d7a"  value="1475"  <?php if (($channel == "1475") && $isNotAdmin) echo 'selected="selected"'; ?> >D7a(1475 MHz)</option>
+				<option id="d8a"  value="1525"  <?php if (($channel == "1525") && $isNotAdmin) echo 'selected="selected"'; ?> >D8a(1525 MHz)</option>
+				<option id="d9"   value="1550"  <?php if (($channel == "1550") && $isNotAdmin) echo 'selected="selected"'; ?> >D9(1550 MHz)</option>	
+				<option id="d9a"  value="1575"  <?php if (($channel == "1575") && $isNotAdmin) echo 'selected="selected"'; ?> >D9a(1575 MHz)</option>
+				<option id="d10"  value="1600"  <?php if (($channel == "1600") && $isNotAdmin) echo 'selected="selected"'; ?> >D10(1600 MHz)</option>	
+				<option id="d10a" value="1625"  <?php if (($channel == "1625") && $isNotAdmin) echo 'selected="selected"'; ?> >D10a(1625 MHz)</option> 
 			</select>
 		</div>
 		<?php	$channel_show = "D1(1150 MHz)";
@@ -356,66 +361,66 @@ function next_step()
 			<label for="beacon_power">Beacon Power Reduction(dB):</label>
 			<select id="beacon_power">
 				<option selected="selected"                                           >0</option>
-				<option <?php if ($beacon_power == 3)  echo 'selected="selected"'; ?> >3</option>
-				<option <?php if ($beacon_power == 6)  echo 'selected="selected"'; ?> >6</option>
-				<option <?php if ($beacon_power == 9)  echo 'selected="selected"'; ?> >9</option>
-				<option <?php if ($beacon_power == 12) echo 'selected="selected"'; ?> >12</option>
-				<option <?php if ($beacon_power == 15) echo 'selected="selected"'; ?> >15</option>
+				<option <?php if (($beacon_power == 3) && $isNotAdmin)  echo 'selected="selected"'; ?> >3</option>
+				<option <?php if (($beacon_power == 6) && $isNotAdmin)  echo 'selected="selected"'; ?> >6</option>
+				<option <?php if (($beacon_power == 9) && $isNotAdmin)  echo 'selected="selected"'; ?> >9</option>
+				<option <?php if (($beacon_power == 12) && $isNotAdmin) echo 'selected="selected"'; ?> >12</option>
+				<option <?php if (($beacon_power == 15) && $isNotAdmin) echo 'selected="selected"'; ?> >15</option>
 			</select>
 		</div>
 		<div class="form-row odd" id="div_taboo_list">
 			<label>Taboo Frequency:</label>
 			<div class="moca_row1" style="position:relative;top:0px;right:0px">
-				<input class="moca11" type="checkbox" id="tf_2"  value="0000000000000400" <?php if (php_str_and($taboo_freq, "0000000000000400") == "0000000000000400") echo "checked=\"checked\""; ?> /> <label for="2" class="acs-hide"></label> <b>1050MHz</b>&nbsp;&nbsp;
-				<input class="moca11" type="checkbox" id="tf_4"  value="0000000000001000" <?php if (php_str_and($taboo_freq, "0000000000001000") == "0000000000001000") echo "checked=\"checked\""; ?> /> <label for="4" class="acs-hide"></label> <b>1100MHz</b>&nbsp;&nbsp;
-				<input class="moca11" type="checkbox" id="tf_6"  value="0000000000004000" <?php if (php_str_and($taboo_freq, "0000000000004000") == "0000000000004000") echo "checked=\"checked\""; ?> /> <label for="6" class="acs-hide"></label> <b>1150MHz</b>&nbsp;&nbsp;
-				<input class="moca11" type="checkbox" id="tf_8"  value="0000000000010000" <?php if (php_str_and($taboo_freq, "0000000000010000") == "0000000000010000") echo "checked=\"checked\""; ?> /> <label for="8" class="acs-hide"></label> <b>1200MHz</b>
+				<input class="moca11" type="checkbox" id="tf_2"  value="0000000000000400" <?php if ((php_str_and($taboo_freq, "0000000000000400") == "0000000000000400") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="2" class="acs-hide"></label> <b>1050MHz</b>&nbsp;&nbsp;
+				<input class="moca11" type="checkbox" id="tf_4"  value="0000000000001000" <?php if ((php_str_and($taboo_freq, "0000000000001000") == "0000000000001000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="4" class="acs-hide"></label> <b>1100MHz</b>&nbsp;&nbsp;
+				<input class="moca11" type="checkbox" id="tf_6"  value="0000000000004000" <?php if ((php_str_and($taboo_freq, "0000000000004000") == "0000000000004000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="6" class="acs-hide"></label> <b>1150MHz</b>&nbsp;&nbsp;
+				<input class="moca11" type="checkbox" id="tf_8"  value="0000000000010000" <?php if ((php_str_and($taboo_freq, "0000000000010000") == "0000000000010000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="8" class="acs-hide"></label> <b>1200MHz</b>
 			</div>
 			<div class="moca_row1" style="position:relative;top:0px;right:0px">
-				<input class="moca11" type="checkbox" id="tf_10" value="0000000000040000" <?php if (php_str_and($taboo_freq, "0000000000040000") == "0000000000040000") echo "checked=\"checked\""; ?> /> <label for="10" class="acs-hide"></label> <b>1250MHz</b>&nbsp;&nbsp;
-				<input class="moca11" type="checkbox" id="tf_12" value="0000000000100000" <?php if (php_str_and($taboo_freq, "0000000000100000") == "0000000000100000") echo "checked=\"checked\""; ?> /> <label for="12" class="acs-hide"></label> <b>1300MHz</b>&nbsp;&nbsp;
-				<input class="moca11" type="checkbox" id="tf_14" value="0000000000400000" <?php if (php_str_and($taboo_freq, "0000000000400000") == "0000000000400000") echo "checked=\"checked\""; ?> /> <label for="14" class="acs-hide"></label> <b>1350MHz</b>&nbsp;&nbsp;
-				<input class="moca11" type="checkbox" id="tf_16" value="0000000001000000" <?php if (php_str_and($taboo_freq, "0000000001000000") == "0000000001000000") echo "checked=\"checked\""; ?> /> <label for="16" class="acs-hide"></label> <b>1400MHz</b>
+				<input class="moca11" type="checkbox" id="tf_10" value="0000000000040000" <?php if ((php_str_and($taboo_freq, "0000000000040000") == "0000000000040000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="10" class="acs-hide"></label> <b>1250MHz</b>&nbsp;&nbsp;
+				<input class="moca11" type="checkbox" id="tf_12" value="0000000000100000" <?php if ((php_str_and($taboo_freq, "0000000000100000") == "0000000000100000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="12" class="acs-hide"></label> <b>1300MHz</b>&nbsp;&nbsp;
+				<input class="moca11" type="checkbox" id="tf_14" value="0000000000400000" <?php if ((php_str_and($taboo_freq, "0000000000400000") == "0000000000400000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="14" class="acs-hide"></label> <b>1350MHz</b>&nbsp;&nbsp;
+				<input class="moca11" type="checkbox" id="tf_16" value="0000000001000000" <?php if ((php_str_and($taboo_freq, "0000000001000000") == "0000000001000000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="16" class="acs-hide"></label> <b>1400MHz</b>
 			</div>
 			<div class="moca_row1" style="position:relative;top:0px;right:-230px">
-				<input class="moca11" type="checkbox" id="tf_18" value="0000000004000000" <?php if (php_str_and($taboo_freq, "0000000004000000") == "0000000004000000") echo "checked=\"checked\""; ?> /> <label for="18" class="acs-hide"></label> <b>1450MHz</b>&nbsp;&nbsp;
-				<input class="moca11" type="checkbox" id="tf_20" value="0000000010000000" <?php if (php_str_and($taboo_freq, "0000000010000000") == "0000000010000000") echo "checked=\"checked\""; ?> /> <label for="20" class="acs-hide"></label> <b>1500MHz</b>&nbsp;&nbsp;
-				<input class="moca11" type="checkbox" id="tf_24" value="0000000100000000" <?php if (php_str_and($taboo_freq, "0000000100000000") == "0000000100000000") echo "checked=\"checked\""; ?> /> <label for="24" class="acs-hide"></label> <b>1600MHz</b>
+				<input class="moca11" type="checkbox" id="tf_18" value="0000000004000000" <?php if ((php_str_and($taboo_freq, "0000000004000000") == "0000000004000000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="18" class="acs-hide"></label> <b>1450MHz</b>&nbsp;&nbsp;
+				<input class="moca11" type="checkbox" id="tf_20" value="0000000010000000" <?php if ((php_str_and($taboo_freq, "0000000010000000") == "0000000010000000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="20" class="acs-hide"></label> <b>1500MHz</b>&nbsp;&nbsp;
+				<input class="moca11" type="checkbox" id="tf_24" value="0000000100000000" <?php if ((php_str_and($taboo_freq, "0000000100000000") == "0000000100000000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="24" class="acs-hide"></label> <b>1600MHz</b>
 			</div>
 			<div class="moca_row2" style="position:relative;top:0px;right:-230px">
-				<input class="moca20" type="checkbox" id="tf_1"  value="0000000000000200" <?php if (php_str_and($taboo_freq, "0000000000000200") == "0000000000000200") echo "checked=\"checked\""; ?> /> <label for="1" class="acs-hide"></label> <b>1025MHz</b>&nbsp;&nbsp;
-				<input class="moca20" type="checkbox" id="tf_3"  value="0000000000000800" <?php if (php_str_and($taboo_freq, "0000000000000800") == "0000000000000800") echo "checked=\"checked\""; ?> /> <label for="3" class="acs-hide"></label> <b>1075MHz</b>&nbsp;&nbsp;
-				<input class="moca20" type="checkbox" id="tf_5"  value="0000000000002000" <?php if (php_str_and($taboo_freq, "0000000000002000") == "0000000000002000") echo "checked=\"checked\""; ?> /> <label for="5" class="acs-hide"></label> <b>1125MHz</b>&nbsp;&nbsp;
-				<input class="moca20" type="checkbox" id="tf_7"  value="0000000000008000" <?php if (php_str_and($taboo_freq, "0000000000008000") == "0000000000008000") echo "checked=\"checked\""; ?> /> <label for="7" class="acs-hide"></label> <b>1175MHz</b>
+				<input class="moca20" type="checkbox" id="tf_1"  value="0000000000000200" <?php if ((php_str_and($taboo_freq, "0000000000000200") == "0000000000000200") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="1" class="acs-hide"></label> <b>1025MHz</b>&nbsp;&nbsp;
+				<input class="moca20" type="checkbox" id="tf_3"  value="0000000000000800" <?php if ((php_str_and($taboo_freq, "0000000000000800") == "0000000000000800") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="3" class="acs-hide"></label> <b>1075MHz</b>&nbsp;&nbsp;
+				<input class="moca20" type="checkbox" id="tf_5"  value="0000000000002000" <?php if ((php_str_and($taboo_freq, "0000000000002000") == "0000000000002000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="5" class="acs-hide"></label> <b>1125MHz</b>&nbsp;&nbsp;
+				<input class="moca20" type="checkbox" id="tf_7"  value="0000000000008000" <?php if ((php_str_and($taboo_freq, "0000000000008000") == "0000000000008000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="7" class="acs-hide"></label> <b>1175MHz</b>
 			</div>
 			<div class="moca_row2" style="position:relative;top:0px;right:-230px">
-				<input class="moca20" type="checkbox" id="tf_9"  value="0000000000020000" <?php if (php_str_and($taboo_freq, "0000000000020000") == "0000000000020000") echo "checked=\"checked\""; ?> /> <label for="9"  class="acs-hide"></label> <b>1225MHz</b>&nbsp;&nbsp;
-				<input class="moca20" type="checkbox" id="tf_11" value="0000000000080000" <?php if (php_str_and($taboo_freq, "0000000000080000") == "0000000000080000") echo "checked=\"checked\""; ?> /> <label for="11" class="acs-hide"></label> <b>1275MHz</b>&nbsp;&nbsp;
-				<input class="moca20" type="checkbox" id="tf_13" value="0000000000200000" <?php if (php_str_and($taboo_freq, "0000000000200000") == "0000000000200000") echo "checked=\"checked\""; ?> /> <label for="13" class="acs-hide"></label> <b>1325MHz</b>&nbsp;&nbsp;
-				<input class="moca20" type="checkbox" id="tf_15" value="0000000000800000" <?php if (php_str_and($taboo_freq, "0000000000800000") == "0000000000800000") echo "checked=\"checked\""; ?> /> <label for="15" class="acs-hide"></label> <b>1375MHz</b>
+				<input class="moca20" type="checkbox" id="tf_9"  value="0000000000020000" <?php if ((php_str_and($taboo_freq, "0000000000020000") == "0000000000020000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="9"  class="acs-hide"></label> <b>1225MHz</b>&nbsp;&nbsp;
+				<input class="moca20" type="checkbox" id="tf_11" value="0000000000080000" <?php if ((php_str_and($taboo_freq, "0000000000080000") == "0000000000080000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="11" class="acs-hide"></label> <b>1275MHz</b>&nbsp;&nbsp;
+				<input class="moca20" type="checkbox" id="tf_13" value="0000000000200000" <?php if ((php_str_and($taboo_freq, "0000000000200000") == "0000000000200000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="13" class="acs-hide"></label> <b>1325MHz</b>&nbsp;&nbsp;
+				<input class="moca20" type="checkbox" id="tf_15" value="0000000000800000" <?php if ((php_str_and($taboo_freq, "0000000000800000") == "0000000000800000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="15" class="acs-hide"></label> <b>1375MHz</b>
 			</div>
 			<div class="moca_row2" style="position:relative;top:0px;right:-230px">
-				<input class="moca20" type="checkbox" id="tf_17" value="0000000002000000" <?php if (php_str_and($taboo_freq, "0000000002000000") == "0000000002000000") echo "checked=\"checked\""; ?> /> <label for="17" class="acs-hide"></label> <b>1425MHz</b>&nbsp;&nbsp;
-				<input class="moca20" type="checkbox" id="tf_19" value="0000000008000000" <?php if (php_str_and($taboo_freq, "0000000008000000") == "0000000008000000") echo "checked=\"checked\""; ?> /> <label for="19" class="acs-hide"></label> <b>1475MHz</b>&nbsp;&nbsp;
-				<input class="moca20" type="checkbox" id="tf_21" value="0000000020000000" <?php if (php_str_and($taboo_freq, "0000000020000000") == "0000000020000000") echo "checked=\"checked\""; ?> /> <label for="21" class="acs-hide"></label> <b>1525MHz</b>&nbsp;&nbsp;
-				<input class="moca20" type="checkbox" id="tf_22" value="0000000040000000" <?php if (php_str_and($taboo_freq, "0000000040000000") == "0000000040000000") echo "checked=\"checked\""; ?> /> <label for="22" class="acs-hide"></label> <b>1550MHz</b>&nbsp;&nbsp;
-				<input class="moca20" type="checkbox" id="tf_23" value="0000000080000000" <?php if (php_str_and($taboo_freq, "0000000080000000") == "0000000080000000") echo "checked=\"checked\""; ?> /> <label for="23" class="acs-hide"></label> <b>1575MHz</b>
+				<input class="moca20" type="checkbox" id="tf_17" value="0000000002000000" <?php if ((php_str_and($taboo_freq, "0000000002000000") == "0000000002000000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="17" class="acs-hide"></label> <b>1425MHz</b>&nbsp;&nbsp;
+				<input class="moca20" type="checkbox" id="tf_19" value="0000000008000000" <?php if ((php_str_and($taboo_freq, "0000000008000000") == "0000000008000000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="19" class="acs-hide"></label> <b>1475MHz</b>&nbsp;&nbsp;
+				<input class="moca20" type="checkbox" id="tf_21" value="0000000020000000" <?php if ((php_str_and($taboo_freq, "0000000020000000") == "0000000020000000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="21" class="acs-hide"></label> <b>1525MHz</b>&nbsp;&nbsp;
+				<input class="moca20" type="checkbox" id="tf_22" value="0000000040000000" <?php if ((php_str_and($taboo_freq, "0000000040000000") == "0000000040000000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="22" class="acs-hide"></label> <b>1550MHz</b>&nbsp;&nbsp;
+				<input class="moca20" type="checkbox" id="tf_23" value="0000000080000000" <?php if ((php_str_and($taboo_freq, "0000000080000000") == "0000000080000000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="23" class="acs-hide"></label> <b>1575MHz</b>
 			</div>
 		</div>
 		<div class="form-row " id="div_nc_switch">
 			<label>Preferred Network Controller:</label>
 			<input type="radio"  id="nc_enable"  name="Network" value="enabled"  checked="checked" /> <label for="nc_enable" class="acs-hide"></label><b>Enabled</b>
-			<input type="radio"  id="nc_disable" name="Network" value="disabled" <?php if ("false"==$nc_enable) echo 'checked="checked"'; ?> /> <label for="nc_disable" class="acs-hide"></label><b>Disabled</b>
+			<input type="radio"  id="nc_disable" name="Network" value="disabled" <?php if (("false"==$nc_enable) && $isNotAdmin) echo 'checked="checked"'; ?> /> <label for="nc_disable" class="acs-hide"></label><b>Disabled</b>
 		</div>
 		<div class="form-row" id="privacy_switch" >
 			<label for="Privacy">MoCA Privacy:</label>
 			<input type="radio"  id="privacy_enable"  name="privacy_switch" value="enabled"  checked="checked" /> <label for="privacy_enable" class="acs-hide"></label><b>Enabled</b>
-			<input type="radio"  id="privacy_disable" name="privacy_switch" value="disabled" <?php if ("false"==$privacy_enable) echo 'checked="checked"'; ?> /> <label for="privacy_disable" class="acs-hide"></label><b>Disabled</b>
+			<input type="radio"  id="privacy_disable" name="privacy_switch" value="disabled" <?php if (("false"==$privacy_enable) && $isNotAdmin) echo 'checked="checked"'; ?> /> <label for="privacy_disable" class="acs-hide"></label><b>Disabled</b>
 		</div>
 		<div class="form-row add" id="net_password_top">
 			<label for="net_password">Network Password:</label>
 			<span id="password_field">
-				<input type="password" size="23" id="net_password" name="net_password" class="text" value="<?php echo $net_password; ?>" />
+				<input type="password" size="23" id="net_password" name="net_password" class="text" value="<?php if ($isNotAdmin) echo $net_password; ?>" />
 			</span>&nbsp;<span style="font-size: .8em;">12 Digits Min,17 Digits Max<span/>
 		</div>
 		<div class="form-row" id="password_show_top">
