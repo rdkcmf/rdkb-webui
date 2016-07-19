@@ -538,15 +538,14 @@ $(document).ready(function() {
 		$freq_id = strpos(php_getstr("Device.WiFi.SSID.$i.LowerLayers"), "Radio.1") ? "1" : "2";
 		$PrimaryRemoteEndpoint	= php_getstr("Device.X_COMCAST-COM_GRE.Tunnel.1.PrimaryRemoteEndpoint");	// 2.4G and 5G share one gre tunnel
 		$SecondaryRemoteEndpoint = php_getstr("Device.X_COMCAST-COM_GRE.Tunnel.1.SecondaryRemoteEndpoint");	// 2.4G and 5G share one gre tunnel
-		$RemoteEndpointsV4	= array();
-		$RemoteEndpointsV6	= array();
-		array_push($RemoteEndpointsV4, $PrimaryRemoteEndpoint);
-		array_push($RemoteEndpointsV4, $SecondaryRemoteEndpoint);
-		array_push($RemoteEndpointsV6, $PrimaryRemoteEndpoint);
-		array_push($RemoteEndpointsV6, $SecondaryRemoteEndpoint);
-		$wlan_gw = "";
-		if (isset($RemoteEndpointsV4[0])) $wlan_gw = $RemoteEndpointsV4[0];
-		if (isset($RemoteEndpointsV6[0])) $wlan_gw = $wlan_gw."/".$RemoteEndpointsV6[0];
+        $RemoteEndpointsV4  = array();
+        array_push($RemoteEndpointsV4, $PrimaryRemoteEndpoint);
+        array_push($RemoteEndpointsV4, $SecondaryRemoteEndpoint);
+        $wlan_gw = ""; 
+        if (isset($RemoteEndpointsV4[0])) {
+            $wlan_gw = $RemoteEndpointsV4[0];
+            $wlan_gw = $wlan_gw."/".$RemoteEndpointsV4[1];
+        }      
 		array_push($public_v, array(
 			'ssid_id'		=> $i,
 			'ssid_enable'	=> $wifi_value["Enable".$i],
