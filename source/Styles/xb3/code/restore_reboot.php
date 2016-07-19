@@ -13,7 +13,7 @@ $(document).ready(function() {
 		$("#div2, #div3, #div4, #div6").hide();
 	}
 	else if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>") {
-		$("#div6").hide();
+		$("#div6").remove();
 		$("#div5").addClass("odd");
 	}
 //start by licha
