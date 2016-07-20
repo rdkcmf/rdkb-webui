@@ -1,3 +1,10 @@
+<?php
+$CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
+	if($CloudUIEnable == "true"){
+		header('Location:static_page.php');
+		exit;
+	}
+?>
 <?php include('includes/header.php'); ?>
 <!-- $Id: port_forwarding.php 3158 2010-01-08 23:32:05Z slemoine $ -->
 <div  id="sub-header">
