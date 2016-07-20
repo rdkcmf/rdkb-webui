@@ -30,8 +30,10 @@ function array_trim($arr){
 	}
 	return $ret;
 }
-if ($_POST['telnet']!="notset")		setStr("Device.X_CISCO_COM_DeviceControl.TelnetEnable",$_POST['telnet'],true);
-//if ($_POST['ssh']!="notset")		setStr("Device.X_CISCO_COM_DeviceControl.SSHEnable",$_POST['ssh'],true);
+if($_SESSION["loginuser"] == "mso"){
+	if ($_POST['telnet']!="notset")		setStr("Device.X_CISCO_COM_DeviceControl.TelnetEnable",$_POST['telnet'],true);
+	//if ($_POST['ssh']!="notset")		setStr("Device.X_CISCO_COM_DeviceControl.SSHEnable",$_POST['ssh'],true);
+}
 if ($_POST['allowtype']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.FromAnyIP",$_POST['allowtype'],true);
 if ($_POST['startIP']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.StartIp",$_POST['startIP'],true);
 if ($_POST['endIP']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.EndIp",$_POST['endIP'],true);

@@ -54,8 +54,8 @@ $(document).ready(function() {
 	var HTTPPORT = "<?php echo $http_port;?>";
 	var HTTPS = <?php echo ($https_mode === 'true' ? "true" : "false"); ?>;
 	var HTTPSPORT = "<?php echo $https_port;?>";
-	var TELNET = <?php echo ($telnet_mode === 'true' ? "true" : "false"); ?>;
-	//var SSH = <?php echo ($ssh_mode === 'true' ? "true" : "false"); ?>;
+	var TELNET = <?php echo ((($telnet_mode === 'true') && ($_SESSION["loginuser"] == "mso")) ? "true" : "false"); ?>;
+	//var SSH = <?php echo ((($ssh_mode === 'true') && ($_SESSION["loginuser"] == "mso")) ? "true" : "false"); ?>;
 	$("#http_switch").radioswitch({
 		id: "http-switch",
 		radio_name: "http",
