@@ -316,23 +316,27 @@ else {
 	</div>
 </div>
 <?php
-$cm_param = array(
-	"IPAddress"				=> "Device.X_CISCO_COM_CableModem.IPAddress",
-	"SubnetMask"			=> "Device.X_CISCO_COM_CableModem.SubnetMask",
-	"Gateway"				=> "Device.X_CISCO_COM_CableModem.Gateway",
-	"TFTPServer"			=> "Device.X_CISCO_COM_CableModem.TFTPServer",
-	"TimeServer"			=> "Device.X_CISCO_COM_CableModem.TimeServer",
-	"TimeOffset"			=> "Device.X_CISCO_COM_CableModem.TimeOffset",
-	"BootFileName"			=> "Device.X_CISCO_COM_CableModem.BootFileName",
-	"MDDIPOverride"			=> "Device.X_CISCO_COM_CableModem.MDDIPOverride",
-	"LearnedIPMode"			=> "Device.X_CISCO_COM_CableModem.ProvIpType",
-	"LeaseTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.LeaseTimeRemaining",
-	"RebindTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.RebindTimeRemaining",
-	"RenewTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.RenewTimeRemaining",
-//	"PrimaryDHCPServer"		=> "Device.X_CISCO_COM_MTA.PrimaryDHCPServer",
-//	"SecondaryDHCPServer"	=> "Device.X_CISCO_COM_MTA.SecondaryDHCPServer",
-	);
-$cm_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $cm_param);
+if($_SESSION["loginuser"] == "mso"){
+	$cm_param = array(
+		"IPAddress"				=> "Device.X_CISCO_COM_CableModem.IPAddress",
+		"SubnetMask"			=> "Device.X_CISCO_COM_CableModem.SubnetMask",
+		"Gateway"				=> "Device.X_CISCO_COM_CableModem.Gateway",
+		"TFTPServer"			=> "Device.X_CISCO_COM_CableModem.TFTPServer",
+		"TimeServer"			=> "Device.X_CISCO_COM_CableModem.TimeServer",
+		"TimeOffset"			=> "Device.X_CISCO_COM_CableModem.TimeOffset",
+		"BootFileName"			=> "Device.X_CISCO_COM_CableModem.BootFileName",
+		"MDDIPOverride"			=> "Device.X_CISCO_COM_CableModem.MDDIPOverride",
+		"LearnedIPMode"			=> "Device.X_CISCO_COM_CableModem.ProvIpType",
+		"LeaseTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.LeaseTimeRemaining",
+		"RebindTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.RebindTimeRemaining",
+		"RenewTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.RenewTimeRemaining",
+	//	"PrimaryDHCPServer"		=> "Device.X_CISCO_COM_MTA.PrimaryDHCPServer",
+	//	"SecondaryDHCPServer"	=> "Device.X_CISCO_COM_MTA.SecondaryDHCPServer",
+		);
+	$cm_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $cm_param);
+} else {
+	$cm_value = NULL;
+}
 ?>
 <div class="module forms div_cm">
 	<h2>CM DHCP Parameters</h2>
@@ -402,25 +406,47 @@ $cm_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $cm_param);
 </div>
 -->
 <?php
-$mta_param = array(
-	"FQDN"					=> "Device.X_CISCO_COM_MTA.FQDN",
-	"IPAddress"				=> "Device.X_CISCO_COM_MTA.IPAddress",
-	"SubnetMask"			=> "Device.X_CISCO_COM_MTA.SubnetMask",
-	"Gateway"				=> "Device.X_CISCO_COM_MTA.Gateway",
-	"BootFileName"			=> "Device.X_CISCO_COM_MTA.BootFileName",
-	"LeaseTimeRemaining"	=> "Device.X_CISCO_COM_MTA.LeaseTimeRemaining",
-	"RebindTimeRemaining"	=> "Device.X_CISCO_COM_MTA.RebindTimeRemaining",
-	"RenewTimeRemaining"	=> "Device.X_CISCO_COM_MTA.RenewTimeRemaining",
-	"PrimaryDNS"			=> "Device.X_CISCO_COM_MTA.PrimaryDNS",
-	"SecondaryDNS"			=> "Device.X_CISCO_COM_MTA.SecondaryDNS",
-	"DHCPOption3"			=> "Device.X_CISCO_COM_MTA.DHCPOption3",
-	"DHCPOption6"			=> "Device.X_CISCO_COM_MTA.DHCPOption6",
-	"DHCPOption7"			=> "Device.X_CISCO_COM_MTA.DHCPOption7",
-	"DHCPOption8"			=> "Device.X_CISCO_COM_MTA.DHCPOption8",
-	"PrimaryDHCPServer"		=> "Device.X_CISCO_COM_MTA.PrimaryDHCPServer",
-	"SecondaryDHCPServer"	=> "Device.X_CISCO_COM_MTA.SecondaryDHCPServer",
-	);
-$mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
+if($_SESSION["loginuser"] == "mso"){
+	$mta_param = array(
+		"FQDN"					=> "Device.X_CISCO_COM_MTA.FQDN",
+		"IPAddress"				=> "Device.X_CISCO_COM_MTA.IPAddress",
+		"SubnetMask"			=> "Device.X_CISCO_COM_MTA.SubnetMask",
+		"Gateway"				=> "Device.X_CISCO_COM_MTA.Gateway",
+		"BootFileName"			=> "Device.X_CISCO_COM_MTA.BootFileName",
+		"LeaseTimeRemaining"	=> "Device.X_CISCO_COM_MTA.LeaseTimeRemaining",
+		"RebindTimeRemaining"	=> "Device.X_CISCO_COM_MTA.RebindTimeRemaining",
+		"RenewTimeRemaining"	=> "Device.X_CISCO_COM_MTA.RenewTimeRemaining",
+		"PrimaryDNS"			=> "Device.X_CISCO_COM_MTA.PrimaryDNS",
+		"SecondaryDNS"			=> "Device.X_CISCO_COM_MTA.SecondaryDNS",
+		"DHCPOption3"			=> "Device.X_CISCO_COM_MTA.DHCPOption3",
+		"DHCPOption6"			=> "Device.X_CISCO_COM_MTA.DHCPOption6",
+		"DHCPOption7"			=> "Device.X_CISCO_COM_MTA.DHCPOption7",
+		"DHCPOption8"			=> "Device.X_CISCO_COM_MTA.DHCPOption8",
+		"PrimaryDHCPServer"		=> "Device.X_CISCO_COM_MTA.PrimaryDHCPServer",
+		"SecondaryDHCPServer"	=> "Device.X_CISCO_COM_MTA.SecondaryDHCPServer",
+		);
+	$mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
+} else if($_SESSION["loginuser"] == "cusadmin"){
+	$mta_param = array(
+		"FQDN"					=> "Device.X_CISCO_COM_MTA.FQDN",
+		"IPAddress"				=> "Device.X_CISCO_COM_MTA.IPAddress",
+		"SubnetMask"			=> "Device.X_CISCO_COM_MTA.SubnetMask",
+		"Gateway"				=> "Device.X_CISCO_COM_MTA.Gateway",
+		"BootFileName"			=> "Device.X_CISCO_COM_MTA.BootFileName",
+		"LeaseTimeRemaining"	=> "Device.X_CISCO_COM_MTA.LeaseTimeRemaining",
+		"RebindTimeRemaining"	=> "Device.X_CISCO_COM_MTA.RebindTimeRemaining",
+		"RenewTimeRemaining"	=> "Device.X_CISCO_COM_MTA.RenewTimeRemaining",
+		"PrimaryDNS"			=> "Device.X_CISCO_COM_MTA.PrimaryDNS",
+		"SecondaryDNS"			=> "Device.X_CISCO_COM_MTA.SecondaryDNS",
+		"DHCPOption3"			=> "Device.X_CISCO_COM_MTA.DHCPOption3",
+		"DHCPOption6"			=> "Device.X_CISCO_COM_MTA.DHCPOption6",
+		"DHCPOption7"			=> "Device.X_CISCO_COM_MTA.DHCPOption7",
+		"DHCPOption8"			=> "Device.X_CISCO_COM_MTA.DHCPOption8",
+		);
+	$mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
+} else {
+	$mta_value = NULL;
+}
 ?>
 <div class="module forms div_cm">
 	<h2>CM PacketCable Options</h2>
