@@ -98,19 +98,21 @@ switch ($infoArray[0]) {
 		exit(0);
 	case "btn6" :
 		//"mso" and "cusadmin" required to reset password of "admin"
-		if ("mso"==$thisUser) {
-			setStr("Device.Users.User.1.X_CISCO_COM_Password", "pod", true);
-			setStr("Device.Users.User.3.X_CISCO_COM_Password", "password", true);
-			echo "mso";
-		}
-		elseif ("cusadmin"==$thisUser) {
-			setStr("Device.Users.User.2.X_CISCO_COM_Password", "Xfinity", true);
-			setStr("Device.Users.User.3.X_CISCO_COM_Password", "password", true);
-			echo "cusadmin";
-		}
-		else {
-			setStr("Device.Users.User.3.X_CISCO_COM_Password", "password", true);
-			echo "admin";
+		if($_SESSION["loginuser"] == "mso" || $_SESSION["loginuser"] == "cusadmin"){
+			if ("mso"==$thisUser) {
+				setStr("Device.Users.User.1.X_CISCO_COM_Password", "pod", true);
+				setStr("Device.Users.User.3.X_CISCO_COM_Password", "password", true);
+				echo "mso";
+			}
+			elseif ("cusadmin"==$thisUser) {
+				setStr("Device.Users.User.2.X_CISCO_COM_Password", "Xfinity", true);
+				setStr("Device.Users.User.3.X_CISCO_COM_Password", "password", true);
+				echo "cusadmin";
+			}
+			else {
+				setStr("Device.Users.User.3.X_CISCO_COM_Password", "password", true);
+				echo "admin";
+			}
 		}
 		break;
 	default:
