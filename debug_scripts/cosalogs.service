@@ -1,0 +1,12 @@
+[Unit]
+Description=WebUI COSA Logs
+After=com.cisco.spvtg.ccsp.PNM.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/sh -c '/lib/rdk/cosalogs.sh &'
+
+[Install]
+WantedBy=multi-user.target
+
