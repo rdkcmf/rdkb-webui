@@ -516,7 +516,7 @@ $(document).ready(function() {
 	<?php
 		if($loginuser=="mso"){
 			echo '<div  class="module forms data div-xhs-network" style="position:relative; top:10px; ">';
-		      	echo '<h2>Online Devices-XHS '.$xhsSSIDName.' SSID</h2>';
+		      	echo '<h2  style="white-space: pre;">Online Devices-XHS '.$xhsSSIDName.' SSID</h2>';
 		      	echo '<table   class="data" summary="this table displays online devices connected to Home security SSID">';
 		      		echo '<tr>';
 		      			echo '<th id="XHS-host-name" width="30%">Host Name</th>';
@@ -640,7 +640,7 @@ $(document).ready(function() {
    		echo '</table>';
    	echo '</div> <!-- end .module -->';
 	echo '<div  class="module forms data div-xhs-network" style="position:relative; top:10px; ">';
-      	echo '<h2>Offline Devices-XHS '.$xhsSSIDName.' SSID</h2>';
+      	echo '<h2 style="white-space: pre;">Offline Devices-XHS '.$xhsSSIDName.' SSID</h2>';
       	echo '<table   class="data" summary="this table displays offline devices connected to Home security SSID">';
       		echo '<tr>';
       			echo '<th id="offXHS-host-name" width="">Host Name</th>';

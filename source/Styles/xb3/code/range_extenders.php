@@ -173,7 +173,7 @@ $jsConfig = json_encode($arConfig);
 						$("#range_extender").append('\
 							<tr id="'+ val.ext_ip +'" class="'+ ((odd=!odd) ? "odd" : "") +'">\
 								<td headers="ext-name" class="ext_name" rowspan="'+val.ssid_info.length+'" style="display:'+ (k?"none":"") +'">'+ val.ext_name +'</td>\
-								<td headers="ssid" class="ssid">'+ val.ssid_info[j].ssid +'</td>\
+								<td headers="ssid" class="ssid" style="white-space: pre;">'+ val.ssid_info[j].ssid +'</td>\
 								<td headers="bssid" class="bssid">'+ val.ssid_info[j].bssid +'</td>\
 								<td headers="frequency-band" class="freq">'+ val.ssid_info[j].freq +'</td>\
 								<td headers="channel" class="channel">'+ val.ssid_info[j].channel +'</td>\
@@ -186,7 +186,7 @@ $jsConfig = json_encode($arConfig);
 					$("#range_extender").append('\
 						<tr id="'+ val.ext_ip +'" class="'+ ((odd=!odd) ? "odd" : "") +'">\
 							<td headers="ext-name" class="ext_name" rowspan="'+val.ssid_info.length+'" style="display:'+ (k?"none":"") +'">'+ val.ext_name +'</td>\
-							<td headers="ssid" class="ssid">'+ val.ssid_info[j].ssid +'</td>\
+							<td headers="ssid" class="ssid" style="white-space: pre;">'+ val.ssid_info[j].ssid +'</td>\
 							<td headers="bssid" class="bssid">'+ val.ssid_info[j].bssid +'</td>\
 							<td headers="frequency-band" class="freq">'+ val.ssid_info[j].freq +'</td>\
 							<td headers="channel" class="channel">'+ val.ssid_info[j].channel +'</td>\

@@ -405,7 +405,7 @@ function f()
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
 						echo '<span class="readonlyLabel">Wi-Fi SSID:</span>';
-						echo '<span style="font-weight: bold;" class="value">'.$wifi_ssid.'</span>';
+						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_ssid.'</span>';
 					echo '</div>';
 				echo '</div>';
 				}
@@ -414,7 +414,7 @@ function f()
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
 						echo '<span class="readonlyLabel">Wi-Fi SSID:</span>';
-						echo '<span style="font-weight: bold;" class="value">'.$wifi_ssid.'</span>';
+						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_ssid.'</span>';
 					echo '</div>';
 					echo '<div class="form-row even">';
 						echo '<span class="readonlyLabel">Wi-Fi Passkey:</span>';
@@ -428,13 +428,13 @@ function f()
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
 						echo '<span class="readonlyLabel">Wi-Fi SSID (2.4GHz):</span>';
-						echo '<span style="font-weight: bold;" class="value">'.$wifi_24_ssid.'</span>';
+						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_24_ssid.'</span>';
 					echo '</div>';
 				echo '</div>';
 				echo '<div class="form-row odd">';
 					echo '<div class="form-row even">';
 						echo '<span class="readonlyLabel">Wi-Fi SSID (5GHz):</span>';
-						echo '<span style="font-weight: bold;" class="value">'.$wifi_50_ssid.'</span>';
+						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_50_ssid.'</span>';
 					echo '</div>';
 				echo '</div>';
 				}
@@ -442,7 +442,7 @@ function f()
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
 						echo '<span class="readonlyLabel">Wi-Fi SSID (2.4GHz):</span>';
-						echo '<span style="font-weight: bold;" class="value">'.$wifi_24_ssid.'</span>';
+						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_24_ssid.'</span>';
 					echo '</div>';
 					echo '<div class="form-row even">';
 						echo '<span class="readonlyLabel">Wi-Fi Passkey (2.4GHz):</span>';
@@ -452,7 +452,7 @@ function f()
 				echo '<div class="form-row odd">';
 					echo '<div class="form-row even">';
 						echo '<span class="readonlyLabel">Wi-Fi SSID (5GHz):</span>';
-						echo '<span style="font-weight: bold;" class="value">'.$wifi_50_ssid.'</span>';
+						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_50_ssid.'</span>';
 					echo '</div>';
 					echo '<div class="form-row odd">';
 						echo '<span class="readonlyLabel">Wi-Fi Passkey (5GHz):</span>';

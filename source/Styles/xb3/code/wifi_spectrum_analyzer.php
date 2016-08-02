@@ -66,7 +66,7 @@ $(document).ready(function(){
 				        tr.append("<td headers='band_id' class='band_id'>" + Radio_val+ "</td>");
 				        tr.append("<td headers='channel_number' class='channel_number'>" + spec_values["Channel"]+ "</td>");
 				        tr.append("<td headers='mac_id' class='mac_id'>" + spec_values["BSSID"]+ "</td>");
-						tr.append("<td headers='ssid_name' class='ssid_name'>" + spec_values["SSID"]+ "</td>");
+						tr.append("<td headers='ssid_name' class='ssid_name' style='white-space: pre;'>" + spec_values["SSID"]+ "</td>");
 				        tr.append("<td headers='Signal_level' class='Signal_level'>" + spec_values["SignalStrength"]+" dBm"+ "</td>");
 				        tr.append("<td headers='mode' class='mode'>" + spec_values["SupportedStandards"]+ "</td>");
 				        tr.append("<td headers='security' class='security'>" + spec_values["SecurityModeEnabled"]+ "</td>");
