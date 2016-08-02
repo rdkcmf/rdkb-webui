@@ -1131,14 +1131,14 @@ function saveBandSteeringSettings()
 		<th id="private-Blank" class="edit" width="10%">&nbsp;</th>
 	</tr>
 	<tr class="form-row odd">
-		<td headers="private-Name"><b><font color="black"><?php echo $network_name; ?></font></b></td>
+		<td headers="private-Name"><b><font color="black" style="white-space: pre-wrap;"><?php echo $network_name; ?></font></b></td>
 		<td headers="private-Frequency"><?php echo $feq_band; ?></td>
 		<td headers="private-MAC"><?php echo $mac_address; ?>   </td>
 		<td headers="private-Security"><?php echo encrypt_map($encrypt_mode, $encrypt_method);?></td>
 		<td headers="private-Blank"><a href="wireless_network_configuration_edit.php?id=1" class="btn">Edit</a></td>
 	</tr>
 	<tr class="form-row">
-		<td headers="private-Name"><b><font color="black"><?php echo $network_name1; ?></font></b></td>
+		<td headers="private-Name"><b><font color="black" style="white-space: pre-wrap;"><?php echo $network_name1; ?></font></b></td>
 		<td headers="private-Frequency"><?php echo $feq_band1; ?></td>
 		<td headers="private-MAC"><?php echo $mac_address1; ?>   </td>
 		<td headers="private-Security"><?php echo encrypt_map($encrypt_mode1, $encrypt_method1); ?></td>
@@ -1181,7 +1181,7 @@ function saveBandSteeringSettings()
 		for ($j=0; $j<count($public_v); $j++)
 		{
 			echo '<tr class="'.(($odd=!$odd)?"odd":"even").'">';
-			echo 	'<td headers="public-Name"><b><font color="black">'.$public_v[$j]['ssid'].'</font></b> </td>';
+			echo 	'<td headers="public-Name"><b><font color="black" style="white-space: pre-wrap;">'.$public_v[$j]['ssid'].'</font></b> </td>';
 			echo 	'<td headers="public-Frequency">'.$public_v[$j]['freq'].'</td>';
 			echo 	'<td headers="public-MAC">'.$public_v[$j]['bssid'].'</td>';
 			echo 	'<td headers="public-Security">'.$public_v[$j]['secur'].'</td>';
@@ -1659,7 +1659,7 @@ function saveBandSteeringSettings()
 				 $isBridge = $_SESSION["lanMode"];
 				foreach ($ssids as $i) {
 				$id = ($isBridge == 'bridge-static' && "mso" == $_SESSION["loginuser"])? 3:1;
-					echo '<option value="'.$i.'" '.(($id==$i)?'selected="selected"':"").'>'.getStr("Device.WiFi.SSID.$i.SSID").'</option>';
+					echo '<option value="'.$i.'" '.(($id==$i)?'selected="selected"':"").'>'.str_replace(" ", "&nbsp;", getStr("Device.WiFi.SSID.$i.SSID")).'</option>';
 				}
 			?>		
 		</select>

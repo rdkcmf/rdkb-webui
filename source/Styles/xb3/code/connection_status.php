@@ -406,7 +406,7 @@ $(document).ready(function() {
   </div>
   <div style="width:355px;float:left;position:relative;left:5px;" class="wifi_section"><!-- contain private and public Wi-Fi -->
     <div class="module forms block private-wifi">
-        <h2>Private Wi-Fi Network-<?php echo $wifi_value["SSID1"]; ?></h2>
+        <h2 style="white-space: pre-wrap;">Private Wi-Fi Network-<?php echo $wifi_value["SSID1"]; ?></h2>
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.php?id=1" class="btn">Edit</a></p>
         <div class="form-row">
           <span class="readonlyLabel">Wireless Network (Wi-Fi 2.4 GHz):</span> <span class="value">
@@ -440,7 +440,7 @@ $(document).ready(function() {
         </div>
     </div><!-- end .module private wifi 2.4-->  
     <div class="module forms block private-wifi" style="position:relative;top:0px;right:0px;">
-        <h2>Private Wi-Fi Network-<?php echo $wifi_value["SSID2"]; ?> </h2>
+        <h2 style="white-space: pre-wrap;">Private Wi-Fi Network-<?php echo $wifi_value["SSID2"]; ?> </h2>
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.php?id=2" class="btn">Edit</a></p>
         <div class="form-row">
           <span class="readonlyLabel">Wireless Network (Wi-Fi 5 GHz):</span> <span class="value">
@@ -508,7 +508,7 @@ $(document).ready(function() {
 		else
 		        $wifi_enable = "Inactive";
 		echo '<div class="module forms block" style="position:relative;top:0px;right:0px;">';
-		echo '<h2>HomeSecurityNetwork-'.$public_v[$j]['ssid_name'].'</h2>';
+		echo '<h2 style="white-space: pre-wrap;">HomeSecurityNetwork-'.$public_v[$j]['ssid_name'].'</h2>';
 		// !!!dont goto edit_public page!!! thant page just for hotspot tunnel configuration
 		echo '<p class="button"><a tabindex="0" class="btn" href="wireless_network_configuration_edit.php?id='.$public_v[$j]['ssid_id'].'">Edit</a></p>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Wireless Network (Wi-Fi '.$public_v[$j]['radio_freq'].' GHz):</span> <span class="value">'.$wifi_enable.'</span></div>';
@@ -562,7 +562,7 @@ $(document).ready(function() {
 	for ($j=0; $j<count($public_v); $j++)
 	{
 		echo '<div class="module forms block tr_hotspot" style="position:relative;top:0px;right:0px;">';
-		echo '<h2>Public Wi-Fi Network-'.$public_v[$j]['ssid_name'].'</h2>';
+		echo '<h2 style="white-space: pre-wrap;">Public Wi-Fi Network-'.$public_v[$j]['ssid_name'].'</h2>';
 		echo '<p class="button"><a class="btn" href="wireless_network_configuration_edit_public.php?id='.$public_v[$j]['ssid_id'].'">Edit</a></p>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Xfinity Wi-Fi Capable:</span> <span class="value">'.("true"==$public_v[$j]['xf_capable']?"Yes":"No").'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Wireless Network (Wi-Fi '.$public_v[$j]['radio_freq'].' GHz):</span> <span class="value">'.("true"==$public_v[$j]['ssid_enable']?"Active":"Inactive").'</span></div>';
