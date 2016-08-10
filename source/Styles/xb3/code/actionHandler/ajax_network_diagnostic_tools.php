@@ -21,9 +21,14 @@ if (!isset($_SESSION["loginuser"])) {
 	exit(0);
 }
 function is_link_valid($link){
-	if(inet_pton($link) !== false)
+	//A valid URL per the URL spec.
+	if (preg_match("/^((((https?|ftps?|gopher|telnet|nntp):\/\/)|(mailto:|news:))(%[0-9A-Fa-f]{2}|[-()_.!~*';\/?:@&=+$,A-Za-z0-9])+)([).!';\/?:,][[:blank:]])?$/",$link))
 		return true;
-	else if (preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.]*[-a-z0-9+&@#\/%=~_|]/i",$link))
+	else
+		return false;
+}
+function is_ip_valid($link){
+	if(inet_pton($link) !== false)
 		return true;
 	else
 		return false;
@@ -59,7 +64,7 @@ else if (isset($_POST['destination_ipv4'])){
 	$destination_ipv4=$_POST['destination_ipv4'];
 	$count2=$_POST['count2'];
 	$DiagnosticsState="Requested";
-	if(is_link_valid($destination_ipv4)){
+	if(is_ip_valid($destination_ipv4)){
 		setStr("Device.IP.Diagnostics.IPPing.Host",$destination_ipv4,true);
 		setStr("Device.IP.Diagnostics.IPPing.NumberOfRepetitions",$count2,true);
 		setStr("Device.IP.Diagnostics.IPPing.DiagnosticsState",$DiagnosticsState,true);
@@ -82,7 +87,7 @@ else if (isset($_POST['destination_ipv6'])){
 	$destination_ipv6=$_POST['destination_ipv6'];
 	$count3=$_POST['count3'];
 	$DiagnosticsState="Requested";
-	if(is_link_valid($destination_ipv6)){
+	if(is_ip_valid($destination_ipv6)){
 		setStr("Device.IP.Diagnostics.IPPing.Host",$destination_ipv6,true);
 		setStr("Device.IP.Diagnostics.IPPing.NumberOfRepetitions",$count3,true);
 		setStr("Device.IP.Diagnostics.IPPing.DiagnosticsState",$DiagnosticsState,true);
@@ -116,7 +121,7 @@ else if (isset($_POST['trace_ipv4_dst'])){
 		// "8    10 ms    10 ms    10 ms  comcast.net [10.0.0.101]",
 		// "Trace complete."
 	);
-	if(is_link_valid($trace_ipv4_dst)){
+	if(is_ip_valid($trace_ipv4_dst)){
 		setStr("Device.IP.Diagnostics.TraceRoute.Host", $trace_ipv4_dst, true);
 		setStr("Device.IP.Diagnostics.TraceRoute.DiagnosticsState", $trace_ipv4_status, true);
 		do{
@@ -145,7 +150,7 @@ else if (isset($_POST['trace_ipv6_dst'])){
 	$trace_ipv6_dst	   = $_POST['trace_ipv6_dst'];
 	$trace_ipv6_status = "Requested";
 	$trace_ipv6_result = array();
-	if(is_link_valid($trace_ipv6_dst)){
+	if(is_ip_valid($trace_ipv6_dst)){
 		setStr("Device.IP.Diagnostics.TraceRoute.Host", $trace_ipv6_dst, true);
 		setStr("Device.IP.Diagnostics.TraceRoute.DiagnosticsState", $trace_ipv6_status, true);
 		do{
