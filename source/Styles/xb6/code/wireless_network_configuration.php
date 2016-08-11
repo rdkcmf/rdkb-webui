@@ -1151,8 +1151,8 @@ function saveBandSteeringSettings()
 	</div>
 </div> <!-- end .module -->
 <div class="module data data div_public_wifi">
-	<h2>Public Wi-Fi Network</h2>
-	<table class="data" id="public_wifi" summary="Public Wi-Fi Network">
+	<h2>Other Wi-Fi Network</h2>
+	<table class="data" id="public_wifi" summary="Other Wi-Fi Network">
 		<tbody>
 		<tr>
 			<th id="public-Name" width="20%" class="name">Name</th>
