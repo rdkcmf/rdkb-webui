@@ -137,7 +137,7 @@ if($parental_control){
 echo '</li>';
 }
 echo '<li class="nav-advanced">';
-	if ($_SESSION["lanMode"] == "bridge-static") echo '<a role="menuitem"  title="click to toggle sub menu"  class="top-level" href="dynamic_dns.php">Advanced</a>';
+	if ($_SESSION["lanMode"] == "bridge-static") echo '<a role="menuitem"  href="device_discovery.php">Advanced</a></li>';
 		else echo '<a role="menuitem"  title="click to toggle sub menu"  class="top-level" href="port_forwarding.php">Advanced</a>';
 	echo '<ul>';
 	if($port_forwarding) echo '<li class="nav-port-forwarding"><a role="menuitem"  href="port_forwarding.php">Port Forwarding</a></li>';
