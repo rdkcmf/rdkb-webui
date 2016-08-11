@@ -660,7 +660,7 @@ $(document).ready(function() {
 				$Hostname    = $onXHSClientArr[$i]['X_CISCO_COM_HostName'];
 				$MACAddress  = strtoupper($onXHSClientArr[$i]['Chaddr']);
 				$IPv4Address = $onXHSClientArr[$i]['IPv4Address'];
-				$RSSILevel = $onXHSAssoDeviceArr[$i]['RSSILevel'];
+				$RSSILevel = $onXHSAssoDeviceArr[$i]['SignalStrength'];
 				if($i % 2) $odd = "";
 					else $odd = " class='odd'";
 				echo '<tr' .$odd. '>';
