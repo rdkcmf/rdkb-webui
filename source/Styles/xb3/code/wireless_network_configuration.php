@@ -617,10 +617,15 @@ $(document).ready(function() {
 	{
 		$("#no_public_wifi").show();
 	}
+	if ($("#other_wifi").find("tr").length <= 1)
+	{
+		$("#no_other_wifi").show();
+	}
 	// remove sections as per loginuser, content must be hidden before doc ready
 	if ("mso" != "<?php echo $_SESSION["loginuser"]; ?>"){
 		$(".div_enable_radio").remove();
 		$(".div_public_wifi").remove();
+		$(".div_other_wifi").remove();
 		$(".div_radio_setting").remove();
 		$(".div_wps_setting").remove();
 		$(".band_steering").remove();
@@ -1149,6 +1154,52 @@ function saveBandSteeringSettings()
 		<a href="wireless_network_configuration_wps.php" class="btn">Add Wi-Fi Protected Setup (WPS) Client</a>
 	</div>
 </div> <!-- end .module -->
+<div class="module data data div_other_wifi">
+	<h2>Other Wi-Fi Network</h2>
+	<table class="data" id="other_wifi" summary="Other Wi-Fi Network">
+		<tbody>
+		<tr>
+			<th id="other-Name" width="20%" class="name">Name</th>
+			<th id="other-Frequency" class="name">Frequency Band</th>
+			<th id="other-MAC" width="20%" class="protocals">MAC Address</th>
+			<th id="other-Security" width="30%" class="security">Security Mode</th>
+			<th id="other-Blank" width="10%" class="edit">&nbsp;</th>
+		</tr>
+		<?php
+		//$ssids 		= explode(",", getInstanceIds("Device.WiFi.SSID."));
+		$other_v	= array();
+		$odd 		= true;
+		foreach ($ssids as $i)
+		{
+			if (intval($i)<3 || intval($i)>4){		//SSID 1,2 for Private, 3,4 for Home Security, 5,6 for Hot Spot
+				continue;
+			}
+			array_push($other_v, array(
+				'sufix'	=> (intval($i)==5 || intval($i)==6) ? "_other" : "",
+				'id'	=> $i,
+				'ssid'	=> $wifi_value['SSID_SSID'.$i],
+				'freq'	=> intval($i)%2 ? "2.4 GHz" : "5 GHz",
+				'bssid'	=> $wifi_value['SSID_BSSID'.$i],
+				'secur'	=> encrypt_map($wifi_value['ModeEnabled'.$i], $wifi_value['EncrypMethod'.$i])
+				));
+		}
+		for ($j=0; $j<count($other_v); $j++)
+		{
+			echo '<tr class="'.(($odd=!$odd)?"odd":"even").'">';
+			echo 	'<td headers="other-Name"><b><font color="black" style="white-space: pre-wrap;">'.$other_v[$j]['ssid'].'</font></b> </td>';
+			echo 	'<td headers="other-Frequency">'.$other_v[$j]['freq'].'</td>';
+			echo 	'<td headers="other-MAC">'.$other_v[$j]['bssid'].'</td>';
+			echo 	'<td headers="other-Security">'.$other_v[$j]['secur'].'</td>';
+			echo 	'<td headers="other-Blank"><a class="btn '.$other_v[$j]['sufix'].'" href="wireless_network_configuration_edit'.$other_v[$j]['sufix'].'.php?id='.$other_v[$j]['id'].'">Edit</a></td>';
+			echo '</tr>';
+		}
+		?>
+		</tbody>
+	</table>
+	<div id="no_other_wifi" style="display: none;">
+		<p>There are no valid Other Wi-Fi found!</p>
+	</div>
+</div>
 <div class="module data data div_public_wifi">
 	<h2>Public Wi-Fi Network</h2>
 	<table class="data" id="public_wifi" summary="Public Wi-Fi Network">
@@ -1166,7 +1217,7 @@ function saveBandSteeringSettings()
 		$odd 		= true;
 		foreach ($ssids as $i)
 		{
-			if (intval($i)<3 || intval($i)>6){		//SSID 1,2 for Private, 3,4 for Home Security, 5,6 for Hot Spot
+			if (intval($i)<5 || intval($i)>6){		//SSID 1,2 for Private, 3,4 for Home Security, 5,6 for Hot Spot
 				continue;
 			}
 			array_push($public_v, array(
