@@ -4,9 +4,17 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="index.php";</script>';
 	exit(0);
 }
+function randString(){
+	$str = "";
+	$char = array_merge(range('A','Z'), range('a','z'), range('0','9'));
+	for ($i = 0; $i < 6; $i++) {
+		$str .= $char[mt_rand(0, 61)];
+	}
+	return $str;
+}
 ini_set('upload_tmp_dir','/var/tmp/');
 $target = "/var/tmp/";
-$target = $target.basename($_FILES['file']['name']);
+$target = $target.randString().'.conf';
 if($_FILES["file"]["error"]>0){
 	echo "Return Code: ".$_FILES["file"]["error"];
 	exit;
