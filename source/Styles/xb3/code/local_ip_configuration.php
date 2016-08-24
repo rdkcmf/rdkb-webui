@@ -98,12 +98,9 @@ $(document).ready(function() {
 		beginning_ip1 = ending_ip1 = parseInt(ip1);
 		beginning_ip2 = ending_ip2 = parseInt(ip2);
 		beginning_ip3 = ending_ip3 = parseInt(ip3);
-		$("#ipv4_dhcp_beginning_address_1").val(beginning_ip1);
-		$("#ipv4_dhcp_ending_address_1").val(ending_ip1);
-		$("#ipv4_dhcp_beginning_address_2").val(beginning_ip2);
-		$("#ipv4_dhcp_ending_address_2").val(ending_ip2);
-		$("#ipv4_dhcp_beginning_address_3").val(beginning_ip3);
-		$("#ipv4_dhcp_ending_address_3").val(ending_ip3);
+		beginning_ip4 = "2";
+		ending_ip4 = "253";
+		/*
 		if (subnet == "255.255.255.252"){
 			 //cache old values
 			old_beginning_ip4 = $("#ipv4_dhcp_beginning_address_4").val();
@@ -111,7 +108,7 @@ $(document).ready(function() {
 		else {
 			$("#ipv4_dhcp_beginning_address_4").val(old_beginning_ip4);
 			$("#ipv4_dhcp_ending_address_4").val(old_ending_ip4);
-		}
+		}*/
 		if(subnet == "255.255.0.0") {
 			beginning_ip3 = "0";
 			beginning_ip4 = "2";
@@ -128,7 +125,7 @@ $(document).ready(function() {
 		} 
 		else if (subnet == "255.255.255.128") {
 			beginning_ip4 = "2";
-			ending_ip4 = "2";
+			ending_ip4 = "125";
 			if($("#ipv4_dhcp_ending_address_4").val()>125) $("#ipv4_dhcp_ending_address_4").val(125);
 			$("#ipv4_dhcp_beginning_address_1").prop("disabled", true);
 			$("#ipv4_dhcp_beginning_address_2").prop("disabled", true);
@@ -183,6 +180,14 @@ $(document).ready(function() {
 			$("#ipv4_gateway_address_2").prop("disabled", false);
 			$("#ipv4_gateway_address_3").prop("disabled", false);
 		}
+		$("#ipv4_dhcp_beginning_address_1").val(beginning_ip1);
+		$("#ipv4_dhcp_ending_address_1").val(ending_ip1);
+		$("#ipv4_dhcp_beginning_address_2").val(beginning_ip2);
+		$("#ipv4_dhcp_ending_address_2").val(ending_ip2);
+		$("#ipv4_dhcp_beginning_address_3").val(beginning_ip3);
+		$("#ipv4_dhcp_ending_address_3").val(ending_ip3);
+		$("#ipv4_dhcp_beginning_address_4").val(beginning_ip4);
+		$("#ipv4_dhcp_ending_address_4").val(ending_ip4);
 	}//end of updateIPv4
 	// Update range addresses automatically
 	$(".gateway_address").blur(function() {
@@ -609,7 +614,7 @@ $('#submit_ipv4').click(function(e){
     var gw_ip2 = parseInt($('#ipv4_gateway_address_2').val());
     var gw_ip3 = parseInt($('#ipv4_gateway_address_3').val());
     if( ((gw_ip1 != 10) && (gw_ip1 != 172) && (gw_ip1 != 192)) || ((gw_ip1 == 172) && ((gw_ip2<16) || (gw_ip2>31)))  || ((gw_ip1== 192) && (gw_ip2 != 168) ) ){
-    	jAlert("Gateway IP is not in valid private IP range\n [10.0.0.1 ~ 10.255.255.254,\n172.16.0.1 ~ 172.31.255.254,\n192.168.0.1 ~ 192.168.255.254]");
+    	jAlert("Gateway IP is not in valid private IP range\n [10.0.0.1 ~ 10.255.255.253,\n172.16.0.1 ~ 172.31.255.254,\n192.168.0.1 ~ 192.168.255.254]");
     	return;
     }
     if ((gw_ip1==172) && (gw_ip2==16) && (gw_ip3==12)) {
@@ -994,7 +999,7 @@ $('#restore_ipv6').click(function(e) {
     				<option id="mask2" value="255.255.0.0" <?php if("255.255.0.0" == $subnetmask) echo 'selected';  ?> >255.255.0.0</option>
     				<option id="mask3" value="255.255.255.128" <?php if("255.255.255.128" == $subnetmask) echo 'selected'; ?> >255.255.255.128</option>
     				<option id="mask4" value="255.0.0.0" <?php if("255.0.0.0" == $subnetmask) echo 'selected'; ?> >255.0.0.0</option>
-    				<!-- <option id="mask5" value="255.255.255.252" <?php if("255.255.255.252" == $subnetmask) echo 'selected'; ?> >255.255.255.252</option> -->
+    				<!-- <option id="mask5" value="255.255.255.252" <?php //if("255.255.255.252" == $subnetmask) echo 'selected'; ?> >255.255.255.252</option> -->
     			</select>
     	    </div>
     		<div class="form-row">
