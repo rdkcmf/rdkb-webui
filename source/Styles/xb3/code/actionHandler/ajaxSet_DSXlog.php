@@ -23,8 +23,8 @@ if (!isset($_SESSION["loginuser"])) {
 /*********************************************************************/
 /*      this file is replaced by ajaxSet_mta_sip_packet_log.php      */	
 /*********************************************************************/
-	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_MTA.DSXLog. | grep 'type:' > /var/log_dsx.txt");
-	$file= fopen("/var/log_dsx.txt", "r");
+	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_MTA.DSXLog. | grep 'type:' > /tmp/log_dsx.txt");
+	$file= fopen("/tmp/log_dsx.txt", "r");
 	$pos = 50;		//global file pointer where to read the value in a line
 	$Log = array();
 	for($i=0; !feof($file) && $i<600; $i++)

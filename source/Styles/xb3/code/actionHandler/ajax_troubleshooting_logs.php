@@ -73,8 +73,8 @@ switch($timef){			//	[$mintime, $maxtime)
 }
 $pos = 50;		//global file pointer where to read the value in a line
 if ($mode=="system"){
-	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Diagnostics.Syslog.Entry. | grep 'type:' > /var/log_system.txt");
-	$file= fopen("/var/log_system.txt", "r");
+	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Diagnostics.Syslog.Entry. | grep 'type:' > /tmp/log_system.txt");
+	$file= fopen("/tmp/log_system.txt", "r");
 	$Log = array();
 	// for($i=0; !feof($file); $i++)
 	for($i=0; !feof($file); )
@@ -94,7 +94,7 @@ if ($mode=="system"){
 	// array_pop($Log);	
 	$sysLog = $Log;
 	//dump($sysLog);
-	$fh=fopen("/var/tmp/troubleshooting_logs_".$mode."_".$timef.".txt","w+");
+	$fh=fopen("/tmp/troubleshooting_logs_".$mode."_".$timef.".txt","w+");
 	foreach ($sysLog as $key=>$value){
 		fwrite($fh, $value["Des"]."\t".$value["time"]."\t".$value["Level"]."\r\n");
 	}
@@ -103,8 +103,8 @@ if ($mode=="system"){
 	echo json_encode($sysLog);	
 }
 else if ($mode=="event") {
-	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Diagnostics.Eventlog.Entry. | grep 'type:' > /var/log_event.txt");
-	$file= fopen("/var/log_event.txt", "r");
+	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Diagnostics.Eventlog.Entry. | grep 'type:' > /tmp/log_event.txt");
+	$file= fopen("/tmp/log_event.txt", "r");
 	$Log = array();
 	// for($i=0; !feof($file); $i++)
 	for($i=0; !feof($file); )
@@ -123,7 +123,7 @@ else if ($mode=="event") {
 	fclose($file);
 	// array_pop($Log);	
 	$docLog = $Log;
-	$fh=fopen("/var/tmp/troubleshooting_logs_".$mode."_".$timef.".txt","w+");
+	$fh=fopen("/tmp/troubleshooting_logs_".$mode."_".$timef.".txt","w+");
 	foreach ($docLog as $key=>$value){
 		fwrite($fh, $value["Des"]."\t".$value["time"]."\t".$value["Level"]."\r\n");
 	}
@@ -132,8 +132,8 @@ else if ($mode=="event") {
 	echo json_encode($docLog);
 }
 else {	
-	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /var/log_firewall.txt");
-	$file= fopen("/var/log_firewall.txt", "r");
+	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /tmp/log_firewall.txt");
+	$file= fopen("/tmp/log_firewall.txt", "r");
 	$Log = array();
 	// for($i=0; !feof($file); $i++)
 	for($i=0; !feof($file); )
@@ -154,7 +154,7 @@ else {
 	}
 	fclose($file);
 	$firewallLog = $Log;	
-	$fh=fopen("/var/tmp/troubleshooting_logs_".$mode."_".$timef.".txt","w+");
+	$fh=fopen("/tmp/troubleshooting_logs_".$mode."_".$timef.".txt","w+");
 	foreach ($firewallLog as $key=>$value){
 		fwrite($fh, $value["Des"].", ".$value["Count"]." Attemps, ".$value["time"]."\t".$value["Type"]."\r\n");
 	}
