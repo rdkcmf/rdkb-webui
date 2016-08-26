@@ -59,8 +59,8 @@ switch($mode){
 	default:
 		$type="all";
 }
-exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /var/log_parental.txt");
-$file= fopen("/var/log_parental.txt", "r");
+exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /tmp/log_parental.txt");
+$file= fopen("/tmp/log_parental.txt", "r");
 $pos = 50;		//global file pointer where to read the value in a line
 $Log = array();
 for ($i=0; !feof($file); ) {
@@ -90,7 +90,7 @@ fclose($file);
 $firewall_log = array_reverse($Log);
 // echo "firewall log ...: \n";
 // var_dump($firewall_log);
-$fh=fopen("/var/tmp/parental_reports_".$mode."_".$timef.".txt","w");
+$fh=fopen("/tmp/parental_reports_".$mode."_".$timef.".txt","w");
 foreach ($firewall_log as $key=>$value){
 	fwrite($fh, $value["Des"].", ".$value["Count"]." Attemps, ".$value["time"]."\t".$value["Type"]."\r\n");
 }

@@ -20,11 +20,11 @@ if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] == 'admin') {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_MTA.MTALog. > /var/log_mta.txt");
+exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_MTA.MTALog. > /tmp/log_mta.txt");
 $Log = array();
-if (file_exists("/var/log_mta.txt"))
+if (file_exists("/tmp/log_mta.txt"))
 {
-	$raw = file("/var/log_mta.txt");
+	$raw = file("/tmp/log_mta.txt");
 	$len = count($raw);
 	$pos = 50;		//global file pointer where to read the value in a line
 	for ($i=0; $i<$len; $i++) 
