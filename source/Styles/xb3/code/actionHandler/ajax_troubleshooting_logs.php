@@ -73,7 +73,7 @@ switch($timef){			//	[$mintime, $maxtime)
 }
 $pos = 50;		//global file pointer where to read the value in a line
 if ($mode=="system"){
-	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Diagnostics.Syslog.Entry. | grep 'type:' > /tmp/log_system.txt");
+	exec("/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Diagnostics.Syslog.Entry. | grep 'type:' > /tmp/log_system.txt");
 	$file= fopen("/tmp/log_system.txt", "r");
 	$Log = array();
 	// for($i=0; !feof($file); $i++)
@@ -103,7 +103,7 @@ if ($mode=="system"){
 	echo json_encode($sysLog);	
 }
 else if ($mode=="event") {
-	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Diagnostics.Eventlog.Entry. | grep 'type:' > /tmp/log_event.txt");
+	exec("/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Diagnostics.Eventlog.Entry. | grep 'type:' > /tmp/log_event.txt");
 	$file= fopen("/tmp/log_event.txt", "r");
 	$Log = array();
 	// for($i=0; !feof($file); $i++)
@@ -132,7 +132,7 @@ else if ($mode=="event") {
 	echo json_encode($docLog);
 }
 else {	
-	exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /tmp/log_firewall.txt");
+	exec("/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /tmp/log_firewall.txt");
 	$file= fopen("/tmp/log_firewall.txt", "r");
 	$Log = array();
 	// for($i=0; !feof($file); $i++)

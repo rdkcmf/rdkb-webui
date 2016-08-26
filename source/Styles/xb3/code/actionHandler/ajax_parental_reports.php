@@ -59,7 +59,7 @@ switch($mode){
 	default:
 		$type="all";
 }
-exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /tmp/log_parental.txt");
+exec("/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /tmp/log_parental.txt");
 $file= fopen("/tmp/log_parental.txt", "r");
 $pos = 50;		//global file pointer where to read the value in a line
 $Log = array();
