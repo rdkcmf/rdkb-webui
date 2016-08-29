@@ -142,6 +142,24 @@
 <script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
 <script>
 $(document).ready(function(){
+	//CSRF
+	var request;
+	if (window.XMLHttpRequest) {
+		request = new XMLHttpRequest();
+	} else {
+		// code for IE6, IE5
+		request = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	request.open('HEAD', 'actionHandler/ajax_at_a_glance.php', false);
+	request.onload = function(){
+		$.ajaxSetup({
+			beforeSend: function (xhr)
+			{
+				xhr.setRequestHeader("X-Csrf-Token",request.getResponseHeader('X-Csrf-Token'));
+			}
+		});
+	};
+	request.send();
 	$CloudPersonalizationURL = "<?php echo $CloudPersonalizationURL;?>";
 	$CloudUIEnable = <?php echo $CloudUIEnable;?>;
 	function cloudRedirection(cloudReachable){
