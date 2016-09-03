@@ -57,7 +57,7 @@ function file_download($file_path, $file_name)
 }
 set_time_limit(0);
 $report=$_POST['report_type']."_".$_POST['time_frame'];
-$file_path="/var/tmp/parental_reports_".$report.".txt";
+$file_path="/tmp/parental_reports_".$report.".txt";
 $file_name="parental_reports_".$report.".txt";
 file_download($file_path, $file_name);
 //output_file("parental_reports_sample.txt","parental_reports_sample.txt");
