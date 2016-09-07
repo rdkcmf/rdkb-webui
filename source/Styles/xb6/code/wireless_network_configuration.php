@@ -484,6 +484,10 @@ $(document).ready(function() {
 			else if ($("#channel_bandwidth2").prop("checked")) {
 				$("#channel_number1").find("[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144'],[value='165']").prop("disabled", true).prop("selected", false);			
 			}
+			//160MHz
+			else if ($("#channel_bandwidth3").prop("checked")) {
+				$("#channel_number1").find("[value='132'],[value='136'],[value='140'],[value='144'],[value='149'],[value='153'],[value='157'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);			
+			}
 			// NOT 20MHz, disable channel 165
 			$("#channel_number1").find("[value='165']").prop("disabled", true).prop("selected", false);
 		}
@@ -1552,6 +1556,8 @@ function saveBandSteeringSettings()
 			<input type="radio"  name="channel_bandwidth1" value="40MHz"  id="channel_bandwidth1" <?php if ("40MHz"==$channel_bandwidth1) echo 'checked="checked"';?> /><b>20/40</b>
 			<label for="channel_bandwidth2" class="acs-hide"></label>
 			<input type="radio"  name="channel_bandwidth1" value="80MHz"  id="channel_bandwidth2" <?php if ("80MHz"==$channel_bandwidth1) echo 'checked="checked"';?> /><b>20/40/80</b>
+			<label for="channel_bandwidth3" class="acs-hide"></label>
+			<input type="radio"  name="channel_bandwidth1" value="160MHz"  id="channel_bandwidth3" <?php if ("160MHz"==$channel_bandwidth1) echo 'checked="checked"';?> /><b>20/40/80/160</b>
 		<?php } else{ ?>
 			<label for="channel_bandwidth1" class="acs-hide"></label>
 			<input type="radio"  name="channel_bandwidth1" value="40MHz"  id="channel_bandwidth1" <?php if ("40MHz"==$channel_bandwidth1) echo 'checked="checked"';?> /><b>20/40</b>
