@@ -189,7 +189,7 @@ function showDialog() {
 		else if ("WEP_128" == popSec) {
 			$("#security").prepend('<option value="WEP_128" title="WEP 128 requires a 13 ASCII character or  26 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.">WEP 128 (risky)</option>');
 		}
-		$('#security option[value="' + popSec + '"]').prop('selected', true);
+		$("#security").val(popSec);
 		$.virtualDialog("hide");
 		// check settings
 		fromOther = true;
@@ -207,7 +207,7 @@ function showDialog() {
 		else if ("WEP_128" == $security_val) {
 			$("#security").prepend('<option value="WEP_128" title="WEP 128 requires a 13 ASCII character or  26 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.">WEP 128 (risky)</option>');
 		}
-		$('#security option[value="' + $security_val + '"]').prop('selected', true);
+		$("#security").val($security_val);
 		$.virtualDialog("hide");
 		// check settings
 		$("#security").change();
