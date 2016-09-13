@@ -35,11 +35,13 @@
 		"CONFIGUREWIFI" => "Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi",
 		"CaptivePortalEnable"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CaptivePortalEnable",
 		"CloudPersonalizationURL"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudPersonalizationURL",
+		"CloudUIEnable"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable",
 	);
 	$DeviceInfo_value	= KeyExtGet("Device.DeviceInfo.", $DeviceInfo_param);
 	$CONFIGUREWIFI = $DeviceInfo_value["CONFIGUREWIFI"];
 	$CaptivePortalEnable	= $DeviceInfo_value["CaptivePortalEnable"];
 	$CloudPersonalizationURL	= $DeviceInfo_value["CloudPersonalizationURL"];
+	$CloudUIEnable	= $DeviceInfo_value["CloudUIEnable"];
 	if(!strcmp($CaptivePortalEnable, "false") || !strcmp($CONFIGUREWIFI, "false")) {
 		header('Location:index.php');
 		exit;
@@ -141,6 +143,7 @@
 <script>
 $(document).ready(function(){
 	$CloudPersonalizationURL = "<?php echo $CloudPersonalizationURL;?>";
+	$CloudUIEnable = <?php echo $CloudUIEnable;?>;
 	function cloudRedirection(cloudReachable){
 		if(cloudReachable){
 			location.href = $CloudPersonalizationURL;
@@ -150,30 +153,21 @@ $(document).ready(function(){
 			$("#set_up").show();
 		}
 	}
-	if($CloudPersonalizationURL){
-		$.ajax($CloudPersonalizationURL, {
-			type: "HEAD",
-			dataType: 'jsonp',
-			jsonp: false,
-			crossDomain: true,
-			cache: false,
-			success: function(data, textStatus, xhr)
-			{
-				if( xhr.status >= 200 && xhr.status < 304 ){
+	if($CloudUIEnable){
+		$.ajax({
+			type: "POST",
+			url: "actionHandler/ajaxSet_wireless_network_configuration_redirection.php",
+			data: { CloudUIEnable: true },
+			success: function (msg, status, jqXHR) {
+				//msg is the response
+				msg = JSON.parse(msg);
+				if(msg[0] == "true") {
 					cloudRedirection(true);
-				} else {
+				}
+				else{
 					cloudRedirection(false);
 				}
-			},
-			error: function(request, status, error)
-			{
-				if(request.status >= 200 && request.status < 304 ){
-					cloudRedirection(true);
-				} else {
-					cloudRedirection(false);
-				}
-			},
-			timeout: 10000 // sets timeout to 10 seconds
+			}
 		});
 	}
 	else {
