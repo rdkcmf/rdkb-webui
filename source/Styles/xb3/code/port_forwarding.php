@@ -1,9 +1,5 @@
 <?php
 $CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
-	if($CloudUIEnable == "true"){
-		header('Location:static_page.php');
-		exit;
-	}
 ?>
 <?php include('includes/header.php'); ?>
 <!-- $Id: port_forwarding.php 3158 2010-01-08 23:32:05Z slemoine $ -->
@@ -131,6 +127,9 @@ $(document).ready(function() {
 	});
 });
 </script>
+<?php if($CloudUIEnable == "true"){
+	include('static_page.php');
+} else { ?>
 <div  id="content">
 	<h1>Advanced > Port Forwarding</h1>
 	<div  id="educational-tip">
@@ -239,4 +238,5 @@ $(document).ready(function() {
 		</div> <!-- end .module -->
 	</div>
 </div><!-- end #content -->
+<?php } ?>
 <?php include('includes/footer.php'); ?>

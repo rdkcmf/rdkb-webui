@@ -1,9 +1,5 @@
 <?php
 $CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
-	if($CloudUIEnable == "true"){
-		header('Location:static_page.php');
-		exit;
-	}
 ?>
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
@@ -368,6 +364,9 @@ $('#device').click(function(){
 	}
 });//end of document ready
 </script>
+<?php if($CloudUIEnable == "true"){
+	include('static_page.php');
+} else { ?>
 <div id="content">
 	<h1>Advanced > Port Forwarding > Add Service</h1>
     <div id="educational-tip">
@@ -455,6 +454,7 @@ $('#device').click(function(){
 	</div> <!-- end .module -->
 	</form>
 </div><!-- end #content -->
+<?php } ?>
 <div id="device_list" style="display: none;">
 	<table summary="This table lists connected devices">
 	<tr>
