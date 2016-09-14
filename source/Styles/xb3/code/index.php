@@ -200,47 +200,6 @@ $_SESSION["psmMode"] = $psmMode;
 	?>
 	<script type="text/javascript">
 	$(document).ready(function() {
-		var sta_batt = "<?php echo $sta_batt; ?>";
-		var sta_inet = "<?php echo $sta_inet; ?>";
-		var sta_wifi = "<?php echo $sta_wifi; ?>";
-		var sta_moca = "<?php echo $sta_moca; ?>";
-		var sta_fire = "<?php echo $sta_fire; ?>";
-		/*
-		* get status when hover or tab focused one by one
-		* but for screen reader we have to load all status once
-		* below code can easily rollback
-		*/
-		// $("[id^='sta_']:not(#sta_batt)").one("mouseenter",function(){
-		// var theObj = $(this);
-		// var target = theObj.attr("id");
-		// var status = ("sta_fire"==target)? sta_fire : !(theObj.hasClass("off"));
-		// var jsConfig = '{"status":"'+status+'", "target":"'+target+'"}';
-		var jsConfig = '{"target":"'+"sta_inet,sta_wifi,sta_moca,sta_fire"
-		+'", "status":"'+sta_inet+','+sta_wifi+','+sta_moca+','+sta_fire+'"}';
-		$.ajax({
-			type: "POST",
-			url: "actionHandler/ajaxSet_index_userbar.php",
-			data: { configInfo: jsConfig },
-			dataType: "json",
-			success: function(msg) {
-				// theObj.find(".tooltip").html(msg.tips);
-				for (var i=0; i<msg.tags.length; i++){
-					$("#"+msg.tags[i]).find(".tooltip").html(msg.tips[i]);
-				}
-			},
-			error: function(){
-				// does something
-			}
-		});
-		// });
-		// show pop-up info when focus
-		$("#status a").focus(function() {
-			$(this).mouseenter();
-		});
-		// disappear previous pop-up
-		$("#status a").blur(function() {
-			$(".tooltip").hide();
-		});
 	});
 </script>
 <style>
@@ -311,6 +270,65 @@ $_SESSION["psmMode"] = $psmMode;
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
+	//CSRF
+	var request;
+	if (window.XMLHttpRequest) {
+		request = new XMLHttpRequest();
+	} else {
+		// code for IE6, IE5
+		request = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	request.open('HEAD', 'actionHandler/ajax_at_a_glance.php', false);
+	request.onload = function(){
+		$.ajaxSetup({
+			beforeSend: function (xhr)
+			{
+				xhr.setRequestHeader("X-Csrf-Token",request.getResponseHeader('X-Csrf-Token'));
+			}
+		});
+	};
+	request.send();
+	var sta_batt = "<?php echo $sta_batt; ?>";
+	var sta_inet = "<?php echo $sta_inet; ?>";
+	var sta_wifi = "<?php echo $sta_wifi; ?>";
+	var sta_moca = "<?php echo $sta_moca; ?>";
+	var sta_fire = "<?php echo $sta_fire; ?>";
+	/*
+	* get status when hover or tab focused one by one
+	* but for screen reader we have to load all status once
+	* below code can easily rollback
+	*/
+	// $("[id^='sta_']:not(#sta_batt)").one("mouseenter",function(){
+	// var theObj = $(this);
+	// var target = theObj.attr("id");
+	// var status = ("sta_fire"==target)? sta_fire : !(theObj.hasClass("off"));
+	// var jsConfig = '{"status":"'+status+'", "target":"'+target+'"}';
+	var jsConfig = '{"target":"'+"sta_inet,sta_wifi,sta_moca,sta_fire"
+	+'", "status":"'+sta_inet+','+sta_wifi+','+sta_moca+','+sta_fire+'"}';
+	$.ajax({
+		type: "POST",
+		url: "actionHandler/ajaxSet_index_userbar.php",
+		data: { configInfo: jsConfig },
+		dataType: "json",
+		success: function(msg) {
+			// theObj.find(".tooltip").html(msg.tips);
+			for (var i=0; i<msg.tags.length; i++){
+				$("#"+msg.tags[i]).find(".tooltip").html(msg.tips[i]);
+			}
+		},
+		error: function(){
+			// does something
+		}
+	});
+	// });
+	// show pop-up info when focus
+	$("#status a").focus(function() {
+		$(this).mouseenter();
+	});
+	// disappear previous pop-up
+	$("#status a").blur(function() {
+		$(".tooltip").hide();
+	});
 	comcast.page.init("Login", "nav-login");
 	$("#pageForm").validate({
 		errorElement : "p"

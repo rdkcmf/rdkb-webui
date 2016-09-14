@@ -69,6 +69,24 @@ if($_FILES["file"]["error"]>0){
 <body>
 <script type="text/javascript">
 $(document).ready(function() {
+	//CSRF
+	var request;
+	if (window.XMLHttpRequest) {
+		request = new XMLHttpRequest();
+	} else {
+		// code for IE6, IE5
+		request = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	request.open('HEAD', 'actionHandler/ajax_at_a_glance.php', false);
+	request.onload = function(){
+		$.ajaxSetup({
+			beforeSend: function (xhr)
+			{
+				xhr.setRequestHeader("X-Csrf-Token",request.getResponseHeader('X-Csrf-Token'));
+			}
+		});
+	};
+	request.send();
 	if(2 == "<?php echo $return_var; ?>"){	//Need Reboot to restore the saved configuration.
 		var info = new Array("btn1", "Router,Wifi,VoIP,Dect,MoCA");
 		var jsonInfo = '["' + info[0] + '","' + info[1]+ '"]';
