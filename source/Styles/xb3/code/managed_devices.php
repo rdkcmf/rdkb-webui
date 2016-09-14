@@ -1,9 +1,5 @@
 <?php
 $CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
-	if($CloudUIEnable == "true"){
-		header('Location:static_page.php');
-		exit;
-	}
 ?>
 <?php include('includes/header.php'); ?>
 <?php include('includes/utility.php'); ?>
@@ -163,6 +159,9 @@ $(document).ready(function() {
 	});
 });
 </script>
+<?php if($CloudUIEnable == "true"){
+	include('static_page.php');
+} else { ?>
 <div  id="content" class="main_content">
 	<h1>Parental Control > Managed Devices</h1>
 	<div  id="educational-tip">
@@ -313,4 +312,5 @@ $(document).ready(function() {
 		</table>
 	</div> <!-- end .module -->
 </div><!-- end #content -->
+<?php } ?>
 <?php include('includes/footer.php'); ?>
