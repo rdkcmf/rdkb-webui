@@ -851,7 +851,7 @@ function setResetInfo(info) {
 				<label for="channel_bandwidth2" class="acs-hide"></label>
 				<input type="radio"  name="channel_bandwidth1" value="80MHz"  id="channel_bandwidth2" <?php if ("80MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40/80</b>
 				<label for="channel_bandwidth3" class="acs-hide"></label>
-				<input type="radio"  name="channel_bandwidth1" value="160MHz"  id="channel_bandwidth3" <?php if ("160MHz"==$channel_bandwidth1) echo 'checked="checked"';?> /><b>20/40/80/160</b>
+				<input type="radio"  name="channel_bandwidth1" value="160MHz"  id="channel_bandwidth3" <?php if ("160MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40/80/160</b>
 			<?php } else{ ?>
 				<label for="channel_bandwidth1" class="acs-hide"></label>
 				<input type="radio"  name="channel_bandwidth1" value="40MHz"  id="channel_bandwidth1" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
