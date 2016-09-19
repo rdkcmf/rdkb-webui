@@ -57,7 +57,7 @@ function file_download($file_path, $file_name)
 }
 set_time_limit(0);
 $log=$_POST["log_type"]."_".$_POST["time_frame"];
-$file_path="/var/tmp/troubleshooting_logs_".$log.".txt";
+$file_path="/tmp/troubleshooting_logs_".$log.".txt";
 $file_name="troubleshooting_logs_".$log.".txt";
 file_download($file_path, $file_name);
 //file_download('troubleshooting_logs_sample.txt','troubleshooting_logs_sample.txt');
