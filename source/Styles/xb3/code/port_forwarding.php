@@ -127,9 +127,27 @@ $(document).ready(function() {
 	});
 });
 </script>
-<?php if($CloudUIEnable == "true"){
-	include('static_page.php');
-} else { ?>
+<?php if($CloudUIEnable == "true"){ ?>
+<div  id="content">
+	<h1>Advanced > Port Forwarding</h1>
+	<div  id="educational-tip">
+		<p class="tip">Manage external access to specific ports on your network.</p>
+		<p class="hidden">Port forwarding permits communications from external hosts by forwarding them to a particular port.</p>
+		<p class="hidden">Select <strong>Enable</strong> to manage external access to specific ports on your network.</p>
+		<p class="hidden">Click <strong>+ADD SERVICE</strong> to add new port forwarding rules.</p>
+		<p class="hidden">Port forwarding settings can affect the Gateway's performance.</p>
+	</div>
+	<div  id=forwarding-items>
+		<div class="module data">
+			<h2>Port Forwarding</h2>
+			<div id="content" style="text-align: center;">
+				<br><h3>Managed devices and Port Forwarding pages are moved to cloud.</h3>
+				<h3>Please use the following link to access cloud portal: <a href="https://internet.xfinity.com">internet.xfinity.com</a></h3><br>
+			</div>
+		</div> <!-- end .module -->
+	</div>
+</div><!-- end #content -->
+<?php } else { ?>
 <div  id="content">
 	<h1>Advanced > Port Forwarding</h1>
 	<div  id="educational-tip">

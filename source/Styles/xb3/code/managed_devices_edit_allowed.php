@@ -246,9 +246,18 @@ $(document).ready(function() {
 	});
 });
 </script>
-<?php if($CloudUIEnable == "true"){
-	include('static_page.php');
-} else { ?>
+<?php if($CloudUIEnable == "true"){ ?>
+<div id="content">
+	<h1>Parental Control > Managed Devices > Edit Allowed Device</h1>
+	<div class="module forms enable">
+		<h2>Edit Allowed Device</h2>
+		<div id="content" style="text-align: center;">
+			<br><h3>Managed devices and Port Forwarding pages are moved to cloud.</h3>
+			<h3>Please use the following link to access cloud portal: <a href="https://internet.xfinity.com">internet.xfinity.com</a></h3><br>
+		</div>
+	</div>
+</div><!-- end #content -->
+<?php } else { ?>
 <div id="content">
 	<h1>Parental Control > Managed Devices > Edit Allowed Device</h1>
 	<form id="pageForm"  method="post"> 
