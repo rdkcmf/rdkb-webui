@@ -26,6 +26,7 @@ $LanGwIP 	= $devices_value["LanGwIP"]; //getStr("Device.X_CISCO_COM_DeviceContro
 $LanSubnetMask 	= $devices_value["LanSubnetMask"]; //getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask");
 $beginAddr 	= getStr("Device.DHCPv4.Server.Pool.1.MinAddress");
 $endAddr 	= getStr("Device.DHCPv4.Server.Pool.1.MaxAddress");
+if (!preg_match('/^\d{1,3}$/', $_GET['id'])) die();
 $i = $_GET['id'];
 $portmapping_param = array(
     "service_name"  => "Device.NAT.PortMapping.$i.Description",

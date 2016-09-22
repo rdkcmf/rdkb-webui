@@ -9,6 +9,7 @@ $CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
 <?php
+	if (!preg_match('/^\d{1,3}$/', $_GET['id'])) die();
 	$i=$_GET['id'];
 //	echo "<script>var ID=".$i.";</script>";
     $managed_devices_param = array(
