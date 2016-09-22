@@ -217,9 +217,7 @@ if (isset($_POST['edit'])){
 	header("Content-Type: application/json");
 	echo json_encode($result);
 }
-if (isset($_GET['del'])){
-	delTblObj("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$_GET['del'].".");
-	Header("Location:../managed_services.php");
-	exit;
+if (isset($_POST['del'])){
+	delTblObj("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$_POST['del'].".");
 }
 ?>

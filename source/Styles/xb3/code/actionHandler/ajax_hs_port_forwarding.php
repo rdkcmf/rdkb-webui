@@ -222,10 +222,8 @@ if (isset($_POST['active'])){
 		$result="Success!";
 	}
 }
-if (isset($_REQUEST['del'])){
-	delTblObj("Device.NAT.PortMapping.".$_REQUEST['del'].".");
-	Header("Location:../hs_port_forwarding.php");
-	exit;
+if (isset($_POST['del'])){
+	delTblObj("Device.NAT.PortMapping.".$_POST['del'].".");
 }
 if ($result=="") {
 //the set operation failure due to conflict with port trigger rules or ...

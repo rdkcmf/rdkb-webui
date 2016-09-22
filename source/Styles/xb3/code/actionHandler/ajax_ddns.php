@@ -110,11 +110,9 @@ if (isset($_POST['edit'])){
 	header("Content-Type: application/json");
 	echo json_encode($result);
 }
-if (isset($_GET['del'])){
-/*	delTblObj("Device.X_CISCO_COM_DDNS.Service.".$_GET['del'].".");*/
-	$i=$_GET['del'];
+if (isset($_POST['del'])){
+/*	delTblObj("Device.X_CISCO_COM_DDNS.Service.".$_POST['del'].".");*/
+	$i=$_POST['del'];
 	setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Enable","false",true);
-	Header("Location:../dynamic_dns.php");
-	exit;
 }
 ?>
