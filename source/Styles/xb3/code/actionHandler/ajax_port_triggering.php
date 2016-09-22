@@ -257,10 +257,8 @@ if (isset($_POST['active'])){
 	$i=$_POST['id'];
 	setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Enable",$isChecked,true);
 }
-if (isset($_GET['del'])){
-	delTblObj("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$_GET['del'].".");
-	Header("Location:../port_triggering.php");
-	exit;
+if (isset($_POST['del'])){
+	delTblObj("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$_POST['del'].".");
 }
 if ($result=="") { 
 //the set operation failure due to conflict with port forwarding rules or ...

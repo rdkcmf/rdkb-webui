@@ -36,7 +36,21 @@ $(document).ready(function() {
 		        ,"Are You Sure?"
 		        ,function(ret) {
 		            if(ret) {
-		                window.location = href;
+						delVal = href.substring(href.indexOf("=")+1);
+						jProgress('This may take several seconds.',60);
+						$.ajax({
+							type:"POST",
+							url:"actionHandler/ajax_hs_port_forwarding.php",
+							data:{del:delVal},
+							success:function(){
+								jHide();
+								window.location.reload();
+							},
+							error:function(){
+								jHide();
+								jAlert("Error! Please try later!");
+							}
+						});
 		            }    
 		     });
         	});

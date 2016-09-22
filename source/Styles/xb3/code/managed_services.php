@@ -81,7 +81,21 @@ $(document).ready(function() {
 					,"Are You Sure?"
 					,function(ret) {
 						if(ret) {
-							window.location.href = btnHander.attr('href');
+							delVal = btnHander.attr('href').substring(btnHander.attr('href').indexOf("=")+1);
+							jProgress('This may take several seconds.',60);
+							$.ajax({
+								type:"POST",
+								url:"actionHandler/ajax_managed_services.php",
+								data:{del:delVal},
+								success:function(){
+									jHide();
+									window.location.reload();
+								},
+								error:function(){
+									jHide();
+									jAlert("Error! Please try later!");
+								}
+							});
 						}
 					}
 				);
