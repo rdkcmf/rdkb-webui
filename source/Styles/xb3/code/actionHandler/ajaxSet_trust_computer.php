@@ -32,10 +32,10 @@ if( $flag['trustFlag'] == "true" ){
     $deviceExist = false;
     $rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.";
     $paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.");
-    $mapping_array  = array("IPAddress");
+    $mapping_array  = array("IPAddress", "HostDescription");
     $TrustedUserValues = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
     foreach ($TrustedUserValues as $key => $value) {
-        if ($flag['IPAddress'] == $value["IPAddress"]) {
+        if ($flag['IPAddress'] == $value["IPAddress"] && $flag['HostName'] == $value["HostDescription"]) {
            $deviceExist = true;
            $id = $value["__id"];
            setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.$id.Trusted", $flag['trustFlag'], true);
@@ -65,10 +65,10 @@ else{
     $idArr = explode(",", $IDs);*/
     $rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.";
     $paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.");
-    $mapping_array  = array("IPAddress");
+    $mapping_array  = array("IPAddress", "HostDescription");
     $TrustedUserValues = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
     foreach ($TrustedUserValues as $key => $value) {
-        if ($flag['IPAddress'] == $value["IPAddress"]) {
+        if ($flag['IPAddress'] == $value["IPAddress"] && $flag['HostName'] == $value["HostDescription"]) {
            $index = $value["__id"];
            break; 
         }

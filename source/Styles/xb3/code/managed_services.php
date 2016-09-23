@@ -210,7 +210,7 @@ $(document).ready(function() {
 				//TrustedUser
 				$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser.";
 				$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser.");
-				$mapping_array  = array("IPAddress", "Trusted");
+				$mapping_array  = array("IPAddress", "Trusted", "HostDescription");
 				$TrustedUser = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 				//Host
 				$rootObjName    = "Device.Hosts.Host.";
@@ -304,8 +304,8 @@ $(document).ready(function() {
 				array_push($ipAddrArr, $Host["$i"]['IPAddress']);
                 $Host["$i"]['Trusted'] = false;
                 foreach( $TrustedUser as $key => $value ){
-                    if ( $value['IPAddress'] == $Host["$i"]['IPAddress']){
-                        $Host["$i"]['Trusted'] = $value['Trusted']; 
+                	if ( $value['IPAddress'] == $Host["$i"]['IPAddress'] && $value['HostDescription'] == $Host["$i"]['HostName']){
+						$Host["$i"]['Trusted'] = $value['Trusted'];
                         break;
                     }
                 }
