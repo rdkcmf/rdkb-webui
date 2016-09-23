@@ -34,6 +34,7 @@ $portmapping_param = array(
 	"endport"	=> "Device.NAT.PortMapping.".$i.".ExternalPortEndRange",
 	"type"		=> "Device.NAT.PortMapping.".$i.".Protocol",
 	"internClient"	=> "Device.NAT.PortMapping.".$i.".InternalClient",
+	"internalPort"	=> "Device.NAT.PortMapping.".$i.".InternalPort",
 	);
     $portmapping_value = KeyExtGet("Device.NAT.PortMapping.", $portmapping_param);
 $service_name = $portmapping_value["service_name"]; //getStr("Device.NAT.PortMapping.$i.Description");
@@ -41,6 +42,11 @@ $v6ServerIP = $portmapping_value["v6ServerIP"]; //getStr("Device.NAT.PortMapping
 $startport = $portmapping_value["startport"]; //getStr("Device.NAT.PortMapping.".$i.".ExternalPort"); 
 $endport   = $portmapping_value["endport"]; //getStr("Device.NAT.PortMapping.".$i.".ExternalPortEndRange");
 $DeviceMode = $devices_value["DeviceMode"]; //getStr("Device.X_CISCO_COM_DeviceControl.DeviceMode");
+$internalPort	= $portmapping_value["internalPort"];
+if($internalPort != '0') {
+	echo '<script type="text/javascript">location.href="port_forwarding.php";</script>';
+	exit;
+}
 //$DeviceMode = "IPv6";
 $state = $v6_value["state"]; //getStr("Device.DHCPv6.Server.X_CISCO_COM_Type");
 //2040::/64, 2040:1::/64, 2040:1:2::/64 and 2040:1:2:3::/64

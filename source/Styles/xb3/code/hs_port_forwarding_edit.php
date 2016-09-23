@@ -23,6 +23,11 @@ $Start_Public_Port	= $portMapping_value["Start_Public_Port"];
 $End_Public_Port	= $portMapping_value["End_Public_Port"];
 $Private_Ports		= $portMapping_value["Private_Ports"];
 $Enable_Port_Range	= $portMapping_value["Enable_Port_Range"];
+if($Private_Ports == '0') {
+	echo '<script type="text/javascript">location.href="hs_port_forwarding.php";</script>';
+	exit;
+}
+
 ?>
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
