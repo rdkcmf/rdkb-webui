@@ -1658,7 +1658,7 @@ function saveBandSteeringSettings()
 		<input type="text" id="UtilzThreshold1" value="<?php echo $UtilzThreshold1; ?>"/>
 	</div>
 	<div class="form-row odd">
-		<label for="BS_Logging">RSSI Threshold(2.4GHz):</label>
+		<label for="BS_Logging">Signal Threshold(2.4GHz):</label>
 		<input type="text" id="RSSIThreshold1" value="<?php echo $RSSIThreshold1; ?>"/>
 	</div>
 	<div class="form-row ">
@@ -1670,7 +1670,7 @@ function saveBandSteeringSettings()
 		<input type="text" id="UtilzThreshold2" value="<?php echo $UtilzThreshold2; ?>"/>
 	</div>
 	<div class="form-row ">
-		<label for="BS_Logging">RSSI Threshold(5GHz):</label>
+		<label for="BS_Logging">Signal Threshold(5GHz):</label>
 		<input type="text" id="RSSIThreshold2" value="<?php echo $RSSIThreshold2; ?>"/>
 	</div>
 	<div class="form-row odd">
