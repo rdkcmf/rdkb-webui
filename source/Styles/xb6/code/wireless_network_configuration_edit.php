@@ -264,22 +264,21 @@ $(document).ready(function() {
 			if (fromOther && ($("#security").val()=="WEP_64" || $("#security").val()=="WEP_128" || $("#security").val()=="None"))
 			{
 				var security_val = $("#security").val();
-				jConfirm(
-					"WARNING:<br/>Changing the Security Mode to WEP, WPA and Open will disable Wi-Fi Protected Setup(WPS) functionality. Are you sure you want to change?"
+				//ARRISXB6-2329
+				if($("#security").val()=="None")
+				{
+					jConfirm(
+					"Configure the Security Mode to Open(Not Secure)?"
 					, "Are You Sure?"
 					,function(ret) {
-					if(!ret) {
-						$('#security option[value="' + $security_val + '"]').prop('selected', true);
-						if("None" == $security_val){
-							$("#network_password").prop("disabled", true);
+						if(!ret) {
+							$('#security option[value="' + $security_val + '"]').prop('selected', true);
+								$("#network_password").prop("disabled", true);
 						} else {
-							$("#network_password").prop("disabled", false);
-							$("#netPassword-footnote").text($("option:selected", $("#security")).attr("title"));
+							$security_val = security_val;
 						}
-					} else {
-						$security_val = security_val;
-					}
-				});
+					});
+				}
 			}
 			if ("None" == $("#security").val()) {
 				$("#network_password").prop("disabled", true);
