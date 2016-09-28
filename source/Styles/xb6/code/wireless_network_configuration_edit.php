@@ -279,6 +279,20 @@ $(document).ready(function() {
 						}
 					});
 				}
+				else {
+					jConfirm(
+					"WARNING:<br/>Changing the Security Mode to WEP, and WPA will disable Wi-Fi Protected Setup(WPS) functionality. Are you sure you want to change?"
+					, "Are You Sure?"
+					,function(ret) {
+						if(!ret) {
+							$('#security option[value="' + $security_val + '"]').prop('selected', true);
+							$("#network_password").prop("disabled", false);
+							$("#netPassword-footnote").text($("option:selected", $("#security")).attr("title"));
+						} else {
+							$security_val = security_val;
+						}
+				});	
+				}
 			}
 			if ("None" == $("#security").val()) {
 				$("#network_password").prop("disabled", true);
