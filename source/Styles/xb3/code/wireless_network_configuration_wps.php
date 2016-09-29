@@ -95,7 +95,7 @@ function set_config(target)
 	var wps_enabled	= $("#wps_switch").radioswitch("getState").on;
 	var wps_method	= $("#pin_switch").radioswitch("getState").on ? "PushButton,PIN" : "PushButton";
 	var pair_method = $("#connection_options").val();
-	var pin_number	= $("#pin_number").attr("value");
+	var pin_number	= $("#pin_number").attr("value").replace(/ |-/g,'');
 	var jsConfig 	=	'{"ssid_number":"'+ssid_number
 		+'", "target":"'+target
 		+'", "wps_enabled":"'+wps_enabled

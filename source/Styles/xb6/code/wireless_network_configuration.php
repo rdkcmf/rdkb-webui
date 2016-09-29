@@ -970,7 +970,7 @@ function pair_client()
 {
 	var ssid_number	=	$("#wps_ssid").attr("value");
 	var pair_method =	$('[name="pair_method"]:checked').attr("value");
-	var pin_number = 	$("#pin_number").attr("value");
+	var pin_number = 	$("#pin_number").attr("value").replace(/ |-/g,'');
 	var jsConfig = '{"ssid_number":"'+ssid_number+'", "pair_method":"'+pair_method+'", "pin_number":"'+pin_number
 					+'", "target":"'+"pair_client"+'"}';	
 	if ("PushButton"!=pair_method && !validChecksum(pin_number))
