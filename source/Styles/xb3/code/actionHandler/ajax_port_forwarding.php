@@ -212,5 +212,5 @@ $ids=explode(",",getInstanceIDs("Device.NAT.PortMapping."));
         }
 	} //end of foreach
 } //end of if
-echo json_encode($result);
+echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 ?>

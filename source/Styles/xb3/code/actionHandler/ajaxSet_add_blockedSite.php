@@ -188,5 +188,5 @@ else{
 		}
 	}
 }
-echo $result;
+echo htmlspecialchars($result, ENT_NOQUOTES, 'UTF-8');
 ?>

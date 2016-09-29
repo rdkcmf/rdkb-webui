@@ -59,11 +59,11 @@ try {
 	}
 	$response["status"] = "success";
 	header("Content-Type: application/json");
-	echo json_encode($response);
+	echo htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8');
 }
 catch (Exception $e) {
 	$response = array("status" => "Failed", "msg" => $e->getMessage());
 	header("Content-Type: application/json");
-	echo json_encode($response);
+	echo htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8');
 }
 ?>

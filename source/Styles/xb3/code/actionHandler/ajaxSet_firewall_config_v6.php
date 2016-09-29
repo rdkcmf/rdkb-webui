@@ -34,5 +34,5 @@ if ( $firewall_config['firewallLevel'] == "Custom" )
 }
 setStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevelV6", $firewall_config['firewallLevel'], true);
 // sleep(3);
-echo $_REQUEST['configInfo'];
+echo htmlspecialchars($_REQUEST['configInfo'], ENT_NOQUOTES, 'UTF-8');
 ?>

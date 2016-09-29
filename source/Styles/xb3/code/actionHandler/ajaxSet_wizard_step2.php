@@ -156,6 +156,6 @@ else {	//no open, no wep
 // setStr("Device.WiFi.Radio.2.X_CISCO_COM_ApplySetting", "true", true);
 MiniApplySSID(2);
 //changing password for admin case
-if($arConfig['newPassword']) setStr("Device.Users.User.3.X_CISCO_COM_Password", $arConfig['newPassword'], true);	
-echo $jsConfig;
+if($arConfig['newPassword']) setStr("Device.Users.User.3.X_CISCO_COM_Password", $arConfig['newPassword'], true);
+echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 ?>

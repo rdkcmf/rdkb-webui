@@ -50,5 +50,5 @@ if ("true" == $arConfig['moca_enable']){
 	}
 }
 setStr("Device.MoCA.Interface.1.Enable", $arConfig['moca_enable'], true);
-echo $jsConfig;
+echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 ?>

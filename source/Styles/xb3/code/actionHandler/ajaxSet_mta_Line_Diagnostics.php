@@ -76,5 +76,5 @@ else if (isset($_POST['start_diagnostics2']))
 }
 header("Content-Type: application/json");
 $jsConfig	= json_encode($arConfig);
-echo $jsConfig;
+echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 ?>

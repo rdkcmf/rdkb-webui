@@ -20,7 +20,7 @@ if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] == 'admin') {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-exec("/fss/gw/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_MTA.MTALog. > /tmp/log_mta.txt");
+exec("/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_MTA.MTALog. > /tmp/log_mta.txt");
 $Log = array();
 if (file_exists("/tmp/log_mta.txt"))
 {
@@ -38,7 +38,7 @@ if (file_exists("/tmp/log_mta.txt"))
 			{
 				if (!strstr($raw[$i], "Time"))
 				{
-					$Des = $Des.'<br/>'.htmlentities($raw[$i]);
+					$Des = $Des.'-'.htmlentities($raw[$i]);
 				}
 				else
 				{
@@ -50,5 +50,5 @@ if (file_exists("/tmp/log_mta.txt"))
 	}
 }
 header("Content-Type: application/json");
-echo json_encode($Log);	
+echo htmlspecialchars(json_encode($Log), ENT_NOQUOTES, 'UTF-8');
 ?>

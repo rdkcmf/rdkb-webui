@@ -33,15 +33,15 @@ if (isset($_POST['Bridge'])){
 	setStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry_ApplySettings", "true", true);
 	$bridgeModel=getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode");
 	if($bridgeModel=="bridge-static"){
-		echo json_encode("Enabled");
+		echo htmlspecialchars(json_encode("Enabled"), ENT_NOQUOTES, 'UTF-8');
 	}else{
-		echo json_encode("Disabled");
+		echo htmlspecialchars(json_encode("Disabled"), ENT_NOQUOTES, 'UTF-8');
 	}
 }
 if (isset($_POST['IGMP'])){
 	$IGMPEnable=($_POST['IGMPEnable']=="Enabled"?"true":"false");
 	setStr("Device.X_CISCO_COM_DeviceControl.IGMPSnoopingEnable",$IGMPEnable,true);
 	$IGMPModel=(getStr("Device.X_CISCO_COM_DeviceControl.IGMPSnoopingEnable")=="true"?"Enabled":"Disabled");
-	echo json_encode($IGMPModel);
+	echo htmlspecialchars(json_encode($IGMPModel), ENT_NOQUOTES, 'UTF-8');
 }
 ?>

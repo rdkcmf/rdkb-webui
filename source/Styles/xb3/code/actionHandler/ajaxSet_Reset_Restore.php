@@ -48,27 +48,27 @@ function delMacFilterTables(  ) {
 switch ($infoArray[0]) {
 	case "btn1" :
 		$ret["reboot"] = true;
-		echo json_encode($ret);
-    	        setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","reboot_device",true);
+		echo htmlspecialchars(json_encode($ret), ENT_NOQUOTES, 'UTF-8');
+		setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","reboot_device",true);
 		setStr("Device.X_CISCO_COM_DeviceControl.RebootDevice", $infoArray[1],true);
 		exit(0);
 	case "btn2" :
 		$ret["wifi"] = true;
-		echo json_encode($ret);	
+		echo htmlspecialchars(json_encode($ret), ENT_NOQUOTES, 'UTF-8');
 		setStr("Device.X_CISCO_COM_DeviceControl.RebootDevice", $infoArray[1],true);
 		//force to restart radio even no change
 		setStr("Device.WiFi.X_CISCO_COM_ResetRadios", "true", true);
 		exit(0);
 	case "btn3" :
 		$ret["wifi"] = true;
-		echo json_encode($ret);	
+		echo htmlspecialchars(json_encode($ret), ENT_NOQUOTES, 'UTF-8');
 		setStr("Device.X_CISCO_COM_DeviceControl.RebootDevice", $infoArray[1],true);
 		//force to restart radio even no change
 		setStr("Device.WiFi.X_CISCO_COM_ResetRadios", "true", true);
 		exit(0);
 	case "btn4" :
 		$ret["wifi"] = true;
-		echo json_encode($ret);
+		echo htmlspecialchars(json_encode($ret), ENT_NOQUOTES, 'UTF-8');
 		delMacFilterTable("1 2");
 		//setStr("Device.X_CISCO_COM_DeviceControl.FactoryReset", $infoArray[1],true);
 		//when restore, radio can be restart, but also need to force it when no change
@@ -79,7 +79,7 @@ switch ($infoArray[0]) {
 		exit(0);
 	case "FactoryResetRadioAndAp" :
 		$ret["wifi"] = true;
-		echo json_encode($ret);
+		echo htmlspecialchars(json_encode($ret), ENT_NOQUOTES, 'UTF-8');
 		$idxArr = explode(";", $infoArray[1]);
 		//$radioIndex=$idxArr[0];
 		$apIndex=$idxArr[1];		
@@ -92,7 +92,7 @@ switch ($infoArray[0]) {
 		exit(0);
 	case "btn5" :
 		$ret["reboot"] = true;
-		echo json_encode($ret);
+		echo htmlspecialchars(json_encode($ret), ENT_NOQUOTES, 'UTF-8');
 		setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","factory_reset",true);
 		setStr("Device.X_CISCO_COM_DeviceControl.FactoryReset", $infoArray[1],true);
 		exit(0);
@@ -118,5 +118,5 @@ switch ($infoArray[0]) {
 	default:
 		break;
 }
-echo json_encode($ret);
+echo htmlspecialchars(json_encode($ret), ENT_NOQUOTES, 'UTF-8');
 ?>

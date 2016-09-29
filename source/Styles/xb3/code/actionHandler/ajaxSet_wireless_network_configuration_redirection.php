@@ -30,7 +30,7 @@ if($isCaptiveMode)
 		$IsCloudReachable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_IsCloudReachable");
 		$response = array();
 		array_push($response, $IsCloudReachable);
-		echo json_encode($response);
+		echo htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8');
 	}
 	else {
 		$jsConfig = $_POST['rediection_Info'];
@@ -85,7 +85,7 @@ if($isCaptiveMode)
 		sleep(10);
 		$response = array();
 		array_push($response, $arConfig['phoneNumber']);
-		echo json_encode($response);
+		echo htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8');
 	}
 }
 else
@@ -93,6 +93,6 @@ else
 	setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","captiveportal_failure",true);
 	$response = array();
 	array_push($response, "outOfCaptivePortal");
-	echo json_encode($response);
+	echo htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8');
 }
 ?>

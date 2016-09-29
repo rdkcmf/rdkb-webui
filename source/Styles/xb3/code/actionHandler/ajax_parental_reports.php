@@ -96,5 +96,5 @@ foreach ($firewall_log as $key=>$value){
 }
 fclose($fh);
 header("Content-Type: application/json");
-echo json_encode($firewall_log);
+echo htmlspecialchars(json_encode($firewall_log), ENT_NOQUOTES, 'UTF-8');
 ?>

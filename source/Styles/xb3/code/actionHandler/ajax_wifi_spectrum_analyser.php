@@ -33,7 +33,7 @@ function rearrange_SDTR($val){
 	$count = 0;
 	$val = '';
 	foreach ($variable as $key => $value) {
-		if($count == 2)	{ $val = $val.$value.',<br>'; $count = 0; }
+		if($count == 2)	{ $val = $val.$value.',-'; $count = 0; }
 		else { $val = $val.$value.','; $count = $count+1; };
 	}
 	return rtrim($val, ',');
@@ -55,7 +55,7 @@ function get_results()
 		$new_array = array();
 		foreach ($wifi_spec_values as $i => $spec_values) {
 			$wifi_spec_values[$i]["BSSID"] = mac_translate($spec_values["BSSID"]);
-			$wifi_spec_values[$i]["SupportedDataTransferRates"] = rearrange_SDTR($spec_values["SupportedDataTransferRates"]);
+			//$wifi_spec_values[$i]["SupportedDataTransferRates"] = rearrange_SDTR($spec_values["SupportedDataTransferRates"]);
 			array_push($new_array, $wifi_spec_values[$i]);
 		}
 		//var_dump($wifi_spec_values);
@@ -73,5 +73,5 @@ else
 	setStr("Device.WiFi.NeighboringWiFiDiagnostic.DiagnosticsState", "Requested", true);	
 }
 $result = get_results();
-echo json_encode($result);
+echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 ?>

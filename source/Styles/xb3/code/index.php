@@ -313,7 +313,7 @@ $(document).ready(function() {
 		success: function(msg) {
 			// theObj.find(".tooltip").html(msg.tips);
 			for (var i=0; i<msg.tags.length; i++){
-				$("#"+msg.tags[i]).find(".tooltip").html(msg.tips[i]);
+				$("#"+msg.tags[i]).find(".tooltip").html(msg.tips[i].replace(/-/g, "<br/>"));
 			}
 		},
 		error: function(){
