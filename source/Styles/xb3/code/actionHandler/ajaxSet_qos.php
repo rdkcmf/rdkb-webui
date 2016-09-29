@@ -40,5 +40,5 @@ else if ("clear_DSXlog" == $arConfig['target'])
 {
 	setStr("Device.X_CISCO_COM_MTA.ClearDSXLog", "true", true);
 }
-echo $jsConfig;	
+echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 ?>

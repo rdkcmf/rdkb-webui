@@ -58,7 +58,7 @@ if (isset($_POST['test_connectivity'])){
 		$result=array('connectivity_internet'=>"Error",'success_received'=>"0");
 	}
 	header("Content-Type: application/json");
-	echo json_encode($result);
+	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 }
 else if (isset($_POST['destination_ipv4'])){
 	$destination_ipv4=$_POST['destination_ipv4'];
@@ -81,7 +81,7 @@ else if (isset($_POST['destination_ipv4'])){
 		$result=array('connectivity_ipv4'=>"Error");
 	}
 	header("Content-Type: application/json");
-	echo json_encode($result);
+	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 }
 else if (isset($_POST['destination_ipv6'])){
 	$destination_ipv6=$_POST['destination_ipv6'];
@@ -104,7 +104,7 @@ else if (isset($_POST['destination_ipv6'])){
 		$result=array('connectivity_ipv6'=>"Error");
 	}
 	header("Content-Type: application/json");
-	echo json_encode($result);
+	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 }
 else if (isset($_POST['trace_ipv4_dst'])){
 	$trace_ipv4_dst	   = $_POST['trace_ipv4_dst'];
@@ -135,7 +135,7 @@ else if (isset($_POST['trace_ipv4_dst'])){
 				$time = getStr("Device.IP.Diagnostics.TraceRoute.RouteHops.$i.RTTimes");
 				$host = getStr("Device.IP.Diagnostics.TraceRoute.RouteHops.$i.Host");
 				$addr = getStr("Device.IP.Diagnostics.TraceRoute.RouteHops.$i.HostAddress");
-				array_push($trace_ipv4_result, '<br/>'.$i.': '.$time.' '.$host.' '.$addr);
+				array_push($trace_ipv4_result, $i.': '.$time.' '.$host.' '.$addr);
 			}
 		}
 		$result=array('trace_ipv4_status'=>$trace_ipv4_status, 'trace_ipv4_result'=>$trace_ipv4_result);
@@ -144,7 +144,7 @@ else if (isset($_POST['trace_ipv4_dst'])){
 		$result=array('trace_ipv4_status'=>"Error", 'trace_ipv4_result'=>"Error");
 	}
 	header("Content-Type: application/json");
-	echo json_encode($result);
+	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 }
 else if (isset($_POST['trace_ipv6_dst'])){
 	$trace_ipv6_dst	   = $_POST['trace_ipv6_dst'];
@@ -164,7 +164,7 @@ else if (isset($_POST['trace_ipv6_dst'])){
 				$time = getStr("Device.IP.Diagnostics.TraceRoute.RouteHops.$i.RTTimes");
 				$host = getStr("Device.IP.Diagnostics.TraceRoute.RouteHops.$i.Host");
 				$addr = getStr("Device.IP.Diagnostics.TraceRoute.RouteHops.$i.HostAddress");
-				array_push($trace_ipv6_result, '<br/>'.$i.': '.$time.' '.$host.' '.$addr);
+				array_push($trace_ipv6_result, $i.': '.$time.' '.$host.' '.$addr);
 			}
 		}
 		$result=array('trace_ipv6_status'=>$trace_ipv6_status, 'trace_ipv6_result'=>$trace_ipv6_result);
@@ -173,6 +173,6 @@ else if (isset($_POST['trace_ipv6_dst'])){
 		$result=array('trace_ipv6_status'=>"Error", 'trace_ipv6_result'=>"Error");
 	}
 	header("Content-Type: application/json");
-	echo json_encode($result);
+	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 }
 ?>

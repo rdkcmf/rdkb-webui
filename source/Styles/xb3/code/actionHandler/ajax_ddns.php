@@ -35,7 +35,7 @@ if (isset($_POST['set'])){
 	$status=getStr("Device.X_CISCO_COM_DDNS.Enable");
 	$status=($status=="true")?"Enabled":"Disabled";
 	header("Content-Type: application/json");
-	echo json_encode($status);
+	echo htmlspecialchars(json_encode($status), ENT_NOQUOTES, 'UTF-8');
 //	echo json_encode("Disabled");
 }
 if (isset($_POST['add'])){
@@ -56,7 +56,7 @@ if (isset($_POST['add'])){
 		$result = "Service Provider is not exist!";
 	}
 	header("Content-Type: application/json");
-	echo json_encode($result);
+	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 /*	
 	$ids=explode(",",getInstanceIDs("Device.X_CISCO_COM_DDNS.Service."));
 	if (count($ids)==0) {	//no table, need test whether it equals 0
@@ -108,7 +108,7 @@ if (isset($_POST['edit'])){
 	setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Enable","true",true);
 	$result="Success!";
 	header("Content-Type: application/json");
-	echo json_encode($result);
+	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 }
 if (isset($_POST['del'])){
 /*	delTblObj("Device.X_CISCO_COM_DDNS.Service.".$_POST['del'].".");*/

@@ -43,5 +43,5 @@ else if ("Delete" == $arConfig['dest'])
 	delTblObj("Device.X_CISCO_COM_FileSharing.User.$id.");
 }
 sleep(6);
-echo $jsConfig;
+echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 ?>

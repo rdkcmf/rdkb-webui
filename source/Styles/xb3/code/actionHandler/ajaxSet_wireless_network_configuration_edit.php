@@ -135,5 +135,5 @@ if ($i == 1 || $i == 2 || (($_SESSION["loginuser"] == "mso") && ($i == 3 || $i =
 	// setStr("Device.WiFi.Radio.$r.X_CISCO_COM_ApplySetting", "true", true);
 	MiniApplySSID($i);
 }
-echo $jsConfig;
+echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 ?>

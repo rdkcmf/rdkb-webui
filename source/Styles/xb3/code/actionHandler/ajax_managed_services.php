@@ -57,7 +57,7 @@ if (isset($_POST['set'])){
 	$UMSStatus=getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Enable");
 	$UMSStatus=($UMSStatus=="true")?"Enabled":"Disabled";
 	header("Content-Type: application/json");
-	echo json_encode($UMSStatus);
+	echo htmlspecialchars(json_encode($UMSStatus), ENT_NOQUOTES, 'UTF-8');
 //	echo json_encode("Disabled");
 }
 if (isset($_POST['trust_not'])){
@@ -66,7 +66,7 @@ if (isset($_POST['trust_not'])){
 	$status=getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser.".$ID.".Trusted");
 	$status=($status=="true")?"Trusted":"Not trusted";
 	header("Content-Type: application/json");
-	echo json_encode($status);
+	echo htmlspecialchars(json_encode($status), ENT_NOQUOTES, 'UTF-8');
 //	echo json_encode("Disabled");
 }
 if (isset($_POST['add'])){
@@ -98,7 +98,7 @@ if (isset($_POST['add'])){
 		}
 		setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".AlwaysBlock",$block,true);
 		header("Content-Type: application/json");
-		echo json_encode("Success!");
+		echo htmlspecialchars(json_encode("Success!"), ENT_NOQUOTES, 'UTF-8');
 	} 
 	else {
 		$result="";
@@ -149,7 +149,7 @@ if (isset($_POST['add'])){
 			$result="Success!";
 		}
 		header("Content-Type: application/json");
-		echo json_encode($result);
+		echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 	}
 }
 if (isset($_POST['edit'])){
@@ -215,7 +215,7 @@ if (isset($_POST['edit'])){
 		$result="Success!";
 	}
 	header("Content-Type: application/json");
-	echo json_encode($result);
+	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 }
 if (isset($_POST['del'])){
 	delTblObj("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$_POST['del'].".");

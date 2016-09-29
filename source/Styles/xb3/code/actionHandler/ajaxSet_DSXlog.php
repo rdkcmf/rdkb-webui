@@ -38,5 +38,5 @@ if (!isset($_SESSION["loginuser"])) {
 	fclose($file);
 	array_pop($Log);
 	header("Content-Type: application/json");
-	echo json_encode($Log);	
+	echo htmlspecialchars(json_encode($Log), ENT_NOQUOTES, 'UTF-8');	
 ?>

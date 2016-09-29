@@ -40,7 +40,7 @@ else if ("register" == $_POST['target'])
 	if ("noChange" != $_POST['reg_mode']){
 		setStr("Device.X_CISCO_COM_MTA.Dect.RegistrationMode", $_POST['reg_mode'], true);
 	}
-	echo $_POST['reg_mode'];
+	echo htmlspecialchars($_POST['reg_mode'], ENT_NOQUOTES, 'UTF-8');
 }
 else if ("deregister" == $_POST['target'])
 {

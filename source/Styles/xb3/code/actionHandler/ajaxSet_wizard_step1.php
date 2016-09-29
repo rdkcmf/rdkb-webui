@@ -39,5 +39,5 @@ if (getStr("Device.Users.User.$i.X_CISCO_COM_Password") ==  $arConfig['oldPasswo
 $arConfig = array('p_status'=>$p_status);
 $jsConfig = json_encode($arConfig);
 header("Content-Type: application/json");
-echo $jsConfig;	
+echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 ?>

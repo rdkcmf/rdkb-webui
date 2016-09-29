@@ -100,7 +100,7 @@ if ($mode=="system"){
 	}
 	fclose($fh);
 	header("Content-Type: application/json");
-	echo json_encode($sysLog);	
+	echo htmlspecialchars(json_encode($sysLog), ENT_NOQUOTES, 'UTF-8');
 }
 else if ($mode=="event") {
 	exec("/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Diagnostics.Eventlog.Entry. | grep 'type:' > /tmp/log_event.txt");
@@ -129,7 +129,7 @@ else if ($mode=="event") {
 	}
 	fclose($fh);
 	header("Content-Type: application/json");
-	echo json_encode($docLog);
+	echo htmlspecialchars(json_encode($docLog), ENT_NOQUOTES, 'UTF-8');
 }
 else {	
 	exec("/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /tmp/log_firewall.txt");
@@ -160,6 +160,6 @@ else {
 	}
 	fclose($fh);
 	header("Content-Type: application/json");
-	echo json_encode($firewallLog);
+	echo htmlspecialchars(json_encode($firewallLog), ENT_NOQUOTES, 'UTF-8');
 }
 ?>

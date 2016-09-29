@@ -32,7 +32,7 @@ if (array_key_exists('band_steering', $arConfig))
 		if($arConfig['band_steering_history'] == "true")
 		{
 			$BandSteeringHistory = getStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.History");
-			echo $BandSteeringHistory;
+			echo htmlspecialchars($BandSteeringHistory, ENT_NOQUOTES, 'UTF-8');
 		}
 		if($arConfig['save_steering_settings'] == "true")
 		{
@@ -43,7 +43,7 @@ if (array_key_exists('band_steering', $arConfig))
 			setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.UtilizationThreshold", $arConfig['UtilzThreshold2'], false);
 			setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.RSSIThreshold", $arConfig['RSSIThreshold2'], false);
 			setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.PhyRateThreshold", $arConfig['PhyRateThreshold2'], true);
-			echo $jsConfig;
+			echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 		}
 	}
 }
@@ -100,7 +100,7 @@ else
 			// setStr("Device.WiFi.Radio.$i.X_CISCO_COM_ApplySetting", "true", true);
 			MiniApplySSID($i);
 		}
-		echo $jsConfig;
+		echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 	}
 	else if ("wps_ssid" == $arConfig['target'])
 	{
@@ -119,7 +119,7 @@ else
 						'wps_pin'=>$wps_pin, 'wps_method'=>$wps_method);
 		$jsConfig = json_encode($arConfig);
 		header("Content-Type: application/json");
-		echo $jsConfig;	
+		echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 	}
 	else if ("save_enable" == $arConfig['target'])
 	{
@@ -165,7 +165,7 @@ else
 			MiniApplySSID(1);
 			MiniApplySSID(2);
 		}
-		echo $jsConfig;	
+		echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 	}
 	else if ("pair_client" == $arConfig['target'])
 	{
@@ -192,13 +192,13 @@ else
 		// }
 		// $arConfig = array('pair_res'=>$pair_res);			
 		// $jsConfig = json_encode($arConfig);
-		echo $jsConfig;	
+		echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 	}
 	else if ("pair_cancel" == $arConfig['target'])
 	{
 		setStr("Device.WiFi.AccessPoint.1.WPS.X_CISCO_COM_CancelSession", "true", true);
 		setStr("Device.WiFi.AccessPoint.2.WPS.X_CISCO_COM_CancelSession", "true", true);
-		echo $jsConfig;	
+		echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 	}
 	else if ("mac_ssid" == $arConfig['target'])
 	{
@@ -265,7 +265,7 @@ else
 		$arConfig = array('filtering_mode'=>$filtering_mode, 'ft'=>$ft, 'at'=>$at);
 		$jsConfig = json_encode($arConfig);
 		header("Content-Type: application/json");
-		echo $jsConfig;	
+		echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 	}
 	else if ("save_filter" == $arConfig['target'])
 	{
@@ -359,7 +359,7 @@ else
 			//For WECB
 			setStr("Device.MoCA.X_CISCO_COM_WiFi_Extender.X_CISCO_COM_SSID_Updated", "true", true);
 		}
-		echo $jsConfig;	
+		echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 	}
 }
 // sleep(3);

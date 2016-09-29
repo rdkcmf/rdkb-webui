@@ -27,7 +27,7 @@ if (isset($_POST['set'])){
 	$UMDStatus=getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Enable");
 	$UMDStatus=($UMDStatus=="true")?"Enabled":"Disabled";
 	header("Content-Type: application/json");
-	echo json_encode($UMDStatus);
+	echo htmlspecialchars(json_encode($UMDStatus), ENT_NOQUOTES, 'UTF-8');
 //	echo json_encode("Disabled");
 }
 if (isset($_POST['allow_block'])){
@@ -36,7 +36,7 @@ if (isset($_POST['allow_block'])){
 	$AllowBlock=getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.AllowAll");
 	$AllowBlock=($AllowBlock=="true")?"Allow All":"Block All";
 	header("Content-Type: application/json");
-	echo json_encode($AllowBlock);
+	echo htmlspecialchars(json_encode($AllowBlock), ENT_NOQUOTES, 'UTF-8');
 //	echo json_encode("Disabled");
 }
 function time_date_conflict($TD1, $TD2) {
@@ -78,7 +78,7 @@ if (isset($_POST['add'])){
 		}
 		setStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".AlwaysBlock",$block,true);
 		header("Content-Type: application/json");
-		echo json_encode("Success!");
+		echo htmlspecialchars(json_encode("Success!"), ENT_NOQUOTES, 'UTF-8');
 	} 
 	else {
 		$result="";
@@ -120,7 +120,7 @@ if (isset($_POST['add'])){
 			$result="Success!";
 		}
 		header("Content-Type: application/json");
-		echo json_encode($result);
+		echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 	}
 }
 if (isset($_POST['edit'])){
@@ -169,7 +169,7 @@ if (isset($_POST['edit'])){
 		$result="Success!";
 	}
 	header("Content-Type: application/json");
-	echo json_encode($result);
+	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 }
 if (isset($_POST['del'])){
 	delTblObj("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$_POST['del'].".");
