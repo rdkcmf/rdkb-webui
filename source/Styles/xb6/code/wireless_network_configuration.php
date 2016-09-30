@@ -706,8 +706,7 @@ $(document).ready(function() {
 		}
 	}
 	//BS_Capability to grey out
-	var BS_Capability = <?php echo $BS_Capability; ?>;
-	if(!BS_Capability)
+	if("true" != "<?php echo $BS_Capability; ?>")
 	{
 		$('.band_steering *').addClass('disabled');
 	        $('.band_steering input ').prop('disabled',true);
@@ -1717,7 +1716,7 @@ function saveBandSteeringSettings()
 				 $isBridge = $_SESSION["lanMode"];
 				foreach ($ssids as $i) {
 				$id = ($isBridge == 'bridge-static' && "mso" == $_SESSION["loginuser"])? 3:1;
-					echo '<option value="'.$i.'" '.(($id==$i)?'selected="selected"':"").'>'.getStr("Device.WiFi.SSID.$i.SSID").'</option>';
+					echo '<option value="'.$i.'" '.(($id==$i)?'selected="selected"':"").'>'.str_replace(" ", "&nbsp;", getStr("Device.WiFi.SSID.$i.SSID")).'</option>';
 				}
 			?>		
 		</select>
