@@ -22,7 +22,7 @@ if (!isset($_SESSION["loginuser"])) {
 }
 function is_link_valid($link){
 	//A valid URL per the URL spec.
-	if (preg_match("/^((((https?|ftps?|gopher|telnet|nntp):\/\/)|(mailto:|news:))(%[0-9A-Fa-f]{2}|[-()_.!~*';\/?:@&=+$,A-Za-z0-9])+)([).!';\/?:,][[:blank:]])?$/",$link))
+	if (preg_match("/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/",$link))
 		return true;
 	else
 		return false;
