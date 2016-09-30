@@ -701,8 +701,7 @@ $(document).ready(function() {
 		}
 	}
 	//BS_Capability to grey out
-	var BS_Capability = <?php echo $BS_Capability; ?>;
-	if(!BS_Capability)
+	if("true" != "<?php echo $BS_Capability; ?>")
 	{
 		$('.band_steering *').addClass('disabled');
 	        $('.band_steering input ').prop('disabled',true);
