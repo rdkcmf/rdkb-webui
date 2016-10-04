@@ -21,7 +21,7 @@ if (!isset($_SESSION["loginuser"])) {
 	exit(0);
 }
 header("Content-Type: application/json");
-$infoArray = json_decode($_REQUEST['resetInfo'], true);
+$infoArray = json_decode($_POST['resetInfo'], true);
 // sleep(10);
 $thisUser = $infoArray[2];
 ob_implicit_flush(true);

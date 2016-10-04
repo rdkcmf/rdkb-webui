@@ -15,7 +15,7 @@
 */
 ?>
 <?php
-$jsConfig = $_REQUEST['configInfo'];
+$jsConfig = $_POST['configInfo'];
 //$jsConfig = '{"status":"true", "target":"sta_inet"}';
 $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);

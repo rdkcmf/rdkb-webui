@@ -20,6 +20,6 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-$removeInfo = json_decode($_REQUEST['removeBlockInfo'], true);
+$removeInfo = json_decode($_POST['removeBlockInfo'], true);
 delTblObj("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$removeInfo['InstanceID']. ".");
 ?>

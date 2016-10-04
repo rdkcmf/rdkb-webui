@@ -20,9 +20,9 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-//$_REQUEST['configInfo'] = '{"firewallLevel": "High", "block_http": "Enabled","block_icmp": "Enabled",
+//$_POST['configInfo'] = '{"firewallLevel": "High", "block_http": "Enabled","block_icmp": "Enabled",
 //                                         "block_multicast": "Disabled","block_peer": "Disabled","block_ident": "Disabled""} ';
-$firewall_config = json_decode($_REQUEST['configInfo'], true);
+$firewall_config = json_decode($_POST['configInfo'], true);
 if ( $firewall_config['firewallLevel'] == "Custom" )
 {
     if ( $firewall_config['block_http'] == "Enabled" )
@@ -75,5 +75,5 @@ if ( $firewall_config['firewallLevel'] == "Custom" )
 }
 setStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel", $firewall_config['firewallLevel'], true);
 // sleep(3);
-echo htmlspecialchars($_REQUEST['configInfo'], ENT_NOQUOTES, 'UTF-8');
+echo htmlspecialchars($_POST['configInfo'], ENT_NOQUOTES, 'UTF-8');
 ?>

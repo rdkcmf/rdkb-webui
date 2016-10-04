@@ -28,7 +28,7 @@ fwrite($myfile, "table { border-collapse: collapse; clear: both; width: 100%; ba
 fwrite($myfile, "th { background: #39baf1; color: #fff; }");
 fwrite($myfile, "td { border: 1px solid white; }");
 fwrite($myfile, "</style>");
-fwrite($myfile, $_REQUEST['configInfo']);
+fwrite($myfile, $_POST['configInfo']);
 fclose($myfile);
 echo "success";
 ?>

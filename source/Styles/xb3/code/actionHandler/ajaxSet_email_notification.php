@@ -20,7 +20,7 @@ if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] != 'mso') {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-$jsConfig = $_REQUEST['configInfo'];
+$jsConfig = $_POST['configInfo'];
 //$jsConfig = '{"recipient_mail":"string1", "firewall_breach":"true", "parental_breach":"true", "alerts_warnings":"false", "send_logs":"true", "smtp_address":"string2", "comcast_address":"string3", "comcast_username":"string4", "comcast_password":"string5"}';
 $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);

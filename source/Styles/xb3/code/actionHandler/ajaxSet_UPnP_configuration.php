@@ -21,7 +21,7 @@ if (!isset($_SESSION["loginuser"])) {
 	exit(0);
 }
 //upnpInfo = '{"IsEnabledUPnP":"'+isEnabledUPnP+'", "Period":"'+period+'", "Live":"'+live+'", "IsEnabledZero":"'+isEnabledZero+'", "IsEnabledQosUPnP":"'+isEnabledQosUPnP+'"}';
-$upnpInfo = json_decode($_REQUEST['upnpInfo'], true);
+$upnpInfo = json_decode($_POST['upnpInfo'], true);
 //var_dump($upnpInfo);
 //echo $ddnsInfo['IsEnabled'];
 //echo "<br />";

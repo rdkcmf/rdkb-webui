@@ -20,7 +20,7 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-$jsConfig = $_REQUEST['configInfo'];
+$jsConfig = $_POST['configInfo'];
 //$jsConfig = '{"network_name":"string", "security":"WPA2-Enterprise", "network_password":"00000000", "network_name1":"string1", "security1":"WPA-WPA2-Enterprise", "network_password1":"11111111"}';
 $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);

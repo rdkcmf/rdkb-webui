@@ -20,7 +20,7 @@ if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] != 'mso') {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-$ripInfo = json_decode($_REQUEST['ripInfo'], true);
+$ripInfo = json_decode($_POST['ripInfo'], true);
 function setRIPconfig($ripInfo){
 	$authType = $ripInfo['AuthType'];
 	setStr("Device.Routing.RIP.Enable", "true", false);

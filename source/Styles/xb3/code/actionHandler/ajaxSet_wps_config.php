@@ -20,7 +20,7 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-$jsConfig = $_REQUEST['configInfo'];
+$jsConfig = $_POST['configInfo'];
 //$jsConfig = '{"ssid_number":"1", "target":"pair_client", "wps_enabled":"true", "wps_method":"PushButton,PIN", "pair_method":"PIN", "pin_number":"12345678"}';
 $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);

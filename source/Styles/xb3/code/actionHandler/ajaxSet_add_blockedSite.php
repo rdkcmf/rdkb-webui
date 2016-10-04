@@ -37,7 +37,7 @@ function time_date_conflict($TD1, $TD2) {
 	}
 	return $ret;
 }
-$blockedSiteInfo = json_decode($_REQUEST['BlockInfo'], true);
+$blockedSiteInfo = json_decode($_POST['BlockInfo'], true);
 $objPrefix = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 $rootObjName = $objPrefix;
 $exist = false;

@@ -21,7 +21,7 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-$flag = json_decode($_REQUEST['TrustFlag'], true);
+$flag = json_decode($_POST['TrustFlag'], true);
 //var_dump($flag);
 if( $flag['trustFlag'] == "true" ){
     // "no" => "yes"
