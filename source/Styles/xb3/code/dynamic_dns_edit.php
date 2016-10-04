@@ -5,6 +5,7 @@
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
 <?php
+	if (!preg_match('/^\d{1,3}$/', $_GET['id'])) die();
 	$i=$_GET['id'];
 	$dns_param = array(
 	  	"sp" 		=> "Device.X_CISCO_COM_DDNS.Service."."$i".".ServiceName",

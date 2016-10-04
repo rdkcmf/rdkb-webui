@@ -5,6 +5,7 @@
 <?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
 <?php
+if (!preg_match('/^\d{1,3}$/', $_GET['id'])) die();
 $i = $_GET['id'];
 $portMapping_param = array(
         "service_name" 		=> "Device.NAT.PortMapping.$i.Description",

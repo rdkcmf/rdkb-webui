@@ -91,7 +91,9 @@ $(document).ready(function() {
 	});	
 });
 </script>
-<?php $i=$_GET['id'];
+<?php
+	if (!preg_match('/^\d{1,3}$/', $_GET['id'])) die();
+	$i=$_GET['id'];
 	echo "<script>var ID=".$i.";</script>";
     $port_trigger_param = array(
         "service_name"      => "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Description",

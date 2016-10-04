@@ -6,6 +6,7 @@
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
 <?php
+	if (!preg_match('/^\d{1,3}$/', $_GET['id'])) die();
 	$i=$_GET['id'];
 //	echo "<script>var ID=".$i.";</script>";
     $managed_services_param = array(

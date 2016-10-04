@@ -5,6 +5,7 @@
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
 <?php
+if (!($_GET['id'] > 0 && $_GET['id'] < 5)) die();
 //allow only mso to edit SSID 3,4 for Home Security
 if(($_GET['id'] == 3 || $_GET['id'] == 4) && $_SESSION["loginuser"] != "mso"){
 	echo '<script type="text/javascript">location.href="wireless_network_configuration.php";</script>';
