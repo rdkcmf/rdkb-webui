@@ -22,7 +22,7 @@ if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] == 'admin') {
 }
 //ddnsInfo = '{"Index":"'+index+'", "SpName":"'+spName+'", "User:"'+user+'", "Passwd":"'+passwd+'", "Host":"'+host+'"}';
 //ddnsInfo = '{"IsEnabled":"'+isEnabled+'", "SpName":"'+spName+'", "User":"'+user+'", "Passwd":"'+passwd+'", "Host":"'+host+'"}';
-$ddnsInfo = json_decode($_REQUEST['ddnsInfo'], true);
+$ddnsInfo = json_decode($_POST['ddnsInfo'], true);
 //var_dump($ddnsInfo);
 //echo $ddnsInfo['Index'];
 //echo $ddnsInfo['IsEnabled'];

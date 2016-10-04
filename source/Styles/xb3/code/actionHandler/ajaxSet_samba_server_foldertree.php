@@ -20,7 +20,7 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-$dir	= $_REQUEST['dir'];
+$dir	= $_POST['dir'];
 $id		= $_GET["id"];
 setStr("Device.X_CISCO_COM_FileSharing.Sharing.$id.LocalPath", $dir, false);
 $files	= array_filter(explode(",", getStr("Device.X_CISCO_COM_FileSharing.Sharing.$id.SubDirectories")));
@@ -36,8 +36,8 @@ sleep(1);
 $basefolder = 'uploads'; //just the name
 $base = $_SERVER['DOCUMENT_ROOT'].'/jquery_folder_tree/'.$basefolder.'';
 //-------------- END FILE BROWSER CONFIG VARS-----------------//
-if(isset($_REQUEST['dir'])){
-	$dir=urldecode($_REQUEST['dir']);
+if(isset($_POST['dir'])){
+	$dir=urldecode($_POST['dir']);
 }else{
 	$dir='';
 }

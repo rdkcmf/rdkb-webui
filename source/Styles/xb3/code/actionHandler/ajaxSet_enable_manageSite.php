@@ -20,6 +20,6 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-$flag = json_decode($_REQUEST['Enable'], true);
+$flag = json_decode($_POST['Enable'], true);
 setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.Enable", $flag['Enable'], true);
 ?>

@@ -20,7 +20,7 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-$jsConfig = $_REQUEST['configInfo'];
+$jsConfig = $_POST['configInfo'];
 //$jsConfig = '	{"dest":"Edit", "idex":"1", "name":"tom", "pass":"11111111"}';
 $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);

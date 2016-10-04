@@ -102,7 +102,7 @@ function isIPValid($IP, $MAC){
     }
     return array($ret, $msg);
 }
-$deviceInfo = json_decode($_REQUEST['DeviceInfo'], true);
+$deviceInfo = json_decode($_POST['DeviceInfo'], true);
 $result     = "";
 if( !array_key_exists('delFlag', $deviceInfo) ) {
     //key kelFlag is not exist, so this is to reserve a ip addr for host 

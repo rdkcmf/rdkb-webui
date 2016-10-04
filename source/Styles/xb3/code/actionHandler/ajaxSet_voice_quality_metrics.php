@@ -21,9 +21,9 @@ if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] == 'admin') {
 	exit(0);
 }
 //data:{line:$("#line_number").val(),call:$("#call_number").val(),action:$("#action").val()},
-$line = $_REQUEST['line'];
-$call = $_REQUEST['call'];
-$action = $_REQUEST['action'];
+$line = $_POST['line'];
+$call = $_POST['call'];
+$action = $_POST['action'];
 if("display" == $action){
 	//display part is handled in main page
 }

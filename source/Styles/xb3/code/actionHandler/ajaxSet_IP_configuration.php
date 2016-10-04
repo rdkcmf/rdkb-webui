@@ -20,7 +20,7 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-$ip_config = json_decode($_REQUEST['configInfo'], true);
+$ip_config = json_decode($_POST['configInfo'], true);
 if(!array_key_exists('IPv6', $ip_config)){
     //set ipv4 part
 	setStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress", $ip_config['Ipaddr'], true);
