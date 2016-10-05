@@ -45,6 +45,8 @@ switch($timef){			//	[$mintime, $maxtime)
 		$maxtime=strtotime("now");
 		$mintime=strtotime("-90 days");
 	break;
+	default:
+		die('Not allowed!');
 }
 switch($mode){
 	case "site":
@@ -56,8 +58,11 @@ switch($mode){
 	case "device":
 		$type="Device Blocked";
 		break;
-	default:
+	case "all":
 		$type="all";
+		break;
+	default:
+		die('Not allowed!');
 }
 exec("/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /tmp/log_parental.txt");
 $file= fopen("/tmp/log_parental.txt", "r");
