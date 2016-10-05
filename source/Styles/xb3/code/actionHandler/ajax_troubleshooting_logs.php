@@ -70,6 +70,8 @@ switch($timef){			//	[$mintime, $maxtime)
 		$maxtime=strtotime("today");
 		$mintime=strtotime("-90 days");
 	break;
+	default:
+		die('Not allowed!');
 }
 $pos = 50;		//global file pointer where to read the value in a line
 if ($mode=="system"){
@@ -131,7 +133,7 @@ else if ($mode=="event") {
 	header("Content-Type: application/json");
 	echo htmlspecialchars(json_encode($docLog), ENT_NOQUOTES, 'UTF-8');
 }
-else {	
+else if ($mode=="firewall") {
 	exec("/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /tmp/log_firewall.txt");
 	$file= fopen("/tmp/log_firewall.txt", "r");
 	$Log = array();

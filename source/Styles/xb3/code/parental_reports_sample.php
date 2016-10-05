@@ -57,6 +57,10 @@ function file_download($file_path, $file_name)
 }
 set_time_limit(0);
 $report=$_POST['report_type']."_".$_POST['time_frame'];
+$report_type_array = array("all", "site", "service", "device");
+$time_frame_array = array("Today", "Yesterday", "Last week", "Last month", "Last 90 days");
+if (!in_array($_POST["report_type"], $report_type_array))	die('Not allowed!');
+if (!in_array($_POST["time_frame"], $time_frame_array))	die('Not allowed!');
 $file_path="/tmp/parental_reports_".$report.".txt";
 $file_name="parental_reports_".$report.".txt";
 file_download($file_path, $file_name);
