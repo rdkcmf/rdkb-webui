@@ -4,8 +4,8 @@
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
-<link rel="stylesheet" type="text/css" href="./cmn/css/lib/smartpaginator.css"/>
-<script type="text/javascript" src="./cmn/js/lib/smartpaginator.js"></script>
+<link rel="stylesheet" type="text/css" href="./cmn/css/comcastPaginator.css"/>
+<script type="text/javascript" src="./cmn/js/comcastPaginator.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#system").show();
@@ -229,17 +229,7 @@ function ajaxDo(mode,timef){
 			}
 			// alert(length+mode+'_logs_'+timef2);
 			if(length>20){
-				$(".smart_paginator").empty();
-				$(".smart_paginator:visible").smartpaginator({
-					totalrecords:length,
-					recordsperpage:20,
-					datacontainer:mode+'_logs_'+timef2,
-					dataelement:'tr',
-					theme:'blue'
-				});
-			} 
-			else {
-				$(".smart_paginator:visible").hide();
+				$('#'+mode+'_logs_'+timef2).comcastPaginator();
 			}
 			//adjust current data table
 			adjust_acs_tb("This is "+mode+" logs, for "+timef, Array("Discription", "Time", "Level"));
@@ -278,7 +268,7 @@ function ajaxDo(mode,timef){
 	</div>
 	<div class="module forms data" id="system">
 		<h2>System Logs</h2>
-		<table id="system_logs_today" cellpadding="0" cellspacing="0" class="data" style="display:none">
+		<table id="system_logs_today" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
 				<td class="acs-th" scope="col" colspan="3">All logs for Today</td>
@@ -296,7 +286,7 @@ function ajaxDo(mode,timef){
 				<tbody>
 			</tbody>
 		</table>
-		<table id="system_logs_week" cellpadding="0" cellspacing="0" class="data">
+		<table id="system_logs_week" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
 				<td class="acs-th" scope="col" colspan="3">All logs from Last Week</td>
@@ -305,7 +295,7 @@ function ajaxDo(mode,timef){
 				<tbody>
 			</tbody>
 		</table>
-		<table id="system_logs_month" cellpadding="0" cellspacing="0" class="data">
+		<table id="system_logs_month" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
 				<td class="acs-th" scope="col" colspan="3">All logs from Last Month</td>
@@ -314,7 +304,7 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		<table id="system_logs_last" cellpadding="0" cellspacing="0" class="data">
+		<table id="system_logs_last" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
 				<td class="acs-th" scope="col" colspan="3">All logs for Last 90 Days</td>
@@ -323,15 +313,14 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		<div class="smart_paginator"></div>
 		<div class="btn-group">
 			<input type="button" value="Print" class="btn alt"/>
 			<input type="submit" value="Download" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
-	<div class="module forms data" id="event">
+	<div class="module forms data" id="event" style="display:none">
 		<h2>Event Logs</h2>
-		<table id="event_logs_today" cellpadding="0" cellspacing="0" class="data">
+		<table id="event_logs_today" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
 				<td class="acs-th" scope="col" colspan="3">All logs for Today</td>
@@ -340,7 +329,7 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		<table id="event_logs_yesterday" cellpadding="0" cellspacing="0" class="data">
+		<table id="event_logs_yesterday" cellpadding="0" cellspacing="0" class="data" style="display:none">
 				<thead>
 					<tr>
 					<td class="acs-th" scope="col" colspan="3">All logs from Yesterday</td>
@@ -349,7 +338,7 @@ function ajaxDo(mode,timef){
 				<tbody>
 				</tbody>
 		</table>
-		<table id="event_logs_week" cellpadding="0" cellspacing="0" class="data">
+		<table id="event_logs_week" cellpadding="0" cellspacing="0" class="data" style="display:none">
 				<thead>
 					<tr>
 					<td class="acs-th" scope="col" colspan="3">All logs from Last Week</td>
@@ -358,7 +347,7 @@ function ajaxDo(mode,timef){
 				<tbody>
 				</tbody>
 		</table>
-		<table id="event_logs_month" cellpadding="0" cellspacing="0" class="data">
+		<table id="event_logs_month" cellpadding="0" cellspacing="0" class="data" style="display:none">
 				<thead>
 					<tr>
 					<td class="acs-th" scope="col" colspan="3">All logs from Last Month</td>
@@ -367,7 +356,7 @@ function ajaxDo(mode,timef){
 				<tbody>
 				</tbody>
 		</table>
-		<table id="event_logs_last" cellpadding="0" cellspacing="0" class="data">
+		<table id="event_logs_last" cellpadding="0" cellspacing="0" class="data" style="display:none">
 				<thead>
 					<tr>
 					<td class="acs-th" scope="col" colspan="3">All logs for Last 90 Days</td>
@@ -376,16 +365,15 @@ function ajaxDo(mode,timef){
 				<tbody>
 				</tbody>
 		</table>
-		<div class="smart_paginator"></div>
 		<div class="btn-group">
 			<input type="button" value="Print" class="btn alt"/>
 			<input type="submit" value="Download" class="btn alt"/>
 			<!--a  id="download_event_logs" href="#" class="btn alt">Download</a-->
 		</div>
 	</div> <!-- end .module -->
-	<div class="module forms data" id="firewall">
+	<div class="module forms data" id="firewall" style="display:none">
 		<h2>Firewall Logs</h2>
-		<table id="firewall_logs_today" cellpadding="0" cellspacing="0" class="data">
+		<table id="firewall_logs_today" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
 					<td class="acs-th" scope="col" colspan="3">All logs for Today</td>
@@ -394,7 +382,7 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		<table id="firewall_logs_yesterday" cellpadding="0" cellspacing="0" class="data">
+		<table id="firewall_logs_yesterday" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
 					<td class="acs-th" scope="col" colspan="3">All logs from Yesterday</td>
@@ -403,7 +391,7 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		<table id="firewall_logs_week" cellpadding="0" cellspacing="0" class="data">
+		<table id="firewall_logs_week" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
 					<td class="acs-th" scope="col" colspan="3">All logs from Last Week</td>
@@ -412,7 +400,7 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		<table id="firewall_logs_month" cellpadding="0" cellspacing="0" class="data">
+		<table id="firewall_logs_month" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
 					<td class="acs-th" scope="col" colspan="3">All logs from Last Month</td>
@@ -421,7 +409,7 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		<table id="firewall_logs_last" cellpadding="0" cellspacing="0" class="data">
+		<table id="firewall_logs_last" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
 					<td class="acs-th" scope="col" colspan="3">All logs for Last 90 Days</td>
@@ -430,7 +418,6 @@ function ajaxDo(mode,timef){
 			<tbody>
 			</tbody>
 		</table>
-		<div class="smart_paginator"></div>
 		<div class="btn-group">
 			<input type="button" value="Print" class="btn alt"/>
 			<input type="submit" value="Download" class="btn alt"/>
