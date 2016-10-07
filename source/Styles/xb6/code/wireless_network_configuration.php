@@ -232,7 +232,7 @@ if ($_SESSION['_DEBUG']){
 	$channel_automatic ="true";
 	$channel_number =	"7";
 	$BG_protect_mode = "Auto";
-	$operation_mode =	"g,n";
+	$operation_mode =	"b,g,n";
 	$channel_bandwidth= "20MHz";
 	$guard_interval = "800nsec";
 	$reverse_enabled = "true";
@@ -416,7 +416,6 @@ $(document).ready(function() {
 		}
 	}).trigger("change");
     	$("#wireless_mode").change(function() {
-/*
 		if($(this).val() == "b,g,n") {
 			jConfirm(
 				"WARNING:<br/> Changing the Wi-Fi mode to '802.11 b/g/n' will significantly reduce the performance of your Wi-Fi network. This setting is required only if you have older 'b only' Wi-Fi devices in your network. All newer Wi-Fi devices support '802.11 g/n' mode. Are you sure you want to continue with the change?"
@@ -426,7 +425,7 @@ $(document).ready(function() {
 						$("#wireless_mode").val('<?php echo $wireless_mode; ?>').attr("selected","selected");
 					}
 			});
-		}*/
+		}
 		if("n"==$("#wireless_mode").attr("value")) {
 			$("#mixed_mode").prop("checked", true);
 			$("#operation_mode").prop("disabled", false);
@@ -1255,9 +1254,9 @@ function saveBandSteeringSettings()
 	<div class="form-row">
 		<label for="wireless_mode">Mode:</label>
 		<select name="wireless_mode" id="wireless_mode">
-		<option value="n"  		<?php if ("n" == $wireless_mode) echo 'selected="selected"';?> >802.11 n</option>
+		<!--option value="n"  		<?php //if ("n" == $wireless_mode) echo 'selected="selected"';?> >802.11 n</option-->
 		<option value="g,n" 	<?php if ("g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 g/n</option>
-		<!-- option value="b,g,n" 	<?php //if ("b,g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 b/g/n</option-->
+		<option value="b,g,n" 	<?php if ("b,g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 b/g/n</option>
 		</select>
 	</div>
 	<div class="form-row odd">
