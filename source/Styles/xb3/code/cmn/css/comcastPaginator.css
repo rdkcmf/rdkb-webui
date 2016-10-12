@@ -2,7 +2,7 @@
  * If not stated otherwise in this file or this component's Licenses.txt file the
  * following copyright and licenses apply:
  *
- * Copyright 2015 RDK Management
+ * Copyright 2016 RDK Management
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,26 +22,10 @@
     width:684px;
     padding:10px 0 8px 0;
     margin: 10px 0 0 0;
-    overflow: hidden;
     position: relative;
-    -moz-box-shadow:0 0 12px 0 #e0e0e0;
+    overflow: hidden;
     -webkit-box-shadow: 0 0 12px 0 #e0e0e0;
-}
-.pager div.short
-{
-    float: right;
-    margin: 0;
-    padding: 0;
-    margin-right: 10px;
-    width: 74px;
-}
-.pager div.short input
-{
-    width: 28px;
-    height: 18px;
-    border: none;
-    margin-left: 8px;
-    float: left;
+    -moz-box-shadow:0 0 12px 0 #e0e0e0;
 }
 .pager ul
 {
@@ -62,14 +46,12 @@
     display: inline-table;
     width: 20px;
     text-align: center;
-/*    border-radius: 4px;
-    -moz-border-radius: 4px;*/
 }
 
 .pager span
 {
     margin-left: 4px;
-    color: White;
+    color: white;
     float: left;
 }
 .pager .btn
@@ -88,26 +70,42 @@
     color: #A0A0A0 !important;
     text-shadow: 1px 1px 1px #FFFFFF;
 }
-/*green*/.blue
+.blue
 {
     background-color: #39BAF1;
 }
-.blue.normal
+.blue .normal
 {
     background-color: #33A7D9;
-    color: White;
+    color: white;
     border: solid 1px white;
 }
-.blue.active
+.blue .active
 {
     background-color: #33A7D9;
     color: #F8EB00;
     font-weight:bold;
     border: solid 1px white;
 }
-.pager.blue.btn
+.pager .blue .btn
 {
     background-color: #33A7D9;
     color: black;
     border: solid 1px white;
+}
+.pager div.short
+{
+    float: right;
+    margin: 0;
+    padding: 0;
+    margin-right: 10px;
+    width: 74px;
+}
+.pager div.short input
+{
+    width: 28px;
+    height: 18px;
+    border: none;
+    margin-left: 8px;
+    float: left;
 }

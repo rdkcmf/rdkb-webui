@@ -4,8 +4,8 @@
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
-<link rel="stylesheet" type="text/css" href="./cmn/css/lib/smartpaginator.css"/>
-<script type="text/javascript" src="./cmn/js/lib/smartpaginator.js"></script>
+<link rel="stylesheet" type="text/css" href="./cmn/css/comcastPaginator.css"/>
+<script type="text/javascript" src="./cmn/js/comcastPaginator.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > QoS", "nav-qos");
@@ -28,7 +28,7 @@ $(document).ready(function() {
 							return;
 						}
 						else {
-							document.getElementById('event').innerHTML='<h2>Call Signal logs</h2><table summary="This table shows Call Signal logs" id="event_logs_today" class="data" style="word-break:break-all"><thead><th id="sip_value">Description</th><th width="111" id="sip_time">Time</th></thead><tbody></tbody><tfoot><tr class="acs-hide"><td headers="sip_value">null</td><td headers="sip_time">null</td></tr></tfoot></table><div class="smart_paginator"></div>';
+							document.getElementById('event').innerHTML='<h2>Call Signal logs</h2><table summary="This table shows Call Signal logs" id="event_logs_today" class="data" style="word-break:break-all"><thead><th id="sip_value">Description</th><th width="111" id="sip_time">Time</th></thead><tbody></tbody><tfoot><tr class="acs-hide"><td headers="sip_value">null</td><td headers="sip_time">null</td></tr></tfoot></table>';
 						}
 						$.each(results,function(key,value) {
 							$("#event_logs_today > tbody").append('<tr class="'+trClass+'"><td headers="sip_value">'+value.Des.replace(/-/g, "<br/>")+'</td><td headers="sip_time">'+value.time+'</td></tr>');
@@ -36,16 +36,9 @@ $(document).ready(function() {
 							length++;
 						});
 						if (length>10) {
-							$(".smart_paginator:visible").smartpaginator({
-								totalrecords:length,
-								recordsperpage:10,
-								datacontainer:'event_logs_today',
-								dataelement:'tr',
-								theme:'blue'
+							$('#event_logs_today').comcastPaginator({
+								entriesInPage: 10
 							});
-						}
-						else {
-							$(".smart_paginator:visible").hide();
 						}
 						jHide();
 					}
