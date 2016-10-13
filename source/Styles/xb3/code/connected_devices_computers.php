@@ -11,6 +11,7 @@
 	$endAddr 	= getStr("Device.DHCPv4.Server.Pool.1.MaxAddress");
 	$loginuser = $_SESSION["loginuser"];
 	$CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
+	$PreferPrivate = getStr("Device.WiFi.X_RDKCENTRAL-COM_PreferPrivate");
 ?>
 <style>
 table a:link, table a:visited {
@@ -254,6 +255,22 @@ $(document).ready(function() {
 			else if($(this).hasClass("wifi")) window.location.href = "wireless_network_configuration_wps.php";
 		}
 	});
+	$("#prefer_private").change(function(){
+		var isChecked=$(this).is(":checked");
+		jProgress('This may take several seconds.',60);
+		$.ajax({
+			type:"POST",
+			url:"actionHandler/ajaxSet_wireless_network_configuration.php",
+			data: { configInfo: '{"prefer_private": "true", "isChecked":"'+isChecked+'"}' },
+			success:function(){
+				jHide();
+			},
+			error:function(){
+				jHide();
+				jAlert("Error! Please try later!");
+			}
+		});
+	});
 });
 </script>
 <div id="content"  class="cnt-device-main">
@@ -265,6 +282,15 @@ $(document).ready(function() {
 				<p  class="hidden"><strong>Offline Devices</strong>  were once connected to your network, but not currently.</p>
 				<p  class="hidden">To block Internet access to a device connected to your Gateway, click the <strong>X</strong> button. </p>
     </div>
+<?php if($loginuser == "mso"){
+	$checked = ($PreferPrivate == "true")?"checked":"";
+	echo '<div class="module" id="prefer_private_connection">
+		<div class="select-row">
+			<label class="readonlyLabel label" for="prefer_private">Prefer Private Connection</label><input style="margin-top: 8px" type="checkbox" id="prefer_private" name="prefer_private" '.$checked.' >
+		</div>
+	</div>';
+}
+?>
 	<div id='online-private' class="module data">
         <h2 id='online-table-cap'>Online Devices-Private Network</h2>
 		<table   class="data"  summary="This table displays Online Devices connected to priviate network">

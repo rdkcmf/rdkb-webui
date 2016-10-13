@@ -47,6 +47,12 @@ if (array_key_exists('band_steering', $arConfig))
 		}
 	}
 }
+else if (array_key_exists('prefer_private', $arConfig) {
+	if ($_SESSION["loginuser"] == "mso") {
+		setStr("Device.WiFi.X_RDKCENTRAL-COM_PreferPrivate", $arConfig['isChecked'], true);
+		echo $arConfig['isChecked'];
+	}
+}
 else
 {
 	$i = $arConfig['ssid_number'];
