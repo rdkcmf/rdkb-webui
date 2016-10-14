@@ -1,16 +1,5 @@
-<?php
-$CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
-	if($CloudUIEnable == "false"){
-		header('Location:at_a_glance.php');
-		exit;
-	}
-session_start();
-if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="home_loggedout.php";</script>';
-	exit(0);
-}
-?>
-<!doctype html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <html>
 <head>
   <meta charset="utf-8">
