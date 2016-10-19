@@ -334,7 +334,7 @@ $(document).ready(function() {
 	}    
 	$rootObjName    = "Device.Hosts.Host.";
 	$paramNameArray = array("Device.Hosts.Host.");
-	$mapping_array  = array("PhysAddress", "IPAddress", "Layer1Interface", "HostName", "Active", "AddressSource", "X_CISCO_COM_RSSI", "Comments", "IPv4Address.1.IPAddress", "IPv6Address.1.IPAddress", "IPv6Address.2.IPAddress");
+	$mapping_array  = array("PhysAddress", "IPAddress", "Layer1Interface", "HostName", "Active", "AddressSource", "X_CISCO_COM_RSSI", "Comments", "IPv4Address.1.IPAddress", "IPv6Address.1.IPAddress", "IPv6Address.2.IPAddress", "X_RDKCENTRAL-COM_Parent", "X_RDKCENTRAL-COM_DeviceType");
 	$HostIndexArr = DmExtGetInstanceIds("Device.Hosts.Host.");
 	if(0 == $HostIndexArr[0]){  
 	    // status code 0 = success   
@@ -345,6 +345,7 @@ $(document).ready(function() {
 		$onlinePrivateHostNameArr = array();
 		$onlineHostNameArr        = array();
 		$onlineHostMAC        	  = array();
+		$NetworkExtender		  = array();
 		$onlinePrivateNetworkHost['hostNum'] = 0;
 		$offlinePrivateNetworkHost['hostNum'] = 0;
 		$PublicNetworkHost['hostNum']  = 0;
@@ -377,9 +378,22 @@ $(document).ready(function() {
 					array_push($arrayBlockMAC, $ManagedDevices[$key]['MACAddress']);
 				}
 			}
+			//var_dump($HostNum);
+			//for WiFi Extender
+			for ($e=0; $e < $HostNum; $e++) {
+				if($Host[$e]['X_RDKCENTRAL-COM_DeviceType'] == 'extender'){
+					$NetworkExtender[$Host[$e]['PhysAddress']] = $Host[$e]['HostName'];
+				}
+			}
 		    //This for loop aims to construct online and offline network host arrays based on $Host		    
 		    for ($i=0,$j=0,$k=0,$x=0; $i < $HostNum; $i++) { 
                 $Host["$i"]['instanceID'] = $i + 1;
+				//for WiFi Extended device
+				$isExtendedDevice = false;
+				if (array_key_exists($Host["$i"]['X_RDKCENTRAL-COM_Parent'], $NetworkExtender)){
+					$isExtendedDevice = true;
+					$extDeviceConnType = $NetworkExtender[$Host["$i"]['X_RDKCENTRAL-COM_Parent']];
+				}
                 $tmpHost = ProcessLay1Interface( $Host["$i"]['Layer1Interface']);
 		    	if ($tmpHost['networkType'] == "Private"){
 		      	//construct private network host info
@@ -399,7 +413,7 @@ $(document).ready(function() {
                     $onlinePrivateNetworkHost["$j"]['PhysAddress'] = strtoupper($Host["$i"]['PhysAddress']);
 		            array_push($onlineHostMAC, $onlinePrivateNetworkHost["$j"]['PhysAddress']);
                     $onlinePrivateNetworkHost["$j"]['AddressSource'] = $Host["$i"]['AddressSource'];
-                    $onlinePrivateNetworkHost["$j"]['Connection'] = $tmpHost['connectionType'];
+                    $onlinePrivateNetworkHost["$j"]['Connection'] = ($isExtendedDevice) ? $extDeviceConnType.' '.$tmpHost['connectionType'] : $tmpHost['connectionType'];
                     $onlinePrivateNetworkHost["$j"]['Comments'] = $Host["$i"]['Comments'];
                     if (stristr($tmpHost['connectionType'], 'Wi-Fi') || stristr($tmpHost['connectionType'], 'MoCA')) {
 						$onlinePrivateNetworkHost[$j]['RSSI'] = $clients_RSSI[strtoupper($Host["$i"]['PhysAddress'])]." dBm";
@@ -425,7 +439,7 @@ $(document).ready(function() {
                     $offlinePrivateNetworkHost["$k"]['IPv6Address1'] = $Host["$i"]['IPv6Address.1.IPAddress'];
                     $offlinePrivateNetworkHost["$k"]['IPv6Address2'] = $Host["$i"]['IPv6Address.2.IPAddress'];
                     $offlinePrivateNetworkHost["$k"]['PhysAddress'] = strtoupper($Host["$i"]['PhysAddress']);
-                    $offlinePrivateNetworkHost["$k"]['Connection'] = $tmpHost['connectionType'];
+                    $offlinePrivateNetworkHost["$k"]['Connection'] = ($isExtendedDevice) ? $extDeviceConnType.' '.$tmpHost['connectionType'] : $tmpHost['connectionType'];
                     $offlinePrivateNetworkHost["$k"]['AddressSource'] = $Host["$i"]['AddressSource'];
                     $offlinePrivateNetworkHost["$k"]['Comments'] = $Host["$i"]['Comments'];
 					if(in_array($offlinePrivateNetworkHost["$k"]['PhysAddress'], $arrayBlockMAC)){
