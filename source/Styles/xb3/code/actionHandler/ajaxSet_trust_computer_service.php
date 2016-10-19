@@ -22,7 +22,6 @@ if (!isset($_SESSION["loginuser"])) {
 	exit(0);
 }
 $flag = json_decode($_POST['TrustFlag'], true);
-//var_dump($flag);
 if( $flag['trustFlag'] == "true" ){
     // "no" => "yes"
     //if device not in trusted user table, add this device to Trusted user table, set the trusted flag == true

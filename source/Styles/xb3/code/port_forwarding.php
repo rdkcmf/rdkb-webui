@@ -207,7 +207,6 @@ $(document).ready(function() {
 				}
 				if(!empty($IndexNums)){
 					$resArray = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-					//dump($resArray);
                     if (!empty($resArray)){
 						$iclass = "";
 					    for ($i=0; $i < $IndexNums; $i++) { 

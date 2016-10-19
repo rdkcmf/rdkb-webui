@@ -44,7 +44,6 @@ function str2time($str){
 			$time['firewall_time']  = date("Y")-1 .'/'. $MONTH[$timeTmp[0]] .'/'. $timeTmp[1] .' '. $timeTmp[2]; 
 		}
 	}
-	//var_dump($time);
 	return $time;
 }
 $mode=$_POST['mode'];
@@ -95,7 +94,6 @@ if ($mode=="system"){
 	fclose($file);
 	// array_pop($Log);	
 	$sysLog = $Log;
-	//dump($sysLog);
 	$fh=fopen("/tmp/troubleshooting_logs_".$mode."_".$timef.".txt","w+");
 	foreach ($sysLog as $key=>$value){
 		fwrite($fh, $value["Des"]."\t".$value["time"]."\t".$value["Level"]."\r\n");

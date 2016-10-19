@@ -58,7 +58,6 @@ function get_results()
 			//$wifi_spec_values[$i]["SupportedDataTransferRates"] = rearrange_SDTR($spec_values["SupportedDataTransferRates"]);
 			array_push($new_array, $wifi_spec_values[$i]);
 		}
-		//var_dump($wifi_spec_values);
 		return array("status"=> "success", "data"=> $new_array);
 	}
 }

@@ -22,7 +22,6 @@ if (!isset($_SESSION["loginuser"])) {
 }
 //qosInfo = '{"IsEnabledWMM":"'+isEnabledWMM+'", "IsEnabledMoCA":"'+isEnabledMoCA+'", "IsEnabledLAN":"'+isEnabledLAN+'", "IsEnabledUPnP":"'+isEnabledUPnP+'"}';
 $qosInfo = json_decode($_POST['qosInfo'], true);
-//var_dump($ddnsInfo);
 $APIDs=explode(",",getInstanceIDs("Device.WiFi.AccessPoint."));
 for($i=0;$i<count($APIDs);$i++)
 {

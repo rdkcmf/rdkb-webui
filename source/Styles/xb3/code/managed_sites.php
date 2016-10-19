@@ -414,7 +414,6 @@ $.validator.addMethod("no_space", function(value, element, param) {
 	$Host = getParaValues($rootObjName, $paramNameArray, $mapping_array);
    	// $blockedSitesNums = sizeof($blockedSitesInstanceArr);
 	$blockedSitesNums = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSiteNumberOfEntries");
-    	//dump($blockedSitesNums);
 	$blockedSitesURL = array();
 	$blockedSitesKeyWord = array();
 	for ($i=0,$j=0,$k=0; $i < $blockedSitesNums; $i++) { 
@@ -460,8 +459,6 @@ $.validator.addMethod("no_space", function(value, element, param) {
 	}
 	$URLNums = sizeof($blockedSitesURL);
 	$KeywordNums = sizeof($blockedSitesKeyWord);
-    //dump($URLNums);
-    //dump($KeywordNums);
 	?>
 	<div id="managed-sites-items">
 		<div class="module data">
