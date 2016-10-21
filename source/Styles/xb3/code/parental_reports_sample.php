@@ -61,8 +61,8 @@ $report_type_array = array("all", "site", "service", "device");
 $time_frame_array = array("Today", "Yesterday", "Last week", "Last month", "Last 90 days");
 if (!in_array($_POST["report_type"], $report_type_array))	die('Not allowed!');
 if (!in_array($_POST["time_frame"], $time_frame_array))	die('Not allowed!');
-$file_path="/tmp/parental_reports_".$report.".txt";
-$file_name="parental_reports_".$report.".txt";
+$file_path="/tmp/parental_reports_{$report}.txt";
+$file_name="parental_reports_{$report}.txt";
 file_download($file_path, $file_name);
 //output_file("parental_reports_sample.txt","parental_reports_sample.txt");
 ?>
