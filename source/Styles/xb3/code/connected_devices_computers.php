@@ -379,7 +379,7 @@ $(document).ready(function() {
 			        else
 			        	$onlinePrivateNetworkHost["$j"]['HostName'] = $Host["$i"]['HostName'];
 			        array_push($onlineHostNameArr, $onlinePrivateNetworkHost["$j"]['HostName']);
-                    $onlinePrivateNetworkHost["$j"]['IPv4Address'] = $Host["$i"]['IPv4Address.1.IPAddress'];
+                    $onlinePrivateNetworkHost["$j"]['IPv4Address'] = $Host["$i"]['IPAddress'];
                     $onlinePrivateNetworkHost["$j"]['IPv6Address1'] = $Host["$i"]['IPv6Address.1.IPAddress'];
                     $onlinePrivateNetworkHost["$j"]['IPv6Address2'] = $Host["$i"]['IPv6Address.2.IPAddress'];
                     $onlinePrivateNetworkHost["$j"]['PhysAddress'] = strtoupper($Host["$i"]['PhysAddress']);
@@ -407,7 +407,7 @@ $(document).ready(function() {
 			        	$offlinePrivateNetworkHost["$k"]['HostName'] = strtoupper($Host["$i"]['PhysAddress']);
 			        else
 			        	$offlinePrivateNetworkHost["$k"]['HostName'] = $Host["$i"]['HostName'];
-                    $offlinePrivateNetworkHost["$k"]['IPv4Address'] = $Host["$i"]['IPv4Address.1.IPAddress'];
+                    $offlinePrivateNetworkHost["$k"]['IPv4Address'] = $Host["$i"]['IPAddress'];
                     $offlinePrivateNetworkHost["$k"]['IPv6Address1'] = $Host["$i"]['IPv6Address.1.IPAddress'];
                     $offlinePrivateNetworkHost["$k"]['IPv6Address2'] = $Host["$i"]['IPv6Address.2.IPAddress'];
                     $offlinePrivateNetworkHost["$k"]['PhysAddress'] = strtoupper($Host["$i"]['PhysAddress']);
@@ -559,7 +559,7 @@ $(document).ready(function() {
       		 */
   			$rootObjName    = "Device.DHCPv4.Server.Pool.2.Client.";
 			$paramNameArray = array($rootObjName);
-			$mapping_array  = array("X_CISCO_COM_HostName", "Chaddr", "IPv4Address.1.IPAddress");
+			$mapping_array  = array("X_CISCO_COM_HostName", "Chaddr", "IPAddress");
 			$PoolClientArr = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
 			if ($_DEBUG) {
 				$PoolClientArr = array(
@@ -581,7 +581,7 @@ $(document).ready(function() {
 				);
 			}
 			foreach ($PoolClientArr as $k => $entry) {
-				$PoolClientArr[$k] = array_merge($entry, array('IPv4Address' => $entry["IPv4Address.1.IPAddress"]));
+				$PoolClientArr[$k] = array_merge($entry, array('IPv4Address' => $entry["IPAddress"]));
 			}
 			//dump($PoolClientArr);
 			$WiFi3_rootObjName    = "Device.WiFi.AccessPoint.3.AssociatedDevice.";
