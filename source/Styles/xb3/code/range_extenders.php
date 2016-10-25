@@ -40,7 +40,6 @@ $online_client		= array_trim(explode(",", getStr("Device.MoCA.X_CISCO_COM_WiFi_E
 $disconnect_client	= array_trim(explode(",", getStr("Device.MoCA.X_CISCO_COM_WiFi_Extender.X_CISCO_COM_DISCONNECT_CLIENT")));
 // $online_client		= array_trim(explode(",", "  00:11:22:33:44:11  ,  00:11:22:33:44:99  ,  00:11:22:33:44:bb    "));
 // $disconnect_client	= array_trim(explode(",", "  00:11:22:33:44:11  ,  00:11:22:33:44:22  ,  00:11:22:33:44:33, 00:11:22:33:44:44, 00:11:22:33:44:55, 00:11:22:33:44:66, 00:11:22:33:44:77, 00:11:22:33:44:88 "));
-// var_dump($disconnect_client);
 //Establish data structure
 $dat = array();
 for ($i=0; $i<count($online_client); $i++)

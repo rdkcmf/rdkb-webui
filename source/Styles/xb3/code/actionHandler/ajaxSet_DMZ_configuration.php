@@ -22,7 +22,6 @@ if (!isset($_SESSION["loginuser"])) {
 }
 //dmzInfo = '{"IsEnabledDMZ":"'+isEnabledDMZ+'", "Host":"'+host+'"}';
 $dmzInfo = json_decode($_POST['dmzInfo'], true);
-//var_dump($dmzInfo);
 //echo $dmzInfo['IsEnabled'];
 //echo "<br />";
 $isEnabledDMZ = $dmzInfo['IsEnabledDMZ'];

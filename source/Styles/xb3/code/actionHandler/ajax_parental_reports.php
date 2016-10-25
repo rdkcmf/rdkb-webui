@@ -78,9 +78,6 @@ for ($i=0; !feof($file); ) {
 	$Des 	    = substr(fgets($file),$pos);
 	if (feof($file)) break;					//PHP read last line will return false, not EOF!
 	$timeU = strtotime($time);
-	// dump('timeU = '. $timeU);
-	// dump('mintime = '. $mintime);
-	// dump('maxtime = '. $maxtime);
 	if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
 	if ($type == $Type) {
 		$Log[$i++] = array("time"=>$time, "Des"=>$Des, "Count"=>$Count, "Target"=>$TargetIP,"Source"=>$SourceIP,"Type"=>$Type);
@@ -94,7 +91,6 @@ for ($i=0; !feof($file); ) {
 fclose($file);
 $firewall_log = array_reverse($Log);
 // echo "firewall log ...: \n";
-// var_dump($firewall_log);
 $fh=fopen("/tmp/parental_reports_".$mode."_".$timef.".txt","w");
 foreach ($firewall_log as $key=>$value){
 	fwrite($fh, $value["Des"].", ".$value["Count"]." Attemps, ".$value["time"]."\t".$value["Type"]."\r\n");

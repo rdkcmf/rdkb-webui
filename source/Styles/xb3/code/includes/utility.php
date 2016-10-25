@@ -160,28 +160,7 @@ function getParaValues($root, $paramArray, $mapping_array, $includeId=false) {
 			}
 		}
 	}
-	//dump($key_ret);
 	return $key_ret;
-}
-/**
- * Discription: 
- *     This function is used to display dump info in a beautiful manner
- */
-function dump($vars, $label = '', $return = false)
-{
-    if (ini_get('html_errors')) {
-        $content = "<pre>\n";
-        if ($label != '') {
-            $content .= "<strong>{$label} :</strong>\n";
-        }
-        $content .= htmlspecialchars(print_r($vars, true));
-        $content .= "\n</pre>\n";
-    } else {
-        $content = $label . " :\n" . print_r($vars, true);
-    }
-    if ($return) { return $content; }
-        echo $content;
-    return null;
 }
 //show a PSM mode notification webpage, (then exit current script)
 function init_psmMode($title, $navElementId)

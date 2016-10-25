@@ -350,7 +350,6 @@ $(document).ready(function() {
 		$PublicNetworkHost['hostNum']  = 0;
 		$Host = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 		if(!empty($Host)){
-			//dump($Host);
 			//check if online device is there in Blocked Devices List using MAC Address
 			//if it's there remove 'X' button for "Online Blocked Devices"
 			$MD_rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.";
@@ -425,7 +424,6 @@ $(document).ready(function() {
 		    }//end of for
 		}//end of if empty host
 	}//end of if empty hostNums
-//dump($onlinePrivateNetworkHost);    
     if ("" == $onlinePrivateNetworkHost['hostNum']) $onlinePrivateNetworkHost['hostNum']=0;
 	echo "<script type=\"text/javascript\">
         var onlineDeviceNum = ", $onlinePrivateNetworkHost['hostNum'] , "; 
@@ -583,7 +581,6 @@ $(document).ready(function() {
 			foreach ($PoolClientArr as $k => $entry) {
 				$PoolClientArr[$k] = array_merge($entry, array('IPv4Address' => $entry["IPAddress"]));
 			}
-			//dump($PoolClientArr);
 			$WiFi3_rootObjName    = "Device.WiFi.AccessPoint.3.AssociatedDevice.";
 			$WiFi3_paramNameArray = array("Device.WiFi.AccessPoint.3.AssociatedDevice.");
 			$WiFi3_mapping_array  = array("MACAddress", "SignalStrength");
@@ -605,7 +602,6 @@ $(document).ready(function() {
 					),
 				);
 			}
-			//dump($AssoDeviceArr);
 			$onXHSClientArr  = array();
 			$onXHSAssoDeviceArr  = array();
 			$offXHSClientArr = array();
@@ -627,8 +623,6 @@ $(document).ready(function() {
 			//foreach ($offXHSArr as $offDevice) {
 			//	array_push($offXHSClientArr, $offDevice);
 			//}
-			//dump($onXHSClientArr);
-			//dump($offXHSClientArr); 
 			$onXHS_clients_num = count($onXHSClientArr);
 			$offXHS_clients_num = count($offXHSClientArr);
 			for ($i=0; $i < $onXHS_clients_num; $i++) { 
@@ -735,8 +729,7 @@ $(document).ready(function() {
 			$Hostspot_2_clients = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 		}
 		$Hotspot_clients = array_merge($Hostspot_1_clients, $Hostspot_2_clients);
-		$clients_num = count($Hotspot_clients);    
-		//dump($Hotspot_clients);
+		$clients_num = count($Hotspot_clients);
     echo '<div  class="module forms data div-pub-network" style="position:relative; top:10px; ">';
       	echo '<h2>Online Devices-xfinitywifi SSID</h2>';
       	echo '<table   class="data" summary="this table displays online devices connected to xfinitywifi SSID">';
@@ -801,8 +794,7 @@ $(document).ready(function() {
       	?>
 </div><!-- end #content -->
 <?php 
-//this part is to populate edit device info on each online private network host basis 
-//dump ($onlinePrivateNetworkHost);
+//this part is to populate edit device info on each online private network host basis
 for ($i=0; $i < $onlinePrivateNetworkHost['hostNum']; $i++) { 
 	$ID      = $onlinePrivateNetworkHost["$i"]['instanceID'];
 	$AddrSrc = $onlinePrivateNetworkHost["$i"]['AddressSource'];

@@ -183,7 +183,6 @@ $(document).ready(function() {
 		    		$portTriggerValues = array();
                     $portTriggerValuesArr = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 			$PTIDs=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."));
-			//var_dump(count($PTIDs));
 			$iclass="even";
 			foreach ($PTIDs as $key=>$i) {
 				$portTriggerValues["$i"] = $portTriggerValuesArr["$key"];
