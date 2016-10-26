@@ -5,7 +5,7 @@
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
 <link rel="stylesheet" type="text/css" href="./cmn/css/comcastPaginator.css"/>
-<script type="text/javascript" src="./cmn/js/comcastPaginator.js"></script>
+<script type="text/javascript" src="./cmn/js/lib/jquery-simple-pagination-plugin.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#system").show();
@@ -229,7 +229,7 @@ function ajaxDo(mode,timef){
 			}
 			// alert(length+mode+'_logs_'+timef2);
 			if(length>20){
-				$('#'+mode+'_logs_'+timef2).comcastPaginator();
+				$('#'+mode+'_logs_'+timef2).simplePagination();
 			}
 			//adjust current data table
 			adjust_acs_tb("This is "+mode+" logs, for "+timef, Array("Discription", "Time", "Level"));

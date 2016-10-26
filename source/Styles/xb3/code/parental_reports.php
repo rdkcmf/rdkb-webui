@@ -5,7 +5,7 @@
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
 <link rel="stylesheet" type="text/css" href="./cmn/css/comcastPaginator.css"/>
-<script type="text/javascript" src="./cmn/js/comcastPaginator.js"></script>
+<script type="text/javascript" src="./cmn/js/lib/jquery-simple-pagination-plugin.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#all").show();
@@ -287,7 +287,7 @@ function ajaxDo(mode,timef){
 				$('input[value="Download"]:visible').prop("disabled",false).removeClass("disabled");
 			}
 			if(length>20){
-				$('#'+mode+'_report_'+timef2).comcastPaginator();
+				$('#'+mode+'_report_'+timef2).simplePagination();
 				
 			}
 			//adjust current data table
