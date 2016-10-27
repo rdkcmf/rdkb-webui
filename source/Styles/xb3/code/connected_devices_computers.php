@@ -557,7 +557,7 @@ $(document).ready(function() {
       		 */
   			$rootObjName    = "Device.DHCPv4.Server.Pool.2.Client.";
 			$paramNameArray = array($rootObjName);
-			$mapping_array  = array("X_CISCO_COM_HostName", "Chaddr", "IPAddress");
+			$mapping_array  = array("X_CISCO_COM_HostName", "Chaddr", "IPv4Address.1.IPAddress");
 			$PoolClientArr = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
 			if ($_DEBUG) {
 				$PoolClientArr = array(
@@ -579,7 +579,7 @@ $(document).ready(function() {
 				);
 			}
 			foreach ($PoolClientArr as $k => $entry) {
-				$PoolClientArr[$k] = array_merge($entry, array('IPv4Address' => $entry["IPAddress"]));
+				$PoolClientArr[$k] = array_merge($entry, array('IPv4Address' => $entry["IPv4Address.1.IPAddress"]));
 			}
 			$WiFi3_rootObjName    = "Device.WiFi.AccessPoint.3.AssociatedDevice.";
 			$WiFi3_paramNameArray = array("Device.WiFi.AccessPoint.3.AssociatedDevice.");
