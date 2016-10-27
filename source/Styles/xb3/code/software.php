@@ -12,9 +12,9 @@ $(document).ready(function() {
 </script>
 <?php
 	$deviceInfo_param = array(
-        "version"   	=> "Device.DeviceInfo.SoftwareVersion",
-	"FirmwareName"	=> "Device.DeviceInfo.X_CISCO_COM_FirmwareName",
-	"ModelName"	=> "Device.DeviceInfo.ModelName",
+		"version"   	=> "Device.DeviceInfo.AdditionalSoftwareVersion",
+		"FirmwareName"	=> "Device.DeviceInfo.X_CISCO_COM_FirmwareName",
+		"ModelName"		=> "Device.DeviceInfo.ModelName",
 	);
     $deviceInfo_value = KeyExtGet("Device.DeviceInfo.", $deviceInfo_param);
 ?>
