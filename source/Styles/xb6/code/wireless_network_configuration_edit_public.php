@@ -11,8 +11,8 @@ if(($_GET['id'] != 5 && $_GET['id'] != 6) || $_SESSION["loginuser"] != "mso"){
 	echo '<script type="text/javascript">location.href="wireless_network_configuration.php";</script>';
 	exit(0);
 }
+if (!($_GET['id'] == 5 || $_GET['id'] == 6)) die();
 $id		= isset($_GET['id']) ? $_GET['id'] : "5";
-$reset	= isset($_GET['reset']) ? $_GET['reset'] : "n";
 $rf		= (2 - intval($id)%2);	//1,3,5,7 == 1(2.4G); 2,4,6,8 == 2(5G)
 $hhs_enable 	= getStr("Device.DeviceInfo.X_COMCAST_COM_xfinitywifiEnable");
 $radio_freq = ($id%2)?"2.4":"5";
@@ -21,110 +21,59 @@ if (("5"!=$id && "6"!=$id) || "true"!=$hhs_enable) {
 	echo '<script type="text/javascript">alert("HotSpot function is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
 	exit(0);
 }
-if ("y" == $reset) {
-	//!!!!!!this is not DM in box, but the standard TR-181 DM in xml file!!!!!!
-	$gre_param = array(
-		"max_client"			=> "Device.WiFi.AccessPoint.$id.BssMaxNumSta",
-		"DSCPMarkPolicy"		=> "dmsb.hotspot.tunnel.1.DSCPMarkPolicy",
-		"PrimaryRemoteEndpoint"	=> "dmsb.hotspot.tunnel.1.PrimaryRemoteEndpoint",
-		"SecondaryRemoteEndpoint" => "dmsb.hotspot.tunnel.1.SecondaryRemoteEndpoint",
-		"KeepAliveCount"		=> "dmsb.hotspot.tunnel.1.RemoteEndpointHealthCheckPingCount",
-		"KeepAliveInterval"		=> "dmsb.hotspot.tunnel.1.RemoteEndpointHealthCheckPingInterval",
-		"KeepAliveThreshold"	=> "dmsb.hotspot.tunnel.1.RemoteEndpointHealthCheckPingFailThreshold",
-		"KeepAliveFailInterval"	=> "dmsb.hotspot.tunnel.1.RemoteEndpointHealthCheckPingIntervalInFailure",
-		"ReconnectPrimary"		=> "dmsb.hotspot.tunnel.1.ReconnectToPrimaryRemoteEndpoint",
-		"DHCPCircuitIDSSID"		=> "dmsb.hotspot.tunnel.1.EnableCircuitID",
-		"DHCPRemoteID"			=> "dmsb.hotspot.tunnel.1.EnableRemoteID",
-	);
-	$gre_value = getDefault('/fss/gw/usr/ccsp/config/bbhm_def_cfg.xml', $gre_param);
-	$max_client			= $gre_value['max_client'];
-	$DSCPMarkPolicy 	= $gre_value['DSCPMarkPolicy']=="" ? "0" : $gre_value['DSCPMarkPolicy'];
-	$PrimaryRemoteEndpoint 	= $gre_value['PrimaryRemoteEndpoint'];
-	$SecondaryRemoteEndpoint = $gre_value['SecondaryRemoteEndpoint'];
-	$KeepAliveCount 	= $gre_value['KeepAliveCount'];
-	$KeepAliveInterval 	= $gre_value['KeepAliveInterval'];
-	$KeepAliveThreshold 	= $gre_value['KeepAliveThreshold'];
-	$KeepAliveFailInterval 	= $gre_value['KeepAliveFailInterval'];
-	$ReconnectPrimary 	= $gre_value['ReconnectPrimary'];
-	$DHCPCircuitIDSSID 	= $gre_value['DHCPCircuitIDSSID']=="1" ? "true" : "false";
-	$DHCPRemoteID 		= $gre_value['DHCPRemoteID']=="1" ? "true" : "false";
-	$wifi_param = array(
-		"radio_enable"		=> "eRT.com.cisco.spvtg.ccsp.Device.WiFi.Radio.SSID.$id.WLANEnable",
-		"network_name"		=> "eRT.com.cisco.spvtg.ccsp.Device.WiFi.Radio.SSID.$id.SSID",
-		"encrypt_mode"		=> "eRT.com.cisco.spvtg.ccsp.Device.WiFi.Radio.SSID.$id.Security",
-		"encrypt_method"	=> "eRT.com.cisco.spvtg.ccsp.Device.WiFi.Radio.SSID.$id.Encryption",
-		"password_wpa"		=> "eRT.com.cisco.spvtg.ccsp.Device.WiFi.Radio.SSID.$id.Passphrase",
-		"password_wep_64"	=> "eRT.com.cisco.spvtg.ccsp.Device.WiFi.Radio.SSID.$id.FIXME",
-		"password_wep_128"	=> "eRT.com.cisco.spvtg.ccsp.Device.WiFi.Radio.SSID.$id.FIXME",
-		"broadcastSSID"		=> "eRT.com.cisco.spvtg.ccsp.Device.WiFi.Radio.SSID.$id.HideSSID",
-		"enableWMM"			=> "eRT.com.cisco.spvtg.ccsp.Device.WiFi.Radio.SSID.$id.WMMEnable",
-	);
-	$wifi_value = getDefault('/nvram/bbhm_cur_cfg.xml', $wifi_param);
-	$radio_enable		= $wifi_value['radio_enable']=="1" ? "true" : "false";
-	$network_name		= $wifi_value['network_name'];
-	$encrypt_mode		= "None";
-	$encrypt_method		= "None";
-	$password_wpa		= $wifi_value['password_wpa'];
-	$password_wep_64	= $wifi_value['password_wep_64'];
-	$password_wep_128	= $wifi_value['password_wep_128'];
-	$broadcastSSID 		= $wifi_value['broadcastSSID']=="0" ? "true" : "false";
-	$enableWMM			= $wifi_value['enableWMM']=="1" ? "true" : "false";
-}
-else {
-	$wifi_param = array(
-		// "wireless_mode"	=> "Device.WiFi.Radio.".((intval($id)+1)%2+1).".OperatingStandards",
-		// "lower_layers"	=> "Device.WiFi.SSID.$id.LowerLayers",
-		"radio_enable"		=> "Device.WiFi.SSID.$id.Enable",
-		"network_name"		=> "Device.WiFi.SSID.$id.SSID",
-		"encrypt_mode"		=> "Device.WiFi.AccessPoint.$id.Security.ModeEnabled",
-		"encrypt_method"	=> "Device.WiFi.AccessPoint.$id.Security.X_CISCO_COM_EncryptionMethod",
-		"password_wpa"		=> "Device.WiFi.AccessPoint.$id.Security.X_COMCAST-COM_KeyPassphrase",
-		"password_wep_64"	=> "Device.WiFi.AccessPoint.$id.Security.X_CISCO_COM_WEPKey64Bit.1.WEPKey",
-		"password_wep_128"	=> "Device.WiFi.AccessPoint.$id.Security.X_CISCO_COM_WEPKey128Bit.1.WEPKey",
-		"broadcastSSID"		=> "Device.WiFi.AccessPoint.$id.SSIDAdvertisementEnabled",
-		"enableWMM"			=> "Device.WiFi.AccessPoint.$id.WMMEnable",
-		"max_client"		=> "Device.WiFi.AccessPoint.$id.X_CISCO_COM_BssMaxNumSta",
-		// "max_client"		=> "Device.WiFi.AccessPoint.$id.MaxAssociatedDevices",
-		"Radio_".$rf."_Enable"	=> "Device.WiFi.Radio.$rf.Enable",
-	);
-	$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
-	$radio_enable		= $wifi_value['radio_enable'];
-	$network_name		= $wifi_value['network_name'];
-	$encrypt_mode		= $wifi_value['encrypt_mode'];
-	$encrypt_method		= $wifi_value['encrypt_method'];
-	$password_wpa		= $wifi_value['password_wpa'];
-	$password_wep_64	= $wifi_value['password_wep_64'];
-	$password_wep_128	= $wifi_value['password_wep_128'];
-	$broadcastSSID 		= $wifi_value['broadcastSSID'];
-	$enableWMM		= $wifi_value['enableWMM'];
-	$max_client		= $wifi_value['max_client'];
-	$GRE_Tunnel_param = array(
-		"DSCPMarkPolicy" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.DSCPMarkPolicy",
-		"PrimaryRemoteEndpoint" => "Device.X_COMCAST-COM_GRE.Tunnel.1.PrimaryRemoteEndpoint",
-		"SecondaryRemoteEndpoint" => "Device.X_COMCAST-COM_GRE.Tunnel.1.SecondaryRemoteEndpoint",
-		"KeepAliveCount" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingCount",
-		"KeepAliveInterval" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingInterval",
-		"KeepAliveThreshold" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingFailThreshold",
-		"KeepAliveFailInterval" => "Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingIntervalInFailure",
-		"ReconnectPrimary" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.ReconnectToPrimaryRemoteEndpoint",
-		"DHCPCircuitIDSSID" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.EnableCircuitID",
-		"DHCPRemoteID" 		=> "Device.X_COMCAST-COM_GRE.Tunnel.1.EnableRemoteID",
-	);
-	$GRE_Tunnel_value = KeyExtGet("Device.X_COMCAST-COM_GRE.Tunnel.1.", $GRE_Tunnel_param);
-	$DSCPMarkPolicy 	= $GRE_Tunnel_value["DSCPMarkPolicy"];
-	$PrimaryRemoteEndpoint 	= $GRE_Tunnel_value["PrimaryRemoteEndpoint"];
-	$SecondaryRemoteEndpoint = $GRE_Tunnel_value["SecondaryRemoteEndpoint"];
-	$KeepAliveCount 	= $GRE_Tunnel_value["KeepAliveCount"];
-	$KeepAliveInterval 	= $GRE_Tunnel_value["KeepAliveInterval"];
-	$KeepAliveThreshold 	= $GRE_Tunnel_value["KeepAliveThreshold"];
-	$KeepAliveFailInterval 	= $GRE_Tunnel_value["KeepAliveFailInterval"];
-	$ReconnectPrimary 	= $GRE_Tunnel_value["ReconnectPrimary"];
-	$DHCPCircuitIDSSID 	= $GRE_Tunnel_value["DHCPCircuitIDSSID"];
-	$DHCPRemoteID 		= $GRE_Tunnel_value["DHCPRemoteID"];
-	//if Radio.{i}.Enable is false, ALL SSIDs belong to that radio shows disabled, else depends on SSID.{i}.Enable
-	if ("false" == $wifi_value["Radio_".$rf."_Enable"]){
-		$radio_enable = "false";
-	}
+$wifi_param = array(
+	// "wireless_mode"	=> "Device.WiFi.Radio.".((intval($id)+1)%2+1).".OperatingStandards",
+	// "lower_layers"	=> "Device.WiFi.SSID.$id.LowerLayers",
+	"radio_enable"		=> "Device.WiFi.SSID.$id.Enable",
+	"network_name"		=> "Device.WiFi.SSID.$id.SSID",
+	"encrypt_mode"		=> "Device.WiFi.AccessPoint.$id.Security.ModeEnabled",
+	"encrypt_method"	=> "Device.WiFi.AccessPoint.$id.Security.X_CISCO_COM_EncryptionMethod",
+	"password_wpa"		=> "Device.WiFi.AccessPoint.$id.Security.X_COMCAST-COM_KeyPassphrase",
+	"password_wep_64"	=> "Device.WiFi.AccessPoint.$id.Security.X_CISCO_COM_WEPKey64Bit.1.WEPKey",
+	"password_wep_128"	=> "Device.WiFi.AccessPoint.$id.Security.X_CISCO_COM_WEPKey128Bit.1.WEPKey",
+	"broadcastSSID"		=> "Device.WiFi.AccessPoint.$id.SSIDAdvertisementEnabled",
+	"enableWMM"			=> "Device.WiFi.AccessPoint.$id.WMMEnable",
+	"max_client"		=> "Device.WiFi.AccessPoint.$id.X_CISCO_COM_BssMaxNumSta",
+	// "max_client"		=> "Device.WiFi.AccessPoint.$id.MaxAssociatedDevices",
+	"Radio_".$rf."_Enable"	=> "Device.WiFi.Radio.$rf.Enable",
+);
+$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
+$radio_enable		= $wifi_value['radio_enable'];
+$network_name		= $wifi_value['network_name'];
+$encrypt_mode		= $wifi_value['encrypt_mode'];
+$encrypt_method		= $wifi_value['encrypt_method'];
+$password_wpa		= $wifi_value['password_wpa'];
+$password_wep_64	= $wifi_value['password_wep_64'];
+$password_wep_128	= $wifi_value['password_wep_128'];
+$broadcastSSID 		= $wifi_value['broadcastSSID'];
+$enableWMM		= $wifi_value['enableWMM'];
+$max_client		= $wifi_value['max_client'];
+$GRE_Tunnel_param = array(
+	"DSCPMarkPolicy" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.DSCPMarkPolicy",
+	"PrimaryRemoteEndpoint" => "Device.X_COMCAST-COM_GRE.Tunnel.1.PrimaryRemoteEndpoint",
+	"SecondaryRemoteEndpoint" => "Device.X_COMCAST-COM_GRE.Tunnel.1.SecondaryRemoteEndpoint",
+	"KeepAliveCount" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingCount",
+	"KeepAliveInterval" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingInterval",
+	"KeepAliveThreshold" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingFailThreshold",
+	"KeepAliveFailInterval" => "Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingIntervalInFailure",
+	"ReconnectPrimary" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.ReconnectToPrimaryRemoteEndpoint",
+	"DHCPCircuitIDSSID" 	=> "Device.X_COMCAST-COM_GRE.Tunnel.1.EnableCircuitID",
+	"DHCPRemoteID" 		=> "Device.X_COMCAST-COM_GRE.Tunnel.1.EnableRemoteID",
+);
+$GRE_Tunnel_value = KeyExtGet("Device.X_COMCAST-COM_GRE.Tunnel.1.", $GRE_Tunnel_param);
+$DSCPMarkPolicy 	= $GRE_Tunnel_value["DSCPMarkPolicy"];
+$PrimaryRemoteEndpoint 	= $GRE_Tunnel_value["PrimaryRemoteEndpoint"];
+$SecondaryRemoteEndpoint = $GRE_Tunnel_value["SecondaryRemoteEndpoint"];
+$KeepAliveCount 	= $GRE_Tunnel_value["KeepAliveCount"];
+$KeepAliveInterval 	= $GRE_Tunnel_value["KeepAliveInterval"];
+$KeepAliveThreshold 	= $GRE_Tunnel_value["KeepAliveThreshold"];
+$KeepAliveFailInterval 	= $GRE_Tunnel_value["KeepAliveFailInterval"];
+$ReconnectPrimary 	= $GRE_Tunnel_value["ReconnectPrimary"];
+$DHCPCircuitIDSSID 	= $GRE_Tunnel_value["DHCPCircuitIDSSID"];
+$DHCPRemoteID 		= $GRE_Tunnel_value["DHCPRemoteID"];
+//if Radio.{i}.Enable is false, ALL SSIDs belong to that radio shows disabled, else depends on SSID.{i}.Enable
+if ("false" == $wifi_value["Radio_".$rf."_Enable"]){
+	$radio_enable = "false";
 }
 if ($_SESSION['_DEBUG']){
 	$radio_enable		= "true";
@@ -347,16 +296,27 @@ wpa2psk ==> 8 to 63 Ascii characters
     });	
 	$("#restore_settings").click(function(){
 		jConfirm(
-			"This will change your settings in this page to default values. Are you sure you want to change the settings to the default values? (take effect immediately)"
+			"This will change your Public Wi-Fi Network Configuration to default values. Are you sure you want to change the settings to the default values? (take effect immediately)"
 			, "Reset Default Settings"
 			,function(ret) {
 				if(ret) {
-					if (-1 == location.href.indexOf("reset=y")){
-						location.href = location.href+'&reset=y';
-					}
-					else{
-						location.reload();
-					}
+					var jsConfig = '{"radio_restore":"true"'
+					+', "ssid_number":"<?php echo $id; ?>"'
+					+'}';
+					jProgress('This may take several seconds...', 60);
+					$.ajax({
+						type:"POST",
+						url:"actionHandler/ajaxSet_wireless_network_configuration_edit_public.php",
+						data: { configInfo: jsConfig },
+						success:function(){
+							jHide();
+							location.href = 'wireless_network_configuration.php';
+						},
+						error:function(){
+							jHide();
+							jAlert("Something wrong, please try later!");
+						}
+					});
 				}
 			}
 		);
@@ -394,9 +354,7 @@ wpa2psk ==> 8 to 63 Ascii characters
 						+'", "ReconnectPrimary":"'+3600*$("#ReconnectPrimary").val()
 						+'", "DHCPCircuitIDSSID":"'+$("#circuit_switch").radioswitch("getState").on
 						+'", "DHCPRemoteID":"'+$("#remote_switch").radioswitch("getState").on
-						 <?php if ("y" == $reset) {
-						echo ', "radio_reset":	"true"';
-					}?>	+'"}';	
+						+'"}';
 		if($("#pageForm").valid()) {
 			jProgress('This may take several seconds...', 60);
 			$.ajax({
@@ -405,7 +363,6 @@ wpa2psk ==> 8 to 63 Ascii characters
 				data: { configInfo: jsConfig },
 				success:function(){
 					jHide();
-					//location.href = location.href.replace(/&reset=y/g, "");
 					location.href = 'wireless_network_configuration.php';
 				},
 				error:function(){
@@ -415,10 +372,6 @@ wpa2psk ==> 8 to 63 Ascii characters
 			});
 		}
 	});
-	//do apply right after press "restore default" button
-	if ("y" == "<?php echo $reset; ?>"){
-		$("#save_settings").click();
-	}
 });
 function init_form() {
 	//re-style each div
@@ -620,7 +573,7 @@ label{
 			</div>
 			<div class="form-row odd">
 				<input type="button" id="save_settings"    name="save_settings"    class="btn" value="Save Settings" />
-				<input type="reset"  id="cancel_settings"  name="cancel_settings"  class="btn" value="Cancel" onclick="location.reload();" />
+				<input type="reset"  id="cancel_settings"  name="cancel_settings"  class="btn" value="Cancel" />
 				<input type="button" id="restore_settings" name="restore_settings" class="btn alt" value="Restore Default Settings" />
 			</div>
 		</form>
