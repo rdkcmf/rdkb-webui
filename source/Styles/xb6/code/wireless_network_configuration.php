@@ -8,6 +8,9 @@
 <?php 
 	$ret = init_psmMode("Gateway > Connection > Wi-Fi", "nav-wifi-config");
 	if ("" != $ret){echo $ret;	return;}
+	//from connected_devices_computers.php only 3, 5 are expected
+	if(isSet($_GET['mac_ssid']))
+		if (!($_GET['mac_ssid'] == 3 || $_GET['mac_ssid'] == 5)) die();
 ?>
 <?php
 /*********************get WiFi parameters***************************/
