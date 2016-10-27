@@ -17,6 +17,9 @@ Licensed under the MIT License
 Copyright 2006-2008, 2013 Jörn Zaefferer
 Licensed under the MIT License
 
+Copyright (c) Douglas Denhartog
+Licensed under the MIT License
+
 Copyright Unknown
 https://code.google.com/p/jscomponentes/
 Licensed under the MIT License
