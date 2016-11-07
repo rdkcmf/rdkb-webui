@@ -19,7 +19,7 @@ $jsConfig = $_POST['configInfo'];
 //$jsConfig = '{"status":"true", "target":"sta_inet"}';
 $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);
-function get_tips($target, $status)
+function get_tips($target, $status, $user_type)
 {
 	$tip = "No Tips!";
 	switch($target)
@@ -36,6 +36,7 @@ function get_tips($target, $status)
 			if ("true"==$status){
 				$sum = 0;
 				$ids = explode(",", getInstanceIds("Device.WiFi.AccessPoint."));
+				if($user_type == 'admin') $ids = array(1,2);
 				foreach($ids as $i){
 					$sum += getStr("Device.WiFi.AccessPoint.$i.AssociatedDeviceNumberOfEntries");
 				}
@@ -72,11 +73,12 @@ function get_tips($target, $status)
 }
 $tags = explode(',', $arConfig['target']);
 $stas = explode(',', $arConfig['status']);
+$user_type = $arConfig['user_type'];
 $tips = array();
 for ($i=0; $i<count($tags); $i++) {
-	array_push($tips, get_tips($tags[$i], $stas[$i]));
+	array_push($tips, get_tips($tags[$i], $stas[$i], $user_type));
 }
-$arConfig = array('tags'=>$tags, 'tips'=>$tips);			
+$arConfig = array('tags'=>$tags, 'tips'=>$tips);
 $jsConfig = json_encode($arConfig);
 echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 ?>

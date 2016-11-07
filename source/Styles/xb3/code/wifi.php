@@ -17,6 +17,8 @@ $wifi_param = array(
 	"1_BSSID"	=> "Device.WiFi.SSID.1.BSSID",
 	"2_Enable"	=> "Device.WiFi.Radio.2.Enable",
 	"2_BSSID"	=> "Device.WiFi.SSID.2.BSSID",
+	"1_SSID"	=> "Device.WiFi.SSID.1.Enable",
+	"2_SSID"	=> "Device.WiFi.SSID.2.Enable",
 	//getStr
 	"1_RadioUpTime"	=> "Device.WiFi.Radio.1.X_COMCAST_COM_RadioUpTime",
 	"2_RadioUpTime"	=> "Device.WiFi.Radio.2.X_COMCAST_COM_RadioUpTime",
@@ -29,6 +31,13 @@ if ("Enabled" == $_SESSION["psmMode"])
 	$wifi_value['1_BSSID']	="";
 	$wifi_value['2_Enable']	="";
 	$wifi_value['2_BSSID']	="";
+}
+if($_SESSION['loginuser'] == 'admin'){
+	$wifi_status1 = ($wifi_value['1_SSID'] == 'true') ? true : false ;
+	$wifi_status2 = ($wifi_value['2_SSID'] == 'true') ? true : false ;
+} else {
+	$wifi_status1 = ($wifi_value['1_Enable'] == 'true') ? true : false ;
+	$wifi_status2 = ($wifi_value['2_Enable'] == 'true') ? true : false ;
 }
 function div_mod($n, $m)
 {
@@ -52,7 +61,7 @@ function div_mod($n, $m)
 		<h2>Wi-Fi LAN port (2.4 GHZ)</h2>
 		<div class="form-row">
 			<span class="readonlyLabel">Wi-Fi link status:</span>
-			<span class="value"><?php echo ("true"==$wifi_value['1_Enable'])?"Active":"Inactive";?></span>
+			<span class="value"><?php echo ($wifi_status1)?"Active":"Inactive";?></span>
 		</div>
 		<div class="form-row odd">
 			<span class="readonlyLabel">MAC Address:</span>
@@ -62,7 +71,7 @@ function div_mod($n, $m)
 			<span class="readonlyLabel">System Uptime:</span>
 			<span class="value">
 			<?php
-			$sec = $wifi_value['1_RadioUpTime'];
+			$sec = ($wifi_status1)?$wifi_value['1_RadioUpTime']:0;
 			$tmp = div_mod($sec, 24*60*60);
 			$day = $tmp[0];
 			$tmp = div_mod($tmp[1], 60*60);
@@ -77,7 +86,7 @@ function div_mod($n, $m)
 		<h2>Wi-Fi LAN port (5 GHZ)</h2>
 		<div class="form-row">
 			<span class="readonlyLabel">Wi-Fi link status:</span>
-			<span class="value"><?php echo ("true"==$wifi_value['2_Enable'])?"Active":"Inactive";?></span>
+			<span class="value"><?php echo ($wifi_status2)?"Active":"Inactive";?></span>
 		</div>
 		<div class="form-row odd">
 			<span class="readonlyLabel">MAC Address:</span>
@@ -87,7 +96,7 @@ function div_mod($n, $m)
 			<span class="readonlyLabel">System Uptime:</span>
 			<span class="value">
 			<?php
-			$sec = $wifi_value['2_RadioUpTime'];
+			$sec = ($wifi_status2)?$wifi_value['2_RadioUpTime']:0;
 			$tmp = div_mod($sec, 24*60*60);
 			$day = $tmp[0];
 			$tmp = div_mod($tmp[1], 60*60);

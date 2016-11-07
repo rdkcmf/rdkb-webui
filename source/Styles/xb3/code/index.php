@@ -180,6 +180,7 @@ $_SESSION["psmMode"] = $psmMode;
 	$sta_wifi = "false";
 	if("Disabled"==$_SESSION["psmMode"]){
 		$ssids = explode(",", getInstanceIds("Device.WiFi.SSID."));
+		if(!$isMSO) $ssids = array(1,2);
 		foreach ($ssids as $i){
 			$r = (2 - intval($i)%2);	//1,3,5,7==1(2.4G); 2,4,6,8==2(5G)
 			if ("true" == getStr("Device.WiFi.Radio.$r.Enable") && "true" == getStr("Device.WiFi.SSID.$i.Enable")){	//bwg has radio.enable, active status is “at least one SSID and its Radio is enabled”
@@ -293,6 +294,7 @@ $(document).ready(function() {
 	var sta_wifi = "<?php echo $sta_wifi; ?>";
 	var sta_moca = "<?php echo $sta_moca; ?>";
 	var sta_fire = "<?php echo $sta_fire; ?>";
+	var user_type = "<?php echo ($isMSO)?'mso':'admin'; ?>";
 	/*
 	* get status when hover or tab focused one by one
 	* but for screen reader we have to load all status once
@@ -304,7 +306,8 @@ $(document).ready(function() {
 	// var status = ("sta_fire"==target)? sta_fire : !(theObj.hasClass("off"));
 	// var jsConfig = '{"status":"'+status+'", "target":"'+target+'"}';
 	var jsConfig = '{"target":"'+"sta_inet,sta_wifi,sta_moca,sta_fire"
-	+'", "status":"'+sta_inet+','+sta_wifi+','+sta_moca+','+sta_fire+'"}';
+	+'", "status":"'+sta_inet+','+sta_wifi+','+sta_moca+','+sta_fire+'"'
+	+', "user_type":"'+user_type+'"}';
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_index_userbar.php",
