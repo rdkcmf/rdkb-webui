@@ -332,6 +332,9 @@ $(document).ready(function() {
 	$("[name='channel_bandwidth1']").change(function() {
 		//enable all channel first
 		$("#channel_number option").prop("disabled", false);
+		if ($("#DFS_Channel_Selection_disabled").prop("checked")) {
+			$("#channel_number1").find("[value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true).prop("selected", false);
+                }
 		//disable some channel as per extension channel when NOT 20MHz in 5G (2.4G able to set channel and extension channel together)
 		if (!$("#channel_bandwidth201").prop("checked")) {
 			//40MHz
