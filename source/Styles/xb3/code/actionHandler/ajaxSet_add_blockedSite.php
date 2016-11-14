@@ -21,27 +21,10 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-function time_date_conflict($TD1, $TD2) {
-	$ret = false;
-	$days1 = explode(",", $TD1[2]);
-	$days2 = explode(",", $TD2[2]);
-	foreach ($days1 as &$value) {
-		if (in_array($value, $days2)) {
-			//deMorgan's law - to find if ranges are overlapping
-			//(StartA <= EndB)  and  (EndA >= StartB)
-			if((strtotime($TD1[0]) < strtotime($TD2[1])) and (strtotime($TD1[1]) > strtotime($TD2[0]))){
-	  			$ret = true;
-	  			break;
-			} 
-		}
-	}
-	return $ret;
-}
 $blockedSiteInfo = json_decode($_POST['BlockInfo'], true);
 $objPrefix = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 $rootObjName = $objPrefix;
 $exist = false;
-$idArr = explode(",", getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite."));
 $block=$blockedSiteInfo['alwaysBlock'];
 $startTime=$blockedSiteInfo['StartTime'];
 $endTime=$blockedSiteInfo['EndTime'];
@@ -49,21 +32,22 @@ $blockDays=$blockedSiteInfo['blockedDays'];
 $result = "";
 if( array_key_exists('URL', $blockedSiteInfo) ) {
 	//this is to set blocked URL
-    	//firstly, check whether URL exist or not
+   	//firstly, check whether URL exist or not
 	$url = $blockedSiteInfo['URL'];
 		$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 		$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
 		$mapping_array  = array("Site", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
-		$managedSitesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-    	foreach ($idArr as $key => $value) {
-		$always_Block = $managedSitesValues["$key"]["AlwaysBlock"];
-		$start_Time = $managedSitesValues["$key"]["StartTime"];
-		$end_Time = $managedSitesValues["$key"]["EndTime"];
-		$block_Days = $managedSitesValues["$key"]["BlockDays"];
+		$managedSitesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
+		if($UTC_local_Time_conversion) $managedSitesValues = days_time_conversion_get($managedSitesValues, 'Site');
+    	foreach ($managedSitesValues as $key => $value) {
+		$always_Block = $value["AlwaysBlock"];
+		$start_Time = $value["StartTime"];
+		$end_Time = $value["EndTime"];
+		$block_Days = $value["BlockDays"];
 		//Check for time and day conflicts
 		$TD1=array($startTime, $endTime, $blockDays);
 		$TD2=array($start_Time, $end_Time, $block_Days);
-		if (($url == $managedSitesValues["$key"]["Site"]) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
+		if (($url == $value["Site"]) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
 			$result .= "Conflict with other blocked site rule. Please check your input!";
 			break;
 		}
@@ -90,20 +74,37 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 			setStr($objPrefix.$index.".AlwaysBlock", $blockedSiteInfo['alwaysBlock'], false);
 			setStr($objPrefix.$index.".BlockMethod", "URL", true);*/
 		}
-		else{
+		else {
+			if ($UTC_local_Time_conversion) $timeData = days_time_conversion_set($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime'], $blockedSiteInfo['blockedDays']);
+			else $timeData = array($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime'], $blockedSiteInfo['blockedDays'], false);
 			$paramArray = 
 				array (
 					array($objPrefix.$index.".Site", "string", $blockedSiteInfo['URL']),
 					array($objPrefix.$index.".AlwaysBlock", "bool", $blockedSiteInfo['alwaysBlock']),
 					array($objPrefix.$index.".BlockMethod", "string", "URL"),
-					array($objPrefix.$index.".StartTime", "string", $blockedSiteInfo['StartTime']),
-					array($objPrefix.$index.".EndTime", "string", $blockedSiteInfo['EndTime']),
-					array($objPrefix.$index.".BlockDays", "string", $blockedSiteInfo['blockedDays']),
+					array($objPrefix.$index.".StartTime", "string", $timeData[0]),
+					array($objPrefix.$index.".EndTime", "string", $timeData[1]),
+					array($objPrefix.$index.".BlockDays", "string", $timeData[2]),
 				);
-			$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);	
-			if (!$retStatus){
+			$retStatus1 = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);
+			if($timeData[3]){
+				addTblObj($rootObjName);
+				$IDs=explode(",",getInstanceIDs($rootObjName));
+				$index=$IDs[count($IDs)-1];
+				$paramArray = 
+					array (
+						array($objPrefix.$index.".Site", "string", $blockedSiteInfo['URL']),
+						array($objPrefix.$index.".AlwaysBlock", "bool", $blockedSiteInfo['alwaysBlock']),
+						array($objPrefix.$index.".BlockMethod", "string", "URL"),
+						array($objPrefix.$index.".StartTime", "string", $timeData[4]),
+						array($objPrefix.$index.".EndTime", "string", $timeData[5]),
+						array($objPrefix.$index.".BlockDays", "string", $timeData[6]),
+					);
+				$retStatus2 = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);
+			}
+			if ((!$retStatus1 && !$timeData[3]) || (!$retStatus1 && $timeData[3] && !$retStatus2)){
 				$result="Success!";
-			}	
+			}
 			else {
 				$result = 'Failed to add';
 			}
@@ -124,16 +125,17 @@ else{
 		$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 		$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
 		$mapping_array  = array("Site", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
-		$managedSitesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-    	foreach ($idArr as $key => $value) {
-	    	$always_Block = $managedSitesValues["$key"]["AlwaysBlock"];
-		$start_Time = $managedSitesValues["$key"]["StartTime"];
-		$end_Time = $managedSitesValues["$key"]["EndTime"];
-		$block_Days = $managedSitesValues["$key"]["BlockDays"];
+		$managedSitesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
+		if($UTC_local_Time_conversion) $managedSitesValues = days_time_conversion_get($managedSitesValues, 'Site');
+    	foreach ($managedSitesValues as $key => $value) {
+    	$always_Block = $value["AlwaysBlock"];
+		$start_Time = $value["StartTime"];
+		$end_Time = $value["EndTime"];
+		$block_Days = $value["BlockDays"];
 		//Check for time and day conflicts
 		$TD1=array($startTime, $endTime, $blockDays);
 		$TD2=array($start_Time, $end_Time, $block_Days);
-		if (($keyword == $managedSitesValues["$key"]["Site"]) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
+		if (($keyword == $value["Site"]) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
 			$result .= "Conflict with other blocked Keyword rule. Please check your input!";
 			break;
 		}
@@ -160,20 +162,37 @@ else{
 			setStr($objPrefix.$index.".AlwaysBlock", $blockedSiteInfo['alwaysBlock'], false);
 			setStr($objPrefix.$index.".BlockMethod", "Keyword", true);*/
 		}
-		else{
+		else {
+			if ($UTC_local_Time_conversion) $timeData = days_time_conversion_set($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime'], $blockedSiteInfo['blockedDays']);
+			else $timeData = array($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime'], $blockedSiteInfo['blockedDays'], false);
 			$paramArray = 
 				array (
 					array($objPrefix.$index.".Site", "string", $blockedSiteInfo['Keyword']),
 					array($objPrefix.$index.".AlwaysBlock", "bool", $blockedSiteInfo['alwaysBlock']),
 					array($objPrefix.$index.".BlockMethod", "string", "Keyword"),
-					array($objPrefix.$index.".StartTime", "string", $blockedSiteInfo['StartTime']),
-					array($objPrefix.$index.".EndTime", "string", $blockedSiteInfo['EndTime']),
-					array($objPrefix.$index.".BlockDays", "string", $blockedSiteInfo['blockedDays']),
+					array($objPrefix.$index.".StartTime", "string", $timeData[0]),
+					array($objPrefix.$index.".EndTime", "string", $timeData[1]),
+					array($objPrefix.$index.".BlockDays", "string", $timeData[2]),
 				);
-			$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);	
-			if (!$retStatus){
+			$retStatus1 = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);
+			if($timeData[3]){
+				addTblObj($rootObjName);
+				$IDs=explode(",",getInstanceIDs($rootObjName));
+				$index=$IDs[count($IDs)-1];
+				$paramArray = 
+					array (
+						array($objPrefix.$index.".Site", "string", $blockedSiteInfo['Keyword']),
+						array($objPrefix.$index.".AlwaysBlock", "bool", $blockedSiteInfo['alwaysBlock']),
+						array($objPrefix.$index.".BlockMethod", "string", "Keyword"),
+						array($objPrefix.$index.".StartTime", "string", $timeData[4]),
+						array($objPrefix.$index.".EndTime", "string", $timeData[5]),
+						array($objPrefix.$index.".BlockDays", "string", $timeData[6]),
+					);
+				$retStatus2 = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);
+			}
+			if ((!$retStatus1 && !$timeData[3]) || (!$retStatus1 && $timeData[3] && !$retStatus2)){
 				$result="Success!";
-			}	
+			}
 			else {
 				$result = 'Failed to add';
 			}

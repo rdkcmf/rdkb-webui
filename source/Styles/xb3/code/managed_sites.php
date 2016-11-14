@@ -231,7 +231,7 @@ $("#managed_sites_switch").change(function() {
 	 $(function() {
 $.validator.addMethod("no_space", function(value, element, param) {
 		return !param || /^[a-zA-Z0-9]*$/i.test(value);
-	}, " No spaces. Case sensitive.");
+	}, "Letters and Numbers only. Case sensitive.");
 				$(pageFORM).validate({
 					rules: {
 						url: {
@@ -396,12 +396,13 @@ $.validator.addMethod("no_space", function(value, element, param) {
 		</div>
 	</div>
 	</form>
-	<?php 
+	<?php
 	$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
 	$mapping_array  = array("BlockMethod", "Site", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
-	$blockedSitesInstance = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-	$blockedSitesInstanceArr = explode(",", getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite."));
+	$blockedSitesInstance = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
+	if($UTC_local_Time_conversion) $blockedSitesInstance = days_time_conversion_get($blockedSitesInstance, 'Site');
+	$blockedSitesNums = sizeof($blockedSitesInstance);
 	//TrustedUser
 	$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.";
 	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser.");
@@ -412,11 +413,9 @@ $.validator.addMethod("no_space", function(value, element, param) {
 	$paramNameArray = array("Device.Hosts.Host.");
 	$mapping_array  = array("HostName", "PhysAddress", "IPAddress", "IPv6Address.1.IPAddress");
 	$Host = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-   	// $blockedSitesNums = sizeof($blockedSitesInstanceArr);
-	$blockedSitesNums = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSiteNumberOfEntries");
-	$blockedSitesURL = array();
+   	$blockedSitesURL = array();
 	$blockedSitesKeyWord = array();
-	for ($i=0,$j=0,$k=0; $i < $blockedSitesNums; $i++) { 
+	for ($i=0,$j=0,$k=0; $i < $blockedSitesNums; $i++) {
     	// retrieve info from backend
 		$blockedSites["$i"]['BlockMethod'] = $blockedSitesInstance["$i"]['BlockMethod'];
 		$blockedSites["$i"]['Site'] = $blockedSitesInstance["$i"]['Site'];
@@ -427,7 +426,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
     	//process blockedSites info based on Blocked Method, URL/Keywords
 		if( !strcasecmp("URL", $blockedSites["$i"]['BlockMethod'])){
 			$blockedSitesURL["$j"]['InstanceID'] = $i + 1;
-			$blockedSitesURL["$j"]['RealID'] = $blockedSitesInstanceArr["$i"];
+			$blockedSitesURL["$j"]['RealID'] = $blockedSitesInstance["$i"]['__id'];
 			$blockedSitesURL["$j"]['Site'] = $blockedSites["$i"]['Site'];
 			$blockedSitesURL["$j"]['AlwaysBlock'] = $blockedSites["$i"]['AlwaysBlock'];
 			$blockedSitesURL["$j"]['StartTime'] = $blockedSites["$i"]['StartTime'];
@@ -437,7 +436,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 		}
 		else{
 			$blockedSitesKeyWord["$k"]['InstanceID'] = $i + 1;
-			$blockedSitesKeyWord["$k"]['RealID'] = $blockedSitesInstanceArr["$i"];
+			$blockedSitesKeyWord["$k"]['RealID'] = $blockedSitesInstance["$i"]['__id'];
 			$blockedSitesKeyWord["$k"]['Site'] = $blockedSites["$i"]['Site'];
 			$blockedSitesKeyWord["$k"]['AlwaysBlock'] = $blockedSites["$i"]['AlwaysBlock'];
 			$blockedSitesKeyWord["$k"]['StartTime'] = $blockedSites["$i"]['StartTime'];
