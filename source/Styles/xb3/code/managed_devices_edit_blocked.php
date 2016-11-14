@@ -9,32 +9,61 @@ $CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
 <?php
-	if (!preg_match('/^\d{1,3}$/', $_GET['id'])) die();
 	$i=$_GET['id'];
-//	echo "<script>var ID=".$i.";</script>";
-    $managed_devices_param = array(
-        "name"          => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".Description",
-        "mac"           => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".MACAddress",
-        "blockStatus"   => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".AlwaysBlock",
-        "startTime"     => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".StartTime",
-        "endTime"       => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".EndTime",
-        "days"          => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".BlockDays",
+	$index = explode('_', $i);
+	if (!preg_match('/^\d{1,3}$/', $index[0])) die();
+	if (!preg_match('/^\d{1,3}$/', $index[1]) && $UTC_local_Time_conversion && array_key_exists(1, $index)) die();
+	$managed_devices_param = array(
+		"name"			=> "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[0].".Description",
+		"MACAddress"	=> "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[0].".MACAddress",
+		"blockStatus"	=> "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[0].".AlwaysBlock",
+		"StartTime"		=> "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[0].".StartTime",
+		"EndTime"		=> "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[0].".EndTime",
+		"BlockDays"		=> "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[0].".BlockDays",
 	);
-    $managed_devices_value = KeyExtGet("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.", $managed_devices_param);
+	$managed_devices_value = KeyExtGet("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.", $managed_devices_param);
+	if($UTC_local_Time_conversion){
+		$i = $index[0];
+		$managed_devices_get = array();
+		$managed_devices_value1 = $managed_devices_value;
+		array_push($managed_devices_get, $managed_devices_value1);
+		if(array_key_exists(1, $index)){
+			$managed_devices_param = array(
+				"name"			=> "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[1].".Description",
+				"MACAddress"	=> "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[1].".MACAddress",
+				"blockStatus"	=> "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[1].".AlwaysBlock",
+				"StartTime"		=> "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[1].".StartTime",
+				"EndTime"		=> "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[1].".EndTime",
+				"BlockDays"		=> "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[1].".BlockDays",
+			);
+			$managed_devices_value2 = KeyExtGet("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.", $managed_devices_param);
+			$i = $i.'_'.$index[1];
+			array_push($managed_devices_get, $managed_devices_value2);
+		}
+		$managed_devices_value = array();
+		$managed_devices_get = days_time_conversion_get($managed_devices_get, 'MACAddress');
+		foreach ($managed_devices_get as $key => $value) {
+			foreach ($value as $k => $val) {
+				$managed_devices_value[$k] = $val;
+			}
+			unset($val);
+		}
+		unset($value);
+	}
 	$name = $managed_devices_value["name"]; 
-	$mac = $managed_devices_value["mac"]; 
+	$mac = $managed_devices_value["MACAddress"]; 
 	$blockStatus = $managed_devices_value["blockStatus"]; 
 	global $startTime, $endTime, $days;
 	if($blockStatus == "false") {
-		$startTime = $managed_devices_value["startTime"]; 
-		$endTime = $managed_devices_value["endTime"]; 
-		$days = $managed_devices_value["days"]; 
+		$startTime = $managed_devices_value["StartTime"];
+		$endTime = $managed_devices_value["EndTime"];
+		$days = $managed_devices_value["BlockDays"];
 	}
 	($blockStatus == "") && ($blockStatus = "true");
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Parental Control > Managed Devices > Add Blocked Device", "nav-devices");
+	comcast.page.init("Parental Control > Managed Devices > Add Blocked Device", "nav-devices");
 	var ID = "<?php echo $i ?>";
 	var jsName = "<?php echo $name ?>";
 	var jsMac = "<?php echo $mac ?>";
@@ -66,6 +95,8 @@ $(document).ready(function() {
 		$('#mac_address').val(jsMac);
 		if(jsBlockStatus == false) {
 			$("#no").prop("checked", true);
+			jsStartTime[0]	= parseInt(jsStartTime[0]);
+			jsEndTime[0]	= parseInt(jsEndTime[0]);
 			if((parseInt(jsStartTime[0])>=12)) {
 				var tmpHour = Math.abs(parseInt(jsStartTime[0]) - 12);
 				(tmpHour === 0) && (tmpHour = 12);
