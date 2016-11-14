@@ -6,37 +6,68 @@
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
 <?php
-	if (!preg_match('/^\d{1,3}$/', $_GET['id'])) die();
 	$i=$_GET['id'];
-//	echo "<script>var ID=".$i.";</script>";
-    $managed_services_param = array(
-        "serviceName"   => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".Description",
-        "protocol"      => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".Protocol",
-        "startPort"     => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".StartPort",
-        "endPort"       => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".EndPort",
-        "blockStatus"   => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".AlwaysBlock", 
-        "startTime"   => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".StartTime", 
-        "endTime"   => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".EndTime", 
-        "days"   => "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".BlockDays", 
+	$index = explode('_', $i);
+	if (!preg_match('/^\d{1,3}$/', $index[0])) die();
+	if (!preg_match('/^\d{1,3}$/', $index[1]) && $UTC_local_Time_conversion && array_key_exists(1, $index)) die();
+	$managed_services_param = array(
+		"Description"	=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[0].".Description",
+		"Protocol"		=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[0].".Protocol",
+		"startPort"		=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[0].".StartPort",
+		"endPort"		=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[0].".EndPort",
+		"blockStatus"	=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[0].".AlwaysBlock",
+		"StartTime"		=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[0].".StartTime",
+		"EndTime"		=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[0].".EndTime",
+		"BlockDays"		=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[0].".BlockDays",
 	);
-    $managed_services_value = KeyExtGet("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.", $managed_services_param);
-	$serviceName = $managed_services_value["serviceName"];
-	$protocol = $managed_services_value["protocol"];
+	$managed_services_value = KeyExtGet("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.", $managed_services_param);
+	if($UTC_local_Time_conversion){
+		$i = $index[0];
+		$managed_services_get = array();
+		$managed_services_value1 = $managed_services_value;
+		array_push($managed_services_get, $managed_services_value1);
+		if(array_key_exists(1, $index)){
+			$managed_services_param = array(
+				"Description"	=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[1].".Description",
+				"Protocol"		=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[1].".Protocol",
+				"startPort"		=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[1].".StartPort",
+				"endPort"		=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[1].".EndPort",
+				"blockStatus"	=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[1].".AlwaysBlock",
+				"StartTime"		=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[1].".StartTime",
+				"EndTime"		=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[1].".EndTime",
+				"BlockDays"		=> "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$index[1].".BlockDays",
+			);
+			$managed_services_value2 = KeyExtGet("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.", $managed_services_param);
+			$i = $i.'_'.$index[1];
+			array_push($managed_services_get, $managed_services_value2);
+		}
+		$managed_services_value = array();
+		$managed_services_get = days_time_conversion_get($managed_services_get, 'Description');
+		foreach ($managed_services_get as $key => $value) {
+			foreach ($value as $k => $val) {
+				$managed_services_value[$k] = $val;
+			}
+			unset($val);
+		}
+		unset($value);
+	}
+	$serviceName = $managed_services_value["Description"];
+	$protocol = $managed_services_value["Protocol"];
 	$startPort = $managed_services_value["startPort"];
 	$endPort = $managed_services_value["endPort"];
 	$blockStatus = $managed_services_value["blockStatus"];
 	global $startTime, $endTime, $days;
 	if($blockStatus == "false") {
-		$startTime = $managed_services_value["startTime"];
-		$endTime = $managed_services_value["endTime"];
-		$days = $managed_services_value["days"];
+		$startTime = $managed_services_value["StartTime"];
+		$endTime = $managed_services_value["EndTime"];
+		$days = $managed_services_value["BlockDays"];
 	}
 	($blockStatus == "") && ($blockStatus = "true");
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Parental Control > Managed Services > Add Blocked Service", "nav-services");
-    $('#user_defined_service').focus();
+	comcast.page.init("Parental Control > Managed Services > Add Blocked Service", "nav-services");
+	$('#user_defined_service').focus();
 	var ID = "<?php echo $i ?>";
 	var jsServiceName = "<?php echo $serviceName ?>";
 	var jsProtocol = "<?php echo $protocol ?>";
@@ -72,6 +103,8 @@ $(document).ready(function() {
 		$('#end_port').val(jsEndPort);
 		if(jsBlockStatus == false) {
 			updateBlockTimeVisibility("no");
+			jsStartTime[0]	= parseInt(jsStartTime[0]);
+			jsEndTime[0]	= parseInt(jsEndTime[0]);
 			if((parseInt(jsStartTime[0])>=12)) {
 				var tmpHour = Math.abs(parseInt(jsStartTime[0]) - 12);
 				(tmpHour === 0) && (tmpHour = 12);
