@@ -226,4 +226,201 @@ function getDefault($xmlFile, $arrName)
 	}
 	return $key_ret;
 }
+//div_sub($n, $m) is for division by subtraction
+function div_sub($n, $m)
+{
+	if (!is_numeric($n) || !is_numeric($m) || (0==$m)){
+		return array(0, 0);
+	}
+	for($i=0; $n >= $m; $i++){
+		$n = $n - $m;
+	}
+	return array($i, $n);
+}
+//hm_to_sec($time) converts H:M to sec
+function hm_to_sec($time){
+	$newTime = explode(":",$time);
+	$timeSec = $newTime[0]*60*60 + $newTime[1]*60;
+	return $timeSec;
+}
+//sec_to_hm($time) converts sec to H:M
+function sec_to_hm($time){
+	$tmp = div_sub($time, 60*60);
+	$hor = $tmp[0];
+	$tmp = div_sub($tmp[1], 60);
+	$min = $tmp[0];
+	$min = ($min < 10)?('0'.$min):$min;
+	$hor = ($hor>=24)?($hor - 24):$hor;
+	$hor = ($hor < 10)?('0'.$hor):$hor;
+	return "$hor:$min";
+}
+//$blockedDays are the days picked by user
+//$shift true is to shift by +1Day
+//$shift false is to shift by -1Day
+function shift_blockedDays($blockedDays, $shift){
+	$blockedDays = explode(',', $blockedDays);
+	$week=array('Mon','Tue','Wed','Thu','Fri','Sat','Sun');
+	if($shift){
+		for($i=0;$i<sizeof($blockedDays);$i++){
+			for($j=0;$j<sizeof($week);$j++){
+				if($week[$j]==$blockedDays[$i]){
+					$index=($j+1)%sizeof($week);
+					$blockedDays[$i]=$week[$index];
+					break;
+				}
+			}
+		}
+	}
+	else {
+		for($i=0;$i<sizeof($blockedDays);$i++){
+			for($j=0;$j<sizeof($week);$j++){
+				if($week[$j]==$blockedDays[$i]){
+					if($j==0) $j=sizeof($week);
+					$index=($j-1)%sizeof($week);
+					$blockedDays[$i]=$week[$index];
+					break;
+				}
+			}
+		}
+	}
+	return implode(',', $blockedDays);
+}
+function group_2D_array($data, $fields) {
+	if(empty($fields) || !is_array($fields)) {
+		return $data;
+	}
+	$tempArray = array();
+	$field = array_shift($fields);
+	foreach($data as $val) {
+		$tempArray[$val[$field]][] = $val;
+	}
+	foreach(array_keys($tempArray) as $key) {
+		$tempArray[$key] = group_2D_array($tempArray[$key], $fields);
+	}
+	return $tempArray;
+}
+$UTC_Enable = getStr("Device.Time.UTC_Enable");
+$UTC_local_Time_conversion = ($UTC_Enable === 'true') ? true : false ;
+$timeOffset = getStr("Device.Time.TimeOffset");
+//$timeOffset = '-25200'; //Eastern Standard Time (EST) = UTC-5
+//$timeOffset = '-18000'; //Mountain Standard Time (MST) = UTC-7
+//$timeOffset = '+25200'; //Indonesia Western Time = UTC+7
+//local_to_UTC_Time($localTime) is for converting $localTime to $utcTime for SET
+function local_to_UTC_Time($localTime, $blockedDays){
+	global $timeOffset;
+	if($localTime=='') return array('', '', false, false);
+	$utcTime = hm_to_sec($localTime) - $timeOffset;
+	$timeChangePos = ($utcTime > (24*60*60));
+	$timeChangeNeg = ($utcTime < 0);
+	$utcTime = ($timeChangePos)?($utcTime - (24*60*60)):$utcTime;
+	$utcTime = ($timeChangeNeg)?($utcTime + (24*60*60)):$utcTime;
+	if($timeChangePos)	$blockedDays = shift_blockedDays($blockedDays, true);
+	if($timeChangeNeg)	$blockedDays = shift_blockedDays($blockedDays, false);
+	return array(sec_to_hm($utcTime), $blockedDays, $timeChangePos, $timeChangeNeg);
+}
+//UTC_to_local_Time($utcTime) is for converting $utcTime to $localTime for GET
+function UTC_to_local_Time($utcTime, $blockedDays){
+	global $timeOffset;
+	if($utcTime=='') return array('', '');
+	$localTime = hm_to_sec($utcTime) + $timeOffset;
+	$timeChangePos = ($localTime > (24*60*60));
+	$timeChangeNeg = ($localTime < 0);
+	$localTime = ($timeChangePos)?($localTime - (24*60*60)):$localTime;
+	$localTime = ($timeChangeNeg)?($localTime + (24*60*60)):$localTime;
+	if($timeChangePos)	$blockedDays = shift_blockedDays($blockedDays, true);
+	if($timeChangeNeg)	$blockedDays = shift_blockedDays($blockedDays, false);
+	return array(sec_to_hm($localTime), $blockedDays);
+}
+//
+function time_in_min($time){
+	$min = explode(':', $time);
+	return (($min[0]*60)+$min[1]);
+}
+function cmp($a, $b) {
+	return $a["StartTime"] - $b["StartTime"];
+}
+function merge_days($data){
+	usort($data, "cmp");
+	for ($i=0; $i < sizeof($data); $i++) {
+		if(time_in_min($data[$i]['EndTime'])+1 == time_in_min($data[$i+1]['StartTime'])){
+			$data[$i]['__id'] = $data[$i]['__id'].'_'.$data[$i+1]['__id'];
+			$data[$i]['EndTime'] = $data[$i+1]['EndTime'];
+			unset($data[$i+1]);
+			$i++;
+		}
+	}
+	return $data;
+}
+function days_time_conversion_get($data, $type){
+	$returnData = array();
+	foreach ($data as $key => &$value) {
+		$startArr	= UTC_to_local_Time($value['StartTime'], $value['BlockDays']);
+		$endArr		= UTC_to_local_Time($value['EndTime'], $value['BlockDays']);
+		$value['StartTime']	= $startArr[0];
+		$value['EndTime']	= $endArr[0];
+		$value['BlockDays']	= $endArr[1];
+	}
+	unset($value);
+	if(is_array($type)){
+		//for "Managed Devices"
+		$tempArray = group_2D_array($data, array($type[0], $type[1], 'BlockDays'));
+		foreach ($tempArray as $key => $value) {
+			foreach ($value as $key2 => $value2) {
+				foreach ($value2 as $k => &$val) {
+					$val = merge_days($val);
+					foreach ($val as $v) {
+						$returnData[] = $v;
+					}
+				}
+				unset($val);
+			}
+		}
+	}
+	else {
+		//for "Blocked Sites​", "Blocked Keywords​", "Managed Services​"
+		$tempArray = group_2D_array($data, array($type, 'BlockDays'));
+		foreach ($tempArray as $key => $value) {
+			foreach ($value as $k => &$val) {
+				$val = merge_days($val);
+				foreach ($val as $v) {
+					$returnData[] = $v;
+				}
+			}
+			unset($val);
+		}
+	}
+	return $returnData;
+}
+//for $startTime, $endTime, $blockedDays parameters do local_to_UTC_Time($localTime)
+//$timeOffset can move this $blockedDays to Tomorrow or Yesterday
+function days_time_conversion_set($startTime, $endTime, $blockedDays){
+	$day_change = false;
+	$startData 	= local_to_UTC_Time($startTime, 	$blockedDays);
+	$endData 	= local_to_UTC_Time($endTime, 	$blockedDays);
+	if($startData[1] == $endData[1]){
+		//$blockedDays are same for start and end
+		return array($startData[0], $endData[0], $startData[1], $day_change);
+	}
+	else {
+		$day_change = true;
+		return array($startData[0], '23:59', $startData[1], $day_change, '00:00', $endData[0], $endData[1]);
+	}
+}
+//Check for time and day conflicts before ADD/EDIT of table rules
+function time_date_conflict($TD1, $TD2) {
+	$ret = false;
+	$days1 = explode(",", $TD1[2]);
+	$days2 = explode(",", $TD2[2]);
+	foreach ($days1 as &$value) {
+		if (in_array($value, $days2)) {
+			//deMorgan's law - to find if ranges are overlapping
+			//(StartA <= EndB)  and  (EndA >= StartB)
+			if((strtotime($TD1[0]) < strtotime($TD2[1])) and (strtotime($TD1[1]) > strtotime($TD2[0]))){
+				$ret = true;
+				break;
+			}
+		}
+	}
+	return $ret;
+}
 ?>
