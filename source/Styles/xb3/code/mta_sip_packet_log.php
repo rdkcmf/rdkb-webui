@@ -5,7 +5,7 @@
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
 <link rel="stylesheet" type="text/css" href="./cmn/css/comcastPaginator.css"/>
-<script type="text/javascript" src="./cmn/js/comcastPaginator.js"></script>
+<script type="text/javascript" src="./cmn/js/lib/jquery-simple-pagination-plugin.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > MTA >SIP Packet Log", "nav-service-sip");
@@ -35,8 +35,8 @@ $(document).ready(function() {
 							length++;
 						});
 						if (length>10) {
-							$('#event_logs_today').comcastPaginator({
-								entriesInPage: 10
+							$('#event_logs_today').simplePagination({
+								items_per_page: 10
 							});
 						}
 						jHide();

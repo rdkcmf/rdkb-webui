@@ -5,8 +5,8 @@
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
-<!--link rel="stylesheet" type="text/css" href="../cmn/css/comcastPaginator.css"/-->
-<!--script type="text/javascript" src="../cmn/js/comcastPaginator.js"></script-->
+<!--link rel="stylesheet" type="text/css" href="./cmn/css/comcastPaginator.css"/-->
+<!--script type="text/javascript" src="./cmn/js/lib/jquery-simple-pagination-plugin.js"></script-->
 <!--script type="text/javascript" src="../cmn/js/lib/jquery.alerts.progress.js"></script-->
 <script type="text/javascript">
 $(document).ready(function() {
