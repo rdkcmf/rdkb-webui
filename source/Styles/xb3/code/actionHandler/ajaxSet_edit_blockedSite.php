@@ -25,7 +25,6 @@ $blockedSiteInfo = json_decode($_POST['BlockInfo'], true);
 $objPrefix = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 $rootObjName = $objPrefix;
 $index = $blockedSiteInfo['InstanceID'];
-$idArr = explode(",", getInstanceIds("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite."));
 $block=$blockedSiteInfo['alwaysBlock'];
 $startTime=$blockedSiteInfo['StartTime'];
 $endTime=$blockedSiteInfo['EndTime'];
@@ -150,7 +149,7 @@ else{
 		$mapping_array  = array("Site", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
 		$managedSitesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array);
     	if($UTC_local_Time_conversion) $managedSitesValues = days_time_conversion_get($managedSitesValues, 'Site');
-    	foreach ($idArr as $key => $value) {
+    	foreach ($managedSitesValues as $key => $value) {
 		if ($index==$value['__id']) continue;
 		$always_Block = $value["AlwaysBlock"];
 		$start_Time = $value["StartTime"];

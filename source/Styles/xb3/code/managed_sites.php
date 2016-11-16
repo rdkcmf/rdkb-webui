@@ -363,9 +363,13 @@ $.validator.addMethod("no_space", function(value, element, param) {
 						type: "POST",
 						url: "actionHandler/ajaxSet_edit_blockedSite.php",
 						data: { BlockInfo: blockInfo },
-						success: function(){            
+						success: function(data){
 							jHide();
-							window.location.href = "managed_sites.php";
+							if (data != "Success!") {
+								jAlert(data);
+							}else{
+								window.location.href = "managed_sites.php";
+							}
 						},
 						error: function(){
 							jHide();
