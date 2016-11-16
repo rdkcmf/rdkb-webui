@@ -43,7 +43,7 @@ $(document).ready(function() {
 	 $(function() {
 $.validator.addMethod("no_space", function(value, element, param) {
 		return !param || /^[a-zA-Z0-9]*$/i.test(value);
-	}, " No spaces. Case sensitive.");
+	}, "Letters and Numbers only. Case sensitive.");
     $("#pageForm").validate({
         rules: {
             keyword: {
