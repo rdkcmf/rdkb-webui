@@ -211,49 +211,46 @@ $(document).ready(function() {
 		</div>
 	</div>
 	<?php 
-    $rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.";
-	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.");
-	$mapping_array  = array("Type", "Description", "MACAddress", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
-	$blockedDevicesInstanceArr = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-		$MDIDs=explode(",",getInstanceIDs("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device."));
+	$rootObjName	= "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.";
+	$paramNameArray	= array("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.");
+	$mapping_array	= array("Type", "Description", "MACAddress", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
+	$blockedDevicesInstanceArr = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
+	if($UTC_local_Time_conversion) $blockedDevicesInstanceArr = days_time_conversion_get($blockedDevicesInstanceArr, array('Type', 'MACAddress'));
 		$allowCnt=0;
 		$blockCnt=0;
 		$arrayAllowName=array();
 		$arrayBlockName=array();
 		$blockedDevicesInstance = array();
-		foreach ($MDIDs as $key=>$i) {
-			$blockedDevicesInstance["$i"] = $blockedDevicesInstanceArr["$key"];
-		}
-		foreach ($MDIDs as $key=>$i) {
-			$type = $blockedDevicesInstance["$i"]["Type"]; 
+		foreach ($blockedDevicesInstanceArr as $key=>$value) {
+			$type = $value["Type"]; 
 			if($type == "Allow") {
-				$arrayAllowID[$allowCnt] = $i;
-				$arrayAllowName[$allowCnt] = $blockedDevicesInstance["$i"]["Description"];
-				$arrayAllowMAC[$allowCnt] = $blockedDevicesInstance["$i"]["MACAddress"]; 
-				$blockStatus = $blockedDevicesInstance["$i"]["AlwaysBlock"]; 
+				$arrayAllowID[$allowCnt] = $value["__id"];
+				$arrayAllowName[$allowCnt] = $value["Description"];
+				$arrayAllowMAC[$allowCnt] = $value["MACAddress"]; 
+				$blockStatus = $value["AlwaysBlock"]; 
 				if($blockStatus == "true")
 					$arrayAllowStatus[$allowCnt] = "Always";
 				else if($blockStatus == "false") {
 					//$arrayAllowStatus[$allowCnt] = "Period";
-					$stime = $blockedDevicesInstance["$i"]["StartTime"]; 
-					$etime = $blockedDevicesInstance["$i"]["EndTime"]; 
-					$bdays = $blockedDevicesInstance["$i"]["BlockDays"]; 
+					$stime = $value["StartTime"]; 
+					$etime = $value["EndTime"]; 
+					$bdays = $value["BlockDays"]; 
 				    $arrayAllowStatus[$allowCnt] = $stime."-".$etime.",".$bdays;
 				}
 				$allowCnt++;
 			} 
 			else if($type == "Block") {
-				$arrayBlockID[$blockCnt] = $i;
-				$arrayBlockName[$blockCnt] = $blockedDevicesInstance["$i"]["Description"]; 
-				$arrayBlockMAC[$blockCnt] = $blockedDevicesInstance["$i"]["MACAddress"]; 
-				$blockStatus = $blockedDevicesInstance["$i"]["AlwaysBlock"]; 
+				$arrayBlockID[$blockCnt] = $value["__id"];
+				$arrayBlockName[$blockCnt] = $value["Description"]; 
+				$arrayBlockMAC[$blockCnt] = $value["MACAddress"]; 
+				$blockStatus = $value["AlwaysBlock"]; 
 				if($blockStatus == "true")
 					$arrayBlockStatus[$blockCnt] = "Always";
 				else if($blockStatus == "false"){
 					//$arrayBlockStatus[$blockCnt] = "Period";
-					$stime = $blockedDevicesInstance["$i"]["StartTime"]; 
-					$etime = $blockedDevicesInstance["$i"]["EndTime"]; 
-					$bdays = $blockedDevicesInstance["$i"]["BlockDays"]; 
+					$stime = $value["StartTime"]; 
+					$etime = $value["EndTime"]; 
+					$bdays = $value["BlockDays"]; 
 				    $arrayBlockStatus[$blockCnt] = $stime."-".$etime.",".$bdays;
 				}
 				$blockCnt++;
