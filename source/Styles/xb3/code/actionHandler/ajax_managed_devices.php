@@ -152,7 +152,8 @@ if (isset($_POST['edit'])){
 	$startTime=$_POST['startTime'];
 	$endTime=$_POST['endTime'];
 	$blockDays=$_POST['days'];
-	$type = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$i.Type");
+	$ID = explode('_', $i)[0];
+	$type = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.$ID.Type");
 	$result="";
 	$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.";
 	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.");
