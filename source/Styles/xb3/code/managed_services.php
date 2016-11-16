@@ -206,7 +206,9 @@ $(document).ready(function() {
 	          	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.");
 	           	$mapping_array  = array("Protocol", "AlwaysBlock", "Description", "StartPort", "EndPort","StartTime", "EndTime", "BlockDays");
 		   		$blockedServicesInstance = array();
-	           	$blockedServicesInstanceArr = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+	           	$blockedServicesInstanceArr = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
+	           	if($UTC_local_Time_conversion) $blockedServicesInstanceArr = days_time_conversion_get($blockedServicesInstanceArr, 'Description');
+				$blockedServicesNums = sizeof($blockedServicesInstanceArr);
 				//TrustedUser
 				$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser.";
 				$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser.");
@@ -217,42 +219,39 @@ $(document).ready(function() {
 				$paramNameArray = array("Device.Hosts.Host.");
 				$mapping_array  = array("HostName", "PhysAddress", "IPAddress", "IPv6Address.1.IPAddress");
 				$HostParam = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-				$num=getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.ServiceNumberOfEntries");
-				if($num!=0) {
-					$MSIDs=explode(",",getInstanceIDs("Device.X_Comcast_com_ParentalControl.ManagedServices.Service."));
+				if($blockedServicesNums > 0) {
 					$iclass="even";
 					$j = 0;
-					foreach ($MSIDs as $key=>$i) {
-						$blockedServicesInstance["$i"] = $blockedServicesInstanceArr["$key"];
-					}
-					foreach ($MSIDs as $key=>$i) {
+					foreach ($blockedServicesInstanceArr as $key=>$value) {
+						$i = $value['__id'];
 						$j += 1;
 						if ($iclass=="even") {$iclass="odd";} else {$iclass="even";}
-						$protocol = $blockedServicesInstance["$i"]["Protocol"];
+						$protocol = $value["Protocol"];
 						if($protocol == "BOTH")
 							$protocol = "TCP/UDP";
-						$blockStatus = $blockedServicesInstance["$i"]["AlwaysBlock"];
+						$blockStatus = $value["AlwaysBlock"];
 						if($blockStatus == "true")
 							$blockStatus = "Always";
 						else if($blockStatus == "false") {
 							//$blockStatus = "Period";
-							$stime = $blockedServicesInstance["$i"]["StartTime"];
-							$etime = $blockedServicesInstance["$i"]["EndTime"];
-							$bdays = $blockedServicesInstance["$i"]["BlockDays"];
+							$stime = $value["StartTime"];
+							$etime = $value["EndTime"];
+							$bdays = $value["BlockDays"];
 					        $blockStatus = $stime."-".$etime.",".$bdays;
 						}
 						echo "
 					<tr class=$iclass>
 						<td headers='service-number' class=\"row-label alt number\">$j</td>
-						<td headers='service-name'>".$blockedServicesInstance["$i"]["Description"]."</td>
+						<td headers='service-name'>".$value["Description"]."</td>
 						<td headers='protocol-type'>".$protocol."</td>
-						<td headers='start-port'>".$blockedServicesInstance["$i"]["StartPort"]."</td>
-						<td headers='end-port'>".$blockedServicesInstance["$i"]["EndPort"]."</td>
+						<td headers='start-port'>".$value["StartPort"]."</td>
+						<td headers='end-port'>".$value["EndPort"]."</td>
 						<td headers='effect-time'>".$blockStatus."</td>
 						<td headers='edit-button' class=\"edit\"><a tabindex='0' href=\"managed_services_edit.php?id=$i\" class=\"btn\"  id=\"edit_$i\">Edit</a></td>
-						<td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_services.php?del=$i\" class=\"btn confirm\" title=\"delete this service for ".$blockedServicesInstance["$i"]["Description"]." \" id=\"delete_$i\">x</a></td>
+						<td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_services.php?del=$i\" class=\"btn confirm\" title=\"delete this service for ".$value["Description"]." \" id=\"delete_$i\">x</a></td>
 					</tr>"; 
-					} 
+					}
+					unset($value);
 				}
 		?>
 	       <tfoot>
