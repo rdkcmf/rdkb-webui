@@ -356,6 +356,21 @@ $(document).ready(function() {
 			$MD_paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.");
 			$MD_mapping_array  = array("Type", "MACAddress");
 			$ManagedDevices = getParaValues($MD_rootObjName, $MD_paramNameArray, $MD_mapping_array);
+			//update clients RSSI from Device.WiFi.AccessPoint.{i} instead of Device.Hosts.Host.
+			$WiFi1_rootObjName    = "Device.WiFi.AccessPoint.1.AssociatedDevice.";
+			$WiFi1_paramNameArray = array("Device.WiFi.AccessPoint.1.AssociatedDevice.");
+			$WiFi1_mapping_array  = array("MACAddress", "SignalStrength");
+			$AssoDeviceArr1 = getParaValues($WiFi1_rootObjName, $WiFi1_paramNameArray, $WiFi1_mapping_array);
+			$WiFi2_rootObjName    = "Device.WiFi.AccessPoint.2.AssociatedDevice.";
+			$WiFi2_paramNameArray = array("Device.WiFi.AccessPoint.2.AssociatedDevice.");
+			$WiFi2_mapping_array  = array("MACAddress", "SignalStrength");
+			$AssoDeviceArr2 = getParaValues($WiFi2_rootObjName, $WiFi2_paramNameArray, $WiFi2_mapping_array);
+			$AssoDeviceArr = array();
+			$AssoDeviceArr = array_merge($AssoDeviceArr1, $AssoDeviceArr2);
+			$clients_RSSI = array();
+			foreach ($AssoDeviceArr as $key => $value) {
+				$clients_RSSI[strtoupper($value['MACAddress'])] = $value['SignalStrength'];
+			}unset($value);
 			$arrayBlockMAC=array();
 			foreach ($ManagedDevices as $key => $value) {
 				if($ManagedDevices[$key]['Type'] == "Block") {
@@ -387,7 +402,7 @@ $(document).ready(function() {
                     $onlinePrivateNetworkHost["$j"]['Connection'] = $tmpHost['connectionType'];
                     $onlinePrivateNetworkHost["$j"]['Comments'] = $Host["$i"]['Comments'];
                     if (stristr($tmpHost['connectionType'], 'Wi-Fi') || stristr($tmpHost['connectionType'], 'MoCA')) {
-                       $onlinePrivateNetworkHost[$j]['RSSI'] = $Host[$i]['X_CISCO_COM_RSSI']." dBm";
+						$onlinePrivateNetworkHost[$j]['RSSI'] = $clients_RSSI[strtoupper($Host["$i"]['PhysAddress'])]." dBm";
                     }
                     else {
                        $onlinePrivateNetworkHost[$j]['RSSI'] = "NA";
