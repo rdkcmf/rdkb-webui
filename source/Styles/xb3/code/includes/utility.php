@@ -283,6 +283,14 @@ function shift_blockedDays($blockedDays, $shift){
 			}
 		}
 	}
+	if($blockedDays[0]=='Sun') {
+		array_shift($blockedDays);
+		array_push($blockedDays,'Sun');
+	}
+	if($blockedDays[sizeof($blockedDays)-1]=='Mon') {
+		array_pop($blockedDays);
+		array_unshift($blockedDays,'Mon');
+	}
 	return implode(',', $blockedDays);
 }
 function group_2D_array($data, $fields) {
@@ -312,13 +320,13 @@ function local_to_UTC_Time($localTime, $blockedDays){
 	$utcTime = hm_to_sec($localTime) - $timeOffset;
 	$timeChangePos = ($utcTime > (24*60*60));
 	$timeChangeNeg = ($utcTime < 0);
-	$timeChangeEqu = ($utcTime == (24*60*60) );
+	$timeChangeEqu = ($utcTime == (24*60*60));
 	$utcTime = ($timeChangePos)?($utcTime - (24*60*60)):$utcTime;
 	$utcTime = ($timeChangeNeg)?($utcTime + (24*60*60)):$utcTime;
 	$utcTime = ($timeChangeEqu)?($utcTime - 1):$utcTime;	
 	if($timeChangePos)	$blockedDays = shift_blockedDays($blockedDays, true);
 	if($timeChangeNeg)	$blockedDays = shift_blockedDays($blockedDays, false);
-	return array(sec_to_hm($utcTime), $blockedDays, $timeChangePos, $timeChangeNeg);
+	return array(sec_to_hm($utcTime), $blockedDays, ($timeChangePos || $timeChangeNeg));
 }
 //UTC_to_local_Time($utcTime) is for converting $utcTime to $localTime for GET
 function UTC_to_local_Time($utcTime, $blockedDays){
@@ -339,7 +347,8 @@ function time_in_min($time){
 	return (($min[0]*60)+$min[1]);
 }
 function cmp($a, $b) {
-	return $a["StartTime"] - $b["StartTime"];
+	if ($a["StartTime"]==$b["StartTime"]) return 0;
+	return ($a["StartTime"]<$b["StartTime"])?-1:1;
 }
 function merge_days($data){
 	usort($data, "cmp");
@@ -399,8 +408,8 @@ function days_time_conversion_set($startTime, $endTime, $blockedDays){
 	$day_change = false;
 	$startData 	= local_to_UTC_Time($startTime, 	$blockedDays);
 	$endData 	= local_to_UTC_Time($endTime, 	$blockedDays);
-	if($startData[1] == $endData[1]){
-		//$blockedDays are same for start and end
+	if(($startData[2] && $endData[2]) || (!$startData[2] && !$endData[2])){
+		//start and end time in same day
 		return array($startData[0], $endData[0], $startData[1], $day_change);
 	}
 	else {
