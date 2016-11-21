@@ -147,7 +147,7 @@ else{
 	$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 		$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
 		$mapping_array  = array("Site", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
-		$managedSitesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+		$managedSitesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
     	if($UTC_local_Time_conversion) $managedSitesValues = days_time_conversion_get($managedSitesValues, 'Site');
     	foreach ($managedSitesValues as $key => $value) {
 		if ($index==$value['__id']) continue;
