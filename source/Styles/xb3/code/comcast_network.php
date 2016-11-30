@@ -218,7 +218,7 @@ function sec2dhms($sec)
 			<?php echo strtoupper(getStr(getStr(getStr($fistUSif."LowerLayers").".LowerLayers").".MACAddress")); ?>
 		</span>
 	</div>
-	<div class="form-row odd">
+	<div class="form-row">
 		<span class="readonlyLabel">eMTA MAC:</span>
 		<span class="value"><?php echo strtoupper(getStr("Device.X_CISCO_COM_MTA.MACAddress"));?></span>
 	</div>
@@ -230,7 +230,7 @@ function sec2dhms($sec)
 		);
 		$CM_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $CM_param);
 	?>
-	<div class="form-row ">
+	<div class="form-row odd">
 		<span class="readonlyLabel">CM MAC:</span>
 		<span class="value"><?php echo strtoupper($CM_value["MACAddress"]);?></span>
 	</div>
@@ -332,8 +332,26 @@ if($_SESSION["loginuser"] == "mso"){
 		"RenewTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.RenewTimeRemaining",
 	//	"PrimaryDHCPServer"		=> "Device.X_CISCO_COM_MTA.PrimaryDHCPServer",
 	//	"SecondaryDHCPServer"	=> "Device.X_CISCO_COM_MTA.SecondaryDHCPServer",
+		"IPv6Address"				=> "Device.X_CISCO_COM_CableModem.IPv6Address",
+		"IPv6TFTPServer"			=> "Device.X_CISCO_COM_CableModem.IPv6TFTPServer",
+		"IPv6TimeServer"			=> "Device.X_CISCO_COM_CableModem.IPv6TimeServer",
+		"IPv6BootFileName"			=> "Device.X_CISCO_COM_CableModem.IPv6BootFileName",
+		"IPv6LeaseTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.IPv6LeaseTimeRemaining",
+		"IPv6RebindTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.IPv6RebindTimeRemaining",
+		"IPv6RenewTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.IPv6RenewTimeRemaining",
 		);
 	$cm_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $cm_param);
+	if($cm_value['LearnedIPMode'] == 'IPv6'){
+		$cm_value['IPAddress']			 = $cm_value['IPv6Address'];
+		$cm_value['SubnetMask']			 = 'NA';
+		$cm_value['Gateway']			 = 'NA';
+		$cm_value['TFTPServer']			 = $cm_value['IPv6TFTPServer'];
+		$cm_value['TimeServer']			 = $cm_value['IPv6TimeServer'];
+		$cm_value['BootFileName']		 = $cm_value['IPv6BootFileName'];
+		$cm_value['LeaseTimeRemaining']	 = $cm_value['IPv6LeaseTimeRemaining'];
+		$cm_value['RebindTimeRemaining'] = $cm_value['IPv6RebindTimeRemaining'];
+		$cm_value['RenewTimeRemaining']	 = $cm_value['IPv6RenewTimeRemaining'];
+	}
 } else {
 	$cm_value = NULL;
 }
