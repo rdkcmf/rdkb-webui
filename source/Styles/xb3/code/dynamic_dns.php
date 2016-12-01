@@ -104,7 +104,9 @@ $(document).ready(function() {
 <script>
 	//Don't allow user to add morethan 4 rules as only 4 Service Provider are allowed
 	function add_service() {
-		if ($('.edit').length > 3) {
+		if ($('#add-service').hasClass('disabled'))
+			return;
+		else if ($('.edit').length > 3) {
 			jAlert("No more than 4 Dynamic DNS rules can be added!");
 			return;
 		} else {
