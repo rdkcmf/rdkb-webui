@@ -14,24 +14,12 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
-}
-function is_link_valid($link){
-	//A valid URL per the URL spec.
-	if (preg_match("/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/",$link))
-		return true;
-	else
-		return false;
-}
-function is_ip_valid($link){
-	if(inet_pton($link) !== false)
-		return true;
-	else
-		return false;
 }
 $states=array("Complete","Error_CannotResolveHostName","Error_Internal","Error_Other");
 $states_trace=array("Complete","Error_CannotResolveHostName","Error_MaxHopCountExceeded");
@@ -39,7 +27,7 @@ if (isset($_POST['test_connectivity'])){
 	$destination_address=$_POST['destination_address'];
 	$count1=$_POST['count1'];
 	$DiagnosticsState="Requested";
-	if(is_link_valid($destination_address)){
+	if(validLink($destination_address)){
 		// setStr("Device.IP.Diagnostics.IPPing.Interface","Device.IP.Interface.1");
 		setStr("Device.IP.Diagnostics.IPPing.Host",$destination_address,true);
 		setStr("Device.IP.Diagnostics.IPPing.NumberOfRepetitions",$count1,true);
@@ -64,7 +52,7 @@ else if (isset($_POST['destination_ipv4'])){
 	$destination_ipv4=$_POST['destination_ipv4'];
 	$count2=$_POST['count2'];
 	$DiagnosticsState="Requested";
-	if(is_ip_valid($destination_ipv4)){
+	if(validIPAddr($destination_ipv4)){
 		setStr("Device.IP.Diagnostics.IPPing.Host",$destination_ipv4,true);
 		setStr("Device.IP.Diagnostics.IPPing.NumberOfRepetitions",$count2,true);
 		setStr("Device.IP.Diagnostics.IPPing.DiagnosticsState",$DiagnosticsState,true);
@@ -87,7 +75,7 @@ else if (isset($_POST['destination_ipv6'])){
 	$destination_ipv6=$_POST['destination_ipv6'];
 	$count3=$_POST['count3'];
 	$DiagnosticsState="Requested";
-	if(is_ip_valid($destination_ipv6)){
+	if(validIPAddr($destination_ipv6)){
 		setStr("Device.IP.Diagnostics.IPPing.Host",$destination_ipv6,true);
 		setStr("Device.IP.Diagnostics.IPPing.NumberOfRepetitions",$count3,true);
 		setStr("Device.IP.Diagnostics.IPPing.DiagnosticsState",$DiagnosticsState,true);
@@ -121,7 +109,7 @@ else if (isset($_POST['trace_ipv4_dst'])){
 		// "8    10 ms    10 ms    10 ms  comcast.net [10.0.0.101]",
 		// "Trace complete."
 	);
-	if(is_ip_valid($trace_ipv4_dst)){
+	if(validIPAddr($trace_ipv4_dst)){
 		setStr("Device.IP.Diagnostics.TraceRoute.Host", $trace_ipv4_dst, true);
 		setStr("Device.IP.Diagnostics.TraceRoute.DiagnosticsState", $trace_ipv4_status, true);
 		do{
@@ -150,7 +138,7 @@ else if (isset($_POST['trace_ipv6_dst'])){
 	$trace_ipv6_dst	   = $_POST['trace_ipv6_dst'];
 	$trace_ipv6_status = "Requested";
 	$trace_ipv6_result = array();
-	if(is_ip_valid($trace_ipv6_dst)){
+	if(validIPAddr($trace_ipv6_dst)){
 		setStr("Device.IP.Diagnostics.TraceRoute.Host", $trace_ipv6_dst, true);
 		setStr("Device.IP.Diagnostics.TraceRoute.DiagnosticsState", $trace_ipv6_status, true);
 		do{

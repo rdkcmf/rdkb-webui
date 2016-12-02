@@ -14,6 +14,7 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
@@ -30,13 +31,15 @@ function selectTable($sp) {
 	return 0;
 }
 if (isset($_POST['set'])){
-	$status=(($_POST['status']=="Enabled")?"true":"false");
-	setStr("Device.X_CISCO_COM_DDNS.Enable",$status,true);
-	$status=getStr("Device.X_CISCO_COM_DDNS.Enable");
-	$status=($status=="true")?"Enabled":"Disabled";
-	header("Content-Type: application/json");
-	echo htmlspecialchars(json_encode($status), ENT_NOQUOTES, 'UTF-8');
-//	echo json_encode("Disabled");
+	if (isValInArray($_POST['status'], array("Enabled", "Disabled"))){
+		$status=(($_POST['status']=="Enabled")?"true":"false");
+		setStr("Device.X_CISCO_COM_DDNS.Enable",$status,true);
+		$status=getStr("Device.X_CISCO_COM_DDNS.Enable");
+		$status=($status=="true")?"Enabled":"Disabled";
+		header("Content-Type: application/json");
+		echo htmlspecialchars(json_encode($status), ENT_NOQUOTES, 'UTF-8');
+		//	echo json_encode("Disabled");
+	}
 }
 if (isset($_POST['add'])){
 	$sp=$_POST['sp'];
@@ -45,18 +48,24 @@ if (isset($_POST['add'])){
 	$hostname=$_POST['hostname'];
 	$result="";
 	$id = selectTable($sp);
-	if($id!=0) {
-		setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".ServiceName",$sp,false);
-		setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".Username",$username,false);
-		setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".Password",$password,false);
-		setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".Domain",$hostname,false);
-		setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".Enable","true",true);
-		$result = "Success!";
-	} else {
-		$result = "Service Provider is not exist!";
+	$validation = true;
+	if($validation) $validation = printableCharacters($_POST['username']);
+	if($validation) $validation = printableCharacters($_POST['password']);
+	if($validation) $validation = printableCharacters($_POST['hostname']);
+	if($validation){
+		if($id!=0) {
+			setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".ServiceName",$sp,false);
+			setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".Username",$username,false);
+			setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".Password",$password,false);
+			setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".Domain",$hostname,false);
+			setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".Enable","true",true);
+			$result = "Success!";
+		} else {
+			$result = "Service Provider is not exist!";
+		}
+		header("Content-Type: application/json");
+		echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 	}
-	header("Content-Type: application/json");
-	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 /*	
 	$ids=explode(",",getInstanceIDs("Device.X_CISCO_COM_DDNS.Service."));
 	if (count($ids)==0) {	//no table, need test whether it equals 0
@@ -96,23 +105,34 @@ if (isset($_POST['edit'])){
 	$username=$_POST['username'];
 	$password=$_POST['password'];
 	$hostname=$_POST['hostname'];
-	//delete entry - we can't edit on same index so delete on one index and update on other index
-	if(strcasecmp($sp,getStr("Device.X_CISCO_COM_DDNS.Service.".$i.".ServiceName")) != 0){
-		setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Enable","false",true);
+	$validation = true;
+	if($validation) $validation = validId($_POST['ID']);
+	if($validation) $validation = printableCharacters($_POST['username']);
+	if($validation) $validation = printableCharacters($_POST['password']);
+	if($validation) $validation = printableCharacters($_POST['hostname']);
+	if($validation){
+		//delete entry - we can't edit on same index so delete on one index and update on other index
+		if(strcasecmp($sp,getStr("Device.X_CISCO_COM_DDNS.Service.".$i.".ServiceName")) != 0){
+			setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Enable","false",true);
+		}
+		$i = selectTable($sp);
+		//setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".ServiceName",$sp,false);
+		setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Username",$username,false);
+		setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Password",$password,false);
+		setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Domain",$hostname,false);
+		setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Enable","true",true);
+		$result="Success!";
+		header("Content-Type: application/json");
+		echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 	}
-	$i = selectTable($sp);
-	//setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".ServiceName",$sp,false);
-	setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Username",$username,false);
-	setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Password",$password,false);
-	setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Domain",$hostname,false);
-	setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Enable","true",true);
-	$result="Success!";
-	header("Content-Type: application/json");
-	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 }
 if (isset($_POST['del'])){
 /*	delTblObj("Device.X_CISCO_COM_DDNS.Service.".$_POST['del'].".");*/
-	$i=$_POST['del'];
-	setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Enable","false",true);
+	$validation = true;
+	if($validation) $validation = validId($_POST['del']);
+	if($validation){
+		$i=$_POST['del'];
+		setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Enable","false",true);
+	}
 }
 ?>
