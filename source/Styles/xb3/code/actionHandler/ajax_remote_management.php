@@ -14,12 +14,58 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
+$validation = true;
+if($validation) $validation = isValInArray($_POST['telnet'], array('true', 'false', 'notset'));
+//if($validation) $validation = isValInArray($_POST['ssh'], array('true', 'false', 'notset'));
+if($validation) $validation = isValInArray($_POST['allowtype'], array('true', 'false', 'notset'));
+if($validation)
+	if(!($_POST['startIP'] == 'x' || $_POST['startIP'] == 'notset'))
+		$validation = validIPAddr($_POST['startIP']);
+if($validation)
+	if(!($_POST['endIP'] == 'x' || $_POST['endIP'] == 'notset'))
+		$validation = validIPAddr($_POST['endIP']);
+//IPv6 can be 'x' or 'notset' as well
+if($validation)
+	if(!($_POST['startIPv6'] == 'x' || $_POST['startIPv6'] == 'notset'))
+		$validation = validIPAddr($_POST['startIPv6']);
+if($validation)
+	if(!($_POST['endIPv6'] == 'x' || $_POST['endIPv6'] == 'notset'))
+		$validation = validIPAddr($_POST['endIPv6']);
+//if($validation) $validation = isValInArray($_POST['mso_mgmt'], array('true', 'false', 'notset'));
+//if($validation) $validation = isValInArray($_POST['cus_mgmt'], array('true', 'false', 'notset'));
+if($validation) $validation = isValInArray($_POST['https'], array('true', 'false', 'notset'));
+//httpsport can only be 1025 ~ 65535
+/*if($validation && ($_POST['httpsport'] != 'notset') && !($_POST['httpsport'] >= 1025 && $_POST['httpsport'] <= 65535)) $validation = false;*/
+if($validation) $validation = isValInArray($_POST['http'], array('true', 'false', 'notset'));
+//httpsport can only be 1025 ~ 65535
+/*if($validation && ($_POST['httpsport'] != 'notset') && !($_POST['httpport'] >= 1025 && $_POST['httpport'] <= 65535)) $validation = false;*/
+if($validation) {
+	if($_SESSION["loginuser"] == "mso"){
+		if ($_POST['telnet']!="notset")		setStr("Device.X_CISCO_COM_DeviceControl.TelnetEnable",$_POST['telnet'],true);
+		//if ($_POST['ssh']!="notset")		setStr("Device.X_CISCO_COM_DeviceControl.SSHEnable",$_POST['ssh'],true);
+	}
+	if ($_POST['allowtype']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.FromAnyIP",$_POST['allowtype'],true);
+	if ($_POST['startIP']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.StartIp",$_POST['startIP'],true);
+	if ($_POST['endIP']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.EndIp",$_POST['endIP'],true);
+	if ($_POST['startIPv6']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.StartIpV6",$_POST['startIPv6'],true);
+	if ($_POST['endIPv6']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.EndIpV6",$_POST['endIPv6'],true);
+	//if ($_POST['mso_mgmt']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.EnableMsoRemoteMgmt",$_POST['mso_mgmt'],true);
+	//if ($_POST['cus_mgmt']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.EnableCusadminRemoteMgmt",$_POST['cus_mgmt'],true);
+	// put change port at the end of this script
+	if ($_POST['https']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpsEnable",$_POST['https'],true);
+	if ($_POST['httpsport']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.HTTPSPort",$_POST['httpsport'],true);
+	if ($_POST['http']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpEnable",$_POST['http'],true);
+	if ($_POST['httpport']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.HTTPPort",$_POST['httpport'],true);
+}
+// sleep(10);
+/*
 function array_trim($arr){
 	$ret = array();
 	foreach($arr as $v){
@@ -30,14 +76,6 @@ function array_trim($arr){
 	}
 	return $ret;
 }
-if($_SESSION["loginuser"] == "mso"){
-	if ($_POST['telnet']!="notset")		setStr("Device.X_CISCO_COM_DeviceControl.TelnetEnable",$_POST['telnet'],true);
-	//if ($_POST['ssh']!="notset")		setStr("Device.X_CISCO_COM_DeviceControl.SSHEnable",$_POST['ssh'],true);
-}
-if ($_POST['allowtype']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.FromAnyIP",$_POST['allowtype'],true);
-if ($_POST['startIP']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.StartIp",$_POST['startIP'],true);
-if ($_POST['endIP']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.EndIp",$_POST['endIP'],true);
-/*
 if ($_POST['startIP']!="notset" || $_POST['endIP']!="notset"){
 	$dat = array();
 	$ids = array_trim(explode(",", getInstanceIds("Device.UserInterface.X_CISCO_COM_RemoteAccess.iprange.")));
@@ -62,14 +100,4 @@ if ($_POST['startIP']!="notset" || $_POST['endIP']!="notset"){
 	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.iprange.$tag.EndIP", $_POST['endIP'], true);
 }
 */
-if ($_POST['startIPv6']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.StartIpV6",$_POST['startIPv6'],true);
-if ($_POST['endIPv6']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.EndIpV6",$_POST['endIPv6'],true);
-if ($_POST['mso_mgmt']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.EnableMsoRemoteMgmt",$_POST['mso_mgmt'],true);
-if ($_POST['cus_mgmt']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.EnableCusadminRemoteMgmt",$_POST['cus_mgmt'],true);
-// put change port at the end of this script
-if ($_POST['https']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpsEnable",$_POST['https'],true);
-if ($_POST['httpsport']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.HTTPSPort",$_POST['httpsport'],true);
-if ($_POST['http']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpEnable",$_POST['http'],true);
-if ($_POST['httpport']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.HTTPPort",$_POST['httpport'],true);
-// sleep(10);
 ?>
