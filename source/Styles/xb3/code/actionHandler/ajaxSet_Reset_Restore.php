@@ -23,7 +23,7 @@ if (!isset($_SESSION["loginuser"])) {
 header("Content-Type: application/json");
 $infoArray = json_decode($_POST['resetInfo'], true);
 // sleep(10);
-$thisUser = $infoArray[2];
+$thisUser = $_SESSION["loginuser"];
 ob_implicit_flush(true);
 ob_end_flush();
 $ret = array();
@@ -44,7 +44,13 @@ function delMacFilterTables(  ) {
 	//For WECB
 	setStr("Device.MoCA.X_CISCO_COM_WiFi_Extender.X_CISCO_COM_SSID_Updated", "true", true);
 }
-//<<
+//Implement Validation of the input parameter(s)
+//NOT USED radioIndex+";"+apIndex >> '1;1', '2;2', '1;3', '2;4'
+$validInputs = array("Router,Wifi,VoIP,Dect,MoCA", "Device", "Wifi,Router", "Wifi", "password");
+if (!in_array($infoArray[1], $validInputs)) {
+	$infoArray[0] = 'InvalidInputs';
+	$ret['status'] = 'InvalidInputs';
+}
 switch ($infoArray[0]) {
 	case "btn1" :
 		$ret["reboot"] = true;
