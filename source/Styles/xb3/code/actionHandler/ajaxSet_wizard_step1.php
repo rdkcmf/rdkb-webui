@@ -28,6 +28,8 @@ $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);
 $i = $arConfig['instanceNum'];
 $p_status = "MisMatch";
+//at least 8 characters, Only letters and numbers are valid. No spaces or special characters.
+if ((preg_match("/^[a-z0-9]{8,20}$/i",$arConfig['oldPassword'])) && (preg_match("/^[a-z0-9]{8,20}$/i",$arConfig['newPassword'])))
 if (getStr("Device.Users.User.$i.X_CISCO_COM_Password") ==  $arConfig['oldPassword']) 
 {
 	if($arConfig['ChangePassword']){

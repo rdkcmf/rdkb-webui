@@ -27,7 +27,7 @@ if (isset($_POST['test_connectivity'])){
 	$destination_address=$_POST['destination_address'];
 	$count1=$_POST['count1'];
 	$DiagnosticsState="Requested";
-	if(validLink($destination_address)){
+	if(validLink($destination_address) && preg_match('/^[1-4]$/', $count1)){
 		// setStr("Device.IP.Diagnostics.IPPing.Interface","Device.IP.Interface.1");
 		setStr("Device.IP.Diagnostics.IPPing.Host",$destination_address,true);
 		setStr("Device.IP.Diagnostics.IPPing.NumberOfRepetitions",$count1,true);
@@ -52,7 +52,7 @@ else if (isset($_POST['destination_ipv4'])){
 	$destination_ipv4=$_POST['destination_ipv4'];
 	$count2=$_POST['count2'];
 	$DiagnosticsState="Requested";
-	if(validIPAddr($destination_ipv4)){
+	if(validIPAddr($destination_ipv4) && preg_match('/^[1-4]$/', $count2)){
 		setStr("Device.IP.Diagnostics.IPPing.Host",$destination_ipv4,true);
 		setStr("Device.IP.Diagnostics.IPPing.NumberOfRepetitions",$count2,true);
 		setStr("Device.IP.Diagnostics.IPPing.DiagnosticsState",$DiagnosticsState,true);
@@ -75,7 +75,7 @@ else if (isset($_POST['destination_ipv6'])){
 	$destination_ipv6=$_POST['destination_ipv6'];
 	$count3=$_POST['count3'];
 	$DiagnosticsState="Requested";
-	if(validIPAddr($destination_ipv6)){
+	if(validIPAddr($destination_ipv6) && preg_match('/^[1-4]$/', $count3)){
 		setStr("Device.IP.Diagnostics.IPPing.Host",$destination_ipv6,true);
 		setStr("Device.IP.Diagnostics.IPPing.NumberOfRepetitions",$count3,true);
 		setStr("Device.IP.Diagnostics.IPPing.DiagnosticsState",$DiagnosticsState,true);
