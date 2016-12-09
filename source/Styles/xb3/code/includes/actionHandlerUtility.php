@@ -22,12 +22,10 @@ function printableCharacters($input){
 	//check only if range is set
 	if(is_array($input)){
 		$regEx = '/^[ -~]{'.$input[1].','.$input[2].'}$/';
-		if(preg_match($regEx, $input[0])) return true;
-		else return false;
+		return (preg_match($regEx, $input[0])==1);
 	}
 	//if range is not set then match for *
-	else if (preg_match("/^[ -~]*$/", $input)) return true;
-	else return false;
+	else return (preg_match("/^[ -~]*$/", $input)==1);
 }
 //check if the $IPAddr is a valid IP address[checks for both IPv4 & IPv6]
 function validIPAddr($IPAddr){
@@ -36,18 +34,29 @@ function validIPAddr($IPAddr){
 }
 //check if the $link is a valid valid URL per the URL spec
 function validLink($link){
-	if (preg_match("/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/",$link)) return true;
-	else return false;
+	return (preg_match("/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/",$link)==1);
+}
+//check if the $mac is a valid MAC Address
+//Note that the first byte of the source address is always even (since the least significant bit, or first bit on the wire indicates that the address is a group address ).
+function validMAC($mac){
+	//return (preg_match('/^([a-f0-9]{2}:){5}[a-f0-9]{2}$/i', $mac)==1);
+	if(preg_match('/^([a-f0-9]{2}:){5}[a-f0-9]{2}$/i', $mac)!=1 || "00:00:00:00:00:00"==$mac || hexdec(substr($mac, 0, 2))%2 != 0) return false;
+	else return true;
 }
 //check if the $port is a valid port number 1 - 65535
 function validPort($port){
-	if (preg_match("/^[1-9][0-9]{0,3}$|^[1-5][0-9]{4}$|^6[0-4][0-9]{3}$|^65[0-4][0-9]{2}$|^655[0-2][0-9]$|^6553[0-5]$/", $port)) return true;
-	else return false;
+	return (preg_match("/^[1-9][0-9]{0,3}$|^[1-5][0-9]{4}$|^6[0-4][0-9]{3}$|^65[0-4][0-9]{2}$|^655[0-2][0-9]$|^6553[0-5]$/", $port)==1);
 }
 //check if the $id is in range 1 - 256
 function validId($id){
-	if (preg_match("/^[1-9][0-9]{0,1}$|^1[0-9]{2}$|^2[0-4][0-9]$|^25[0-6]$/", $id)) return true;
-	else return false;
+	return (preg_match("/^[1-9][0-9]{0,1}$|^1[0-9]{2}$|^2[0-4][0-9]$|^25[0-6]$/", $id)==1);
+}
+//for Parental Control $id can be 10_12 or 10
+function validId_PC($id){
+	$idRegEx = "/^[1-9][0-9]{0,1}$|^1[0-9]{2}$|^2[0-4][0-9]$|^25[0-6]$/";
+	$ids = explode('_', $id);
+	if (array_key_exists('1', $ids)) return (preg_match($idRegEx, $ids[0])==1 && preg_match($idRegEx, $ids[1])==1);
+	else return (preg_match($idRegEx, $ids[0])==1);
 }
 //check if the parameter is in array
 function isValInArray($val, $valArray){
@@ -58,5 +67,41 @@ function isValInArray($val, $valArray){
 function isValInRange($val, $min, $max){
 	if($val >= $min && $val <= $max) return true;
 	else return false;
+}
+//check if the $url is valid
+function validURL($url){
+	$urlRegEx01 = "/^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\x{00A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\x{00A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}])|(([a-z]|\d|[\x{00A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}])([a-z]|\d|-|\.|_|~|[\x{00A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}])*([a-z]|\d|[\x{00A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}])))\.)+(([a-z]|[\x{00A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}])|(([a-z]|[\x{00A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}])([a-z]|\d|-|\.|_|~|[\x{00A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}])*([a-z]|[\x{00A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\x{00A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\x{00A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\x{00A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\x{E000}-\x{F8FF}]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\x{00A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/iu";
+    $urlRegEx02 = "/^(https?|s?ftp):\/\/\[((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))]?(\:[0-9]+)*(\/($|[a-zA-Z0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$/iu";
+	if (preg_match($urlRegEx01, $url)==1 || preg_match($urlRegEx02, $url)==1) return true;
+	else return false;
+}
+//check if the $startTime is less than $endTime and Time is in range 00:00-23:59
+function validTime($startTime, $endTime){
+	//range 00:00-23:59
+	$start_hm 	= explode(':', $startTime);
+	$end_hm 	= explode(':', $endTime);
+	//hours
+	$hourRegEX 		= '/^(0)?\d$|^([1]\d)$|^(2[0-3])$/';
+	//start min can only be	00 15 30 45
+	$startMinRegEX	= '/^00$|^15$|^30$|^45$/';
+	//end min can only be 00 15 30 45 59
+	$endMinRegEX	= '/^00$|^15$|^30$|^45$|^59$/';
+	$start_min 	= ($start_hm[0]*60)+$start_hm[1];
+	$end_min 	= ($end_hm[0]*60)+$end_hm[1];
+	if(preg_match($hourRegEX, $start_hm[0])==1 && preg_match($startMinRegEX, $start_hm[1])==1 && preg_match($hourRegEX, $end_hm[0])==1 && preg_match($endMinRegEX, $end_hm[1])==1 && ($start_min < $end_min)) return true;
+	else  return false;
+}
+//check if the $day is of array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun") only
+function validDays($day){
+	$validation = true;
+	$day = explode(",",$day);
+	$allDays = array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
+	foreach ($day as $value) {
+		if (!in_array($value, $allDays)){
+			$validation = false;
+			break;
+		}
+	}
+	return $validation;
 }
 ?>

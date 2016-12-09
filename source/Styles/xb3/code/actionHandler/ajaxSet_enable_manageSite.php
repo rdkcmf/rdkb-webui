@@ -14,6 +14,7 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php 
 session_start();
 if (!isset($_SESSION["loginuser"])) {
@@ -21,5 +22,7 @@ if (!isset($_SESSION["loginuser"])) {
 	exit(0);
 }
 $flag = json_decode($_POST['Enable'], true);
-setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.Enable", $flag['Enable'], true);
+$validation = true;
+if($validation) $validation = isValInArray($flag['Enable'], array('true', 'false'));
+if($validation) setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.Enable", $flag['Enable'], true);
 ?>
