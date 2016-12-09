@@ -21,5 +21,7 @@ if (!isset($_SESSION["loginuser"])) {
 	exit(0);
 }
 $removeInfo = json_decode($_POST['removeBlockInfo'], true);
-delTblObj("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$removeInfo['InstanceID']. ".");
+foreach (explode('_', $removeInfo['InstanceID']) as $key => $value) {
+	delTblObj("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$value. ".");
+}
 ?>
