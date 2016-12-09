@@ -15,6 +15,7 @@
 */
 ?>
 <?php include('../includes/utility.php'); ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php 
 session_start();
 if (!isset($_SESSION["loginuser"])) {
@@ -32,6 +33,15 @@ $blockDays=$blockedSiteInfo['blockedDays'];
 $result = "";
 if( array_key_exists('URL', $blockedSiteInfo) ) {
 	//this is to edit blocked URL
+	$validation = true;
+	if($validation) $validation = validId_PC($blockedSiteInfo['InstanceID']);
+	if($validation) $validation = validURL($blockedSiteInfo['URL']);
+	if($validation) $validation = isValInArray($blockedSiteInfo['alwaysBlock'], array('true', 'false'));
+	if($validation && $blockedSiteInfo['alwaysBlock'] == 'false'){
+		if($validation) $validation = validTime($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime']);
+		if($validation) $validation = validDays($blockedSiteInfo['blockedDays']);
+	}
+	$result = ($validation)?'':'Invalid Inputs!';
 	//firstly, check whether URL exist or not
 	$url = $blockedSiteInfo['URL'];
 		$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
@@ -68,7 +78,7 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 				$result="Success!";
 			}	
 			else {
-				$result = 'Failed to add';
+				$result = 'Failed to edit';
 			}
 			/*setStr($objPrefix.$index.".Site", $blockedSiteInfo['URL'], false);
 			setStr($objPrefix.$index.".AlwaysBlock", $blockedSiteInfo['alwaysBlock'], true);*/
@@ -93,7 +103,7 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 					$result="Success!";
 				}	
 				else {
-					$result = 'Failed to add';
+					$result = 'Failed to edit';
 				}
 			}
 			else {
@@ -127,7 +137,7 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 					$result="Success!";
 				}	
 				else {
-					$result = 'Failed to add';
+					$result = 'Failed to edit';
 				}
 			}
 	/*
@@ -143,6 +153,15 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 }
 else{
 	//this is to edit blocked Keyword
+	$validation = true;
+	if($validation) $validation = validId_PC($blockedSiteInfo['InstanceID']);
+	if($validation) $validation = printableCharacters($blockedSiteInfo['Keyword']);
+	if($validation) $validation = isValInArray($blockedSiteInfo['alwaysBlock'], array('true', 'false'));
+	if($validation && $blockedSiteInfo['alwaysBlock'] == 'false'){
+		if($validation) $validation = validTime($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime']);
+		if($validation) $validation = validDays($blockedSiteInfo['blockedDays']);
+	}
+	$result = ($validation)?'':'Invalid Inputs!';
 	$keyword = $blockedSiteInfo['Keyword'];
 	$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 		$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
@@ -178,7 +197,7 @@ else{
 				$result="Success!";
 			}	
 			else {
-				$result = 'Failed to add';
+				$result = 'Failed to edit';
 			}
 			/*setStr($objPrefix.$index.".Site", $blockedSiteInfo['Keyword'], false);
 			setStr($objPrefix.$index.".AlwaysBlock", $blockedSiteInfo['alwaysBlock'], true);*/
@@ -203,7 +222,7 @@ else{
 					$result="Success!";
 				}	
 				else {
-					$result = 'Failed to add';
+					$result = 'Failed to edit';
 				}
 			}
 			else {
@@ -237,7 +256,7 @@ else{
 					$result="Success!";
 				}	
 				else {
-					$result = 'Failed to add';
+					$result = 'Failed to edit';
 				}
 			}
 	/*

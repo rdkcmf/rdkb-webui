@@ -15,6 +15,7 @@
 */
 ?>
 <?php include('../includes/utility.php'); ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php 
 session_start();
 if (!isset($_SESSION["loginuser"])) {
@@ -32,24 +33,34 @@ $blockDays=$blockedSiteInfo['blockedDays'];
 $result = "";
 if( array_key_exists('URL', $blockedSiteInfo) ) {
 	//this is to set blocked URL
-   	//firstly, check whether URL exist or not
-	$url = $blockedSiteInfo['URL'];
+	$validation = true;
+	if($validation) $validation = validURL($blockedSiteInfo['URL']);
+	if($validation) $validation = isValInArray($blockedSiteInfo['alwaysBlock'], array('true', 'false'));
+	if($validation && $blockedSiteInfo['alwaysBlock'] == 'false'){
+		if($validation) $validation = validTime($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime']);
+		if($validation) $validation = validDays($blockedSiteInfo['blockedDays']);
+	}
+	$result = ($validation)?'':'Invalid Inputs!';
+	if ($result == ""){
+	   	//firstly, check whether URL exist or not
+		$url = $blockedSiteInfo['URL'];
 		$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 		$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
 		$mapping_array  = array("Site", "AlwaysBlock", "StartTime", "EndTime", "BlockDays");
 		$managedSitesValues = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
 		if($UTC_local_Time_conversion) $managedSitesValues = days_time_conversion_get($managedSitesValues, 'Site');
     	foreach ($managedSitesValues as $key => $value) {
-		$always_Block = $value["AlwaysBlock"];
-		$start_Time = $value["StartTime"];
-		$end_Time = $value["EndTime"];
-		$block_Days = $value["BlockDays"];
-		//Check for time and day conflicts
-		$TD1=array($startTime, $endTime, $blockDays);
-		$TD2=array($start_Time, $end_Time, $block_Days);
-		if (($url == $value["Site"]) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
-			$result .= "Conflict with other blocked site rule. Please check your input!";
-			break;
+			$always_Block = $value["AlwaysBlock"];
+			$start_Time = $value["StartTime"];
+			$end_Time = $value["EndTime"];
+			$block_Days = $value["BlockDays"];
+			//Check for time and day conflicts
+			$TD1=array($startTime, $endTime, $blockDays);
+			$TD2=array($start_Time, $end_Time, $block_Days);
+			if (($url == $value["Site"]) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
+				$result .= "Conflict with other blocked site rule. Please check your input!";
+				break;
+			}
 		}
 	}
 	if ($result == ""){
@@ -121,6 +132,14 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 }
 else{
 	//this is to set blocked Keyword
+	$validation = true;
+	if($validation) $validation = printableCharacters($blockedSiteInfo['Keyword']);
+	if($validation) $validation = isValInArray($blockedSiteInfo['alwaysBlock'], array('true', 'false'));
+	if($validation && $blockedSiteInfo['alwaysBlock'] == 'false'){
+		if($validation) $validation = validTime($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime']);
+		if($validation) $validation = validDays($blockedSiteInfo['blockedDays']);
+	}
+	$result = ($validation)?'':'Invalid Inputs!';
 	$keyword = $blockedSiteInfo['Keyword'];
 		$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 		$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
