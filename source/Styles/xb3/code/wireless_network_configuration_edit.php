@@ -54,6 +54,8 @@ $wifi_param = array(
 	"AccessPoint_4_Enable"	=> "Device.WiFi.AccessPoint.4.Enable",
 	"Radio_".$rf."_Enable"	=> "Device.WiFi.Radio.$rf.Enable",
 	"2_SupportedStandards"	=> "Device.WiFi.Radio.2.SupportedStandards",
+	"DFS_Support1"		=> "Device.WiFi.Radio.2.X_COMCAST_COM_DFSSupport", //1-supported 0-not supported
+	"DFS_Enable1"		=> "Device.WiFi.Radio.2.X_COMCAST_COM_DFSEnable",
 	);
 $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 $radio_enable		= $wifi_value['radio_enable'];
@@ -73,6 +75,9 @@ $network_pass_128	= $wifi_value['network_pass_128'];
 $possible_channels	= $wifi_value['possible_channels'];
 $defaultSSID		= ($id == 3)?"":$wifi_value['DefaultSSID'];
 $defaultKeyPassphrase	= ($id == 3)?"":$wifi_value['DefaultKeyPassphrase'];
+$DFS_Support1		= $wifi_value['DFS_Support1'];
+$DFS_Enable1		= $wifi_value['DFS_Enable1'];
+$DFS_Support1 = "false" ; //Remove/disable DFS channels, DFS_Support1 1-supported 0-not supported
 /*- In bridge mode don't show 'Mac filter settings ' -*/
 if(strstr($_SESSION["lanMode"], "bridge-static") ) {
 	if($_SESSION["loginuser"] != "mso")
