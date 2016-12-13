@@ -600,6 +600,8 @@ function init_form()
 	var channel_bandwidth	= "<?php echo $channel_bandwidth; ?>";
 	var ext_channel			= "<?php echo $ext_channel; ?>";
 	var security			= "<?php echo $security; ?>";
+	var DFS_Support1		= "<?php echo $DFS_Support1; ?>";
+	var DFS_Enable1			= "<?php echo $DFS_Enable1; ?>";
 	//show or hide divs as per user
 	if ("mso"==thisUser){
 		$("#div_wireless_mode").hide();
