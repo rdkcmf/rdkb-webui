@@ -100,6 +100,22 @@ else
     echo "\$SERVER[\"socket\"] == \"erouter0:$HTTPS_PORT\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
 fi
 
+#Changes for ArrisXb6-2949
+
+if [ ! -d "/tmp/pcontrol" ]
+then
+     mkdir /tmp/pcontrol
+fi
+
+cp -rf /usr/www/cmn/ /tmp/pcontrol
+
+if [ ! -f "/tmp/www/index.php" ]
+then
+    cp /usr/www/index_pcontrol.php /tmp/pcontrol/index.php
+fi
+
+echo "\$SERVER[\"socket\"] == \":51515\" { server.use-ipv6 = \"enable\" server.document-root = \"/tmp/pcontrol/\" }" >> $LIGHTTPD_CONF
+
  
 WIFIUNCONFIGURED=`syscfg get redirection_flag`
 SET_CONFIGURE_FLAG=`psmcli get eRT.com.cisco.spvtg.ccsp.Device.WiFi.NotifyWiFiChanges`
