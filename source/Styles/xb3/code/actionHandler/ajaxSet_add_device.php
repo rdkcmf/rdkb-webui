@@ -14,6 +14,7 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php 
 session_start();
 if (!isset($_SESSION["loginuser"])) {
@@ -104,6 +105,12 @@ function isIPValid($IP, $MAC){
 }
 $deviceInfo = json_decode($_POST['DeviceInfo'], true);
 $result     = "";
+$validation = true;
+if($validation) $validation = printableCharacters($deviceInfo['hostName']);
+if($validation) $validation = validMAC($deviceInfo['macAddress']);
+if($validation) $validation = validIPAddr($deviceInfo['reseverd_ipAddr']);
+if($validation && array_key_exists('UpdateComments', $deviceInfo)) $validation = printableCharacters($deviceInfo['Comments']);
+$result = ($validation)?'':'Invalid Inputs!';
 if( !array_key_exists('delFlag', $deviceInfo) ) {
     //key kelFlag is not exist, so this is to reserve a ip addr for host 
     //firstly check whether this device is already in the reserved ip list
