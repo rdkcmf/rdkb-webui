@@ -618,7 +618,7 @@ function init_form()
 	$('#pageForm > div').removeClass("odd");
 	$('#pageForm > div:visible:even').addClass("odd");
 
-	if ("true"!=DFS_Support1 || "true"!=DFS_Enable1) {
+	if ("true"!="<?php echo $DFS_Support1; ?>" || "true"!="<?php echo $DFS_Enable1; ?>") {
 		$("#channel_number [value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true);
 	}
 	//disable some channel as per extension channel when NOT 20MHz, only when can't set extension channel
