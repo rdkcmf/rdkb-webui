@@ -20,6 +20,19 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
+function validChecksum($WPS_pin){
+	if (preg_match("/^\d{4}$|^\d{8}$/", $WPS_pin)!=1) return false;
+	$accum = 0;
+	$accum += 3 * (intval($WPS_pin / 10000000) % 10);
+	$accum += 1 * (intval($WPS_pin / 1000000) % 10);
+	$accum += 3 * (intval($WPS_pin / 100000) % 10);
+	$accum += 1 * (intval($WPS_pin / 10000) % 10);
+	$accum += 3 * (intval($WPS_pin / 1000) % 10);
+	$accum += 1 * (intval($WPS_pin / 100) % 10);
+	$accum += 3 * (intval($WPS_pin / 10) % 10);
+	$accum += 1 * (intval($WPS_pin / 1) % 10);
+	return (0 == ($accum % 10));
+}
 $jsConfig = $_POST['configInfo'];
 //$jsConfig = '{"ssid_number":"1", "target":"pair_client", "wps_enabled":"true", "wps_method":"PushButton,PIN", "pair_method":"PIN", "pin_number":"12345678"}';
 $arConfig = json_decode($jsConfig, true);
@@ -64,7 +77,7 @@ else if ("pair_client" == $arConfig['target'])
 		setStr("Device.WiFi.AccessPoint.1.WPS.X_CISCO_COM_ActivatePushButton", "true", true);
 		setStr("Device.WiFi.AccessPoint.2.WPS.X_CISCO_COM_ActivatePushButton", "true", true);
 	}
-	else 
+	else if(validChecksum($arConfig['pin_number']))
 	{
 		setStr("Device.WiFi.AccessPoint.1.WPS.X_CISCO_COM_ClientPin", $arConfig['pin_number'], true);
 		setStr("Device.WiFi.AccessPoint.2.WPS.X_CISCO_COM_ClientPin", $arConfig['pin_number'], true);
@@ -76,5 +89,5 @@ else if ("pair_cancel" == $arConfig['target'])
 	setStr("Device.WiFi.AccessPoint.2.WPS.X_CISCO_COM_CancelSession", "true", true);
 }
 sleep(1);
-echo $jsConfig;	
+echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 ?>

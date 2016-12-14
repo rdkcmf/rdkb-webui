@@ -1654,7 +1654,7 @@ function saveBandSteeringSettings()
 	</div>
 </div>
 <div class="module band_steering">
-	<h2>Band Setting</h2>
+	<h2>Band Steering</h2>
 	<div class="form-row ">
 		<label for="BS_disabled">Enable:</label>
 		<input type="radio"  name="BS" value="disabled" id="BS_disabled" checked="checked" /><b>Disable</b>
