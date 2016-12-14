@@ -14,6 +14,7 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
@@ -23,14 +24,16 @@ if (!isset($_SESSION["loginuser"])) {
 header("Content-Type: application/json");
 if (isset($_POST['Bridge'])){
 	$isBridgeModel=$_POST['isBridgeModel'];
-	if($isBridgeModel=="Enabled"){
-		setStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode","bridge-static",true);
-	}else{
-		setStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode","router",true);
+	if(isValInArray($isBridgeModel, array('Enabled', 'Disabled'))){
+		if($isBridgeModel=="Enabled"){
+			setStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode","bridge-static",true);
+		}else{
+			setStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode","router",true);
+		}
+		//20140523
+		//set LanManagementEntry_ApplySettings after change LanManagementEntry table
+		setStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry_ApplySettings", "true", true);
 	}
-	//20140523
-	//set LanManagementEntry_ApplySettings after change LanManagementEntry table
-	setStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry_ApplySettings", "true", true);
 	$bridgeModel=getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode");
 	if($bridgeModel=="bridge-static"){
 		echo htmlspecialchars(json_encode("Enabled"), ENT_NOQUOTES, 'UTF-8');
