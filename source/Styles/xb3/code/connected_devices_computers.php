@@ -425,7 +425,6 @@ $(document).ready(function() {
                        {
                        $onlinePrivateNetworkHost[$j]['RSSI'] = $clients_RSSI[strtoupper($Host["$i"]['PhysAddress'])]." dBm";
                        }
-                    }						
                     }
                     else {
                        $onlinePrivateNetworkHost[$j]['RSSI'] = "NA";
