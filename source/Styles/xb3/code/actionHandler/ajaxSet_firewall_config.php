@@ -14,6 +14,7 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
@@ -23,57 +24,68 @@ if (!isset($_SESSION["loginuser"])) {
 //$_POST['configInfo'] = '{"firewallLevel": "High", "block_http": "Enabled","block_icmp": "Enabled",
 //                                         "block_multicast": "Disabled","block_peer": "Disabled","block_ident": "Disabled""} ';
 $firewall_config = json_decode($_POST['configInfo'], true);
-if ( $firewall_config['firewallLevel'] == "Custom" )
-{
-    if ( $firewall_config['block_http'] == "Enabled" )
-    {
-        setStr("Device.X_CISCO_COM_Security.Firewall.FilterHTTP", "true", true);
-		setStr("Device.X_CISCO_COM_Security.Firewall.FilterHTTPs", "true", true);
-    }
-    else
-    {
-        setStr("Device.X_CISCO_COM_Security.Firewall.FilterHTTP", "false", true);
-		setStr("Device.X_CISCO_COM_Security.Firewall.FilterHTTPs", "false", true);
-    }    
-	//sleep(1);
-    if ( $firewall_config['block_icmp'] == "Enabled" )
-    {
-        setStr("Device.X_CISCO_COM_Security.Firewall.FilterAnonymousInternetRequests", "true", true);
-    }
-    else
-    {
-        setStr("Device.X_CISCO_COM_Security.Firewall.FilterAnonymousInternetRequests", "false", true);
-    }
-    //sleep(1);
-    if ( $firewall_config['block_multicast'] == "Enabled" )
-    {
-        setStr("Device.X_CISCO_COM_Security.Firewall.FilterMulticast", "true", true);
-    }
-    else
-    {
-        setStr("Device.X_CISCO_COM_Security.Firewall.FilterMulticast", "false", true);
-    }
-    //sleep(1);
-    if ( $firewall_config['block_peer'] == "Enabled" )
-    {
-        setStr("Device.X_CISCO_COM_Security.Firewall.FilterP2P", "true", true);
-    }
-    else
-    {
-        setStr("Device.X_CISCO_COM_Security.Firewall.FilterP2P", "false", true);
-    }
-    //sleep(1);
-    if ( $firewall_config['block_ident'] == "Enabled" )
-    {
-        setStr("Device.X_CISCO_COM_Security.Firewall.FilterIdent", "true", true);
-    }
-    else
-    {
-        setStr("Device.X_CISCO_COM_Security.Firewall.FilterIdent", "false", true);
-    } 
-	//sleep(1);   
+$validation = true;
+if($validation) $validation = isValInArray($firewall_config['firewallLevel'], array('High', 'Medium', 'Low', 'Custom', 'None'));
+if ( $validation && $firewall_config['firewallLevel'] == "Custom" ){
+    if($validation) $validation = isValInArray($firewall_config['block_http'], array("Enabled", "Disabled"));
+    if($validation) $validation = isValInArray($firewall_config['block_icmp'], array("Enabled", "Disabled"));
+    if($validation) $validation = isValInArray($firewall_config['block_multicast'], array("Enabled", "Disabled"));
+    if($validation) $validation = isValInArray($firewall_config['block_peer'], array("Enabled", "Disabled"));
+    if($validation) $validation = isValInArray($firewall_config['block_ident'], array("Enabled", "Disabled"));
 }
-setStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel", $firewall_config['firewallLevel'], true);
-// sleep(3);
+if($validation) {
+    if ( $firewall_config['firewallLevel'] == "Custom" )
+    {
+        if ( $firewall_config['block_http'] == "Enabled" )
+        {
+            setStr("Device.X_CISCO_COM_Security.Firewall.FilterHTTP", "true", true);
+    		setStr("Device.X_CISCO_COM_Security.Firewall.FilterHTTPs", "true", true);
+        }
+        else
+        {
+            setStr("Device.X_CISCO_COM_Security.Firewall.FilterHTTP", "false", true);
+    		setStr("Device.X_CISCO_COM_Security.Firewall.FilterHTTPs", "false", true);
+        }    
+    	//sleep(1);
+        if ( $firewall_config['block_icmp'] == "Enabled" )
+        {
+            setStr("Device.X_CISCO_COM_Security.Firewall.FilterAnonymousInternetRequests", "true", true);
+        }
+        else
+        {
+            setStr("Device.X_CISCO_COM_Security.Firewall.FilterAnonymousInternetRequests", "false", true);
+        }
+        //sleep(1);
+        if ( $firewall_config['block_multicast'] == "Enabled" )
+        {
+            setStr("Device.X_CISCO_COM_Security.Firewall.FilterMulticast", "true", true);
+        }
+        else
+        {
+            setStr("Device.X_CISCO_COM_Security.Firewall.FilterMulticast", "false", true);
+        }
+        //sleep(1);
+        if ( $firewall_config['block_peer'] == "Enabled" )
+        {
+            setStr("Device.X_CISCO_COM_Security.Firewall.FilterP2P", "true", true);
+        }
+        else
+        {
+            setStr("Device.X_CISCO_COM_Security.Firewall.FilterP2P", "false", true);
+        }
+        //sleep(1);
+        if ( $firewall_config['block_ident'] == "Enabled" )
+        {
+            setStr("Device.X_CISCO_COM_Security.Firewall.FilterIdent", "true", true);
+        }
+        else
+        {
+            setStr("Device.X_CISCO_COM_Security.Firewall.FilterIdent", "false", true);
+        } 
+    	//sleep(1);   
+    }
+    setStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel", $firewall_config['firewallLevel'], true);
+    // sleep(3);
+}
 echo htmlspecialchars($_POST['configInfo'], ENT_NOQUOTES, 'UTF-8');
 ?>
