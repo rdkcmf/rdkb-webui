@@ -24,9 +24,8 @@ require_once("../includes/utility.php");
 $opType = $_POST['op'];
 $r_enable = $_POST['enable'];
 try {
-	if (!in_array($opType, array('savePort4XHS'), true)
-		|| ($opType === 'savePort4XHS' && !isset($r_enable))) {
-		throw new Exception('Parameters are incompleted');
+	if ($opType !== 'savePort4XHS' || !($r_enable == 'true' || $r_enable == 'false')) {
+		throw new Exception('Parameters are invalid');
 	}
 	$response = array();
 	/* get the flag path first */
