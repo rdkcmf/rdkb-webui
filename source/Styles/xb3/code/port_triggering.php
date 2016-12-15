@@ -188,6 +188,7 @@ $(document).ready(function() {
 				$portTriggerValues["$i"] = $portTriggerValuesArr["$key"];
 			}
 			foreach ($PTIDs as $key=>$i) {
+				$portTriggerValues[$i]['Description'] = htmlspecialchars($portTriggerValues[$i]['Description'], ENT_NOQUOTES, 'UTF-8');
 				if ($iclass=="even") {$iclass="odd";} else {$iclass="even";}
 				$Protocol =  $portTriggerValues["$i"]["TriggerProtocol"];
 				if ($Protocol=="BOTH") $Protocol="TCP/UDP";

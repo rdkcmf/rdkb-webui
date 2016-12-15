@@ -121,7 +121,7 @@ $wifi_param = array(
 	);
 $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 $radio_enable		= $wifi_value['Radio_Enable1'];
-$network_name		= $wifi_value['network_name1'];
+$network_name		= htmlspecialchars($wifi_value['network_name1'], ENT_NOQUOTES, 'UTF-8');
 $feq_band			= $wifi_value['feq_band'];
 $mac_address		= $wifi_value['mac_address1'];
 $encrypt_mode		= $wifi_value['ModeEnabled1'];
@@ -151,7 +151,7 @@ $possible_channels	= $wifi_value['possible_channels'];
 $RDG_Supported		= $wifi_value['RDG_Supported'];
 $IEEE80211hSupport	= $wifi_value['IEEE80211hSupported'];
 $radio_enable1		= $wifi_value['Radio_Enable2'];
-$network_name1		= $wifi_value['network_name2'];
+$network_name1		= htmlspecialchars($wifi_value['network_name2'], ENT_NOQUOTES, 'UTF-8');
 $feq_band1			= $wifi_value['feq_band1'];
 $mac_address1		= $wifi_value['mac_address2'];
 $encrypt_mode1		= $wifi_value['ModeEnabled2'];
@@ -817,6 +817,7 @@ function adjust_row(tid)
 }
 function add_row(tid, idex, name, addr) 
 {
+	name = name.replace(/</g,'&lt;').replace(/>/g,'&gt;');
 	var tb  = document.getElementById(tid);
 	var len = tb.rows.length;
 	if (len == -1) {
@@ -1729,7 +1730,7 @@ function saveBandSteeringSettings()
 				 $isBridge = $_SESSION["lanMode"];
 				foreach ($ssids as $i) {
 				$id = ($isBridge == 'bridge-static' && "mso" == $_SESSION["loginuser"])? 3:1;
-					echo '<option value="'.$i.'" '.(($id==$i)?'selected="selected"':"").'>'.str_replace(" ", "&nbsp;", getStr("Device.WiFi.SSID.$i.SSID")).'</option>';
+					echo '<option value="'.$i.'" '.(($id==$i)?'selected="selected"':"").'>'.str_replace(" ", "&nbsp;", htmlspecialchars(getStr("Device.WiFi.SSID.$i.SSID"), ENT_NOQUOTES, 'UTF-8')).'</option>';
 				}
 			?>		
 		</select>

@@ -222,6 +222,7 @@ $(document).ready(function() {
 		$arrayBlockName=array();
 		$blockedDevicesInstance = array();
 		foreach ($blockedDevicesInstanceArr as $key=>$value) {
+			$value["Description"] = htmlspecialchars($value["Description"], ENT_NOQUOTES, 'UTF-8');
 			$type = $value["Type"]; 
 			if($type == "Allow") {
 				$arrayAllowID[$allowCnt] = $value["__id"];

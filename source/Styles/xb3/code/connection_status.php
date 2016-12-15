@@ -406,7 +406,7 @@ $(document).ready(function() {
   </div>
   <div style="width:355px;float:left;position:relative;left:5px;" class="wifi_section"><!-- contain private and public Wi-Fi -->
     <div class="module forms block private-wifi">
-        <h2 style="white-space: pre-wrap;">Private Wi-Fi Network-<?php echo $wifi_value["SSID1"]; ?></h2>
+        <h2 style="white-space: pre-wrap;">Private Wi-Fi Network-<?php echo htmlspecialchars($wifi_value["SSID1"], ENT_NOQUOTES, 'UTF-8'); ?></h2>
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.php?id=1" class="btn">Edit</a></p>
         <div class="form-row">
           <span class="readonlyLabel">Wireless Network (Wi-Fi 2.4 GHz):</span> <span class="value">
@@ -440,7 +440,7 @@ $(document).ready(function() {
         </div>
     </div><!-- end .module private wifi 2.4-->  
     <div class="module forms block private-wifi" style="position:relative;top:0px;right:0px;">
-        <h2 style="white-space: pre-wrap;">Private Wi-Fi Network-<?php echo $wifi_value["SSID2"]; ?> </h2>
+        <h2 style="white-space: pre-wrap;">Private Wi-Fi Network-<?php echo htmlspecialchars($wifi_value["SSID2"], ENT_NOQUOTES, 'UTF-8'); ?> </h2>
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.php?id=2" class="btn">Edit</a></p>
         <div class="form-row">
           <span class="readonlyLabel">Wireless Network (Wi-Fi 5 GHz):</span> <span class="value">
@@ -493,7 +493,7 @@ $(document).ready(function() {
 		array_push($public_v, array(
 			'ssid_id'		=> $i,
 			'ssid_enable'	=> $wifi_value["Enable".$i],
-			'ssid_name'		=> $wifi_value["SSID".$i],
+			'ssid_name'		=> htmlspecialchars($wifi_value["SSID".$i], ENT_NOQUOTES, 'UTF-8'),
 			'radio_mode'	=> strtoupper(php_getstr("Device.WiFi.Radio.$freq_id.OperatingStandards")),
 			'radio_freq'	=> ("1"==$freq_id) ? "2.4" : "5",
 			'client_cnt'	=> $wifi_value["NumberOfEntries".$i],
@@ -549,7 +549,7 @@ $(document).ready(function() {
 		array_push($public_v, array(
 			'ssid_id'		=> $i,
 			'ssid_enable'	=> $wifi_value["Enable".$i],
-			'ssid_name'		=> $wifi_value["SSID".$i],
+			'ssid_name'		=> htmlspecialchars($wifi_value["SSID".$i], ENT_NOQUOTES, 'UTF-8'),
 			'xf_capable'	=> php_getstr("Device.DeviceInfo.X_COMCAST-COM_xfinitywifiCapableCPE"),
 			'time_last'		=> sec2dhms(php_getstr("Device.X_COMCAST-COM_GRE.Tunnel.1.LastChange")),	// 2.4G and 5G share one gre tunnel
 			'wlan_gw'		=> $wlan_gw,

@@ -183,6 +183,7 @@ $(document).ready(function() {
 				if(!empty($resArray)){
 					$iclass = ""; 
 					foreach ($resArray as $hspf_entry) {
+							$hspf_entry['Description'] = htmlspecialchars($hspf_entry['Description'], ENT_NOQUOTES, 'UTF-8');
 							//zqiu
 							if (($hspf_entry['InternalPort'] === '0') || 
 								($hspf_entry['InternalClient'] === '0.0.0.0') ||

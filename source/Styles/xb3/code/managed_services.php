@@ -223,6 +223,7 @@ $(document).ready(function() {
 					$iclass="even";
 					$j = 0;
 					foreach ($blockedServicesInstanceArr as $key=>$value) {
+						$value["Description"] = htmlspecialchars($value["Description"], ENT_NOQUOTES, 'UTF-8');
 						$i = $value['__id'];
 						$j += 1;
 						if ($iclass=="even") {$iclass="odd";} else {$iclass="even";}
@@ -276,8 +277,8 @@ $(document).ready(function() {
 			$hostNums = getStr("Device.Hosts.HostNumberOfEntries");
 			$ipAddrArr = array();
 			$HostNameArr = array();
-			for ($i=0; $i < $hostNums; $i++) { 
-				$HostName = $HostParam[$i]["HostName"];
+			for ($i=0; $i < $hostNums; $i++) {
+				$HostName = htmlspecialchars($HostParam[$i]["HostName"], ENT_NOQUOTES, 'UTF-8');
 		        if (($HostName == "*") || (strlen($HostName) == 0)) {
 		            $Host["$i"]['HostName'] = $HostParam[$i]["PhysAddress"];
 		        }
@@ -303,6 +304,7 @@ $(document).ready(function() {
 				array_push($ipAddrArr, $Host["$i"]['IPAddress']);
                 $Host["$i"]['Trusted'] = false;
                 foreach( $TrustedUser as $key => $value ){
+					$value['HostDescription'] = htmlspecialchars($value['HostDescription'], ENT_NOQUOTES, 'UTF-8');
                 	if ( $value['IPAddress'] == $Host["$i"]['IPAddress'] && $value['HostDescription'] == $Host["$i"]['HostName']){
 						$Host["$i"]['Trusted'] = $value['Trusted'];
                         break;
