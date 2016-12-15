@@ -14,6 +14,7 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php 
 session_start();
 if (!isset($_SESSION["loginuser"])) {
@@ -21,7 +22,8 @@ if (!isset($_SESSION["loginuser"])) {
 	exit(0);
 }
 $removeInfo = json_decode($_POST['removeBlockInfo'], true);
-foreach (explode('_', $removeInfo['InstanceID']) as $key => $value) {
-	delTblObj("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$value. ".");
-}
+if(validId_PC($removeInfo['InstanceID']))
+	foreach (explode('_', $removeInfo['InstanceID']) as $key => $value) {
+		delTblObj("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$value. ".");
+	}
 ?>
