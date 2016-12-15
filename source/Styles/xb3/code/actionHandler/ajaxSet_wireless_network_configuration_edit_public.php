@@ -14,6 +14,7 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php 
 session_start();
 if (!isset($_SESSION["loginuser"])) {
@@ -63,61 +64,73 @@ if (($_SESSION["loginuser"] == "mso") && ($i == 5 || $i == 6)) {
 		setStr("Device.WiFi.SSID.$i.Enable", $arConfig['radio_enable'], true);
 		if ("true" == $arConfig['radio_enable'] || "true" == $arConfig['radio_reset'])
 		{
-			if ("None" == $arConfig['encrypt_mode']) {
-				setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $arConfig['encrypt_mode'], true);
-			}
-			else if ("WEP-64" == $arConfig['encrypt_mode']) {
-				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.1.WEPKey",  $arConfig['network_password'], false);
-				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.2.WEPKey",  $arConfig['network_password'], false);
-				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.3.WEPKey",  $arConfig['network_password'], false);
-				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.4.WEPKey",  $arConfig['network_password'], false);
-				setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $arConfig['encrypt_mode'], true);
-			}
-			else if("WEP-128" == $arConfig['encrypt_mode']) {
-				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.1.WEPKey", $arConfig['network_password'], false);
-				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.2.WEPKey", $arConfig['network_password'], false);
-				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.3.WEPKey", $arConfig['network_password'], false);
-				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.4.WEPKey", $arConfig['network_password'], false);
-				setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $arConfig['encrypt_mode'], true);
-			}
-			else {	//no open, no wep
-				//bCommit false->true still do validation each, have to group set this...
-				DmExtSetStrsWithRootObj("Device.WiFi.", true, array(
-					array("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", "string", $arConfig['encrypt_mode']), 
-					array("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_EncryptionMethod", "string", $arConfig['encrypt_method'])));
-				setStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_KeyPassphrase", $arConfig['network_password'], true);
-			}
-			setStr("Device.WiFi.SSID.$i.SSID", $arConfig['network_name'], true);
-			setStr("Device.WiFi.AccessPoint.$i.SSIDAdvertisementEnabled", $arConfig['broadcastSSID'], true);
-			// if ("false" == $arConfig['enableWMM']){
-				// setStr("Device.WiFi.AccessPoint.$i.UAPSDEnable", "false", true);
-			// }
-			// setStr("Device.WiFi.AccessPoint.$i.WMMEnable", $arConfig['enableWMM'], true);
-			//when disable WMM, make sure UAPSD is disabled as well, have to use group set		
-			if (getStr("Device.WiFi.AccessPoint.$i.WMMEnable") != $arConfig['enableWMM']) {
-				DmExtSetStrsWithRootObj("Device.WiFi.", true, array(
-					array("Device.WiFi.AccessPoint.$i.UAPSDEnable", "bool", "false"),
-					array("Device.WiFi.AccessPoint.$i.WMMEnable",   "bool", $arConfig['enableWMM'])));			
-			}
-			// check if the LowerLayers radio is enabled
-			if ("false" == getStr("Device.WiFi.Radio.$r.Enable") && "true" == $arConfig['radio_enable']){
-				setStr("Device.WiFi.Radio.$r.Enable", "true", true);
-			}
-			setStr("Device.WiFi.SSID.$i.Enable", $arConfig['radio_enable'], true);
-			if (intval($i) >= 5 ){
-				setStr("Device.WiFi.AccessPoint.$i.X_CISCO_COM_BssMaxNumSta", $arConfig['max_client'], true);
-				//soft-gre
-				setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.DSCPMarkPolicy", $arConfig['DSCPMarkPolicy'], true);
-				setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.PrimaryRemoteEndpoint", $arConfig['PrimaryRemoteEndpoint'], true);
-				setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.SecondaryRemoteEndpoint", $arConfig['SecondaryRemoteEndpoint'], true);
-				setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingCount", $arConfig['KeepAliveCount'], true);
-				setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingInterval", $arConfig['KeepAliveInterval'], true);
-				setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingFailThreshold", $arConfig['KeepAliveThreshold'], true);
-				setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingIntervalInFailure", $arConfig['KeepAliveFailInterval'], true);
-				setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.ReconnectToPrimaryRemoteEndpoint", $arConfig['ReconnectPrimary'], true);
-				setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.EnableCircuitID", $arConfig['DHCPCircuitIDSSID'], true);
-				setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.EnableRemoteID", $arConfig['DHCPRemoteID'], true);
-				// echo $i;
+			$validation = true;
+			if($validation) $validation = (preg_match("/^[ -~]{1,32}$/i", $arConfig['network_name'])==1);
+			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
+			if($validation) $validation = isValInRange($arConfig['max_client'], 1, 127);
+			if($validation) $validation = (preg_match("/^[1-9]\d*$|^[0-9]\d\d*$/", $arConfig['DSCPMarkPolicy'])==1);
+			if($validation) $validation = (preg_match("/^[1-9]\d*$|^[0-9]\d\d*$/", $arConfig['KeepAliveCount'])==1);
+			if($validation) $validation = (preg_match("/^[1-9]\d*$|^[0-9]\d\d*$/", $arConfig['KeepAliveInterval'])==1);
+			if($validation) $validation = (preg_match("/^[1-9]\d*$|^[0-9]\d\d*$/", $arConfig['KeepAliveThreshold'])==1);
+			if($validation) $validation = (preg_match("/^[1-9]\d*$|^[0-9]\d\d*$/", $arConfig['KeepAliveFailInterval'])==1);
+			if($validation) $validation = (preg_match("/^[1-9]\d*$|^[0-9]\d\d*$/", $arConfig['ReconnectPrimary'])==1);
+			if($validation){
+				if ("None" == $arConfig['encrypt_mode']) {
+					setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $arConfig['encrypt_mode'], true);
+				}
+				else if ("WEP-64" == $arConfig['encrypt_mode']) {
+					setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.1.WEPKey",  $arConfig['network_password'], false);
+					setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.2.WEPKey",  $arConfig['network_password'], false);
+					setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.3.WEPKey",  $arConfig['network_password'], false);
+					setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.4.WEPKey",  $arConfig['network_password'], false);
+					setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $arConfig['encrypt_mode'], true);
+				}
+				else if("WEP-128" == $arConfig['encrypt_mode']) {
+					setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.1.WEPKey", $arConfig['network_password'], false);
+					setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.2.WEPKey", $arConfig['network_password'], false);
+					setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.3.WEPKey", $arConfig['network_password'], false);
+					setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.4.WEPKey", $arConfig['network_password'], false);
+					setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $arConfig['encrypt_mode'], true);
+				}
+				else {	//no open, no wep
+					//bCommit false->true still do validation each, have to group set this...
+					DmExtSetStrsWithRootObj("Device.WiFi.", true, array(
+						array("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", "string", $arConfig['encrypt_mode']), 
+						array("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_EncryptionMethod", "string", $arConfig['encrypt_method'])));
+					setStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_KeyPassphrase", $arConfig['network_password'], true);
+				}
+				setStr("Device.WiFi.SSID.$i.SSID", $arConfig['network_name'], true);
+				setStr("Device.WiFi.AccessPoint.$i.SSIDAdvertisementEnabled", $arConfig['broadcastSSID'], true);
+				// if ("false" == $arConfig['enableWMM']){
+					// setStr("Device.WiFi.AccessPoint.$i.UAPSDEnable", "false", true);
+				// }
+				// setStr("Device.WiFi.AccessPoint.$i.WMMEnable", $arConfig['enableWMM'], true);
+				//when disable WMM, make sure UAPSD is disabled as well, have to use group set		
+				if (getStr("Device.WiFi.AccessPoint.$i.WMMEnable") != $arConfig['enableWMM']) {
+					DmExtSetStrsWithRootObj("Device.WiFi.", true, array(
+						array("Device.WiFi.AccessPoint.$i.UAPSDEnable", "bool", "false"),
+						array("Device.WiFi.AccessPoint.$i.WMMEnable",   "bool", $arConfig['enableWMM'])));			
+				}
+				// check if the LowerLayers radio is enabled
+				if ("false" == getStr("Device.WiFi.Radio.$r.Enable") && "true" == $arConfig['radio_enable']){
+					setStr("Device.WiFi.Radio.$r.Enable", "true", true);
+				}
+				setStr("Device.WiFi.SSID.$i.Enable", $arConfig['radio_enable'], true);
+				if (intval($i) >= 5 ){
+					setStr("Device.WiFi.AccessPoint.$i.X_CISCO_COM_BssMaxNumSta", $arConfig['max_client'], true);
+					//soft-gre
+					setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.DSCPMarkPolicy", $arConfig['DSCPMarkPolicy'], true);
+					setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.PrimaryRemoteEndpoint", $arConfig['PrimaryRemoteEndpoint'], true);
+					setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.SecondaryRemoteEndpoint", $arConfig['SecondaryRemoteEndpoint'], true);
+					setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingCount", $arConfig['KeepAliveCount'], true);
+					setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingInterval", $arConfig['KeepAliveInterval'], true);
+					setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingFailThreshold", $arConfig['KeepAliveThreshold'], true);
+					setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.RemoteEndpointHealthCheckPingIntervalInFailure", $arConfig['KeepAliveFailInterval'], true);
+					setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.ReconnectToPrimaryRemoteEndpoint", $arConfig['ReconnectPrimary'], true);
+					setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.EnableCircuitID", $arConfig['DHCPCircuitIDSSID'], true);
+					setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.EnableRemoteID", $arConfig['DHCPRemoteID'], true);
+					// echo $i;
+				}
 			}
 		}
 		// if ("2.4" == $arConfig['radio_freq']){

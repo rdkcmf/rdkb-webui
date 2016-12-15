@@ -14,6 +14,7 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php 
 session_start();
 if (!isset($_SESSION["loginuser"])) {
@@ -42,93 +43,111 @@ if ($i == 1 || $i == 2 || (($_SESSION["loginuser"] == "mso") && ($i == 3 || $i =
 	setStr("Device.WiFi.SSID.$i.Enable", $arConfig['radio_enable'], true);
 	if ("true" == $arConfig['radio_enable']) 
 	{
-		// check if the LowerLayers radio is enabled
-		if ("false" == getStr("Device.WiFi.Radio.$r.Enable")){
-			setStr("Device.WiFi.Radio.$r.Enable", "true", true);
-		}
-		switch ($arConfig['security'])
-		{
-			case "WEP_64":
-			  $encrypt_mode   = "WEP-64";
-			  $encrypt_method = "None";
-			  break;
-			case "WEP_128":
-			  $encrypt_mode   = "WEP-128";
-			  $encrypt_method = "None";
-			  break;
-			case "WPA_PSK_TKIP":
-			  $encrypt_mode   = "WPA-Personal";
-			  $encrypt_method = "TKIP";
-			  break;
-			case "WPA_PSK_AES":
-			  $encrypt_mode   = "WPA-Personal";
-			  $encrypt_method = "AES";
-			  break;
-			case "WPA2_PSK_TKIP":
-			  $encrypt_mode   = "WPA2-Personal";
-			  $encrypt_method = "TKIP";
-			  break;
-			case "WPA2_PSK_AES":
-			  $encrypt_mode   = "WPA2-Personal";
-			  $encrypt_method = "AES";
-			  break;
-			case "WPA2_PSK_TKIPAES":
-			  $encrypt_mode   = "WPA2-Personal";
-			  $encrypt_method = "AES+TKIP";
-			  break;
-			case "WPAWPA2_PSK_TKIPAES":
-			  $encrypt_mode   = "WPA-WPA2-Personal";
-			  $encrypt_method = "AES+TKIP";
-			  break;
-			default:
-			  $encrypt_mode   = "None";
-			  $encrypt_method = "None";
-		}
-		// User "mso" have another page to configure this
+		$validation = true;
 		if ("mso" != $thisUser){
-			setStr("Device.WiFi.Radio.$i.OperatingChannelBandwidth", $arConfig['channel_bandwidth'], false);
-			setStr("Device.WiFi.Radio.$i.OperatingStandards", $arConfig['wireless_mode'], true);
-			setStr("Device.WiFi.Radio.$i.AutoChannelEnable", $arConfig['channel_automatic'], true);
+			if($validation) $validation = isValInArray($arConfig['channel_bandwidth'], array('20MHz', '40MHz', '80MHz'));
+			if($validation) $validation = (($r==1 && isValInArray($arConfig['wireless_mode'], array("g,n", "b,g,n"))) || ($r==2 && isValInArray($arConfig['wireless_mode'], array("n", "ac", "n,ac", "a,n,ac"))));
 			if ("false"==$arConfig['channel_automatic']){
-				setStr("Device.WiFi.Radio.$i.Channel", $arConfig['channel_number'], true);
+				$PossibleChannels = getStr("Device.WiFi.Radio.$r.PossibleChannels");
+				$PossibleChannelsArr = explode(',', $PossibleChannels);
+				if ($validation && "false"==$arConfig['channel_automatic']) $validation = isValInArray($arConfig['channel_number'], $PossibleChannelsArr);
 			}
+			if($validation) $validation = (preg_match("/^[ -~]{1,32}$/i", $arConfig['network_name'])==1);
+			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
 		}
-		if ("None" == $arConfig['security']) {
-			setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $encrypt_mode, true);
-		}
-		else if ("WEP_64" == $arConfig['security']) {
-			setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.1.WEPKey",  $arConfig['network_password'], false);
-			setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.2.WEPKey",  $arConfig['network_password'], false);
-			setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.3.WEPKey",  $arConfig['network_password'], false);
-			setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.4.WEPKey",  $arConfig['network_password'], false);
-			setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $encrypt_mode, true);
-		}
-		else if("WEP_128" == $arConfig['security']) {
-			setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.1.WEPKey", $arConfig['network_password'], false);
-			setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.2.WEPKey", $arConfig['network_password'], false);
-			setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.3.WEPKey", $arConfig['network_password'], false);
-			setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.4.WEPKey", $arConfig['network_password'], false);
-			setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $encrypt_mode, true);
-		}
-		else {	//no open, no wep
-			//bCommit false->true still do validation each, have to group set this...
-			DmExtSetStrsWithRootObj("Device.WiFi.", true, array(
-				array("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", "string", $encrypt_mode), 
-				array("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_EncryptionMethod", "string", $encrypt_method)));
-			setStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_KeyPassphrase", $arConfig['network_password'], true);
-		}
-		setStr("Device.WiFi.SSID.$i.SSID", $arConfig['network_name'], true);
-		setStr("Device.WiFi.AccessPoint.$i.SSIDAdvertisementEnabled", $arConfig['broadcastSSID'], true);
-		if ("mso" == $thisUser){
-			// if ("false" == $arConfig['enableWMM']){
-				// setStr("Device.WiFi.AccessPoint.$i.UAPSDEnable", "false", true);
-			// }
-			// setStr("Device.WiFi.AccessPoint.$i.WMMEnable", $arConfig['enableWMM'], true);
-			//when disable WMM, make sure UAPSD is disabled as well, have to use group set		
-			if (getStr("Device.WiFi.AccessPoint.$i.WMMEnable") != $arConfig['enableWMM']) {
+		if($validation){
+			// check if the LowerLayers radio is enabled
+			if ("false" == getStr("Device.WiFi.Radio.$r.Enable")){
+				setStr("Device.WiFi.Radio.$r.Enable", "true", true);
+			}
+			switch ($arConfig['security'])
+			{
+				case "WEP_64":
+				  $encrypt_mode   = "WEP-64";
+				  $encrypt_method = "None";
+				  break;
+				case "WEP_128":
+				  $encrypt_mode   = "WEP-128";
+				  $encrypt_method = "None";
+				  break;
+				case "WPA_PSK_TKIP":
+				  $encrypt_mode   = "WPA-Personal";
+				  $encrypt_method = "TKIP";
+				  break;
+				case "WPA_PSK_AES":
+				  $encrypt_mode   = "WPA-Personal";
+				  $encrypt_method = "AES";
+				  break;
+				case "WPA2_PSK_TKIP":
+				  $encrypt_mode   = "WPA2-Personal";
+				  $encrypt_method = "TKIP";
+				  break;
+				case "WPA2_PSK_AES":
+				  $encrypt_mode   = "WPA2-Personal";
+				  $encrypt_method = "AES";
+				  break;
+				case "WPA2_PSK_TKIPAES":
+				  $encrypt_mode   = "WPA2-Personal";
+				  $encrypt_method = "AES+TKIP";
+				  break;
+				case "WPAWPA2_PSK_TKIPAES":
+				  $encrypt_mode   = "WPA-WPA2-Personal";
+				  $encrypt_method = "AES+TKIP";
+				  break;
+				case "None":
+				  $encrypt_mode   = "None";
+				  $encrypt_method = "None";
+				  break;
+				default:
+				  $encrypt_mode   = "WPA2-Personal";
+				  $encrypt_method = "AES";
+			}
+			// User "mso" have another page to configure this
+			if ("mso" != $thisUser){
+				setStr("Device.WiFi.Radio.$i.OperatingChannelBandwidth", $arConfig['channel_bandwidth'], false);
+				setStr("Device.WiFi.Radio.$i.OperatingStandards", $arConfig['wireless_mode'], true);
+				setStr("Device.WiFi.Radio.$i.AutoChannelEnable", $arConfig['channel_automatic'], true);
+				if ("false"==$arConfig['channel_automatic']){
+					setStr("Device.WiFi.Radio.$i.Channel", $arConfig['channel_number'], true);
+				}
+			}
+			if ("None" == $arConfig['security']) {
+				setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $encrypt_mode, true);
+			}
+			else if ("WEP_64" == $arConfig['security']) {
+				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.1.WEPKey",  $arConfig['network_password'], false);
+				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.2.WEPKey",  $arConfig['network_password'], false);
+				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.3.WEPKey",  $arConfig['network_password'], false);
+				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.4.WEPKey",  $arConfig['network_password'], false);
+				setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $encrypt_mode, true);
+			}
+			else if("WEP_128" == $arConfig['security']) {
+				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.1.WEPKey", $arConfig['network_password'], false);
+				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.2.WEPKey", $arConfig['network_password'], false);
+				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.3.WEPKey", $arConfig['network_password'], false);
+				setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey128Bit.4.WEPKey", $arConfig['network_password'], false);
+				setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $encrypt_mode, true);
+			}
+			else {	//no open, no wep
+				//bCommit false->true still do validation each, have to group set this...
 				DmExtSetStrsWithRootObj("Device.WiFi.", true, array(
-					array("Device.WiFi.AccessPoint.$i.UAPSDEnable", "bool", "false"),
-					array("Device.WiFi.AccessPoint.$i.WMMEnable",   "bool", $arConfig['enableWMM'])));			
+					array("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", "string", $encrypt_mode), 
+					array("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_EncryptionMethod", "string", $encrypt_method)));
+				setStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_KeyPassphrase", $arConfig['network_password'], true);
+			}
+			setStr("Device.WiFi.SSID.$i.SSID", $arConfig['network_name'], true);
+			setStr("Device.WiFi.AccessPoint.$i.SSIDAdvertisementEnabled", $arConfig['broadcastSSID'], true);
+			if ("mso" == $thisUser){
+				// if ("false" == $arConfig['enableWMM']){
+					// setStr("Device.WiFi.AccessPoint.$i.UAPSDEnable", "false", true);
+				// }
+				// setStr("Device.WiFi.AccessPoint.$i.WMMEnable", $arConfig['enableWMM'], true);
+				//when disable WMM, make sure UAPSD is disabled as well, have to use group set		
+				if (getStr("Device.WiFi.AccessPoint.$i.WMMEnable") != $arConfig['enableWMM']) {
+					DmExtSetStrsWithRootObj("Device.WiFi.", true, array(
+						array("Device.WiFi.AccessPoint.$i.UAPSDEnable", "bool", "false"),
+						array("Device.WiFi.AccessPoint.$i.WMMEnable",   "bool", $arConfig['enableWMM'])));			
+				}
 			}
 		}
 	}
