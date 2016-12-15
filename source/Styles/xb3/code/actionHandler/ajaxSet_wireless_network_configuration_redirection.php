@@ -14,6 +14,7 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php
 $isCaptiveMode = false;
 $CONFIGUREWIFI = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi");
@@ -25,6 +26,23 @@ if(!strcmp($CaptivePortalEnable, "true")) {
 }
 if($isCaptiveMode)
 {
+	if(isset($_POST['rediection_Info'])){
+		$jsConfig = $_POST['rediection_Info'];
+		$arConfig = json_decode($jsConfig, true);
+		$validation = true;
+		if($validation) $validation = isValInArray($arConfig['dualband'], array('true', 'false'));
+		if($validation && $arConfig['dualband'] == 'true'){
+			if($validation) $validation = (preg_match("/^[ -~]{1,32}$/i", $arConfig['network_name'])==1);
+			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
+			if($validation) $validation = (preg_match("/^[ -~]{1,32}$/i", $arConfig['network5_name'])==1);
+			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network5_password'])==1);
+		}
+		else {
+			if($validation) $validation = (preg_match("/^[ -~]{1,32}$/i", $arConfig['network_name'])==1);
+			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
+		}
+		if($validation) $validation = (preg_match("/^\d{10}$/", $arConfig['phoneNumber'])==1);
+	}
 	//CloudUIEnable -- to check if "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudPersonalizationURL" is reachable
 	if(isset($_POST['CloudUIEnable'])){
 		$IsCloudReachable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_IsCloudReachable");
@@ -32,11 +50,9 @@ if($isCaptiveMode)
 		array_push($response, $IsCloudReachable);
 		echo htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8');
 	}
-	else {
-		$jsConfig = $_POST['rediection_Info'];
+	else if($validation){
 		// jsConfig = '{"dualband":"true", "network_name":"'+network_name+'", "network_password":"'+network_password+'", "network5_name":"'+network5_name+'", "network5_password":"'+network5_password+', "phoneNumber":"'+EMS_mobileNumber()+'"}';
 		// jsConfig = '{"dualband":"false", "network_name":"'+network_name+'", "network_password":"'+network_password+', "phoneNumber":"'+EMS_mobileNumber()+'"}';
-		$arConfig = json_decode($jsConfig, true);
 		//print_r($arConfig);
 		//update EMS phoneNumber
 		setStr("Device.DeviceInfo.X_COMCAST-COM_EMS_MobileNumber", $arConfig['phoneNumber'], true);
@@ -85,6 +101,13 @@ if($isCaptiveMode)
 		sleep(10);
 		$response = array();
 		array_push($response, $arConfig['phoneNumber']);
+		echo htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8');
+	}
+	else
+	{
+		setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","captiveportal_invalid_input",true);
+		$response = array();
+		array_push($response, "outOfCaptivePortal");
 		echo htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8');
 	}
 }
