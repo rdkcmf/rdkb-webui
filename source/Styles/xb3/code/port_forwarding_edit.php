@@ -39,6 +39,7 @@ $portmapping_param = array(
 	);
     $portmapping_value = KeyExtGet("Device.NAT.PortMapping.", $portmapping_param);
 $service_name = $portmapping_value["service_name"]; //getStr("Device.NAT.PortMapping.$i.Description");
+$service_name = htmlspecialchars($service_name, ENT_NOQUOTES, 'UTF-8');
 $v6ServerIP = $portmapping_value["v6ServerIP"]; //getStr("Device.NAT.PortMapping.$i.X_CISCO_COM_InternalClientV6");
 $startport = $portmapping_value["startport"]; //getStr("Device.NAT.PortMapping.".$i.".ExternalPort"); 
 $endport   = $portmapping_value["endport"]; //getStr("Device.NAT.PortMapping.".$i.".ExternalPortEndRange");
@@ -341,6 +342,7 @@ function update_service_field() {
     if($common_select.find("option:selected").val() == "other") {
         $other.prop("disabled", false).removeClass("disabled").closest(".form-row").show();
         $("#start_port, #end_port").prop("disabled", false);
+	service_name = service_name.replace(/&lt;/g,'<').replace(/&gt;/g,'>');
 	$other.val(service_name);
 	$("#start_port").val(startport);
 	$("#end_port").val(endport);

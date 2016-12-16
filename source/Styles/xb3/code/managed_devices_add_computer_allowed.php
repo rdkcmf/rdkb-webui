@@ -240,6 +240,7 @@ $(document).ready(function() {
 						$hostsInstance["$i"] = $hostsInstanceArr["$key"];
 					}
 					foreach ($hostIDs as $key=>$i) {
+						$hostsInstance["$i"]["HostName"] = htmlspecialchars($hostsInstance["$i"]["HostName"], ENT_NOQUOTES, 'UTF-8');
 						if ($iclass=="") {$iclass="odd";} else {$iclass="";}
 						$hostName = $hostsInstance["$i"]["HostName"]; 
 						$hostMac = $hostsInstance["$i"]["PhysAddress"]; 

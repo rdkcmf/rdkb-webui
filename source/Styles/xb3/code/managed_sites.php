@@ -439,6 +439,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 			$j++;
 		}
 		else{
+			$blockedSites["$i"]['Site'] = htmlspecialchars($blockedSites["$i"]['Site'], ENT_NOQUOTES, 'UTF-8');
 			$blockedSitesKeyWord["$k"]['InstanceID'] = $i + 1;
 			$blockedSitesKeyWord["$k"]['RealID'] = $blockedSitesInstance["$i"]['__id'];
 			$blockedSitesKeyWord["$k"]['Site'] = $blockedSites["$i"]['Site'];
@@ -551,7 +552,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 		$ipAddrArr = array();
 		$HostNameArr = array();
 		for ($i=0; $i < $hostNums; $i++) {
-			$HostName = $Host[$i]["HostName"];
+			$HostName = htmlspecialchars($Host[$i]["HostName"], ENT_NOQUOTES, 'UTF-8');
 			if (($HostName == "*") || (strlen($HostName) == 0)) {
 				$Host["$i"]['HostName'] = $Host[$i]["PhysAddress"];
 			}
@@ -577,6 +578,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 			array_push($ipAddrArr, $Host["$i"]['IPAddress']);
 			$Host["$i"]['Trusted'] = false;
 			foreach( $TrustedUser as $key => $value ){
+				$value['HostDescription'] = htmlspecialchars($value['HostDescription'], ENT_NOQUOTES, 'UTF-8');
 				if ( $value['IPAddress'] == $Host["$i"]['IPAddress'] && $value['HostDescription'] == $Host["$i"]['HostName']){
 					$Host["$i"]['Trusted'] = $value['Trusted'];
 					break;

@@ -154,12 +154,15 @@ $(document).ready(function() {
 							if ($iclass=="") {$iclass="odd";} else {$iclass="";}
 							$name = getStr("Device.X_CISCO_COM_DDNS.Service."."$i".".ServiceName");
 							$username = getStr("Device.X_CISCO_COM_DDNS.Service."."$i".".Username");
+							$username = htmlspecialchars($username, ENT_NOQUOTES, 'UTF-8');
 							$password = getStr("Device.X_CISCO_COM_DDNS.Service."."$i".".Password");
+							$password = htmlspecialchars($password, ENT_NOQUOTES, 'UTF-8');
 							$passwordStr = "";
 							for($j=0;$j<strlen($password);$j++) {
 								$passwordStr = $passwordStr . "*";
 							}
 							$hostname = getStr("Device.X_CISCO_COM_DDNS.Service."."$i".".Domain");
+							$hostname = htmlspecialchars($hostname, ENT_NOQUOTES, 'UTF-8');
 							echo "
 							<tr class=$iclass>
 								<td>".$name."</td>

@@ -209,7 +209,8 @@ $(document).ready(function() {
 					$resArray = getParaValues($rootObjName, $paramNameArray, $mapping_array);
                     if (!empty($resArray)){
 						$iclass = "";
-					    for ($i=0; $i < $IndexNums; $i++) { 
+					    for ($i=0; $i < $IndexNums; $i++) {
+							$resArray[$i]['Description'] = htmlspecialchars($resArray[$i]['Description'], ENT_NOQUOTES, 'UTF-8');
 							//zqiu
 					    	if (($resArray[$i]['InternalPort'] !== '0') || 
 								($resArray[$i]['InternalClient'] === '0.0.0.0') ||

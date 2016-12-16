@@ -166,11 +166,11 @@ function popUp(URL) {
 		);
 	    $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 		$wifi_24_enabled = $wifi_value["wifi_24_enabled"];
-		$wifi_24_ssid = $wifi_value["wifi_24_ssid"];
-		$wifi_24_passkey = $wifi_value["wifi_24_passkey"];
+		$wifi_24_ssid = htmlspecialchars($wifi_value["wifi_24_ssid"], ENT_NOQUOTES, 'UTF-8');
+		$wifi_24_passkey = htmlspecialchars($wifi_value["wifi_24_passkey"], ENT_NOQUOTES, 'UTF-8');
 		$wifi_50_enabled = $wifi_value["wifi_50_enabled"];
-		$wifi_50_ssid = $wifi_value["wifi_50_ssid"];
-		$wifi_50_passkey = $wifi_value["wifi_50_passkey"];
+		$wifi_50_ssid = htmlspecialchars($wifi_value["wifi_50_ssid"], ENT_NOQUOTES, 'UTF-8');
+		$wifi_50_passkey = htmlspecialchars($wifi_value["wifi_50_passkey"], ENT_NOQUOTES, 'UTF-8');
 		//If at least one private SSID is enabled
 		if ( $bridge_mode == "router" && ("true" == $wifi_24_enabled || "true" == $wifi_50_enabled) ) {
 			echo '<div class="module forms" id="wifi-config">';

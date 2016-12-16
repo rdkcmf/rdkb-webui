@@ -388,6 +388,8 @@ $(document).ready(function() {
 		    //This for loop aims to construct online and offline network host arrays based on $Host		    
 		    for ($i=0,$j=0,$k=0,$x=0; $i < $HostNum; $i++) { 
                 $Host["$i"]['instanceID'] = $i + 1;
+                $Host[$i]['HostName'] = htmlspecialchars($Host[$i]['HostName'], ENT_NOQUOTES, 'UTF-8');
+                $Host[$i]['Comments'] = htmlspecialchars($Host[$i]['Comments'], ENT_NOQUOTES, 'UTF-8');
 				//for WiFi Extended device
 				$isExtendedDevice = false;
 				if (array_key_exists($Host["$i"]['X_RDKCENTRAL-COM_Parent'], $NetworkExtender)){
@@ -643,6 +645,7 @@ $(document).ready(function() {
 			$onXHSAssoDeviceArr  = array();
 			$offXHSClientArr = array();
 			foreach ($PoolClientArr as $poolEntry) {
+				$poolEntry['X_CISCO_COM_HostName'] = htmlspecialchars($poolEntry['X_CISCO_COM_HostName'], ENT_NOQUOTES, 'UTF-8');
 				$match = "";
 				foreach ($AssoDeviceArr as $wifiEntry) {
 					if (! strcasecmp($poolEntry['Chaddr'], $wifiEntry['MACAddress'])) {
@@ -778,7 +781,7 @@ $(document).ready(function() {
       			echo '<th id="xfinitywifi-disconnect-button" width="20%"></th>';
       		echo '</tr>';
       		for ($i=0; $i < $clients_num; $i++) { 
-	      		$Hostname      = $Hotspot_clients[$i]['Hostname'];
+	      		$Hostname      = htmlspecialchars($Hotspot_clients[$i]['Hostname'], ENT_NOQUOTES, 'UTF-8');
 	      		$MACAddress    = $Hotspot_clients[$i]['MACAddress'];
 	      		$RSSILevel     = $Hotspot_clients[$i]['RSSILevel'];
 	      		$IPv4Address   = $Hotspot_clients[$i]['IPv4Address'];

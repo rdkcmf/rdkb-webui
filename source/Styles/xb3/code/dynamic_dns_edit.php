@@ -25,17 +25,22 @@ $(document).ready(function() {
     comcast.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");
 	var ID = <?php echo $i ?>;
 	var jsSP = "<?php echo $sp ?>";
-	var jsUser = "<?php echo $username ?>";
-	var jsPwd = "<?php echo $password ?>";
-	var jsHost = "<?php echo $hostname ?>";
-	var hostArr = jsHost.split(",");
+	var jsUser	= "<?php echo htmlspecialchars($username, ENT_NOQUOTES, 'UTF-8'); ?>";
+	var jsPwd	= "<?php echo htmlspecialchars($password, ENT_NOQUOTES, 'UTF-8'); ?>";
+	var jsHost	= "<?php echo htmlspecialchars($hostname, ENT_NOQUOTES, 'UTF-8'); ?>";
+	var hostArr	= jsHost.split(",");
 	var cnt = hostArr.length;
 	$("#Service_Provider1").val(jsSP);
+	jsUser = jsUser.replace(/&lt;/g,'<').replace(/&gt;/g,'>');
 	$("#User_name").val(jsUser);
+	jsPwd = jsPwd.replace(/&lt;/g,'<').replace(/&gt;/g,'>');
 	$("#Password").val(jsPwd);
-	$("#Host_Name1").val(hostArr[0]);
+	$.each(hostArr, function($index, $value) {
+		$value = $value.replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+	});
+	$("#Host_Name1").val(hostArr[0].replace(/&lt;/g,'<').replace(/&gt;/g,'>'));
 	for(var i=1;i<hostArr.length;i++) {
-		add(hostArr[i]);
+		add(hostArr[i].replace(/&lt;/g,'<').replace(/&gt;/g,'>'));
 	}
 	// If Enable UPnP is not checked, disable the next two form fields
     $("#btn-save").click(function() {
