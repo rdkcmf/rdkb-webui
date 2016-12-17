@@ -823,8 +823,8 @@ function add_row(tid, idex, name, addr)
 	if (len == -1) {
 		idex = tb.rows.length;
 	}
-	else if (len > 17) {
-		jAlert("No more than 16 devices can be added!");
+	else if (len > 65) {
+		jAlert("No more than 64 devices can be added!");
 		return;
 	}
 	if ("filter_table" == tid) {
