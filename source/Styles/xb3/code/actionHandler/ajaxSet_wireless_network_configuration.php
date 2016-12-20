@@ -342,7 +342,7 @@ else
 						$old_mac = getStr("Device.WiFi.AccessPoint.$i.X_CISCO_COM_MacFilterTable.$j.MACAddress");
 						for ($k=0; $k<count($ft); $k++)
 						{
-							if ($old_mac == $ft[$k][1])
+							if (strtolower($old_mac) == strtolower($ft[$k][1]))
 							{
 								$del_mac = false;
 								break;
