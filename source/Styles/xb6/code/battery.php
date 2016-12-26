@@ -45,6 +45,11 @@ $(document).ready(function() {
 		return;
 	}*/
 	//var percent	= $("#sta_batt").text().replace("Battery", "");
+         if ("0" == "<?php echo $battery_value['bat_status']; ?>"){
+		//return without populating the table
+		$(".div_battery [id^='bat_']").text("");
+		return;
+         }
 	var bat_chargeremain	= "<?php echo $battery_value['bat_chargeremain']; ?>";
 	$("#bat_chargeremain").text(bat_chargeremain + ' % ');
 	var bat_timeremain	= "<?php echo $battery_value['bat_timeremain']; ?>";
