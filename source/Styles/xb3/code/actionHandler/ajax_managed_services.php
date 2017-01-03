@@ -69,7 +69,7 @@ if (isset($_POST['add'])){
 	if($validation) $validation = isValInArray($_POST['protocol'], array('TCP', 'UDP', 'TCP/UDP'));
 	if($validation) $validation = validPort($_POST['startPort']);
 	if($validation) $validation = validPort($_POST['endPort']);
-	if($validation) $validation = ($_POST['startPort'] < $_POST['endPort']);
+	if($validation) $validation = ($_POST['startPort'] <= $_POST['endPort']);
 	if($validation) $validation = isValInArray($_POST['block'], array('true', 'false'));
 	if($validation && $_POST['block'] == 'false'){
 		if($validation) $validation = validTime($_POST['startTime'], $_POST['endTime']);
@@ -205,7 +205,7 @@ if (isset($_POST['edit'])){
 	if($validation) $validation = isValInArray($_POST['protocol'], array('TCP', 'UDP', 'TCP/UDP'));
 	if($validation) $validation = validPort($_POST['startPort']);
 	if($validation) $validation = validPort($_POST['endPort']);
-	if($validation) $validation = ($_POST['startPort'] < $_POST['endPort']);
+	if($validation) $validation = ($_POST['startPort'] <= $_POST['endPort']);
 	if($validation) $validation = isValInArray($_POST['block'], array('true', 'false'));
 	if($validation && $_POST['block'] == 'false'){
 		if($validation) $validation = validTime($_POST['startTime'], $_POST['endTime']);
