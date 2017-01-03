@@ -11,12 +11,9 @@ $(document).ready(function() {
 });
 </script>
 <?php
-	$deviceInfo_param = array(
-		"version"   	=> "Device.DeviceInfo.AdditionalSoftwareVersion",
-		"FirmwareName"	=> "Device.DeviceInfo.X_CISCO_COM_FirmwareName",
-		"ModelName"		=> "Device.DeviceInfo.ModelName",
-	);
-    $deviceInfo_value = KeyExtGet("Device.DeviceInfo.", $deviceInfo_param);
+	$version		= getStr("Device.DeviceInfo.AdditionalSoftwareVersion");
+	$FirmwareName	= getStr("Device.DeviceInfo.X_CISCO_COM_FirmwareName");
+	$ModelName		= getStr("Device.DeviceInfo.ModelName");
 ?>
 <div id="content">
 	<h1>Gateway > Software</h1>
@@ -28,7 +25,7 @@ $(document).ready(function() {
 		<h2>System Software Version</h2>
 		<div class="form-row">
 			<span class="readonlyLabel">eMTA & DOCSIS Software Version:</span> <span class="value">
-			<?php echo $deviceInfo_value['version']; ?></span>
+			<?php echo $version; ?></span>
 		</div>
 		<!--div class="form-row odd">
 			<span class="readonlyLabel">DECT Software Version:</span> <span class="value">
@@ -36,11 +33,11 @@ $(document).ready(function() {
 		</div-->
 		<div class="form-row odd">
 			<span class="readonlyLabel">Software Image Name:</span> <span class="value">
-			<?php echo $deviceInfo_value['FirmwareName']; ?></span>
+			<?php echo $FirmwareName; ?></span>
 		</div>
 		<div class="form-row ">
 			<span class="readonlyLabel">Advanced Services:</span> <span class="value">
-			<?php echo $deviceInfo_value['ModelName']; ?></span>
+			<?php echo $ModelName; ?></span>
 		</div>
 		<div class="form-row odd">
 			<span class="readonlyLabel">Packet Cable:</span> <span class="value">
