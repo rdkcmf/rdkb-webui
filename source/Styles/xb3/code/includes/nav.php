@@ -175,6 +175,7 @@ echo '<li class="nav-troubleshooting">';
 		echo '<li class="nav-logs"><a role="menuitem"  href="troubleshooting_logs.php">Logs</a></li>';
 		echo '<li class="nav-diagnostic-tools"><a role="menuitem"  href="network_diagnostic_tools.php">Diagnostic Tools</a></li>';
 		echo '<li class="nav-wifi-spectrum-analyzer"><a role="menuitem"  href="wifi_spectrum_analyzer.php">Wi-Fi Spectrum Analyzer</a></li>';
+		echo '<li class="nav-moca-diagnostics"><a role="menuitem"  href="moca_diagnostics.php">MoCA Diagnostics</a></li>';
 		echo '<li class="nav-restore-reboot"><a role="menuitem"  href="restore_reboot.php">Reset/Restore Gateway</a></li>';
 		if($password_change) echo '<li class="nav-password"><a role="menuitem"  href="password_change.php">Change Password</a></li>';
 	echo '</ul>';
