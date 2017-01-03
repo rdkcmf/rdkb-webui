@@ -23,3 +23,6 @@ Licensed under the MIT License
 Copyright Unknown
 https://code.google.com/p/jscomponentes/
 Licensed under the MIT License
+
+Copyright (C) 2010-2016 Almende B.V. 
+Licensed under both Apache 2.0 and MIT
