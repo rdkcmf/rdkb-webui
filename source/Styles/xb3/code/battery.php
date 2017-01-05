@@ -7,7 +7,7 @@
 <?php include('includes/nav.php'); ?>
 <?php
 $battery_param = array(
-        "installed"   	=> "Device.X_CISCO_COM_MTA.Battery.Installed",
+        "bat_instal"   	=> "Device.X_CISCO_COM_MTA.Battery.Installed",
         "bat_remain"   	=> "Device.X_CISCO_COM_MTA.Battery.RemainingCharge",
 	"remain_time"   => "Device.X_CISCO_COM_MTA.Battery.RemainingTime",
 	"bat_power"	=> "Device.X_CISCO_COM_MTA.Battery.PowerStatus",
@@ -25,7 +25,7 @@ $battery_param = array(
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Hardware > Battery", "nav-battery");
-	if ("true" != "<?php echo $battery_value['installed']; ?>"){
+	if ("true" != "<?php echo $battery_value['bat_instal']; ?>"){
 		$(".div_battery [id^='bat_']").text("");
 		$("#bat_power").text("AC");
 		$("#bat_instal").text("No");
