@@ -337,12 +337,13 @@ $(document).ready(function() {
 	$("[name='channel_bandwidth1']").change(function() {
 		//enable all channel first
 		$("#channel_number option").prop("disabled", false);
-		if ($("#DFS_Channel_Selection_disabled").prop("checked")) {
-			$("#channel_number1").find("[value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true).prop("selected", false);
-                }
+		if ("true"!="<?php echo $DFS_Support1; ?>" || "true"!="<?php echo $DFS_Enable1; ?>") {
+			$("#channel_number").find("[value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true).prop("selected", false);
+		}
 		//disable some channel as per extension channel when NOT 20MHz in 5G (2.4G able to set channel and extension channel together)
 		if (!$("#channel_bandwidth201").prop("checked")) {
 			//40MHz
+			$("#channel_number").val('36');
 			if ($("#channel_bandwidth1").is(":checked")) {
 				if ("Auto" == "<?php echo $ext_channel; ?>"){
 					var c = $("#channel_number option:selected").val();
@@ -366,6 +367,19 @@ $(document).ready(function() {
 			}
 			// NOT 20MHz, disable channel 165
 			$("#channel_number").find("[value='165']").prop("disabled", true).prop("selected", false);
+		}
+		else {
+			//if Channel Bandwidth is 20MHz DFS Channels (Channels 50 - 144) should be greyed out
+			$("#channel_number [value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true);
+			$("#channel_number").val('36');
+		}
+	}).trigger("change");
+	$("#channel_number").change(function() {
+		if ("165" == $(this).val()){
+			$('[name="channel_bandwidth1"]:not([value="20MHz"])').prop("disabled", true);
+		}
+		else{
+			$('[name="channel_bandwidth1"]').prop("disabled", false);
 		}
 	}).trigger("change");
     $("#wireless_network_switch").change(function() {
@@ -646,6 +660,10 @@ function init_form()
 		}
 		// NOT 20MHz, disable channel 165
 		$("#channel_number").find("[value='165']").prop("disabled", true).prop("selected", false);
+	}
+	else {
+		//if Channel Bandwidth is 20MHz DFS Channels (Channels 50 - 144) should be greyed out
+		$("#channel_number [value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true);
 	}
 	// Warning for DFS channel (52-140)
 	$("#channel_number").change(function(){

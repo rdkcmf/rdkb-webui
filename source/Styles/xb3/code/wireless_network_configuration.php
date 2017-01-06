@@ -1548,7 +1548,7 @@ function saveBandSteeringSettings()
 	<div class="form-row odd" style="display:none;">
 		<label for="BG_protection_mode1">BG Protection Mode:</label>
 		<select name="BG_protection_mode1" id="BG_protection_mode1">
-			<option value="auto" selected="selected">Auto</option>
+			<option value="Auto" selected="selected">Auto</option>
 			<option value="Disabled" <?php //if ("Disabled"==$BG_protect_mode1) echo 'selected="selected"';?> >Manual</option>
 		</select>
 	</div>
