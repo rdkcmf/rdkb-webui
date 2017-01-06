@@ -16,7 +16,7 @@ if (isset($_GET['line']))
 	//call only 1, 50 are allowed
 	//action only display, clear_line, clear_all are allowed
 	if	(($_GET['line'] == 1 || $_GET['line'] == 2) &&
-			($_GET['call'] > 0 && $_GET['call'] < 51) &&
+			(($_GET['call'] > 0 && $_GET['call'] < 51) || $_GET['call'] == 'all' || $_GET['call'] == 'table') &&
 				($_GET['action'] == 'display' || $_GET['action'] == 'clear_line' || $_GET['action'] == 'clear_all')
 	){
 		$line	= $_GET['line'];
