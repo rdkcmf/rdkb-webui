@@ -210,12 +210,12 @@ $(document).ready(function() {
 	}, "3 to 32 ASCII characters.");
     // XFSETUP HOME xfinitywifi cablewifi
     // a term starting with the following combination of text in uppercase or lowercase should not be allowed
-    $.validator.addMethod("not_XFSETUP", function(value, element, param) {
+    /*$.validator.addMethod("not_XFSETUP", function(value, element, param) {
 		return value.toLowerCase().indexOf("xfsetup") != 0;
 	}, 'SSID starting with "XFSETUP" is reserved !');
     $.validator.addMethod("not_HOME", function(value, element, param) {
 		return value.toLowerCase().indexOf("home") != 0;
-	}, 'SSID starting with "HOME" is reserved !');
+	}, 'SSID starting with "HOME" is reserved !');*/
 /*
 wep 64 ==> 5 Ascii characters or 10 Hex digits
 wep 128 ==> 13 Ascii characters or 26 Hex digits
@@ -227,8 +227,8 @@ wpa2psk ==> 8 to 63 Ascii characters
 		rules: {
 			network_name: {
 				ssid_name: true,
-				not_XFSETUP: true,
-				not_HOME: true
+				//not_XFSETUP: true,
+				//not_HOME: true
 			},
 			network_password: {
 				/*required: function() {

@@ -488,9 +488,9 @@ $(document).ready(function(){
 		isValid		= /^[ -~]{1,32}$/i.test(val);
 		valLowerCase	= val.toLowerCase();
 		isXHS		= valLowerCase.indexOf("xhs-") !=0 && valLowerCase.indexOf("xh-") !=0;
-		isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
-		isHOME 		= valLowerCase.indexOf("home") != 0;
-		isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
+		//isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
+		//isHOME 		= valLowerCase.indexOf("home") != 0;
+		//isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
 		isOnlySpaces = /^\s+$/.test(valLowerCase);
 		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
 		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/g,'').toLowerCase();
@@ -587,9 +587,9 @@ $(document).ready(function(){
 		isValid		= /^[ -~]{1,32}$/i.test(val);
 		valLowerCase	= val.toLowerCase();
 		isXHS		= valLowerCase.indexOf("xhs-") !=0 && valLowerCase.indexOf("xh-") != 0;
-		isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
-		isHOME 		= valLowerCase.indexOf("home") != 0;
-		isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
+		//isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
+		//isHOME 		= valLowerCase.indexOf("home") != 0;
+		//isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
 		isOnlySpaces = /^\s+$/.test(valLowerCase);
 		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
 		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/g,'').toLowerCase();

@@ -31,15 +31,23 @@ if($isCaptiveMode)
 		$arConfig = json_decode($jsConfig, true);
 		$validation = true;
 		if($validation) $validation = isValInArray($arConfig['dualband'], array('true', 'false'));
+		$DefaultSSID = getStr("Device.WiFi.SSID.1.X_COMCAST-COM_DefaultSSID");
+		$DefaultKeyPassphrase = getStr("Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_DefaultKeyPassphrase");
+		$DefaultSSID5 = getStr("Device.WiFi.SSID.2.X_COMCAST-COM_DefaultSSID");
+		$DefaultKeyPassphrase5 = getStr("Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_DefaultKeyPassphrase");
 		if($validation && $arConfig['dualband'] == 'true'){
-			if($validation) $validation = (preg_match("/^[ -~]{1,32}$/i", $arConfig['network_name'])==1);
+			if($validation) $validation = valid_ssid_name($arConfig['network_name']);
 			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
-			if($validation) $validation = (preg_match("/^[ -~]{1,32}$/i", $arConfig['network5_name'])==1);
+			if($validation) $validation = ($DefaultKeyPassphrase != $arConfig['network_password']);
+			if($validation) $validation = valid_ssid_name($arConfig['network5_name']);
 			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network5_password'])==1);
+			if($validation) $validation = ($DefaultKeyPassphrase5 != $arConfig['network5_password']);
 		}
 		else {
-			if($validation) $validation = (preg_match("/^[ -~]{1,32}$/i", $arConfig['network_name'])==1);
+			if($validation) $validation = valid_ssid_name($arConfig['network_name']);
 			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
+			if($validation) $validation = ($DefaultKeyPassphrase != $arConfig['network_password']);
+			if($validation) $validation = ($DefaultKeyPassphrase5 != $arConfig['network_password']);
 		}
 		if($validation) $validation = (preg_match("/^\d{10}$/", $arConfig['phoneNumber'])==1);
 	}

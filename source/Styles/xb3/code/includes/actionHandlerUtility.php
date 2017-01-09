@@ -104,4 +104,18 @@ function validDays($day){
 	}
 	return $validation;
 }
+//check if $ssid_name is as per specs
+function valid_ssid_name($ssid_name){
+	$ssid_name = strtolower($ssid_name);
+	//1 to 32 ASCII characters
+	$ssid_name_check = (preg_match('/^[ -~]{1,32}$/', $ssid_name) == 1);
+	//SSID name cannot contain only spaces
+	$not_only_spaces_check = (preg_match('/^\s+$/', $ssid_name) != 1);
+	//SSID Starting with "XHS-" and "XH-" are reserved
+	$not_hhs_check  = (preg_match('/^xhs-|^xh-/', $ssid_name) != 1);
+	//SSID containing "optimumwifi", "TWCWiFi", "cablewifi" and "xfinitywifi" are reserved
+	$ssid_name = preg_replace('/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"\'\\|<>\[\]\s]/', '', $ssid_name);
+	$not_hhs2_check = !((strpos($ssid_name, 'cablewifi') !== false) || (strpos($ssid_name, 'twcwifi') !== false) || (strpos($ssid_name, 'optimumwifi') !== false) || (strpos($ssid_name, 'xfinitywifi') !== false));
+	return $ssid_name_check && $not_only_spaces_check && $not_hhs_check && $not_hhs2_check;
+}
 ?>
