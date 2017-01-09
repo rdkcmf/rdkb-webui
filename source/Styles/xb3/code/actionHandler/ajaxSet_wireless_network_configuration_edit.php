@@ -52,8 +52,14 @@ if ($i == 1 || $i == 2 || (($_SESSION["loginuser"] == "mso") && ($i == 3 || $i =
 				$PossibleChannelsArr = explode(',', $PossibleChannels);
 				if ($validation && "false"==$arConfig['channel_automatic']) $validation = isValInArray($arConfig['channel_number'], $PossibleChannelsArr);
 			}
-			if($validation) $validation = (preg_match("/^[ -~]{1,32}$/i", $arConfig['network_name'])==1);
 			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
+			if($validation) $validation = valid_ssid_name($arConfig['network_name']);
+			//Choose a different Network Name (SSID) than the one provided on your gateway
+			$DefaultSSID = getStr("Device.WiFi.SSID.$i.X_COMCAST-COM_DefaultSSID");
+			if($validation) $validation = ($DefaultSSID != $arConfig['network_name']);
+			//Choose a different Network Password than the one provided on your gateway
+			$DefaultKeyPassphrase = getStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_DefaultKeyPassphrase");
+			if($validation) $validation = ($DefaultKeyPassphrase != $arConfig['network_password']);
 		}
 		if($validation){
 			// check if the LowerLayers radio is enabled

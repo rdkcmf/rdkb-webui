@@ -99,7 +99,7 @@ $(document).ready(function() {
     $.validator.addMethod("not_hhs", function(value, element, param) {
 		//prevent users to set XHSXXX or Xfinityxxx as ssid
 		return value.toLowerCase().indexOf("xhs-") !=0 && value.toLowerCase().indexOf("xh-") !=0;
-	}, 'SSID containing "XHS-" and "XH-" are reserved !');
+	}, 'SSID name starting with "XHS-" and "XH-" are reserved !');
     $.validator.addMethod("not_hhs2", function(value, element, param) {
 		//prevent users to set optimumwifi or TWCWiFi  or CableWiFi as ssid
 		//zqiu:
