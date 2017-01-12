@@ -33,7 +33,6 @@
 		"NodeTabooMask" 	=> "Device.MoCA.Interface.1.NodeTabooMask",
 		"TxPowerLimit" 		=> "Device.MoCA.Interface.1.TxPowerLimit",
 		"Privacy_Setting" 	=> "Device.MoCA.Interface.1.PrivacyEnabledSetting",
-		"KeyPassphrase" 	=> "Device.MoCA.Interface.1.KeyPassphrase",
 		"BackupNC"			=> "Device.MoCA.Interface.1.BackupNC",
 	);
 	$MoCA_value = KeyExtGet("Device.MoCA.Interface.1.", $MoCA_param);
@@ -69,15 +68,16 @@
 	$NodeTabooMask		= $MoCA_value['NodeTabooMask'];
 	$TxPowerLimit		= $MoCA_value['TxPowerLimit'];
 	$Privacy_Setting	= $MoCA_value['Privacy_Setting'];
-	$KeyPassphrase		= $MoCA_value['KeyPassphrase'];
 	$BackupNC			= $MoCA_value['BackupNC'];
 	$rootObjName	= "Device.MoCA.Interface.1.AssociatedDevice.";
 	$paramNameArray	= array("Device.MoCA.Interface.1.AssociatedDevice.");
 	$mapping_array	= array("MACAddress", "NodeID", "PreferredNC", "Active");
 	$moca_AssocDev	= getParaValues($rootObjName, $paramNameArray, $mapping_array);
-	$PreferredNC_data = '';
-	$BackupNC_data = '';
+	$PreferredNC_data = 'NA';
+	$BackupNC_data = 'NA';
+	$PreferredNC = 'NA';
 	foreach ($moca_AssocDev as $key => $value) {
+		if($key=='0') $PreferredNC = ($value['PreferredNC'] == 'true') ? 'Yes' : 'No';
 		//MoCA MAC address and Node ID of the Active Network Controller
 		if($value['PreferredNC'] == 'true') $PreferredNC_data = 'MAC: '.strtoupper($value['MACAddress']).', Node ID: '.$value['NodeID'];
 		//MoCA MAC address and Node ID of the Backup Network Controller
@@ -238,26 +238,30 @@ $(document).ready(function() {
 				<span class="readonlyValue"><?php echo $CurrentVersion; ?></span>
 			</div>
 			<div class="form-row">
+				<label>Preferred Network Controller:</label>
+				<span class="readonlyValue"><?php echo $PreferredNC; ?></span>
+			</div>
+			<div class="form-row odd">
 				<label>Active Network Controller:</label>
 				<span class="readonlyValue"><?php echo $PreferredNC_data; ?></span>
 			</div>
-			<div class="form-row odd">
+			<div class="form-row">
 				<label>Backup Network Controller:</label>
 				<span class="readonlyValue"><?php echo $BackupNC_data; ?></span>
 			</div>
-			<div class="form-row">
+			<div class="form-row odd">
 				<label>Beacon Frequency:</label>
 				<span class="readonlyValue"><?php echo $channel_array[$CurrentOperFreq]; ?></span>
 			</div>
-			<div class="form-row odd">
+			<div class="form-row">
 				<label>Center frequency:</label>
 				<span class="readonlyValue"><?php echo $channel_array[$CurrentOperFreq]; ?></span>
 			</div>
-			<div class="form-row">
+			<div class="form-row odd">
 				<label>Beacon Backoff Power Level:</label>
 				<span class="readonlyValue"><?php echo $BeaconPowerLimit.'dB'; ?></span>
 			</div>
-			<div class="form-row odd">
+			<div class="form-row">
 				<label>Link Uptime:</label>
 				<span class="readonlyValue">
 					<?php
@@ -271,27 +275,27 @@ $(document).ready(function() {
 					?>
 				</span>
 			</div>
-			<div class="form-row">
+			<div class="form-row odd">
 				<label>Number of Packets Transmitted:</label>
 				<span class="readonlyValue"><?php echo $TxPackets; ?></span>
 			</div>
-			<div class="form-row odd">
+			<div class="form-row">
 				<label>Number of Packets Received:</label>
 				<span class="readonlyValue"><?php echo $RxPackets; ?></span>
 			</div>
-			<div class="form-row">
+			<div class="form-row odd">
 				<label>Number of Uncorrectable Error Packets Received:</label>
 				<span class="readonlyValue"><?php echo $RxErr_Missed; ?></span>
 			</div>
-			<div class="form-row odd">
+			<div class="form-row">
 				<label>Number of Corrected Error Packets Received:</label>
 				<span class="readonlyValue"><?php echo ($ErrorsReceived - $Discard_Received); ?></span>
 			</div>
-			<div class="form-row">
+			<div class="form-row odd">
 				<label>Channel Mask:</label>
 				<span class="readonlyValue"><?php echo $NodeTabooMask; ?></span>
 			</div>
-			<div class="form-row odd">
+			<div class="form-row">
 				<label for="Privacy">Privacy:</label>
 				<span class="readonlyValue"><?php echo ($Privacy_Setting == 'true')?'Enabled':'Disabled'; ?></span>
 			</div>
