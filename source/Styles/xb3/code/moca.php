@@ -257,7 +257,7 @@ function next_step()
 	+ '"} ';
 	var jsConfig = ("admin" == "<?php echo $_SESSION["loginuser"]; ?>")?jsConfig_admin:jsConfig_others;
 	// alert(jsConfig);
-	jProgress('Waiting for backend fully executed, please be patient...', 100);
+	jProgress('Waiting for backend to be fully executed, please be patient...', 100);
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_moca_config.php",

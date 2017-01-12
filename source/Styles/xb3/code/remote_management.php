@@ -74,7 +74,7 @@ $(document).ready(function() {
 		} else {
 			// document.getElementById('http').disabled = false;
 			jConfirm(
-				"WARNING: Enabling Remote Management will expose your Gateway GUI to Internet. Your Gateway will only be protected by your logon password. Are you sure you want to continue?"
+				"WARNING: Enabling Remote Management will expose your Gateway GUI to the Internet. Your Gateway will only be protected by your logon password. Are you sure you want to continue?"
 				,"Confirm:"
 				,function(ret) {
 					if(ret) {

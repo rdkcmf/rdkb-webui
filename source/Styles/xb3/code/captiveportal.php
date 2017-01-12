@@ -31,17 +31,10 @@
 <?php
 	// should we allow to Configure WiFi
 	// redirection logic - uncomment the code below while checking in
-	$DeviceInfo_param = array(
-		"CONFIGUREWIFI" => "Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi",
-		"CaptivePortalEnable"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CaptivePortalEnable",
-		"CloudPersonalizationURL"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudPersonalizationURL",
-		"CloudUIEnable"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable",
-	);
-	$DeviceInfo_value	= KeyExtGet("Device.DeviceInfo.", $DeviceInfo_param);
-	$CONFIGUREWIFI = $DeviceInfo_value["CONFIGUREWIFI"];
-	$CaptivePortalEnable	= $DeviceInfo_value["CaptivePortalEnable"];
-	$CloudPersonalizationURL	= $DeviceInfo_value["CloudPersonalizationURL"];
-	$CloudUIEnable	= $DeviceInfo_value["CloudUIEnable"];
+	$CONFIGUREWIFI 			= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi");
+	$CaptivePortalEnable	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CaptivePortalEnable");
+	$CloudPersonalizationURL= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudPersonalizationURL");
+	$CloudUIEnable			= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
 	if(!strcmp($CaptivePortalEnable, "false") || !strcmp($CONFIGUREWIFI, "false")) {
 		header('Location:index.php');
 		exit;
@@ -488,9 +481,9 @@ $(document).ready(function(){
 		isValid		= /^[ -~]{1,32}$/i.test(val);
 		valLowerCase	= val.toLowerCase();
 		isXHS		= valLowerCase.indexOf("xhs-") !=0 && valLowerCase.indexOf("xh-") !=0;
-		//isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
-		//isHOME 		= valLowerCase.indexOf("home") != 0;
-		//isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
+		isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
+		isHOME 		= valLowerCase.indexOf("home") != 0;
+		isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
 		isOnlySpaces = /^\s+$/.test(valLowerCase);
 		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
 		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/g,'').toLowerCase();
@@ -587,9 +580,9 @@ $(document).ready(function(){
 		isValid		= /^[ -~]{1,32}$/i.test(val);
 		valLowerCase	= val.toLowerCase();
 		isXHS		= valLowerCase.indexOf("xhs-") !=0 && valLowerCase.indexOf("xh-") != 0;
-		//isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
-		//isHOME 		= valLowerCase.indexOf("home") != 0;
-		//isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
+		isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
+		isHOME 		= valLowerCase.indexOf("home") != 0;
+		isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
 		isOnlySpaces = /^\s+$/.test(valLowerCase);
 		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
 		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/g,'').toLowerCase();

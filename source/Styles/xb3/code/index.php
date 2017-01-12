@@ -1,22 +1,15 @@
 <?php include('includes/utility.php'); ?>
 <?php
-$DeviceInfo_param = array(
-	"ConfigureWiFi"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi",
-	//"CloudUIEnable"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable",
-	//"CloudUIWebURL"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIWebURL",
-	"CaptivePortalEnable"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_CaptivePortalEnable",
-	);
-$DeviceInfo_value = KeyExtGet("Device.DeviceInfo.", $DeviceInfo_param);
+	$CONFIGUREWIFI			= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi");
+	//$CloudUIEnable		= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
+	//$CloudUIWebURL		= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIWebURL");
+	$CaptivePortalEnable	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CaptivePortalEnable");
 $DeviceControl_param = array(
 	"LanGwIPv4"	=> "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress",
 	"lanMode"	=> "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode",
 	"psmMode"	=> "Device.X_CISCO_COM_DeviceControl.PowerSavingModeStatus",
 	);
 $DeviceControl_value = KeyExtGet("Device.X_CISCO_COM_DeviceControl.", $DeviceControl_param);
-$CONFIGUREWIFI	= $DeviceInfo_value["ConfigureWiFi"];
-//$Cloud_Enabled	= $DeviceInfo_value["CloudUIEnable"];
-//$Cloud_WebURL	= $DeviceInfo_value["CloudUIWebURL"];
-$CaptivePortalEnable	= $DeviceInfo_value["CaptivePortalEnable"];
 $url = $_SERVER['HTTP_HOST'];
 $Wan_IPv4 = getStr("Device.X_CISCO_COM_CableModem.IPAddress");
 $Wan_IPv6 = getStr("Device.X_CISCO_COM_CableModem.IPv6Address");
