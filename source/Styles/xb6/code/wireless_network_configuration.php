@@ -236,8 +236,8 @@ if ($_SESSION['_DEBUG']){
 	$mac_address =	"00:00:00:00:00:00";
 	$encrypt_mode = 	"WEP-128";
 	$encrypt_method = 	"TKIP";
-	$encrypt_mode = 	"WPA-WPA2-Personal";
-	$encrypt_method = 	"AES+TKIP";
+	$encrypt_mode = 	"WPA2-Personal";
+	$encrypt_method = 	"AES";
 	$wireless_mode = "g,n";
 	$transmit_power = "1";
 	$channel_automatic ="true";
@@ -261,8 +261,8 @@ if ($_SESSION['_DEBUG']){
 	$network_name1 = "222222";
 	$feq_band1 = 	"5 GHz";
 	$mac_address1 =	"00:66:00:00:00:00";
-	$encrypt_mode1 = 	"WPA-WPA2-Personal";
-	$encrypt_method1 = 	"AES+TKIP";
+	$encrypt_mode1 = 	"WPA2-Personal";
+	$encrypt_method1 = 	"AES";
 	$wireless_mode1 = "ac";
 	$transmit_power1 = "19";
 	$channel_automatic1 ="true";

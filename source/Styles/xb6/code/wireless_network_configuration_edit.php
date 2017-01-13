@@ -144,15 +144,9 @@ elseif ("WPA2-Personal" == $encrypt_mode){
 	if ("TKIP" == $encrypt_method){
 		$security = "WPA2_PSK_TKIP";
 	}
-	elseif ("AES" == $encrypt_method){
+	else{
 		$security = "WPA2_PSK_AES";
 	}
-	else{
-		$security = "WPA2_PSK_TKIPAES";
-	}
-}
-elseif ("WPA-WPA2-Personal" == $encrypt_mode){
-		$security = "WPAWPA2_PSK_TKIPAES";
 }
 else{
 		$security = "None";
@@ -177,7 +171,7 @@ function showDialog() {
 		$("#pop_dialog *").prop("disabled", false);
 	}
 	//init status of this pop-up
-	$("#pop_dialog").find("[value='WPAWPA2_PSK_TKIPAES']").prop("checked", true);
+	$("#pop_dialog").find("[value='WPA2_PSK_AES']").prop("checked", true);
 	$("#pop_ok").off("click").on("click", function(){
 		var popSec = $("#pop_dialog [name='path']:checked").val();
 		$("#security").find("[value^='WEP'],[value='None']").remove();
@@ -333,7 +327,7 @@ $(document).ready(function() {
 		// ONLY deal WEP for UI-4.0
 		if ("n"==$("#wireless_mode").val() || "n,ac"==$("#wireless_mode").val() || "a,n,ac"==$("#wireless_mode").val() || "g,n"==$("#wireless_mode").val() || "b,g,n"==$("#wireless_mode").val()) {
 			if ($("#security").val()=="WEP_64" || $("#security").val()=="WEP_128"){
-				$("#security").val("WPAWPA2_PSK_TKIPAES");
+				$("#security").val("WPA2_PSK_AES")
 			}
 			$("#security").find("[value='WEP_64'],[value='WEP_128']").prop("disabled", true);
 		}
@@ -467,12 +461,6 @@ $(document).ready(function() {
 			elseif ("2" == $xml_Encryption) {
 				$xml_security = "WPA2_PSK_AES";
 			}
-			else {
-				$xml_security = "WPA2_PSK_TKIPAES";
-			}
-		}
-		elseif ("32" == $xml_Mode) {
-				$xml_security = "WPAWPA2_PSK_TKIPAES";
 		}
 		?>
         jConfirm(
@@ -664,10 +652,10 @@ function init_form()
 	}
 	//for UI-4.0, remove some security options
     if ("2.4"==radio_band){
-        $("#security").find("[value='None'],[value='WPA_PSK_TKIP'],[value='WPA_PSK_AES'],[value='WPA2_PSK_TKIP'],[value='WPA2_PSK_TKIPAES'],[value='WEP_64'],[value='WEP_128']").remove();
+        $("#security").find("[value='None'],[value='WPA_PSK_TKIP'],[value='WPA_PSK_AES'],[value='WPA2_PSK_TKIP'],[value='WEP_64'],[value='WEP_128']").remove();
     }
     else{
-        $("#security").find("[value='None'],[value='WPA_PSK_TKIP'],[value='WPA_PSK_AES'],[value='WPA2_PSK_TKIP'],[value='WPA2_PSK_TKIPAES'],[value='WEP_64'],[value='WEP_128']").remove();
+        $("#security").find("[value='None'],[value='WPA_PSK_TKIP'],[value='WPA_PSK_AES'],[value='WPA2_PSK_TKIP'],[value='WEP_64'],[value='WEP_128']").remove();
     }
 	// for UI-4.0, add show-more
 	if ("1"==ssid_number || "2"==ssid_number) {
@@ -765,7 +753,7 @@ function setResetInfo(info) {
 		<p class="tip">Manage your <?php echo $radio_band; ?> GHz network settings.</p>
 		<p class="hidden"><strong>Network Name (SSID):</strong> Identifies your home network from other nearby networks. Your default name can be found on the bottom label of the Gateway, but can be changed for easier identification.</p>
 		<p class="hidden"><strong>Mode:</strong>  <?php echo $radio_band; ?> GHz operates in g/n modes.</p>
-		<p class="hidden"><strong>Security Mode:</strong> Secures data between your Wi-Fi devices and the Gateway. The default WPAWPA2-PSK (TKIP/AES) setting is compatible with most devices and provides the best security and performance.</p>
+		<p class="hidden"><strong>Security Mode:</strong> Secures data between your Wi-Fi devices and the Gateway. The default WPA2-PSK (AES) setting is compatible with most devices and provides the best security and performance.</p>
 		<p class="hidden"><strong>Channel Selection:</strong>  Channel to be used for your home Wi-Fi network. In Automatic mode (default), the Gateway will select the channel with the least amount of Wi-Fi interference. In Manual mode, you can choose the channel to be used.</p>
 		<p class="hidden"><strong>Network Password(Key):</strong> Required by Wi-Fi products to connect to your secure network. The default setting can be found on the bottom label of the Gateway. </p>
 		<p class="hidden"><strong>Broadcast Network Name (SSID):</strong>  If enabled, the Network Name (SSID) will be shown in the list of available networks. (If unchecked, you'll need to enter the exact Network Name (SSID) to connect.)</p>
@@ -815,9 +803,7 @@ function setResetInfo(info) {
 				<option value="WPA_PSK_AES" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_AES"==$security)         echo "selected";?> >WPA-PSK (AES)</option>
 				<option value="WPA2_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIP"==$security)       echo "selected";?> >WPA2-PSK (TKIP)</option>
 				<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_AES"==$security)        echo "selected";?> >WPA2-PSK (AES)(Recommended)</option>
-				<option value="WPA2_PSK_TKIPAES"	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIPAES"==$security)    echo "selected";?> >WPA2-PSK (TKIP/AES)</option>
-				<option value="WPAWPA2_PSK_TKIPAES" title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPAWPA2_PSK_TKIPAES"==$security) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)</option>
-			</select>
+				</select>
 			<p id="tip_security_mode" class="footnote">
 			<?php
 				if ("5"==$radio_band && strstr($support_mode_5g, "ac")){
@@ -901,7 +887,6 @@ function setResetInfo(info) {
 		<p style="color: green;"><b>The recommended security mode is "WPA2-PSK (AES)" as this mode gives best WiFi performance and optimum security.</b></p>
 	</div>
 	<div class="form-row">
-		<input name="path" id="path1" type="radio" value="WPAWPA2_PSK_TKIPAES"><b>WPAWPA2-PSK (TKIP/AES) </b><br><span>This mixed mode option will allow Wi-Fi devices to connect with WPA (with TKIP or AES encryption) or WPA2 (with TKIP or AES encryption). To achieve best Wi-Fi performance in this mode, the Wi-Fi devices must connect using WPA2 with AES encryption.</span><br>
 		<input name="path" id="path2" type="radio" value="WPA2_PSK_AES" checked="checked"><b>WPA2-PSK (AES) (Recommended)</b><br><span>This is the recommended and default option as this mode gives best WiFi performance and optimum security.Older Wi-Fi devices which doesn't support WPA2 and AES encryption will be unable to connect to your Wi-Fi network in this mode.</span><br>
 		<!--input name="path" id="path3" type="radio" value="WEP_64"><b>WEP (64)</b><br><span style="color: red;">This is only applicable for legacy Wi-Fi devices. Using this option will impact your Wi-Fi performance and less secure. Select this option only if you have very old Wi-Fi device and if it does not support WPA or WPA2 option.</span><br>
 		<input name="path" id="path4" type="radio" value="WEP_128"><b>WEP (128)</b><br><span style="color: red;">This is only applicable for legacy Wi-Fi devices. Using this option will impact your Wi-Fi performance and less secure.Select this option only if you have very old Wi-Fi device and if it does not support WPA or WPA2 option.</span><br-->

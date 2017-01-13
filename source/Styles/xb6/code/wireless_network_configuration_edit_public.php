@@ -405,9 +405,7 @@ function init_form() {
 		["WPA (TKIP)",		"WPA.TKIP",			"WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."],
 		["WPA (AES)",		"WPA.AES",			"WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."],
 		["WPA2 (TKIP)",		"WPA2.TKIP",		"WPA2 requires a 8-63 ASCII character password."],
-		["WPA2 (AES)",		"WPA2.AES",			"WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."],
-		["WPA2 (TKIP/AES)",	"WPA2.AES+TKIP",	"WPA2 requires a 8-63 ASCII character password."],
-		["WPAWPA2(TKIP/AES) (recommended)", 	"WPA-WPA2.AES+TKIP", "WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."]);
+		["WPA2 (AES) (recommended)",		"WPA2.AES",			"WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."]);
 	var add_list = new Array(
 		["NONE",		"None", 		""],
 		["PSK",			"Personal", 	""],
@@ -443,9 +441,6 @@ function init_form() {
 	for (var i=0; i<sec_list.length; i++){
 		$("#security").append('<option value="'+sec_list[i][1]+'" title="'+sec_list[i][2]+'">'+sec_list[i][0]+'</option>');
 	}
-	if (($('#security [value="'+sec_val+'"]')).length < 1){
-		$("#security").val("WPA-WPA2.AES+TKIP")
-	}
 	else{
 		$("#security").val(sec_val);
 	}
@@ -466,10 +461,10 @@ function init_form() {
 	$("#security").change();
 	//for UI-4.0, remove some security options
     if ("2.4"==radio_freq){
-        $("#security").find("[value='WPA.TKIP'],[value='WPA.AES'],[value='WPA2.TKIP'],[value='WPA2.AES+TKIP']").remove();
+        $("#security").find("[value='WPA.TKIP'],[value='WPA.AES'],[value='WPA2.TKIP']").remove();
     }
     else{
-        $("#security").find("[value='WPA.TKIP'],[value='WPA.AES'],[value='WPA2.TKIP'],[value='WPA2.AES+TKIP'],[value='WEP-64'],[value='WEP-128']").remove();
+        $("#security").find("[value='WPA.TKIP'],[value='WPA.AES'],[value='WPA2.TKIP'],[value='WEP-64'],[value='WEP-128']").remove();
     }   
 }
 </script>
@@ -490,7 +485,7 @@ label{
 		<p class="tip">Manage your Public Wi-Fi network settings.</p>
 		<p class="hidden"><strong>Network Name (SSID):</strong> Identifies your home Wi-Fi network from other nearby Wi-Fi networks. Your default name can be found on the bottom label of the Gateway, but can be changed for easier identification.</p>
 		<p class="hidden"><strong>Mode:</strong> <?php echo $radio_freq;?> GHz operates in 802.11 g/n mode.</p>
-		<p class="hidden"><strong>Security Mode:</strong> Secures data between your Wi-Fi devices and the Gateway. The default WPAWPA2-PSK (TKIP/AES) setting is compatible with most computers and provides the best security and performance.</p>
+		<p class="hidden"><strong>Security Mode:</strong> Secures data between your Wi-Fi devices and the Gateway. The default WPA2-PSK (AES) setting is compatible with most computers and provides the best security and performance.</p>
 		<p class="hidden"><strong>Network Password (Key):</strong> Required by Wi-Fi devices to connect to your secure network. The default setting can be found on the bottom label of the Gateway. </p>
 		<p class="hidden"><strong>Broadcast Network Name (SSID):</strong>  If enabled, the Network Name (SSID) will be shown in the list of available networks. (If unchecked, you'll need to enter the exact Network Name (SSID) to connect.)</p>
 	</div>
