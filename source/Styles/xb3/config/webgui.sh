@@ -74,6 +74,11 @@ fi
 
 cp $LIGHTTPD_DEF_CONF $LIGHTTPD_CONF
 
+getDateTime()
+{
+	dandtwithns_now=`date +'%s'`
+	echo "$dandtwithns_now"
+}
 #sed -i "s/^server.port.*/server.port = $HTTP_PORT/" /var/lighttpd.conf
 #sed -i "s#^\$SERVER\[.*\].*#\$SERVER[\"socket\"] == \":$HTTPS_PORT\" {#" /var/lighttpd.conf
 
@@ -149,6 +154,7 @@ then
   	        		if [ "$check_success" != "" ]
    				then
      			 	   echo "WEBGUI : Setting ConfigureWiFi to true is success"
+				   echo "[`getDateTime`] WIFI_PERSONALIZATION_CAPTIVE:1"
  	       			fi
       			   break
  	       		fi
