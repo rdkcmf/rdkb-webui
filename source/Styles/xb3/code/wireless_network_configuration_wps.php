@@ -76,6 +76,7 @@ if ($_DEBUG) {
 function validChecksum(PIN)
 {
 	if (PIN.search(/^(\d{4}|\d{8}|\d{4}[\-|\s]\d{4})$/) != 0) return false;
+	if (PIN.search(/^\d{4}$/) == 0) return true;
 	PIN = PIN.replace(" ","");
 	PIN = PIN.replace("-","");
 	var accum = 0;

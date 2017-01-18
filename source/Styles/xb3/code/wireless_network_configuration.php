@@ -968,6 +968,7 @@ function save_enable(sub_target)
 function validChecksum(PIN)
 {
 	if (PIN.search(/^(\d{4}|\d{8}|\d{4}[\-|\s]\d{4})$/) != 0) return false;
+	if (PIN.search(/^\d{4}$/) == 0) return true;
 	PIN = PIN.replace(" ","");
 	PIN = PIN.replace("-","");
 	var accum = 0;
@@ -988,7 +989,7 @@ function pair_client()
 	var pin_number	= $("#pin_number").attr("value").replace(/ |-/g,'');
 	var jsConfig = '{"ssid_number":"'+ssid_number+'", "pair_method":"'+pair_method+'", "pin_number":"'+pin_number
 					+'", "target":"'+"pair_client"+'"}';	
-	if ("PushButton"!=pair_method && !validChecksum(pin_number))
+	if ("PushButton"!=pair_method && !validChecksum($("#pin_number").attr("value")))
 	{
 		jAlert("Invalid PIN!");
 		return;

@@ -22,6 +22,7 @@ if (!isset($_SESSION["loginuser"])) {
 }
 function validChecksum($WPS_pin){
 	if (preg_match("/^\d{4}$|^\d{8}$/", $WPS_pin)!=1) return false;
+	if (preg_match("/^\d{4}$/", $WPS_pin)==1) return true;
 	$accum = 0;
 	$accum += 3 * (intval($WPS_pin / 10000000) % 10);
 	$accum += 1 * (intval($WPS_pin / 1000000) % 10);
