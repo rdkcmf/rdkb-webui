@@ -34,6 +34,7 @@
 		"TxPowerLimit" 		=> "Device.MoCA.Interface.1.TxPowerLimit",
 		"Privacy_Setting" 	=> "Device.MoCA.Interface.1.PrivacyEnabledSetting",
 		"BackupNC"			=> "Device.MoCA.Interface.1.BackupNC",
+		"PreferredNC"		=> "Device.MoCA.Interface.1.PreferredNC",
 	);
 	$MoCA_value = KeyExtGet("Device.MoCA.Interface.1.", $MoCA_param);
 	$AssociatedDevices = getStr("Device.MoCA.Interface.1.AssociatedDeviceNumberOfEntries");
@@ -69,15 +70,14 @@
 	$TxPowerLimit		= $MoCA_value['TxPowerLimit'];
 	$Privacy_Setting	= $MoCA_value['Privacy_Setting'];
 	$BackupNC			= $MoCA_value['BackupNC'];
+	$PreferredNC		= ($MoCA_value['PreferredNC'] == 'true') ? 'Yes' : 'No';
 	$rootObjName	= "Device.MoCA.Interface.1.AssociatedDevice.";
 	$paramNameArray	= array("Device.MoCA.Interface.1.AssociatedDevice.");
 	$mapping_array	= array("MACAddress", "NodeID", "PreferredNC", "Active");
 	$moca_AssocDev	= getParaValues($rootObjName, $paramNameArray, $mapping_array);
 	$PreferredNC_data = 'NA';
 	$BackupNC_data = 'NA';
-	$PreferredNC = 'NA';
 	foreach ($moca_AssocDev as $key => $value) {
-		if($key=='0') $PreferredNC = ($value['PreferredNC'] == 'true') ? 'Yes' : 'No';
 		//MoCA MAC address and Node ID of the Active Network Controller
 		if($value['PreferredNC'] == 'true') $PreferredNC_data = 'MAC: '.strtoupper($value['MACAddress']).', Node ID: '.$value['NodeID'];
 		//MoCA MAC address and Node ID of the Backup Network Controller
