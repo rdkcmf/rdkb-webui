@@ -418,7 +418,7 @@ $(document).ready(function() {
                     $onlinePrivateNetworkHost["$j"]['Connection'] = ($isExtendedDevice) ? $extDeviceConnType.' '.$tmpHost['connectionType'] : $tmpHost['connectionType'];
 		   $onlinePrivateNetworkHost["$j"]['X_RDKCENTRAL-COM_DeviceType'] = $Host["$i"]['X_RDKCENTRAL-COM_DeviceType'];                    
 					$onlinePrivateNetworkHost["$j"]['Comments'] = $Host["$i"]['Comments'];
-                    if (stristr($tmpHost['connectionType'], 'Wi-Fi') || stristr($tmpHost['connectionType'], 'MoCA')) {
+                    if ((stristr($tmpHost['connectionType'], 'Wi-Fi') || stristr($tmpHost['connectionType'], 'MoCA')) && !$isExtendedDevice) {
                     	if(strstr($Host["$i"]['X_RDKCENTRAL-COM_DeviceType'], 'extender'))
                        {
                         $onlinePrivateNetworkHost[$j]['RSSI'] = "NA";
