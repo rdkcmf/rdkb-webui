@@ -249,7 +249,7 @@ function ajaxDo(mode,timef){
 	</div>
 	<div class="module noprint">
 		<h2>Log Filters</h2>
-    <form action="troubleshooting_logs_sample.php" method="post">
+    <form action="troubleshooting_logs_download.php" method="post">
 			<label for="log_type" class="readonlyLabel">Log Type:</label>
 			<select id="log_type" name="log_type">
 				<option value="system" selected="selected">System Logs</option>

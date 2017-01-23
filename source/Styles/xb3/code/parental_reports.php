@@ -307,7 +307,7 @@ function ajaxDo(mode,timef){
 	</div>
 	<div class="module noprint">
 		<h2>Report Filters</h2>
-<form action="parental_reports_sample.php" method="post">
+<form action="parental_reports_download.php" method="post">
 			<label for="report_type" class="readonlyLabel">Report Type:</label>
 			<select id="report_type" name="report_type">
 				<option value="all" selected="selected">All</option>
