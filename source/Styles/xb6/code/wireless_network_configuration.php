@@ -121,7 +121,7 @@ $wifi_param = array(
 	);
 $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 $radio_enable		= $wifi_value['Radio_Enable1'];
-$network_name		= $wifi_value['network_name1'];
+$network_name		= htmlspecialchars($wifi_value['network_name1'], ENT_NOQUOTES, 'UTF-8');
 $feq_band			= $wifi_value['feq_band'];
 $mac_address		= $wifi_value['mac_address1'];
 $encrypt_mode		= $wifi_value['ModeEnabled1'];
@@ -151,7 +151,7 @@ $possible_channels	= $wifi_value['possible_channels'];
 $RDG_Supported		= $wifi_value['RDG_Supported'];
 $IEEE80211hSupport	= $wifi_value['IEEE80211hSupported'];
 $radio_enable1		= $wifi_value['Radio_Enable2'];
-$network_name1		= $wifi_value['network_name2'];
+$network_name1		= htmlspecialchars($wifi_value['network_name2'], ENT_NOQUOTES, 'UTF-8');
 $feq_band1			= $wifi_value['feq_band1'];
 $mac_address1		= $wifi_value['mac_address2'];
 $encrypt_mode1		= $wifi_value['ModeEnabled2'];
@@ -485,6 +485,9 @@ $(document).ready(function() {
 	$("[name='channel_bandwidth1']").change(function() {
 		//enable all channel first
 		$("#channel_number1 option").prop("disabled", false);
+		if ($("#DFS_Channel_Selection_disabled").prop("checked")) {
+			$("#channel_number1").find("[value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true).prop("selected", false);
+		}
 		//disable some channel as per extension channel when NOT 20MHz in 5G (2.4G able to set channel and extension channel together)
 		if (!$("#channel_bandwidth201").prop("checked")) {
 			//40MHz
@@ -818,13 +821,14 @@ function adjust_row(tid)
 }
 function add_row(tid, idex, name, addr) 
 {
+	name = name.replace(/</g,'&lt;').replace(/>/g,'&gt;');
 	var tb  = document.getElementById(tid);
 	var len = tb.rows.length;
 	if (len == -1) {
 		idex = tb.rows.length;
 	}
-	else if (len > 17) {
-		jAlert("No more than 16 devices can be added!");
+	else if (len > 65) {
+		jAlert("No more than 64 devices can be added!");
 		return;
 	}
 	if ("filter_table" == tid) {
@@ -1548,7 +1552,7 @@ function saveBandSteeringSettings()
 	<div class="form-row odd" style="display:none;">
 		<label for="BG_protection_mode1">BG Protection Mode:</label>
 		<select name="BG_protection_mode1" id="BG_protection_mode1">
-			<option value="auto" selected="selected">Auto</option>
+			<option value="Auto" selected="selected">Auto</option>
 			<option value="Disabled" <?php //if ("Disabled"==$BG_protect_mode1) echo 'selected="selected"';?> >Manual</option>
 		</select>
 	</div>
@@ -1658,7 +1662,7 @@ function saveBandSteeringSettings()
 	</div>
 </div>
 <div class="module band_steering">
-	<h2>Band Setting</h2>
+	<h2>Band Steering</h2>
 	<div class="form-row ">
 		<label for="BS_disabled">Enable:</label>
 		<input type="radio"  name="BS" value="disabled" id="BS_disabled" checked="checked" /><b>Disable</b>
@@ -1733,7 +1737,7 @@ function saveBandSteeringSettings()
 				 $isBridge = $_SESSION["lanMode"];
 				foreach ($ssids as $i) {
 				$id = ($isBridge == 'bridge-static' && "mso" == $_SESSION["loginuser"])? 3:1;
-					echo '<option value="'.$i.'" '.(($id==$i)?'selected="selected"':"").'>'.str_replace(" ", "&nbsp;", getStr("Device.WiFi.SSID.$i.SSID")).'</option>';
+					echo '<option value="'.$i.'" '.(($id==$i)?'selected="selected"':"").'>'.str_replace(" ", "&nbsp;", htmlspecialchars(getStr("Device.WiFi.SSID.$i.SSID"), ENT_NOQUOTES, 'UTF-8')).'</option>';
 				}
 			?>		
 		</select>
