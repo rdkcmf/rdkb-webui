@@ -372,14 +372,14 @@ $(document).ready(function() {
 			,ipv4_dhcp_beginning_address_4: {
 			    required: true,
 				min: 0,
-				max: 255,
+				max: 253,
 				digits: true,
 				checkMaskBegin: true
 			}
 			,ipv4_dhcp_ending_address_4: {
 			    required: true,
 				min: 0,
-				max: 255,
+				max: 253,
 				digits: true,
 				checkMaskEnd: true
 			}
