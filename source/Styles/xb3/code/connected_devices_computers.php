@@ -409,9 +409,16 @@ $(document).ready(function() {
 			        else
 			        	$onlinePrivateNetworkHost["$j"]['HostName'] = $Host["$i"]['HostName'];
 			        array_push($onlineHostNameArr, $onlinePrivateNetworkHost["$j"]['HostName']);
-                    $onlinePrivateNetworkHost["$j"]['IPv4Address'] = $Host["$i"]['IPAddress'];
-                    $onlinePrivateNetworkHost["$j"]['IPv6Address1'] = $Host["$i"]['IPv6Address.1.IPAddress'];
-                    $onlinePrivateNetworkHost["$j"]['IPv6Address2'] = $Host["$i"]['IPv6Address.2.IPAddress'];
+                    $onlinePrivateNetworkHost["$j"]['IPv4Address'] = $Host["$i"]['IPv4Address.1.IPAddress'];
+                    if(substr($Host["$i"]['IPv6Address.2.IPAddress'], 0, 5) === "fe80:"){
+                    	// Local Link IPV6 Address Only
+	                    $onlinePrivateNetworkHost["$j"]['IPv6Address1'] = $Host["$i"]['IPv6Address.2.IPAddress'];
+	                    $onlinePrivateNetworkHost["$j"]['IPv6Address2'] = $Host["$i"]['IPv6Address.1.IPAddress'];
+                    }
+                    else {
+	                    $onlinePrivateNetworkHost["$j"]['IPv6Address1'] = $Host["$i"]['IPv6Address.1.IPAddress'];
+	                    $onlinePrivateNetworkHost["$j"]['IPv6Address2'] = $Host["$i"]['IPv6Address.2.IPAddress'];
+                    }
                     $onlinePrivateNetworkHost["$j"]['PhysAddress'] = strtoupper($Host["$i"]['PhysAddress']);
 		            array_push($onlineHostMAC, $onlinePrivateNetworkHost["$j"]['PhysAddress']);
                     $onlinePrivateNetworkHost["$j"]['AddressSource'] = $Host["$i"]['AddressSource'];
@@ -436,9 +443,16 @@ $(document).ready(function() {
 			        	$offlinePrivateNetworkHost["$k"]['HostName'] = strtoupper($Host["$i"]['PhysAddress']);
 			        else
 			        	$offlinePrivateNetworkHost["$k"]['HostName'] = $Host["$i"]['HostName'];
-                    $offlinePrivateNetworkHost["$k"]['IPv4Address'] = $Host["$i"]['IPAddress'];
-                    $offlinePrivateNetworkHost["$k"]['IPv6Address1'] = $Host["$i"]['IPv6Address.1.IPAddress'];
-                    $offlinePrivateNetworkHost["$k"]['IPv6Address2'] = $Host["$i"]['IPv6Address.2.IPAddress'];
+                    $offlinePrivateNetworkHost["$k"]['IPv4Address'] = $Host["$i"]['IPv4Address.1.IPAddress'];
+                    if(substr($Host["$i"]['IPv6Address.2.IPAddress'], 0, 5) === "fe80:"){
+                    	// Local Link IPV6 Address Only
+	                    $offlinePrivateNetworkHost["$j"]['IPv6Address1'] = $Host["$i"]['IPv6Address.2.IPAddress'];
+	                    $offlinePrivateNetworkHost["$j"]['IPv6Address2'] = $Host["$i"]['IPv6Address.1.IPAddress'];
+                    }
+                    else {
+	                    $offlinePrivateNetworkHost["$j"]['IPv6Address1'] = $Host["$i"]['IPv6Address.1.IPAddress'];
+	                    $offlinePrivateNetworkHost["$j"]['IPv6Address2'] = $Host["$i"]['IPv6Address.2.IPAddress'];
+                    }
                     $offlinePrivateNetworkHost["$k"]['PhysAddress'] = strtoupper($Host["$i"]['PhysAddress']);
                     $offlinePrivateNetworkHost["$k"]['Connection'] = ($isExtendedDevice) ? $extDeviceConnType.' '.$tmpHost['connectionType'] : $tmpHost['connectionType'];
                     $offlinePrivateNetworkHost["$k"]['AddressSource'] = $Host["$i"]['AddressSource'];
