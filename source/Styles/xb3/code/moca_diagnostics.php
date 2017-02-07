@@ -28,35 +28,17 @@
 		"CurrentOperFreq" 	=> "Device.MoCA.Interface.1.CurrentOperFreq",
 		"BeaconPowerLimit" 	=> "Device.MoCA.Interface.1.BeaconPowerLimit",
 		"LinkUpTime" 		=> "Device.MoCA.Interface.1.LinkUpTime",
-		"ErrorsReceived" 	=> "Device.MoCA.Interface.1.Stats.ErrorsReceived",
-		"Discard_Received" 	=> "Device.MoCA.Interface.1.Stats.DiscardPacketsReceived",
 		"NodeTabooMask" 	=> "Device.MoCA.Interface.1.NodeTabooMask",
 		"TxPowerLimit" 		=> "Device.MoCA.Interface.1.TxPowerLimit",
 		"Privacy_Setting" 	=> "Device.MoCA.Interface.1.PrivacyEnabledSetting",
 		"BackupNC"			=> "Device.MoCA.Interface.1.BackupNC",
 		"PreferredNC"		=> "Device.MoCA.Interface.1.PreferredNC",
+		"ErrorsReceived" 	=> "Device.MoCA.Interface.1.Stats.ErrorsReceived",
+		"Discard_Received" 	=> "Device.MoCA.Interface.1.Stats.DiscardPacketsReceived",
+		"PacketsSent" 		=> "Device.MoCA.Interface.1.Stats.PacketsSent",
+		"PacketsReceived" 	=> "Device.MoCA.Interface.1.Stats.PacketsReceived",
 	);
 	$MoCA_value = KeyExtGet("Device.MoCA.Interface.1.", $MoCA_param);
-	$AssociatedDevices = getStr("Device.MoCA.Interface.1.AssociatedDeviceNumberOfEntries");
-	if($AssociatedDevices>0){
-		$MoCA_param = array(
-			"TxPackets" 		=> "Device.MoCA.Interface.1.AssociatedDevice.1.TxPackets",
-			"RxPackets" 		=> "Device.MoCA.Interface.1.AssociatedDevice.1.RxPackets",
-			"RxErr_Missed"		=> "Device.MoCA.Interface.1.AssociatedDevice.1.RxErroredAndMissedPackets",
-			"RxPowerLevel" 		=> "Device.MoCA.Interface.1.AssociatedDevice.1.RxPowerLevel",
-		);
-		$MoCA_AssociatedDevice = KeyExtGet("Device.MoCA.Interface.1.AssociatedDevice.1.", $MoCA_param);
-		$TxPackets			= $MoCA_AssociatedDevice['TxPackets'];
-		$RxPackets			= $MoCA_AssociatedDevice['RxPackets'];
-		$RxErr_Missed		= $MoCA_AssociatedDevice['RxErr_Missed'];
-		$RxPowerLevel		= $MoCA_AssociatedDevice['RxPowerLevel'];
-	}
-	else {
-		$TxPackets			= 'NA';
-		$RxPackets			= 'NA';
-		$RxErr_Missed		= 'NA';
-		$RxPowerLevel		= 'NA';
-	}
 	$moca_enable		= $MoCA_value['moca_enable'];
 	$MACAddress			= $MoCA_value['MACAddress'];
 	$CurrentVersion		= $MoCA_value['CurrentVersion'];
@@ -70,6 +52,8 @@
 	$TxPowerLimit		= $MoCA_value['TxPowerLimit'];
 	$Privacy_Setting	= $MoCA_value['Privacy_Setting'];
 	$BackupNC			= $MoCA_value['BackupNC'];
+	$PacketsSent		= $MoCA_value['PacketsSent'];
+	$PacketsReceived	= $MoCA_value['PacketsReceived'];
 	$PreferredNC		= ($MoCA_value['PreferredNC'] == 'true') ? 'Yes' : 'No';
 	$rootObjName	= "Device.MoCA.Interface.1.AssociatedDevice.";
 	$paramNameArray	= array("Device.MoCA.Interface.1.AssociatedDevice.");
@@ -277,15 +261,15 @@ $(document).ready(function() {
 			</div>
 			<div class="form-row odd">
 				<label>Number of Packets Transmitted:</label>
-				<span class="readonlyValue"><?php echo $TxPackets; ?></span>
+				<span class="readonlyValue"><?php echo $PacketsSent; ?></span>
 			</div>
 			<div class="form-row">
 				<label>Number of Packets Received:</label>
-				<span class="readonlyValue"><?php echo $RxPackets; ?></span>
+				<span class="readonlyValue"><?php echo $PacketsReceived; ?></span>
 			</div>
 			<div class="form-row odd">
 				<label>Number of Uncorrectable Error Packets Received:</label>
-				<span class="readonlyValue"><?php echo $RxErr_Missed; ?></span>
+				<span class="readonlyValue"><?php echo $Discard_Received; ?></span>
 			</div>
 			<div class="form-row">
 				<label>Number of Corrected Error Packets Received:</label>
