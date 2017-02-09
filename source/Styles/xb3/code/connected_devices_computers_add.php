@@ -29,12 +29,16 @@ $(document).ready(function() {
 	    	}
 	    	,host_name:{
 	    		required: true,
-	    		maxlength: 64
+	    		maxlength: 64,
+	    		allowed_char: true
 	    	}
 	    	,mac_address:{
 	    		required: true,
 	    		//multicastMAC: true,
 	    		mac: true
+	    	}
+	    	,comments:{
+	    		allowed_char: true
 	    	}
 	    }
 	});

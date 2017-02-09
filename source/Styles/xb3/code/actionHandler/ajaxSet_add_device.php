@@ -107,9 +107,11 @@ $deviceInfo = json_decode($_POST['DeviceInfo'], true);
 $result     = "";
 $validation = true;
 if($validation) $validation = printableCharacters($deviceInfo['hostName']);
+$new_hostName = str_replace(str_split('<>&"\'|'), '', $deviceInfo['hostName']);
 if($validation) $validation = validMAC($deviceInfo['macAddress']);
 if($validation) $validation = validIPAddr($deviceInfo['reseverd_ipAddr']);
-if($validation && array_key_exists('UpdateComments', $deviceInfo)) $validation = printableCharacters($deviceInfo['Comments']);
+if($validation) $validation = printableCharacters($deviceInfo['Comments']);
+if($validation) $validation = is_allowed_string($deviceInfo['Comments']);
 $result = ($validation)?'':'Invalid Inputs!';
 if( !array_key_exists('delFlag', $deviceInfo) ) {
     //key kelFlag is not exist, so this is to reserve a ip addr for host 
@@ -159,7 +161,7 @@ if( !array_key_exists('delFlag', $deviceInfo) ) {
             $IDs  = getInstanceIds("Device.DHCPv4.Server.Pool.1.StaticAddress.");
             $idArr = explode(",", $IDs);
             $instanceid = array_pop($idArr);
-            setStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$instanceid.X_CISCO_COM_DeviceName", $deviceInfo['hostName'], false);
+            setStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$instanceid.X_CISCO_COM_DeviceName", $new_hostName, false);
             setStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$instanceid.Chaddr", $deviceInfo['macAddress'], false);
             setStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$instanceid.Yiaddr", $deviceInfo['reseverd_ipAddr'], false);
             if(setStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$instanceid.X_CISCO_COM_Comment", $deviceInfo['Comments'], true)){

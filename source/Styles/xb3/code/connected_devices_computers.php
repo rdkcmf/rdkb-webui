@@ -64,6 +64,9 @@ $(document).ready(function() {
     // activate validation plugin
 	$(".pageForm").validate({
 	    rules : {
+	    	host_name: {
+	    		allowed_char: true
+	    	},
 	    	staticIPAddress: {
 	    		ipv4 : {
 	            	depends : function() {
@@ -79,6 +82,9 @@ $(document).ready(function() {
 	    	,mac_address:{
 	    		required: true,
 	    		mac: true
+	    	},
+	    	comments:{
+	    		allowed_char: true
 	    	}
 	    }
 	});
@@ -842,7 +848,7 @@ for ($i=0; $i < $onlinePrivateNetworkHost['hostNum']; $i++) {
 		<h2>Edit Device</h2> 
         <form id=\"pageForm-" .$ID. "\"   class=\"pageForm\">
 			<div  class=\"form-row\">
-        		<span  class=\"readonlyLabel\" >Host Name:</span>
+        		<span  class=\"readonlyLabel\" name=\"host_name\">Host Name:</span>
         		<span  class=\"value\">" . $onlinePrivateNetworkHost["$i"]['HostName'] . "</span>
 			</div>
 			<div  class=\"form-row odd\">
