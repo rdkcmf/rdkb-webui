@@ -61,11 +61,15 @@ if($validation) $validation = isValInArray($ripInfo['RecVer'], array('NA', 'RIP1
 if($validation) $validation = isValInRange($ripInfo['Interval'], 5, 2147483647);
 if($validation) $validation = isValInRange($ripInfo['Metric'], 1, 15);
 if($validation) $validation = validIPAddr($ripInfo['NeighborIP']);
-if($validation && ($authType == "SimplePassword"))
-	if($validation) $validation = printableCharacters(array($ripInfo['auth_key'], 1, 32));
+$authType = $ripInfo['AuthType'];
 if($validation && ($authType == "SimplePassword")){
 	if($validation) $validation = printableCharacters(array($ripInfo['auth_key'], 1, 32));
-	if($validation) $validation = isValInRange($ripInfo['Metric'], 0, 999);
+	if($validation) $validation = is_allowed_string($ripInfo['auth_key']);
+}
+if($validation && ($authType == "MD5")){
+	if($validation) $validation = printableCharacters(array($ripInfo['auth_key'], 1, 32));
+	if($validation) $validation = is_allowed_string($ripInfo['auth_key']);
+	if($validation) $validation = isValInRange($ripInfo['auth_id'], 0, 999);
 }
 if($validation) setRIPconfig($ripInfo);
 ?>
