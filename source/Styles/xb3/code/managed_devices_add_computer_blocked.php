@@ -55,7 +55,12 @@ $(document).ready(function() {
 					depends: function() {
 						return($("input:radio[name=computer]:checked").val() == "custom")
 					}
-				}
+				},
+				allowed_char: {
+					depends: function() {
+						return($("input:radio[name=computer]:checked").val() == "custom")
+					}
+				},
 			},
 			custom_mac: {
 				required: {

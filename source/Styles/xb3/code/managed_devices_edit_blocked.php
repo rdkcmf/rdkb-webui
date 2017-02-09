@@ -159,19 +159,12 @@ $(document).ready(function() {
 	$("#pageForm").validate({
 		debug: true,
 		rules: {
-			custom_name: {
-				required: {
-					depends: function() {
-						return($("input:radio[name=computer]").val() == "custom")
-					}
-				}
+			computer_name: {
+				required: true,
+				allowed_char: true,
 			},
 			mac_address: {
-				required: {
-					depends: function() {
-						return(true)
-					}
-				},
+				required: true,
 				mac: true
 			}
 			,day: {

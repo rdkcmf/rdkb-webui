@@ -48,7 +48,8 @@ $.validator.addMethod("no_space", function(value, element, param) {
         rules: {
             keyword: {
                 required: true,
-                no_space:true
+                no_space:true,
+                allowed_char: true
             }
             ,day: {
               required: function() {

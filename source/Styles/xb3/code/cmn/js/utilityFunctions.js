@@ -137,7 +137,6 @@ function ValidIp4Addr(ip4Dec, subnetIpDec, subnetMaskDec){
 	if(isIp4ValidRange){
 		//Reserve last IP of subnet for ATOM process communication
 		var bcAddr = (subnetIpBin & subnetMaskBin) + ((~subnetMaskBin) & 0xfffffffe);
-		console.log(bcAddr);
 		if (ip4Bin == bcAddr) {
 			return false;
 		}
@@ -152,3 +151,8 @@ function ValidIp4Addr(ip4Dec, subnetIpDec, subnetMaskDec){
 	}
 
 }
+
+$.validator.addMethod("allowed_char", function(value, element, param) {
+	//Invalid characters are Less than (<), Greater than (>), Ampersand (&), Double quote ("), Single quote ('), Pipe (|).
+	return !param || (value.match(/[<>&"'|]/)==null);
+}, 'Less than (<), Greater than (>), Ampersand (&), Double quote ("), Single quote (\') and Pipe (|) characters are not allowed.');
