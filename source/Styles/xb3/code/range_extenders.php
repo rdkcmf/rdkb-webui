@@ -115,7 +115,7 @@ foreach ($exts as $i){
 	$ssids = explode(",", getInstanceIds("Device.MoCA.X_CISCO_COM_WiFi_Extender.ExtenderDevice.$i.SSID."));
 	foreach ($ssids as $j){
 		array_push($dat[$i]['ssid_info'], array(
-			'ssid'		=> getStr("Device.MoCA.X_CISCO_COM_WiFi_Extender.ExtenderDevice.$i.SSID.$j.SSID"),
+			'ssid'		=> htmlspecialchars(getStr("Device.MoCA.X_CISCO_COM_WiFi_Extender.ExtenderDevice.$i.SSID.$j.SSID")),
 			'bssid'		=> getStr("Device.MoCA.X_CISCO_COM_WiFi_Extender.ExtenderDevice.$i.SSID.$j.BSSID"),
 			'freq'		=> getStr("Device.MoCA.X_CISCO_COM_WiFi_Extender.ExtenderDevice.$i.SSID.$j.Band"),
 			'channel'	=> getStr("Device.MoCA.X_CISCO_COM_WiFi_Extender.ExtenderDevice.$i.SSID.$j.Channel"),
