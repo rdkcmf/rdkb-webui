@@ -1,3 +1,10 @@
+/**
+* @file cosa.c
+* @brief For CCSP Component:  WebUI
+*
+* @description This file gives the function prototypes used for the RDK-Broadband component WebUI
+*/
+
 /*
  * If not stated otherwise in this file or this component's Licenses.txt file the
  * following copyright and licenses apply:
@@ -412,6 +419,16 @@ PHP_MINFO_FUNCTION(cosa)
 
 /* {{{ proto string getStr(string arg)
    gets a string from the model */
+/**
+* @description A PHP function which fetches the parameter value as a string from the ccsp data model. 
+* proto string getStr(string arg)
+*
+* @param getStr - parameter for which value needs to be fetched
+*
+* @return The status of the operation as a string.
+* @retval RETURN_STRING
+*
+*/
 PHP_FUNCTION(getStr)
 {
     int                     flen                = 0;
@@ -489,6 +506,17 @@ PHP_FUNCTION(getStr)
 
 /* {{{ proto string setStr(string arg)
    set a string in the model */
+/**
+* @description A PHP function which sets the parameter value for the ccsp parameter 
+* proto string setStr(string arg)
+*
+* @param setStr - parameter for which values needs to be set
+*
+* @return The status of the operation.
+* @retval RETURN_TRUE if successful.
+* @retval RETURN_FALSE if any error is detected
+*
+*/
 PHP_FUNCTION(setStr)
 {
     int                           flen;
@@ -641,6 +669,16 @@ PHP_FUNCTION(setStr)
 
 /* {{{ proto string getInstanceIds(string arg)
    get all instance ids (comma separated) corresponding to a resource string */
+/**
+* @description Function to get all instance ids (comma separated) corresponding to a resource string
+* proto string getInstanceIds(string arg)
+*
+* @param getInstanceIds - string for which instanceId needs to be fetched 
+*
+* @return The status of the operation.
+* @retval RETURN_STRING
+* 
+*/
 PHP_FUNCTION(getInstanceIds)
 {
     int                             flen;
@@ -721,6 +759,16 @@ PHP_FUNCTION(getInstanceIds)
 /* }}} */
 /* {{{ proto string addTblObj(string arg)
    add object to table resource string */
+/**
+* @description Function to add object to table resource string
+* proto string addTblObj(string arg)
+*
+* @param addTblObj - object to be added to table
+*
+* @return The status of the operation.
+* @retval RETURN_LONG
+* 
+*/
 PHP_FUNCTION(addTblObj)
 {
     int                             flen;
@@ -793,6 +841,16 @@ PHP_FUNCTION(addTblObj)
 /* }}} */
 /* {{{ proto string delTblObj(string arg)
    delete object to table resource string */
+/**
+* @description Function to delete object from table resource string
+* proto string delTblObj(string arg)
+*
+* @param addTblObj - object to be deleted from table
+*
+* @return The status of the operation.
+* @retval RETURN_LONG
+* 
+*/
 PHP_FUNCTION(delTblObj)
 {
     int                             flen;
@@ -864,6 +922,16 @@ PHP_FUNCTION(delTblObj)
 /* }}} */
 /* {{{ proto array DmExtGetStrsWithRootObj(string rootObjName, array paramNameArray)
    delete object to table resource string */
+/**
+* @description Function to get value for multiple parameters
+* proto array DmExtGetStrsWithRootObj(string rootObjName, array paramNameArray)
+*
+* @param DmExtGetStrsWithRootObj - array of parameters whose values needs to be fetched
+*
+* @return The status of the operation.
+* @retval return
+* 
+*/
 PHP_FUNCTION(DmExtGetStrsWithRootObj)
 {
     char*                           pRootObjName;
@@ -1022,6 +1090,16 @@ EXIT0:
 /* }}} */
 /* {{{ proto int DmExtSetStrsWithRootObj(string rootObjName, array paramValArray)
    delete object to table resource string */
+/**
+* @description Function to set value for multiple parameters
+* proto int DmExtSetStrsWithRootObj(string rootObjName, array paramValArray)
+*
+* @param DmExtGetStrsWithRootObj - array of parameters for which values need to be set
+*
+* @return The status of the operation.
+* @retval RETURN_LONG
+* 
+*/
 PHP_FUNCTION(DmExtSetStrsWithRootObj)
 {
     char*                           pRootObjName;
@@ -1292,6 +1370,16 @@ EXIT0:
 /* }}} */
 /* {{{ proto array DmExtGetInstanceIds($objTableName)
    This function is for retrieving the instance IDs under an object table. */
+/**
+* @description Function for retrieving the instance IDs under an object table
+* proto array DmExtGetInstanceIds($objTableName)
+*
+* @param DmExtGetInstanceIds - array of instance IDs to be retrieved
+*
+* @return The status of the operation.
+* @retval return
+* 
+*/
 PHP_FUNCTION(DmExtGetInstanceIds)
 {
     int                             flen;
