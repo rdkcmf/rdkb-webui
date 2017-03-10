@@ -13,10 +13,10 @@ function randString(){
 	return $str;
 }
 ini_set('upload_tmp_dir','/var/tmp/');
-$target = "/var/tmp/";
+$target = '/var/tmp/';
 $target = $target.randString().'.conf';
-if($_FILES["file"]["error"]>0){
-	echo "Return Code: ".$_FILES["file"]["error"];
+if($_FILES['file']['error']>0){
+	echo "Return Code: ".$_FILES['file']['error'];
 	exit;
 } else {
 	exec('confPhp status',$output,$return_status);
@@ -30,7 +30,7 @@ if($_FILES["file"]["error"]>0){
 		break;	
 	default:
 		if(move_uploaded_file($_FILES['file']['tmp_name'], $target)){
-			exec('confPhp restore '.$target,$output,$return_restore);
+			exec('confPhp restore "'.$target.'"',$output,$return_restore);
 			if ($return_restore==-1) echo "Error when to restore configuraion!";
 			else {
 				sleep(1);
@@ -88,7 +88,7 @@ $(document).ready(function() {
 	};
 	request.send();
 	if(2 == "<?php echo $return_var; ?>"){	//Need Reboot to restore the saved configuration.
-		var info = new Array("btn1", "Router,Wifi,VoIP,Dect,MoCA");
+		var info = new Array("btn1", "Device");
 		var jsonInfo = '["' + info[0] + '","' + info[1]+ '"]';
 		jProgress("Please wait for rebooting ...", 999999);
 		$.ajax({
