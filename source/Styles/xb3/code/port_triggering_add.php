@@ -22,7 +22,8 @@ $(document).ready(function() {
     $("#pageForm").validate({
         rules: {
             service_name: {
-                required: true
+                required: true,
+				allowed_char: true
             }
             ,from_start_port: {
                 required: true
