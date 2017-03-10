@@ -7,25 +7,19 @@
 $(document).ready(function() {
     comcast.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");
 	$('#Service_Provider1').focus();
-	// If Enable UPnP is not checked, disable the next two form fields
-/*	$("#pageForm").validate({
-	   rules: {
-	       Service_Provider1: {
-	           required: true
-	       }
-	       ,start_port: {
-	           required: true
-	           ,digits: true
-			   ,max:65535
-	       }
-	       ,end_port: {
-	           required: true
-	           ,digits: true
-			   ,max:65535
-			   ,ltstart: true
-	       }
-	   }
-	});*/
+	$("#pageForm").validate({
+		rules: {
+			User_name: {
+				allowed_char: true
+			}
+			,Password: {
+				allowed_char: true
+			}
+			,Host_Name: {
+				allowed_char: true
+			}
+		}
+	});
 	$("#btn-save").click(function() {
     	var sp = $("#Service_Provider1").val();
 		var spLC = sp.toLowerCase();
@@ -110,41 +104,41 @@ function add()
    		<p class="hidden"><strong>Password:</strong> Enter the Password you registered on the Service Provider</p>
    		<p class="hidden"><strong>Host Name:</strong> Enter the Host Name you registered on the Service Provider. In case you had registered multiple host names with the same provider, click "ADD" next to Host Name and add the additional host names.</p>
    	</div>
-   	<!--<form id="pageForm">-->
-   	<div class="module forms">
-   		<h2>Dynamic DNS</h2>
-   		<div class="form-row " id="Service_Provider" >
-   			<label for="Service_Provider">Service Provider:</label>
-				<!--input type="text" value="dyndns.org" id="Service_Provider1"  name="Service_Provider" /-->
-				<select name="Service_Provider1" id="Service_Provider1">
-				<?php
-					$ids=explode(",",getInstanceIDs("Device.X_CISCO_COM_DDNS.Service."));
-					foreach ($ids as $key=>$j) {
-						$spName		=getStr("Device.X_CISCO_COM_DDNS.Service.".$j.".ServiceName");
-						$serviceStatus	=getStr("Device.X_CISCO_COM_DDNS.Service.".$j.".Enable");
-						if(strcasecmp($serviceStatus,"false") == 0) echo '<option value="'.$spName.'">'.$spName.'</option>';
-					}
-				?>
-				</select>
-   		</div>
-   		<div class="form-row odd" >
-   			<label for="User_name"> User Name:</label> <input type="text"  id="User_name" name="User_name" class="text" size="35"  />
-   		</div>
-   		<div class="form-row">
-   			<label for="Password">Password:</label> <input type="password"  id="Password" name="Password" class="text" size="32"  />
-   		</div>
-   		<div class="form-row odd" id="show1">
-   			<label for="Host_Name">Host Name:</label> <input type="text"  id="Host_Name1" name="Host_Name" class="text" size="35"  />
-   		</div>
-   		<div class="form-row odd" ><div id="foo"></div></div>
-   		<div class="form-btn">
-   			<input type="button" value="ADD" id="add-Dynamic-DNS" class="btn" onclick="add()"/>
-   		</div>
-   		<div class="form-btn">
-   			<input type="button" id="btn-save" value="Save Settings" class="btn submit" />
-   			<input type="button" id="btn-cancel" value="Cancel Settings" class="btn alt reset"/>
-   		</div>
-   	</div> <!-- end .module -->
-   	<!--</form>-->
+	<form id="pageForm">
+	   	<div class="module forms">
+	   		<h2>Dynamic DNS</h2>
+	   		<div class="form-row " id="Service_Provider" >
+	   			<label for="Service_Provider">Service Provider:</label>
+					<!--input type="text" value="dyndns.org" id="Service_Provider1"  name="Service_Provider" /-->
+					<select name="Service_Provider1" id="Service_Provider1">
+					<?php
+						$ids=explode(",",getInstanceIDs("Device.X_CISCO_COM_DDNS.Service."));
+						foreach ($ids as $key=>$j) {
+							$spName		=getStr("Device.X_CISCO_COM_DDNS.Service.".$j.".ServiceName");
+							$serviceStatus	=getStr("Device.X_CISCO_COM_DDNS.Service.".$j.".Enable");
+							if(strcasecmp($serviceStatus,"false") == 0) echo '<option value="'.$spName.'">'.$spName.'</option>';
+						}
+					?>
+					</select>
+	   		</div>
+	   		<div class="form-row odd" >
+	   			<label for="User_name"> User Name:</label> <input type="text"  id="User_name" name="User_name" class="text" size="35"  />
+	   		</div>
+	   		<div class="form-row">
+	   			<label for="Password">Password:</label> <input type="password"  id="Password" name="Password" class="text" size="32"  />
+	   		</div>
+	   		<div class="form-row odd" id="show1">
+	   			<label for="Host_Name">Host Name:</label> <input type="text"  id="Host_Name1" name="Host_Name" class="text" size="35"  />
+	   		</div>
+	   		<div class="form-row odd" ><div id="foo"></div></div>
+	   		<div class="form-btn">
+	   			<input type="button" value="ADD" id="add-Dynamic-DNS" class="btn" onclick="add()"/>
+	   		</div>
+	   		<div class="form-btn">
+	   			<input type="button" id="btn-save" value="Save Settings" class="btn submit" />
+	   			<input type="button" id="btn-cancel" value="Cancel Settings" class="btn alt reset"/>
+	   		</div>
+	   	</div> <!-- end .module -->
+	</form>
    </div><!-- end #content -->
 <?php include('includes/footer.php'); ?>

@@ -217,6 +217,10 @@ function isIp4AddrRequired()
         		jAlert("Please input a service name !");
         		return;
         	}
+        	else if(name.match(/[<>&"'|]/)!=null){
+        		jAlert('Please input valid Service Name ! \n Less than (<), Greater than (>), Ampersand (&), Double quote ("), \n Single quote (\') and Pipe (|) characters are not allowed.');
+				return;
+        	}
         }
         else {
         	var name = $("#common_services").find("option:selected").text();

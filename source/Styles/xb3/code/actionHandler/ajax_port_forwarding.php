@@ -49,6 +49,7 @@ if (isset($_POST['set'])){
 if (isset($_POST['add'])){
 	$validation = true;
 	if($validation) $validation = printableCharacters($_POST['name']);
+	if($validation) $validation = is_allowed_string($_POST['name']);	
 	if($validation) $validation = isValInArray($_POST['type'], array('TCP', 'UDP', 'TCP/UDP'));
 	if($validation) $validation = validIPAddr($_POST['ip']);
 	if($validation)
@@ -145,6 +146,7 @@ if (isset($_POST['edit'])){
 	$validation = true;
 	if($validation) $validation = validId($_POST['ID']);
 	if($validation) $validation = printableCharacters($_POST['name']);
+	if($validation) $validation = is_allowed_string($_POST['name']);	
 	if($validation) $validation = isValInArray($_POST['type'], array('TCP', 'UDP', 'TCP/UDP'));
 	if($validation) $validation = validIPAddr($_POST['ip']);
 	if($validation)

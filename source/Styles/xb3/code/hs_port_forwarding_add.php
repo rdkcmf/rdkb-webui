@@ -23,7 +23,8 @@ $(document).ready(function() {
     $("#pageForm").validate({
 		rules: {
             service_name: {
-				required: true
+				required: true,
+				allowed_char: true
 			}
 			,start_public_port: {
                 required: true,

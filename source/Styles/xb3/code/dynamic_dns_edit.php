@@ -22,7 +22,20 @@
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");
+    comcast.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");    
+	$("#pageForm").validate({
+		rules: {
+			User_name: {
+				allowed_char: true
+			}
+			,Password: {
+				allowed_char: true
+			}
+			,Host_Name: {
+				allowed_char: true
+			}
+		}
+	});
 	var ID = <?php echo $i ?>;
 	var jsSP = "<?php echo $sp ?>";
 	var jsUser	= "<?php echo htmlspecialchars($username, ENT_NOQUOTES, 'UTF-8'); ?>";
@@ -125,42 +138,44 @@ button.onclick=add1
 	<div id="educational-tip">
 		<p class="tip">You can edit this existing DDNS entry, by changing the service provider name/host name/user name/password combination.</p>
 	</div>
-	<div class="module forms">
-		<h2>Dynamic DNS</h2>
-		<div class="form-row " id="Service_Provider" >
-			<div class="form-row "  style="float:left">
-				<label for="Service_Provider">Service Provider:</label>
-				<!--input type="text" value="dyndns.org" id="Service_Provider1"  name="Service_Provider" /-->
-				<select name="Service_Provider1" id="Service_Provider1">
-				<?php
-					$ids=explode(",",getInstanceIDs("Device.X_CISCO_COM_DDNS.Service."));
-					foreach ($ids as $key=>$j) {
-						$spName		=getStr("Device.X_CISCO_COM_DDNS.Service.".$j.".ServiceName");
-						$serviceStatus	=getStr("Device.X_CISCO_COM_DDNS.Service.".$j.".Enable");
-						if(strcasecmp($sp,$spName) == 0) echo '<option value="'.$spName.'">'.$spName.'</option>';
-						else if(strcasecmp($serviceStatus,"false") == 0) echo '<option value="'.$spName.'">'.$spName.'</option>';
-					}
-				?>
-				</select>
+	<form id="pageForm">
+		<div class="module forms">
+			<h2>Dynamic DNS</h2>
+			<div class="form-row " id="Service_Provider" >
+				<div class="form-row "  style="float:left">
+					<label for="Service_Provider">Service Provider:</label>
+					<!--input type="text" value="dyndns.org" id="Service_Provider1"  name="Service_Provider" /-->
+					<select name="Service_Provider1" id="Service_Provider1">
+					<?php
+						$ids=explode(",",getInstanceIDs("Device.X_CISCO_COM_DDNS.Service."));
+						foreach ($ids as $key=>$j) {
+							$spName		=getStr("Device.X_CISCO_COM_DDNS.Service.".$j.".ServiceName");
+							$serviceStatus	=getStr("Device.X_CISCO_COM_DDNS.Service.".$j.".Enable");
+							if(strcasecmp($sp,$spName) == 0) echo '<option value="'.$spName.'">'.$spName.'</option>';
+							else if(strcasecmp($serviceStatus,"false") == 0) echo '<option value="'.$spName.'">'.$spName.'</option>';
+						}
+					?>
+					</select>
+				</div>
 			</div>
-		</div>
-		<div class="form-row odd" >
-			<label for="User_name"> User Name:</label> <input type="text"  id="User_name" name="User_name" class="text" size="35"  value="USG"/>
-		</div>
-		<div class="form-row">
-			<label for="Password">Password:</label> <input type="password"  id="Password" name="Password" class="text" size="32"  value="Comcast123"/>
-		</div>
-		<div class="form-row odd" id="show1">
-			<label for="Host_Name">Host Name:</label> <input type="text"  id="Host_Name1" name="Host_Name" class="text" size="35"  value="App1"/>
-		</div>
-		<div class="form-row odd" ><div id="foo"></div></div>
-		<div class="form-btn">
-			<input type="button" value="ADD" id="add-Dynamic-DNS" class="btn" onclick="add()"/>
-		</div>
-		<div class="form-btn">
-			<input type="button" id="btn-save" value="Save Settings" class="btn submit" />
-			<input type="button" id="btn-cancel" value="Cancel Settings" class="btn alt reset"/>
-		</div>
-	</div> <!-- end .module -->
+			<div class="form-row odd" >
+				<label for="User_name"> User Name:</label> <input type="text"  id="User_name" name="User_name" class="text" size="35"  value="USG"/>
+			</div>
+			<div class="form-row">
+				<label for="Password">Password:</label> <input type="password"  id="Password" name="Password" class="text" size="32"  value="Comcast123"/>
+			</div>
+			<div class="form-row odd" id="show1">
+				<label for="Host_Name">Host Name:</label> <input type="text"  id="Host_Name1" name="Host_Name" class="text" size="35"  value="App1"/>
+			</div>
+			<div class="form-row odd" ><div id="foo"></div></div>
+			<div class="form-btn">
+				<input type="button" value="ADD" id="add-Dynamic-DNS" class="btn" onclick="add()"/>
+			</div>
+			<div class="form-btn">
+				<input type="button" id="btn-save" value="Save Settings" class="btn submit" />
+				<input type="button" id="btn-cancel" value="Cancel Settings" class="btn alt reset"/>
+			</div>
+		</div> <!-- end .module -->
+	</form>
 </div><!-- end #content -->
 <?php include('includes/footer.php'); ?>

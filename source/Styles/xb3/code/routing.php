@@ -164,7 +164,8 @@ $(document).ready(function() {
 	       },
 	       authentication_key:{	       	   
 	       	   required: true,
-	       	   maxlength: 32	       	   
+	       	   maxlength: 32,
+	       	   allowed_char: true
 	       },
 	       authentication_id:{
 	       	   required: true,
