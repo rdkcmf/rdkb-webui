@@ -47,7 +47,8 @@ $(document).ready(function() {
 	$("#pageForm").validate({
 	   rules: {
 	       user_defined_service: {
-	           required: true
+	           required: true,
+	           allowed_char: true
 	       }
 	       ,start_port: {
 	           required: true

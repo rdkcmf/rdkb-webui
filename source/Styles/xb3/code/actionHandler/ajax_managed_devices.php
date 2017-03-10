@@ -52,6 +52,7 @@ if (isset($_POST['add'])){
 	$validation = true;
 	if($validation) $validation = isValInArray($_POST['type'], array('Allow', 'Block'));
 	if($validation) $validation = printableCharacters($_POST['name']);
+	if($validation) $validation = is_allowed_string($_POST['name']);
 	if($validation) $validation = validMAC($_POST['mac']);
 	if($validation) $validation = isValInArray($_POST['block'], array('true', 'false'));
 	if($validation && $_POST['block'] == 'false'){
@@ -168,6 +169,7 @@ if (isset($_POST['edit'])){
 	$validation = true;
 	if($validation) $validation = validId_PC($_POST['ID']);
 	if($validation) $validation = printableCharacters($_POST['name']);
+	if($validation) $validation = is_allowed_string($_POST['name']);
 	if($validation) $validation = validMAC($_POST['mac']);
 	if($validation) $validation = isValInArray($_POST['block'], array('true', 'false'));
 	if($validation && $_POST['block'] == 'false'){

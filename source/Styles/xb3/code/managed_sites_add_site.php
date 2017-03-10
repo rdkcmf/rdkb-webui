@@ -51,7 +51,8 @@ $(document).ready(function() {
         rules: {
             url: {
                 required: true,
-                url2: true 
+                url2: true,
+                allowed_char: true
             }
             ,day: {
                 required: function() {

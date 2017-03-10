@@ -66,6 +66,7 @@ if (isset($_POST['trust_not'])){
 if (isset($_POST['add'])){
 	$validation = true;
 	if($validation) $validation = printableCharacters($_POST['service']);
+	if($validation) $validation = is_allowed_string($_POST['service']);
 	if($validation) $validation = isValInArray($_POST['protocol'], array('TCP', 'UDP', 'BOTH'));
 	if($validation) $validation = validPort($_POST['startPort']);
 	if($validation) $validation = validPort($_POST['endPort']);
@@ -202,6 +203,7 @@ if (isset($_POST['edit'])){
 	$validation = true;
 	if($validation) $validation = validId_PC($_POST['ID']);
 	if($validation) $validation = printableCharacters($_POST['service']);
+	if($validation) $validation = is_allowed_string($_POST['service']);
 	if($validation) $validation = isValInArray($_POST['protocol'], array('TCP', 'UDP', 'BOTH'));
 	if($validation) $validation = validPort($_POST['startPort']);
 	if($validation) $validation = validPort($_POST['endPort']);

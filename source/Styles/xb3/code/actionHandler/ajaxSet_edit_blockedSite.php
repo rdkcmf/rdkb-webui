@@ -36,6 +36,7 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 	$validation = true;
 	if($validation) $validation = validId_PC($blockedSiteInfo['InstanceID']);
 	if($validation) $validation = validURL($blockedSiteInfo['URL']);
+	if($validation) $validation = is_allowed_string($blockedSiteInfo['URL']);
 	if($validation) $validation = isValInArray($blockedSiteInfo['alwaysBlock'], array('true', 'false'));
 	if($validation && $blockedSiteInfo['alwaysBlock'] == 'false'){
 		if($validation) $validation = validTime($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime']);
@@ -58,7 +59,7 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 		//Check for time and day conflicts
 		$TD1=array($startTime, $endTime, $blockDays);
 		$TD2=array($start_Time, $end_Time, $block_Days);
-		if ((strcasecmp($url, $value["Site"]) == 0) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
+		if (($url == $value["Site"]) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
 			$result .= "Conflict with other blocked site rule. Please check your input!";
 			break;
 		}
@@ -156,6 +157,7 @@ else{
 	$validation = true;
 	if($validation) $validation = validId_PC($blockedSiteInfo['InstanceID']);
 	if($validation) $validation = printableCharacters($blockedSiteInfo['Keyword']);
+	if($validation) $validation = is_allowed_string($blockedSiteInfo['Keyword']);
 	if($validation) $validation = isValInArray($blockedSiteInfo['alwaysBlock'], array('true', 'false'));
 	if($validation && $blockedSiteInfo['alwaysBlock'] == 'false'){
 		if($validation) $validation = validTime($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime']);
@@ -177,7 +179,7 @@ else{
 		//Check for time and day conflicts
 		$TD1=array($startTime, $endTime, $blockDays);
 		$TD2=array($start_Time, $end_Time, $block_Days);
-		if ((strcasecmp($keyword, $value["Site"]) == 0) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
+		if (($keyword == $value["Site"]) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
 			$result .= "Conflict with other blocked Keyword rule. Please check your input!";
 			break;
 		}

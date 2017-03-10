@@ -118,4 +118,9 @@ function valid_ssid_name($ssid_name){
 	$not_hhs2_check = !((strpos($ssid_name, 'cablewifi') !== false) || (strpos($ssid_name, 'twcwifi') !== false) || (strpos($ssid_name, 'optimumwifi') !== false) || (strpos($ssid_name, 'xfinitywifi') !== false));
 	return $ssid_name_check && $not_only_spaces_check && $not_hhs_check && $not_hhs2_check;
 }
+//check if $name has any Invalid characters
+//Invalid characters are Less than (<), Greater than (>), Ampersand (&), Double quote ("), Single quote ('), Pipe (|).
+function is_allowed_string($name){
+	return (preg_match('/[<>&"\'|]/', $name)!=1);
+}
 ?>

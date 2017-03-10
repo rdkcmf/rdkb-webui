@@ -236,11 +236,13 @@ $.validator.addMethod("no_space", function(value, element, param) {
 					rules: {
 						url: {
 							required: true,
-							url2: true 
+							url2: true,
+			                allowed_char: true
 						},
 						Keyword: {
-							 required: true,
-               						 no_space:true
+							required: true,
+               				no_space:true,
+			                allowed_char: true
 						},
 						day: {
 							required: function() {
