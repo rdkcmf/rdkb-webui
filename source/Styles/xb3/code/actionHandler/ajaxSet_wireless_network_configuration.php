@@ -330,10 +330,16 @@ else
 		//ssid 1,2 are for all users
 		//ssid 3,4 & 5,6 are for mso only
 		if(($i == 1 || $i == 2) || ($i > 2 && $_SESSION["loginuser"] == "mso")){
-			if(validFilterParam($arConfig['ft'])){
+			$ft_config_filtered = array();
+			foreach($arConfig['ft'] as $key => $value) {
+				//Remove Invalid characters Less than (<), Greater than (>), Ampersand (&), Double quote ("), Single quote ('), Pipe (|).
+				$ft_config_filtered['ft'][$key][0] = str_replace(str_split('<>&"\'|'), '', $value[0]);
+				$ft_config_filtered['ft'][$key][1] = $value[1];
+			}
+			if(validFilterParam($ft_config_filtered['ft'])){
 				foreach ($ssids as $i)	//incase some filter rule apply to more than one SSID (such as HotSpot)
 				{
-					$ft		= $arConfig['ft'];
+					$ft		= $ft_config_filtered['ft'];
 					//get all old table instance
 					$old_id = array_filter(explode(",",getInstanceIds("Device.WiFi.AccessPoint.$i.X_CISCO_COM_MacFilterTable.")));
 					//for old table, delete which is not in new table, keep in place which is in it
@@ -341,9 +347,10 @@ else
 					{
 						$del_mac = true;
 						$old_mac = getStr("Device.WiFi.AccessPoint.$i.X_CISCO_COM_MacFilterTable.$j.MACAddress");
+						$old_DeviceName = getStr("Device.WiFi.AccessPoint.$i.X_CISCO_COM_MacFilterTable.$j.DeviceName");
 						for ($k=0; $k<count($ft); $k++)
 						{
-							if (strtolower($old_mac) == strtolower($ft[$k][1]))
+							if ((strtolower($old_mac) == strtolower($ft[$k][1])) && (strtolower($old_DeviceName) == strtolower($ft[$k][0])))
 							{
 								$del_mac = false;
 								break;

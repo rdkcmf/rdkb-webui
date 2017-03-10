@@ -123,18 +123,26 @@ $(document).ready(function() {
     	debug: true,
 		rules: {
 			recipient_mail: {
-			required: true,
-			email: true,
-			email_domain: true
+				required: true,
+				email: true,
+				email_domain: true,
+				allowed_char: true
 			},
 			comcast_address: {
-			required: true,
-			email: true,
-			email_domain: true
+				required: true,
+				email: true,
+				email_domain: true,
+				allowed_char: true
 			},
 			smtp_address: {
-			required: true,
-			isIP: true
+				required: true,
+				isIP: true
+			},
+			comcast_username: {
+				allowed_char: true
+			},
+			comcast_password: {
+				allowed_char: true
 			}
 		},
 		messages: {

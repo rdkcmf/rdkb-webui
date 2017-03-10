@@ -24,6 +24,7 @@ if (!isset($_SESSION["loginuser"])) {
 $devBlockInfo = json_decode($_POST['BlockInfo'], true);
 $validation = true;
 if($validation) $validation = printableCharacters($devBlockInfo['hostName']);
+$new_hostName = str_replace(str_split('<>&"\'|'), '', $devBlockInfo['hostName']);
 if($validation) $validation = validMAC($devBlockInfo['macAddr']);
 if($validation){
 	if (array_key_exists('privateDevice', $devBlockInfo)) {
@@ -42,7 +43,7 @@ if($validation){
 			$idArr = explode(",", $IDs);
 			$instanceid = array_pop($idArr);
 			setStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device." .$instanceid. ".Type", "Block", false);
-			setStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device." .$instanceid. ".Description", $devBlockInfo['hostName'], false);
+			setStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device." .$instanceid. ".Description", $new_hostName, false);
 			setStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device." .$instanceid. ".MACAddress", $devBlockInfo['macAddr'], false);
 			setStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device." .$instanceid. ".AlwaysBlock", "true", true);
 		}
@@ -79,7 +80,7 @@ if($validation){
 			addTblObj("Device.WiFi.AccessPoint.3.X_CISCO_COM_MacFilterTable.");
 			$idArr = explode(",", getInstanceIds("Device.WiFi.AccessPoint.3.X_CISCO_COM_MacFilterTable."));
 			$id = array_pop($idArr);
-			setStr("Device.WiFi.AccessPoint.3.X_CISCO_COM_MacFilterTable.$id.DeviceName", $devBlockInfo['hostName'], false);
+			setStr("Device.WiFi.AccessPoint.3.X_CISCO_COM_MacFilterTable.$id.DeviceName", $new_hostName, false);
 			setStr("Device.WiFi.AccessPoint.3.X_CISCO_COM_MacFilterTable.$id.MACAddress", $devBlockInfo['macAddr'], true);
 		}
 	}
@@ -110,7 +111,7 @@ if($validation){
 			addTblObj("Device.WiFi.AccessPoint.5.X_CISCO_COM_MacFilterTable.");
 			$idArr = explode(",", getInstanceIds("Device.WiFi.AccessPoint.5.X_CISCO_COM_MacFilterTable."));
 			$id = array_pop($idArr);
-			setStr("Device.WiFi.AccessPoint.5.X_CISCO_COM_MacFilterTable.$id.DeviceName", $devBlockInfo['hostName'], false);
+			setStr("Device.WiFi.AccessPoint.5.X_CISCO_COM_MacFilterTable.$id.DeviceName", $new_hostName, false);
 			setStr("Device.WiFi.AccessPoint.5.X_CISCO_COM_MacFilterTable.$id.MACAddress", $devBlockInfo['macAddr'], true);
 		}
 		//for Wi-Fi SSID 6 mapped to XfinitySSID
@@ -137,7 +138,7 @@ if($validation){
 			addTblObj("Device.WiFi.AccessPoint.6.X_CISCO_COM_MacFilterTable.");
 			$idArr = explode(",", getInstanceIds("Device.WiFi.AccessPoint.6.X_CISCO_COM_MacFilterTable."));
 			$id = array_pop($idArr);
-			setStr("Device.WiFi.AccessPoint.6.X_CISCO_COM_MacFilterTable.$id.DeviceName", $devBlockInfo['hostName'], false);
+			setStr("Device.WiFi.AccessPoint.6.X_CISCO_COM_MacFilterTable.$id.DeviceName", $new_hostName, false);
 			setStr("Device.WiFi.AccessPoint.6.X_CISCO_COM_MacFilterTable.$id.MACAddress", $devBlockInfo['macAddr'], true);
 		}
 		//For WECB

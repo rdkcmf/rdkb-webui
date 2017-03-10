@@ -27,10 +27,14 @@ $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);
 $validation = true;
 if($validation) $validation = (preg_match("/^[ -~]+?@[ -~]+?\.[ -~]+?$/",$arConfig['recipient_mail'])==1);
+if($validation) $validation = is_allowed_string($arConfig['recipient_mail']);
 if($validation) $validation = (preg_match("/^[ -~]+?@[ -~]+?\.[ -~]+?$/",$arConfig['comcast_address'])==1);
+if($validation) $validation = is_allowed_string($arConfig['comcast_address']);
 if($validation) $validation = validIPAddr($arConfig['smtp_address']);
 if($validation) $validation = printableCharacters($arConfig['comcast_username']);
+if($validation) $validation = is_allowed_string($arConfig['comcast_username']);
 if($validation) $validation = printableCharacters($arConfig['comcast_password']);
+if($validation) $validation = is_allowed_string($arConfig['comcast_password']);
 if($validation){
 	setStr("Device.X_CISCO_COM_Security.EmailSendTo", $arConfig['recipient_mail'], false);
 	setStr("Device.X_CISCO_COM_Security.EmailFirewallBreach", $arConfig['firewall_breach'], false);

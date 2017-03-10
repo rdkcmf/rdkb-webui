@@ -765,6 +765,11 @@ function show_extch(ch)
 }
 function check_add()
 {
+	//check device_name
+	if($("#device_name").val().match(/[<>&"'|]/)!=null){
+		return ["ERROR", "Please enter valid Device Name! \n Less than (<), Greater than (>), Ampersand (&), Double quote (\"), \n Single quote (') and Pipe (|) characters are not allowed."];
+	}
+	//check mac_address
 	var name = $("#device_name").val();
 	var addr = $("#mac_address_1").attr("value")
 		  +":"+$("#mac_address_2").attr("value")
