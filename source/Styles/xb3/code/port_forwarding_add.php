@@ -16,24 +16,17 @@ $devices_param = array(
 	"DeviceMode"	=> "Device.X_CISCO_COM_DeviceControl.DeviceMode",
 	);
     $devices_value = KeyExtGet("Device.X_CISCO_COM_DeviceControl.", $devices_param);
-$v6_param = array(
-    "state"   	=> "Device.DHCPv6.Server.X_CISCO_COM_Type",
-	"v6_begin_addr"	=> "Device.DHCPv6.Server.Pool.1.PrefixRangeBegin",
-	"v6_end_addr"	=> "Device.DHCPv6.Server.Pool.1.PrefixRangeEnd",
-	);
-    $v6_value = KeyExtGet("Device.DHCPv6.Server.", $v6_param);
 $LanGwIP 	= $devices_value["LanGwIP"];
 $LanSubnetMask 	= $devices_value["LanSubnetMask"];
 $beginAddr 	= getStr("Device.DHCPv4.Server.Pool.1.MinAddress");
 $endAddr 	= getStr("Device.DHCPv4.Server.Pool.1.MaxAddress");
 $DeviceMode = $devices_value["DeviceMode"];
 //$DeviceMode = "IPv6";
-$state = $v6_value["state"];
 //2040::/64, 2040:1::/64, 2040:1:2::/64 and 2040:1:2:3::/64
 $prefix_arr = explode('::/', getStr("Device.IP.Interface.1.IPv6Prefix.1.Prefix"));
 //$prefix_arr = explode('::/', "2040:1:2:3::/64");
-$v6_begin_addr = $v6_value["v6_begin_addr"];
-$v6_end_addr = $v6_value["v6_end_addr"];
+$v6_begin_addr = "0000:0000:0000:0001";
+$v6_end_addr = "ffff:ffff:ffff:fffe";
 ?>
 <style type="text/css">
 label{
@@ -79,7 +72,6 @@ function populateIPv6Addr(v6addr){
 	else{
 	    v6_arr = v6addr.split(':');
 	}
-    //console.log(v6_arr);
     return v6_arr;
 }
 function IsBlank(id_prefix){
@@ -105,6 +97,42 @@ function GetAddress(separator, id_prefix){
 function isIp6AddrRequired()
 {
 	return !IsBlank('ip6_address_r');
+}
+function ipv6_in_int(ipv6_address){
+	//Residential – /64, Only "interface id" is converted to int for ipv6
+	ipv6_int = new Array();
+	ipv6_int[0] = parseInt(ipv6_address[0].toUpperCase(), 16);
+	ipv6_int[1] = parseInt(ipv6_address[1].toUpperCase(), 16);
+	ipv6_int[2] = parseInt(ipv6_address[2].toUpperCase(), 16);
+	ipv6_int[3] = parseInt(ipv6_address[3].toUpperCase(), 16);
+	return ipv6_int;
+}
+function isHex(hexa_number){
+	var int_number = parseInt(hexa_number,16);
+	return (int_number.toString(16) === hexa_number);
+}
+/* This function checks ending address should be larger than begin address */
+function validate_v6addr_pool (DBArr, DEArr) {
+	var flag = true;
+	if (DEArr[0] < DBArr[0]) {
+		flag = false;
+	}
+	else if (DEArr[0] == DBArr[0]) {
+		if (DEArr[1] < DBArr[1]) {
+			flag = false;
+		}
+		else if (DEArr[1] == DBArr[1]) {
+			if (DEArr[2] < DBArr[2]) {
+				flag = false;
+			}
+			else if (DEArr[2] == DBArr[2]) {
+				if (DEArr[3] < DBArr[3]) {
+					flag = false;
+				}
+			}
+		}
+	}	
+	return flag;
 }
 function isIp4AddrRequired()
 {
@@ -251,27 +279,27 @@ function isIp4AddrRequired()
 			}
 		}
 		if (!IsBlank("ip6_address_r")) {
-		//IPv6 validation
-		//Check if IPv6 Mode - Stateless(Auto-Config), Stateful(Use Dhcp Server)
-			if("<?php echo $state; ?>" == "Stateful"){
-				//if Stateful(Use Dhcp Server) then accept inrange values
-				var start = "<?php echo $v6_begin_addr; ?>";
-				var start1 = start.split(":");
-				var end = "<?php echo $v6_end_addr; ?>";
-				var end1 = end.split(":");
-				var ipv6res = ipv6addr.split(":");
-				var ipv6res1 = ipv6res.splice(4, 4);
-				for (i = 0; i < ipv6res1.length; i++) {
-					var val = parseInt(ipv6res1[i].toUpperCase(), 16);
-					var low = parseInt(start1[i].toUpperCase(), 16);
-					var upp = parseInt(end1[i].toUpperCase(), 16);
-					if(!((val >= low) && (val <= upp))){
-						jAlert("Server IPv6 addr is not in valid range:\n <?php echo $prefix_arr[0].':'.$v6_begin_addr.' ~ '.$prefix_arr[0].':'.$v6_end_addr; ?>");
-					  	return;
-					}
-				}
+			//IPv6 validation
+			//if Stateful(Use Dhcp Server) then accept inrange values
+			var start	= "<?php echo $v6_begin_addr; ?>";
+			var start1	= start.split(":");
+			var end		= "<?php echo $v6_end_addr; ?>";
+			var end1	= end.split(":");
+			var ipv6res	= ipv6addr.split(":");
+			var ipv6res1	= ipv6res.splice(4, 4);
+			ipv6res_int = ipv6_in_int(ipv6res1);
+			start_int 	= ipv6_in_int(start1);
+			end_int 	= ipv6_in_int(end1);
+			//is valid "interface id" is converted to int for ipv6
+			if(!(isHex(ipv6res1[0]) && isHex(ipv6res1[1]) && isHex(ipv6res1[2]) && isHex(ipv6res1[3]))){
+				jAlert("Server IPv6 addr is not valid!");
+				return;
 			}
-	     	}  
+			if(!validate_v6addr_pool(start_int, ipv6res_int) || !validate_v6addr_pool(ipv6res_int, end_int)){
+				jAlert("Server IPv6 addr is not in valid range:\n <?php echo $prefix_arr[0].':'.$v6_begin_addr.' ~ '.$prefix_arr[0].':'.$v6_end_addr; ?>");
+				return;
+			}
+		}
 		$('.port').each(function(){
 			if (!validator.element($(this))){
 				isValid = false;	//any invalid will make this false
@@ -430,12 +458,9 @@ $('#device').click(function(){
 	        <label for="server_ip_address_4" class="acs-hide"></label>
 			.<input type="text" size="2" maxlength="3"  id="server_ip_address_4" name="server_ip_address_4" class="ipv4-addr smallInput" />
 		</div>
-		<?php  
-	      		//2040::/64, 2040:1::/64, 2040:1:2::/64 and 2040:1:2:3::/64
-                  	$prefix_arr = explode('::/', getStr("Device.IP.Interface.1.IPv6Prefix.1.Prefix"));
-			//$prefix_arr = explode('::/', "2040:1:2:3::/64");
+		<?php
 			$ipv6_prefix_arr = explode(':', $prefix_arr[0]);
-                  	$ipa_size = count($ipv6_prefix_arr);
+			$ipa_size = count($ipv6_prefix_arr);
 		?>
 		<div class="form-row odd">		
 			<label for="ip6_address_r1">Server IPv6 Address:</label>
