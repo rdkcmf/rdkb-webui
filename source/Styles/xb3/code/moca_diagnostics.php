@@ -57,7 +57,7 @@
 	$PreferredNC		= ($MoCA_value['PreferredNC'] == 'true') ? 'Yes' : 'No';
 	$rootObjName	= "Device.MoCA.Interface.1.AssociatedDevice.";
 	$paramNameArray	= array("Device.MoCA.Interface.1.AssociatedDevice.");
-	$mapping_array	= array("MACAddress", "NodeID", "PreferredNC", "Active");
+	$mapping_array	= array("MACAddress", "NodeID", "PreferredNC", "Active", "TxPowerControlReduction", "RxPowerLevel");
 	$moca_AssocDev	= getParaValues($rootObjName, $paramNameArray, $mapping_array);
 	$PreferredNC_data = 'NA';
 	$BackupNC_data = 'NA';
@@ -292,6 +292,8 @@ $(document).ready(function() {
 				<th id="node-id">Node ID</th>
 				<th id="mac-address">MoCA MAC Address</th>
 				<th id="network-controller">Network Controller</th>
+				<th id="transmit-power-level" width="20%">MoCA Transmit Power Level</th>
+				<th id="receive-power-level" width="20%">MoCA Receive Power Level</th>
 			</tr>
 			<?php
 				$class = false;
@@ -304,6 +306,8 @@ $(document).ready(function() {
 							<td headers='node-id'>".$value['NodeID']."</td>
 							<td headers='mac-address'>".strtoupper($value['MACAddress'])."</td>
 							<td headers='network-controller'>".$network_controller."</td>
+							<td headers='transmit-power-level'>".$value['TxPowerControlReduction']."</td>
+							<td headers='receive-power-level'>".$value['RxPowerLevel']."</td>
 						</tr>
 					";
 				}
