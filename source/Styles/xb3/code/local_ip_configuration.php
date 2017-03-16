@@ -123,7 +123,7 @@ $(document).ready(function() {
 			$("#ipv4_gateway_address_2").prop("disabled", false);
 			$("#ipv4_gateway_address_3").prop("disabled", true);
 		} 
-		else if (subnet == "255.255.255.128") {
+		/*else if (subnet == "255.255.255.128") {
 			beginning_ip4 = "2";
 			ending_ip4 = "125";
 			if($("#ipv4_dhcp_ending_address_4").val()>125) $("#ipv4_dhcp_ending_address_4").val(125);
@@ -135,7 +135,7 @@ $(document).ready(function() {
 			$("#ipv4_dhcp_ending_address_3").prop("disabled", true);
 			$("#ipv4_gateway_address_2").prop("disabled", false);
 			$("#ipv4_gateway_address_3").prop("disabled", false);
-		}
+		}*/
 		else if (subnet == "255.255.255.252") {
 			beginning_ip4 = "2";
 			ending_ip4 = "2";
@@ -220,7 +220,7 @@ $(document).ready(function() {
 				$("#ipv4_gateway_address_3").prop("disabled", true);
 				$("#ipv4_gateway_address_4").prop("disabled", true);
 				break;
-			case "255.255.255.128":
+			/*case "255.255.255.128":
 				$("#ipv4_dhcp_beginning_address_1").prop("disabled", true);
 				$("#ipv4_dhcp_beginning_address_2").prop("disabled", true);
 				$("#ipv4_dhcp_beginning_address_3").prop("disabled", true);
@@ -233,7 +233,7 @@ $(document).ready(function() {
 				$("#ipv4_gateway_address_2").prop("disabled", false);
 				$("#ipv4_gateway_address_3").prop("disabled", false);
 				$("#ipv4_gateway_address_4").prop("disabled", true);
-				break;
+				break;*/
 			case "255.255.255.252":
 				$("#ipv4_dhcp_beginning_address_1").prop("disabled", true);
 				$("#ipv4_dhcp_beginning_address_2").prop("disabled", true);
@@ -997,7 +997,7 @@ $('#restore_ipv6').click(function(e) {
     			<select name="ipv4_subnet_mask" id="ipv4_subnet_mask">
     				<option id='mask1' value="255.255.255.0" <?php if("255.255.255.0" == $subnetmask) echo 'selected'; ?> >255.255.255.0</option>
     				<option id="mask2" value="255.255.0.0" <?php if("255.255.0.0" == $subnetmask) echo 'selected';  ?> >255.255.0.0</option>
-    				<option id="mask3" value="255.255.255.128" <?php if("255.255.255.128" == $subnetmask) echo 'selected'; ?> >255.255.255.128</option>
+    				<!--option id="mask3" value="255.255.255.128" <?php //if("255.255.255.128" == $subnetmask) echo 'selected'; ?> >255.255.255.128</option-->
     				<option id="mask4" value="255.0.0.0" <?php if("255.0.0.0" == $subnetmask) echo 'selected'; ?> >255.0.0.0</option>
     				<!-- <option id="mask5" value="255.255.255.252" <?php //if("255.255.255.252" == $subnetmask) echo 'selected'; ?> >255.255.255.252</option> -->
     			</select>
