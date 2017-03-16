@@ -49,7 +49,14 @@ if ($i == 1 || $i == 2 || (($_SESSION["loginuser"] == "mso") && ($i == 3 || $i =
 			if($validation) $validation = (($r==1 && isValInArray($arConfig['wireless_mode'], array("g,n", "b,g,n"))) || ($r==2 && isValInArray($arConfig['wireless_mode'], array("n", "ac", "n,ac", "a,n,ac"))));
 			if ("false"==$arConfig['channel_automatic']){
 				$PossibleChannels = getStr("Device.WiFi.Radio.$r.PossibleChannels");
-				$PossibleChannelsArr = explode(',', $PossibleChannels);
+				if(strpos($PossibleChannels, '-') !== false){//1-11
+					$PossibleChannelsRange = explode('-', $PossibleChannels);
+					$PossibleChannelsArr = range($PossibleChannelsRange[0],$PossibleChannelsRange[1]);
+					foreach($PossibleChannelsArr as $key => $val) $PossibleChannelsArr[$key] = (string)$val;
+				}
+				else {//36,40,44,48,149,153,157,161,165 or 1,2,3,4,5,6,7,8,9,10,11
+					$PossibleChannelsArr = explode(',', $PossibleChannels);
+				}
 				if ($validation && "false"==$arConfig['channel_automatic']) $validation = isValInArray($arConfig['channel_number'], $PossibleChannelsArr);
 			}
 			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
