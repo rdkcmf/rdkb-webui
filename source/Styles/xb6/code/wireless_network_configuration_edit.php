@@ -349,42 +349,35 @@ $(document).ready(function() {
 		}
 		//disable some channel as per extension channel when NOT 20MHz in 5G (2.4G able to set channel and extension channel together)
 		if (!$("#channel_bandwidth201").prop("checked")) {
+			// NOT 20MHz, disable channel 165
 			//40MHz
-			$("#channel_number").val('36');
 			if ($("#channel_bandwidth1").is(":checked")) {
-				if ("Auto" == "<?php echo $ext_channel; ?>"){
-					var c = $("#channel_number option:selected").val();
-					if(c==36 || c==44 || c==52 || c==60 || c==100 || c==108 || c==116 || c==124 || c==132 || c==140 || c==149 || c==157 ) {
-					 $("#channel_number").find("[value='40'],[value='48'],[value='56'],[value='64'],[value='104'],[value='112'],[value='116'],[value='136'],[value='140'],[value='144'],[value='153'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);
-					}
-					else {
-					 $("#channel_number").find("[value='36'],[value='44'],[value='52'],[value='60'],[value='100'],[value='108'],[value='116'],[value='132'],[value='140'],[value='144'],[value='149'],[value='157'],[value='165']").prop("disabled", true).prop("selected", false);
-					}
-				}
 				if ("BelowControlChannel" == "<?php echo $ext_channel; ?>"){
+					$("#channel_number").val('40');
 					$("#channel_number").find("[value='36'],[value='44'],[value='52'],[value='60'],[value='100'],[value='108'],[value='116'],[value='132'],[value='140'],[value='144'],[value='149'],[value='157'],[value='165']").prop("disabled", true).prop("selected", false);
 				}	
 				else{	//AboveControlChannel or Auto  //zqiu: exclude 116,140
+					$("#channel_number").val('36');
 					$("#channel_number").find("[value='40'],[value='48'],[value='56'],[value='64'],[value='104'],[value='112'],[value='116'],[value='136'],[value='140'],[value='144'],[value='153'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);
 				}
 			} 
 			//80MHz
 			else if ($("#channel_bandwidth2").is(":checked")) {
+				$("#channel_number").val('36');
 				$("#channel_number").find("[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144'],[value='165']").prop("disabled", true).prop("selected", false);			
 			}
 			//160MHz
 			else if ($("#channel_bandwidth3").is(":checked")) {
+				$("#channel_number").val('36');
 				$("#channel_number").find("[value='132'],[value='136'],[value='140'],[value='144'],[value='149'],[value='153'],[value='157'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);			
 			}
-			// NOT 20MHz, disable channel 165
-			$("#channel_number").find("[value='165']").prop("disabled", true).prop("selected", false);
 		}
 		else {
 			//if Channel Bandwidth is 20MHz DFS Channels (Channels 50 - 144) should be greyed out
-			$("#channel_number [value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true);
 			$("#channel_number").val('36');
+			$("#channel_number [value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true);
 		}
-	}).trigger("change");
+	});
 	$("#channel_number").change(function() {
 		if ("165" == $(this).val()){
 			$('[name="channel_bandwidth1"]:not([value="20MHz"])').prop("disabled", true);
