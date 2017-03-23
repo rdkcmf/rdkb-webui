@@ -45,19 +45,19 @@ function isValidGW($gwAddress, $subnetMask, $beginAddress, $endAddress){
 	if (ip2long($gwAddress) == -1 || ip2long($gwAddress) === FALSE) return false;
 	if (explode('.', $gwAddress)[0] == '10') {
 		//for classA network only these subnetMask are allowed
-		if(!isValInArray($subnetMask, array("255.255.255.0", "255.255.0.0", "255.255.255.128", "255.0.0.0"))) return false;
+		if(!isValInArray($subnetMask, array("255.255.255.0", "255.255.0.0", "255.0.0.0"))) return false;
 		if(!valid_GW_IP('10.0.0.1', '10.255.255.1', $gwAddress)) return false;
 		$ipRange = ipRange($gwAddress, $subnetMask);
 	}
 	else if (explode('.', $gwAddress)[0] == '172') {
 		//for classB network only these subnetMask are allowed
-		if(!isValInArray($subnetMask, array("255.255.255.0", "255.255.255.128"))) return false;
+		if(!isValInArray($subnetMask, array("255.255.255.0"))) return false;
 		if(!valid_GW_IP('172.16.0.1', '172.31.255.1', $gwAddress)) return false;
 		$ipRange = ipRange($gwAddress, $subnetMask);
 	}
 	else if (explode('.', $gwAddress)[0] == '192') {
 		//for classC network only these subnetMask are allowed
-		if(!isValInArray($subnetMask, array("255.255.255.0", "255.255.0.0", "255.255.255.128"))) return false;
+		if(!isValInArray($subnetMask, array("255.255.255.0", "255.255.0.0"))) return false;
 		if(!valid_GW_IP('192.168.0.1', '192.168.255.1', $gwAddress)) return false;
 		$ipRange = ipRange($gwAddress, $subnetMask);
 	}
