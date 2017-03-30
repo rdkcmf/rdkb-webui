@@ -22,6 +22,10 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
+// if both the LowerLayers radios are down ignore WPS options
+$Radio_1_Enable = getStr("Device.WiFi.Radio.1.Enable");
+$Radio_2_Enable = getStr("Device.WiFi.Radio.2.Enable");
+$Radio_Enable = ($Radio_1_Enable == 'true' || $Radio_2_Enable == 'true') ? true : false ;
 function validChecksum($WPS_pin){
 	if (preg_match("/^\d{4}$|^\d{8}$/", $WPS_pin)!=1) return false;
 	if (preg_match("/^\d{4}$/", $WPS_pin)==1) return true;
@@ -202,7 +206,7 @@ else
 				// MiniApplySSID($i);	// if enable or disable this radio, no need to assign an SSID
 			}
 		}
-		else if ("wps_enabled" == $arConfig['sub_target']) {
+		else if ("wps_enabled" == $arConfig['sub_target'] && $Radio_Enable) {
 			//enable or disable WPS in all SSID, GUI ensure that only change will be commit to backend
 			$ssids = explode(",", getInstanceIds("Device.WiFi.SSID."));
 			foreach ($ssids as $i){
@@ -214,7 +218,7 @@ else
 			MiniApplySSID(1);
 			MiniApplySSID(2);
 		}
-		else if ("wps_method" == $arConfig['sub_target']) {
+		else if ("wps_method" == $arConfig['sub_target'] && $Radio_Enable) {
 			$ssids = explode(",", getInstanceIds("Device.WiFi.SSID."));
 			foreach ($ssids as $i){
 				setStr("Device.WiFi.AccessPoint.$i.WPS.ConfigMethodsEnabled", $arConfig['wps_method'], true);
@@ -227,7 +231,7 @@ else
 		}
 		echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 	}
-	else if ("pair_client" == $arConfig['target'])
+	else if ("pair_client" == $arConfig['target'] && $Radio_Enable)
 	{
 		// $pair_num = getStr("Device.WiFi.AccessPoint.$i.AssociatedDeviceNumberOfEntries");
 		// $pair_res = "fail";
@@ -254,7 +258,7 @@ else
 		// $jsConfig = json_encode($arConfig);
 		echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 	}
-	else if ("pair_cancel" == $arConfig['target'])
+	else if ("pair_cancel" == $arConfig['target'] && $Radio_Enable)
 	{
 		setStr("Device.WiFi.AccessPoint.1.WPS.X_CISCO_COM_CancelSession", "true", true);
 		setStr("Device.WiFi.AccessPoint.2.WPS.X_CISCO_COM_CancelSession", "true", true);

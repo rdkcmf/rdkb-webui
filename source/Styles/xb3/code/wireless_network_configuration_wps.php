@@ -6,6 +6,11 @@
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
 <?php
+if ("false" == getStr("Device.WiFi.Radio.1.Enable") && "false" == getStr("Device.WiFi.Radio.2.Enable")) {
+	if (!$_SESSION['_DEBUG'])
+	echo '<script type="text/javascript">alert("Wi-Fi Radio is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
+	exit(0);
+}
 // $ssids			= explode(",", getInstanceIds("Device.WiFi.SSID."));
 $ssids		=array(1,2);	//Currently, only SSID.1(2.4G) and SSID.2(5G) are involved with WPS
 $wps_enabled	= "false";

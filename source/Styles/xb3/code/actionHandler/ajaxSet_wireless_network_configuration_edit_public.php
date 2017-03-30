@@ -59,7 +59,8 @@ if (($_SESSION["loginuser"] == "mso") && ($i == 5 || $i == 6)) {
 		setStr("Device.DeviceInfo.X_COMCAST_COM_xfinitywifiEnable", "false", true);
 		setStr("Device.X_COMCAST-COM_GRE.Tunnel.1.HotSpotReset", "true", true);
 	}
-	else {
+	// check if the LowerLayers radio is enabled. if disable, no need to configure following
+	else if ("true" == getStr("Device.WiFi.Radio.$r.Enable")) {
 		// change SSID status first, if disable, no need to configure following
 		setStr("Device.WiFi.SSID.$i.Enable", $arConfig['radio_enable'], true);
 		if ("true" == $arConfig['radio_enable'] || "true" == $arConfig['radio_reset'])
@@ -110,10 +111,6 @@ if (($_SESSION["loginuser"] == "mso") && ($i == 5 || $i == 6)) {
 					DmExtSetStrsWithRootObj("Device.WiFi.", true, array(
 						array("Device.WiFi.AccessPoint.$i.UAPSDEnable", "bool", "false"),
 						array("Device.WiFi.AccessPoint.$i.WMMEnable",   "bool", $arConfig['enableWMM'])));			
-				}
-				// check if the LowerLayers radio is enabled
-				if ("false" == getStr("Device.WiFi.Radio.$r.Enable") && "true" == $arConfig['radio_enable']){
-					setStr("Device.WiFi.Radio.$r.Enable", "true", true);
 				}
 				setStr("Device.WiFi.SSID.$i.Enable", $arConfig['radio_enable'], true);
 				if (intval($i) >= 5 ){
