@@ -10,6 +10,20 @@
 	</head>
 <!-- for Dual Band Network -->
 <style>
+@media (max-width: 768px) {
+	body {
+		-moz-transform: scale(0.6, 0.6); /* Moz-browsers */
+		zoom: 0.6; /* Other non-webkit browsers */
+		zoom: 60%; /* Webkit browsers */
+	}
+}
+@media (max-width: 480px) {
+	body {
+		-moz-transform: scale(0.4, 0.4); /* Moz-browsers */
+		zoom: 0.4; /* Other non-webkit browsers */
+		zoom: 40%; /* Webkit browsers */
+	}
+}
 .confirm-text{
 	font-family: 'xfinSansLt';
 	font-size: 14px;
@@ -816,12 +830,6 @@ $(document).ready(function(){
 			$("#phoneNumberContainer").hide();
 		}
 	});
-/*
-	$( window ).resize(function() {
-		$("#append").append( '<div class="container" >'+$(document).width()+'</div>');
-		$("#topbar").width($(document).width());
-	});
-*/
 	//for Dual Band Network
 	$("[name=dualBand]").hide();
 	$("[id^='WiFi_Password_pass_0']").hide();
@@ -877,6 +885,8 @@ $(document).ready(function(){
 			</p>
 			<hr>
 				<p name="dualBand" style="margin: 1px 40px 0 0;">2.4 GHz Network</p>
+				<p style="display:inline; margin: 1px 40px 0 0; text-align: right;">Wi-Fi Name</p>
+				<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi_Name" type="text" placeholder="Example: [account name] Wi-Fi" maxlength="32" class="">
 				<div id="NameContainer" class="container" style="display: none;">
 					<div class="requirements">
 						<div id="NameMessageTop" class="top">Let's try that again.</div>
@@ -884,9 +894,12 @@ $(document).ready(function(){
 						<div class="arrow"></div>
 					</div>
 				</div>
-				<p style="display:inline; margin: 1px 40px 0 0; text-align: right;">Wi-Fi Name</p>
-				<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi_Name" type="text" placeholder="Example: [account name] Wi-Fi" maxlength="32" class="">
 				<br>
+				<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;">Wi-Fi Password</p>
+				<span style="display:inline; margin: 4px 0 0 -26px;" id="password_field"><input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" ></span>
+				<div id="showPass" style="display:inline-table; margin: 4px 0 0 -90px;">
+					<a href="javascript:void(0)" style="white-space: pre;">Hide </a>
+			    </div>
 				<div id="PasswordContainer" class="container" style="display: none;">
 					<div class="requirements">
 						<div id="PasswordMessageTop" class="top">Let's try that again.</div>
@@ -894,11 +907,6 @@ $(document).ready(function(){
 						<div class="arrow"></div>
 					</div>
 				</div>
-				<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;">Wi-Fi Password</p>
-				<span style="display:inline; margin: 4px 0 0 -26px;" id="password_field"><input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" ></span>
-				<div id="showPass" style="display:inline-table; margin: 4px 0 0 -90px;">
-					<a href="javascript:void(0)" style="white-space: pre;">Hide </a>
-			    </div>
 				<div id="passwordIndicator" style="display: none;">
 					<div class="progress-bg"><div id="passwordStrength"></div></div>
 					<p id="passwordInfo" class="password-text"></p>
@@ -906,6 +914,8 @@ $(document).ready(function(){
 				<div name="dualBand" id="showDualConfig">
 				<br>
 					<p style="margin: 10px 40px 0 -10px;">5 GHz Network</p>
+					<p style="display:inline; margin: 1px 40px 0 0; text-align: right;">Wi-Fi Name</p>
+					<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi5_Name" type="text" placeholder="Example: [account name] Wi-Fi" maxlength="32" class="">
 					<div id="NameContainer5" class="container" style="display: none;">
 						<div class="requirements">
 							<div id="NameMessageTop5" class="top">Let's try that again.</div>
@@ -913,9 +923,12 @@ $(document).ready(function(){
 							<div class="arrow"></div>
 						</div>
 					</div>
-					<p style="display:inline; margin: 1px 40px 0 0; text-align: right;">Wi-Fi Name</p>
-					<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi5_Name" type="text" placeholder="Example: [account name] Wi-Fi" maxlength="32" class="">
 					<br>
+					<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;">Wi-Fi Password</p>
+					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" ></span>
+					<div id="show5Pass" style="display:inline-table; margin: 4px 0 0 -90px;">
+						<a href="javascript:void(0)" style="white-space: pre;">Hide </a>
+				    </div>
 					<div id="PasswordContainer5" class="container" style="display: none;">
 						<div class="requirements">
 							<div id="PasswordMessageTop5" class="top">Let's try that again.</div>
@@ -923,11 +936,6 @@ $(document).ready(function(){
 							<div class="arrow"></div>
 						</div>
 					</div>
-					<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;">Wi-Fi Password</p>
-					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" ></span>
-					<div id="show5Pass" style="display:inline-table; margin: 4px 0 0 -90px;">
-						<a href="javascript:void(0)" style="white-space: pre;">Hide </a>
-				    </div>
 					<div id="passwordIndicator5" style="display: none;">
 						<div class="progress-bg"><div id="passwordStrength5"></div></div>
 						<p id="passwordInfo5" class="password-text"></p>
@@ -997,33 +1005,34 @@ $(document).ready(function(){
 				Send yourself a text with your Wi-Fi name and password.<br>
 				This is an optional one-time-only text.
 			</p>
-			<div id="phoneNumberContainer" class="container" style="display: none;">
-				<div class="requirements" style="top: 20px; left: 495px;">
-					<div id="phoneNumberMessageTop" class="top">Text (SMS)</div>
-					<div id="phoneNumberMessageBottom" class="bottom">Texts are not encrypted. You can always view Wi-Fi name/password under My Account instead.</div>
-					<div class="arrow"></div>
-				</div>
-			</div>
 			<div id="text_sms">
 				<p style="text-align: left; margin: 27px 0 0 115px;">Your Mobile Number (<b>Optional</b>)</p>
-				<input id="phoneNumber" type="text" placeholder="1(  )  -  " class=""><br/><br/>
+				<input id="phoneNumber" type="text" placeholder="1(  )  -  " class="">
+				<div id="phoneNumberContainer" class="container" style="margin: 20px 30% auto auto; display: none;">
+					<div class="requirements" style="top: 130px; left: 150px;">
+						<div id="phoneNumberMessageTop" class="top">Text (SMS)</div>
+						<div id="phoneNumberMessageBottom" class="bottom">Texts are not encrypted. You can always view Wi-Fi name/password under My Account instead.</div>
+						<div class="arrow"></div>
+					</div>
+				</div>
+				<br/><br/>
 			</div>
-			<div id="agreementContainer" class="container" style="display: none;">
+			<div id="concent_check" class="checkbox">
+				<input id="concent" type="checkbox" name="concent">
+			    	<label for="concent" class="insertBox" style="margin: -40px 10px 0 15px;"></label>
+			    	<div class="check-copy" style="text-align: left; color: #888;">
+						I agree to receive a text message from Comcast via<br/>
+						automated technology to my mobile number provided<br/>
+						regarding my Wi-Fi name and password.<br/>
+					</div>
+		    </div>		    
+			<div id="agreementContainer" class="container" style="margin: 20px 30% auto auto; display: none;">
 				<div class="requirements" style="top: -6px; left: 509px;">
 					<div id="agreementMessageTop" class="top">Confirmation</div>
 					<div id="agreementMessageBottom" class="bottom">Please confirm your agreement to receive a text message.</div>
 					<div class="arrow"></div>
 				</div>
-				</div>
-			<div id="concent_check" class="checkbox">
-				<input id="concent" type="checkbox" name="concent">
-			    	<label for="concent" class="insertBox" style="margin: -40px 10px 0 15px;"></label>
-			    	<div class="check-copy" style="text-align: left; color: #888;">
-					I agree to receive a text message from Comcast via<br/>
-					automated technology to my mobile number provided<br/>
-					regarding my Wi-Fi name and password.<br/>
-				</div>
-		    	</div>
+			</div>
 			<br/><br/>
 			<div>
 				<button id="button_previous_01" class="transparent">Previous Step</button>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
