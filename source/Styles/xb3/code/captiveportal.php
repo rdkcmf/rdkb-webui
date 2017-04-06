@@ -1095,12 +1095,6 @@ $(document).ready(function(){
 						<div id="agreementMessageBottom" class="bottom">Please confirm your agreement to receive a text message.</div>
 						<div class="arrow"></div>
 					</div>
-		    </div>		    
-			<div id="agreementContainer" class="container" style="margin: 20px 30% auto auto; display: none;">
-				<div class="requirements" style="top: -6px; left: 509px;">
-					<div id="agreementMessageTop" class="top">Confirmation</div>
-					<div id="agreementMessageBottom" class="bottom">Please confirm your agreement to receive a text message.</div>
-					<div class="arrow"></div>
 				</div>
 			</div>
 			<br/><br/>
