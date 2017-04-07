@@ -176,17 +176,11 @@ $(document).ready(function() {
 <?php if($CloudUIEnable == "true"){ ?>
 <div  id="content" class="main_content">
 	<h1>Parental Control > Managed Devices</h1>
-	<div  id="educational-tip">
-			<p class="tip">Manage access by specific devices on your network.</p>
-			<p class="hidden">Select <strong>Enable</strong> to manage network devices, or <strong>Disable</strong> to turn off.</p>
-			<p class="hidden"><strong>Access Type:</strong> If you don't want your devices to be restricted, select <strong>Allow All</strong>. Then select <strong>+ADD BLOCKED DEVICE</strong> to add only the device you want to restrict.</p>
-			<p class="hidden">If you want your devices to be restricted, select <strong>Block All.</strong> Click <strong>+ADD ALLOWED DEVICE</strong> to add the device you don't want to restrict.</p>
-	</div>
 	<div class="module forms enable">
-		<h2>Managed Devices</h2>
 		<div id="content" style="text-align: center;">
-			<br><h3>Managed devices and Port Forwarding pages are moved to cloud.</h3>
-			<h3>Please use the following link to access cloud portal: <a href="https://internet.xfinity.com">internet.xfinity.com</a></h3><br>
+			<br>
+			<h3>Managing your home network settings is now easier than ever.<br>Visit <a href="http://xfinity.com/myxfi">xfinity.com/myxfi</a> to enable parental controls for devices connected<br>to your home network, among many other features and settings.</h3>
+			<br>
 		</div>
 	</div> <!-- end .module -->
 </div><!-- end #content -->

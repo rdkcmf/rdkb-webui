@@ -281,13 +281,19 @@ $(document).ready(function() {
 </script>
 <div id="content"  class="cnt-device-main">
 	<h1>Connected Devices > Devices</h1>
-     <div id="educational-tip">
-				<p  class="tip">View information about devices currently connected to your network, as well as connection history.</p>
-				<p  class="hidden">Every device listed below was auto discovered via DHCP.</p>
-				<p  class="hidden"><strong>Online Devices</strong> are currently connected to your Gateway.</p>
-				<p  class="hidden"><strong>Offline Devices</strong>  were once connected to your network, but not currently.</p>
-				<p  class="hidden">To block Internet access to a device connected to your Gateway, click the <strong>X</strong> button. </p>
-    </div>
+<?php if($CloudUIEnable == "true"){ ?>
+	<div id="educational-tip">
+		<h3 style="text-align: justify;">Managing your home network settings is now easier than ever. Visit <a href="http://xfinity.com/myxfi">xfinity.com/myxfi</a> to view and manage your list of connected/offline devices. You can block access to your home network for any device, among many other features and settings.</h3>
+	</div>		
+<?php } else { ?>
+	<div id="educational-tip">
+		<p class="tip">View information about devices currently connected to your network, as well as connection history.</p>
+		<p class="hidden">Every device listed below was auto discovered via DHCP.</p>
+		<p class="hidden"><strong>Online Devices</strong> are currently connected to your Gateway.</p>
+		<p class="hidden"><strong>Offline Devices</strong>  were once connected to your network, but not currently.</p>
+		<p class="hidden">To block Internet access to a device connected to your Gateway, click the <strong>X</strong> button. </p>
+	</div>
+<?php } ?>
 <?php if($loginuser == "mso"){
 	$checked = ($PreferPrivate == "true")?"checked":"";
 	echo '<div class="module" id="prefer_private_connection">
