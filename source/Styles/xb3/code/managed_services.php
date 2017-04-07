@@ -217,7 +217,7 @@ $(document).ready(function() {
 				//Host
 				$rootObjName    = "Device.Hosts.Host.";
 				$paramNameArray = array("Device.Hosts.Host.");
-				$mapping_array  = array("HostName", "PhysAddress", "IPAddress", "IPv6Address.1.IPAddress");
+				$mapping_array  = array("HostName", "PhysAddress", "IPAddress", "IPv6Address.1.IPAddress", "IPv6Address.3.IPAddress");
 				$HostParam = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 				if($blockedServicesNums > 0) {
 					$iclass="even";
@@ -288,7 +288,7 @@ $(document).ready(function() {
 			$Host["$i"]['IPAddress'] = $HostParam[$i]["IPAddress"];
 			$IPAddress = $HostParam["$i"]['IPAddress'];
 			//$IPv4Address	= getStr("Device.Hosts.Host." .$hostsInstanceArr["$i"]. ".IPv4Address.1.IPAddress");
-			$IPv6Address	= $HostParam[$i]["IPv6Address.1.IPAddress"];
+			$IPv6Address	= resolve_IPV6_global_address($HostParam[$i]["IPv6Address.1.IPAddress"], $HostParam[$i]["IPv6Address.3.IPAddress"]);
 			//for now as "Device.Hosts.Host.'$i'.IPv4Address.1.IPAddress" is not updating on GW_IP Change
 			$IPv4Address = $IPAddress;
 			//In IPv6 only mode, IPv4=NA

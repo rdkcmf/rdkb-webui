@@ -417,7 +417,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 	//Host
 	$rootObjName    = "Device.Hosts.Host.";
 	$paramNameArray = array("Device.Hosts.Host.");
-	$mapping_array  = array("HostName", "PhysAddress", "IPAddress", "IPv6Address.1.IPAddress");
+	$mapping_array  = array("HostName", "PhysAddress", "IPAddress", "IPv6Address.1.IPAddress", "IPv6Address.3.IPAddress");
 	$Host = getParaValues($rootObjName, $paramNameArray, $mapping_array);
    	$blockedSitesURL = array();
 	$blockedSitesKeyWord = array();
@@ -564,7 +564,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 			$Host["$i"]['IPAddress'] = $Host[$i]["IPAddress"];
 			$IPAddress = $Host["$i"]['IPAddress'];
 			//$IPv4Address	= getStr("Device.Hosts.Host." .$hostsInstanceArr["$i"]. ".IPv4Address.1.IPAddress");
-			$IPv6Address	= $Host[$i]["IPv6Address.1.IPAddress"];
+			$IPv6Address	= resolve_IPV6_global_address($Host[$i]["IPv6Address.1.IPAddress"], $Host[$i]["IPv6Address.3.IPAddress"]);
 			//"Device.Hosts.Host.'$i'.IPv4Address.1.IPAddress" is not updating on GW_IP Change
 			$IPv4Address = $IPAddress;
 			//In IPv6 only mode, IPv4=NA

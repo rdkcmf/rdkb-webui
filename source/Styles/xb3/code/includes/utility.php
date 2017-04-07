@@ -434,4 +434,14 @@ function time_date_conflict($TD1, $TD2) {
 	}
 	return $ret;
 }
+// resolve IPV6 global address
+function resolve_IPV6_global_address($address1, $address3){
+	// IPV6 address can be "global address", "EMPTY" [from STACK] or NOT-SET [from STACK]
+	$IPV6_Addresses = '';
+	if(isset($address1)){
+		if($address1 != 'EMPTY') $IPV6_Addresses = $address1;
+		else if ($address3 != 'EMPTY') $IPV6_Addresses = $address3;
+	}
+	return $IPV6_Addresses;
+}
 ?>
