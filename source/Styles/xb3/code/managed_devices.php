@@ -174,7 +174,7 @@ $(document).ready(function() {
 });
 </script>
 <?php if($CloudUIEnable == "true"){ ?>
-<div  id="content" class="main_content">
+<div  id="content">
 	<h1>Parental Control > Managed Devices</h1>
 	<div class="module forms enable">
 		<div id="content" style="text-align: center;">
