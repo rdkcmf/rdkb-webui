@@ -9,7 +9,7 @@
 	$not_cusadmin_pages = array('email_notification.php', 'hs_port_forwarding', 'routing.php', 'change_password.php');
 	$not_admin_pages = array('email_notification.php', 'hs_port_forwarding', 'routing.php', 'dynamic_dns', 'mta', 'voice_quality_metrics' ,'qos');
 	$not_mso_pages = array('change_password.php');
-	$not_bridge_static_pages = array('local_ip', 'firewall', 'managed', 'parental', 'forwarding', 'triggering', 'dmz', 'routing');
+	$not_bridge_static_pages = array('local_ip', 'firewall', 'managed', 'parental', 'forwarding', 'triggering', 'dmz', 'routing', 'moca', 'wps', 'wifi_spectrum_analyzer');
 	if ($_SESSION['loginuser'] == 'cusadmin') {
 		foreach ($not_cusadmin_pages as $page) {
 			if (strstr($_SERVER['SCRIPT_FILENAME'], $page)) {
