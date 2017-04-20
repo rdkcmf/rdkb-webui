@@ -206,10 +206,10 @@ $(document).ready(function() {
 	<h1>Parental Control > Managed Devices > Add Blocked Device</h1>
 	<div class="module">
 		<div class="forms">
-			<h2>Add Device to be Blocked</h2>
 			<div id="content" style="text-align: center;">
-				<br><h3>Managed devices and Port Forwarding pages are moved to cloud.</h3>
-				<h3>Please use the following link to access cloud portal: <a href="https://internet.xfinity.com">internet.xfinity.com</a></h3><br>
+				<br>
+				<h3>Managing your home network settings is now easier than ever.<br>Visit <a href="http://xfinity.com/myxfi">xfinity.com/myxfi</a> to enable parental controls for devices connected<br>to your home network, among many other features and settings.</h3>
+				<br>
 			</div>
 		</div> <!-- end .module -->
 	</div>
