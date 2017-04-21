@@ -23,14 +23,33 @@ if (!isset($_SESSION["loginuser"])) {
 }
 $MeshTxNodeTableEntries	= getStr("Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTable.MeshTxNodeTableNumberOfEntries");
 if($MeshTxNodeTableEntries != '0'){
+	/*--
+	AssociatedDeviceNumberOfEntries is the number of other MoCA nodes in the network (not including the XB3).
+	MeshTxNodeTableNumberOfEntries is the total number of MoCA nodes in the network (including the XB3 itself).
+	The MeshTable has TxRates from each node to every other node, 
+	whereas Device.MoCA.Interface.1.AssociatedDevice only has information about the other nodes in the network.
+	*/
 	$MeshTxNodeArray = array();
 	for ($i=1; $i <= $MeshTxNodeTableEntries; $i++) {
 		$rootObjName	= "Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTable.MeshTxNodeTable.$i.MeshRxNodeTable.";
 		$paramNameArray	= array("Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTable.MeshTxNodeTable.$i.MeshRxNodeTable.");
 		$mapping_array	= array("MeshRxNodeId", "MeshPHYTxRate");
 		$MeshTxNodes	= getParaValues($rootObjName, $paramNameArray, $mapping_array);
-		array_push($MeshTxNodeArray, array($i => $MeshTxNodes));
+		array_push($MeshTxNodeArray, array(getStr("Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTable.MeshTxNodeTable.$i.MeshTxNodeId") => $MeshTxNodes));
 	}
+	$rootObjName	= "Device.MoCA.Interface.1.AssociatedDevice.";
+	$paramNameArray	= array("Device.MoCA.Interface.1.AssociatedDevice.");
+	$mapping_array	= array("NodeID", "HighestVersion");
+	$HighestVersion	= getParaValues($rootObjName, $paramNameArray, $mapping_array);
+	//For the XB3
+	$HighestVersion_Modem = getStr("Device.MoCA.Interface.1.HighestVersion");
+	$HighestVersion_Modem = str_replace('.', '', $HighestVersion_Modem);
+	$NodeID_Modem = getStr("Device.MoCA.Interface.1.NodeID");
+	foreach ($HighestVersion as $key => $value) {
+		$Mesh_HighestVersion[$value["NodeID"]] = $value["HighestVersion"];
+	}
+	$Mesh_HighestVersion[$NodeID_Modem] = $HighestVersion_Modem;
+	$MeshTxNodeArray['Mesh_HighestVersion'] = $Mesh_HighestVersion;
 }
 else {
 	$MeshTxNodeArray = array();
