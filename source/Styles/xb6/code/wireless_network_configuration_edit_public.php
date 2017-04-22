@@ -446,9 +446,9 @@ function init_form() {
 	for (var i=0; i<sec_list.length; i++){
 		$("#security").append('<option value="'+sec_list[i][1]+'" title="'+sec_list[i][2]+'">'+sec_list[i][0]+'</option>');
 	}
-	else{
-		$("#security").val(sec_val);
-	}
+
+	$("#security").val(sec_val);
+
 	//addtional mode
 	var add_val = "None";
 	if (encrypt_mode.indexOf("Personal")!=-1){
