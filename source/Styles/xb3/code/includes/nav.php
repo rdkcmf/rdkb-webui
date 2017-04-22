@@ -30,6 +30,7 @@ $nat		        = FALSE;  //for mso/cusadmin
 $wifi_spectrum_analyzer = TRUE;
 $password_change	= FALSE;  //for admin only
 $wizard        		= TRUE;
+$wifi_spec_analyzer	= TRUE;
 if ($_DEBUG) {
 	$media_sharing = TRUE;
 }
@@ -48,6 +49,8 @@ if (isset($_SESSION['lanMode']) && $_SESSION["lanMode"] == "bridge-static") {
 	$port_triggering  	= FALSE;
 	$hs_port_forwarding = FALSE;
 	$wizard		 		= FALSE;
+	$MoCA				= FALSE;
+	$wifi_spec_analyzer	= FALSE;
 }
 if (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'cusadmin') {
 	$routing		= FALSE;
@@ -174,8 +177,8 @@ echo '<li class="nav-troubleshooting">';
 	echo '<ul>';
 		echo '<li class="nav-logs"><a role="menuitem"  href="troubleshooting_logs.php">Logs</a></li>';
 		echo '<li class="nav-diagnostic-tools"><a role="menuitem"  href="network_diagnostic_tools.php">Diagnostic Tools</a></li>';
-		echo '<li class="nav-wifi-spectrum-analyzer"><a role="menuitem"  href="wifi_spectrum_analyzer.php">Wi-Fi Spectrum Analyzer</a></li>';
-		echo '<li class="nav-moca-diagnostics"><a role="menuitem"  href="moca_diagnostics.php">MoCA Diagnostics</a></li>';
+		if($wifi_spec_analyzer) echo '<li class="nav-wifi-spectrum-analyzer"><a role="menuitem"  href="wifi_spectrum_analyzer.php">Wi-Fi Spectrum Analyzer</a></li>';
+		if($MoCA) echo '<li class="nav-moca-diagnostics"><a role="menuitem"  href="moca_diagnostics.php">MoCA Diagnostics</a></li>';
 		echo '<li class="nav-restore-reboot"><a role="menuitem"  href="restore_reboot.php">Reset/Restore Gateway</a></li>';
 		if($password_change) echo '<li class="nav-password"><a role="menuitem"  href="password_change.php">Change Password</a></li>';
 	echo '</ul>';
