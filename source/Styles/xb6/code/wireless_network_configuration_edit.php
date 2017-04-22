@@ -20,6 +20,12 @@ $id		= isset($_GET['id']) ? $_GET['id'] : "1";
 $rf		= (2 - intval($id)%2);	//1,3,5,7 == 1(2.4G); 2,4,6,8 == 2(5G)
 $radio_band	= (1 == $rf) ? "2.4" : "5";
 $valid_ids	= array(1,2,3,4);
+// check if the LowerLayers radio is enabled. if disable, no need to configure
+if ("false" == getStr("Device.WiFi.Radio.$rf.Enable")) {
+	if (!$_SESSION['_DEBUG'])
+	echo '<script type="text/javascript">alert("Wi-Fi Radio is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
+	exit(0);
+}
 function KeyExtGet($root, $param)
 {
 	$raw_ret = DmExtGetStrsWithRootObj($root, $param);

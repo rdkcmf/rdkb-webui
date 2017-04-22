@@ -21,6 +21,11 @@ if (("5"!=$id && "6"!=$id) || "true"!=$hhs_enable) {
 	echo '<script type="text/javascript">alert("HotSpot function is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
 	exit(0);
 }
+if ("false" == getStr("Device.WiFi.Radio.$rf.Enable")) {
+	if (!$_SESSION['_DEBUG'])
+	echo '<script type="text/javascript">alert("Wi-Fi Radio is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
+	exit(0);
+}
 $wifi_param = array(
 	// "wireless_mode"	=> "Device.WiFi.Radio.".((intval($id)+1)%2+1).".OperatingStandards",
 	// "lower_layers"	=> "Device.WiFi.SSID.$id.LowerLayers",

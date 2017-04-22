@@ -380,6 +380,39 @@ $(document).ready(function() {
 		title_off: "Disable WPS PIN",
 		state: G_wps_method !== "PushButton" ? "on" : "off"
 	});
+	function disable_ssid_options(element, index){
+		$("#"+element+" tbody tr:nth-child("+index).addClass('disabled');		
+		$("#"+element+" tbody tr:nth-child("+index+") td:nth-child(1) b font").css('color', 'grey');
+		$("#"+element+" tbody tr:nth-child("+index+") td:nth-child(5) a").addClass('disabled');
+		$("#"+element+" tbody tr:nth-child("+index+") .btn").click(function(e) {
+			e.preventDefault();
+		});
+	}
+	// check if the LowerLayers radio 2.4GHz is enabled. if disable, the user shouldn't be able to enable the SSID.
+	if(!G_radio_enable){
+		disable_ssid_options('private_wifi', 2);
+		disable_ssid_options('other_wifi', 2);
+		disable_ssid_options('public_wifi', 2);
+	}
+	// check if the LowerLayers radio 5GHz is enabled. if disable, the user shouldn't be able to enable the SSID.
+	if(!G_radio_enable1){		
+		disable_ssid_options('private_wifi', 3);
+		disable_ssid_options('other_wifi', 3);
+		disable_ssid_options('public_wifi', 3);
+	}
+	// if both the LowerLayers radios are down disable WPS options
+	if(!G_radio_enable && !G_radio_enable1){
+		$("#add_wps_client").addClass('disabled').click(function(e) {
+			e.preventDefault();
+		});
+		$(".div_wps_setting input, .div_wps_setting select").addClass('disabled').attr('disabled',true);
+		$("#wps_switch, #pin_switch").radioswitch("doEnable", false);
+		$('.div_wps_setting *').addClass('disabled');
+		$('.div_wps_setting .btn').prop('disabled',true);
+		$('.div_wps_setting .btn').click(function(e) {
+			e.preventDefault();
+		});
+	}
 	//DFS_Support1 1-supported 0-not supported
 	if("<?php echo $DFS_Support1;?>" == "true" && "<?php echo $IEEE80211hSupport1;?>" == "true"){
 		if("<?php echo $channel_number1;?>" >= 52 && "<?php echo $channel_number1;?>" <= 140 ) {
@@ -1181,7 +1214,7 @@ function saveBandSteeringSettings()
 	</tr>
 	</table>
 	<div class="btn-group" style="display: none;">
-		<a href="wireless_network_configuration_wps.php" class="btn">Add Wi-Fi Protected Setup (WPS) Client</a>
+		<a id="add_wps_client" href="wireless_network_configuration_wps.php" class="btn">Add Wi-Fi Protected Setup (WPS) Client</a>
 	</div>
 </div> <!-- end .module -->
 <div class="module data data div_other_wifi">
@@ -1851,7 +1884,7 @@ function saveBandSteeringSettings()
 		</div>
 	</div>
 </div>			
-<div class="module forms enable div_wps_setting wps_config">
+<div id="wps_configuration" class="module forms enable div_wps_setting wps_config">
 	<h2>Wi-Fi Client Setup Configuration(WPS)</h2>
 	<div class="form-row"><p>You must enable WPS to connect your device to this device</p></div>
 	<!--div class="form-row">
