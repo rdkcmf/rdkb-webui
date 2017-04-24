@@ -145,7 +145,7 @@ else
 			else {//36,40,44,48,149,153,157,161,165 or 1,2,3,4,5,6,7,8,9,10,11
 				$PossibleChannelsArr = explode(',', $PossibleChannels);
 			}
-			if($validation) $validation = (($i==1 && isValInArray($arConfig['wireless_mode'], array("g,n", "b,g,n"))) || ($i==2 && isValInArray($arConfig['wireless_mode'], array("n", "ac", "n,ac", "a,n,ac"))));
+			if($validation) $validation = (($i==1 && isValInArray($arConfig['wireless_mode'], array("n", "g,n", "b,g,n"))) || ($i==2 && isValInArray($arConfig['wireless_mode'], array("n", "ac", "n,ac", "a,n,ac"))));
 			if ($validation && "false"==$arConfig['channel_automatic']) $validation = isValInArray($arConfig['channel_number'], $PossibleChannelsArr);
 			if ($validation && ("2" != $i) && ("20MHz" != $arConfig['channel_bandwidth'])) $validation = isValInArray($arConfig['ext_channel'], array('AboveControlChannel', 'BelowControlChannel', 'Auto'));
 			if($validation){
