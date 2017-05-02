@@ -341,7 +341,7 @@ if($_SESSION["loginuser"] == "mso"){
 		"IPv6RenewTimeRemaining"	=> "Device.X_CISCO_COM_CableModem.IPv6RenewTimeRemaining",
 		);
 	$cm_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $cm_param);
-	if($cm_value['LearnedIPMode'] == 'IPv6'){
+	if($cm_value['LearnedIPMode'] == 'IPv6' || $cm_value['LearnedIPMode'] == 'IPV6'){
 		$cm_value['IPAddress']			 = $cm_value['IPv6Address'];
 		$cm_value['SubnetMask']			 = 'NA';
 		$cm_value['Gateway']			 = 'NA';
