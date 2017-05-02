@@ -22,10 +22,15 @@ if (!isset($_SESSION["loginuser"])) {
 	exit(0);
 }
 function mac_translate($mac){
-	//to change mac from 16cfe213c610 to 16:CF:E2:13:C6:10	
 	$mac = strtoupper($mac);
-	$mac_new = substr($mac, 0, 2).':'.substr($mac, 2, 2).':'.substr($mac, 4, 2).':'.substr($mac, 6, 2).':'.substr($mac, 8, 2).':'.substr($mac, 10, 2);
-	return $mac_new;
+	if (strpos($mac, ':') !== false) {
+		return $mac;
+	}
+	else {
+		//to change mac from 16cfe213c610 to 16:CF:E2:13:C6:10	
+		$mac_new = substr($mac, 0, 2).':'.substr($mac, 2, 2).':'.substr($mac, 4, 2).':'.substr($mac, 6, 2).':'.substr($mac, 8, 2).':'.substr($mac, 10, 2);
+		return $mac_new;
+	}
 }
 function rearrange_SDTR($val){
 	//add new line char after 4th','
