@@ -149,7 +149,7 @@ $(document).ready(function() {
                         <td headers="battery_status" id="bat_currtemp"><?php echo $battery_value["bat_currtemp"]; ?></td>
                 </tr>
                 <tr class="odd">
-                        <td headers="battery_metric" class="row-label">Charging System Helath:</td>
+                        <td headers="battery_metric" class="row-label">Charging System Health:</td>
                         <td headers="battery_status" id="bat_chargehealth"><?php echo $battery_value["bat_chargehealth"]; ?></td>
                 </tr>
                 <tr>
@@ -181,7 +181,7 @@ $(document).ready(function() {
                         <td headers="battery_status" id="bat_model"><?php echo $battery_value["bat_model"]; ?></td>
                 </tr>
                 <tr class="odd">
-                        <td headers="battery_metric" class="row-label">Power Consumed In Intial 8 Hours:</td>
+                        <td headers="battery_metric" class="row-label">Power Consumed In Initial 8 Hours:</td>
                         <td headers="battery_status" id="bat_idlepower1"><?php echo $battery_value["bat_idlepower1"]; ?></td>
                 </tr>
                 <tr>
