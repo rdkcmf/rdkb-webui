@@ -70,7 +70,7 @@ $(document).ready(function() {
 	<h1>Gateway > Hardware > LAN Ethernet</h1>
 	<div id="educational-tip">
 		<p class="tip"> View information about the Gateway's Ethernet Ports. </p>
-		<p class="hidden">The Gateway has 4 Gigabit (GbE) Ethernet Ports. When a device is connected to the Gateway with an Ethernet cable, you'll see an <i>Active</i> status for that port.</p>
+		<p class="hidden">The Gateway has 2 Gigabit (GbE) Ethernet Ports. When a device is connected to the Gateway with an Ethernet cable, you'll see an <i>Active</i> status for that port.</p>
 	</div>
 	<?php
 	function NameMap($str)
