@@ -94,30 +94,45 @@ $channel_array = array(
 $(document).ready(function() {
 	comcast.page.init("Troubleshooting > MoCA Diagnostics", "nav-moca-diagnostics");
 	var network = null;
-	function moca_bonded_paths($MeshPHYTxRate){
+	function moca_bonded_paths($MeshPHYTxRate, $Tx_HighestVersion, $Rx_HighestVersion){
+		if($Tx_HighestVersion == 20 && $Rx_HighestVersion == 20)
+			$HighestVersion = 20;
+		else if($Tx_HighestVersion == 11 || $Rx_HighestVersion == 11)
+			$HighestVersion = 11;
+		else $HighestVersion = '';
 		//MoCA 1.1 Paths >=200mbps is marked in green, paths >=180mbps but <200mbps are marked in orange, and paths <180mbps are marked in red.
 		//MoCA 2.0 paths >=370mbps are marked in green, paths >=330mbps but <370mbps are marked in orange, and paths < 330mbps are marked in red .
 		//MoCA 2.0 bonded paths >= 740mbps are marked in green, paths >=660 but <740mbps are marked in orange, and paths < 660 are marked in red.
-		if ($MeshPHYTxRate >= 740) return 'green';
+		// HighestVersion can be 20[MoCA 2.0] or 11[MoCA 1.1], MoCA 2.0 bonded is not supported
+		/*if ($MeshPHYTxRate >= 740) return 'green';
 		else if ($MeshPHYTxRate >= 660) return 'orange';
-		else if ($MeshPHYTxRate >= 371) return 'red';
-		else if ($MeshPHYTxRate >= 370) return 'green';
-		else if ($MeshPHYTxRate >= 330) return 'orange';
-		else if ($MeshPHYTxRate >= 201) return 'red';
-		else if ($MeshPHYTxRate >= 200) return 'green';
-		else if ($MeshPHYTxRate >= 180) return 'orange';
-		else return 'red';
+		else if ($MeshPHYTxRate >= 371) return 'red';*/
+		if($HighestVersion == 20){
+			if ($MeshPHYTxRate >= 370) $bonded_path = 'green';
+			else if ($MeshPHYTxRate >= 330) $bonded_path = 'orange';
+			else $bonded_path = 'red';
+		}
+		else if($HighestVersion == 11){
+			if ($MeshPHYTxRate >= 200) $bonded_path = 'green';
+			else if ($MeshPHYTxRate >= 180) $bonded_path = 'orange';
+			else $bonded_path = 'red';
+		}
+		else $bonded_path = 'red';
+		return $bonded_path;
 	}
 	function create_nodes_edges($data_MoCA){
 		var nodes = new Array();
 		var edges = new Array();
 		// create an array with nodes & edges
 		for (var $key in $data_MoCA) {
+			if($key != 'Mesh_HighestVersion')
 			for (var $ke in $data_MoCA[$key]) {
 				nodes.push({id: $ke, label: "Node ID: "+$key, shape: 'box',});
 				for (var $k in $data_MoCA[$key][$ke]) {
-					var $path_color = moca_bonded_paths($data_MoCA[$key][$ke][$k]['MeshPHYTxRate']);
-						edges.push({from: $ke, to: $data_MoCA[$key][$ke][$k]['MeshRxNodeId'], label: $data_MoCA[$key][$ke][$k]['MeshPHYTxRate'], color:{color: $path_color, highlight: $path_color}});
+					$TxID = $ke;
+					$RxID = $data_MoCA[$key][$ke][$k]['MeshRxNodeId'];
+					var $path_color = moca_bonded_paths($data_MoCA[$key][$ke][$k]['MeshPHYTxRate'], $data_MoCA['Mesh_HighestVersion'][$TxID], $data_MoCA['Mesh_HighestVersion'][$RxID]);
+					edges.push({from: $ke, to: $data_MoCA[$key][$ke][$k]['MeshRxNodeId'], label: $data_MoCA[$key][$ke][$k]['MeshPHYTxRate'], color:{color: $path_color, highlight: $path_color}});
 				}
 			}
 		}
