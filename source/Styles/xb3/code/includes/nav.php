@@ -31,6 +31,7 @@ $wifi_spectrum_analyzer = TRUE;
 $password_change	= FALSE;  //for admin only
 $wizard        		= TRUE;
 $wifi_spec_analyzer	= TRUE;
+$advanced_tab		= TRUE;
 if ($_DEBUG) {
 	$media_sharing = TRUE;
 }
@@ -40,6 +41,7 @@ if ($_DEBUG) {
  * routing page(mso), dmz page, wizard pages, port fowarding and port triggering pages removed
  */
 if (isset($_SESSION['lanMode']) && $_SESSION["lanMode"] == "bridge-static") {
+	$advanced_tab		= FALSE;
 	$local_ip_config  	= FALSE;
 	$firewall         	= FALSE;
 	$parental_control 	= FALSE;
@@ -139,39 +141,40 @@ if($parental_control){
 	echo '</ul>';
 echo '</li>';
 }
-echo '<li class="nav-advanced">';
-	if ($_SESSION["lanMode"] == "bridge-static") echo '<a role="menuitem"  href="device_discovery.php">Advanced</a></li>';
-		else echo '<a role="menuitem"  title="click to toggle sub menu"  class="top-level" href="port_forwarding.php">Advanced</a>';
-	echo '<ul>';
-	if($port_forwarding) echo '<li class="nav-port-forwarding"><a role="menuitem"  href="port_forwarding.php">Port Forwarding</a></li>';
-	if($hs_port_forwarding) echo '<li class="nav-HS-port-forwarding"><a role="menuitem"  href="hs_port_forwarding.php">HS Port Forwarding</a></li>';
-	if($port_triggering) echo '<li class="nav-port-triggering"><a role="menuitem"  href="port_triggering.php">Port Triggering</a></li>';
-	if($remote_management) echo '<li class="nav-remote-management"><a role="menuitem"  href="remote_management.php">Remote Management</a></li>';
-	echo '<!--li class="nav-qos1"><a role="menuitem"  href="qos1.php">QoS</a></li-->';
-	if($dmz) echo '<li class="nav-dmz"><a role="menuitem"  href="dmz.php">DMZ</a></li>';
-	if($nat) echo '<li class="nav-nat"><a role="menuitem"  href="nat.php">NAT</a></li>';
-	if($routing) echo '<li class="nav-routing"><a role="menuitem"  href="routing.php">Routing</a></li>';
-	if($dynamic_dns) echo '<li class="nav-Dynamic-dns"><a role="menuitem"  href="dynamic_dns.php">Dynamic DNS</a></li>';
-	echo '<li class="nav-device-discovery"><a role="menuitem"  href="device_discovery.php">Device Discovery</a></li>';
-	if($radius_servers) echo '<li class="nav-radius-servers"><a role="menuitem"  href="radius_servers.php">Radius Servers</a></li>';
-	if($media_sharing) {
-		echo '<li class="nav-media-sharing"><a role="menuitem"  title="click to toggle sub menu"  href="javascript:;">Media Sharing</a>';
+if($advanced_tab) {
+	echo '<li class="nav-advanced">';
+		echo '<a role="menuitem"  title="click to toggle sub menu"  class="top-level" href="port_forwarding.php">Advanced</a>';
 		echo '<ul>';
-			echo '<li class="nav-dlna"><a role="menuitem"  title="click to toggle sub menu"  href="javascript:;">DLNA</a>';
-				echo '<ul>';
-					echo '<li class="nav-dlna-settings"><a role="menuitem"  href="dlna_settings.php">DLNA Settings</a></li>';
-					echo '<li class="nav-dlna-media-servers"><a role="menuitem"  href="digital_media_servers.php">Digital Media Servers</a></li>';
-					echo '<li class="nav-dlna-media-players"><a role="menuitem"  href="digital_media_players.php">Digital Media Players</a></li>';
-					echo '<li class="nav-dlna-media-index"><a role="menuitem"  href="digital_media_index.php">Media Index</a></li>';
-				echo '</ul>';
+		if($port_forwarding) echo '<li class="nav-port-forwarding"><a role="menuitem"  href="port_forwarding.php">Port Forwarding</a></li>';
+		if($hs_port_forwarding) echo '<li class="nav-HS-port-forwarding"><a role="menuitem"  href="hs_port_forwarding.php">HS Port Forwarding</a></li>';
+		if($port_triggering) echo '<li class="nav-port-triggering"><a role="menuitem"  href="port_triggering.php">Port Triggering</a></li>';
+		if($remote_management) echo '<li class="nav-remote-management"><a role="menuitem"  href="remote_management.php">Remote Management</a></li>';
+		echo '<!--li class="nav-qos1"><a role="menuitem"  href="qos1.php">QoS</a></li-->';
+		if($dmz) echo '<li class="nav-dmz"><a role="menuitem"  href="dmz.php">DMZ</a></li>';
+		if($nat) echo '<li class="nav-nat"><a role="menuitem"  href="nat.php">NAT</a></li>';
+		if($routing) echo '<li class="nav-routing"><a role="menuitem"  href="routing.php">Routing</a></li>';
+		if($dynamic_dns) echo '<li class="nav-Dynamic-dns"><a role="menuitem"  href="dynamic_dns.php">Dynamic DNS</a></li>';
+		echo '<li class="nav-device-discovery"><a role="menuitem"  href="device_discovery.php">Device Discovery</a></li>';
+		if($radius_servers) echo '<li class="nav-radius-servers"><a role="menuitem"  href="radius_servers.php">Radius Servers</a></li>';
+		if($media_sharing) {
+			echo '<li class="nav-media-sharing"><a role="menuitem"  title="click to toggle sub menu"  href="javascript:;">Media Sharing</a>';
+			echo '<ul>';
+				echo '<li class="nav-dlna"><a role="menuitem"  title="click to toggle sub menu"  href="javascript:;">DLNA</a>';
+					echo '<ul>';
+						echo '<li class="nav-dlna-settings"><a role="menuitem"  href="dlna_settings.php">DLNA Settings</a></li>';
+						echo '<li class="nav-dlna-media-servers"><a role="menuitem"  href="digital_media_servers.php">Digital Media Servers</a></li>';
+						echo '<li class="nav-dlna-media-players"><a role="menuitem"  href="digital_media_players.php">Digital Media Players</a></li>';
+						echo '<li class="nav-dlna-media-index"><a role="menuitem"  href="digital_media_index.php">Media Index</a></li>';
+					echo '</ul>';
+				echo '</li>';
+			echo '</ul>';
 			echo '</li>';
+		}
+		if($file_sharing) echo '<li class="nav-file-sharing"><a role="menuitem"  href="samba_server_config.php">File Sharing</a></li>';
+		if($local_users)  echo '<li class="nav-local-users"><a role="menuitem"  href="local_users.php">Local Users</a></li>';
 		echo '</ul>';
-		echo '</li>';
-	}
-	if($file_sharing) echo '<li class="nav-file-sharing"><a role="menuitem"  href="samba_server_config.php">File Sharing</a></li>';
-	if($local_users)  echo '<li class="nav-local-users"><a role="menuitem"  href="local_users.php">Local Users</a></li>';
-	echo '</ul>';
-echo '</li>';
+	echo '</li>';
+}
 echo '<li class="nav-troubleshooting">';
 	echo '<a role="menuitem"  title="click to toggle sub menu"  class="top-level" href="troubleshooting_logs.php">Troubleshooting</a>';
 	echo '<ul>';
