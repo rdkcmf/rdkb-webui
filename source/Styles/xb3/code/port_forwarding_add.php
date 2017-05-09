@@ -521,8 +521,10 @@ $('#device').click(function(){
 					if ($j === '') break;
 					$val = getStr("Device.Hosts.Host.$hostsInstanceArr[$i].IPv6Address.$j.IPAddress");
 					if (stripos($val, "fe80:") === 0) continue;
-					$IPv6Addr = $val;
-					break;
+					if (stripos($val, "EMPTY") !== 0) {
+	 					$IPv6Addr = $val;
+	 					break;
+					}
 				}
 			}
 			if ($_DEBUG) {
