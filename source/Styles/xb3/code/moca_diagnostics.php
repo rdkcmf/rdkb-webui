@@ -26,6 +26,7 @@
 		"CurrentVersion" 	=> "Device.MoCA.Interface.1.CurrentVersion",
 		"HighestVersion" 	=> "Device.MoCA.Interface.1.HighestVersion",
 		"CurrentOperFreq" 	=> "Device.MoCA.Interface.1.CurrentOperFreq",
+		"moca_NodeID" 		=> "Device.MoCA.Interface.1.NodeID",
 		"BeaconPowerLimit" 	=> "Device.MoCA.Interface.1.BeaconPowerLimit",
 		"LinkUpTime" 		=> "Device.MoCA.Interface.1.LinkUpTime",
 		"NodeTabooMask" 	=> "Device.MoCA.Interface.1.NodeTabooMask",
@@ -43,6 +44,7 @@
 	$MACAddress			= $MoCA_value['MACAddress'];
 	$CurrentVersion		= $MoCA_value['CurrentVersion'];
 	$HighestVersion		= $MoCA_value['HighestVersion'];
+	$moca_NodeID		= $MoCA_value['moca_NodeID'];
 	$CurrentOperFreq	= $MoCA_value['CurrentOperFreq'];
 	$BeaconPowerLimit	= $MoCA_value['BeaconPowerLimit'];
 	$LinkUpTime			= $MoCA_value['LinkUpTime'];
@@ -57,15 +59,24 @@
 	$PreferredNC		= ($MoCA_value['PreferredNC'] == 'true') ? 'Yes' : 'No';
 	$rootObjName	= "Device.MoCA.Interface.1.AssociatedDevice.";
 	$paramNameArray	= array("Device.MoCA.Interface.1.AssociatedDevice.");
-	$mapping_array	= array("MACAddress", "NodeID", "PreferredNC", "Active", "TxPowerControlReduction", "RxPowerLevel");
+	$mapping_array	= array("MACAddress", "NodeID", "PreferredNC", "TxPowerControlReduction", "RxPowerLevel");
 	$moca_AssocDev	= getParaValues($rootObjName, $paramNameArray, $mapping_array);
 	$PreferredNC_data = 'NA';
 	$BackupNC_data = 'NA';
+	$moca_AssocDev['GW']['MACAddress'] 	= $MACAddress;
+	$moca_AssocDev['GW']['NodeID'] 		= $moca_NodeID;
+	$moca_AssocDev['GW']['PreferredNC'] = $MoCA_value['PreferredNC'];
 	foreach ($moca_AssocDev as $key => $value) {
 		//MoCA MAC address and Node ID of the Active Network Controller
-		if($value['PreferredNC'] == 'true') $PreferredNC_data = 'MAC: '.strtoupper($value['MACAddress']).', Node ID: '.$value['NodeID'];
+		if($value['PreferredNC'] == 'true' && $BackupNC != $value['NodeID'])
+			$PreferredNC_data = 'MAC: '.strtoupper($value['MACAddress']).', Node ID: '.$value['NodeID'];
 		//MoCA MAC address and Node ID of the Backup Network Controller
-		if($BackupNC == $value['NodeID']) $BackupNC_data = 'MAC: '.strtoupper($value['MACAddress']).', Node ID: '.$value['NodeID'];
+		if($BackupNC == $value['NodeID'])
+			$BackupNC_data = 'MAC: '.strtoupper($value['MACAddress']).', Node ID: '.$value['NodeID'];
+	}
+	if($MoCA_value['PreferredNC'] == 'true' && sizeof($moca_AssocDev) ==1){
+		$PreferredNC_data = 'MAC: '.strtoupper($MACAddress).', Node ID: '.$moca_NodeID;
+		$BackupNC_data = 'NA';
 	}
 $channel_array = array(
 	"1150" => "D1(1150 MHz)",
@@ -94,6 +105,40 @@ $channel_array = array(
 $(document).ready(function() {
 	comcast.page.init("Troubleshooting > MoCA Diagnostics", "nav-moca-diagnostics");
 	var network = null;
+	function update_NC_AssociatedDevices($data){
+		$AssociatedDevices = $data['AssociatedDevices'];
+		$MACAddress	= $AssociatedDevices['GW']['MACAddress'];
+		$BackupNC	= $AssociatedDevices['GW']['BackupNC'];
+		$('#moca_nodes').find("tr:gt(0)").remove();
+		$class = false;
+		$PreferredNC_data	= "NA";
+		$BackupNC_data		= "NA";
+		$.each($AssociatedDevices, function($key, $value) {
+			//MoCA MAC address and Node ID of the Active Network Controller
+			if($value['PreferredNC'] == 'true' && $BackupNC != $value['NodeID'])
+				$PreferredNC_data = 'MAC: '+$value['MACAddress'].toUpperCase()+', Node ID: '+$value['NodeID'];
+			//MoCA MAC address and Node ID of the Backup Network Controller
+			if($BackupNC == $value['NodeID'])
+				$BackupNC_data = 'MAC: '+$value['MACAddress'].toUpperCase()+', Node ID: '+$value['NodeID'];
+			//MoCA Nodes Table
+			$network_controller = ($value['PreferredNC']=='true')?'Yes':'No';
+			$odd = ($class)?"":" class='odd'";
+			$class = !$class;
+			$transmit_power_level	= ($value['TxPowerControlReduction'] != null)?$value['TxPowerControlReduction']:"NA";
+			$receive_power_level	= ($value['RxPowerLevel'] != null)?$value['RxPowerLevel']:"NA";
+			//create row
+			row = "<tr "+$odd+">";
+				row += "<td headers='node-id'>"+$value['NodeID']+"</td>";
+				row += "<td headers='mac-address'>"+$value['MACAddress'].toUpperCase()+"</td>";
+				row += "<td headers='network-controller'>"+$network_controller+"</td>";
+				row += "<td headers='transmit-power-level'>"+$transmit_power_level+"</td>";
+				row += "<td headers='receive-power-level'>"+$receive_power_level+"</td>";
+			row += "</tr>";
+			$('#moca_nodes').append(row);
+		});
+		$('#active_NC').text($PreferredNC_data);
+		$('#backup_NC').text($BackupNC_data);
+	}
 	function moca_bonded_paths($MeshPHYTxRate, $Tx_HighestVersion, $Rx_HighestVersion){
 		if($Tx_HighestVersion == 20 && $Rx_HighestVersion == 20)
 			$HighestVersion = 20;
@@ -101,7 +146,7 @@ $(document).ready(function() {
 			$HighestVersion = 11;
 		else $HighestVersion = '';
 		//MoCA 1.1 Paths >=200mbps is marked in green, paths >=180mbps but <200mbps are marked in orange, and paths <180mbps are marked in red.
-		//MoCA 2.0 paths >=370mbps are marked in green, paths >=330mbps but <370mbps are marked in orange, and paths < 330mbps are marked in red .
+		//MoCA 2.0 paths >=370mbps are marked in green, paths >=330mbps but <370mbps are marked in orange, and paths < 330mbps are marked in red.
 		//MoCA 2.0 bonded paths >= 740mbps are marked in green, paths >=660 but <740mbps are marked in orange, and paths < 660 are marked in red.
 		// HighestVersion can be 20[MoCA 2.0] or 11[MoCA 1.1], MoCA 2.0 bonded is not supported
 		/*if ($MeshPHYTxRate >= 740) return 'green';
@@ -124,16 +169,15 @@ $(document).ready(function() {
 		var nodes = new Array();
 		var edges = new Array();
 		// create an array with nodes & edges
+		for (var $k in $data_MoCA['Mesh_HighestVersion']) {
+			nodes.push({id: $k, label: "Node ID: "+$k, shape: 'box',});
+		}
 		for (var $key in $data_MoCA) {
-			if($key != 'Mesh_HighestVersion')
-			for (var $ke in $data_MoCA[$key]) {
-				nodes.push({id: $ke, label: "Node ID: "+$key, shape: 'box',});
-				for (var $k in $data_MoCA[$key][$ke]) {
-					$TxID = $ke;
-					$RxID = $data_MoCA[$key][$ke][$k]['MeshRxNodeId'];
-					var $path_color = moca_bonded_paths($data_MoCA[$key][$ke][$k]['MeshPHYTxRate'], $data_MoCA['Mesh_HighestVersion'][$TxID], $data_MoCA['Mesh_HighestVersion'][$RxID]);
-					edges.push({from: $ke, to: $data_MoCA[$key][$ke][$k]['MeshRxNodeId'], label: $data_MoCA[$key][$ke][$k]['MeshPHYTxRate'], color:{color: $path_color, highlight: $path_color}});
-				}
+			if($key != 'Mesh_HighestVersion' && $key != 'AssociatedDevices' && $key != 'MeshTableEntries') {
+				$TxID = $data_MoCA[$key][0]['MeshTxNodeId'];
+				$RxID = $data_MoCA[$key][0]['MeshRxNodeId'];
+				var $path_color = moca_bonded_paths($data_MoCA[$key][0]['MeshPHYTxRate'], $data_MoCA['Mesh_HighestVersion'][$TxID], $data_MoCA['Mesh_HighestVersion'][$RxID]);
+				edges.push({from: $TxID, to: $RxID, label: $data_MoCA[$key][0]['MeshPHYTxRate'], color:{color: $path_color, highlight: $path_color}});
 			}
 		}
 		var data = {
@@ -149,6 +193,7 @@ $(document).ready(function() {
 		}
 	}
 	function draw($data_MoCA) {
+		update_NC_AssociatedDevices($data_MoCA);
 		destroy();
 		var data_network = create_nodes_edges($data_MoCA);
 		var container = document.getElementById('network_diagram');
@@ -191,7 +236,7 @@ $(document).ready(function() {
 			url: "actionHandler/ajax_moca_diagnostics.php",
 			success: function(result) {
 				jHide();
-				if(result[0]['MeshTxNodeTableEntries']=='0') jAlert("Currently MoCA devices are not connected to the Gateway.");
+				if(result['MeshTableEntries']=='0') jAlert("Currently MoCA devices are not connected to the Gateway.");
 				else draw(result);
 			},
 			failure: function() {
@@ -242,11 +287,11 @@ $(document).ready(function() {
 			</div>
 			<div class="form-row odd">
 				<label>Active Network Controller:</label>
-				<span class="readonlyValue"><?php echo $PreferredNC_data; ?></span>
+				<span class="readonlyValue" id="active_NC"><?php echo $PreferredNC_data; ?></span>
 			</div>
 			<div class="form-row">
 				<label>Backup Network Controller:</label>
-				<span class="readonlyValue"><?php echo $BackupNC_data; ?></span>
+				<span class="readonlyValue" id="backup_NC"><?php echo $BackupNC_data; ?></span>
 			</div>
 			<div class="form-row odd">
 				<label>Beacon Frequency:</label>
@@ -302,7 +347,7 @@ $(document).ready(function() {
 	</form>
 	<div id='moca-online' class="module data">
 		<h2>MoCA Nodes</h2>
-		<table class="data"  summary="This table displays Online Devices connected to priviate network">
+		<table class="data" id="moca_nodes" summary="This table displays Online Devices connected to MoCA network">
 			<tr>
 				<th id="node-id">Node ID</th>
 				<th id="mac-address">MoCA MAC Address</th>
@@ -316,13 +361,15 @@ $(document).ready(function() {
 					$network_controller = ($value['PreferredNC']=='true')?'Yes':'No';
 					$odd = ($class)?"":" class='odd'";
 					$class = !$class;
+					$transmit_power_level	= (isset($value['TxPowerControlReduction']))?$value['TxPowerControlReduction']:"NA";
+					$receive_power_level	= (isset($value['RxPowerLevel']))?$value['RxPowerLevel']:"NA";
 					echo "
 						<tr $odd>
 							<td headers='node-id'>".$value['NodeID']."</td>
 							<td headers='mac-address'>".strtoupper($value['MACAddress'])."</td>
 							<td headers='network-controller'>".$network_controller."</td>
-							<td headers='transmit-power-level'>".$value['TxPowerControlReduction']."</td>
-							<td headers='receive-power-level'>".$value['RxPowerLevel']."</td>
+							<td headers='transmit-power-level'>".$transmit_power_level."</td>
+							<td headers='receive-power-level'>".$receive_power_level."</td>
 						</tr>
 					";
 				}

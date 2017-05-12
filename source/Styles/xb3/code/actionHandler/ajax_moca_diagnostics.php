@@ -21,40 +21,51 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-$MeshTxNodeTableEntries	= getStr("Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTable.MeshTxNodeTableNumberOfEntries");
-if($MeshTxNodeTableEntries != '0'){
+$MeshTableEntries	= getStr("Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTableNumberOfEntries");
+if($MeshTableEntries != '0'){
 	/*--
 	AssociatedDeviceNumberOfEntries is the number of other MoCA nodes in the network (not including the XB3).
-	MeshTxNodeTableNumberOfEntries is the total number of MoCA nodes in the network (including the XB3 itself).
+	MeshTableNumberOfEntries is the total number of MoCA nodes in the network (including the XB3 itself).
 	The MeshTable has TxRates from each node to every other node, 
 	whereas Device.MoCA.Interface.1.AssociatedDevice only has information about the other nodes in the network.
 	*/
-	$MeshTxNodeArray = array();
-	for ($i=1; $i <= $MeshTxNodeTableEntries; $i++) {
-		$rootObjName	= "Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTable.MeshTxNodeTable.$i.MeshRxNodeTable.";
-		$paramNameArray	= array("Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTable.MeshTxNodeTable.$i.MeshRxNodeTable.");
-		$mapping_array	= array("MeshRxNodeId", "MeshPHYTxRate");
-		$MeshTxNodes	= getParaValues($rootObjName, $paramNameArray, $mapping_array);
-		array_push($MeshTxNodeArray, array(getStr("Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTable.MeshTxNodeTable.$i.MeshTxNodeId") => $MeshTxNodes));
+	//MoCA Nodes Table
+	$MeshNodeArray = array();
+	for ($i=1; $i <= $MeshTableEntries; $i++) {
+		$rootObjName	= "Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTable.$i.";
+		$paramNameArray	= array("Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTable.$i.");
+		$mapping_array	= array("MeshTxNodeId", "MeshRxNodeId", "MeshPHYTxRate");
+		$MeshNodes	= getParaValues($rootObjName, $paramNameArray, $mapping_array);
+		array_push($MeshNodeArray, $MeshNodes);
 	}
+	//for AssociatedDevices
 	$rootObjName	= "Device.MoCA.Interface.1.AssociatedDevice.";
 	$paramNameArray	= array("Device.MoCA.Interface.1.AssociatedDevice.");
-	$mapping_array	= array("NodeID", "HighestVersion");
-	$HighestVersion	= getParaValues($rootObjName, $paramNameArray, $mapping_array);
-	//For the XB3
+	$mapping_array	= array("MACAddress", "NodeID", "HighestVersion", "PreferredNC", "TxPowerControlReduction", "RxPowerLevel");
+	$AssociatedDevices	= getParaValues($rootObjName, $paramNameArray, $mapping_array);
+	//for Modem NC
+	$MACAddress_Modem	= getStr("Device.MoCA.Interface.1.MACAddress");
+	$PreferredNC_Modem	= getStr("Device.MoCA.Interface.1.PreferredNC");
+	$BackupNC_Modem		= getStr("Device.MoCA.Interface.1.BackupNC");
 	$HighestVersion_Modem = getStr("Device.MoCA.Interface.1.HighestVersion");
 	$HighestVersion_Modem = str_replace('.', '', $HighestVersion_Modem);
-	$NodeID_Modem = getStr("Device.MoCA.Interface.1.NodeID");
-	foreach ($HighestVersion as $key => $value) {
+	$NodeID_Modem 	= getStr("Device.MoCA.Interface.1.NodeID");
+	foreach ($AssociatedDevices as $key => $value) {
 		$Mesh_HighestVersion[$value["NodeID"]] = $value["HighestVersion"];
 	}
 	$Mesh_HighestVersion[$NodeID_Modem] = $HighestVersion_Modem;
-	$MeshTxNodeArray['Mesh_HighestVersion'] = $Mesh_HighestVersion;
+	$MeshNodeArray['Mesh_HighestVersion'] = $Mesh_HighestVersion;
+	$AssociatedDevices['GW']['MACAddress']		= $MACAddress_Modem;
+	$AssociatedDevices['GW']['PreferredNC']		= $PreferredNC_Modem;
+	$AssociatedDevices['GW']['BackupNC']		= $BackupNC_Modem;
+	$AssociatedDevices['GW']['NodeID']			= $NodeID_Modem;
+	$MeshNodeArray['AssociatedDevices'] = $AssociatedDevices;
+	$MeshNodeArray['MeshTableEntries'] = $MeshTableEntries;
 }
 else {
-	$MeshTxNodeArray = array();
-	array_push($MeshTxNodeArray, array('MeshTxNodeTableEntries' => '0'));
+	$MeshNodeArray = array();
+	$MeshNodeArray['MeshTableEntries'] = '0';
 }
 header("Content-Type: application/json");
-echo htmlspecialchars(json_encode($MeshTxNodeArray), ENT_NOQUOTES, 'UTF-8');
+echo htmlspecialchars(json_encode($MeshNodeArray), ENT_NOQUOTES, 'UTF-8');
 ?>
