@@ -35,6 +35,8 @@ restore ()
 		#my_log(LOG_ERR, "Failed writing back config file");
 	fi
     rm /nvram/db_version
+	syscfg set restore_reboot true
+	touch /nvram/restore_reboot
 	echo "CONF_RECOVER_STATUS_NEED_REBOOT" > /tmp/confPhp.status
 }  
 
