@@ -84,6 +84,10 @@ $defaultKeyPassphrase	= ($id == 3)?"":$wifi_value['DefaultKeyPassphrase'];
 $DFS_Support1		= $wifi_value['DFS_Support1'];
 $DFS_Enable1		= $wifi_value['DFS_Enable1'];
 $DFS_Support1 = "false" ; //Remove/disable DFS channels, DFS_Support1 1-supported 0-not supported
+$Mesh_Enable 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.Enable");
+$Mesh_State 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.State");
+$Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')?'true':'false';
+if($id != 1 && $id != 2) $Mesh_Mode = 'false';
 /*- In bridge mode don't show 'Mac filter settings ' -*/
 if(strstr($_SESSION["lanMode"], "bridge-static") ) {
 	if($_SESSION["loginuser"] != "mso")
@@ -172,6 +176,11 @@ else{
 <script type="text/javascript" src="./cmn/js/lib/jquery.alerts.progress.js"></script>
 <script type="text/javascript">
 function showDialog() {
+	$Mesh_Mode = '<?php echo $Mesh_Mode; ?>';
+	if($Mesh_Mode == 'true'){
+		$("#pop_dialog").find("input[value='None']").prop("disabled", true);
+		$("#pop_dialog").find("input[value='None']").next().css('color', 'grey');
+	}
 	$("#pop_dialog").find("input[value^='WEP']").nextUntil("input").toggle( "ac" == $("#wireless_mode").val() );
 	$("#pop_dialog").find("input[value^='WEP']").toggle( "ac" == $("#wireless_mode").val() );
 	$.virtualDialog({
@@ -228,6 +237,7 @@ function showDialog() {
 	var fromOther;
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > Wireless > Edit <?php echo $radio_band; ?> GHz", "nav-wifi-config");
+	$Mesh_Mode = '<?php echo $Mesh_Mode; ?>';
 	$("#wireless_network_switch").radioswitch({
 		id: "wireless-network-switch",
 		radio_name: "wireless_network",
@@ -320,7 +330,7 @@ $(document).ready(function() {
 			'<input type="password" size="23" id="network_password" name="network_password" class="text" value="" />';
 			$("#network_password").val(pass_val);
 		}
-		if ("None" == $("#security").val()) {
+		if ("None" == $("#security").val() || '<?php echo $Mesh_Mode; ?>' == 'true') {
 			$("#network_password").prop("disabled", true);
 		}
 		else {
@@ -602,7 +612,14 @@ wpa2psk ==> 8 to 63 Ascii characters
 		submitHandler:function(form){
 			click_save();
 		}
-    });	
+    });
+	//for Mesh WiFi integration
+	if($Mesh_Mode == 'true'){
+		//disable >> Channel Selection:, Channel:, Channel Bandwidth:
+		$('#channel_automatic, #channel_manual, #channel_number, input[name=channel_bandwidth]').prop("disabled", true);
+		//disable >> Network Name (SSID):, Network Password:
+		$('#network_name, #network_password').prop("disabled", true);
+	}
 });
 function init_form()
 {

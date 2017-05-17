@@ -22,6 +22,7 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
+$Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')? true : false;
 // if both the LowerLayers radios are down ignore WPS options
 $Radio_1_Enable = getStr("Device.WiFi.Radio.1.Enable");
 $Radio_2_Enable = getStr("Device.WiFi.Radio.2.Enable");
@@ -106,7 +107,7 @@ else
 			{
 				if(preg_match('/^100$|^75$|^50$|^25$|^12$/', $arConfig['transmit_power']) == 1){
 					setStr("Device.WiFi.Radio.$i.TransmitPower", $arConfig['transmit_power'], false);
-					setStr("Device.WiFi.Radio.$i.AutoChannelEnable", $arConfig['channel_automatic'], false);
+					if(!$Mesh_Mode) setStr("Device.WiFi.Radio.$i.AutoChannelEnable", $arConfig['channel_automatic'], false);
 				}
 			}
 			else if ("save_advance" == $arConfig['sub_target'])
@@ -118,7 +119,7 @@ else
 				if($validation){
 					setStr("Device.WiFi.Radio.$i.X_CISCO_COM_CTSProtectionMode", $arConfig['BG_protect_mode'], false);
 					setStr("Device.WiFi.Radio.$i.X_COMCAST_COM_IGMPSnoopingEnable", $arConfig['IGMP_Snooping'], false);
-					setStr("Device.WiFi.Radio.$i.OperatingChannelBandwidth", $arConfig['channel_bandwidth'], false);
+					if(!$Mesh_Mode) setStr("Device.WiFi.Radio.$i.OperatingChannelBandwidth", $arConfig['channel_bandwidth'], false);
 					setStr("Device.WiFi.Radio.$i.GuardInterval", $arConfig['guard_interval'], false);
 					setStr("Device.WiFi.Radio.$i.X_CISCO_COM_ReverseDirectionGrant", $arConfig['reverse_enabled'], false);
 					setStr("Device.WiFi.Radio.$i.X_CISCO_COM_AggregationMSDU", $arConfig['MSDU_enabled'], false);
@@ -154,7 +155,7 @@ else
 				setStr("Device.WiFi.Radio.$i.X_CISCO_COM_11nGreenfieldEnabled", $arConfig['operation_mode'], false);
 				//primary channel and 2nd channel must set together
 				if ("false"==$arConfig['channel_automatic']){
-					setStr("Device.WiFi.Radio.$i.Channel", $arConfig['channel_number'], false);
+					if(!$Mesh_Mode) setStr("Device.WiFi.Radio.$i.Channel", $arConfig['channel_number'], false);
 				}
 				if (("2" != $i) && ("20MHz" != $arConfig['channel_bandwidth'])){
 					setStr("Device.WiFi.Radio.$i.ExtensionChannel", $arConfig['ext_channel'], false);	

@@ -13,6 +13,9 @@
 		if (!($_GET['mac_ssid'] == 3 || $_GET['mac_ssid'] == 5)) die();
 ?>
 <?php
+$Mesh_Enable 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.Enable");
+$Mesh_State 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.State");
+$Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')?'true':'false';
 /*********************get WiFi parameters***************************/
 $wifi_param = array(
 	"feq_band" 			=> "Device.WiFi.Radio.1.OperatingFrequencyBand",
@@ -323,6 +326,7 @@ var G_wps_enabled	= <?php echo ($wps_enabled === "true" ? "true" : "false"); ?>;
 var G_wps_method	= "<?php echo $wps_method; ?>";
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > WiFi", "nav-wifi-config");
+    $Mesh_Mode = '<?php echo $Mesh_Mode; ?>';
     var isBridge = "<?php echo $_SESSION["lanMode"]; ?>";
     //Disable all the MAC filter options in user admin mode if bridge mode is enabled
     if (isBridge == 'bridge-static') {       
@@ -762,6 +766,11 @@ $(document).ready(function() {
 	        $('.band_steering .btn').click(function(e) {
 	            e.preventDefault();
 	        });
+	}
+	//for Mesh WiFi integration
+	if($Mesh_Mode == 'true'){
+		//disable >> Channel Selection:, Channel:, Channel Bandwidth:
+		$('#channel_automatic, #channel_manual, #channel_automatic1, #channel_manual1, #channel_number, #channel_number1, #auto_channel_number, #auto_channel_number1, input[name=channel_bandwidth], input[name=channel_bandwidth1]').prop("disabled", true);
 	}
 });
 function set_config(jsConfig)

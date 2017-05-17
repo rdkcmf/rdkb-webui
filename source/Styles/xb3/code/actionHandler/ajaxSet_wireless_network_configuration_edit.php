@@ -29,6 +29,10 @@ $thisUser = $arConfig['thisUser'];
 /*********************************************************************************************/
 $i = $arConfig['ssid_number'];
 $r = (2 - intval($i)%2);	//1,3,5,7 == 1(2.4G); 2,4,6,8 == 2(5G)
+$Mesh_Enable 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.Enable");
+$Mesh_State 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.State");
+$Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')? true : false;
+if($i != 1 && $i != 2) $Mesh_Mode = false;
 // this method for only restart a certain SSID
 function MiniApplySSID($ssid) {
 	$apply_id = (1 << intval($ssid)-1);
@@ -115,15 +119,17 @@ if ($i == 1 || $i == 2 || (($_SESSION["loginuser"] == "mso") && ($i == 3 || $i =
 				}
 				// User "mso" have another page to configure this
 				if ("mso" != $thisUser){
-					setStr("Device.WiFi.Radio.$i.OperatingChannelBandwidth", $arConfig['channel_bandwidth'], false);
+					if(!$Mesh_Mode) setStr("Device.WiFi.Radio.$i.OperatingChannelBandwidth", $arConfig['channel_bandwidth'], false);
 					setStr("Device.WiFi.Radio.$i.OperatingStandards", $arConfig['wireless_mode'], true);
-					setStr("Device.WiFi.Radio.$i.AutoChannelEnable", $arConfig['channel_automatic'], true);
-					if ("false"==$arConfig['channel_automatic']){
-						setStr("Device.WiFi.Radio.$i.Channel", $arConfig['channel_number'], true);
+					if(!$Mesh_Mode) {
+						setStr("Device.WiFi.Radio.$i.AutoChannelEnable", $arConfig['channel_automatic'], true);
+						if ("false"==$arConfig['channel_automatic']){
+							setStr("Device.WiFi.Radio.$i.Channel", $arConfig['channel_number'], true);
+						}
 					}
 				}
 				if ("None" == $arConfig['security']) {
-					setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $encrypt_mode, true);
+					if(!$Mesh_Mode) setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $encrypt_mode, true);
 				}
 				else if ("WEP_64" == $arConfig['security']) {
 					setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.1.WEPKey",  $arConfig['network_password'], false);
@@ -144,9 +150,9 @@ if ($i == 1 || $i == 2 || (($_SESSION["loginuser"] == "mso") && ($i == 3 || $i =
 					DmExtSetStrsWithRootObj("Device.WiFi.", true, array(
 						array("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", "string", $encrypt_mode), 
 						array("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_EncryptionMethod", "string", $encrypt_method)));
-					setStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_KeyPassphrase", $arConfig['network_password'], true);
+					if(!$Mesh_Mode) setStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_KeyPassphrase", $arConfig['network_password'], true);
 				}
-				setStr("Device.WiFi.SSID.$i.SSID", $arConfig['network_name'], true);
+				if(!$Mesh_Mode) setStr("Device.WiFi.SSID.$i.SSID", $arConfig['network_name'], true);
 				setStr("Device.WiFi.AccessPoint.$i.SSIDAdvertisementEnabled", $arConfig['broadcastSSID'], true);
 				if ("mso" == $thisUser){
 					// if ("false" == $arConfig['enableWMM']){
