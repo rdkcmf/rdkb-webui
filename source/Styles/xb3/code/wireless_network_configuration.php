@@ -381,7 +381,7 @@ $(document).ready(function() {
 		state: G_wps_method !== "PushButton" ? "on" : "off"
 	});
 	function disable_ssid_options(element, index){
-		$("#"+element+" tbody tr:nth-child("+index).addClass('disabled');		
+		$("#"+element+" tbody tr:nth-child("+index+")").addClass('disabled');
 		$("#"+element+" tbody tr:nth-child("+index+") td:nth-child(1) b font").css('color', 'grey');
 		$("#"+element+" tbody tr:nth-child("+index+") td:nth-child(5) a").addClass('disabled');
 		$("#"+element+" tbody tr:nth-child("+index+") .btn").click(function(e) {
