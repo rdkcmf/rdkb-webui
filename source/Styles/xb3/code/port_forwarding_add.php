@@ -363,7 +363,8 @@ $('#device').click(function(){
 					'<div style="position:relative; left:200px">' +
 					'<input id="close_btn" type="button" value="Close" />' +
 					'</div>' +
-				'</div>'
+				'</div>',
+		width: "550px",
 	});
 	$('#add_btn').click(function() {
 		var ipv4_addr = $('input[type="radio"]:checked').parent().parent().find("td:eq(1)").text().replace(/^\s+|\s+$/g, '');
@@ -374,10 +375,10 @@ $('#device').click(function(){
 		$("#server_ip_address_2").val(ipv4_arr[1]);
 		$("#server_ip_address_3").val(ipv4_arr[2]);
 		$("#server_ip_address_4").val(ipv4_arr[3]);
-		$("#ip6_address_r1").val(ipv6_arr[0]);
+		/*$("#ip6_address_r1").val(ipv6_arr[0]);
 		$("#ip6_address_r2").val(ipv6_arr[1]);
 		$("#ip6_address_r3").val(ipv6_arr[2]);
-		$("#ip6_address_r4").val(ipv6_arr[3]);
+		$("#ip6_address_r4").val(ipv6_arr[3]);*/
 		$("#ip6_address_r5").val(ipv6_arr[4]);
 		$("#ip6_address_r6").val(ipv6_arr[5]);
 		$("#ip6_address_r7").val(ipv6_arr[6]);
@@ -513,7 +514,7 @@ $('#device').click(function(){
 			$HostName  = getStr("Device.Hosts.Host.$hostsInstanceArr[$i].HostName");
 			$IPAddress = getStr("Device.Hosts.Host.$hostsInstanceArr[$i].IPAddress");
 			$Active    = getStr("Device.Hosts.Host.$hostsInstanceArr[$i].Active");
-			$IPv6Addr = "";
+			$IPv6Addr = "EMPTY";
 			$IPv6Num = getStr("Device.Hosts.Host.$hostsInstanceArr[$i].IPv6AddressNumberOfEntries");
 			if (((int)$IPv6Num) > 0) {
 				$ids = explode(",", getInstanceIds("Device.Hosts.Host.$hostsInstanceArr[$i].IPv6Address."));
