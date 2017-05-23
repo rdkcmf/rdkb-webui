@@ -71,7 +71,54 @@ $(document).ready(function() {
     	$('.div-bridge').remove();
     }*/
 	<?php $bridge_mode = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode"); ?>
-		$("#IGMP_snooping_switch").change(function(){
+	$("#bridge_switch").radioswitch({
+		id: "at-a-glance-switch",
+		radio_name: "at_a_glance",
+		id_on: "at_a_glance_enabled",
+		id_off: "at_a_glance_disabled",
+		title_on: "Enable bridge mode",
+		title_off: "Disable bridge mode",
+		state: "<?php echo ($bridge_mode != 'router' ? "on" : "off"); ?>"
+	});
+	function changeBridge(isBridgeModelEnable) {
+		var cnt = 90;
+		jProgress('Bridge Mode changes will be fully applied in <b id="cnt">' + cnt + '</b> seconds, please be patient...', 600);
+		$.ajax({
+		type:"POST",
+		url:"actionHandler/ajax_at_a_glance.php",
+		data:{Bridge:"true",isBridgeModel:isBridgeModelEnable},
+		success:function(){
+				// don't do jHide, with latest firmware, switch bridge will return before httpd restart, GUI reload at return will cause 500 error. So wait until http restored. 
+				var hCnt = setInterval(function(){
+					$("#cnt").text(cnt--);
+					if (cnt < 0) {clearInterval(hCnt); location.reload();}
+				}, 1000);
+			}
+		});
+	}
+	$("#bridge_switch").change(function(){
+		var isBridgeModelEnable = $("#bridge_switch").radioswitch("getState").on ? "Enabled" : "Disabled";
+		//the 200ms timer is only used to fix confirm dialogue not shown issue on IE
+		if ('Enabled' == isBridgeModelEnable) {
+			setTimeout(function(){
+				jConfirm(
+				"Enabling Bridge Mode will disable Router functionality of gateway and turn off the private Wi-Fi network. Are you sure you want to continue?"
+				,"WARNING:"
+				,function(ret) {
+					if(ret) {
+						changeBridge(isBridgeModelEnable);
+					} //end of if ret
+					else {
+						$("#bridge_switch").radioswitch("doSwitch", "off");
+					}
+				});//end of jConfirm
+			}, 200);
+		} //end of if Enabled
+		else {
+			changeBridge(isBridgeModelEnable);
+		}
+	});
+	$("#IGMP_snooping_switch").change(function(){
 		var IGMPEnable=$("input[name='IGMP_snooping']:radio:checked").val();
 		jProgress('This may take several seconds', 60);
 		$.ajax({
@@ -191,7 +238,12 @@ function popUp(URL) {
 		echo '</div>';
 	}
 	?>
-
+		<div class="module div-bridge">
+			<div class="select-row">
+				<span class="readonlyLabel label">Bridge Mode:</span>
+				<span id="bridge_switch"></span>
+			</div>
+		</div>
 	<div class="module forms">
 		<input type="button" onClick="javascript:popUp('at_downloading.php')" class="btn" value="Save Current Configuration"/>
 		<input type="button" onClick="javascript:popUp('at_mycomputer.php')" class="btn" value="Restore Saved Configuration"/>
