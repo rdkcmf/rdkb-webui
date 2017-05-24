@@ -88,9 +88,9 @@ $(document).ready(function() {
 		}
 	}
 	$ids = array_filter(explode(",",getInstanceIds("Device.Ethernet.Interface.")));
-	if ($_DEBUG) {
+	/*if ($_DEBUG) {
 		$ids = array("1", "2", "3", "4");
-	}
+	}*/
 	foreach ($ethernetParam as $id => $value)
 	{
 		if ("true" == $ethernetParam[$id]["Upstream"]){
