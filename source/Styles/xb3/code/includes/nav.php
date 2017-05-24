@@ -32,9 +32,9 @@ $password_change	= FALSE;  //for admin only
 $wizard        		= TRUE;
 $wifi_spec_analyzer	= TRUE;
 $advanced_tab		= TRUE;
-if ($_DEBUG) {
+/*if ($_DEBUG) {
 	$media_sharing = TRUE;
-}
+}*/
 /*
  * The difference between  bridge mode and router mode
  * In bridge mode, local ip config page, firewall page, parental control pages, 
