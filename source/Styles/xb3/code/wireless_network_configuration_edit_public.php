@@ -17,12 +17,12 @@ $rf		= (2 - intval($id)%2);	//1,3,5,7 == 1(2.4G); 2,4,6,8 == 2(5G)
 $hhs_enable 	= getStr("Device.DeviceInfo.X_COMCAST_COM_xfinitywifiEnable");
 $radio_freq = ($id%2)?"2.4":"5";
 if (("5"!=$id && "6"!=$id) || "true"!=$hhs_enable) {
-	if (!$_SESSION['_DEBUG'])
+	/*if (!$_SESSION['_DEBUG'])*/
 	echo '<script type="text/javascript">alert("HotSpot function is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
 	exit(0);
 }
 if ("false" == getStr("Device.WiFi.Radio.$rf.Enable")) {
-	if (!$_SESSION['_DEBUG'])
+	/*if (!$_SESSION['_DEBUG'])*/
 	echo '<script type="text/javascript">alert("Wi-Fi Radio is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
 	exit(0);
 }
@@ -80,7 +80,7 @@ $DHCPRemoteID 		= $GRE_Tunnel_value["DHCPRemoteID"];
 if ("false" == $wifi_value["Radio_".$rf."_Enable"]){
 	$radio_enable = "false";
 }
-if ($_SESSION['_DEBUG']){
+/*if ($_SESSION['_DEBUG']){
 	$radio_enable		= "true";
 	$network_name		= "xfinityWiFi";
 	$encrypt_mode		= "WPA2-Personal";
@@ -101,7 +101,7 @@ if ($_SESSION['_DEBUG']){
 	$ReconnectPrimary 		= "300";
 	$DHCPCircuitIDSSID 		= "true";
 	$DHCPRemoteID 			= "false";
-}
+}*/
 $RemoteEndpointsV4	= array();
 $RemoteEndpointsV6	= array();
 array_push($RemoteEndpointsV4, $PrimaryRemoteEndpoint);

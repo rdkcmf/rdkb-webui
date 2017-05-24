@@ -7,7 +7,7 @@
 <?php include('includes/nav.php'); ?>
 <?php
 if ("false" == getStr("Device.WiFi.Radio.1.Enable") && "false" == getStr("Device.WiFi.Radio.2.Enable")) {
-	if (!$_SESSION['_DEBUG'])
+	/*if (!$_SESSION['_DEBUG'])*/
 	echo '<script type="text/javascript">alert("Wi-Fi Radio is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
 	exit(0);
 }
@@ -69,13 +69,13 @@ $broadcastSSID_1 = $wifi_value['SSIDAdvert1'];
 $broadcastSSID_2 = $wifi_value['SSIDAdvert2'];
 if("false"==$broadcastSSID_1 && "false"==$broadcastSSID_2) $wps_config	= "false";
 // $wps_config = "true";
-if ($_DEBUG) {
+/*if ($_DEBUG) {
 	$wps_enabled = "false";
 	$wps_pin = "";
 	$wps_method = "PushButton";
 	$f_e_ssid = "1";
 	$wps_config = "false";
-}
+}*/
 ?>
 <script type="text/javascript">
 function validChecksum(PIN)
