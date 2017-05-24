@@ -7,9 +7,9 @@
 <?php include('includes/nav.php'); ?>
 <?php
 $isManageEnabled = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.Enable");
-if ($_DEBUG) {
+/*if ($_DEBUG) {
 	$isManageEnabled = "true";
-}
+}*/
 ?>
 <?php 
 	$ret = init_psmMode("Parental Control > Managed Sites", "nav-sites");
@@ -452,7 +452,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 			$k++;
 		}
 	}
-	if ($_DEBUG) {
+	/*if ($_DEBUG) {
 		$blockedSitesNums = 4;
 		$blockedSitesURL = array(
 			array("InstanceID"=>1, "RealID"=>"1", "Site"=>"www.baidu.com", "AlwaysBlock"=>"true", "StartTime"=>"8:00", "EndTime"=>"17:00", "BlockedDays"=>"Mon"),
@@ -462,7 +462,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 			array("InstanceID"=>3, "RealID"=>"3", "Site"=>"keyword1", "AlwaysBlock"=>"true", "StartTime"=>"8:00", "EndTime"=>"15:00", "BlockedDays"=>"Mon"),
 			array("InstanceID"=>4, "RealID"=>"4", "Site"=>"keyword2", "AlwaysBlock"=>"false", "StartTime"=>"8:00", "EndTime"=>"15:00", "BlockedDays"=>"Mon"),
 			);
-	}
+	}*/
 	$URLNums = sizeof($blockedSitesURL);
 	$KeywordNums = sizeof($blockedSitesKeyWord);
 	?>
@@ -587,13 +587,13 @@ $.validator.addMethod("no_space", function(value, element, param) {
 				}
 			}
 		}
-		if ($_DEBUG) {
+		/*if ($_DEBUG) {
 			$hostNums = 2;
 			$Host["0"] = array("HostName"=>"host1", "IPAddress"=>"1.1.1.1", "Trusted"=>false);
 			$Host["1"] = array("HostName"=>"host2", "IPAddress"=>"2.2.2.2", "Trusted"=>true);
 			$HostNameArr = array("host1", "host2");
 			$ipAddrArr = array("1.1.1.1", "2.2.2.2");
-		}
+		}*/
 		 ?>
 			<div class="module data">
 				<h2>Trusted Computers</h2>		
