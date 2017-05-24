@@ -7,9 +7,9 @@
 <?php include('includes/nav.php'); ?>
 <?php
 $PTEnable=getStr("Device.NAT.X_CISCO_COM_PortTriggers.Enable");
-if ($_DEBUG) {
+/*if ($_DEBUG) {
 	$PTEnable = "true";
-}
+}*/
 ?>
 <style>
 	td:not(.edit) {word-break: break-all;}

@@ -16,7 +16,7 @@ $LanSubnetMask	= getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.L
 $LanGwIP 		= getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
 $IPv6Prefix     = getStr("Device.IP.Interface.1.IPv6Prefix.1.Prefix");
 ("" == $enableDMZ) && ($enableDMZ = "false");
-if ($_SESSION['_DEBUG']){
+/*if ($_SESSION['_DEBUG']){
 	$enableDMZ 		= "true";
 	$host   		= "10.0.0.11";
 	$hostv6 		= "0::1";	
@@ -25,7 +25,7 @@ if ($_SESSION['_DEBUG']){
 	$LanGwIP 		= "10.0.0.1";
 	$LanSubnetMask 	= "255.255.255.0";
 	$IPv6Prefix 	= "2042:cafe:0:b::/64";
-}
+}*/
 $IPv6Prefix = substr($IPv6Prefix,0, strrpos($IPv6Prefix, "::"));
 // these means disable, MUST show empty on GUI!!!
 ("0.0.0.0" == $host)	&& ($host = "");

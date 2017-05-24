@@ -6,9 +6,9 @@
 <?php include('includes/utility.php'); ?>
 <?php 
 	$HPEnable = getStr("Device.NAT.X_Comcast_com_EnableHSPortMapping");
-	if ($_DEBUG) {
+	/*if ($_DEBUG) {
 		$HPEnable = 'true';
-	}
+	}*/
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -158,7 +158,7 @@ $(document).ready(function() {
 				$mapping_array  = array("LeaseDuration", "InternalPort", "Protocol", "Description",
 					                    "ExternalPort", "ExternalPortEndRange", "InternalClient", "Enable");
 				$resArray = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);				
-				if ($_DEBUG) {
+				/*if ($_DEBUG) {
 					$resArray = array(
 						array(
 							'Protocol' => 'TCP',
@@ -179,7 +179,7 @@ $(document).ready(function() {
 							'LeaseDuration' => 0,
 							),
 					 );
-				}
+				}*/
 				if(!empty($resArray)){
 					$iclass = ""; 
 					foreach ($resArray as $hspf_entry) {
