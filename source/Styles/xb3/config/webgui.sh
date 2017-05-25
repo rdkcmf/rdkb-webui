@@ -197,3 +197,4 @@ LD_LIBRARY_PATH=/fss/gw/usr/ccsp:$LD_LIBRARY_PATH lighttpd -f $LIGHTTPD_CONF
 
 echo "WEBGUI : Set event"
 sysevent set webserver started
+touch /tmp/webgui_initialized
