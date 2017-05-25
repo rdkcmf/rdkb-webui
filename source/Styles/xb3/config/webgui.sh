@@ -55,6 +55,11 @@ REVERT_FLAG="/nvram/reverted"
 LIGHTTPD_CONF="/var/lighttpd.conf"
 LIGHTTPD_DEF_CONF="/etc/lighttpd.conf"
 
+WEBGUI_INST=`ps -ef | grep webgui.sh | grep -v grep | grep -c webgui.sh`
+if [ $WEBGUI_INST -gt 0 ]; then
+	exit 1
+fi
+
 LIGHTTPD_PID=`pidof lighttpd`
 if [ "$LIGHTTPD_PID" != "" ]; then
 	/bin/kill $LIGHTTPD_PID
