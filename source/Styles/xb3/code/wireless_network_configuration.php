@@ -504,8 +504,8 @@ $(document).ready(function() {
 	if("<?php echo $RDG_Supported; ?>" == "false")	$('[name="Reverse_Direction_Grant"]').prop("disabled", true);
 	if("<?php echo $RDG_Supported1; ?>" == "false")	$('[name="Reverse_Direction_Grant1"]').prop("disabled", true);
 	//IEEE80211hSupported => X_COMCAST_COM_DFSEnable and TransmitPower
-	if("<?php echo $IEEE80211hSupport; ?>" == "false")	$('#transmit_power').prop("disabled", true);
-	if("<?php echo $IEEE80211hSupport1; ?>" == "false")	$('#transmit_power1').prop("disabled", true);
+	//if("<?php echo $IEEE80211hSupport; ?>" == "false")	$('#transmit_power').prop("disabled", true);
+	//if("<?php echo $IEEE80211hSupport1; ?>" == "false")	$('#transmit_power1').prop("disabled", true);
     $("[name='channel']").change(function() {
 		if($("#channel_automatic").is(":checked") || (MeshEnable=="true")) {
 			document.getElementById('channel_number').disabled = true;
