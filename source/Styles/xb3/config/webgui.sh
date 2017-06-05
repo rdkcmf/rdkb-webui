@@ -55,7 +55,7 @@ REVERT_FLAG="/nvram/reverted"
 LIGHTTPD_CONF="/var/lighttpd.conf"
 LIGHTTPD_DEF_CONF="/etc/lighttpd.conf"
 
-WEBGUI_INST=`ps -ef | grep webgui.sh | grep -v grep | grep -c webgui.sh`
+WEBGUI_INST=`ps | grep webgui.sh | grep -v grep | grep -c webgui.sh`
 if [ $WEBGUI_INST -gt 2 ]; then
 	echo "WEBGUI :Exiting,Another instance running"
 	exit 1
