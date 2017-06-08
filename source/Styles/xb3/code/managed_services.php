@@ -11,9 +11,9 @@
 ?>
 <?php
 $enableMS = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Enable");
-if ($_DEBUG) {
+/*if ($_DEBUG) {
 	$enableMS = "true";
-}
+}*/
 // $enableMS = "false";
 //add by shunjie
 ("" == $enableMS) && ($enableMS = "false");
@@ -311,13 +311,13 @@ $(document).ready(function() {
                     }
                 }
 			}
-			if ($_DEBUG) {
+			/*if ($_DEBUG) {
 				$hostNums = 2;
 				$Host["0"] = array("HostName"=>"host1", "IPAddress"=>"1.1.1.1", "Trusted"=>false);
 				$Host["1"] = array("HostName"=>"host2", "IPAddress"=>"2.2.2.2", "Trusted"=>true);
 				$HostNameArr = array("host1", "host2");
 				$ipAddrArr = array("1.1.1.1", "2.2.2.2");
-			}
+			}*/
 		 ?>
 			<div class="module data">
 				<h2>Trusted Computers</h2>

@@ -15,10 +15,10 @@ $CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
 <?php
 $enableMD = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Enable");
 $allowAll = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.AllowAll");
-if ($_DEBUG) {
+/*if ($_DEBUG) {
 	$enableMD = 'true';
 	$allowAll = 'true';
-}
+}*/
 //add by shunjie
 ("" == $enableMD) && ($enableMD = "false");
 ("" == $allowAll) && ($allowAll = "false");
