@@ -27,6 +27,7 @@ $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);
 $thisUser = $_SESSION["loginuser"];
 $validation = true;
+if ($_SESSION["lanMode"] != "router") $validation = false;
 if($validation) $validation = isValInArray($arConfig['moca_enable'], array('true', 'false'));
 if ($validation && "true" == $arConfig['moca_enable'] && "admin" != $thisUser){
 	if($validation) $validation = isValInArray($arConfig['scan_method'], array('true', 'false'));

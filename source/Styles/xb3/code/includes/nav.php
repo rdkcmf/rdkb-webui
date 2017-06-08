@@ -95,7 +95,7 @@ echo '<li class="nav-gateway">';
 			echo '<li class="nav-qos"><a role="menuitem"  href="qos.php">CallP/QoS</a></li>';
 			echo '<li class="nav-comcast-voice"><a role="menuitem"  href="voice_quality_metrics.php">VQM</a></li>';
 		}
-		if($MoCA) echo '<li class="nav-moca"><a role="menuitem"  href="moca.php">MoCA</a></li>';
+		echo '<li class="nav-moca"><a role="menuitem"  href="moca.php">MoCA</a></li>';
 		echo '</ul>';
 	echo '</li>';
 	/*if($firewall) echo '<li class="nav-firewall"><a role="menuitem"  href="firewall_settings.php">Firewall</a></li>';*/

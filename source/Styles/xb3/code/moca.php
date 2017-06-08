@@ -31,6 +31,7 @@
 	$nc_enable	= $MoCA_value['nc_enable'];
 	$privacy_enable	= $MoCA_value['privacy_enable'];
 	$net_password	= $MoCA_value['net_password'];
+	if ($_SESSION["lanMode"] != "router") $moca_enable = 'false';
 	//$qos_enable 	= "true";
 	// $taboo_enable	= getStr("Device.MoCA.Interface.1.X_CISCO_COM_EnableTabooBit");
 	// $qos_enable 	= getStr("Device.MoCA.Interface.1.QoS.X_CISCO_COM_Enabled");
@@ -78,6 +79,12 @@ $(document).ready(function() {
 		title_off: "Disable QoS for MoCA",
 		state: <?php echo ($qos_enable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});*/
+	$lanMode = '<?php echo $_SESSION["lanMode"]; ?>';
+	if ($lanMode != "router"){
+		$('#pageForm *').addClass("disabled");
+		$("#moca_switch").radioswitch("doEnable", false);
+		$("#pageForm :input").prop("disabled", true);
+	}
 	// $('#div_channel_switch').change(function()	//this is not compatible with IE8
 	$(':input[name="channel_switch"]').change(function() //this will act twice
 	{
