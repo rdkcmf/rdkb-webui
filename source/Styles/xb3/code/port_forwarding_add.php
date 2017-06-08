@@ -507,9 +507,9 @@ $('#device').click(function(){
 		$hostsInstance = getInstanceIds("Device.Hosts.Host.");
 		$hostsInstanceArr = explode(",", $hostsInstance);
 		$hostNums = getStr("Device.Hosts.HostNumberOfEntries");
-		if ($_DEBUG) {
+		/*if ($_DEBUG) {
 			$hostNums = "2";
-		}
+		}*/
 		for ($i=0; $i < $hostNums; $i++) { 
 			$HostName  = getStr("Device.Hosts.Host.$hostsInstanceArr[$i].HostName");
 			$IPAddress = getStr("Device.Hosts.Host.$hostsInstanceArr[$i].IPAddress");
@@ -528,12 +528,12 @@ $('#device').click(function(){
 					}
 				}
 			}
-			if ($_DEBUG) {
+			/*if ($_DEBUG) {
 				$HostName = "Host ".($i+1);
 				$IPAddress = "1.1.1.".($i+1);
 				$IPv6Addr = "2001::89$i";
 				$Active = "true";
-			}
+			}*/
 			if($Active == 'true'){
 				echo '<tr>';
 				echo '<td headers="devcie-name">'. $HostName . '</td>';
