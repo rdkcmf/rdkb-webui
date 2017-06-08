@@ -228,7 +228,7 @@ foreach ($ssidsWPS as $i){
 		}
 	}
 }
-if ($_SESSION['_DEBUG']){
+/*if ($_SESSION['_DEBUG']){
 	$wps_config = "true";
 	$radio_enable = "true";
 	$network_name = "111111";
@@ -284,7 +284,7 @@ if ($_SESSION['_DEBUG']){
 	$possible_channels1="36,40,44,48,149,153,157,161,165";
 	$support_mode_5g 	= "a,n,ac";
 	// $support_mode_5g 	= "a,n";
-}
+}*/
 if ("1-11"==$possible_channels)
 $possible_channels = "1,2,3,4,5,6,7,8,9,10,11";
 // SSID 1,2 for Private, 3,4 for Home Security, 5,6 for Hot Spot, HotSpot share the same SSID as a service set
