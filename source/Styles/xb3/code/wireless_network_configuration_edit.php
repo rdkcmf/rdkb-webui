@@ -22,7 +22,7 @@ $radio_band	= (1 == $rf) ? "2.4" : "5";
 $valid_ids	= array(1,2,3,4);
 // check if the LowerLayers radio is enabled. if disable, no need to configure
 if ("false" == getStr("Device.WiFi.Radio.$rf.Enable")) {
-	if (!$_SESSION['_DEBUG'])
+	/*if (!$_SESSION['_DEBUG'])*/
 	echo '<script type="text/javascript">alert("Wi-Fi Radio is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
 	exit(0);
 }
@@ -115,7 +115,7 @@ if ("false" == $wifi_value['Radio_'.$rf.'_Enable']){
 }
 //check if support 802.11ac
 $support_mode_5g		= $wifi_value['2_SupportedStandards'];
-if ($_SESSION['_DEBUG']){
+/*if ($_SESSION['_DEBUG']){
 	$radio_enable		= "true";
 	$network_name		= "string";
 	$wireless_mode		= "b,g,n";
@@ -135,7 +135,7 @@ if ($_SESSION['_DEBUG']){
 	$possible_channels	= "36,40,44,48,149,153,157,161,165";
 	// $possible_channels	= "1-11";
 	$support_mode_5g 	= "a,n,ac";
-}
+}*/
 if ("1-11"==$possible_channels)
 $possible_channels = "1,2,3,4,5,6,7,8,9,10,11";
 $security = "None";
