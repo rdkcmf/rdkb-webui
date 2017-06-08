@@ -43,15 +43,15 @@
 		}
 	}
 	/* demo flag in session */
-	if (!isset($_SESSION['_DEBUG'])) {
+	/*if (!isset($_SESSION['_DEBUG'])) {
 		$_DEBUG = file_exists('/var/ui_dev_debug');
 		$_SESSION['_DEBUG'] = $_DEBUG;
 	}
 	else {
 		$_DEBUG = $_SESSION['_DEBUG'];
-	}
+	}*/
 	// disable timeout when debug mode
-	if ($_DEBUG) { $_SESSION["timeout"] = 100000; }
+	//if ($_DEBUG) { $_SESSION["timeout"] = 100000; }
 	$header_param = array(
 		"Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode",
 		"Device.X_CISCO_COM_DeviceControl.PowerSavingModeStatus"

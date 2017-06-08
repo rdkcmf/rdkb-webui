@@ -46,7 +46,7 @@ $(document).ready(function() {
 	});
 	//when clicked on this page, restart timer
 	var jsInactTimeout = parseInt("<?php echo $_SESSION["timeout"]; ?>") * 1000;
-	// if ("<?php echo $_DEBUG; ?>") jsInactTimeout = 5000;	// 5 seconds debug
+	//if ("<?php /*echo $_DEBUG;*/ ?>") jsInactTimeout = 5000;	// 5 seconds debug
 	// var h_timer = setTimeout('alert("You are being logged out due to inactivity."); location.href="home_loggedout.php";', jsInactTimeout);
 	var h_timer = null;
 	$(document).click(function() {
