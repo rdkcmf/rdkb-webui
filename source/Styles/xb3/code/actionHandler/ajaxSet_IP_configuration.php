@@ -51,7 +51,7 @@ function isValidGW($gwAddress, $subnetMask, $beginAddress, $endAddress){
 	}
 	else if (explode('.', $gwAddress)[0] == '172') {
 		//for classB network only these subnetMask are allowed
-		if(!isValInArray($subnetMask, array("255.255.255.0"))) return false;
+		if(!isValInArray($subnetMask, array("255.255.255.0", "255.255.0.0"))) return false;
 		if(!valid_GW_IP('172.16.0.1', '172.31.255.1', $gwAddress)) return false;
 		$ipRange = ipRange($gwAddress, $subnetMask);
 	}
