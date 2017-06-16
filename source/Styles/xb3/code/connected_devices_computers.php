@@ -630,7 +630,12 @@ $(document).ready(function() {
 			$WiFi3_rootObjName    = "Device.WiFi.AccessPoint.3.AssociatedDevice.";
 			$WiFi3_paramNameArray = array("Device.WiFi.AccessPoint.3.AssociatedDevice.");
 			$WiFi3_mapping_array  = array("MACAddress", "SignalStrength");
-			$AssoDeviceArr = getParaValues($WiFi3_rootObjName, $WiFi3_paramNameArray, $WiFi3_mapping_array);
+			$AssoDeviceArr3 = getParaValues($WiFi3_rootObjName, $WiFi3_paramNameArray, $WiFi3_mapping_array);
+			$WiFi4_rootObjName    = "Device.WiFi.AccessPoint.4.AssociatedDevice.";
+			$WiFi4_paramNameArray = array("Device.WiFi.AccessPoint.4.AssociatedDevice.");
+			$WiFi4_mapping_array  = array("MACAddress", "SignalStrength");
+			$AssoDeviceArr4 = getParaValues($WiFi4_rootObjName, $WiFi4_paramNameArray, $WiFi4_mapping_array);
+			$AssoDeviceArr = array_merge($AssoDeviceArr3, $AssoDeviceArr4);
 			//MACAddress, SignalStrength, Active
 			/*if ($_DEBUG) {
 				$AssoDeviceArr = array(
