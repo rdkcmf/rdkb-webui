@@ -1,4 +1,14 @@
 <?php
+$flag=0;
+$flag_mso=0;
+$flag_cusadmin=0;
+$passLockEnable = getStr("Device.UserInterface.PasswordLockoutEnable");
+$failedAttempt=getStr("Device.Users.User.3.NumOfFailedAttempts");
+$failedAttempt_mso=getStr("Device.Users.User.1.NumOfFailedAttempts");
+$failedAttempt_cusadmin=getStr("Device.Users.User.2.NumOfFailedAttempts");
+$passLockoutAttempt=getStr("Device.UserInterface.PasswordLockoutAttempts");
+$passLockoutTime=getStr("Device.UserInterface.PasswordLockoutTime");
+$passLockoutTimeMins=$passLockoutTime/(1000*60);
     if (isset($_POST["username"]))
 	{
 		session_start();
@@ -36,13 +46,37 @@
 	   $curPwd1 = getStr("Device.Users.User.1.X_CISCO_COM_Password");
 	    if ( innerIP($client_ip) || (if_type($server_ip)=="rg_ip") )
             {
-            	session_destroy();
-                echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
+            	if($passLockEnable == "true"){
+					
+					if($failedAttempt_mso<$passLockoutAttempt){
+						$failedAttempt_mso=$failedAttempt_mso+1;
+						setStr("Device.Users.User.1.NumOfFailedAttempts",$failedAttempt_mso,true);
+					}
+					
+					if($failedAttempt_mso==$passLockoutAttempt){
+						$flag_mso=1;
+						echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+								
+					}
+				}
+				if($flag_mso==0){
+            		session_destroy();
+                	echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
+                }
             }
             elseif ($curPwd1 == "Good_PWD")
-            {	
-            	exec("/usr/bin/logger -t GUI -p local5.notice 'User:mso login'");
-                header("location:at_a_glance.php");
+            {
+            	if(($passLockEnable == "true") && ($failedAttempt_mso==$passLockoutAttempt)){
+						$flag_mso=1;
+						echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+								
+				}else{
+					$failedAttempt_mso=0;	
+					setStr("Device.Users.User.1.NumOfFailedAttempts",$failedAttempt_mso,true);
+            		exec("/usr/bin/logger -t GUI -p local5.notice 'User:mso login'");
+                	header("location:at_a_glance.php");
+                }	
+            	
             }
             elseif ("" == $curPwd1)
             {
@@ -51,8 +85,24 @@
             }
             else
           	{
-				session_destroy();
-				echo '<script type="text/javascript"> alert("Incorrect password for mso!"); history.back(); </script>';
+				if($passLockEnable == "true"){
+					
+					if($failedAttempt_mso<$passLockoutAttempt){
+						$failedAttempt_mso=$failedAttempt_mso+1;
+						setStr("Device.Users.User.1.NumOfFailedAttempts",$failedAttempt_mso,true);
+					}
+					
+					if($failedAttempt_mso==$passLockoutAttempt){
+						$flag_mso=1;
+						echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+								
+					}
+				}
+	
+				if($flag_mso==0){
+				 	session_destroy();
+					echo '<script type="text/javascript"> alert("Incorrect password for mso!"); history.back(); </script>';
+				}
             }
         }
         elseif ($_POST["username"] == "cusadmin")
@@ -60,13 +110,38 @@
 		$curPwd2 = getStr("Device.Users.User.2.X_CISCO_COM_Password");
 			if ( innerIP($client_ip) || (if_type($server_ip)=="rg_ip") )
 			{
-				session_destroy();
-				echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
+				if($passLockEnable == "true"){
+					
+					if($failedAttempt_cusadmin<$passLockoutAttempt){
+						$failedAttempt_cusadmin=$failedAttempt_cusadmin+1;
+						setStr("Device.Users.User.2.NumOfFailedAttempts",$failedAttempt_cusadmin,true);
+					}
+
+					if($failedAttempt_cusadmin==$passLockoutAttempt){
+						$flag_cusadmin=1;
+						echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+								
+					}
+				}
+				if($flag_cusadmin==0){
+            		session_destroy();
+                	echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
+                }
 			}
 			elseif ($_POST["password"] == $curPwd2) 
             {
-				exec("/usr/bin/logger -t GUI -p local5.notice 'User:cusadmin login'");
-				header("location:at_a_glance.php");
+            	if(($passLockEnable == "true") && ($failedAttempt_cusadmin==$passLockoutAttempt)){
+						$flag_cusadmin=1;
+						echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+								
+				}else{
+					$failedAttempt_cusadmin=0;
+					setStr("Device.Users.User.2.NumOfFailedAttempts",$failedAttempt_cusadmin,true);
+					exec("/usr/bin/logger -t GUI -p local5.notice 'User:cusadmin login'");
+					header("location:at_a_glance.php");
+
+				}
+				
 			}
             elseif ("" == $curPwd2)
             {
@@ -75,8 +150,24 @@
             }
             else
           	{
-				session_destroy();
-				echo '<script type="text/javascript"> alert("Incorrect password for cusadmin!"); history.back(); </script>';
+				if($passLockEnable == "true"){
+					
+					if($failedAttempt_cusadmin<$passLockoutAttempt){
+						$failedAttempt_cusadmin=$failedAttempt_cusadmin+1;
+						setStr("Device.Users.User.2.NumOfFailedAttempts",$failedAttempt_cusadmin,true);
+					}
+
+					if($failedAttempt_cusadmin==$passLockoutAttempt){
+						$flag_cusadmin=1;
+						echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+								
+					}
+				}
+	
+				if($flag_cusadmin==0){
+				 	session_destroy();
+					echo '<script type="text/javascript"> alert("Incorrect password for cusadmin!"); history.back(); </script>';
+				}
             }
         }
         elseif ($_POST["username"] == "admin")
@@ -86,20 +177,39 @@
 			{
 				if ( !innerIP($client_ip) && (if_type($server_ip)!="rg_ip") )
 				{
-					session_destroy();
-					echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
+					if($passLockEnable == "true"){
+							if($failedAttempt<$passLockoutAttempt){
+								$failedAttempt=$failedAttempt+1;
+								setStr("Device.Users.User.3.NumOfFailedAttempts",$failedAttempt,true);
+							}
+							if($failedAttempt==$passLockoutAttempt){
+								$flag=1;
+								echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+							}
+					}
+					if($flag==0){
+				 		session_destroy();
+						echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
+					}
 				}
 				else
 				{
-					exec("/usr/bin/logger -t GUI -p local5.notice 'User:admin login'");
-					setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_success",true);
-					if ($curPwd3 == 'password')
-					{
-						echo '<script type="text/javascript"> if (confirm("You are using a default password, would you like to change it?")) {location.href = "password_change.php";} else {location.href = "at_a_glance.php";} </script>';
-					}
-					else
-					{	
-						header("location:at_a_glance.php");
+				if(($passLockEnable == "true") && ($failedAttempt==$passLockoutAttempt)){
+							$flag=1;
+							echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+						}else{
+							$failedAttempt=0;
+							setStr("Device.Users.User.3.NumOfFailedAttempts",$failedAttempt,true);
+							exec("/usr/bin/logger -t GUI -p local5.notice 'User:admin login'");
+							setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_success",true);
+							if ($curPwd3 == 'password')
+							{
+								echo '<script type="text/javascript"> if (confirm("You are using a default password, would you like to change it?")) {location.href = "password_change.php";} else {location.href = "at_a_glance.php";} </script>';
+							}
+							else
+							{	
+								header("location:at_a_glance.php");
+							}
 					}
 				}
             		}
@@ -113,7 +223,27 @@
             		{
 				setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_failed",true);
 				session_destroy();
-				echo '<script type="text/javascript"> alert("Incorrect password for admin!"); history.back(); </script>';
+				if($passLockEnable == "true"){
+					
+					if($failedAttempt<$passLockoutAttempt){
+						$failedAttempt=$failedAttempt+1;
+						setStr("Device.Users.User.3.NumOfFailedAttempts",$failedAttempt,true);
+					}
+					
+					if($failedAttempt==$passLockoutAttempt){
+						$flag=1;
+						echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+								
+					}
+					
+					
+				}
+
+				if($flag==0){
+
+				 	session_destroy();
+					echo '<script type="text/javascript"> alert("Incorrect password for admin!");history.back(); </script>';
+					}
             		}
         }
         else
