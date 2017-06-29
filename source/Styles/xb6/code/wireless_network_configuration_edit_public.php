@@ -405,10 +405,6 @@ function init_form() {
 	ReconnectPrimary = ReconnectPrimary/3600; //zqiu: translate it to hrs
 	var sec_list = new Array(
 		["Open (risky)",	"None",				"Open networks do not have a password."],
-		["WEP 64 (risky)",	"WEP-64",			"WEP 64 requires a 5 ASCII character or 10 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."],
-		["WEP 128 (risky)",	"WEP-128",			"WEP 128 requires a 13 ASCII character or 16 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."],
-		["WPA (TKIP)",		"WPA.TKIP",			"WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."],
-		["WPA (AES)",		"WPA.AES",			"WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."],
 		["WPA2 (TKIP)",		"WPA2.TKIP",		"WPA2 requires a 8-63 ASCII character password."],
 		["WPA2 (AES) (recommended)",		"WPA2.AES",			"WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789."]);
 	var add_list = new Array(
@@ -466,10 +462,10 @@ function init_form() {
 	$("#security").change();
 	//for UI-4.0, remove some security options
     if ("2.4"==radio_freq){
-        $("#security").find("[value='WPA.TKIP'],[value='WPA.AES'],[value='WPA2.TKIP']").remove();
+        $("#security").find("[value='WPA2.TKIP']").remove();
     }
     else{
-        $("#security").find("[value='WPA.TKIP'],[value='WPA.AES'],[value='WPA2.TKIP'],[value='WEP-64'],[value='WEP-128']").remove();
+        $("#security").find("[value='WPA2.TKIP']").remove();
     }   
 }
 </script>

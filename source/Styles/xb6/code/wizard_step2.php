@@ -291,19 +291,7 @@ $network_pass_128	= $wifi_value['network_pass_128'];
 // $network_pass_64		= "wep64";
 // $network_pass_128	= "wep128";
 $security = "None";
-if ("WEP-64" == $encrypt_mode){
-		$security = "WEP_64";
-		$network_password = $network_pass_64;
-}elseif ("WEP-128" == $encrypt_mode){
-		$security = "WEP_128";
-		$network_password = $network_pass_128;
-}elseif ("WPA-Personal" == $encrypt_mode){
-	if ("TKIP" == $encrypt_method){
-		$security = "WPA_PSK_TKIP";
-	}else{
-		$security = "WPA_PSK_AES";
-	}
-}elseif ("WPA2-Personal" == $encrypt_mode){
+if ("WPA2-Personal" == $encrypt_mode){
 	if ("TKIP" == $encrypt_method){
 		$security = "WPA2_PSK_TKIP";
 	}elseif ("AES" == $encrypt_method){
@@ -326,19 +314,7 @@ $network_pass_128	= $wifi_value['network_pass_128_1'];
 // $network_pass_64		= "wep64";
 // $network_pass_128	= "wep128";
 $security1 = "None";
-if ("WEP-64" == $encrypt_mode1){
-		$security1 = "WEP_64";
-		$network_password1 = $network_pass_64;
-}elseif ("WEP-128" == $encrypt_mode1){
-		$security1 = "WEP_128";
-		$network_password1 = $network_pass_128;
-}elseif ("WPA-Personal" == $encrypt_mode1){
-	if ("TKIP" == $encrypt_method1){
-		$security1 = "WPA_PSK_TKIP";
-	}else{
-		$security1 = "WPA_PSK_AES";
-	}
-}elseif ("WPA2-Personal" == $encrypt_mode1){
+if ("WPA2-Personal" == $encrypt_mode1){
 	if ("TKIP" == $encrypt_method1){
 		$security1 = "WPA2_PSK_TKIP";
 	}elseif ("AES" == $encrypt_method1){

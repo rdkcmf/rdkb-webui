@@ -135,23 +135,7 @@ $support_mode_5g		= $wifi_value['2_SupportedStandards'];
 if ("1-11"==$possible_channels)
 $possible_channels = "1,2,3,4,5,6,7,8,9,10,11";
 $security = "None";
-if ("WEP-64" == $encrypt_mode){
-		$security = "WEP_64";
-		$network_password = $network_pass_64;
-}
-elseif ("WEP-128" == $encrypt_mode){
-		$security = "WEP_128";
-		$network_password = $network_pass_128;
-}
-elseif ("WPA-Personal" == $encrypt_mode){
-	if ("TKIP" == $encrypt_method){
-		$security = "WPA_PSK_TKIP";
-	}
-	else{
-		$security = "WPA_PSK_AES";
-	}
-}
-elseif ("WPA2-Personal" == $encrypt_mode){
+if ("WPA2-Personal" == $encrypt_mode){
 	if ("TKIP" == $encrypt_method){
 		$security = "WPA2_PSK_TKIP";
 	}
@@ -692,10 +676,10 @@ function init_form()
 	}
 	//for UI-4.0, remove some security options
     if ("2.4"==radio_band){
-        $("#security").find("[value='None'],[value='WPA_PSK_TKIP'],[value='WPA_PSK_AES'],[value='WPA2_PSK_TKIP'],[value='WEP_64'],[value='WEP_128']").remove();
+        $("#security").find("[value='None'],[value='WPA2_PSK_TKIP']").remove();
     }
     else{
-        $("#security").find("[value='None'],[value='WPA_PSK_TKIP'],[value='WPA_PSK_AES'],[value='WPA2_PSK_TKIP'],[value='WEP_64'],[value='WEP_128']").remove();
+        $("#security").find("[value='None'],[value='WPA2_PSK_TKIP']").remove();
     }
 	// for UI-4.0, add show-more
 	if ("1"==ssid_number || "2"==ssid_number) {
@@ -837,10 +821,6 @@ function setResetInfo(info) {
 			<label for="security">Security Mode:</label>
 			<select name="encryption_method" id="security">
 				<option value="None" 				title="Open networks do not have a password." 			<?php if ("None"==$security) echo "selected";?> >Open (risky)</option>
-				<option value="WEP_64" 				title="WEP  64 requires a  5 ASCII character or  10 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_64"==$security)              echo "selected";?> >WEP 64 (risky)</option>
-				<option value="WEP_128" 			title="WEP 128 requires a 13 ASCII character or  26 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_128"==$security)             echo "selected";?> >WEP 128 (risky)</option>
-				<option value="WPA_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_TKIP"==$security)        echo "selected";?> >WPA-PSK (TKIP)</option>
-				<option value="WPA_PSK_AES" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_AES"==$security)         echo "selected";?> >WPA-PSK (AES)</option>
 				<option value="WPA2_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIP"==$security)       echo "selected";?> >WPA2-PSK (TKIP)</option>
 				<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_AES"==$security)        echo "selected";?> >WPA2-PSK (AES)(Recommended)</option>
 				</select>

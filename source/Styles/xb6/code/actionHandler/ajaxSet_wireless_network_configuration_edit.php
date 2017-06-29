@@ -77,22 +77,6 @@ if ($i == 1 || $i == 2 || (($_SESSION["loginuser"] == "mso") && ($i == 3 || $i =
 			if($validation){
 				switch ($arConfig['security'])
 				{
-					case "WEP_64":
-					  $encrypt_mode   = "WEP-64";
-					  $encrypt_method = "None";
-					  break;
-					case "WEP_128":
-					  $encrypt_mode   = "WEP-128";
-					  $encrypt_method = "None";
-					  break;
-					case "WPA_PSK_TKIP":
-					  $encrypt_mode   = "WPA-Personal";
-					  $encrypt_method = "TKIP";
-					  break;
-					case "WPA_PSK_AES":
-					  $encrypt_mode   = "WPA-Personal";
-					  $encrypt_method = "AES";
-					  break;
 					case "WPA2_PSK_TKIP":
 					  $encrypt_mode   = "WPA2-Personal";
 					  $encrypt_method = "TKIP";
@@ -100,14 +84,6 @@ if ($i == 1 || $i == 2 || (($_SESSION["loginuser"] == "mso") && ($i == 3 || $i =
 					case "WPA2_PSK_AES":
 					  $encrypt_mode   = "WPA2-Personal";
 					  $encrypt_method = "AES";
-					  break;
-					case "WPA2_PSK_TKIPAES":
-					  $encrypt_mode   = "WPA2-Personal";
-					  $encrypt_method = "AES+TKIP";
-					  break;
-					case "WPAWPA2_PSK_TKIPAES":
-					  $encrypt_mode   = "WPA-WPA2-Personal";
-					  $encrypt_method = "AES+TKIP";
 					  break;
 					case "None":
 					  $encrypt_mode   = "None";
