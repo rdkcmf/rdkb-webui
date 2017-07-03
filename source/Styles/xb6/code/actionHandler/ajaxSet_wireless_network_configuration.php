@@ -66,10 +66,10 @@ if (array_key_exists('band_steering', $arConfig))
 			$validation = true;
 			if($validation) $validation = isValInArray($arConfig['bs_enable'], array('true', 'false'));
 			if($validation) $validation = (preg_match('/^\d\d*$/', $arConfig['UtilzThreshold1']) == 1);
-			if($validation) $validation = (preg_match('/^\d\d*$/', $arConfig['RSSIThreshold1']) == 1);
+			if($validation) $validation = (preg_match('/^-?\d\d*$/', $arConfig['RSSIThreshold1']) == 1);
 			if($validation) $validation = (preg_match('/^\d\d*$/', $arConfig['PhyRateThreshold1']) == 1);
 			if($validation) $validation = (preg_match('/^\d\d*$/', $arConfig['UtilzThreshold2']) == 1);
-			if($validation) $validation = (preg_match('/^\d\d*$/', $arConfig['RSSIThreshold2']) == 1);
+			if($validation) $validation = (preg_match('/^-?\d\d*$/', $arConfig['RSSIThreshold2']) == 1);
 			if($validation) $validation = (preg_match('/^\d\d*$/', $arConfig['PhyRateThreshold2']) == 1);
 			if($validation){
 				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.Enable", $arConfig['bs_enable'], false);
