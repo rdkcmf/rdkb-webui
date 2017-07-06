@@ -209,7 +209,9 @@ else
 		}
 		else if ("wps_enabled" == $arConfig['sub_target'] && $Radio_Enable) {
 			//enable or disable WPS in all SSID, GUI ensure that only change will be commit to backend
-			$ssids = explode(",", getInstanceIds("Device.WiFi.SSID."));
+			//$ssids = explode(",", getInstanceIds("Device.WiFi.SSID."));
+			//only enable wps in private 2.4GHz and private 5GHz ssids
+			$ssids = array( 1 , 2 );
 			foreach ($ssids as $i){
 				setStr("Device.WiFi.AccessPoint.$i.WPS.Enable", $arConfig['wps_enabled'], true);
 				// setStr("Device.WiFi.Radio.$i.X_CISCO_COM_ApplySetting", "true", true);	// all SSID, so don't put this in loop
@@ -220,7 +222,9 @@ else
 			MiniApplySSID(2);
 		}
 		else if ("wps_method" == $arConfig['sub_target'] && $Radio_Enable) {
-			$ssids = explode(",", getInstanceIds("Device.WiFi.SSID."));
+			//$ssids = explode(",", getInstanceIds("Device.WiFi.SSID."));
+			//only enable wps in private 2.4GHz and private 5GHz ssids
+			$ssids = array( 1 , 2 );
 			foreach ($ssids as $i){
 				setStr("Device.WiFi.AccessPoint.$i.WPS.ConfigMethodsEnabled", $arConfig['wps_method'], true);
 				// setStr("Device.WiFi.Radio.$i.X_CISCO_COM_ApplySetting", "true", true);
