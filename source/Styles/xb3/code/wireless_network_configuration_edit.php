@@ -402,6 +402,20 @@ $(document).ready(function() {
 			$("#wireless_mode").change();
 		}
 	}).trigger("change");
+	// Warning for DFS channel (52-140)
+	$("#channel_number").change(function(){
+		var channel = $("#channel_number option:selected").val();
+		if(channel >= 52 && channel <= 140 ) {
+			jConfirm(
+				"WARNING:<br/> You are selecting a Dynamic Frequency Selection (DFS) Channel (52-140). Some Wi-Fi devices do not support DFS channels in the 5 GHz band. For those devices that do not support DFS channels, the 5 GHz Wi-Fi Network Name (SSID) will not be displayed on the list of available networks. Do you wish to continue?"
+				, "Are You Sure?"
+				,function(ret) {
+					if(!ret) {
+						$("#channel_number").val('<?php echo $channel_number; ?>').attr("selected","selected");
+					}
+			});
+		}
+	});
 //zqiu >>	
 	$("#restore-default-settings").click(function() {
 		var href = $(this).attr("href");
@@ -680,20 +694,6 @@ function init_form()
 		//if Channel Bandwidth is 20MHz DFS Channels (Channels 50 - 144) should be greyed out
 		$("#channel_number [value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true);
 	}
-	// Warning for DFS channel (52-140)
-	$("#channel_number").change(function(){
-		var channel = $("#channel_number option:selected").val();
-		if(channel >= 52 && channel <= 140 ) {
-			jConfirm(
-				"WARNING:<br/> You are selecting a Dynamic Frequency Selection (DFS) Channel (52-140). Some Wi-Fi devices do not support DFS channels in the 5 GHz band. For those devices that do not support DFS channels, the 5 GHz Wi-Fi Network Name (SSID) will not be displayed on the list of available networks. Do you wish to continue?"
-				, "Are You Sure?"
-				,function(ret) {
-					if(!ret) {
-						$("#channel_number").val('<?php echo $channel_number; ?>').attr("selected","selected");
-					}
-			});
-		}
-	});
 	//re-style for 802.11ac
 	$("#wireless_mode").val("<?php echo $wireless_mode; ?>");
 	//for home sevurity ssid, no editing SSID name, no restore button
