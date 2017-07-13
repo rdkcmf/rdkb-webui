@@ -7,7 +7,6 @@
 <?php include('includes/nav.php'); ?>
 <?php
 $RemoteAccess_param = array(
-	"http_mode"	=> "Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpEnable",
 	"https_mode"	=> "Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpsEnable",
 	"allow_type"	=> "Device.UserInterface.X_CISCO_COM_RemoteAccess.FromAnyIP",
 	"start_ip"	=> "Device.UserInterface.X_CISCO_COM_RemoteAccess.StartIp",
@@ -17,7 +16,6 @@ $RemoteAccess_param = array(
 	);
 $RemoteAccess_value = KeyExtGet("Device.UserInterface.X_CISCO_COM_RemoteAccess.", $RemoteAccess_param);
 $DeviceControl_param = array(
-	"http_port"	=> "Device.X_CISCO_COM_DeviceControl.HTTPPort",
 	"https_port"	=> "Device.X_CISCO_COM_DeviceControl.HTTPSPort",
 	"telnet_mode"	=> "Device.X_CISCO_COM_DeviceControl.TelnetEnable",
 	//"ssh_mode"	=> "Device.X_CISCO_COM_DeviceControl.SSHEnable",
@@ -25,14 +23,12 @@ $DeviceControl_param = array(
 	"ipv4_smask"	=> "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask",
 	);
 $DeviceControl_value = KeyExtGet("Device.X_CISCO_COM_DeviceControl.", $DeviceControl_param);
-$http_mode	= $RemoteAccess_value['http_mode'];
 $https_mode	= $RemoteAccess_value['https_mode'];
 $allow_type	= $RemoteAccess_value['allow_type'];
 $start_ip	= $RemoteAccess_value['start_ip'];
 $end_ip		= $RemoteAccess_value['end_ip'];
 $start_ipv6	= $RemoteAccess_value['start_ipv6'];
 $end_ipv6	= $RemoteAccess_value['end_ipv6'];
-$http_port	= $DeviceControl_value['http_port'];
 $https_port	= $DeviceControl_value['https_port'];
 $telnet_mode	= $DeviceControl_value['telnet_mode'];
 //$ssh_mode	= $DeviceControl_value['ssh_mode'];
@@ -50,45 +46,10 @@ label{
 <script type="text/javascript">
 $(document).ready(function() {
 	comcast.page.init("Advanced > Remote Management", "nav-remote-management");
-	var HTTP = <?php echo ($http_mode === 'true' ? "true" : "false"); ?>;
-	var HTTPPORT = "<?php echo $http_port;?>";
 	var HTTPS = <?php echo ($https_mode === 'true' ? "true" : "false"); ?>;
 	var HTTPSPORT = "<?php echo $https_port;?>";
 	var TELNET = <?php echo ((($telnet_mode === 'true') && ($_SESSION["loginuser"] == "mso")) ? "true" : "false"); ?>;
 	//var SSH = <?php echo ((($ssh_mode === 'true') && ($_SESSION["loginuser"] == "mso")) ? "true" : "false"); ?>;
-	$("#http_switch").radioswitch({
-		id: "http-switch",
-		radio_name: "http",
-		id_on: "http_enabled",
-		id_off: "http_disabled",
-		title_on: "Enable HTTP",
-		title_off: "Disable HTTP",
-		state: HTTP ? "on" : "off"
-	}).change(function() {
-		$("#http").val(HTTPPORT);
-		validator.element("#http");
-		var isUHTTPDisabled = $(this).radioswitch("getState").on === false;
-		if(isUHTTPDisabled) {
-			document.getElementById('http').disabled = true;
-			remote_access_allowe();
-		} else {
-			// document.getElementById('http').disabled = false;
-			jConfirm(
-				"WARNING: Enabling Remote Management will expose your Gateway GUI to the Internet. Your Gateway will only be protected by your logon password. Are you sure you want to continue?"
-				,"Confirm:"
-				,function(ret) {
-					if(ret) {
-						document.getElementById('http').disabled = false;
-						remote_access_allowe();
-					}
-					else{
-						$("#http_switch").radioswitch("doSwitch", "off");
-					}
-				}
-			);
-		}
-	});
-	$("#http").val(HTTPPORT).prop("disabled", !HTTP);
 	$("#https_switch").radioswitch({
 		id: "https-switch",
 		radio_name: "https",
@@ -259,10 +220,6 @@ var validator = $("#pageForm").validate({
 		endipv6_address_x:	"endipv6_address_1 endipv6_address_2 endipv6_address_3 endipv6_address_4 endipv6_address_5 endipv6_address_6 endipv6_address_7 endipv6_address_8"
 	},
 	rules: {
-		http:{
-			required: function(element){return !$(element).prop("disabled")},
-			port: true
-		},
 		https:{
 			required: function(element){return !$(element).prop("disabled")},
 			port: true,
@@ -426,7 +383,7 @@ var validator = $("#pageForm").validate({
 	}
 });
 $("#https").keydown(function(){	validator.element($(this)); });
-$("#http").keydown(function() {	validator.element($(this)); });
+
 // $(":text").val("");
 var snetCal = {
 	getsnetRange : function( ip, snetMask )
@@ -497,9 +454,9 @@ var snetCal = {
 $(".btn").click(function(){
 	var isValid = true;
 	$("p.error").remove();
-	var http_enabled  = $("#http_switch").radioswitch("getState").on;
+	
 	var https_enabled = $("#https_switch").radioswitch("getState").on;
-	if(http_enabled || https_enabled){
+	if(https_enabled){
 		if ($(":radio[value='single']").prop("checked")){
 			if (IsBlank("ip_address_") && IsBlank("ipv6_address_")){
 				jAlert("Please input at least one single address of IPv4 or IPv6!");
@@ -566,17 +523,12 @@ $(".btn").click(function(){
 	if (TELNET==telnet) telnet="notset";
 	/*var ssh = $("#ssh1_switch").radioswitch("getState").on;
 	if (SSH==ssh) ssh="notset";*/
- 	var http = $("#http_switch").radioswitch("getState").on;
-	if (HTTP==http) http="notset";
-	var httpport=$('#http').val();
-	// if (HTTPPORT==httpport || HTTP=="false") httpport="notset";
-	if (HTTPPORT==httpport) httpport="notset";
 	var https = $("#https_switch").radioswitch("getState").on;
 	if (HTTPS==https) https="notset";
 	var httpsport=$('#https').val();
 	// if (HTTPSPORT==httpsport || HTTPS=="false") httpsport="notset";
 	if (HTTPSPORT==httpsport) httpsport="notset";
-	if(!http && !https){
+	if(!https){
 		allowtype	="notset";
 		startIP		="notset";
 		endIP		="notset";
@@ -654,7 +606,7 @@ $(".btn").click(function(){
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_remote_management.php",
-			data:{http:http, httpport:httpport, https:https, httpsport:httpsport,
+			data:{https:https, httpsport:httpsport,
 					allowtype:allowtype, startIP:startIP, endIP:endIP,
 					telnet:telnet, startIPv6:startIPv6, endIPv6:endIPv6
 					/*
@@ -724,12 +676,11 @@ function remote_access_block(){
 	$("#message_note").show();
 }
 	$("#message_note").hide();
-	if(!HTTP && !HTTPS){remote_access_block();}
+	if(!HTTPS){remote_access_block();}
 	function remote_access_allowe(){
-		var http_enabled  = $("#http_switch").radioswitch("getState").on;
 		var https_enabled = $("#https_switch").radioswitch("getState").on;
 		var allowtype	  =$('input[name="single"]:radio:checked').val();
-		if(http_enabled || https_enabled){
+		if(https_enabled){
 			$("#message_note").hide();
 			$("#"+allowtype).trigger("click");
 			$("#single, #range, #any").attr('disabled', false);
@@ -751,10 +702,6 @@ function remote_access_block(){
 	<form method="" id="pageForm" action="">
 	<div class="module forms">
 		<h2>Remote Management</h2>
-		<div class="form-row">
-			<label for="http">HTTP: <input type="text" value="" name="http"  maxlength="5" size=7 id="http" /></label>
-			<span id="http_switch"></span>
-		</div>
 		<div class="form-row ">
 			<label for="https">HTTPS: <input type="text" value="" name="https" maxlength="5" size=7 id="https" /></label>
 			<span id="https_switch"></span>
@@ -793,7 +740,7 @@ function remote_access_block(){
 			?>		
 			</strong></p>
 		</div>
-		<p  id="message_note" style="position:relative; left:40px" class="error">Please enable HTTP or HTTPS to configure Remote Access Allowed From.</p>
+		<p  id="message_note" style="position:relative; left:40px" class="error">Please enable HTTPS to configure Remote Access Allowed From.</p>
 	</div> <!-- end .module -->
 	<div class="module forms">
 	    <h2>Remote Access Allowed From</h2><br/>
