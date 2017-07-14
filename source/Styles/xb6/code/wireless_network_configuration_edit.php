@@ -83,7 +83,7 @@ $defaultSSID		= ($id == 3)?"":$wifi_value['DefaultSSID'];
 $defaultKeyPassphrase	= ($id == 3)?"":$wifi_value['DefaultKeyPassphrase'];
 $DFS_Support1		= $wifi_value['DFS_Support1'];
 $DFS_Enable1		= $wifi_value['DFS_Enable1'];
-$DFS_Support1 = "false" ; //Remove/disable DFS channels, DFS_Support1 1-supported 0-not supported
+//$DFS_Support1 = "false" ; //Remove/disable DFS channels, DFS_Support1 1-supported 0-not supported
 /*- In bridge mode don't show 'Mac filter settings ' -*/
 if(strstr($_SESSION["lanMode"], "bridge-static") ) {
 	if($_SESSION["loginuser"] != "mso")
