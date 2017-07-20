@@ -21,8 +21,9 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
+//if responce is "", then CcspTandDSsp has crashed
 $states=array("Complete","Error_CannotResolveHostName","Error_Internal","Error_Other");
-$states_trace=array("Complete","Error_CannotResolveHostName","Error_MaxHopCountExceeded");
+$states_trace=array("Complete","Error_CannotResolveHostName","Error_MaxHopCountExceeded","Error_Internal");
 if (isset($_POST['test_connectivity'])){
 	$destination_address=$_POST['destination_address'];
 	$count1=$_POST['count1'];
@@ -35,6 +36,7 @@ if (isset($_POST['test_connectivity'])){
 		do{
 			sleep(1);
 			$pingState=getStr("Device.IP.Diagnostics.IPPing.DiagnosticsState");
+			if($pingState == "") $trace_ipv4_status = "Error_Internal";
 		}while(!in_array($pingState,$states));
 		$success_received=getStr("Device.IP.Diagnostics.IPPing.SuccessCount");
 		// $failure_received=getStr("Device.IP.Diagnostics.IPPing.FailureCount");
@@ -59,6 +61,7 @@ else if (isset($_POST['destination_ipv4'])){
 		do{
 			sleep(1);
 			$pingState=getStr("Device.IP.Diagnostics.IPPing.DiagnosticsState");
+			if($pingState == "") $trace_ipv4_status = "Error_Internal";
 		}while(!in_array($pingState,$states));
 		$success_received=getStr("Device.IP.Diagnostics.IPPing.SuccessCount");
 		if($success_received>0) {$connectivity_ipv4="OK";}
@@ -82,6 +85,7 @@ else if (isset($_POST['destination_ipv6'])){
 		do{
 			sleep(1);
 			$pingState=getStr("Device.IP.Diagnostics.IPPing.DiagnosticsState");
+			if($pingState == "") $trace_ipv4_status = "Error_Internal";
 		}while(!in_array($pingState,$states));
 		$success_received=getStr("Device.IP.Diagnostics.IPPing.SuccessCount");
 		if($success_received>0) {$connectivity_ipv6="OK";}
@@ -115,6 +119,7 @@ else if (isset($_POST['trace_ipv4_dst'])){
 		do{
 			sleep(3);
 			$trace_ipv4_status = getStr("Device.IP.Diagnostics.TraceRoute.DiagnosticsState");
+			if($trace_ipv4_status == "") $trace_ipv4_status = "Error_Internal";
 			// $trace_ipv4_status = "Complete";
 		}while(!in_array($trace_ipv4_status, $states_trace));
 		if ("Complete" == $trace_ipv4_status){
@@ -144,6 +149,7 @@ else if (isset($_POST['trace_ipv6_dst'])){
 		do{
 			sleep(3);
 			$trace_ipv6_status = getStr("Device.IP.Diagnostics.TraceRoute.DiagnosticsState");
+			if($trace_ipv6_status == "") $trace_ipv4_status = "Error_Internal";
 			// $trace_ipv6_status = "Error_CannotResolveHostName";
 		}while(!in_array($trace_ipv6_status, $states_trace));
 		if ("Complete" == $trace_ipv6_status){
