@@ -41,7 +41,7 @@ $passLockoutTimeMins=$passLockoutTime/(1000*60);
         if ($_POST["username"] == "mso")
 	{
 	   //triggering password validation in back end
-	   setStr("Device.Users.User.1.X_CISCO_COM_Password",$_POST["password"],true);
+	   $return_status = setStr("Device.Users.User.1.X_CISCO_COM_Password",$_POST["password"],true);
 	   sleep(1);
 	   $curPwd1 = getStr("Device.Users.User.1.X_CISCO_COM_Password");
 	    if ( innerIP($client_ip) || (if_type($server_ip)=="rg_ip") )
@@ -64,7 +64,7 @@ $passLockoutTimeMins=$passLockoutTime/(1000*60);
                 	echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
                 }
             }
-            elseif ($curPwd1 == "Good_PWD")
+            elseif ($curPwd1 == "Good_PWD" && $return_status)
             {
             	if(($passLockEnable == "true") && ($failedAttempt_mso==$passLockoutAttempt)){
 						$flag_mso=1;
