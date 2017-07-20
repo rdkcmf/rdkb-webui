@@ -51,7 +51,7 @@ if(!$isMSO) {
 		if(!strcmp($CONFIGUREWIFI, "true")) {
 			$SERVER_ADDR = $_SERVER['SERVER_ADDR'];
 			$ip_addr = strpos($SERVER_ADDR, ":") == false ? $LanGwIPv4 : $LanGwIPv6 ;
-			header('Location:http://'.$ip_addr.'/captiveportal.php');
+			header('Location:https://webui-xb3-cpe-srvr.xcal.tv/captiveportal.php');
 			exit;
 		}
 	}
