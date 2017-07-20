@@ -278,7 +278,7 @@ function ajaxDo(mode,timef){
 			var trClass="odd";
 			$("#"+mode+"_report_"+timef2+" > tbody").empty();
 			$.each(results,function(key,value){
-				$("#"+mode+"_report_"+timef2+" > tbody").append("<tr class='"+trClass+"'><td>"+value.Des+", "+value.Count+" Attemps, "+value.time+"</td><td>"+value.Type+"</td></tr>");
+				$("#"+mode+"_report_"+timef2+" > tbody").append("<tr class='"+trClass+"'><td>"+value.Des+", "+value.Count+" Attempts, "+value.time+"</td><td>"+value.Type+"</td></tr>");
 				trClass=((trClass=="")?"odd":"");
 				length++;
 			});
