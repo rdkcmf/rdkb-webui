@@ -81,7 +81,7 @@ $(document).ready(function() {
 		state: "<?php echo ($bridge_mode != 'router' ? "on" : "off"); ?>"
 	});
 	function changeBridge(isBridgeModelEnable) {
-		var cnt = 90;
+		var cnt = 210;
 		jProgress('Bridge Mode changes will be fully applied in <b id="cnt">' + cnt + '</b> seconds, please be patient...', 600);
 		$.ajax({
 		type:"POST",
