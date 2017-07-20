@@ -26,10 +26,10 @@ function get_tips($target, $status, $user_type)
 	{
 		case "sta_inet":{
 			if ("true"==$status){
-				$tip = 'Status: Connected-'.getStr("Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber").' computers connected';
+				$tip = 'Status: Connected-'.getStr("Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber").' devices connected';
 			}
 			else{
-				$tip = 'Status: Unconnected-no computers';
+				$tip = 'Status: Unconnected-no devices';
 			}
 		}break;
 		case "sta_wifi":{
@@ -40,18 +40,18 @@ function get_tips($target, $status, $user_type)
 				foreach($ids as $i){
 					$sum += getStr("Device.WiFi.AccessPoint.$i.AssociatedDeviceNumberOfEntries");
 				}
-				$tip = 'Status: Connected-'.$sum.' computers connected';
+				$tip = 'Status: Connected-'.$sum.' devices connected';
 			}
 			else{
-				$tip = 'Status: Unconnected-no computers';
+				$tip = 'Status: Unconnected-no devices';
 			}
 		}break;
 		case "sta_moca":{
 			if ("true"==$status && "Up"==getStr("Device.MoCA.Interface.1.Status")){
-				$tip = 'Status: Connected-'.getStr("Device.MoCA.Interface.1.X_CISCO_COM_NumberOfConnectedClients").' computers connected';
+				$tip = 'Status: Connected-'.getStr("Device.MoCA.Interface.1.X_CISCO_COM_NumberOfConnectedClients").' devices connected';
 			}
 			else{
-				$tip = 'Status: Unconnected-no computers';
+				$tip = 'Status: Unconnected-no devices';
 			}	
 		}break;
 		/*case "sta_dect":{
