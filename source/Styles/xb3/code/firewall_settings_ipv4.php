@@ -83,7 +83,7 @@ $(document).ready(function() {
         e.preventDefault();
         var currentSetting = $("input[name=firewall_level]:checked").parent().find("label:first").text();
         jConfirm(
-            "The firewall security level is currently set to " + currentSetting + ". Are you sure you want the change to default settings?"
+            "The firewall security level is currently set to " + currentSetting + ". Are you sure you want to change to default settings?"
             ,"Reset Default Firewall Settings"
             ,function(ret) {
                 if(ret) {
