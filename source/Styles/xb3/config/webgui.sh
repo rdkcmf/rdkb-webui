@@ -91,7 +91,9 @@ getDateTime()
 HTTP_SECURITY_HEADER_ENABLE=`syscfg get HTTPSecurityHeaderEnable`
 
 if [ "$HTTP_SECURITY_HEADER_ENABLE" = "true" ]; then
-        echo "setenv.add-response-header = (\"X-Frame-Options\" => \"deny\",\"X-XSS-Protection\" => \"1; mode=block\",\"X-Content-Type-Options\" => \"nosniff\",\"Content-Security-Policy\" => \"img-src 'self'; font-src 'self'; form-action 'self';\")"  >> $LIGHTTPD_CONF
+	echo "setenv.add-response-header = (\"Cache-Control\" => \"public,no-store, no-cache, must-revalidate,proxy-revalidate, post-check=0, pre-check=0, max-age=0\",\"Pragma\" => \"no-cache\",\"X-Frame-Options\" => \"deny\",\"X-XSS-Protection\" => \"1; mode=block\",\"X-Content-Type-Options\" => \"nosniff\",\"Content-Security-Policy\" => \"img-src 'self'; font-src 'self'; form-action 'self';\")"  >> $LIGHTTPD_CONF
+else
+	echo "setenv.add-response-header = (\"Cache-Control\" => \"public,no-store, no-cache, must-revalidate,proxy-revalidate, post-check=0, pre-check=0, max-age=0\",\"Pragma\" => \"no-cache\")" >> $LIGHTTPD_CONF
 fi
 
 echo "server.port = $HTTP_ADMIN_PORT" >> $LIGHTTPD_CONF
