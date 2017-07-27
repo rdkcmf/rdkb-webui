@@ -390,7 +390,6 @@ $(document).ready(function() {
 					array_push($arrayBlockMAC, $ManagedDevices[$key]['MACAddress']);
 				}
 			}
-			//var_dump($HostNum);
 			//for WiFi Extender
 			for ($e=0; $e < $HostNum; $e++) {
 				if($Host[$e]['X_RDKCENTRAL-COM_DeviceType'] == 'extender'){
@@ -754,33 +753,28 @@ $(document).ready(function() {
 		/*
 	    ** Hotspot feature ----XfinitySSID part
 	    */
-		$Hostspot_1_clients = array();
-        $Hostspot_2_clients = array();
-		$rootObjName    = "Device.X_COMCAST-COM_GRE.Tunnel.1.SSID.1.AssociatedDevice.";
-		$paramNameArray = array($rootObjName);
-		$mapping_array  = array("MACAddress", "Hostname", "RSSILevel", "IPv4Address", "DHCPv4Status", "IPv6Address", 
-							"IPv6Prefix", "DHCPv6Status", "IPv6LinkLocalAddress");
-		$Hotspot_1_idAr = DmExtGetInstanceIds($rootObjName);
-		if(0 == $Hotspot_1_idAr[0]){  
-		    // status code 0 = success   
-			$Hotspot_1_clientsNum = count($Hotspot_1_idAr) - 1;
+		function get_hotspot_clients(){
+			//get_hotspot_clients() will get all the clients connected to Hotspot AssociatedDevice SSID's
+			$Hostspot_SSIDNumberOfEntries = getStr("Device.X_COMCAST-COM_GRE.Tunnel.1.SSIDNumberOfEntries");
+			$Hotspot_clients = array();
+			for($idx = 1; $idx <= $Hostspot_SSIDNumberOfEntries; $idx++) {
+				$rootObjName	= "Device.X_COMCAST-COM_GRE.Tunnel.1.SSID.$idx.AssociatedDevice.";
+				$paramNameArray	= array($rootObjName);
+				$mapping_array	= array("MACAddress", "Hostname", "RSSILevel", "IPv4Address", "DHCPv4Status", "IPv6Address", "IPv6Prefix", "DHCPv6Status", "IPv6LinkLocalAddress");
+				$Hotspot_SSID_idAr = DmExtGetInstanceIds($rootObjName);
+				if(0 == $Hotspot_SSID_idAr[0]){
+					// status code 0 = success
+					$Hotspot_SSID_clientsNum = count($Hotspot_SSID_idAr) - 1;
+				}
+				//$Hotspot_SSID_clientsNum = getStr("Device.X_COMCAST-COM_GRE.Tunnel.1.SSID.1.AssociatedDeviceNumberOfEntries");
+				if(!empty($Hotspot_SSID_clientsNum)){
+					$Hotspot_SSID_clients = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+					$Hotspot_clients = array_merge($Hotspot_clients, $Hotspot_SSID_clients);
+				}
+			}
+			return $Hotspot_clients;
 		}
-		//$Hotspot_1_clientsNum = getStr("Device.X_COMCAST-COM_GRE.Tunnel.1.SSID.1.AssociatedDeviceNumberOfEntries");
-	    if(!empty($Hotspot_1_clientsNum)){
-			$Hostspot_1_clients = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-		}
-		$rootObjName    = "Device.X_COMCAST-COM_GRE.Tunnel.1.SSID.2.AssociatedDevice.";
-		$paramNameArray = array($rootObjName);
-		$Hotspot_2_idAr = DmExtGetInstanceIds($rootObjName);
-		if(0 == $Hotspot_2_idAr[0]){  
-		    // status code 0 = success   
-			$Hotspot_2_clientsNum = count($Hotspot_2_idAr) - 1;
-		}
-		//$Hotspot_2_clientsNum = getStr("Device.X_COMCAST-COM_GRE.Tunnel.1.SSID.2.AssociatedDeviceNumberOfEntries");
-		if(!empty($Hotspot_2_clientsNum)){
-			$Hostspot_2_clients = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-		}
-		$Hotspot_clients = array_merge($Hostspot_1_clients, $Hostspot_2_clients);
+		$Hotspot_clients = get_hotspot_clients();
 		$clients_num = count($Hotspot_clients);
     echo '<div  class="module forms data div-pub-network" style="position:relative; top:10px; ">';
       	echo '<h2>Online Devices-xfinitywifi SSID</h2>';
