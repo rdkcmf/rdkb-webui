@@ -45,6 +45,7 @@ function sec2dhms($sec)
 	return "D: $day H: $hor M: $min S: $tmp[1]";
 }
 	$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
+	$WAN_Status = getStr($fistUSif."Status");
 	$WANIPv4 = getStr($fistUSif."IPv4Address.1.IPAddress");
 	$ids = explode(",", getInstanceIds($fistUSif."IPv6Address."));
 	foreach ($ids as $i){
@@ -66,7 +67,7 @@ function sec2dhms($sec)
 			$WANIPv6LinkLocal = $val;
 		}
 	}
-	$sta_inet = ($WANIPv4 != "0.0.0.0" || strlen($WANIPv6) > 0) ? "true" : "false";
+	$sta_inet = ($WAN_Status == "Up") ? "true" : "false";
 	//in Bridge mode > Internet connectivity status is always active
 	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
 ?>

@@ -32,16 +32,8 @@ if (!isset($_SESSION["loginuser"])) {
 	elseif($sta_batt > 8) { $battery_class = "bat-10"; }
 	else { $battery_class = "bat-0"; }
 	$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
-	$WANIPv4 = getStr($fistUSif."IPv4Address.1.IPAddress");
-	$ids = explode(",", getInstanceIds($fistUSif."IPv6Address."));
-	foreach ($ids as $i){
-		$val = getStr($fistUSif."IPv6Address.$i.IPAddress");
-		if (!strstr($val, "fe80::")){
-			$WANIPv6 = $val;
-			break;
-		}
-	}
-	$sta_inet = ($WANIPv4 != "0.0.0.0" || strlen($WANIPv6) > 0) ? "true" : "false";
+	$WAN_Status = getStr($fistUSif."Status");
+	$sta_inet = ($WAN_Status == "Up") ? "true" : "false";
 	//in Bridge mode > Internet connectivity status is always active
 	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
 	$sta_wifi = "false";
