@@ -294,14 +294,13 @@ $(document).ready(function() {
 		<p class="hidden">To block Internet access to a device connected to your Gateway, click the <strong>X</strong> button. </p>
 	</div>
 <?php } ?>
-<?php if($loginuser == "mso"){
+<?php
 	$checked = ($PreferPrivate == "true")?"checked":"";
 	echo '<div class="module" id="prefer_private_connection">
 		<div class="select-row">
 			<label class="readonlyLabel label" for="prefer_private">Prefer Private Connection</label><input style="margin-top: 8px" type="checkbox" id="prefer_private" name="prefer_private" '.$checked.' >
 		</div>
 	</div>';
-}
 ?>
 	<div id='online-private' class="module data">
         <h2 id='online-table-cap'>Online Devices-Private Network</h2>
