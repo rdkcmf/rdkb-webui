@@ -14,6 +14,7 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/utility.php'); ?>
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
@@ -74,7 +75,7 @@ for ($i=0; !feof($file); ) {
 	$User 	    = substr(fgets($file),$pos);
 	$TargetIP 	= substr(fgets($file),$pos);
 	$Type 	    = rtrim(substr(fgets($file),$pos)); //need to trim the blank char in string end, otherwise $type never equal to $Type
-	$time 	    = substr(fgets($file),$pos);
+	$time       = UTC_to_local_date_logs(substr(fgets($file),$pos));
 	$Des 	    = substr(fgets($file),$pos);
 	if (feof($file)) break;					//PHP read last line will return false, not EOF!
 	$timeU = strtotime($time);

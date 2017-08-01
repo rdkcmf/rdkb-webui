@@ -341,6 +341,16 @@ function UTC_to_local_Time($utcTime, $blockedDays){
 	if($timeChangeNeg)	$blockedDays = shift_blockedDays($blockedDays, false);
 	return array(sec_to_hm($localTime), $blockedDays);
 }
+function UTC_to_local_date($utcTime){
+        global $timeOffset;
+        $localTime = strtotime($utcTime) + $timeOffset;
+        return gmdate("Y-m-d H:i:s", $localTime);
+}
+function UTC_to_local_date_logs($utcTime){
+        global $timeOffset;
+        $localTime = strtotime($utcTime) + $timeOffset;
+        return gmdate("M d H:i:s Y", $localTime);
+}
 //
 function time_in_min($time){
 	$min = explode(':', $time);
