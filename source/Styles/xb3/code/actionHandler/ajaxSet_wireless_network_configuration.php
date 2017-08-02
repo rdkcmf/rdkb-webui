@@ -71,12 +71,12 @@ if (array_key_exists('band_steering', $arConfig))
 			if($validation) $validation = (preg_match('/^\d\d*$/', $arConfig['RSSIThreshold2']) == 1);
 			if($validation) $validation = (preg_match('/^\d\d*$/', $arConfig['PhyRateThreshold2']) == 1);
 			if($validation){
-				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.Enable", $arConfig['bs_enable'], false);
-				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.1.UtilizationThreshold", $arConfig['UtilzThreshold1'], false);
-				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.1.RSSIThreshold", $arConfig['RSSIThreshold1'], false);
-				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.1.PhyRateThreshold", $arConfig['PhyRateThreshold1'], false);
-				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.UtilizationThreshold", $arConfig['UtilzThreshold2'], false);
-				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.RSSIThreshold", $arConfig['RSSIThreshold2'], false);
+				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.Enable", $arConfig['bs_enable'], true);
+				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.1.UtilizationThreshold", $arConfig['UtilzThreshold1'], true);
+				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.1.RSSIThreshold", $arConfig['RSSIThreshold1'], true);
+				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.1.PhyRateThreshold", $arConfig['PhyRateThreshold1'], true);
+				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.UtilizationThreshold", $arConfig['UtilzThreshold2'], true);
+				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.RSSIThreshold", $arConfig['RSSIThreshold2'], true);
 				setStr("Device.WiFi.X_RDKCENTRAL-COM_BandSteering.BandSetting.2.PhyRateThreshold", $arConfig['PhyRateThreshold2'], true);
 			}
 			echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
