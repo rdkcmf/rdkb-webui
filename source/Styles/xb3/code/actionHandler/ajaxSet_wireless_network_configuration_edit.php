@@ -42,7 +42,7 @@ function MiniApplySSID($ssid) {
 }
 //ssid 1,2 for all
 //ssid 3,4 for mso only
-if ($i == 1 || $i == 2 || (($_SESSION["loginuser"] == "mso") && ($i == 3 || $i == 4))) {
+if ($i == 1 || $i == 2) {
 	// check if the LowerLayers radio is enabled. if disable, no need to configure following
 	if ("true" == getStr("Device.WiFi.Radio.$r.Enable")) {
 		//change SSID status first, if disable, no need to configure following
