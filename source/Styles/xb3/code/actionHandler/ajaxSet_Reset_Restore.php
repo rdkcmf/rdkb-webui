@@ -63,14 +63,14 @@ switch ($infoArray[0]) {
 		echo htmlspecialchars(json_encode($ret), ENT_NOQUOTES, 'UTF-8');
 		setStr("Device.X_CISCO_COM_DeviceControl.RebootDevice", $infoArray[1],true);
 		//force to restart radio even no change
-		setStr("Device.WiFi.X_CISCO_COM_ResetRadios", "true", true);
+		//setStr("Device.WiFi.X_CISCO_COM_ResetRadios", "true", true);
 		exit(0);
 	case "btn3" :
 		$ret["wifi"] = true;
 		echo htmlspecialchars(json_encode($ret), ENT_NOQUOTES, 'UTF-8');
 		setStr("Device.X_CISCO_COM_DeviceControl.RebootDevice", $infoArray[1],true);
 		//force to restart radio even no change
-		setStr("Device.WiFi.X_CISCO_COM_ResetRadios", "true", true);
+		//setStr("Device.WiFi.X_CISCO_COM_ResetRadios", "true", true);
 		exit(0);
 	case "btn4" :
 		$ret["wifi"] = true;
