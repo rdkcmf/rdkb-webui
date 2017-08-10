@@ -1226,7 +1226,6 @@ function saveBandSteeringSettings()
 			<th id="other-Frequency" class="name">Frequency Band</th>
 			<th id="other-MAC" width="20%" class="protocals">MAC Address</th>
 			<th id="other-Security" width="30%" class="security">Security Mode</th>
-			<th id="other-Blank" width="10%" class="edit">&nbsp;</th>
 		</tr>
 		<?php
 		//$ssids 		= explode(",", getInstanceIds("Device.WiFi.SSID."));
@@ -1253,7 +1252,6 @@ function saveBandSteeringSettings()
 			echo 	'<td headers="other-Frequency">'.$other_v[$j]['freq'].'</td>';
 			echo 	'<td headers="other-MAC">'.$other_v[$j]['bssid'].'</td>';
 			echo 	'<td headers="other-Security">'.$other_v[$j]['secur'].'</td>';
-			echo 	'<td headers="other-Blank"><a class="btn '.$other_v[$j]['sufix'].'" href="wireless_network_configuration_edit'.$other_v[$j]['sufix'].'.php?id='.$other_v[$j]['id'].'">Edit</a></td>';
 			echo '</tr>';
 		}
 		?>
@@ -1272,7 +1270,6 @@ function saveBandSteeringSettings()
 			<th id="public-Frequency" class="name">Frequency Band</th>
 			<th id="public-MAC" width="20%" class="protocals">MAC Address</th>
 			<th id="public-Security" width="30%" class="security">Security Mode</th>
-			<th id="public-Blank" width="10%" class="edit">&nbsp;</th>
 		</tr>
 		<?php
 		//$ssids 		= explode(",", getInstanceIds("Device.WiFi.SSID."));
@@ -1299,7 +1296,6 @@ function saveBandSteeringSettings()
 			echo 	'<td headers="public-Frequency">'.$public_v[$j]['freq'].'</td>';
 			echo 	'<td headers="public-MAC">'.$public_v[$j]['bssid'].'</td>';
 			echo 	'<td headers="public-Security">'.$public_v[$j]['secur'].'</td>';
-			echo 	'<td headers="public-Blank"><a class="btn '.$public_v[$j]['sufix'].'" href="wireless_network_configuration_edit'.$public_v[$j]['sufix'].'.php?id='.$public_v[$j]['id'].'">Edit</a></td>';
 			echo '</tr>';
 		}
 		?>
