@@ -491,7 +491,7 @@ $(document).ready(function() {
 		}
 		?>
         jConfirm(
-            "Are you sure you want the change to default settings?"
+            "Are you sure you want to change to default settings?"
             ,"Reset Default Settings"
             ,function(ret) {
                 if (ret) {
