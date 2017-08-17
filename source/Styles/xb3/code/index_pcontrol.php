@@ -142,12 +142,9 @@
 		    </g>
 		</svg>
 		<div class="dp-space-filler-30"></div>
-		<p class="dp-header dp-white-text">This device has been paused or is in Bedtime Mode.</p>
-		<div class="dp-space-filler-below-header"></div>
-		<p class="dp-text dp-gray-text">Access to the Internet and the Comcast network on this device has been paused.</p>
+		<p class="dp-header dp-white-text">This device is paused or in Bedtime Mode.</p>
 		<div class="dp-space-filler-30"></div>
-		<div class="dp-space-filler-30 dp-border-top-splitter"></div>
-		<p class="dp-text dp-gray-text">To resume access, visit the XFNITY xFi app or xfinity.com/myxfi using a different Internet connection or device.</p>		
+		<p class="dp-text dp-gray-text">To resume access to the Internet on your home network, open the XFINITY xFi app or visit xfinity.com/myxfi using a different connection or device.</p>
 	</div>
 </body>
 </html>
