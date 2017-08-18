@@ -140,6 +140,8 @@ $(document).ready(function() {
 		$('#backup_NC').text($BackupNC_data);
 	}
 	function moca_bonded_paths($MeshPHYTxRate, $Tx_HighestVersion, $Rx_HighestVersion){
+		$Tx_HighestVersion = $Tx_HighestVersion.replace('.','');
+		$Rx_HighestVersion = $Rx_HighestVersion.replace('.','');
 		if($Tx_HighestVersion == 20 && $Rx_HighestVersion == 20)
 			$HighestVersion = 20;
 		else if($Tx_HighestVersion == 11 || $Rx_HighestVersion == 11)
