@@ -350,7 +350,7 @@ if ("WPA2-Personal" == $encrypt_mode1){
 					echo '<h2>Home Network Wizard</h2>';
 				}
 			?>
-			<p class="summary">Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi G, N) and 5GHz(Wi-Fi A, N) compatible devices.</p>
+			<p class="summary">Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi G, N) and 5GHz(Wi-Fi A, N, AC) compatible devices.</p>
 			<div class="form-row odd">
 				<label for="network_name">Wi-Fi Network Name (2.4GHz):</label>
 				<input type="text" size="23" value="<?php echo htmlspecialchars($network_name);?>" id="network_name" name="network_name" class="text" />
