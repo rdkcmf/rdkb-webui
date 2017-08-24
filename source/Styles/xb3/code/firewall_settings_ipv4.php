@@ -198,11 +198,18 @@ $(document).ready(function() {
             $block_multicast = $firewall_value["block_multicast"];
             $block_peer = $firewall_value["block_peer"];
             $block_ident = $firewall_value["block_ident"];
+            $videoServiceEnable = getStr("Device.X_RDKCENTRAL-COM_VideoService.Enabled");
+            $videoDisable = ($videoServiceEnable=="true") ? "disabled" : "";
 		?>
 		<ul class="combo-group" id="security-level">
 			<li id="max">
-				<input type="radio" name="firewall_level" value="high" id="firewall_level_maximum" <?php if ( !strcasecmp("High", $SecurityLevel)) echo "checked"; ?> />
-				<label for="firewall_level_maximum" class="label">Maximum Security (High)</label>
+				<input type="radio" name="firewall_level" value="high" id="firewall_level_maximum" <?php if ( !strcasecmp("High", $SecurityLevel)) echo "checked"; echo $videoDisable; ?>/>
+				<label for="firewall_level_maximum" class="label">Maximum Security (High)
+				</label>
+				<?php
+					if($videoServiceEnable=="true")
+						echo '<p class="error"> Video Service only works in this setting. </p>';
+				?>
 				<div class="hide">
 					<p><strong>LAN-to-WAN:</strong> Allow as per below.</p>
 					<dl>

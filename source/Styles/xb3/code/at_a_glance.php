@@ -45,7 +45,8 @@ session_start();
 	$_SESSION['sta_fire'] = $sta_fire;
 	$_SESSION['sta_batt'] = $sta_batt;
 	$_SESSION['battery_class'] = $battery_class;
-?>
+	$videoServiceEnable = getStr("Device.X_RDKCENTRAL-COM_VideoService.Enabled");
+	?>
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
@@ -72,6 +73,12 @@ $(document).ready(function() {
 		title_off: "Disable bridge mode",
 		state: "<?php echo ($bridge_mode != 'router' ? "on" : "off"); ?>"
 	});
+	<?php
+		if ($videoServiceEnable == "true") {
+			echo '$("#bridge_switch").children(".rs_radiolist").addClass("disabled_state");';
+			echo '$("#bridge_switch").data("radioswitchstates", "false");';
+		}
+	?>
 	function changeBridge(isBridgeModelEnable) {
 		var cnt = 210;
 		jProgress('Bridge Mode changes will be fully applied in <b id="cnt">' + cnt + '</b> seconds, please be patient...', 600);
@@ -234,6 +241,12 @@ function popUp(URL) {
 			<div class="select-row">
 				<span class="readonlyLabel label">Bridge Mode:</span>
 				<span id="bridge_switch"></span>
+				<?php
+					if($videoServiceEnable=="true") {
+						echo '<br><br>';
+						echo '<p class="error"> Video Service only works in this setting. </p>';
+					}
+				?>
 			</div>
 		</div>
 	<div class="module forms">

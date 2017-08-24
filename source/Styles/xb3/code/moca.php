@@ -45,7 +45,8 @@
 	// $privacy_enable	= "false";
 	// $net_password	= "1234567891011";
 	$isNotAdmin = ("admin" != $_SESSION["loginuser"])?true:false;
-?>
+	$videoServiceEnable = getStr("Device.X_RDKCENTRAL-COM_VideoService.Enabled");
+	?>
 <style type="text/css">
 label{
 	margin-right: 10px !important;
@@ -70,6 +71,12 @@ $(document).ready(function() {
 		title_off: "Disable MoCA",
 		state: <?php echo ($moca_enable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});
+	<?php
+		if ($videoServiceEnable=="true") {
+			echo '$("#moca_switch").children(".rs_radiolist").addClass("disabled_state");';
+			echo '$("#moca_switch").data("radioswitchstates", "false");';
+		}
+	?>
 	/*$("#qos_switch").radioswitch({
 		id: "qos-switch",
 		radio_name: "enable_moca1",
@@ -300,6 +307,11 @@ function next_step()
 		<div class="select-row">
 			<label>MoCA:</label>
 			<span id="moca_switch"></span>
+			<?php if($videoServiceEnable=="true"){
+					echo '<br><br>';
+					echo '<p align="center" class="error"> Video Service only works in this setting. </p>';
+				}
+			?>
 		</div>
 		<div class="form-row odd" id="div_channel_switch">
 			<label for="channel_selection">Channel Selection:</label>

@@ -91,3 +91,18 @@
 .rs_radiolist.disabled li.rs_selected label {
 	font-weight: normal;
 }
+/* show current state, but disable option to select */
+.rs_radiolist.disabled_state li {
+	background: !important;
+	color: !important;
+	border: solid 1px #eee !important;
+	opacity:0.4;
+}
+.rs_radiolist.disabled_state li label {
+	cursor: not-allowed;
+}
+.rs_radiolist.disabled_state li.rs_selected {
+	text-shadow: none;
+}
+.rs_radiolist.disabled_state li.rs_selected label {
+	font-weight: normal;
