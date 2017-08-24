@@ -484,7 +484,7 @@ $(document).ready(function() {
 	$("#restore-default-settings-ipv4").click(function(e) {
 		e.preventDefault();
 		jConfirm(
-		"Are you sure you want the change LAN IPv4 to default settings?"
+		"Are you sure you want to change LAN IPv4 to default settings?"
 		,"Reset Default IPv4 Settings"
 		,function(ret) {
 		if(ret) {
@@ -923,7 +923,7 @@ $('#submit_ipv6').click(function(e){
 $('#restore_ipv6').click(function(e) {
 	e.preventDefault();
 	jConfirm(
-	"Are you sure you want the change LAN IPv6 to default settings?"
+	"Are you sure you want to change LAN IPv6 to default settings?"
 	,"Reset Default IPv6 Settings"
 	,function(ret) {
 	if(ret) {
