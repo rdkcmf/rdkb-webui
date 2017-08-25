@@ -376,7 +376,7 @@ $(document).ready(function() {
 			$("#channel_number").val('36');
 			$("#channel_number [value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true);
 		}
-	}).trigger("change");
+	});
 	$("#channel_number").change(function() {
 		if ("165" == $(this).val()){
 			$('[name="channel_bandwidth1"]:not([value="20MHz"])').prop("disabled", true);
