@@ -58,10 +58,8 @@ function isValidGW($gwAddress, $subnetMask, $beginAddress, $endAddress){
 	else if (explode('.', $gwAddress)[0] == '192') {
 		//for classC network only these subnetMask are allowed
 		if(!isValInArray($subnetMask, array("255.255.255.0"))) return false;
-		//192.168.0.1 ~ 192.168.146.1
-		if(!valid_GW_IP('192.168.0.1', '192.168.146.1', $gwAddress)) return false;
-		//192.168.148.1 ~ 192.168.255.1
-		if(!valid_GW_IP('192.168.148.1', '192.168.255.1', $gwAddress)) return false;
+		//192.168.0.1 ~ 192.168.146.1 || 192.168.148.1 ~ 192.168.255.1
+		if(!(valid_GW_IP('192.168.0.1', '192.168.146.1', $gwAddress) || valid_GW_IP('192.168.148.1', '192.168.255.1', $gwAddress))) return false;
 		$ipRange = ipRange($gwAddress, $subnetMask);
 	}
 	else return false;
