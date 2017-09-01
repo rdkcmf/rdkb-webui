@@ -650,10 +650,7 @@ function GetAddress(separator, id_prefix){
 	});
 	return ret.replace(eval('/'+separator+'$/'), '');
 }
-	if ("cusadmin" == "<?php echo $_SESSION["loginuser"]; ?>"){
-		$(".div_global").hide();
-	}
-	else if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>"){
+	if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>"){
 		$(".div_global").hide();
 	}
 function remote_access_block(){

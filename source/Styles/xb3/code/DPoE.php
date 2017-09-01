@@ -12,10 +12,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > XFINITY Network", "nav-comcast-network");
-	if ("cusadmin" == "<?php echo $_SESSION["loginuser"]; ?>"){
-		$(".div_dpoe").remove();
-	}
-	else if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>"){
+	if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>"){
 		$(".div_dpoe").remove();
 		$(".div_mta").remove();
 	}
