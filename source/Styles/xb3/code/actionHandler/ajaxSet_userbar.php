@@ -48,7 +48,11 @@ if (!isset($_SESSION["loginuser"])) {
 			}
 		}	
 	}
-	if("Disabled"==$_SESSION["psmMode"]) { $sta_moca = getStr("Device.MoCA.Interface.1.Enable"); }
+	if("Disabled"==$_SESSION["psmMode"]) {
+		$sta_moca = getStr("Device.MoCA.Interface.1.Enable"); 
+		$sta_moca = ($sta_moca=="") ? "false" : $sta_moca;
+	}
+
 	$sta_dect = getStr("Device.X_CISCO_COM_MTA.Dect.Enable");
 	$sta_fire = getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel");
 	$arConfig = array(
