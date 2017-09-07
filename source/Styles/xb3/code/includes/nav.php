@@ -20,15 +20,15 @@ $radius_servers   	= FALSE;
 $media_sharing    	= FALSE;
 $file_sharing     	= FALSE;
 $local_users      	= FALSE;
-$remote_management  	= TRUE;  //for xb3, all user will have this page, but different content
-$eMTA               	= TRUE;  //for mso/cusadmin
-$routing          	= TRUE;  //for mso only
-$email_notify		= TRUE;  //for mso only
-$hs_port_forwarding 	= TRUE; //for mso only
-$dynamic_dns        	= TRUE;  //for mso/cusadmin
-$nat		        = FALSE;  //for mso/cusadmin
+$remote_management  	= TRUE;		//for xb3, all user will have this page, but different content
+$eMTA               	= TRUE;		//for mso
+$routing          	= TRUE;		//for mso
+$email_notify		= TRUE;		//for mso
+$hs_port_forwarding 	= TRUE;		//for mso
+$dynamic_dns        	= TRUE;		//for mso
+$nat		        = FALSE;	//for mso
 $wifi_spectrum_analyzer = TRUE;
-$password_change	= FALSE;  //for admin only
+$password_change	= FALSE;	//for admin only
 $wizard        		= TRUE;
 $wifi_spec_analyzer	= TRUE;
 $advanced_tab		= TRUE;
@@ -54,12 +54,7 @@ if (isset($_SESSION['lanMode']) && $_SESSION["lanMode"] == "bridge-static") {
 	$MoCA				= FALSE;
 	$wifi_spec_analyzer	= FALSE;
 }
-if (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'cusadmin') {
-	$routing		= FALSE;
-	$email_notify		= FALSE;
-	$hs_port_forwarding 	= FALSE;
-}
-elseif (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'admin') {
+if (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'admin') {
 	$eMTA 			= FALSE;	
 	$routing 		= FALSE;
 	$email_notify		= FALSE;

@@ -57,7 +57,6 @@ if($validation) {
 	if ($_POST['startIPv6']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.StartIpV6",$_POST['startIPv6'],true);
 	if ($_POST['endIPv6']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.EndIpV6",$_POST['endIPv6'],true);
 	//if ($_POST['mso_mgmt']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.EnableMsoRemoteMgmt",$_POST['mso_mgmt'],true);
-	//if ($_POST['cus_mgmt']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.EnableCusadminRemoteMgmt",$_POST['cus_mgmt'],true);
 	// put change port at the end of this script
 	if ($_POST['https']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpsEnable",$_POST['https'],true);
 	if ($_POST['httpsport']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.HTTPSPort",$_POST['httpsport'],true);

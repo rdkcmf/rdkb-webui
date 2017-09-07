@@ -480,7 +480,6 @@ $(document).ready(function() {
 	$odd 		= true;
 	// xb3-1.6 remove homesecurity wifi for now
 	// $ssids 		= explode(",", "");
-	// hide homesecurity for cusadmin
 	if ("mso" != $_SESSION["loginuser"]) {
 		$ssids	= array();
 	}
@@ -526,7 +525,6 @@ $(document).ready(function() {
 	$odd 		= true;
 	// xb3-1.6 add hotspot wifi
 	// $ssids 		= explode(",", "");
-	// hide hotspot for cusadmin
 	if ("mso" != $_SESSION["loginuser"]) {
 		$ssids	= array();
 	}

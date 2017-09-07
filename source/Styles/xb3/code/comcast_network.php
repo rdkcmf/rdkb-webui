@@ -12,10 +12,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > XFINITY Network", "nav-comcast-network");
-	if ("cusadmin" == "<?php echo $_SESSION["loginuser"]; ?>"){
-		$(".div_cm").remove();
-	}
-	else if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>"){
+	if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>"){
 		$(".div_cm").remove();
 		$(".div_mta").remove();
 	}
@@ -443,24 +440,6 @@ if($_SESSION["loginuser"] == "mso"){
 		"DHCPOption8"			=> "Device.X_CISCO_COM_MTA.DHCPOption8",
 		"PrimaryDHCPServer"		=> "Device.X_CISCO_COM_MTA.PrimaryDHCPServer",
 		"SecondaryDHCPServer"	=> "Device.X_CISCO_COM_MTA.SecondaryDHCPServer",
-		);
-	$mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
-} else if($_SESSION["loginuser"] == "cusadmin"){
-	$mta_param = array(
-		"FQDN"					=> "Device.X_CISCO_COM_MTA.FQDN",
-		"IPAddress"				=> "Device.X_CISCO_COM_MTA.IPAddress",
-		"SubnetMask"			=> "Device.X_CISCO_COM_MTA.SubnetMask",
-		"Gateway"				=> "Device.X_CISCO_COM_MTA.Gateway",
-		"BootFileName"			=> "Device.X_CISCO_COM_MTA.BootFileName",
-		"LeaseTimeRemaining"	=> "Device.X_CISCO_COM_MTA.LeaseTimeRemaining",
-		"RebindTimeRemaining"	=> "Device.X_CISCO_COM_MTA.RebindTimeRemaining",
-		"RenewTimeRemaining"	=> "Device.X_CISCO_COM_MTA.RenewTimeRemaining",
-		"PrimaryDNS"			=> "Device.X_CISCO_COM_MTA.PrimaryDNS",
-		"SecondaryDNS"			=> "Device.X_CISCO_COM_MTA.SecondaryDNS",
-		"DHCPOption3"			=> "Device.X_CISCO_COM_MTA.DHCPOption3",
-		"DHCPOption6"			=> "Device.X_CISCO_COM_MTA.DHCPOption6",
-		"DHCPOption7"			=> "Device.X_CISCO_COM_MTA.DHCPOption7",
-		"DHCPOption8"			=> "Device.X_CISCO_COM_MTA.DHCPOption8",
 		);
 	$mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
 } else {

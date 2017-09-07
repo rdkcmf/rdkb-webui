@@ -54,8 +54,6 @@ function getInstanceNum()
 	{
 	case "mso":
 		return 1;
-	case "cusadmin":
-		return 2;
 	case "admin":
 		return 3;
 	default: return 0;
