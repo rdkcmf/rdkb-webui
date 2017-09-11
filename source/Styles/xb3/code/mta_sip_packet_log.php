@@ -9,6 +9,23 @@
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > MTA >SIP Packet Log", "nav-service-sip");
+	var entities = {
+		'amp': '&',
+		'apos': '\'',
+		'#x27': '\'',
+		'#x2F': '/',
+		'#39': '\'',
+		'#47': '/',
+		'lt': '<',
+		'gt': '>',
+		'nbsp': ' ',
+		'quot': '"'
+	}
+function decodeHTMLEntities (text) {
+  return text.replace(/&([^;]+);/gm, function (match, entity) {
+    return entities[entity] || match
+  })
+}
 	$("#showlogs").click(function() {
 		jConfirm("This action may take more than one minute. Do you want to continue?", "Are You Sure?", function(ret){
 			if(ret){
@@ -30,7 +47,7 @@ $(document).ready(function() {
 							document.getElementById('event').innerHTML='<h2>MTA SIP Packet Log</h2><table summary="This table shows SIP Packet Log" id="event_logs_today" class="data" style="word-break:break-all"><thead><th id="sip_value">Description</th><th width="111" id="sip_time">Time</th></thead><tbody></tbody><tfoot><tr class="acs-hide"><td headers="sip_value">null</td><td headers="sip_time">null</td></tr></tfoot></table>';
 						}
 						$.each(results,function(key,value) {
-							$("#event_logs_today > tbody").append('<tr class="'+trClass+'"><td headers="sip_value">'+value.Des+'</td><td headers="sip_time">'+value.time+'</td></tr>');
+							$("#event_logs_today > tbody").append('<tr class="'+trClass+'"><td headers="sip_value">'+decodeHTMLEntities(value.Des)+'</td><td headers="sip_time">'+value.time+'</td></tr>');
 							trClass=((trClass=="")?"odd":"");
 							length++;
 						});
