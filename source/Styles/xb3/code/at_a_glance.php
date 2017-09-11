@@ -46,6 +46,7 @@ session_start();
 	$_SESSION['sta_batt'] = $sta_batt;
 	$_SESSION['battery_class'] = $battery_class;
 	$videoServiceEnable = getStr("Device.X_RDKCENTRAL-COM_VideoService.Enabled");
+	$Mesh_Enable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.Enable");
 	?>
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
@@ -74,7 +75,7 @@ $(document).ready(function() {
 		state: "<?php echo ($bridge_mode != 'router' ? "on" : "off"); ?>"
 	});
 	<?php
-		if ($videoServiceEnable == "true") {
+		if ($videoServiceEnable == "true" || $Mesh_Enable=="true") {
 			echo '$("#bridge_switch").children(".rs_radiolist").addClass("disabled_state");';
 			echo '$("#bridge_switch").data("radioswitchstates", "false");';
 		}
@@ -245,6 +246,10 @@ function popUp(URL) {
 					if($videoServiceEnable=="true") {
 						echo '<br><br>';
 						echo '<p class="error"> Video Service only works in this setting. </p>';
+					}
+					if($Mesh_Enable=="true") {
+						echo '<br><br>';
+						echo '<p class="error"> Wi-Fi Mesh only works in this setting. </p>';
 					}
 				?>
 			</div>
