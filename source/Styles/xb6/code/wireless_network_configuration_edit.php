@@ -18,7 +18,7 @@ if(!($_GET['id'] == 1 || $_GET['id'] == 2)){
 $id		= isset($_GET['id']) ? $_GET['id'] : "1";
 $rf		= (2 - intval($id)%2);	//1,3,5,7 == 1(2.4G); 2,4,6,8 == 2(5G)
 $radio_band	= (1 == $rf) ? "2.4" : "5";
-$valid_ids	= array(1,2,3,4);
+$valid_ids	= array('1','2','3','4');
 // check if the LowerLayers radio is enabled. if disable, no need to configure
 if ("false" == getStr("Device.WiFi.Radio.$rf.Enable")) {
 	/*if (!$_SESSION['_DEBUG'])*/
