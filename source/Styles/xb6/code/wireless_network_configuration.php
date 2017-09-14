@@ -10,7 +10,7 @@
 	if ("" != $ret){echo $ret;	return;}
 	//from connected_devices_computers.php only 3, 5 are expected
 	if(isSet($_GET['mac_ssid']))
-		if (!($_GET['mac_ssid'] == 3 || $_GET['mac_ssid'] == 5)) die();
+		if (!($_GET['mac_ssid'] == '3' || $_GET['mac_ssid'] == '5')) die();
 ?>
 <?php
 $Mesh_Enable 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.Enable");
@@ -385,7 +385,7 @@ $(document).ready(function() {
 		state: G_wps_method !== "PushButton" ? "on" : "off"
 	});
 	function disable_ssid_options(element, index){
-		$("#"+element+" tbody tr:nth-child("+index+")").addClass('disabled');		
+		$("#"+element+" tbody tr:nth-child("+index+")").addClass('disabled');
 		$("#"+element+" tbody tr:nth-child("+index+") td:nth-child(1) b font").css('color', 'grey');
 		$("#"+element+" tbody tr:nth-child("+index+") td:nth-child(5) a").addClass('disabled');
 		$("#"+element+" tbody tr:nth-child("+index+") .btn").click(function(e) {

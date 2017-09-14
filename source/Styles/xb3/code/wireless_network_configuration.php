@@ -10,7 +10,7 @@
 	if ("" != $ret){echo $ret;	return;}
 	//from connected_devices_computers.php only 3, 5 are expected
 	if(isSet($_GET['mac_ssid']))
-		if (!($_GET['mac_ssid'] == 3 || $_GET['mac_ssid'] == 5)) die();
+		if (!($_GET['mac_ssid'] == '3' || $_GET['mac_ssid'] == '5')) die();
 ?>
 <?php
 $Mesh_Enable 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.Enable");
@@ -1665,7 +1665,7 @@ function saveBandSteeringSettings()
 		<option value="2" <?php if ("2"==$HT_TxStream1) echo 'selected="selected"';?> >2</option>
 		<option value="1" <?php if ("1"==$HT_TxStream1) echo 'selected="selected"';?> >1</option>
 		</select>
-	</div> 
+	</div>
 	<div class="form-row ">
 		<label for="HT_RxStream1">HT RxStream:</label>
 		<select name="HT_RxStream1" id="HT_RxStream1">

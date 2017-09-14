@@ -1,7 +1,4 @@
 <?php include('includes/header.php'); ?>
-<div id="pop_mask" style="z-index:100; position: fixed; height: 100%; width: 100%;">
-<img style="position: fixed; left: 50%; top: 16%;" src="./cmn/img/loading.gif"  alt="Loading..."/><br>
-</div>
 <div id="sub-header">
     <?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
@@ -15,16 +12,20 @@ if (isset($_GET['line']))
 	//line only 1, 2 are allowed
 	//call only 1, 50 are allowed
 	//action only display, clear_line, clear_all are allowed
-	if	(($_GET['line'] == 1 || $_GET['line'] == 2) &&
-			(($_GET['call'] > 0 && $_GET['call'] < 51) || $_GET['call'] == 'all' || $_GET['call'] == 'table') &&
+	if	(($_GET['line'] == '1' || $_GET['line'] == '2') &&
+			((preg_match('/^(50|[1234][0-9]|[1-9])$/', $_GET['call'])) || $_GET['call'] == 'all' || $_GET['call'] == 'table') &&
 				($_GET['action'] == 'display' || $_GET['action'] == 'clear_line' || $_GET['action'] == 'clear_all')
 	){
 		$line	= $_GET['line'];
 		$call	= $_GET['call'];
 		$action	= $_GET['action'];
 	}
+	else die();
 }
 ?>
+<div id="pop_mask" style="z-index:100; position: fixed; height: 100%; width: 100%;">
+<img style="position: fixed; left: 50%; top: 16%;" src="./cmn/img/loading.gif"  alt="Loading..."/><br>
+</div>
 <script type="text/javascript">
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > Voice Quality Metrics", "nav-comcast-voice");
