@@ -17,7 +17,7 @@ $RemoteAccess_param = array(
 $RemoteAccess_value = KeyExtGet("Device.UserInterface.X_CISCO_COM_RemoteAccess.", $RemoteAccess_param);
 $DeviceControl_param = array(
 	"https_port"	=> "Device.X_CISCO_COM_DeviceControl.HTTPSPort",
-	"telnet_mode"	=> "Device.X_CISCO_COM_DeviceControl.TelnetEnable",
+	//"telnet_mode"	=> "Device.X_CISCO_COM_DeviceControl.TelnetEnable",
 	//"ssh_mode"	=> "Device.X_CISCO_COM_DeviceControl.SSHEnable",
 	"ipv4_gw"	=> "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress",
 	"ipv4_smask"	=> "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask",
@@ -30,8 +30,6 @@ $end_ip		= $RemoteAccess_value['end_ip'];
 $start_ipv6	= $RemoteAccess_value['start_ipv6'];
 $end_ipv6	= $RemoteAccess_value['end_ipv6'];
 $https_port	= $DeviceControl_value['https_port'];
-$telnet_mode	= $DeviceControl_value['telnet_mode'];
-//$ssh_mode	= $DeviceControl_value['ssh_mode'];
 $ipv4_gw	= $DeviceControl_value['ipv4_gw'];
 $ipv4_smask	= $DeviceControl_value['ipv4_smask'];
 ?>
@@ -48,8 +46,6 @@ $(document).ready(function() {
 	comcast.page.init("Advanced > Remote Management", "nav-remote-management");
 	var HTTPS = <?php echo ($https_mode === 'true' ? "true" : "false"); ?>;
 	var HTTPSPORT = "<?php echo $https_port;?>";
-	var TELNET = <?php echo ((($telnet_mode === 'true') && ($_SESSION["loginuser"] == "mso")) ? "true" : "false"); ?>;
-	//var SSH = <?php echo ((($ssh_mode === 'true') && ($_SESSION["loginuser"] == "mso")) ? "true" : "false"); ?>;
 	$("#https_switch").radioswitch({
 		id: "https-switch",
 		radio_name: "https",
@@ -83,38 +79,6 @@ $(document).ready(function() {
 		}
 	});
 	$("#https").val(HTTPSPORT).prop("disabled", !HTTPS);
-	$("#telnet1_switch").radioswitch({
-		id: "telnet1-switch",
-		radio_name: "telnet1",
-		id_on: "telnet1_enabled",
-		id_off: "telnet1_disabled",
-		title_on: "Enable Telnet",
-		title_off: "Disable Telnet",
-		state: TELNET ? "on" : "off"
-	}).change(function() {
-		var isUTELDisabled = $(this).radioswitch("getState").on === false;
-		if(isUTELDisabled) {
-			//document.getElementById('telnet').disabled = true;
-		} else {
-			//document.getElementById('telnet').disabled = false;
-		}
-	});
-	/*$("#ssh1_switch").radioswitch({
-		id: "ssh1-switch",
-		radio_name: "ssh1",
-		id_on: "ssh1_enabled",
-		id_off: "ssh1_disabled",
-		title_on: "Enable SSH",
-		title_off: "Disable SSh",
-		state: SSH ? "on" : "off"
-	}).change(function() {
-		var isUSSHDisabled = $(this).radioswitch("getState").on === false;
-		if(isUSSHDisabled) {
-			//document.getElementById('ssh').disabled = true;
-		} else {
-			//document.getElementById('ssh').disabled = false;
-		}
-	});*/
 var ALLOWTYPE=$('input[name="single"]:radio:checked').val();
 switch (ALLOWTYPE) {
 	case "single":
@@ -514,15 +478,6 @@ $(".btn").click(function(){
 		}
 		if (!isValid) return;
 	}
-	/*if ($("#telnet1_switch").radioswitch("getState").on && $("#ssh1_switch").radioswitch("getState").on)
-	{
-		jAlert("Telnet and SSH can not be enabled at the same time.\r\nPlease disable at least one of them.");
-		return;
-	}*/
-	var telnet = $("#telnet1_switch").radioswitch("getState").on;
-	if (TELNET==telnet) telnet="notset";
-	/*var ssh = $("#ssh1_switch").radioswitch("getState").on;
-	if (SSH==ssh) ssh="notset";*/
 	var https = $("#https_switch").radioswitch("getState").on;
 	if (HTTPS==https) https="notset";
 	var httpsport=$('#https').val();
@@ -608,7 +563,7 @@ $(".btn").click(function(){
 			url:"actionHandler/ajax_remote_management.php",
 			data:{https:https, httpsport:httpsport,
 					allowtype:allowtype, startIP:startIP, endIP:endIP,
-					telnet:telnet, startIPv6:startIPv6, endIPv6:endIPv6
+					startIPv6:startIPv6, endIPv6:endIPv6
 					/*
 					ssh:ssh,
 					mso_mgmt:$("#mso_mgmt").prop("checked"),
@@ -957,17 +912,7 @@ function remote_access_block(){
 			<p> Note:This option will allow any computer on the Internet to access your network and may cause a security risk.</p>
 		</div>
 	</div>
-	<div class="module forms div_global">
-		<h2>Global Management</h2>
-			<div class="form-row">
-				<label for="telnet1-switch">Telnet:</label>
-				<span id="telnet1_switch"></span>
-			</div>
-			<!--div class="form-row ">
-			  	<label for="ssh1-switch">SSH:</label>
-				<span id="ssh1_switch"></span>
-			</div-->
-	</div> <!-- end .module -->
+
 	<div class="form-btn">
 		<input type="button" value="Save" class="btn" />
 	</div>

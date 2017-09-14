@@ -22,8 +22,6 @@ if (!isset($_SESSION["loginuser"])) {
 	exit(0);
 }
 $validation = true;
-if($validation) $validation = isValInArray($_POST['telnet'], array('true', 'false', 'notset'));
-//if($validation) $validation = isValInArray($_POST['ssh'], array('true', 'false', 'notset'));
 if($validation) $validation = isValInArray($_POST['allowtype'], array('true', 'false', 'notset'));
 if($validation)
 	if(!($_POST['startIP'] == 'x' || $_POST['startIP'] == 'notset'))
@@ -47,10 +45,6 @@ if($validation) $validation = isValInArray($_POST['https'], array('true', 'false
 //httpsport can only be 1025 ~ 65535
 /*if($validation && ($_POST['httpsport'] != 'notset') && !($_POST['httpport'] >= 1025 && $_POST['httpport'] <= 65535)) $validation = false;*/
 if($validation) {
-	if($_SESSION["loginuser"] == "mso"){
-		if ($_POST['telnet']!="notset")		setStr("Device.X_CISCO_COM_DeviceControl.TelnetEnable",$_POST['telnet'],true);
-		//if ($_POST['ssh']!="notset")		setStr("Device.X_CISCO_COM_DeviceControl.SSHEnable",$_POST['ssh'],true);
-	}
 	if ($_POST['allowtype']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.FromAnyIP",$_POST['allowtype'],true);
 	if ($_POST['startIP']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.StartIp",$_POST['startIP'],true);
 	if ($_POST['endIP']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.EndIp",$_POST['endIP'],true);
