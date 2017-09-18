@@ -303,6 +303,7 @@ $(document).ready(function() {
 		var dhcp_addr = $('#ipv4_dhcp_beginning_address_1').val() + "." + $('#ipv4_dhcp_beginning_address_2').val() + "." + $('#ipv4_dhcp_beginning_address_3').val() + "." + $('#ipv4_dhcp_beginning_address_4').val();
 		isIp4Valid = ValidIp4Addr(dhcp_addr, ipaddr, netmask);
 		$("p:contains('DHCP Beginning address is beyond the valid range.'):visible").remove();
+		$("p:contains('Please enter a value greater than or equal to 2.'):visible").remove();
 		return isIp4Valid;
 	}, "DHCP Beginning address is beyond the valid range.");
 	jQuery.validator.addMethod("checkMaskEnd",function(value,element){		
@@ -371,7 +372,15 @@ $(document).ready(function() {
 			}
 			,ipv4_dhcp_beginning_address_4: {
 			    required: true,
-				min: 0,
+				min: function () {
+					if($("#ipv4_subnet_mask option:selected").val() == "255.255.255.0")
+					{
+						return 2;
+					}
+					else {
+						return 0;
+					}
+				},
 				max: 253,
 				digits: true,
 				checkMaskBegin: true
