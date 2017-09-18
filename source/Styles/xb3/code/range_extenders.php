@@ -295,7 +295,7 @@ $jsConfig = json_encode($arConfig);
 			</tfoot>
 		</table>
 		<div id="no_client" style="display: none;">
-			<p>There are no valid extender found!</p>
+			<p>There are no valid extenders found!</p>
 		</div>
     </div> <!-- end .module -->
 	<form name="h_form" method="post" action="range_extenders_edit.php">
