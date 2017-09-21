@@ -81,7 +81,7 @@ function sec2dhms($sec)
 	</div>
 	<div class="form-row odd">
 		<span class="readonlyLabel">Local time:</span>
-		<span class="value"><?php echo getStr("Device.Time.CurrentLocalTime");?></span>
+		<span class="value"><?php echo UTC_to_local_date(getStr("Device.Time.CurrentLocalTime"));?></span>
 	</div>
 	<div class="form-row ">
 		<span class="readonlyLabel">System Uptime:</span>
