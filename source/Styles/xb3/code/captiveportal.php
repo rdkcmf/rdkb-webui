@@ -95,36 +95,6 @@ svg.defs-only {
 	}
 	// Convert back to printable address in canonical form
 	$clientIP = inet_ntop($addr_bin);
-	// cross check IP in Connected Devices List
-	function ProcessLay1Interface($interface){
-		if (stristr($interface, "WiFi")){
-			if (stristr($interface, "WiFi.SSID.1")) {
-				$host['networkType'] = "Private";
-				$host['connectionType'] = "Wi-Fi 2.4G";
-			}
-			elseif (stristr($interface, "WiFi.SSID.2")) {
-				$host['networkType'] = "Private";
-				$host['connectionType'] = "Wi-Fi 5G";
-			}
-			else {
-				$host['networkType'] = "Public";
-				$host['connectionType'] = "Wi-Fi";
-			}
-		}
-		elseif (stristr($interface, "MoCA")) {
-			$host['connectionType'] = "MoCA";
-			$host['networkType'] = "Private";
-		}
-		elseif (stristr($interface, "Ethernet")) {
-			$host['connectionType'] = "Ethernet";
-			$host['networkType'] = "Private";
-		} 
-		else{
-			$host['connectionType'] = "Unknown";
-			$host['networkType'] = "Private";
-		}
-    	return $host;
-	}
 	$connectionType = "none";
 	$rootObjName    = "Device.Hosts.Host.";
 	$paramNameArray = array("Device.Hosts.Host.");
@@ -140,8 +110,8 @@ svg.defs-only {
 			foreach ($Host as $key => $value) {
 				if(stristr($value["IPAddress"], $clientIP)){
 					if(stristr($value["Layer1Interface"], "Ethernet")){ $connectionType = "Ethernet"; }
-					else if(stristr($value["Layer1Interface"], "WiFi.SSID.1")){ $connectionType = "WiFi"; }//WiFi 2.4GHz
-					else if(stristr($value["Layer1Interface"], "WiFi.SSID.2")){ $connectionType = "WiFi"; }//WiFi 5GHz
+					else if(stristr($value["Layer1Interface"], "WiFi.Radio.1")){ $connectionType = "WiFi"; }//WiFi 2.4GHz
+					else if(stristr($value["Layer1Interface"], "WiFi.Radio.2")){ $connectionType = "WiFi"; }//WiFi 5GHz
 					else if(stristr($value["Layer1Interface"], "Public")){ $connectionType = "WiFi"; }//WiFi Public
 					else { $connectionType = "Ethernet"; }
 				}
