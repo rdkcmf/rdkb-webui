@@ -41,7 +41,7 @@ if($validation)
 if($validation) $validation = isValInArray($_POST['https'], array('true', 'false', 'notset'));
 //httpsport can only be 1025 ~ 65535
 /*if($validation && ($_POST['httpsport'] != 'notset') && !($_POST['httpsport'] >= 1025 && $_POST['httpsport'] <= 65535)) $validation = false;*/
-//if($validation) $validation = isValInArray($_POST['http'], array('true', 'false', 'notset'));
+if($validation) $validation = isValInArray($_POST['http'], array('true', 'false', 'notset'));
 //httpsport can only be 1025 ~ 65535
 /*if($validation && ($_POST['httpsport'] != 'notset') && !($_POST['httpport'] >= 1025 && $_POST['httpport'] <= 65535)) $validation = false;*/
 if($validation) {
@@ -54,8 +54,8 @@ if($validation) {
 	// put change port at the end of this script
 	if ($_POST['https']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpsEnable",$_POST['https'],true);
 	if ($_POST['httpsport']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.HTTPSPort",$_POST['httpsport'],true);
-//	if ($_POST['http']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpEnable",$_POST['http'],true);
-//	if ($_POST['httpport']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.HTTPPort",$_POST['httpport'],true);
+	if ($_POST['http']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpEnable",$_POST['http'],true);
+	if ($_POST['httpport']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.HTTPPort",$_POST['httpport'],true);
 }
 // sleep(10);
 /*
