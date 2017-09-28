@@ -33,7 +33,9 @@ function MiniApplySSID($ssid) {
 	setStr("Device.WiFi.Radio.$apply_rf.X_CISCO_COM_ApplySetting", "true", true);
 }
 $validation = true;
-if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
+if($arConfig['security']!="None"){
+	if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
+}
 if($validation) $validation = valid_ssid_name($arConfig['network_name']);
 //Choose a different Network Name (SSID) than the one provided on your gateway
 $DefaultSSID = getStr("Device.WiFi.SSID.1.X_COMCAST-COM_DefaultSSID");
@@ -41,7 +43,9 @@ if($validation) $validation = ($DefaultSSID != $arConfig['network_name']);
 //Choose a different Network Password than the one provided on your gateway
 $DefaultKeyPassphrase = getStr("Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_DefaultKeyPassphrase");
 if($validation) $validation = ($DefaultKeyPassphrase != $arConfig['network_password']);
-if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password1'])==1);
+if($arConfig['security1']!="None"){
+	if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password1'])==1);
+}
 if($validation) $validation = valid_ssid_name($arConfig['network_name1']);
 //Choose a different Network Name (SSID) than the one provided on your gateway
 $DefaultSSID5 = getStr("Device.WiFi.SSID.2.X_COMCAST-COM_DefaultSSID");
@@ -49,7 +53,6 @@ if($validation) $validation = ($DefaultSSID5 != $arConfig['network_name1']);
 //Choose a different Network Password than the one provided on your gateway
 $DefaultKeyPassphrase5 = getStr("Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_DefaultKeyPassphrase");
 if($validation) $validation = ($DefaultKeyPassphrase5 != $arConfig['network_password1']);
-if($validation) $validation = preg_match("/^[a-z0-9]{8,20}$/i",$arConfig['newPassword']);
 if($validation){
 	//for WiFi 2.4G
 	switch ($arConfig['security'])

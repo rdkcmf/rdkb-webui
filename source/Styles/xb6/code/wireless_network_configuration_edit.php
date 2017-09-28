@@ -294,6 +294,7 @@ $(document).ready(function() {
 				}
 			}
 			if ("None" == $("#security").val()) {
+				$("#network_password").val("");
 				$("#network_password").prop("disabled", true);
 			}
 			else {

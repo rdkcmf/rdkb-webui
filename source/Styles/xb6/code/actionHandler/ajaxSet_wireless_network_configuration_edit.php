@@ -65,7 +65,9 @@ if ($i == 1 || $i == 2) {
 					}
 					if ($validation && "false"==$arConfig['channel_automatic']) $validation = isValInArray($arConfig['channel_number'], $PossibleChannelsArr);
 				}
-				if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
+				if($arConfig['security']!="None"){
+					if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
+				}
 				if($validation) $validation = valid_ssid_name($arConfig['network_name']);
 				//Choose a different Network Name (SSID) than the one provided on your gateway
 				$DefaultSSID = getStr("Device.WiFi.SSID.$i.X_COMCAST-COM_DefaultSSID");
