@@ -51,6 +51,7 @@
 # start lighttpd
 source /etc/utopia/service.d/log_capture_path.sh
 source /fss/gw/etc/utopia/service.d/log_env_var.sh
+source /etc/device.properties
 REVERT_FLAG="/nvram/reverted"
 LIGHTTPD_CONF="/var/lighttpd.conf"
 LIGHTTPD_DEF_CONF="/etc/lighttpd.conf"
@@ -115,6 +116,13 @@ else
 fi
 
 echo "\$SERVER[\"socket\"] == \"$INTERFACE:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
+
+#If video analytics test is enabled in device.properties file, open 58081 securely.
+if [ "$VIDEO_ANALYTICS" = "enabled" ]
+then
+   echo "\$SERVER[\"socket\"] == \"$INTERFACE:58081\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/tmp/.webui/rdkb-video.pem\" }" >> $LIGHTTPD_CONF
+fi
+
 echo "\$SERVER[\"socket\"] == \"wan0:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
 if [ $HTTPS_PORT -ne 0 ]
 then
@@ -199,6 +207,22 @@ then
 	fi
 fi		
 
+if [ "$VIDEO_ANALYTICS" = "enabled" ]
+then
+    CONFIGPARAMGEN=/usr/bin/cpgc
+    if [ -d /etc/webui/certs ]; then
+       mkdir -p /tmp/.webui/
+       cp /etc/webui/certs/comcast-rdk-ca-chain.cert.pem /tmp/.webui/
+       if [ -f $CONFIGPARAMGEN ]; then
+          $CONFIGPARAMGEN jx /etc/webui/certs/ptohjvfeh.sdn /tmp/.webui/rdkb-video.pem
+          if [ -f /tmp/.webui/rdkb-video.pem ]; then
+             chmod 600 /tmp/.webui/rdkb-video.pem
+          fi
+       else
+          echo "$CONFIGPARAMGEN not found !!!"
+       fi
+    fi
+fi
 
 #echo "\$SERVER[\"socket\"] == \"$INTERFACE:10443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" server.document-root = \"/fss/gw/usr/walled_garden/parcon/siteblk\" server.error-handler-404 = \"/index.php\" }" >> /var/lighttpd.conf
 #echo "\$SERVER[\"socket\"] == \"$INTERFACE:18080\" { server.use-ipv6 = \"enable\"  server.document-root = \"/fss/gw/usr/walled_garden/parcon/siteblk\" server.error-handler-404 = \"/index.php\" }" >> /var/lighttpd.conf
@@ -212,6 +236,9 @@ fi
 
 LD_LIBRARY_PATH=/fss/gw/usr/ccsp:$LD_LIBRARY_PATH lighttpd -f $LIGHTTPD_CONF
 
+if [ -f /tmp/.webui/rdkb-video.pem ]; then
+       rm -rf /tmp/.webui/rdkb-video.pem
+fi
 echo "WEBGUI : Set event"
 sysevent set webserver started
 touch /tmp/webgui_initialized
