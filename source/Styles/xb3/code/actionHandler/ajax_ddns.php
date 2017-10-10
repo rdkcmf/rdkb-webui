@@ -49,6 +49,8 @@ if (isset($_POST['add'])){
 	$result="";
 	$id = selectTable($sp);
 	$validation = true;
+	if($validation) $validation = noSpace($username);
+	if($validation) $validation = noSpace($password);
 	if($validation) $validation = printableCharacters($_POST['username']);
 	if($validation) $validation = printableCharacters($_POST['password']);
 	if($validation) $validation = printableCharacters($_POST['hostname']);
@@ -110,6 +112,8 @@ if (isset($_POST['edit'])){
 	$hostname=$_POST['hostname'];
 	$validation = true;
 	if($validation) $validation = validId($_POST['ID']);
+	if($validation) $validation = noSpace($username);
+	if($validation) $validation = noSpace($password);
 	if($validation) $validation = printableCharacters($_POST['username']);
 	if($validation) $validation = printableCharacters($_POST['password']);
 	if($validation) $validation = printableCharacters($_POST['hostname']);

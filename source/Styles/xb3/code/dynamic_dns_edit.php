@@ -22,13 +22,20 @@
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");    
+    comcast.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");
+	jQuery.validator.addMethod("noSpace", function(value, element) { 
+		return value.indexOf(" ") < 0 && value != ""; 
+	}, "Space are not allowed");    
 	$("#pageForm").validate({
 		rules: {
 			User_name: {
+				required: true,
+				noSpace: true,
 				allowed_char: true
 			}
 			,Password: {
+				required: true,
+				noSpace: true,
 				allowed_char: true
 			}
 			,Host_Name: {
@@ -57,33 +64,35 @@ $(document).ready(function() {
 	}
 	// If Enable UPnP is not checked, disable the next two form fields
     $("#btn-save").click(function() {
-    	var sp = $("#Service_Provider1").val();
-		var spLC = sp.toLowerCase();
-		var username = $("#User_name").val();
-		var password = $("#Password").val();
-		var hostnames = document.getElementsByName("Host_Name");
-		var hostname = hostnames[0].value;
-		for(var i=1;i<hostnames.length;i++) {
-			hostname += ","+hostnames[i].value
-		}
-		if(spLC!="dyndns.org" && spLC!="tzo.com" && spLC!="changeip.com" && spLC!="freedns.afraid.org") {
-			alert("Service provider name should be \"DynDns.org\" or \"TZO.com\" or \"changeip.com\" or \"freedns.afraid.org\".");
-		} else {
-			jProgress('This may take several seconds', 60);
-			$.ajax({
-				type:"POST",
-				url:"actionHandler/ajax_ddns.php",
-				data:{edit:"true",ID:ID,sp:sp,username:username,password:password,hostname:hostname},
-				success:function(results){
-					//jAlert(results);
-					jHide();
-					if (results=="Success!") { window.location.href="dynamic_dns.php";}
-				},
-				error:function(){
-					jHide();
-					jAlert("Failure, please try again.");
-				}
-			});
+    	if($("#pageForm").valid()){
+	    	var sp = $("#Service_Provider1").val();
+			var spLC = sp.toLowerCase();
+			var username = $("#User_name").val();
+			var password = $("#Password").val();
+			var hostnames = document.getElementsByName("Host_Name");
+			var hostname = hostnames[0].value;
+			for(var i=1;i<hostnames.length;i++) {
+				hostname += ","+hostnames[i].value
+			}
+			if(spLC!="dyndns.org" && spLC!="tzo.com" && spLC!="changeip.com" && spLC!="freedns.afraid.org") {
+				alert("Service provider name should be \"DynDns.org\" or \"TZO.com\" or \"changeip.com\" or \"freedns.afraid.org\".");
+			} else {
+				jProgress('This may take several seconds', 60);
+				$.ajax({
+					type:"POST",
+					url:"actionHandler/ajax_ddns.php",
+					data:{edit:"true",ID:ID,sp:sp,username:username,password:password,hostname:hostname},
+					success:function(results){
+						//jAlert(results);
+						jHide();
+						if (results=="Success!") { window.location.href="dynamic_dns.php";}
+					},
+					error:function(){
+						jHide();
+						jAlert("Failure, please try again.");
+					}
+				});
+			}
 		}
     });
 	$("#btn-cancel").click(function() {
