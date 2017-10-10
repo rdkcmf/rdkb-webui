@@ -15,7 +15,6 @@ $battery            	= TRUE;
 $cordless_handset 	= FALSE;
 $USB              	= FALSE;
 $network_storage  	= FALSE;
-$range_extenders  	= TRUE;
 $radius_servers   	= FALSE;
 $media_sharing    	= FALSE;
 $file_sharing     	= FALSE;
@@ -122,7 +121,6 @@ echo '<li class="nav-connected-devices">';
 	echo '<li class="nav-cdevices"><a role="menuitem"  href="connected_devices_computers.php">Devices</a></li>';
 	if($cordless_handset) echo '<li class="nav-cordless-handsets"><a role="menuitem"  href="cordless_handsets.php">Cordless Handsets</a></li>';
 	if($network_storage)  echo '<li class="nav-network-storage"><a role="menuitem"  href="network_storage.php">Network Storage</a></li>';
-	if($range_extenders)  echo '<li class="nav-range-extenders"><a role="menuitem"  href="range_extenders.php">Range Extenders</a></li>';
 	echo '</ul>';
 echo '</li>';
 if($parental_control){

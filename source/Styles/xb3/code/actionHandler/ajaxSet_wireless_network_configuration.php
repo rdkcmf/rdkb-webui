@@ -431,8 +431,6 @@ else
 					// setStr("Device.WiFi.Radio.$i.X_CISCO_COM_ApplySetting", "true", true);
 					// echo $i;
 				}
-				//For WECB
-				setStr("Device.MoCA.X_CISCO_COM_WiFi_Extender.X_CISCO_COM_SSID_Updated", "true", true);
 			}
 		}
 		echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');

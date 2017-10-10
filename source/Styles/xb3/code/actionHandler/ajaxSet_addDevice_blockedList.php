@@ -141,8 +141,6 @@ if($validation){
 			setStr("Device.WiFi.AccessPoint.6.X_CISCO_COM_MacFilterTable.$id.DeviceName", $new_hostName, false);
 			setStr("Device.WiFi.AccessPoint.6.X_CISCO_COM_MacFilterTable.$id.MACAddress", $devBlockInfo['macAddr'], true);
 		}
-		//For WECB
-		setStr("Device.MoCA.X_CISCO_COM_WiFi_Extender.X_CISCO_COM_SSID_Updated", "true", true);
 	}
 }
 ?>

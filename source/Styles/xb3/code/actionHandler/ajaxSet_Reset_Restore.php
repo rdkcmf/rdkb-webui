@@ -41,8 +41,6 @@ function delMacFilterTable( $ssid_list ) {
 }
 function delMacFilterTables(  ) {
 	delMacFilterTable("1 2 3 5 6");
-	//For WECB
-	setStr("Device.MoCA.X_CISCO_COM_WiFi_Extender.X_CISCO_COM_SSID_Updated", "true", true);
 }
 //Implement Validation of the input parameter(s)
 //NOT USED radioIndex+";"+apIndex >> '1;1', '2;2', '1;3', '2;4'
@@ -80,8 +78,6 @@ switch ($infoArray[0]) {
 		//when restore, radio can be restart, but also need to force it when no change
 		//setStr("Device.WiFi.X_CISCO_COM_ResetRadios", "true", true);
 		setStr("Device.WiFi.X_CISCO_COM_FactoryResetRadioAndAp", "1,2;1,2",true);	//radio 1, radio 2; Ap 1, Ap 2
-		//For WECB
-		setStr("Device.MoCA.X_CISCO_COM_WiFi_Extender.X_CISCO_COM_SSID_Updated", "true", true);
 		exit(0);
 	case "FactoryResetRadioAndAp" :
 		$ret["wifi"] = true;
@@ -91,8 +87,6 @@ switch ($infoArray[0]) {
 		$apIndex=$idxArr[1];		
 		if($apIndex != "0") {
 			delMacFilterTable( "$apIndex" );
-			//For WECB
-			setStr("Device.MoCA.X_CISCO_COM_WiFi_Extender.X_CISCO_COM_SSID_Updated", "true", true);
 		}		
 		setStr("Device.WiFi.X_CISCO_COM_FactoryResetRadioAndAp", $infoArray[1],true);		
 		exit(0);
