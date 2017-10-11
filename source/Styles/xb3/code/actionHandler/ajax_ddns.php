@@ -51,6 +51,10 @@ if (isset($_POST['add'])){
 	$validation = true;
 	if($validation) $validation = noSpace($username);
 	if($validation) $validation = noSpace($password);
+	if($validation) $validation = noSpace($hostname);
+	if($validation) $validation = !empty($username);
+	if($validation) $validation = !empty($password);
+	if($validation) $validation = !empty($hostname);
 	if($validation) $validation = printableCharacters($_POST['username']);
 	if($validation) $validation = printableCharacters($_POST['password']);
 	if($validation) $validation = printableCharacters($_POST['hostname']);
@@ -114,6 +118,10 @@ if (isset($_POST['edit'])){
 	if($validation) $validation = validId($_POST['ID']);
 	if($validation) $validation = noSpace($username);
 	if($validation) $validation = noSpace($password);
+	if($validation) $validation = noSpace($hostname);
+	if($validation) $validation = !empty($username);
+	if($validation) $validation = !empty($password);
+	if($validation) $validation = !empty($hostname);
 	if($validation) $validation = printableCharacters($_POST['username']);
 	if($validation) $validation = printableCharacters($_POST['password']);
 	if($validation) $validation = printableCharacters($_POST['hostname']);

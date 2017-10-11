@@ -23,6 +23,8 @@ $(document).ready(function() {
 				allowed_char: true
 			}
 			,Host_Name: {
+				required: true,
+				noSpace: true,
 				allowed_char: true
 			}
 		}
