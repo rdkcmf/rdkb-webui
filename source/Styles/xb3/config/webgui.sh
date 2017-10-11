@@ -55,11 +55,26 @@ REVERT_FLAG="/nvram/reverted"
 LIGHTTPD_CONF="/var/lighttpd.conf"
 LIGHTTPD_DEF_CONF="/etc/lighttpd.conf"
 
-WEBGUI_INST=`ps | grep webgui.sh | grep -v grep | grep -c webgui.sh`
-if [ $WEBGUI_INST -gt 2 ]; then
-	echo "WEBGUI :Exiting,Another instance running"
-	exit 1
-fi
+webgui_count=0
+while : ; do
+    WEBGUI_INST=`ps | grep webgui.sh | grep -v grep | grep -c webgui.sh`
+    WEBGUI_INST_PROCESS=`ps -l | grep webgui.sh | grep -v grep`
+
+    if [ $webgui_count -lt 3 ]; then
+        if [ $WEBGUI_INST -gt 2 ]; then
+            echo "WEBGUI :Sleeping,Another instance running"
+            echo "WEBGUI :WEBGUI_INST= $WEBGUI_INST"
+            echo "$WEBGUI_INST_PROCESS"
+            webgui_count=$((webgui_count+1))
+            sleep 2;
+        else
+            break;
+        fi
+    else
+        echo "WEBGUI :Exiting,Another instance running, Max retry reached"
+        exit 1
+    fi
+done
 
 LIGHTTPD_PID=`pidof lighttpd`
 if [ "$LIGHTTPD_PID" != "" ]; then
