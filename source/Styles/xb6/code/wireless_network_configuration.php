@@ -747,6 +747,8 @@ $(document).ready(function() {
 	// disable NOT 20MHz channel if 165	
 	if ( "true" != "<?php echo $channel_automatic1; ?>"  && "165" == "<?php echo $channel_number1; ?>"){
 		$('[name="channel_bandwidth1"]:not([value="20MHz"])').prop("disabled", true);
+	}else if("true" != "<?php echo $DFS_Enable1; ?>") {
+		$("#channel_bandwidth3").prop("disabled", true);
 	}
 	else{
 		$('[name="channel_bandwidth1"]').prop("disabled", false);
@@ -1174,6 +1176,13 @@ function saveBandSteeringSettings()
 			jAlert("Failure, please try again.");
 		}
 	});
+}
+function disableFreq(val){
+	if(val=="1"){
+		$("#channel_bandwidth3").prop("disabled", true);
+	}else{
+		$("#channel_bandwidth3").prop("disabled", false);
+	}
 }
 </script>
 <div id="content">
@@ -1664,9 +1673,9 @@ function saveBandSteeringSettings()
 	</div>
 	<div class="form-row">
 		<label for="DFS_Channel_Selection_disabled">DFS Channel Selection In Auto Mode:</label>
-		<input type="radio"  name="DFS_Channel_Selection" value="disabled" id="DFS_Channel_Selection_disabled" checked="checked" /><b>Disable</b>
+		<input type="radio"  name="DFS_Channel_Selection" value="disabled" id="DFS_Channel_Selection_disabled" checked="checked" onclick="return disableFreq('1');" /><b>Disable</b>
 		<label for="DFS_Channel_Selection_enabled" class="acs-hide"></label>
-		<input type="radio"  name="DFS_Channel_Selection" value="enabled"  id="DFS_Channel_Selection_enabled" <?php if ("true"==$DFS_Enable1) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="DFS_Channel_Selection" value="enabled"  id="DFS_Channel_Selection_enabled" <?php if ("true"==$DFS_Enable1) echo 'checked="checked"';?> onclick="return disableFreq('2');"/><b>Enable</b>
 	</div>
 <!-- 	<div class="form-row odd">
 	<label for="HT_TxStream1">HT TxStream:</label>
