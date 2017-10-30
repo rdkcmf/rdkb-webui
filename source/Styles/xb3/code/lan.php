@@ -21,7 +21,7 @@ function getPort4XHSEnabled() {
 $isPort4XHSEnabled = getPort4XHSEnabled();
 $rootObjName = "Device.Ethernet.Interface.";
 $paramNameArray = array("Device.Ethernet.Interface.");
-$mapping_array  = array("Upstream", "Status", "MACAddress", "MaxBitRate");
+$mapping_array  = array("Upstream", "Status", "MACAddress", "CurrentBitRate");
 $ethernetParam = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
 ?>
 <script type="text/javascript">
@@ -103,7 +103,7 @@ $(document).ready(function() {
 			array("MAC Address:", null, $ethernetParam[$id]["MACAddress"])
 		);
 		/* link speed */
-		$lspeed = $ethernetParam[$id]["MaxBitRate"];
+		$lspeed = $ethernetParam[$id]["CurrentBitRate"];
 		$lunit = " Mbps";
 		if (empty($lspeed)) {
 			$lspeed = "Not Applicable";
