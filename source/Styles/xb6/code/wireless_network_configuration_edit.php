@@ -215,6 +215,7 @@ function showDialog() {
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > Wireless > Edit <?php echo $radio_band; ?> GHz", "nav-wifi-config");
 	$Mesh_Mode = '<?php echo $Mesh_Mode; ?>';
+	var MeshEnable= '<?php echo $Mesh_Enable; ?>';
 	$("#wireless_network_switch").radioswitch({
 		id: "wireless-network-switch",
 		radio_name: "wireless_network",
@@ -227,7 +228,7 @@ $(document).ready(function() {
 	init_form();
 	fromOther = false;
 	$(":radio[name='channel']").change(function() {		//alert("hahaha");
-		if ($("#channel_automatic").is(":checked")) {
+		if ($("#channel_automatic").is(":checked") || (MeshEnable=="true")) {
 			$("#channel_number").prop("disabled", true);
 			$("#channel_number").hide();
 			$("#auto_channel_number").show();
@@ -622,7 +623,10 @@ wpa2psk ==> 8 to 63 Ascii characters
 		submitHandler:function(form){
 			click_save();
 		}
-    });	
+    });
+    if(MeshEnable == 'true'){
+	$('#channel_number,input[name=channel_bandwidth]').prop("disabled", true);
+    }
 	//for Mesh WiFi integration
 	if($Mesh_Mode == 'true'){
 		//disable >> Channel Selection:, Channel:, Channel Bandwidth:

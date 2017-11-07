@@ -328,6 +328,12 @@ $(document).ready(function() {
     comcast.page.init("Gateway > Connection > WiFi", "nav-wifi-config");
     $Mesh_Mode = '<?php echo $Mesh_Mode; ?>';
     var isBridge = "<?php echo $_SESSION["lanMode"]; ?>";
+    var MeshEnable='<?php echo $Mesh_Enable; ?>';
+    if(MeshEnable=="true"){
+	$('[name="channel_bandwidth"]').prop("disabled", true);
+    }else{
+	$('[name="channel_bandwidth"]').prop("disabled", false);
+    }
     //Disable all the MAC filter options in user admin mode if bridge mode is enabled
     if (isBridge == 'bridge-static') {       
         $('.div_private_wifi *').addClass('disabled');
@@ -444,7 +450,7 @@ $(document).ready(function() {
 	if("<?php echo $IEEE80211hSupport; ?>" == "false")	$('#transmit_power').prop("disabled", true);
 	if("<?php echo $IEEE80211hSupport1; ?>" == "false")	$('#transmit_power1').prop("disabled", true);
     $("[name='channel']").change(function() {
-		if($("#channel_automatic").is(":checked")) {
+		if($("#channel_automatic").is(":checked") || (MeshEnable=="true")) {
 			document.getElementById('channel_number').disabled = true;
 			show_extch(0);
 			$("#channel_number").hide();
@@ -512,7 +518,7 @@ $(document).ready(function() {
 		show_extch(document.getElementById("channel_number").value);
 	}).trigger("change");
 	$("[name='channel_bandwidth']").change(function() {
-		if ($("#channel_bandwidth20").prop("checked")) {
+		if ($("#channel_bandwidth20").prop("checked") || (MeshEnable=="true")) {
 			$('div [id*="Ext"]').prop("disabled", true);
 		}
 		else {
