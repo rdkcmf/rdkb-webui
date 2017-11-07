@@ -113,6 +113,10 @@ $(document).ready(function() {
         $('.private-wifi .btn').click(function(e) {
             e.preventDefault();
         });
+        $('.moca_section *').addClass('disabled');
+        $('.moca_section .btn').click(function(e) {
+            e.preventDefault();
+        });
     };
 	if("Enabled"=="<?php echo $_SESSION["psmMode"]; ?>") {
 		$(".wifi_section").remove();
