@@ -90,7 +90,7 @@ $('#btn4').click(function(e) {
 	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
 	var info = new Array("btn4", "Wifi");
 	jConfirm(
-	message+"<br/><br/><strong>WARNING:</strong> Wi-Fi will be unavailable for at least 30 seconds!"
+	message+"<br/><br/><strong>WARNING:</strong> Wi-Fi will be unavailable for at least 90 seconds!"
 	, "Are You Sure?"
 	,function(ret) {
 	if(ret) {
@@ -171,7 +171,7 @@ function setResetInfo(info) {
 				setTimeout(checkForRebooting, 4 * 60 * 1000);
 			}
 			else if(data.wifi) {
-				jProgress("Restarting Wi-Fi radios in upto 90 seconds...", 120);
+				jProgress("Restarting Wi-Fi radios in up to 90 seconds...", 120);
 				//we don't know if Wi-Fi is ready (eth client can restart wifi also), so just delay 90 seconds
 				setTimeout(function(){jHide();}, 90 * 1000);
 			}
