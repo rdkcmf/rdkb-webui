@@ -102,10 +102,10 @@ $passLockoutTimeMins=$passLockoutTime/(1000*60);
         }
         elseif ($_POST["username"] == "admin")
 		{
-			$curPwd3 = getStr("Device.Users.User.3.X_CISCO_COM_Password");
-			if ($_POST["password"] == $curPwd3) 
-			{
-				if ( !innerIP($client_ip) && (if_type($server_ip)!="rg_ip") )
+			setStr("Device.Users.User.3.X_RDKCENTRAL-COM_CompareAdminPassword",$_POST["password"],true);
+			sleep(1);
+			$passVal= getStr("Device.Users.User.3.X_RDKCENTRAL-COM_CompareAdminPassword");
+			if ( !innerIP($client_ip) && (if_type($server_ip)!="rg_ip") )
 				{
 					if($passLockEnable == "true"){
 							if($failedAttempt<$passLockoutAttempt){
@@ -118,64 +118,47 @@ $passLockoutTimeMins=$passLockoutTime/(1000*60);
 							}
 					}
 					if($flag==0){
-				 		session_destroy();
+						session_destroy();
 						echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
+					}
+				}
+				else if($passVal=="Invalid_PWD"){
+
+					setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_failed",true);
+					session_destroy();
+					if($passLockEnable == "true"){
+						if($failedAttempt<$passLockoutAttempt){
+						$failedAttempt=$failedAttempt+1;
+						setStr("Device.Users.User.3.NumOfFailedAttempts",$failedAttempt,true);
+						}
+						if($failedAttempt==$passLockoutAttempt){
+							$flag=1;
+							echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+						}
+					}
+					if($flag==0){
+						session_destroy();
+						echo '<script type="text/javascript"> alert("Incorrect password for admin!");history.back(); </script>';
 					}
 				}
 				else
 				{
-				if(($passLockEnable == "true") && ($failedAttempt==$passLockoutAttempt)){
+					if(($passLockEnable == "true") && ($failedAttempt==$passLockoutAttempt)){
 							$flag=1;
 							echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
-						}else{
-							$failedAttempt=0;
-							setStr("Device.Users.User.3.NumOfFailedAttempts",$failedAttempt,true);
-							exec("/usr/bin/logger -t GUI -p local5.notice 'User:admin login'");
-							setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_success",true);
-							if ($curPwd3 == 'password')
-							{
-								echo '<script type="text/javascript"> if (confirm("You are using a default password, would you like to change it?")) {location.href = "password_change.php";} else {location.href = "at_a_glance.php";} </script>';
-							}
-							else
-							{	
-								header("location:at_a_glance.php");
-							}
-					}
-				}
-            		}
-            		elseif ("" == $curPwd3)
-            		{
-				setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_failed",true);
-				session_destroy();
-				echo '<script type="text/javascript"> alert("Can not get password for admin from backend!"); history.back(); </script>';
-            		}
-            		else
-            		{
-				setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_failed",true);
-				session_destroy();
-				if($passLockEnable == "true"){
-					
-					if($failedAttempt<$passLockoutAttempt){
-						$failedAttempt=$failedAttempt+1;
+					}else{
+						$failedAttempt=0;
 						setStr("Device.Users.User.3.NumOfFailedAttempts",$failedAttempt,true);
+						exec("/usr/bin/logger -t GUI -p local5.notice 'User:admin login'");
+						setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_success",true);
+						if($passVal=="Default_PWD"){
+							echo '<script type="text/javascript"> location.href = "password_change.php"; </script>';
+						}else{
+							header("location:at_a_glance.php");
+						}
 					}
-					
-					if($failedAttempt==$passLockoutAttempt){
-						$flag=1;
-						echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
-								
-					}
-					
-					
 				}
-
-				if($flag==0){
-
-				 	session_destroy();
-					echo '<script type="text/javascript"> alert("Incorrect password for admin!");history.back(); </script>';
-					}
-            		}
-        }
+		}
         else
 	{
 		setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_failed",true);

@@ -27,16 +27,24 @@ $jsConfig = $_POST['configInfo'];
 $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);
 $i = $arConfig['instanceNum'];
-$p_status = "MisMatch";
+$p_status = "Invalid_PWD";
 //at least 8 characters, Only letters and numbers are valid. No spaces or special characters.
-if ((preg_match("/^[a-z0-9]{8,20}$/i",$arConfig['oldPassword'])) && (preg_match("/^[a-z0-9]{8,20}$/i",$arConfig['newPassword'])))
-if (getStr("Device.Users.User.$i.X_CISCO_COM_Password") ==  $arConfig['oldPassword']) 
-{
-	if($arConfig['ChangePassword']){
-		setStr("Device.Users.User.3.X_CISCO_COM_Password", $arConfig['newPassword'], true);
+if ((preg_match("/^[a-z0-9]{8,20}$/i",$arConfig['oldPassword'])) && (preg_match("/^[a-z0-9]{8,20}$/i",$arConfig['newPassword']))){
+	setStr("Device.Users.User.3.X_RDKCENTRAL-COM_CompareAdminPassword",$arConfig['oldPassword'],true);
+	sleep(1);
+	//Good_PWD, Default_PWD, Invalid_PWD
+	$passVal= getStr("Device.Users.User.3.X_RDKCENTRAL-COM_CompareAdminPassword");
+	if ($passVal=="Good_PWD" || $passVal=="Default_PWD")
+	{
+		if($arConfig['ChangePassword']){
+			setStr("Device.Users.User.3.X_CISCO_COM_Password", $arConfig['newPassword'], true);
+		}
+		$p_status = "Good_PWD";
+		//setStr("Device.Users.User.$i.X_CISCO_COM_Password", $arConfig['newPassword'], true);
 	}
-	$p_status = "Match";
-	//setStr("Device.Users.User.$i.X_CISCO_COM_Password", $arConfig['newPassword'], true);	
+	else {
+		$p_status = "Invalid_PWD";
+	}
 }
 $arConfig = array('p_status'=>$p_status);
 $jsConfig = json_encode($arConfig);

@@ -101,11 +101,11 @@ switch ($infoArray[0]) {
 		if($_SESSION["loginuser"] == "mso"){
 			if ("mso"==$thisUser) {
 				setStr("Device.Users.User.1.X_CISCO_COM_Password", "pod", true);
-				setStr("Device.Users.User.3.X_CISCO_COM_Password", "password", true);
+				setStr("Device.Users.User.3.X_RDKCENTRAL-COM_PasswordReset", true, true);
 				echo "mso";
 			}
 			else {
-				setStr("Device.Users.User.3.X_CISCO_COM_Password", "password", true);
+				setStr("Device.Users.User.3.X_RDKCENTRAL-COM_PasswordReset", "true", true);
 				echo "admin";
 			}
 		}

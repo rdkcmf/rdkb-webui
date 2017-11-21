@@ -81,7 +81,8 @@ function set_config(jsConfig)
 		{
 			setTimeout(function(){ 
 				jHide();
-				if ("Match" == msg.p_status) {
+				//msg.p_status >> Good_PWD, Default_PWD, Invalid_PWD
+				if ("Good_PWD" == msg.p_status) {
 					//window.location = "wizard_step2.php";
 					document.getElementById("pageForm").submit();
 				}
