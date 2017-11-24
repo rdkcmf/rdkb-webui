@@ -7,17 +7,10 @@ $failedAttempt_mso=getStr("Device.Users.User.1.NumOfFailedAttempts");
 $passLockoutAttempt=getStr("Device.UserInterface.PasswordLockoutAttempts");
 $passLockoutTime=getStr("Device.UserInterface.PasswordLockoutTime");
 $passLockoutTimeMins=$passLockoutTime/(1000*60);
+$client_ip		= $_SERVER["REMOTE_ADDR"];			// $client_ip="::ffff:10.0.0.101";
+$server_ip		= $_SERVER["SERVER_ADDR"];
     if (isset($_POST["username"]))
 	{
-		session_start();
-		//echo("You are logging...");
-		$client_ip		= $_SERVER["REMOTE_ADDR"];			// $client_ip="::ffff:10.0.0.101";
-		$server_ip		= $_SERVER["SERVER_ADDR"];
-		$timeout_val 		= intval(getStr("Device.X_CISCO_COM_DeviceControl.WebUITimeout"));
-		("" == $timeout_val) && ($timeout_val = 900);
-		$_SESSION["timeout"]	= $timeout_val - 60;	//dmcli param is returning 900, GUI expects 840 - then GUI adds 60
-		$_SESSION["sid"]	= session_id();
-		$_SESSION["loginuser"]	= $_POST["username"];
 		/*=============================================*/
 		// $dev_mode = true;
 		/*if (file_exists("/var/ui_dev_mode")) {
@@ -66,6 +59,7 @@ $passLockoutTimeMins=$passLockoutTime/(1000*60);
 						echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
 								
 				}else{
+					create_session();
 					$failedAttempt_mso=0;	
 					setStr("Device.Users.User.1.NumOfFailedAttempts",$failedAttempt_mso,true);
             		exec("/usr/bin/logger -t GUI -p local5.notice 'User:mso login'");
@@ -152,8 +146,14 @@ $passLockoutTimeMins=$passLockoutTime/(1000*60);
 						exec("/usr/bin/logger -t GUI -p local5.notice 'User:admin login'");
 						setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_success",true);
 						if($passVal=="Default_PWD"){
-							echo '<script type="text/javascript"> location.href = "password_change.php"; </script>';
+							session_start();
+							$_SESSION["password_change"] = "default_pwd";
+							echo '<script type="text/javascript"> alert("You are using default password. Please change the password.");
+								location.href = "admin_password_change.php";
+							</script>';
+							
 						}else{
+							create_session();
 							header("location:at_a_glance.php");
 						}
 					}
@@ -224,6 +224,15 @@ $passLockoutTimeMins=$passLockoutTime/(1000*60);
 		}
 		// print_r($lan_ip);
 		// print_r($cm_ip);
+	}
+	function create_session(){
+		session_start();
+		//echo("You are logging...");
+		$timeout_val 		= intval(getStr("Device.X_CISCO_COM_DeviceControl.WebUITimeout"));
+		("" == $timeout_val) && ($timeout_val = 900);
+		$_SESSION["timeout"]	= $timeout_val - 60;	//dmcli param is returning 900, GUI expects 840 - then GUI adds 60
+		$_SESSION["sid"]	= session_id();
+		$_SESSION["loginuser"]	= $_POST["username"];
 	}
 /*	
 	function innerIP($client_ip)
