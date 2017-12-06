@@ -18,6 +18,11 @@
  limitations under the License.
 */
 ?>
+<?php
+include_once __DIR__ .'/CSRF-Protector-PHP/libs/csrf/csrfprotector_rdkb.php';
+//Initialise CSRFGuard library
+csrfprotector_rdkb::init();
+?>
 <?php include('includes/utility.php'); ?>
 <?php
 	$PartnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
@@ -32,11 +37,6 @@
 		"captivePortal_WelcomeMessage"	=>	"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.WelcomeMessage",
 	);
 	$personalization_value = KeyExtGet("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.", $personalization_param);
-?>
-<?php
-include_once __DIR__ .'/CSRF-Protector-PHP/libs/csrf/csrfprotector_rdkb.php';
-//Initialise CSRFGuard library
-csrfprotector_rdkb::init();
 ?>
 <html lang="en">
 	<head>
