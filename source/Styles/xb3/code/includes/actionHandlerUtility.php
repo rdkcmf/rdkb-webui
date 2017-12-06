@@ -18,6 +18,13 @@
 */
 //input can only be printable characters, the printable ASCII characters start at the space and end at the tilde
 //check if $input[0] is in range $input[1] - $input[2]
+?>
+<?php
+include_once __DIR__ .'/../CSRF-Protector-PHP/libs/csrf/csrfprotector_rdkb.php';
+//Initialise CSRFGuard library
+csrfprotector_rdkb::init();
+?>
+<?php
 function printableCharacters($input){
 	//check only if range is set
 	if(is_array($input)){

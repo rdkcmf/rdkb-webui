@@ -14,4 +14,5 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php echo 'using ajaxSet_wizard_step1.php';?>

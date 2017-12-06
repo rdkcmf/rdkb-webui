@@ -14,6 +14,7 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php 
 session_start();
 if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] == 'admin') {

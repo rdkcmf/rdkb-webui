@@ -122,6 +122,27 @@ $channel_array = array(
 );
 ?>
 <script type="text/javascript">
+function ajax_moca_diagnostics() {
+		jProgress('This may take several seconds', 60);
+		$.ajax({
+			type: "POST",
+			url: "actionHandler/ajax_moca_diagnostics.php",
+			data: { moca_diagnostics: 'diagnostics' },
+			success: function(result) {
+				jHide();
+				if(result['MeshTableEntries']=='0') jAlert("Currently MoCA devices are not connected to the Gateway.");
+				else draw(result);
+			},
+			failure: function() {
+				jHide();
+				jAlert("Failure, please try again.");
+			},
+			error: function(){
+				jHide();
+				jAlert("Failure, please try again.");
+			}
+		});
+	}
 $(document).ready(function() {
 	comcast.page.init("Troubleshooting > MoCA Diagnostics", "nav-moca-diagnostics");
 	var network = null;
@@ -251,30 +272,12 @@ $(document).ready(function() {
 		};
 		network = new vis.Network(container, data_network, options);
 	}
-	function ajax_moca_diagnostics() {
-		jProgress('This may take several seconds', 60);
-		$.ajax({
-			type: "POST",
-			url: "actionHandler/ajax_moca_diagnostics.php",
-			success: function(result) {
-				jHide();
-				if(result['MeshTableEntries']=='0') jAlert("Currently MoCA devices are not connected to the Gateway.");
-				else draw(result);
-			},
-			failure: function() {
-				jHide();
-				jAlert("Failure, please try again.");
-			},
-			error: function(){
-				jHide();
-				jAlert("Failure, please try again.");
-			}
-		});
-	}
-	ajax_moca_diagnostics();
 	$('#refresh').click(function() {
 		ajax_moca_diagnostics();
 	});
+});
+$(window).load(function() {
+	ajax_moca_diagnostics();
 });
 </script>
 <div id="content" >

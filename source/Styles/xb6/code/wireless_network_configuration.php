@@ -344,10 +344,45 @@ var G_radio_enable	= <?php echo ($radio_enable === "true" ? "true" : "false"); ?
 var G_radio_enable1	= <?php echo ($radio_enable1 === "true" ? "true" : "false"); ?>;
 var G_wps_enabled	= <?php echo ($wps_enabled === "true" ? "true" : "false"); ?>;
 var G_wps_method	= "<?php echo $wps_method; ?>";
+var isBridge		= "<?php echo $_SESSION["lanMode"]; ?>";
+function update_Wi_Fi_control_list(){
+	var ssid_number		= $("#mac_ssid").attr("value");
+	var jsConfig 	=	'{"ssid_number":"'+ssid_number+'", "target":"'+"mac_ssid"+'"}';
+	//jProgress('This may take several seconds...', 60);
+	$("#mac_admin_temp, #mac_admin").toggle();
+	$.ajax({
+		type: "POST",
+		url: "actionHandler/ajaxSet_wireless_network_configuration.php",
+		data: { configInfo: jsConfig },
+		success: function(msg) {
+		if (isBridge != 'bridge-static' || "mso" == "<?php echo $_SESSION["loginuser"]; ?>") {
+				$("#filtering_mode").attr("value", msg.filtering_mode);
+				//clear the previous filter_table when ssid changed
+				$("#filter_table > tbody").empty();
+				for (var i=0; i < msg.ft.length; i++)
+				{
+					add_row("filter_table", -1, msg.ft[i][0], msg.ft[i][1].toUpperCase());
+				}
+				//clear the previous auto_table when ssid changed
+				$("#auto_table > tbody").empty();
+				for (var i=0; i < msg.at.length; i++)
+				{
+					add_row("auto_table", -1, msg.at[i][0], msg.at[i][1].toUpperCase());
+				}
+			}
+			//jHide();
+			$("#mac_admin_temp, #mac_admin").toggle();
+		},
+		error: function(){
+			//jHide();
+			$("#mac_admin_temp, #mac_admin").toggle();
+			jAlert("Failure, please try again.");
+		}
+	});
+}
 $(document).ready(function() {
     comcast.page.init("Gateway > Connection > WiFi", "nav-wifi-config");
     $Mesh_Mode = '<?php echo $Mesh_Mode; ?>';
-    var isBridge = "<?php echo $_SESSION["lanMode"]; ?>";
     var MeshEnable='<?php echo $Mesh_Enable; ?>';
     if(MeshEnable=="true"){
 	$('[name="channel_bandwidth"]').prop("disabled", true);
@@ -643,50 +678,9 @@ $(document).ready(function() {
 				});
 			}	
 	}); */
-	var doOnce = true;
     $("#mac_ssid").change(function() {
-		var ssid_number		= $("#mac_ssid").attr("value");
-		var mac_ssid_GET	= "<?php echo $_GET['mac_ssid'];?>";
-		if(doOnce && mac_ssid_GET) {
-			ssid_number	= mac_ssid_GET;
-			$("#mac_ssid").val(mac_ssid_GET);
-			doOnce = false;
-		}
-		var jsConfig 	=	'{"ssid_number":"'+ssid_number+'", "target":"'+"mac_ssid"+'"}';	
-		//jProgress('This may take several seconds...', 60);
-		$("#mac_admin_temp, #mac_admin").toggle();
-		$.ajax({
-			type: "POST",
-			url: "actionHandler/ajaxSet_wireless_network_configuration.php",
-			data: { configInfo: jsConfig },
-			success: function(msg) {
-			if (isBridge != 'bridge-static' || "mso" == "<?php echo $_SESSION["loginuser"]; ?>") {
-					$("#filtering_mode").attr("value", msg.filtering_mode);
-					
-					//clear the previous filter_table when ssid changed
-					$("#filter_table > tbody").empty();
-					for (var i=0; i < msg.ft.length; i++)
-					{
-						add_row("filter_table", -1, msg.ft[i][0], msg.ft[i][1].toUpperCase());
-					}
-					
-					//clear the previous auto_table when ssid changed
-					$("#auto_table > tbody").empty();
-					for (var i=0; i < msg.at.length; i++)
-					{
-						add_row("auto_table", -1, msg.at[i][0], msg.at[i][1].toUpperCase());
-					}
-				}
-				//jHide();
-				$("#mac_admin_temp, #mac_admin").toggle();
-			},
-			error: function(){            
-				//jHide();
-				$("#mac_admin_temp, #mac_admin").toggle();
-				jAlert("Failure, please try again.");
-			}
-		});
-	}).trigger("change");
+		update_Wi_Fi_control_list();
+	});
 	//==disable some radio mode as per security mode (configured on other page)==
 	var sec_mod = document.getElementById("private_wifi").rows[1].cells[3].innerHTML;
 	// if (sec_mod.indexOf("WEP")!=-1 || sec_mod.indexOf("TKIP")!=-1){
@@ -808,6 +802,13 @@ $(document).ready(function() {
 		//disable >> Channel Selection:, Channel:, Channel Bandwidth:
 		$('#channel_automatic, #channel_manual, #channel_automatic1, #channel_manual1, #channel_number, #channel_number1, #auto_channel_number, #auto_channel_number1, input[name=channel_bandwidth], input[name=channel_bandwidth1]').prop("disabled", true);
 	}
+});
+$(window).load(function() {
+	var mac_ssid_GET	= "<?php echo $_GET['mac_ssid'];?>";
+	if(mac_ssid_GET == '3' || mac_ssid_GET == '5') {
+		$("#mac_ssid").val(mac_ssid_GET);
+	}
+	update_Wi_Fi_control_list();
 });
 function set_config(jsConfig)
 {

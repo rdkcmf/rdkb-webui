@@ -36,6 +36,7 @@ $server_ip		= $_SERVER["SERVER_ADDR"];
 		/*if (file_exists("/var/ui_dev_mode")) {
 			$_SESSION["timeout"] = 100000; 
 			if ($_POST["password"] == "dev") {
+				create_session();
 				if ($_POST["username"] == "mso") {
 					header("location:at_a_glance.php");
 				}

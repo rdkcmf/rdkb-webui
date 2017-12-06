@@ -15,6 +15,7 @@
 */
 ?>
 <?php include('../includes/utility.php'); ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {

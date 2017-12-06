@@ -29,7 +29,7 @@
 	$sta_fire = $_SESSION['sta_fire'];
 ?>
 <script type="text/javascript">
-$(document).ready(function() {
+$(window).load(function() {
 	/*
 	* get status when hover or tab focused one by one
 	* but for screen reader we have to load all status once
@@ -73,7 +73,7 @@ $(document).ready(function() {
 		// do not handle click if no-login for GA
 		// if ("" == "<?php echo (isset($_SESSION["loginid"])?$_SESSION["loginid"]:""); ?>") {
 			// return;
-		// }			
+		// }
 		// do not handle click event when count-down show up
 		if ($("#count_down").length > 0) {
 			return;
@@ -86,7 +86,7 @@ $(document).ready(function() {
 				$("#count_down").text(--cnt);
 				// (1)stop counter when less than 0, (2)hide warning when achieved 0, (3)add another alert to block user action if network unreachable
 				if (cnt<=0) {
-					clearInterval(h_cntd);	
+					clearInterval(h_cntd);
 					jAlert("You have been logged out due to inactivity!");
 					location.href="home_loggedout.php";
 				}

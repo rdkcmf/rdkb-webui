@@ -33,6 +33,11 @@
 	);
 	$personalization_value = KeyExtGet("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.", $personalization_param);
 ?>
+<?php
+include_once __DIR__ .'/CSRF-Protector-PHP/libs/csrf/csrfprotector_rdkb.php';
+//Initialise CSRFGuard library
+csrfprotector_rdkb::init();
+?>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
@@ -100,6 +105,7 @@ svg.defs-only {
 	overflow: hidden;
 }
 </style>
+<?php include('includes/utility.php'); ?>
 <?php
 	// should we allow to Configure WiFi
 	// redirection logic - uncomment the code below while checking in
@@ -218,24 +224,6 @@ svg.defs-only {
 <script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
 <script>
 $(document).ready(function(){
-	//CSRF
-	var request;
-	if (window.XMLHttpRequest) {
-		request = new XMLHttpRequest();
-	} else {
-		// code for IE6, IE5
-		request = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	request.open('HEAD', 'actionHandler/ajax_at_a_glance.php', false);
-	request.onload = function(){
-		$.ajaxSetup({
-			beforeSend: function (xhr)
-			{
-				xhr.setRequestHeader("X-Csrf-Token",request.getResponseHeader('X-Csrf-Token'));
-			}
-		});
-	};
-	request.send();
 	$CloudPersonalizationURL = "<?php echo $CloudPersonalizationURL;?>";
 	$CloudUIEnable = <?php echo $CloudUIEnable;?>;
 	function cloudRedirection(cloudReachable){
@@ -1096,6 +1084,12 @@ $(document).ready(function(){
 						<div id="agreementMessageBottom" class="bottom">Please confirm your agreement to receive a text message.</div>
 						<div class="arrow"></div>
 					</div>
+		    </div>		    
+			<div id="agreementContainer" class="container" style="margin: 20px 30% auto auto; display: none;">
+				<div class="requirements" style="top: -6px; left: 509px;">
+					<div id="agreementMessageTop" class="top">Confirmation</div>
+					<div id="agreementMessageBottom" class="bottom">Please confirm your agreement to receive a text message.</div>
+					<div class="arrow"></div>
 				</div>
 			</div>
 			<br/><br/>

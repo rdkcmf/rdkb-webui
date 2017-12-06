@@ -14,6 +14,7 @@
  limitations under the License.
 */
 ?>
+<?php include('../includes/actionHandlerUtility.php') ?>
 <?php include('../includes/utility.php'); ?>
 <?php
 session_start();

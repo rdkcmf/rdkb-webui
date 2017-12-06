@@ -18,6 +18,11 @@
  limitations under the License.
 */
 ?>
+<?php
+include_once __DIR__ .'/CSRF-Protector-PHP/libs/csrf/csrfprotector_rdkb.php';
+//Initialise CSRFGuard library
+csrfprotector_rdkb::init();
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <?php
@@ -75,28 +80,6 @@
 	}
 	</style>	
 </head>
-<script type="text/javascript">
-	$(document).ready(function() {
-		//CSRF
-		var request;
-		if (window.XMLHttpRequest) {
-			request = new XMLHttpRequest();
-		} else {
-			// code for IE6, IE5
-			request = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		request.open('HEAD', 'actionHandler/ajax_at_a_glance.php', false);
-		request.onload = function(){
-			$.ajaxSetup({
-				beforeSend: function (xhr)
-				{
-					xhr.setRequestHeader("X-Csrf-Token",request.getResponseHeader('X-Csrf-Token'));
-				}
-			});
-		};
-		request.send();
-	});
-</script>
 <body>
     <!--Main Container - Centers Everything-->
 	<div id="container">

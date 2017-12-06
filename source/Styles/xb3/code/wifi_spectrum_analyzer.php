@@ -29,10 +29,7 @@
 }
 </style>
 <script>
-$(document).ready(function(){
-	comcast.page.init("Troubleshooting > Wi-Fi Spectrum Analyzer", "nav-wifi-spectrum-analyzer");
-	$("#save_result").hide();
-	function spanTable($rows, startIdx, endIdx){
+function spanTable($rows, startIdx, endIdx){
 		if (endIdx === 0){
 			return;
 		}
@@ -67,6 +64,7 @@ $(document).ready(function(){
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajax_wifi_spectrum_analyser.php",
+			data: { wifi_spectrum_analyser: 'analyse' },
 			success: function(result) {
 				result = JSON.parse(result);
 				if(result.status == "success")
@@ -110,6 +108,9 @@ $(document).ready(function(){
 			}
 		});
 	}
+$(document).ready(function(){
+	comcast.page.init("Troubleshooting > Wi-Fi Spectrum Analyzer", "nav-wifi-spectrum-analyzer");
+	$("#save_result").hide();
 	function popUp(URL) {
 	day = new Date();
 	id = day.getTime();
@@ -134,6 +135,8 @@ $(document).ready(function(){
 			}
 		});
 	});
+});
+$(window).load(function() {
 	ajax_spec_analyzer();
 });
 </script>
