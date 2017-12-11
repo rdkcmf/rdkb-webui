@@ -53,7 +53,9 @@ if($validation) $validation = ($DefaultSSID5 != $arConfig['network_name1']);
 //Choose a different Network Password than the one provided on your gateway
 $DefaultKeyPassphrase5 = getStr("Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_DefaultKeyPassphrase");
 if($validation) $validation = ($DefaultKeyPassphrase5 != $arConfig['network_password1']);
-if($validation) $validation = (preg_match("/^[a-z0-9]{8,20}$/i",$arConfig['newPassword']));
+if($_SESSION["loginuser"]!="mso"){
+	if($validation) $validation = (preg_match("/^[a-z0-9]{8,20}$/i",$arConfig['newPassword']));
+}
 if($validation){
 	//for WiFi 2.4G
 	switch ($arConfig['security'])
