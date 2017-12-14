@@ -32,6 +32,7 @@ $r = (2 - intval($i)%2);	//1,3,5,7 == 1(2.4G); 2,4,6,8 == 2(5G)
 $Mesh_Enable 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.Enable");
 $Mesh_State 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.State");
 $Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')? true : false;
+$network_pass = getStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_KeyPassphrase");
 if($i != 1 && $i != 2) $Mesh_Mode = false;
 // this method for only restart a certain SSID
 function MiniApplySSID($ssid) {
@@ -50,6 +51,9 @@ if ($i == 1 || $i == 2) {
 		if ("true" == $arConfig['radio_enable']) 
 		{
 			$validation = true;
+			if(($arConfig['password_update']=="false") && ("mso" == $thisUser)){
+				$arConfig['network_password']=$network_pass;
+			}
 			if ("mso" != $thisUser){
 				if($validation) $validation = isValInArray($arConfig['channel_bandwidth'], array('20MHz', '40MHz', '80MHz'));
 				if($validation) $validation = (($r==1 && isValInArray($arConfig['wireless_mode'], array("n", "g,n", "b,g,n"))) || ($r==2 && isValInArray($arConfig['wireless_mode'], array("n", "a,n", "ac", "n,ac", "a,n,ac"))));
@@ -65,17 +69,17 @@ if ($i == 1 || $i == 2) {
 					}
 					if ($validation && "false"==$arConfig['channel_automatic']) $validation = isValInArray($arConfig['channel_number'], $PossibleChannelsArr);
 				}
-				if($arConfig['security']!="None"){
-					if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
-				}
-				if($validation) $validation = valid_ssid_name($arConfig['network_name']);
-				//Choose a different Network Name (SSID) than the one provided on your gateway
-				$DefaultSSID = getStr("Device.WiFi.SSID.$i.X_COMCAST-COM_DefaultSSID");
-				if($validation) $validation = ($DefaultSSID != $arConfig['network_name']);
-				//Choose a different Network Password than the one provided on your gateway
-				$DefaultKeyPassphrase = getStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_DefaultKeyPassphrase");
-				if($validation) $validation = ($DefaultKeyPassphrase != $arConfig['network_password']);
 			}
+			if($arConfig['security']!="None"){
+					if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
+			}
+			if($validation) $validation = valid_ssid_name($arConfig['network_name']);
+				//Choose a different Network Name (SSID) than the one provided on your gateway
+			$DefaultSSID = getStr("Device.WiFi.SSID.$i.X_COMCAST-COM_DefaultSSID");
+			if($validation) $validation = ($DefaultSSID != $arConfig['network_name']);
+				//Choose a different Network Password than the one provided on your gateway
+			$DefaultKeyPassphrase = getStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_DefaultKeyPassphrase");
+			if($validation) $validation = ($DefaultKeyPassphrase != $arConfig['network_password']);
 			if($validation){
 				switch ($arConfig['security'])
 				{

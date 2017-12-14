@@ -149,6 +149,8 @@ if ("WPA2-Personal" == $encrypt_mode){
 else{
 		$security = "None";
 }
+//for SSID 1 and 2 don't show password for mso user
+$password_mso_user = !(($id == 1 || $id == 2) && ($_SESSION["loginuser"] == "mso"));
 ?>
 <script type="text/javascript" src="./cmn/js/lib/jquery.alerts.progress.js"></script>
 <script type="text/javascript">
@@ -255,7 +257,8 @@ $(document).ready(function() {
 		}	
 	});
 	$security_val = '<?php echo $security; ?>';
-    	$("#security").change(function() {
+	var password_mso_user = '<?php echo $password_mso_user; ?>';
+	$("#security").change(function() {
 		if ("more" == $("#security").val()) {
 			// only private(1,2) SSID have show-more option
 			showDialog();
@@ -299,9 +302,22 @@ $(document).ready(function() {
 				$("#network_password").prop("disabled", true);
 			}
 			else {
-				$("#network_password").prop("disabled", false);
+				if(!password_mso_user){
+					$("#network_password").val("");
+					$("#network_password").prop("disabled", true);
+					$("#div_change_password").show();
+				}
+				else {
+					$("#network_password").prop("disabled", false);
+					$("#div_change_password").hide();
+				}
 			}
 			$("#netPassword-footnote").text($("option:selected", $(this)).attr("title"));
+		}
+		if(!password_mso_user){
+			$('#password_check').click(function() {
+				$("#network_password").prop("disabled", !(this.checked));
+			});
 		}
 		//cacheye user option before going to "more"
 		if ("more" != $("#security").val() && "WEP_64" != $("#security").val() && "WEP_128" != $("#security").val() && "None" != $("#security").val()) {
@@ -730,6 +746,8 @@ function addslashes( str ) {
 }
 function click_save()
 {
+	var password_mso_user = '<?php echo $password_mso_user; ?>';
+	var network_password = "";
 	var rf = "<?php echo $rf == 1? "": 1; ?>";
 	var radio_enable		= $("#wireless_network_switch").radioswitch("getState").on;
 	var network_name		= addslashes($("#network_name").val());
@@ -739,7 +757,10 @@ function click_save()
 	var security 			= security_id.options[security_id.selectedIndex].value;
 	var channel_automatic	= $("#channel_automatic").prop("checked");
 	var channel_number		= $("#channel_number").attr("value");
-	var network_password	= addslashes($("#network_password").val());
+	var password_update      = $("#password_check").prop("checked");
+	if((password_mso_user) || password_update){
+		network_password	= addslashes($("#network_password").val());
+	}
 	var broadcastSSID		= $("#broadcastSSID").prop("checked");
 	var enableWMM			= $("#enableWMM").prop("checked");
 	var channel_bandwidth	= $('[name="channel_bandwidth'+rf+'"]:checked').attr("value");
@@ -754,6 +775,7 @@ function click_save()
 	+'", "channel_bandwidth":"'+channel_bandwidth
 	+'", "enableWMM":"'+enableWMM
 	+'", "ssid_number":"'+"<?php echo $id; ?>"
+	+'", "password_update":"'+password_update
 	+'", "thisUser":"'+"<?php echo $_SESSION["loginuser"]; ?>"
 	+'"}';	
 	// alert(jsConfig);
@@ -904,8 +926,12 @@ function setResetInfo(info) {
 		</div>
 		<div class="form-row" id="div_network_password">
 			<label for="network_password">Network Password:</label>
-			<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="<?php echo htmlspecialchars($network_password); ?>" /></span>
+			<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password); ?>" </span>
 			<p id="netPassword-footnote" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
+		</div>
+		<div class="form-row" id="div_change_password">
+			<label for="change_password">Change Password:</label>
+			<span class="checkbox"><input type="checkbox" id="password_check" name="password_check" /></span>
 		</div>
 		<div class="form-row odd" id="div_password_show">
 			<label for="password_show">Show Network Password:</label>
