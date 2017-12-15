@@ -117,9 +117,9 @@ $server_ip		= $_SERVER["SERVER_ADDR"];
         }
         elseif ($_POST["username"] == "admin")
 		{
-			$return_status = setStr("Device.Users.User.3.X_RDKCENTRAL-COM_CompareAdminPassword",$_POST["password"],true);
+			$return_status = setStr("Device.Users.User.3.X_RDKCENTRAL-COM_ComparePassword",$_POST["password"],true);
 			sleep(1);
-			$passVal= getStr("Device.Users.User.3.X_RDKCENTRAL-COM_CompareAdminPassword");
+			$passVal= getStr("Device.Users.User.3.X_RDKCENTRAL-COM_ComparePassword");
 			if(!$return_status) $passVal = "Invalid_PWD";
 			if ( !innerIP($client_ip) && (if_type($server_ip)!="rg_ip") )
 				{
