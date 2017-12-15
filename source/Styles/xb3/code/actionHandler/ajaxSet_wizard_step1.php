@@ -30,10 +30,10 @@ $i = $arConfig['instanceNum'];
 $p_status = "Invalid_PWD";
 //at least 8 characters, Only letters and numbers are valid. No spaces or special characters.
 if ((preg_match("/^[a-z0-9]{8,20}$/i",$arConfig['oldPassword'])) && (preg_match("/^[a-z0-9]{8,20}$/i",$arConfig['newPassword']))){
-	setStr("Device.Users.User.3.X_RDKCENTRAL-COM_CompareAdminPassword",$arConfig['oldPassword'],true);
+	setStr("Device.Users.User.3.X_RDKCENTRAL-COM_ComparePassword",$arConfig['oldPassword'],true);
 	sleep(1);
 	//Good_PWD, Default_PWD, Invalid_PWD
-	$passVal= getStr("Device.Users.User.3.X_RDKCENTRAL-COM_CompareAdminPassword");
+	$passVal= getStr("Device.Users.User.3.X_RDKCENTRAL-COM_ComparePassword");
 	if ($passVal=="Good_PWD" || $passVal=="Default_PWD")
 	{
 		if($arConfig['ChangePassword']){

@@ -96,9 +96,9 @@ $server_ip		= $_SERVER["SERVER_ADDR"];
         }
         elseif ($_POST["username"] == "admin")
 		{
-			setStr("Device.Users.User.3.X_RDKCENTRAL-COM_CompareAdminPassword",$_POST["password"],true);
+			setStr("Device.Users.User.3.X_RDKCENTRAL-COM_ComparePassword",$_POST["password"],true);
 			sleep(1);
-			$passVal= getStr("Device.Users.User.3.X_RDKCENTRAL-COM_CompareAdminPassword");
+			$passVal= getStr("Device.Users.User.3.X_RDKCENTRAL-COM_ComparePassword");
 			if ( !innerIP($client_ip) && (if_type($server_ip)!="rg_ip") )
 				{
 					if($passLockEnable == "true"){
