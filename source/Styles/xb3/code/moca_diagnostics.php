@@ -122,6 +122,7 @@ $channel_array = array(
 );
 ?>
 <script type="text/javascript">
+var network = null;
 function ajax_moca_diagnostics() {
 		jProgress('This may take several seconds', 60);
 		$.ajax({
@@ -143,10 +144,44 @@ function ajax_moca_diagnostics() {
 			}
 		});
 	}
-$(document).ready(function() {
-	comcast.page.init("Troubleshooting > MoCA Diagnostics", "nav-moca-diagnostics");
-	var network = null;
-	function update_NC_AssociatedDevices($data){
+function draw($data_MoCA) {
+	update_NC_AssociatedDevices($data_MoCA);
+	destroy();
+	var data_network = create_nodes_edges($data_MoCA);
+	var container = document.getElementById('network_diagram');
+	var options = {
+		"edges": {
+			"smooth": {
+				"type": "straightCross",
+				"roundness": 0.5,
+				"forceDirection": "none"
+			},
+			"font":{
+				"align":'top',
+			},
+			"arrows": {
+				"to": {
+					"scaleFactor": 0.5
+				},
+			},
+			'arrowStrikethrough': false,
+		},
+		"interaction": {
+			"dragNodes": false
+		},
+		"physics": {
+			"barnesHut": {
+				"springLength": 300,
+				"springConstant": 0.19,
+				"damping": 0.50,
+				"avoidOverlap": 1
+			},
+		"minVelocity": 0.75
+		}
+	};
+	network = new vis.Network(container, data_network, options);
+}
+function update_NC_AssociatedDevices($data){
 		$AssociatedDevices = $data['AssociatedDevices'];
 		$MACAddress	= $AssociatedDevices['GW']['MACAddress'];
 		$BackupNC	= $AssociatedDevices['GW']['BackupNC'];
@@ -180,98 +215,63 @@ $(document).ready(function() {
 		$('#active_NC').text($PreferredNC_data);
 		$('#backup_NC').text($BackupNC_data);
 	}
-	function moca_bonded_paths($MeshPHYTxRate, $Tx_HighestVersion, $Rx_HighestVersion){
-		$Tx_HighestVersion = $Tx_HighestVersion.replace('.','');
-		$Rx_HighestVersion = $Rx_HighestVersion.replace('.','');
-		if($Tx_HighestVersion == 20 && $Rx_HighestVersion == 20)
-			$HighestVersion = 20;
-		else if($Tx_HighestVersion == 11 || $Rx_HighestVersion == 11)
-			$HighestVersion = 11;
-		else $HighestVersion = '';
-		//MoCA 1.1 Paths >=200mbps is marked in green, paths >=180mbps but <200mbps are marked in orange, and paths <180mbps are marked in red.
-		//MoCA 2.0 paths >=370mbps are marked in green, paths >=330mbps but <370mbps are marked in orange, and paths < 330mbps are marked in red.
-		//MoCA 2.0 bonded paths >= 740mbps are marked in green, paths >=660 but <740mbps are marked in orange, and paths < 660 are marked in red.
-		// HighestVersion can be 20[MoCA 2.0] or 11[MoCA 1.1], MoCA 2.0 bonded is not supported
-		/*if ($MeshPHYTxRate >= 740) return 'green';
-		else if ($MeshPHYTxRate >= 660) return 'orange';
-		else if ($MeshPHYTxRate >= 371) return 'red';*/
-		if($HighestVersion == 20){
-			if ($MeshPHYTxRate >= 370) $bonded_path = 'green';
-			else if ($MeshPHYTxRate >= 330) $bonded_path = 'orange';
-			else $bonded_path = 'red';
-		}
-		else if($HighestVersion == 11){
-			if ($MeshPHYTxRate >= 200) $bonded_path = 'green';
-			else if ($MeshPHYTxRate >= 180) $bonded_path = 'orange';
-			else $bonded_path = 'red';
-		}
+function moca_bonded_paths($MeshPHYTxRate, $Tx_HighestVersion, $Rx_HighestVersion){
+	$Tx_HighestVersion = $Tx_HighestVersion.replace('.','');
+	$Rx_HighestVersion = $Rx_HighestVersion.replace('.','');
+	if($Tx_HighestVersion == 20 && $Rx_HighestVersion == 20)
+		$HighestVersion = 20;
+	else if($Tx_HighestVersion == 11 || $Rx_HighestVersion == 11)
+		$HighestVersion = 11;
+	else $HighestVersion = '';
+	//MoCA 1.1 Paths >=200mbps is marked in green, paths >=180mbps but <200mbps are marked in orange, and paths <180mbps are marked in red.
+	//MoCA 2.0 paths >=370mbps are marked in green, paths >=330mbps but <370mbps are marked in orange, and paths < 330mbps are marked in red.
+	//MoCA 2.0 bonded paths >= 740mbps are marked in green, paths >=660 but <740mbps are marked in orange, and paths < 660 are marked in red.
+	// HighestVersion can be 20[MoCA 2.0] or 11[MoCA 1.1], MoCA 2.0 bonded is not supported
+	/*if ($MeshPHYTxRate >= 740) return 'green';
+	else if ($MeshPHYTxRate >= 660) return 'orange';
+	else if ($MeshPHYTxRate >= 371) return 'red';*/
+	if($HighestVersion == 20){
+		if ($MeshPHYTxRate >= 370) $bonded_path = 'green';
+		else if ($MeshPHYTxRate >= 330) $bonded_path = 'orange';
 		else $bonded_path = 'red';
-		return $bonded_path;
 	}
-	function create_nodes_edges($data_MoCA){
-		var nodes = new Array();
-		var edges = new Array();
-		// create an array with nodes & edges
-		for (var $k in $data_MoCA['Mesh_HighestVersion']) {
-			nodes.push({id: $k, label: "Node ID: "+$k, shape: 'box',});
-		}
-		for (var $key in $data_MoCA) {
-			if($key != 'Mesh_HighestVersion' && $key != 'AssociatedDevices' && $key != 'MeshTableEntries') {
-				$TxID = $data_MoCA[$key][0]['MeshTxNodeId'];
-				$RxID = $data_MoCA[$key][0]['MeshRxNodeId'];
-				var $path_color = moca_bonded_paths($data_MoCA[$key][0]['MeshPHYTxRate'], $data_MoCA['Mesh_HighestVersion'][$TxID], $data_MoCA['Mesh_HighestVersion'][$RxID]);
-				edges.push({from: $TxID, to: $RxID, label: $data_MoCA[$key][0]['MeshPHYTxRate'], color:{color: $path_color, highlight: $path_color}});
-			}
-		}
-		var data = {
-			nodes: nodes,
-			edges: edges
-		};
-		return data;
+	else if($HighestVersion == 11){
+		if ($MeshPHYTxRate >= 200) $bonded_path = 'green';
+		else if ($MeshPHYTxRate >= 180) $bonded_path = 'orange';
+		else $bonded_path = 'red';
 	}
-	function destroy() {
-		if (network !== null) {
-			network.destroy();
-			network = null;
+	else $bonded_path = 'red';
+	return $bonded_path;
+}
+function create_nodes_edges($data_MoCA){
+	var nodes = new Array();
+	var edges = new Array();
+	// create an array with nodes & edges
+	for (var $k in $data_MoCA['Mesh_HighestVersion']) {
+		nodes.push({id: $k, label: "Node ID: "+$k, shape: 'box',});
+	}
+	for (var $key in $data_MoCA) {
+		if($key != 'Mesh_HighestVersion' && $key != 'AssociatedDevices' && $key != 'MeshTableEntries') {
+			$TxID = $data_MoCA[$key][0]['MeshTxNodeId'];
+			$RxID = $data_MoCA[$key][0]['MeshRxNodeId'];
+			var $path_color = moca_bonded_paths($data_MoCA[$key][0]['MeshPHYTxRate'], $data_MoCA['Mesh_HighestVersion'][$TxID], $data_MoCA['Mesh_HighestVersion'][$RxID]);
+			edges.push({from: $TxID, to: $RxID, label: $data_MoCA[$key][0]['MeshPHYTxRate'], color:{color: $path_color, highlight: $path_color}});
 		}
 	}
-	function draw($data_MoCA) {
-		update_NC_AssociatedDevices($data_MoCA);
-		destroy();
-		var data_network = create_nodes_edges($data_MoCA);
-		var container = document.getElementById('network_diagram');
-		var options = {
-			"edges": {
-				"smooth": {
-					"type": "straightCross",
-					"roundness": 0.5,
-					"forceDirection": "none"
-				},
-				"font":{
-					"align":'top',
-				},
-				"arrows": {
-					"to": {
-						"scaleFactor": 0.5
-					},
-				},
-				'arrowStrikethrough': false,
-			},
-			"interaction": {
-				"dragNodes": false
-			},
-			"physics": {
-				"barnesHut": {
-					"springLength": 300,
-					"springConstant": 0.19,
-					"damping": 0.50,
-					"avoidOverlap": 1
-				},
-			"minVelocity": 0.75
-			}
-		};
-		network = new vis.Network(container, data_network, options);
+	var data = {
+		nodes: nodes,
+		edges: edges
+	};
+	return data;
+}
+function destroy() {
+	if (network !== null) {
+		network.destroy();
+		network = null;
 	}
+}
+$(document).ready(function() {
+	comcast.page.init("Troubleshooting > MoCA Diagnostics", "nav-moca-diagnostics");
 	$('#refresh').click(function() {
 		ajax_moca_diagnostics();
 	});
