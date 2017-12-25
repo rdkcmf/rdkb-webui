@@ -1,3 +1,8 @@
+<?php
+include_once __DIR__ .'/CSRF-Protector-PHP/libs/csrf/csrfprotector_rdkb.php';
+//Initialise CSRFGuard library
+csrfprotector_rdkb::init();
+?>
 <html>
 <head>
 	<title>Access blocked</title>
