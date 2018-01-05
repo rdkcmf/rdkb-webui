@@ -397,7 +397,7 @@ $(document).ready(function() {
                         }
                         else {
                              //20MHz, disable channels 116, 140 Legacy Interop Disabled Channels
-                             $("#channel_number1").find("[value='116'],[value='140']").prop("disabled", true).prop("selected", false);
+                             $("#channel_number").find("[value='116'],[value='140']").prop("disabled", true).prop("selected", false);
                         }
 		}
 	});
