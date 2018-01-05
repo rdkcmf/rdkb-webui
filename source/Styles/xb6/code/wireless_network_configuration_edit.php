@@ -271,7 +271,7 @@ $(document).ready(function() {
 				if($("#security").val()=="None")
 				{
 					jConfirm(
-					"Configure the Security Mode to Open(Not Secure)?"
+					"WARNING:<br/>Changing the Security Mode to Open will disable Wi-Fi Protected Setup(WPS) functionality. Are you sure you want to change?"
 					, "Are You Sure?"
 					,function(ret) {
 						if(!ret) {

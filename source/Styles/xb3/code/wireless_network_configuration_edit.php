@@ -290,7 +290,7 @@ $(document).ready(function() {
 			{
 				var security_val = $("#security").val();
 				jConfirm(
-					"WARNING:<br/>Changing the Security Mode to WEP, WPA and Open will disable Wi-Fi Protected Setup(WPS) functionality. Are you sure you want to change?"
+					"WARNING:<br/>Changing the Security Mode to Open will disable Wi-Fi Protected Setup(WPS) functionality. Are you sure you want to change?"
 					, "Are You Sure?"
 					,function(ret) {
 					if(!ret) {
