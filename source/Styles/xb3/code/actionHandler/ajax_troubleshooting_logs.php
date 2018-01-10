@@ -55,19 +55,19 @@ switch($timef){			//	[$mintime, $maxtime)
 		$mintime=strtotime("today");
 	break;
 	case "Yesterday":
-		$maxtime=strtotime("today");
+		$maxtime=strtotime("now");
 		$mintime=strtotime("yesterday");
 	break;
 	case "Last week":
-		$maxtime=strtotime("this Monday");
+		$maxtime=strtotime("now");
 		$mintime=strtotime("last Monday");
 	break;
 	case "Last month":
-		$maxtime=strtotime("this month");
+		$maxtime=strtotime("now");
 		$mintime=strtotime("last month");
 	break;
 	case "Last 90 days":
-		$maxtime=strtotime("today");
+		$maxtime=strtotime("now");
 		$mintime=strtotime("-90 days");
 	break;
 	default:
