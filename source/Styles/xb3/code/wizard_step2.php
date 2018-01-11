@@ -41,6 +41,8 @@
 	$defaultKeyPassphrase1	= $wifi_value['defaultKeyPassphrase1'];
 	$defaultSSID2		= $wifi_value['defaultSSID2'];
 	$defaultKeyPassphrase2	= $wifi_value['defaultKeyPassphrase2'];
+	//don't show current password for mso user
+	$password_mso_user = !($_SESSION["loginuser"] == "mso");
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -52,6 +54,7 @@ $(document).ready(function() {
 			echo 'comcast.page.init("Gateway > Home Network Wizard", "nav-wizard");';
 		}
 	?>
+	var password_mso_user = '<?php echo $password_mso_user; ?>';
     /*
      *  Manage password field: open wep networks don't use passwords
      */
@@ -61,11 +64,25 @@ $(document).ready(function() {
     	if($selected_option.val() == "None") {
     		$("#netPassword").find("*").addClass("disabled").filter("input").attr("disabled", "disabled").val("");
     	} else {
-    		$("#netPassword").find("*").removeClass("disabled").filter("input").attr("disabled", false);
+			$("#netPassword").find("*").removeClass("disabled").filter("input").attr("disabled", false);
+			if(!password_mso_user){
+				$("#network_password").val("");
+				$("#network_password").prop("disabled", true);
+				$("#div_change_password").show();
+			}
+			else {
+				$("#network_password").prop("disabled", false);
+				$("#div_change_password").hide();
+			}
     	}
     	// Update footnote to display password validation rules
     	$("#netPassword-footnote").text($selected_option.attr("title"));
     }).trigger("change");
+	if(!password_mso_user){
+		$('#password_check').click(function() {
+			$("#network_password").prop("disabled", !(this.checked));
+		});
+	}
 	$("#security1").change(function() {
 		var $select1 = $(this);
 		var $selected_option1 = $("option:selected", $select1);
@@ -73,9 +90,23 @@ $(document).ready(function() {
 			$("#netPassword1").find("*").addClass("disabled").filter("input").attr("disabled", "disabled").val("");
 		} else {
 			$("#netPassword1").find("*").removeClass("disabled").filter("input").attr("disabled", false);
+			if(!password_mso_user){
+				$("#network_password1").val("");
+				$("#network_password1").prop("disabled", true);
+				$("#div_change_password1").show();
+			}
+			else {
+				$("#network_password1").prop("disabled", false);
+				$("#div_change_password1").hide();
+			}
 		}
 		// Update footnote to display password validation rules
 		$("#netPassword-footnote1").text($selected_option1.attr("title"));
+	if(!password_mso_user){
+		$('#password_check1').click(function() {
+			$("#network_password1").prop("disabled", !(this.checked));
+		});
+	}
 	}).trigger("change");
     $.validator.addMethod("wep_64", function(value, element, param) {
 		return !param || /^[a-fA-F0-9]{10}$|^[\S]{5}$/i.test(value);
@@ -256,21 +287,32 @@ function addslashes( str ) {
 }
 function click_save()
 {
+	var password_mso_user = '<?php echo $password_mso_user; ?>';
+	var network_password = "";
+	var network_password1 = "";
 	var network_name = 		addslashes($("#network_name").val());
 	var security = 			$("#security").val();
-	var network_password = 	addslashes($("#network_password").val());
 	var network_name1 = 	addslashes($("#network_name1").val());
 	var security1 = 		$("#security1").val();
-	var network_password1 = addslashes($("#network_password1").val());
 	var newPassword	= '<?php if("admin" == $_SESSION["loginuser"]) echo $_POST["userPassword"]; ?>';
+	var password_update      = $("#password_check").prop("checked");
+	var password_update1     = $("#password_check1").prop("checked");
+	if((password_mso_user) || password_update){
+		network_password	= addslashes($("#network_password").val());
+	}
+	if((password_mso_user) || password_update1){
+		network_password1	= addslashes($("#network_password1").val());
+	}
 	if(newPassword){
 		var jsConfig = '{"network_name":"'+network_name+'", "security":"'+security+'", "network_password":"'+network_password 
 			+'", "network_name1":"'+network_name1+'", "security1":"'+security1+'", "network_password1":"'+network_password1
+			+'", "password_update":"'+password_update+'", "password_update1":"'+password_update1
 			+'", "newPassword":"'+newPassword
 			+'"}';
 	} else {
 		var jsConfig = '{"network_name":"'+network_name+'", "security":"'+security+'", "network_password":"'+network_password 
 			+'", "network_name1":"'+network_name1+'", "security1":"'+security1+'", "network_password1":"'+network_password1
+			+'", "password_update":"'+password_update+'", "password_update1":"'+password_update1
 			+'"}';
 	}
 	set_config(jsConfig);
@@ -404,9 +446,13 @@ if ("WEP-64" == $encrypt_mode1){
 			<div id="netPassword">
 				<div class="form-row odd">
 					<label for="network_password">Network Password (2.4GHz):</label>
-					<input type="text" size="23" id="network_password" name="network_password" class="text" value="<?php echo htmlspecialchars($network_password); ?>"/>
+					<input type="text" size="23" id="network_password" name="network_password" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password); ?>"/>
 				</div>
 				<p id="netPassword-footnote" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
+			</div>
+			<div class="form-row" id="div_change_password">
+				<label for="network_password">Change Password:</label>
+				<span class="checkbox"><input type="checkbox" id="password_check" name="password_check" /></span>
 			</div>
 			<div class="form-row odd">
 				<label for="network_name1">Wi-Fi Network Name (5 GHz):</label>
@@ -429,9 +475,13 @@ if ("WEP-64" == $encrypt_mode1){
 			<div id="netPassword1">
 				<div class="form-row odd">
 					<label for="network_password1">Network Password (5 GHz):</label>
-					<input type="text" size="23" id="network_password1" name="network_password1" class="text" value="<?php echo htmlspecialchars($network_password1); ?>" />
+					<input type="text" size="23" id="network_password1" name="network_password1" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password1); ?>"/>
 				</div>
 				<p id="netPassword-footnote1" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
+			</div>
+			<div class="form-row" id="div_change_password1">
+				<label for="network_password1">Change Password:</label>
+				<span class="checkbox"><input type="checkbox" id="password_check1" name="password_check1" /></span>
 			</div>
 			<div id="wizard-form-buttons" class="form-row form-btn">
 				<input type="submit" value="Finish" class="btn" />

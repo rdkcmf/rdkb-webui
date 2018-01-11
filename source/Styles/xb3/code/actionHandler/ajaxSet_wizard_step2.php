@@ -22,9 +22,7 @@ if (!isset($_SESSION["loginuser"])) {
 	exit(0);
 }
 $jsConfig = $_POST['configInfo'];
-//$jsConfig = '{"network_name":"string", "security":"WPA2-Enterprise", "network_password":"00000000", "network_name1":"string1", "security1":"WPA-WPA2-Enterprise", "network_password1":"11111111"}';
 $arConfig = json_decode($jsConfig, true);
-//print_r($arConfig);
 // this method for only restart a certain SSID
 function MiniApplySSID($ssid) {
 	$apply_id = (1 << intval($ssid)-1);
@@ -32,7 +30,16 @@ function MiniApplySSID($ssid) {
 	setStr("Device.WiFi.Radio.$apply_rf.X_CISCO_COM_ApplySettingSSID", $apply_id, false);
 	setStr("Device.WiFi.Radio.$apply_rf.X_CISCO_COM_ApplySetting", "true", true);
 }
+$thisUser = $_SESSION['loginuser'];
+$network_pass_1 = getStr("Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase");
+$network_pass_2 = getStr("Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase");
 $validation = true;
+if(($arConfig['password_update']=="false") && ("mso" == $thisUser)){
+	$arConfig['network_password']=$network_pass_1;
+}
+if(($arConfig['password_update1']=="false") && ("mso" == $thisUser)){
+	$arConfig['network_password1']=$network_pass_2;
+}
 if($arConfig['security']!="None"){
 	if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
 }
