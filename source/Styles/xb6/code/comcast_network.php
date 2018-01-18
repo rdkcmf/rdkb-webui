@@ -603,24 +603,34 @@ for ($i=1, $j=1; $i<count($ds_ids); $i++)
 	$ds_tab[$i]['LockStatus']		= $ds_val[$j++][1];
 }
 
-$ds_ofdm_obj = "Device.X_CISCO_COM_CableModem.DownstreamOFDMChannel.";
+$ds_ofdm_obj = "Device.X_RDKCENTRAL-COM_CableModem.DsOfdmChan.";
 $ds_ofdm_val = DmExtGetStrsWithRootObj($ds_ofdm_obj, array($ds_ofdm_obj));
 $ds_ofdm_ids = DmExtGetInstanceIds($ds_ofdm_obj);
 $ds_ofdm_tab = array();
 for ($i=1, $j=1; $i<count($ds_ofdm_ids); $i++)
 {
         $ds_ofdm_tab[$i]['ChannelID']                    = $ds_ofdm_val[$j++][1];
-        $ds_ofdm_tab[$i]['Frequency']                    = $ds_ofdm_val[$j++][1];
-        $ds_ofdm_tab[$i]['TunerFrequency']               = $ds_ofdm_val[$j++][1];
-        $ds_ofdm_tab[$i]['PlcCenterFrequency']           = $ds_ofdm_val[$j++][1];
-        $ds_ofdm_tab[$i]['TimeInterleavingDepth']        = $ds_ofdm_val[$j++][1];
-        $ds_ofdm_tab[$i]['rollOff']                      = $ds_ofdm_val[$j++][1];
-        $ds_ofdm_tab[$i]['fftType']                      = $ds_ofdm_val[$j++][1];
-        $ds_ofdm_tab[$i]['cpSize']                       = $ds_ofdm_val[$j++][1];
-        $ds_ofdm_tab[$i]['NumberOfSubDataCarriers']      = $ds_ofdm_val[$j++][1];
-        $ds_ofdm_tab[$i]['Modulation']                   = $ds_ofdm_val[$j++][1];
-        $ds_ofdm_tab[$i]['LockStatus']                   = $ds_ofdm_val[$j++][1];
-        $ds_ofdm_tab[$i]['PowerLevel']                   = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['ChanIndicator']                = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['SubcarrierZeroFreq']           = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['FirstActiveSubcarrierNum']     = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['LastActiveSubcarrierNum']      = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['NumActiveSubcarriers']         = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['SubcarrierSpacing']            = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['CyclicPrefix']                 = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['RollOffPeriod']                = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['PlcFreq']                      = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['NumPilots']                    = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['TimeInterleaverDepth']         = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['PlcTotalCodewords']            = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['PlcUnreliableCodewords']       = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['NcpTotalFields']               = $ds_ofdm_val[$j++][1];
+        $ds_ofdm_tab[$i]['NcpFieldCrcFailures']          = $ds_ofdm_val[$j++][1];
+
+        if($ds_ofdm_tab[$i]['SubcarrierZeroFreq']) {
+            $ds_ofdm_tab[$i]['LockStatus'] = 'Locked';
+        } else {
+            $ds_ofdm_tab[$i]['LockStatus'] = 'Not Locked';
+        }
 }
 ?>
 
@@ -646,7 +656,7 @@ for ($i=1, $j=1; $i<count($ds_ofdm_ids); $i++)
 		<tr class="">
 			<th class="row-label ">Frequency</td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['Frequency'].'</div></td>';?>
-                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++) echo '<td><div style="width: 100px">'.$ds_ofdm_tab[$j]['Frequency'].'</div></td>';?>
+                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++) echo '<td><div style="width: 100px">'.$ds_ofdm_tab[$j]['SubcarrierZeroFreq'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
 			<th class="row-label ">SNR</td>
@@ -656,12 +666,20 @@ for ($i=1, $j=1; $i<count($ds_ofdm_ids); $i++)
 		<tr class="">
 			<th class="row-label ">Power Level</td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['PowerLevel'].'</div></td>';?>
-                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++) echo '<td><div style="width: 100px">'.$ds_ofdm_tab[$j]['PowerLevel'].'</div></td>';?>
+                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++) echo '<td><div style="width: 100px">NA</div></td>';?>
 		</tr>
 		<tr class="odd">
 			<th class="row-label ">Modulation</td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['Modulation'].'</div></td>';?>
-                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++) echo '<td><div style="width: 100px">'.$ds_ofdm_tab[$j]['Modulation'].'</div></td>';?>
+                        <?php
+                            for ($j=1; $j<count($ds_ofdm_ids); $j++) {
+                                if($ds_ofdm_tab[$j]['LockStatus'] == 'Locked') {
+                                    echo '<td><div style="width: 100px">OFDM</div></td>';
+                                } else {
+                                    echo '<td><div style="width: 100px">UNSUPPORTED</div></td>';
+                                }
+                            }
+                        ?>
 		</tr>
 	</tbody>
 	</table>
