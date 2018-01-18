@@ -1,11 +1,19 @@
 <!-- $Id: footer.php 2976 2009-09-02 21:42:51Z cporto $ -->
 		</div> <!-- end #main-content-->
 		<!--Footer-->
+<?php
+	$footer_param = array(
+		"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Footer.PartnerLink",
+		"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Footer.UserGuideLink",
+		"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Footer.CustomerCentralLink",
+	);
+	$footer_value = DmExtGetStrsWithRootObj("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.", $footer_param);
+?>
 		<div id="footer">
 			<ul id="footer-links">
-				<li class="first-child"><a href="http://www.xfinity.com" target="_blank">Xfinity.com</a></li>
-				<li style="list-style:none outside none; margin-left:10px">&#8226;&nbsp;&nbsp;<a href="https://customer.comcast.com/" target="_blank">customerCentral</a></li>
-				<li style="list-style:none outside none; margin-left:10px">&#8226;&nbsp;&nbsp;<a href="http://customer.comcast.com/userguides" target="_blank">User Guide</a></li>
+				<li class="first-child"><a href="<?php echo $footer_value[1][1]; ?>" target="_blank">Xfinity.com</a></li>
+				<li style="list-style:none outside none; margin-left:10px">&#8226;&nbsp;&nbsp;<a href="<?php echo $footer_value[2][1]; ?>" target="_blank">customerCentral</a></li>
+				<li style="list-style:none outside none; margin-left:10px">&#8226;&nbsp;&nbsp;<a href="<?php echo $footer_value[3][1]; ?>" target="_blank">User Guide</a></li>
 			</ul>
 		</div> <!-- end #footer -->
 	</div> <!-- end #container -->

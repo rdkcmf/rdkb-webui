@@ -21,6 +21,10 @@ $(document).ready(function() {
 });
 </script>
 <?php
+	$rootObjName    = "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Connection.";
+	$paramNameArray = array("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Connection.");
+	$mapping_array  = array("MSOinfo", "StatusTitle", "StatusInfo");
+	$Connection_values = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 function div_mod($n, $m)
 {
 	if (!is_numeric($n) || !is_numeric($m) || (0==$m)){
@@ -69,13 +73,13 @@ function sec2dhms($sec)
 	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
 ?>
 <div id="content">
-<h1>Gateway > Connection > XFINITY Network</h1>
+<h1>Gateway > Connection > <?php echo $Connection_values[0]['StatusTitle']; ?></h1>
 <div id="educational-tip">
-	<p class="tip">View technical information related to your XFINITY network connection.</p>
-	<p class="hidden">You may need this information if you contact Comcast for troubleshooting assistance.</p>
+	<p class="tip"><?php echo $Connection_values[0]['MSOinfo']; ?></p>
+	<p class="hidden"><?php echo $Connection_values[0]['StatusInfo']; ?></p>
 </div>
 <div class="module forms">
-	<h2>XFINITY Network</h2>
+	<h2><?php echo $Connection_values[0]['StatusTitle']; ?></h2>
 	<div class="form-row">
 		<span class="readonlyLabel">Internet:</span>
 		<span class="value"><?php echo ($sta_inet=="true") ? "Active" : "Inactive";?></span>

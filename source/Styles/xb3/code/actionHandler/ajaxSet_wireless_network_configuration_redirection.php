@@ -19,10 +19,14 @@
 $isCaptiveMode = false;
 $CONFIGUREWIFI = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi");
 $CaptivePortalEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CaptivePortalEnable");
-if(!strcmp($CaptivePortalEnable, "true")) {
-	if(!strcmp($CONFIGUREWIFI, "true")) {
-		$isCaptiveMode = true;
-	}
+$personalization_support = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Support");
+$PersonalizationSMSsupport = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.SMSsupport");
+if(!strcmp($personalization_support, "true")) {
+  if(!strcmp($CaptivePortalEnable, "true")) {
+        if(!strcmp($CONFIGUREWIFI, "true")) {
+                $isCaptiveMode = true;
+        }
+    }
 }
 if($isCaptiveMode)
 {
@@ -62,8 +66,10 @@ if($isCaptiveMode)
 		// jsConfig = '{"dualband":"true", "network_name":"'+network_name+'", "network_password":"'+network_password+'", "network5_name":"'+network5_name+'", "network5_password":"'+network5_password+', "phoneNumber":"'+EMS_mobileNumber()+'"}';
 		// jsConfig = '{"dualband":"false", "network_name":"'+network_name+'", "network_password":"'+network_password+', "phoneNumber":"'+EMS_mobileNumber()+'"}';
 		//print_r($arConfig);
-		//update EMS phoneNumber
-		setStr("Device.DeviceInfo.X_COMCAST-COM_EMS_MobileNumber", $arConfig['phoneNumber'], true);
+		if($PersonalizationSMSsupport == 'true'){
+			//update EMS phoneNumber
+			setStr("Device.DeviceInfo.X_COMCAST-COM_EMS_MobileNumber", $arConfig['phoneNumber'], true);
+		}
 		if($arConfig['dualband'] == "true"){
 			$network_name_arr = array(
 				"1" => $arConfig['network_name'],//."-2.4",

@@ -53,13 +53,21 @@ svg.defs-only {
 </style>
 <?php include('includes/utility.php'); ?>
 <?php
+	//WiFiPersonalization.Support UI inclusion/exclusion (on/off)
+	$personalization_param = array(
+		"Support"				=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Support",
+		"PartnerHelpLink"		=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.PartnerHelpLink",
+		"SMSsupport"			=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.SMSsupport",
+		"MyAccountAppSupport"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.MyAccountAppSupport",
+	);
+	$personalization_value = KeyExtGet("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.", $personalization_param);
 	// should we allow to Configure WiFi
 	// redirection logic - uncomment the code below while checking in
 	$CONFIGUREWIFI 			= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi");
 	$CaptivePortalEnable	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CaptivePortalEnable");
 	$CloudPersonalizationURL= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudPersonalizationURL");
 	$CloudUIEnable			= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
-	if(!strcmp($CaptivePortalEnable, "false") || !strcmp($CONFIGUREWIFI, "false")) {
+	if(!(($personalization_value["Support"] == "true") && ($CaptivePortalEnable == "true") && ($CONFIGUREWIFI == "true"))) {
 		header('Location:index.php');
 		exit;
 	}
@@ -125,6 +133,22 @@ svg.defs-only {
 		exit(0);
 	}
 	*/
+	$MyAccountAppSupport = ($personalization_value['MyAccountAppSupport'] == 'true');
+	$MyAccountAppBox = '<div class="access-box">';
+	$MyAccountAppBox .=	'<div style="float: left; padding-bottom: 50px;">';
+	$MyAccountAppBox .=	'<a href="'.$personalization_value['PartnerHelpLink'].'">';
+	$MyAccountAppBox .=	'<img class="img-hover" src="cmn/img/xfinity_My_Account.png" style="margin: 10px 20px 0 20px;" height="100px"/>';
+	$MyAccountAppBox .=	'</a>';
+	$MyAccountAppBox .=	'</div>';
+	$MyAccountAppBox .=	'<div>';
+	$MyAccountAppBox .=	'<p style="margin: 10px 0 0 0; text-align: left; width: 380px; font-size: large;">';
+	$MyAccountAppBox .=	'Want to change your settings at any time?';
+	$MyAccountAppBox .=	'</p>';
+	$MyAccountAppBox .=	'<p style="margin: 10px 0 0 0; text-align: left; width: 400px;">';
+	$MyAccountAppBox .=	'Download the XFINITY My Account app to access these settings and other features of your service.';
+	$MyAccountAppBox .=	'</p>';
+	$MyAccountAppBox .=	'</div>';
+	$MyAccountAppBox .=	'</div>';
 ?>
 <script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
 <script>
@@ -971,36 +995,39 @@ $(document).ready(function(){
 				</tr>
 			</table>
 			<hr>
-			<p style="text-align: left; margin: 13px 0 0 115px;">
-				Send yourself a text with your Wi-Fi name and password.<br>
-				This is an optional one-time-only text.
-			</p>
-			<div id="text_sms">
-				<p style="text-align: left; margin: 27px 0 0 115px;">Your Mobile Number (<b>Optional</b>)</p>
-				<input id="phoneNumber" type="text" placeholder="1(  )  -  " class="">
-				<div id="phoneNumberContainer" class="container" style="margin: 20px 30% auto auto; display: none;">
-					<div class="requirements" style="top: 130px; left: 150px;">
-						<div id="phoneNumberMessageTop" class="top">Text (SMS)</div>
-						<div id="phoneNumberMessageBottom" class="bottom">Texts are not encrypted. You can always view Wi-Fi name/password under My Account instead.</div>
+			<?php $SMSsupport = ($personalization_value["SMSsupport"] == 'true') ? 'block' : 'none' ; ?>
+			<div style="display: <?php echo $SMSsupport; ?>">
+				<p style="text-align: left; margin: 13px 0 0 115px;">
+					Send yourself a text with your Wi-Fi name and password.<br>
+					This is an optional one-time-only text.
+				</p>
+				<div id="text_sms" style="display: <?php echo $SMSsupport; ?>">
+					<p style="text-align: left; margin: 27px 0 0 115px;">Your Mobile Number (<b>Optional</b>)</p>
+					<input id="phoneNumber" type="text" placeholder="1(  )  -  " class="">
+					<div id="phoneNumberContainer" class="container" style="margin: 20px 30% auto auto; display: none;">
+						<div class="requirements" style="top: 130px; left: 150px;">
+							<div id="phoneNumberMessageTop" class="top">Text (SMS)</div>
+							<div id="phoneNumberMessageBottom" class="bottom">Texts are not encrypted. You can always view Wi-Fi name/password under My Account instead.</div>
+							<div class="arrow"></div>
+						</div>
+					</div>
+					<br/><br/>
+				</div>
+				<div id="concent_check" class="checkbox">
+					<input id="concent" type="checkbox" name="concent">
+					<label for="concent" class="insertBox" style="margin: -40px 10px 0 15px;"></label>
+					<div class="check-copy" style="text-align: left; color: #888;">
+							I agree to receive a text message from Comcast via<br/>
+							automated technology to my mobile number provided<br/>
+							regarding my Wi-Fi name and password.<br/>
+						</div>
+				</div>
+				<div id="agreementContainer" class="container" style="margin: 20px 30% auto auto; display: none;">
+					<div class="requirements" style="top: -6px; left: 509px;">
+						<div id="agreementMessageTop" class="top">Confirmation</div>
+						<div id="agreementMessageBottom" class="bottom">Please confirm your agreement to receive a text message.</div>
 						<div class="arrow"></div>
 					</div>
-				</div>
-				<br/><br/>
-			</div>
-			<div id="concent_check" class="checkbox">
-				<input id="concent" type="checkbox" name="concent">
-			    	<label for="concent" class="insertBox" style="margin: -40px 10px 0 15px;"></label>
-			    	<div class="check-copy" style="text-align: left; color: #888;">
-						I agree to receive a text message from Comcast via<br/>
-						automated technology to my mobile number provided<br/>
-						regarding my Wi-Fi name and password.<br/>
-					</div>
-		    </div>		    
-			<div id="agreementContainer" class="container" style="margin: 20px 30% auto auto; display: none;">
-				<div class="requirements" style="top: -6px; left: 509px;">
-					<div id="agreementMessageTop" class="top">Confirmation</div>
-					<div id="agreementMessageBottom" class="bottom">Please confirm your agreement to receive a text message.</div>
-					<div class="arrow"></div>
 				</div>
 			</div>
 			<br/><br/>
@@ -1054,21 +1081,7 @@ $(document).ready(function(){
 				</tr>
 			</table>
 			<hr>
-			<div class="access-box">
-				<div style="float: left; padding-bottom: 50px;">
-					<a href="http://xfinity.com">
-						<img class="img-hover" src="cmn/img/xfinity_My_Account.png" style="margin: 10px 20px 0 20px;" height="100px"/>
-					</a>
-				</div>
-				<div>
-					<p style="margin: 10px 0 0 0; text-align: left; width: 380px; font-size: large;">
-						Want to change your settings at any time?
-					</p>
-					<p style="margin: 10px 0 0 0; text-align: left; width: 400px;">
-						Download the XFINITY My Account app to access these settings and other features of your service.
-					</p>
-				</div>
-			</div>
+			<?php if($MyAccountAppSupport) echo $MyAccountAppBox; ?>
 			<br><br>
 		</div>
 		<div id="complete" style="display: none;" class="portal">
@@ -1118,21 +1131,7 @@ $(document).ready(function(){
 				</tr>
 			</table>
 			<hr>
-			<div class="access-box">
-				<div style="float: left; padding-bottom: 50px;">
-					<a href="http://xfinity.com">
-						<img class="img-hover" src="cmn/img/xfinity_My_Account.png" style="margin: 10px 20px 0 20px;" height="100px"/>
-					</a>
-				</div>
-				<div>
-					<p style="margin: 10px 0 0 0; text-align: left; width: 380px; font-size: large;">
-						Want to change your settings at any time?
-					</p>
-					<p style="margin: 10px 0 0 0; text-align: left; width: 400px;">
-						Download the XFINITY My Account app to access these settings and other features of your service.
-					</p>
-				</div>
-			</div>
+			<?php if($MyAccountAppSupport) echo $MyAccountAppBox; ?>
 			<br><br>
 		</div>
 		<div id="ready" style="display: none;" class="portal">
@@ -1182,21 +1181,7 @@ $(document).ready(function(){
 				</tr>
 			</table>
 			<hr>
-			<div class="access-box">
-				<div style="float: left; padding-bottom: 50px;">
-					<a href="http://xfinity.com">
-						<img class="img-hover" src="cmn/img/xfinity_My_Account.png" style="margin: 10px 20px 0 20px;" height="100px"/>
-					</a>
-				</div>
-				<div>
-					<p style="margin: 10px 0 0 0; text-align: left; width: 380px; font-size: large;">
-						Want to change your settings at any time?
-					</p>
-					<p style="margin: 10px 0 0 0; text-align: left; width: 400px;">
-						Download the XFINITY My Account app to access these settings and other features of your service.
-					</p>
-				</div>
-			</div>
+			<?php if($MyAccountAppSupport) echo $MyAccountAppBox; ?>
 			<br><br>
 		</div>
 	</body>
