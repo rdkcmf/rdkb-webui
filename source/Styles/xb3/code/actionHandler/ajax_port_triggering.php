@@ -56,38 +56,32 @@ if (isset($_POST['add'])){
 		$tsp=$_POST['tsp'];
 		$tep=$_POST['tep'];
 		if (getStr("Device.NAT.X_CISCO_COM_PortTriggers.TriggerNumberOfEntries")==0) {
-			//don't allow overlapping target and trigger port
-			if(PORTTEST($fsp,$fep,$tsp,$tep) == 1){
-				$result.="Conflicting Trigger and Target Ports, Please check!";
-			}
-			if ($result=="") {
-				addTblObj("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
-				$IDs=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."));
-				$i=$IDs[count($IDs)-1];
-				// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortStart",$fsp,false);//from start port
-				// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortEnd",$fep,false);
-				// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerProtocol",$type,false);
-				// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardProtocol",$type,false);//need to ask wu
-				// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortStart",$tsp,false);//to start port
-				// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortEnd",$tep,false);
-				// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Description",$name,false);
-				// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Enable","true",true);
-				$rootObjName ="Device.NAT.X_CISCO_COM_PortTriggers.Trigger.";
-				$paramArray = 
-					array (
-						array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortStart", "uint",   $fsp),
-						array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortEnd",   "uint",   $fep),
-						array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerProtocol",  "string", $type),
-						array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardProtocol",  "string", $type),
-						array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortStart", "uint",   $tsp),
-						array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortEnd",   "uint",   $tep),
-						array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Description",      "string", $name),
-						array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Enable",           "bool",   "true"),
-					);
-				$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);	
-				if (!$retStatus){$result="Success!";}
-				// echo json_encode("Success!");
-			}
+			addTblObj("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
+			$IDs=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."));
+			$i=$IDs[count($IDs)-1];
+			// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortStart",$fsp,false);//from start port
+			// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortEnd",$fep,false);
+			// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerProtocol",$type,false);
+			// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardProtocol",$type,false);//need to ask wu
+			// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortStart",$tsp,false);//to start port
+			// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortEnd",$tep,false);
+			// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Description",$name,false);
+			// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Enable","true",true);
+			$rootObjName ="Device.NAT.X_CISCO_COM_PortTriggers.Trigger.";
+			$paramArray =
+				array (
+					array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortStart", "uint",   $fsp),
+					array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortEnd",   "uint",   $fep),
+					array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerProtocol",  "string", $type),
+					array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardProtocol",  "string", $type),
+					array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortStart", "uint",   $tsp),
+					array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".ForwardPortEnd",   "uint",   $tep),
+					array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Description",      "string", $name),
+					array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Enable",           "bool",   "true"),
+				);
+			$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);
+			if (!$retStatus){$result="Success!";}
+			// echo json_encode("Success!");
 		} else {
 			// $result="";
 			$rootObjName    = "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.";
@@ -112,10 +106,6 @@ if (isset($_POST['add'])){
 						$result.="Conflict with other service. Please check Trigger and Target Ports!";
 						break;
 					}
-					//don't allow overlapping target and trigger port
-					if(PORTTEST($fsp,$fep,$tsp,$tep) == 1){
-						$result.="Conflicting Trigger and Target Ports, Please check!";
-					}
 				}
 			}
 			if ($result=="") {
@@ -134,10 +124,6 @@ if (isset($_POST['add'])){
 								$result.="Conflict with other service. Please check port and IP!";
 								break;
 							}
-						}
-						//don't allow overlapping target and trigger port
-						if(PORTTEST($fsp,$fep,$tsp,$tep) == 1){
-							$result.="Conflicting Trigger and Target Ports, Please check!";
 						}
 					}
 				} //end of foreach		
@@ -218,10 +204,6 @@ if (isset($_POST['edit'])){
 					$result.="Conflict with other service. Please check Trigger and Target Ports!";
 					break;
 				}
-				//don't allow overlapping target and trigger port
-				if(PORTTEST($fsp,$fep,$tsp,$tep) == 1){
-					$result.="Conflicting Trigger and Target Ports, Please check!";
-				}
 			}
 		}
 	    if ($result=="") {
@@ -240,10 +222,6 @@ if (isset($_POST['edit'])){
 							$result.="Conflict with other service. Please check port and IP!";
 							break;
 						}
-					}
-					//don't allow overlapping target and trigger port
-					if(PORTTEST($fsp,$fep,$tsp,$tep) == 1){
-						$result.="Conflicting Trigger and Target Ports, Please check!";
 					}
 				}
 			} //end of foreach		
