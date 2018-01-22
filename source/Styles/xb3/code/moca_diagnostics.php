@@ -29,7 +29,7 @@
 		"moca_NodeID" 		=> "Device.MoCA.Interface.1.NodeID",
 		"BeaconPowerLimit" 	=> "Device.MoCA.Interface.1.BeaconPowerLimit",
 		"LinkUpTime" 		=> "Device.MoCA.Interface.1.LinkUpTime",
-		"NodeTabooMask" 	=> "Device.MoCA.Interface.1.NodeTabooMask",
+		"FreqCurrentMask" 	=> "Device.MoCA.Interface.1.FreqCurrentMask",
 		"TxPowerLimit" 		=> "Device.MoCA.Interface.1.TxPowerLimit",
 		"Privacy_Setting" 	=> "Device.MoCA.Interface.1.PrivacyEnabledSetting",
 		"BackupNC"			=> "Device.MoCA.Interface.1.BackupNC",
@@ -50,7 +50,7 @@
 	$LinkUpTime			= $MoCA_value['LinkUpTime'];
 	$ErrorsReceived		= $MoCA_value['ErrorsReceived'];
 	$Discard_Received	= $MoCA_value['Discard_Received'];
-	$NodeTabooMask		= $MoCA_value['NodeTabooMask'];
+	$FreqCurrentMask	= $MoCA_value['FreqCurrentMask'];
 	$TxPowerLimit		= $MoCA_value['TxPowerLimit'];
 	$Privacy_Setting	= $MoCA_value['Privacy_Setting'];
 	$BackupNC			= $MoCA_value['BackupNC'];
@@ -339,7 +339,7 @@ $(document).ready(function() {
 			</div>
 			<div class="form-row odd">
 				<label>Channel Mask:</label>
-				<span class="readonlyValue"><?php echo $NodeTabooMask; ?></span>
+				<span class="readonlyValue"><?php echo $FreqCurrentMask; ?></span>
 			</div>
 			<div class="form-row">
 				<label for="Privacy">Privacy:</label>
