@@ -541,11 +541,11 @@ function f()
 		if ("Disabled"==$_SESSION["psmMode"]) {
 			function ProcessLay1Interface($interface){
 				if (stristr($interface, "WiFi")){
-					if (stristr($interface, "1")) {
+					if (stristr($interface, "WiFi.SSID.1")) {
 						//$host['networkType'] = "Private";
 						$host['connectionType'] = "Wi-Fi 2.4G";
 					}
-					elseif (stristr($interface, "2")) {
+					elseif (stristr($interface, "WiFi.SSID.2")) {
 						//$host['networkType'] = "Private";
 						$host['connectionType'] = "Wi-Fi 5G";
 					}
