@@ -788,10 +788,13 @@ function click_save()
 		type: "POST",
 		url: "actionHandler/ajaxSet_wireless_network_configuration_edit.php",
 		data: { configInfo: jsConfig },
-		success: function(msg) {            
+		success: function(msg) {
 			jHide();
+			msg_parseJSON = $.parseJSON(msg);
 			// location.reload();
-			location.href = 'wireless_network_configuration.php';
+			if(msg_parseJSON.error_message){
+				jAlert(msg_parseJSON.error_message);
+			} else location.href = 'wireless_network_configuration.php';
 		},
 		error: function(){            
 			jHide();

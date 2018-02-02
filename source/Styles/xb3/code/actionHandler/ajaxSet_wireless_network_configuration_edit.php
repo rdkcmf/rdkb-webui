@@ -41,6 +41,7 @@ function MiniApplySSID($ssid) {
 	setStr("Device.WiFi.Radio.$apply_rf.X_CISCO_COM_ApplySettingSSID", $apply_id, false);
 	setStr("Device.WiFi.Radio.$apply_rf.X_CISCO_COM_ApplySetting", "true", true);
 }
+$response_message = '';
 //ssid 1,2 for all
 //ssid 3,4 for mso only
 if ($i == 1 || $i == 2) {
@@ -79,7 +80,10 @@ if ($i == 1 || $i == 2) {
 			if($validation) $validation = ($DefaultSSID != $arConfig['network_name']);
 				//Choose a different Network Password than the one provided on your gateway
 			$DefaultKeyPassphrase = getStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_DefaultKeyPassphrase");
-			if($validation) $validation = ($DefaultKeyPassphrase != $arConfig['network_password']);
+			if($validation && ($DefaultKeyPassphrase == $arConfig['network_password'])) {
+				$validation = false;
+				$response_message = 'Please change Network Password !';
+			}
 			if($validation){
 				switch ($arConfig['security'])
 				{
@@ -178,5 +182,9 @@ if ($i == 1 || $i == 2) {
 		MiniApplySSID($i);
 	}
 }
-echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
+if($response_message!='') {
+	$response->error_message = $response_message;
+	echo htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8');
+}
+else echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 ?>
