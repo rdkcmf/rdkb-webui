@@ -283,8 +283,6 @@ function saveRIP(information) {
 			<select id="send_version">
 				<option value="NA">Do Not Send</option>
 				<option value="RIP1">RIP1</option>
-				<option value="RIP2">RIP2</option>
-				<option value="RIP1/2">RIP1/2</option>
 			</select>
 		</div>
 		<div class="form-row">
@@ -292,8 +290,6 @@ function saveRIP(information) {
 			<select id="receive_version">
 				<option value="NA">Do Not Receive</option>
 				<option value="RIP1">RIP1</option>
-				<option value="RIP2">RIP2</option>
-				<option value="RIP1/2">RIP1/2</option>
 			</select>
 		</div>
 		<div class="form-row odd">

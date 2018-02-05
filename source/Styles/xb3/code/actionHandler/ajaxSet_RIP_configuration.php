@@ -56,8 +56,8 @@ function setRIPconfig($ripInfo){
 $validation = true;
 if($validation) $validation = isValInArray($ripInfo['AuthType'], array('NoAuth', 'SimplePassword', 'MD5'));
 if($validation) $validation = isValInArray($ripInfo['IfName'], array('Cable', 'Ethernet'));
-if($validation) $validation = isValInArray($ripInfo['SendVer'], array('NA', 'RIP1', 'RIP2', 'RIP1/2'));
-if($validation) $validation = isValInArray($ripInfo['RecVer'], array('NA', 'RIP1', 'RIP2', 'RIP1/2'));
+if($validation) $validation = isValInArray($ripInfo['SendVer'], array('NA', 'RIP1'));
+if($validation) $validation = isValInArray($ripInfo['RecVer'], array('NA', 'RIP1'));
 if($validation) $validation = isValInRange($ripInfo['Interval'], 5, 2147483647);
 if($validation) $validation = isValInRange($ripInfo['Metric'], 1, 15);
 if($validation) $validation = validIPAddr($ripInfo['NeighborIP']);
