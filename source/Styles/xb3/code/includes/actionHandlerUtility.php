@@ -118,7 +118,7 @@ function valid_ssid_name($ssid_name){
 	$not_hhs_check  = (preg_match('/^xhs-|^xh-/', $ssid_name) != 1);
 	//SSID containing "optimumwifi", "TWCWiFi", "cablewifi" and "xfinitywifi" are reserved
 	$ssid_name = preg_replace('/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"\'\\|<>\[\]\s]/', '', $ssid_name);
-	$not_hhs2_check = !((strpos($ssid_name, 'cablewifi') !== false) || (strpos($ssid_name, 'twcwifi') !== false) || (strpos($ssid_name, 'optimumwifi') !== false) || (strpos($ssid_name, 'xfinitywifi') !== false));
+	$not_hhs2_check = !((strpos($ssid_name, 'cablewifi') !== false) || (strpos($ssid_name, 'twcwifi') !== false) || (strpos($ssid_name, 'optimumwifi') !== false) || (strpos($ssid_name, 'xfinitywifi') !== false) || (strpos($ssid_name, 'xfinity') !== false));
 	return $ssid_name_check && $not_only_spaces_check && $not_hhs_check && $not_hhs2_check;
 }
 //check if $name has any Invalid characters

@@ -557,6 +557,11 @@ $(document).ready(function(){
 			$(this).addClass("error").removeClass("success");
 			messageHandler("name", "Let's try that again", 'SSID is invalid/reserved.');
 		}
+		else if(!isXFINITY){
+			goNextName = false;
+			$(this).addClass("error").removeClass("success");
+			messageHandler("name", "Let's try that again", 'SSID is invalid/reserved.');
+		}
 		else if(!isOther){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
@@ -652,6 +657,11 @@ $(document).ready(function(){
 			messageHandler("name5", "Let's try that again", "Choose a different name than the one provided on your gateway.");
 		}
 		else if(!isXHS){
+			goNextName5 = false;
+			$(this).addClass("error").removeClass("success");
+			messageHandler("name5", "Let's try that again", 'SSID is invalid/reserved.');
+		}
+		else if(!isXFINITY){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
 			messageHandler("name5", "Let's try that again", 'SSID is invalid/reserved.');
