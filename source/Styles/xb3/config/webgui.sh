@@ -102,7 +102,13 @@ cp $LIGHTTPD_DEF_CONF $LIGHTTPD_CONF
 HTTP_SECURITY_HEADER_ENABLE=`syscfg get HTTPSecurityHeaderEnable`
 
 if [ "$HTTP_SECURITY_HEADER_ENABLE" = "true" ]; then
-        echo "setenv.add-response-header = (\"X-Frame-Options\" => \"deny\",\"X-XSS-Protection\" => \"1; mode=block\",\"X-Content-Type-Options\" => \"nosniff\",\"Content-Security-Policy\" => \"img-src 'self'; font-src 'self'; form-action 'self';\")"  >> $LIGHTTPD_CONF
+    echo "setenv.add-response-header = ("  >> $LIGHTTPD_CONF
+    echo "    \"X-Frame-Options\" => \"deny\","  >> $LIGHTTPD_CONF
+    echo "    \"X-XSS-Protection\" => \"1; mode=block\","  >> $LIGHTTPD_CONF
+    echo "    \"X-Content-Type-Options\" => \"nosniff\","  >> $LIGHTTPD_CONF
+    echo "    \"Content-Security-Policy\" => \"default-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src 'self' 'unsafe-inline' 'unsafe-eval'; font-src 'self' 'unsafe-inline' 'unsafe-eval'; form-action 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self'; connect-src 'self'; object-src 'none'; media-src 'none'; script-nonce 'none'; plugin-types 'none'; reflected-xss 'none'; report-uri 'none';\","  >> $LIGHTTPD_CONF
+    echo ")"  >> $LIGHTTPD_CONF
+    echo "#sandbox 'allow-same-origin allow-scripts allow-popups allow-forms';"  >> $LIGHTTPD_CONF
 fi
 
 echo "server.port = $HTTP_ADMIN_PORT" >> $LIGHTTPD_CONF
