@@ -49,6 +49,14 @@
 #include "ext/standard/info.h"
 #include "php_cosa.h"
 
+#if PHP_MAJOR_VERSION < 7
+#define _RETURN_STRING(str) RETURN_STRING(str, 1)
+#define _add_next_index_string(str1,str2) add_next_index_string(str1,str2,1)
+#else
+#define _add_next_index_string(str1,str2) add_next_index_string(str1,str2)
+#define _RETURN_STRING(str) RETURN_STRING(str)
+#endif
+
 #define  COSA_PHP_EXT_LOG_FILE_NAME "/var/log/cosa_php_ext.log"
 #define  COSA_PHP_EXT_DEBUG_FILE    "/tmp/cosa_php_debug"
 #define  COSA_PHP_EXT_PCSIM         "/tmp/cosa_php_pcsim"
@@ -446,13 +454,13 @@ PHP_FUNCTION(getStr)
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dotstr, &flen) == FAILURE)
     {
         CosaPhpExtLog("getStr - zend_parse_parameters failed!\n");
-        RETURN_STRING("",1);
+        _RETURN_STRING("");
     }
 
     //check for NULL string
     if( !strlen(dotstr) )
     {
-        RETURN_STRING("",1);
+        _RETURN_STRING("");
     }
     else
     {
@@ -467,7 +475,7 @@ PHP_FUNCTION(getStr)
     iReturn = UiDbusClientGetDestComponent(dotstr, &ppDestComponentName, &ppDestPath,subSystemPrefix);
     if ( iReturn != 0 )
     {
-        RETURN_STRING("",1);
+        _RETURN_STRING("");
     }
         
     //Get Parameter Vaues from ccsp
@@ -483,7 +491,7 @@ PHP_FUNCTION(getStr)
     {
         CosaPhpExtLog("Failed on CcspBaseIf_getParameterValues %s, error code = %d.\n", dotstr, iReturn);
         //RETURN_STRING("ERROR: Failed on CcspBaseIf_getParameterValues",1);
-        RETURN_STRING("",1);
+        _RETURN_STRING("");
     }
 
     CosaPhpExtLog
@@ -501,7 +509,7 @@ PHP_FUNCTION(getStr)
     }
 
     //Return only first param value
-    RETURN_STRING(retParamVal, 1);
+    _RETURN_STRING(retParamVal);
 }
 
 /* {{{ proto string setStr(string arg)
@@ -701,12 +709,12 @@ PHP_FUNCTION(getInstanceIds)
 
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dotstr, &flen) == FAILURE) {
         //RETURN_STRING("ERROR: GetStr: ARGUMENT MISSING",1);
-        RETURN_STRING("",1);
+        _RETURN_STRING("");
     }
 
     //check for NULL string
     if( !strlen(dotstr))
-        RETURN_STRING("",1);
+        _RETURN_STRING("");
 
     //check whether there are subsystem prefix in the dot string
     //Split Subsytem prefix and COSA dotstr if subsystem prefix is found
@@ -717,7 +725,7 @@ PHP_FUNCTION(getInstanceIds)
 
     if ( iReturn != 0 )
     {
-        RETURN_STRING("",1);
+        _RETURN_STRING("");
     }
 
     /*
@@ -738,7 +746,7 @@ PHP_FUNCTION(getInstanceIds)
     {
         //AnscTraceWarning("Failed on CcspBaseIf_GetNextLevelInstances, error code = %d.\n", iReturn);
         //RETURN_STRING("ERROR: Failed on CcspBaseIf_GetNextLevelInstances",1);
-        RETURN_STRING("",1);
+        _RETURN_STRING("");
     }
 
     for(loop1=0,loop2=0; loop1<(InstNum); loop1++) 
@@ -754,7 +762,7 @@ PHP_FUNCTION(getInstanceIds)
 
     //Place NULL char at the end of string
     format_s[loop2-1]=0;
-    RETURN_STRING(format_s,1);
+    _RETURN_STRING(format_s);
 }
 /* }}} */
 /* {{{ proto string addTblObj(string arg)
@@ -1002,7 +1010,7 @@ PHP_FUNCTION(DmExtGetStrsWithRootObj)
     }
 
     iIndex = 0;
-
+#if PHP_MAJOR_VERSION < 7
     for ( zend_hash_internal_pointer_reset_ex(pArrayHash, &pPos);
           zend_hash_get_current_data_ex(pArrayHash, (void**) &pArrayVal, &pPos) == SUCCESS;
           zend_hash_move_forward_ex(pArrayHash, &pPos) )
@@ -1014,7 +1022,19 @@ PHP_FUNCTION(DmExtGetStrsWithRootObj)
             iIndex++;
         }
     }
-    
+#else
+    for ( zend_hash_internal_pointer_reset_ex(pArrayHash, &pPos);
+          zend_hash_get_current_data_ex(pArrayHash, &pPos) != NULL;
+          zend_hash_move_forward_ex(pArrayHash, &pPos) )
+    {
+        if (Z_TYPE_P(zend_hash_get_current_data_ex(pArrayHash, &pPos)) == IS_STRING)
+        {
+            ppParamNameList[iIndex] = Z_STRVAL_P(zend_hash_get_current_data_ex(pArrayHash, &pPos));
+            CosaPhpExtLog("  %s, (len %d)\n", ppParamNameList[iIndex], Z_STRLEN_P(zend_hash_get_current_data_ex(pArrayHash, &pPos)));
+            iIndex++;
+        }
+    }
+#endif 
     iReturn = 
         CcspBaseIf_getParameterValues
             (
@@ -1042,7 +1062,7 @@ PHP_FUNCTION(DmExtGetStrsWithRootObj)
         add_index_long(return_value, 0, 0);
 
         CosaPhpExtLog("%d of returned values:\n", iValCount);
-
+#if PHP_MAJOR_VERSION < 7
         for ( iIndex = 0; iIndex < iValCount; iIndex++ )
         {
             zval*           pVal;
@@ -1051,11 +1071,25 @@ PHP_FUNCTION(DmExtGetStrsWithRootObj)
 
             ALLOC_INIT_ZVAL(pVal);
             array_init(pVal);
-            add_next_index_string(pVal, ppParameterVal[iIndex]->parameterName, 1);
-            add_next_index_string(pVal, ppParameterVal[iIndex]->parameterValue, 1);
+            _add_next_index_string(pVal, ppParameterVal[iIndex]->parameterName);
+            _add_next_index_string(pVal, ppParameterVal[iIndex]->parameterValue);
             
             add_next_index_zval(return_value, pVal);
         }
+#else
+        for ( iIndex = 0; iIndex < iValCount; iIndex++ )
+        {
+            zval           pVal;
+            
+            CosaPhpExtLog("  %s = %s\n", ppParameterVal[iIndex]->parameterName, ppParameterVal[iIndex]->parameterValue);
+
+            array_init(&pVal);
+            _add_next_index_string(&pVal, ppParameterVal[iIndex]->parameterName);
+            _add_next_index_string(&pVal, ppParameterVal[iIndex]->parameterValue);
+            
+            add_next_index_zval(return_value, &pVal);
+        }
+#endif
 
         if ( iValCount > 0 )
         {
@@ -1192,6 +1226,7 @@ PHP_FUNCTION(DmExtSetStrsWithRootObj)
     /*
      *  Process the first level array of parameter values
      */
+#if PHP_MAJOR_VERSION < 7
     for ( zend_hash_internal_pointer_reset_ex(pParamHash, &pParamPos);
           zend_hash_get_current_data_ex(pParamHash, (void**) &pParamData, &pParamPos) == SUCCESS;
           zend_hash_move_forward_ex(pParamHash, &pParamPos) )
@@ -1203,7 +1238,19 @@ PHP_FUNCTION(DmExtSetStrsWithRootObj)
         else
         {
             pParamValHash   = Z_ARRVAL_PP(pParamData);
-            
+#else
+    for ( zend_hash_internal_pointer_reset_ex(pParamHash, &pParamPos);
+          zend_hash_get_current_data_ex(pParamHash, &pParamPos) != NULL;
+          zend_hash_move_forward_ex(pParamHash, &pParamPos) )
+    {
+        if (Z_TYPE_P(zend_hash_get_current_data_ex(pParamHash, &pParamPos)) != IS_ARRAY)
+        {
+            CosaPhpExtLog("Item is not ARRAY!\n");
+        }
+        else
+        {
+            pParamValHash   = Z_ARRVAL_P(zend_hash_get_current_data_ex(pParamHash, &pParamPos)); 
+#endif           
             /*
              *  Second level array of each parameter value: parameter name, type and value
              *  Therofore, the count has to be 3
@@ -1216,6 +1263,7 @@ PHP_FUNCTION(DmExtSetStrsWithRootObj)
             }
             else
             {
+#if PHP_MAJOR_VERSION < 7
                 zend_hash_internal_pointer_reset_ex(pParamValHash, &pParamValPos);
 
                 if ( zend_hash_get_current_data_ex(pParamValHash, (void**) &pParamValData, &pParamValPos) == SUCCESS )
@@ -1233,6 +1281,25 @@ PHP_FUNCTION(DmExtSetStrsWithRootObj)
                 if ( zend_hash_get_current_data_ex(pParamValHash, (void**) &pParamValData, &pParamValPos) == SUCCESS )
                 {
                     char*           pTemp   = Z_STRVAL_PP(pParamValData);
+#else
+                zend_hash_internal_pointer_reset_ex(pParamValHash, &pParamValPos);
+
+                if ( zend_hash_get_current_data_ex(pParamValHash, &pParamValPos) != NULL )
+                {
+                    pParameterValList[iIndex].parameterName  = Z_STRVAL_P(zend_hash_get_current_data_ex(pParamValHash, &pParamValPos));
+                    CosaPhpExtLog("  Param name %s\n", pParameterValList[iIndex].parameterName);
+                }
+                else
+                {
+                    continue;
+                }
+                
+                zend_hash_move_forward_ex(pParamValHash, &pParamValPos);
+                 
+                if ( zend_hash_get_current_data_ex(pParamValHash, &pParamValPos) != NULL )
+                {
+                    char*           pTemp   = Z_STRVAL_P(zend_hash_get_current_data_ex(pParamValHash, &pParamValPos));
+#endif
 
                     if ( !strcmp(pTemp, "void") )
                     {
@@ -1289,9 +1356,15 @@ PHP_FUNCTION(DmExtSetStrsWithRootObj)
 
                 zend_hash_move_forward_ex(pParamValHash, &pParamValPos);
 
+#if PHP_MAJOR_VERSION < 7
                 if ( zend_hash_get_current_data_ex(pParamValHash, (void**) &pParamValData, &pParamValPos) == SUCCESS )
                 {
                     pParameterValList[iIndex].parameterValue  = Z_STRVAL_PP(pParamValData);
+#else
+                if ( zend_hash_get_current_data_ex(pParamValHash, &pParamValPos) != NULL )
+                {
+                    pParameterValList[iIndex].parameterValue  = Z_STRVAL_P(zend_hash_get_current_data_ex(pParamValHash, &pParamValPos));
+#endif
 
                     if ( pParameterValList[iIndex].type == ccsp_boolean )
                     {
@@ -1454,7 +1527,7 @@ PHP_FUNCTION(DmExtGetInstanceIds)
         for ( iIndex = 0; iIndex < InstNum; iIndex++ )
         {
             snprintf(StrBuf, sizeof(StrBuf) - 1, "%d", pInstNumList[iIndex]);
-            add_next_index_string(return_value, StrBuf, 1);
+            _add_next_index_string(return_value, StrBuf);
             CosaPhpExtLog("Instance %d: %s\n", iIndex, StrBuf);
         }
 
