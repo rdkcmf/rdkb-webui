@@ -377,7 +377,7 @@ $(window).load(function() {
 				<th id="node-id">Node ID</th>
 				<th id="mac-address">MoCA MAC Address</th>
 				<th id="network-controller">Network Controller</th>
-				<th id="transmit-power-level" width="20%">MoCA Transmit Power Level</th>
+				<th id="transmit-power-level" width="20%">MoCA Transmit Power Reduction</th>
 				<th id="receive-power-level" width="20%">MoCA Receive Power Level</th>
 			</tr>
 			<?php
