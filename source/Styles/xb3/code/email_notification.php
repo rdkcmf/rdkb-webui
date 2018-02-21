@@ -13,9 +13,9 @@ $email_notif_param = array(
         "alerts_warnings"   => "Device.X_CISCO_COM_Security.EmailAlertsOrWarnings",
         "send_logs"         => "Device.X_CISCO_COM_Security.EmailSendLogs",
         "smtp_address"      => "Device.X_CISCO_COM_Security.EmailServer",
-        "comcast_address"   => "Device.X_CISCO_COM_Security.EmailFromAddress",
-        "comcast_username"  => "Device.X_CISCO_COM_Security.EmailUserName",
-        "comcast_password"  => "Device.X_CISCO_COM_Security.EmailPassword",
+        "address"   => "Device.X_CISCO_COM_Security.EmailFromAddress",
+        "username"  => "Device.X_CISCO_COM_Security.EmailUserName",
+        "password"  => "Device.X_CISCO_COM_Security.EmailPassword",
 	);
     $email_notif_value = KeyExtGet("Device.X_CISCO_COM_Security.", $email_notif_param);
 $recipient_mail = 	$email_notif_value["recipient_mail"]; //getStr("Device.X_CISCO_COM_Security.EmailSendTo");
@@ -24,18 +24,18 @@ $parental_breach = 	$email_notif_value["parental_breach"]; //getStr("Device.X_CI
 $alerts_warnings = 	$email_notif_value["alerts_warnings"]; //getStr("Device.X_CISCO_COM_Security.EmailAlertsOrWarnings");
 $send_logs = 		$email_notif_value["send_logs"];       //getStr("Device.X_CISCO_COM_Security.EmailSendLogs");
 $smtp_address = 	$email_notif_value["smtp_address"]; //getStr("Device.X_CISCO_COM_Security.EmailServer");
-$comcast_address = 	$email_notif_value["comcast_address"]; //getStr("Device.X_CISCO_COM_Security.EmailFromAddress");
-$comcast_username = $email_notif_value["comcast_username"]; //getStr("Device.X_CISCO_COM_Security.EmailUserName");
-$comcast_password = $email_notif_value["comcast_password"]; //getStr("Device.X_CISCO_COM_Security.EmailPassword");
+$address = 	$email_notif_value["address"]; //getStr("Device.X_CISCO_COM_Security.EmailFromAddress");
+$username = $email_notif_value["username"]; //getStr("Device.X_CISCO_COM_Security.EmailUserName");
+$password = $email_notif_value["password"]; //getStr("Device.X_CISCO_COM_Security.EmailPassword");
 // $recipient_mail = 	"string1";
 // $firewall_breach = 	"true";
 // $parental_breach = 	"true";
 // $alerts_warnings = 	"false";
 // $send_logs = 		"true";
 // $smtp_address = 	"string2";
-// $comcast_address = 	"string3";
-// $comcast_username = "string4";
-// $comcast_password = "string5";
+// $address = 	"string3";
+// $username = "string4";
+// $password = "string5";
 ?>
 <script type="text/javascript">
 var o_firewallbreach = <?php echo $firewall_breach === 'true' ? 'true' : 'false';?>;
@@ -128,7 +128,7 @@ $(document).ready(function() {
 				email_domain: true,
 				allowed_char: true
 			},
-			comcast_address: {
+			address: {
 				required: true,
 				email: true,
 				email_domain: true,
@@ -138,10 +138,10 @@ $(document).ready(function() {
 				required: true,
 				isIP: true
 			},
-			comcast_username: {
+			username: {
 				allowed_char: true
 			},
-			comcast_password: {
+			password: {
 				allowed_char: true
 			}
 		},
@@ -150,7 +150,7 @@ $(document).ready(function() {
 			required: "We need an email address to send to",
 			email: 'Email address must be in the format of name@domain.com, upto 60 char'
 			},
-			comcast_address: {
+			address: {
 			required: "We need an email address to send to",
 			email: 'Email address must be in the format of name@domain.com, upto 60 char'
 			}
@@ -168,12 +168,12 @@ function button_save()
 	var alerts_warnings = 	$("#alert_switch").radioswitch("getState").on;
 	var send_logs = 		$("#log_switch").radioswitch("getState").on;
 	var smtp_address = 		$("#smtp_address").val();
-	var comcast_address = 	$("#comcast_address").val();
-	var comcast_username = 	$("#comcast_username").val();
-	var comcast_password = 	$("#comcast_password").val();
+	var address = 	$("#address").val();
+	var username = 	$("#username").val();
+	var password = 	$("#password").val();
 	var jsConfig = '{"recipient_mail":"'+recipient_mail+'", "firewall_breach":"'+firewall_breach+'", "parental_breach":"'+parental_breach 
 		+'", "alerts_warnings":"'+alerts_warnings+'", "send_logs":"'+send_logs+'", "smtp_address":"'+smtp_address 
-		+'", "comcast_address":"'+comcast_address+'", "comcast_username":"'+comcast_username+'", "comcast_password":"'+comcast_password+'"}';	
+		+'", "address":"'+address+'", "username":"'+username+'", "password":"'+password+'"}';	
 	// alert(jsConfig);
 	jProgress('This may take several seconds...', 60);
 	$.ajax({
@@ -239,14 +239,14 @@ function button_save()
 				<div class="form-row"><label for="smtp_address">SMTP Server Address:</label>
 					<input type="text" id="smtp_address" name="smtp_address" value="<?php echo $smtp_address;?>" >
 				</div>
-				<div class="form-row odd"><label for="comcast_address">Comcast Email Address:</label>
-					<input type="text" id="comcast_address" name="comcast_address" value="<?php echo $comcast_address;?>" >
+				<div class="form-row odd"><label for="address">Comcast Email Address:</label>
+					<input type="text" id="address" name="address" value="<?php echo $address;?>" >
 				</div>
-				<div class="form-row"><label for="comcast_username">Comcast Username:</label>
-					<input type="text" id="comcast_username" name="comcast_username" value="<?php echo $comcast_username;?>" >
+				<div class="form-row"><label for="username">Comcast Username:</label>
+					<input type="text" id="username" name="username" value="<?php echo $username;?>" >
 				</div>
-				<div class="form-row odd"><label for="comcast_password">Comcast Password:</label>
-					<input type="password" id="comcast_password" name="comcast_password" value="<?php echo $comcast_password;?>" >
+				<div class="form-row odd"><label for="password">Comcast Password:</label>
+					<input type="password" id="password" name="password" value="<?php echo $password;?>" >
 				</div>
 			</div> <!-- end .module -->
 			<div class="form-btn">
