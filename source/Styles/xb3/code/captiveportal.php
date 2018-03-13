@@ -24,6 +24,20 @@
 		zoom: 40%; /* Webkit browsers */
 	}
 }
+@media (max-width: 320px) {
+	body {
+		-moz-transform: scale(0.3, 0.3); /* Moz-browsers */
+		zoom: 0.3; /* Other non-webkit browsers */
+		zoom: 30%; /* Webkit browsers */
+	}
+}
+@media (max-width: 200px) {
+	body {
+		-moz-transform: scale(0.27, 0.27); /* Moz-browsers */
+		zoom: 0.27; /* Other non-webkit browsers */
+		zoom: 27%; /* Webkit browsers */
+	}
+}
 .confirm-text{
 	font-family: 'xfinSansLt';
 	font-size: 14px;
