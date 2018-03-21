@@ -18,6 +18,21 @@
  limitations under the License.
 */
 ?>
+<?php include('includes/utility.php'); ?>
+<?php
+	$PartnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
+	//WiFiPersonalization.Support UI inclusion/exclusion (on/off)
+	$personalization_param = array(
+		"Support"				=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Support",
+		"PartnerHelpLink"		=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.PartnerHelpLink",
+		"SMSsupport"			=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.SMSsupport",
+		"MyAccountAppSupport"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.MyAccountAppSupport",
+		"captivePortal_MSOLogo"			=>	"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.MSOLogo",
+		"captivePortal_Title"			=>	"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Title",
+		"captivePortal_WelcomeMessage"	=>	"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.WelcomeMessage",
+	);
+	$personalization_value = KeyExtGet("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.", $personalization_param);
+?>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
@@ -25,7 +40,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="">
 		<meta name="author" content="">
-		<title>XFINITY Smart Internet</title>
+		<title><?php echo $personalization_value["captivePortal_Title"]; ?></title>
 		<link rel="stylesheet" href="cmn/css/styles.css">
 	</head>
 <!-- for Dual Band Network -->
@@ -85,16 +100,7 @@ svg.defs-only {
 	overflow: hidden;
 }
 </style>
-<?php include('includes/utility.php'); ?>
 <?php
-	//WiFiPersonalization.Support UI inclusion/exclusion (on/off)
-	$personalization_param = array(
-		"Support"				=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Support",
-		"PartnerHelpLink"		=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.PartnerHelpLink",
-		"SMSsupport"			=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.SMSsupport",
-		"MyAccountAppSupport"	=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.MyAccountAppSupport",
-	);
-	$personalization_value = KeyExtGet("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.", $personalization_param);
 	// should we allow to Configure WiFi
 	// redirection logic - uncomment the code below while checking in
 	$CONFIGUREWIFI 			= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi");
@@ -907,21 +913,14 @@ $(document).ready(function(){
 	<body>
 		<div id="topbar">
 			<!-- XFINITY logo placement -->
-			<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-			<svg viewBox="0 0 100 47"  height="60" style="margin-top: 20px;">
-				<use xlink:href="#logo"  transform="translate(1.000000, 7.000000)"/>
-			</svg>		
-			<!-- XFINITY logo placement end -->
-
-			<!-- XFINITY logo svg code -->
-			<svg class="defs-only" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-				<!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
-				<desc>Created with Sketch.</desc>
-				<defs></defs>
-				<symbol id="logo">
-					<path d="M65.8445511,25.0485949 L65.8445511,7.29671008 L61.7321453,7.29671008 L61.7321453,26.0766964 L65.8445511,26.0766964 L65.8445511,25.0485949 Z M37.6060315,25.0485949 L37.6060315,7.29671008 L33.4936258,7.29671008 L33.4936258,26.0766964 L37.6060315,26.0766964 L37.6060315,25.0485949 Z M50.76573,6.9540096 C48.8466073,6.9540096 46.9960247,7.77649075 46.0364633,9.01021247 L46.0364633,7.29671008 L41.9240576,7.29671008 L41.9240576,26.0766964 L46.0364633,26.0766964 L46.0364633,15.110281 C46.0364633,12.0945168 47.3387252,10.3810144 49.7376285,10.3810144 C52.3421522,10.3810144 53.4387937,11.8888965 53.4387937,15.4529815 L53.4387937,26.0766964 L57.4826594,26.0766964 L57.4826594,15.3844414 C57.5511995,9.83269363 55.2208362,6.9540096 50.76573,6.9540096 L50.76573,6.9540096 Z M71.8075394,10.5180946 L71.8075394,21.0047293 C71.8075394,24.4317341 73.658122,26.4879369 76.8109664,26.4879369 C77.8390679,26.4879369 78.8671693,26.3508568 79.6896504,26.1452365 L80.1694311,22.8553119 C79.9638108,22.923852 79.0727896,23.1294722 78.3188485,23.1294722 C76.6053461,23.1294722 75.9199452,22.4440713 75.9199452,20.7305689 L75.9199452,10.5180946 L80.6492118,10.5180946 L79.4154901,7.29671008 L75.9199452,7.29671008 L75.9199452,0.511240576 L71.8075394,2.56744345 L71.8075394,7.29671008 L68.7917752,7.29671008 L68.7917752,10.5180946 L71.8075394,10.5180946 Z M22.5957505,7.29671008 L20.6766278,7.29671008 L18.4148047,10.5180946 L22.5957505,10.5180946 L22.5957505,26.1452365 L26.7081563,26.1452365 L26.7081563,10.5180946 L30.8891021,10.5180946 L30.8891021,7.29671008 L26.7081563,7.29671008 L26.7081563,5.51466758 C26.7081563,4.14386566 27.256477,3.59554489 28.6958191,3.59554489 C29.5183002,3.59554489 30.3407814,3.73262509 30.8891021,3.93824537 L30.8891021,0.579780672 C30.066621,0.305620288 28.9014393,0.1 27.5991775,0.1 C24.4463331,0.1 22.5957505,2.15620288 22.5957505,5.58320768 L22.5957505,7.29671008 L22.5957505,7.29671008 Z M100.8,7.29671008 L96.4134339,7.29671008 L89.8335846,19.2912269 L85.3784784,7.29671008 L81.1289925,7.29671008 L87.4346813,23.677793 L82.5683345,32.7250857 L86.8863605,32.7250857 L100.8,7.29671008 Z M12.1776559,16.4125428 L18.5518849,7.36525017 L13.8911583,7.36525017 L9.91583276,13.1226182 L5.9405072,7.36525017 L1.27978067,7.36525017 L7.6540096,16.4125428 L0.8,26.1452365 L5.46072653,26.1452365 L9.84729267,19.7024674 L18.9631254,32.7936258 L23.5553119,32.7936258 L12.1776559,16.4125428 Z" id="Shape" stroke="none" fill="#FFFFFF" fill-rule="nonzero"></path>
-				</symbol>
-			</svg>		
+<?php
+	//PartnerId = comcast cox rogers shaw
+	$logo="cmn/syndication/img/".$personalization_value['captivePortal_MSOLogo'];
+	if($PartnerId == 'comcast')
+		include($logo);
+	else
+		echo "<img src='".$logo."' />";
+?>
 			<!-- XFINITY logo svg code end -->
 		</div>
 		<div id="redirect_process">
@@ -929,7 +928,7 @@ $(document).ready(function(){
 			<img src="cmn/img/progress.gif" height="75" width="75"/>
 		</div>
 		<div id="set_up" style="display: none;" class="portal">
-			<h1>Welcome to XFINITY Internet</h1>
+			<h1><?php echo $personalization_value["captivePortal_WelcomeMessage"]; ?></h1>
 			<hr>
 			<p>
 			<b>This step is required to get your devices online</b><br><br>
