@@ -88,8 +88,9 @@ if ($mode=="system"){
 		$Des 	= substr(fgets($file),$pos);
 		// $Log[$i] =	array("time"=>$time, "Level"=>$Level, "Des"=>$Des);
 		if (feof($file)) break;					//PHP read last line will return false, not EOF!
-		$timeArr = str2time(trim(UTC_to_local_date_logs($time)));
+		$timeArr = str2time(trim($time));
 		$timeU = $timeArr['timeU'];
+		$timeArr = str2time(trim(UTC_to_local_date_logs($time)));
 		if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
 		$Log[$i++] = array("time"=>$timeArr['formatted_time'], "Level"=>$Level, "Des"=>$Des);
 	}
@@ -117,8 +118,9 @@ else if ($mode=="event") {
 		$Des 	= substr(fgets($file),$pos);
 		// $Log[$i] =	array("time"=>$time, "Level"=>$Level, "Des"=>$Des);
 		if (feof($file)) break;					//PHP read last line will return false, not EOF!
-		$timeArr = str2time(trim(UTC_to_local_date_logs($time)));
+		$timeArr = str2time(trim($time));
 		$timeU = $timeArr['timeU'];
+		$timeArr = str2time(trim(UTC_to_local_date_logs($time)));
 		if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
 		$Log[$i++] = array("time"=>$timeArr['formatted_time'], "Level"=>$Level, "Des"=>$Des);
 	}
@@ -149,8 +151,9 @@ else if ($mode=="firewall") {
 		$Des		= substr(fgets($file),$pos);
 		// $Log[$i] =	array("time"=>$time, "Des"=>$Des, "Count"=>$Count, "Target"=>$TargetIP,"Source"=>$SourceIP,"Type"=>$Type);
 		if (feof($file)) break;						//PHP read last line will return false, not EOF!
-		$timeArr = str2time(trim(UTC_to_local_date_logs($time)));
+		$timeArr = str2time(trim($time));
 		$timeU = $timeArr['timeU'];
+		$timeArr = str2time(trim(UTC_to_local_date_logs($time)));
 		if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
 		$Log[$i++] = array("time"=>$timeArr['firewall_time'], "Des"=>$Des, "Count"=>$Count, "Target"=>$TargetIP,"Source"=>$SourceIP,"Type"=>$Type);
 	}

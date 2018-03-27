@@ -76,11 +76,12 @@ for ($i=0; !feof($file); ) {
 	$User 	    = substr(fgets($file),$pos);
 	$TargetIP 	= substr(fgets($file),$pos);
 	$Type 	    = rtrim(substr(fgets($file),$pos)); //need to trim the blank char in string end, otherwise $type never equal to $Type
-	$time       = UTC_to_local_date_logs(substr(fgets($file),$pos));
+	$time 	    = substr(fgets($file),$pos);
 	$Des 	    = substr(fgets($file),$pos);
 	if (feof($file)) break;					//PHP read last line will return false, not EOF!
 	$timeU = strtotime($time);
 	if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
+	$time = UTC_to_local_date_logs($time);
 	if ($type == $Type) {
 		$Log[$i++] = array("time"=>$time, "Des"=>$Des, "Count"=>$Count, "Target"=>$TargetIP,"Source"=>$SourceIP,"Type"=>$Type);
     }
