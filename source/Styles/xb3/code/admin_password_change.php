@@ -26,9 +26,12 @@
 		echo '<script type="text/javascript">alert("Please Login First!"); location.href="home_loggedout.php";</script>';
 		exit(0);
 	}
+	$title=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Title");
+	$msoLogo= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogo");
+	$logo="cmn/syndication/img/".$msoLogo;
 ?>
 <head>
-	<title>Xfinity</title>
+	<title><?php echo $title; ?></title>
 	<!--CSS-->
 	<link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/common-min.css" />
 	<!--[if IE 6]>
@@ -99,7 +102,7 @@
 	<div id="container">
 		<!--Header-->
 		<div id="header">
-			<h2 id="logo" style="margin-top: 10px"><img src="./cmn/img/logo_xfinity.png" alt="Xfinity" title="Xfinity" /></h2>
+			<h2 id="logo" style="margin-top: 10px"><?php echo "<img src='".$logo."' alt='".$title."' title='".$title."' />"; ?></h2>
 		</div> <!-- end #header -->
 		<div id='div-skip-to' style="display: none;">
 			<a id="skip-link" name="skip-link" href="#content">Skip to content</a>

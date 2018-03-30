@@ -88,9 +88,12 @@
 	}
 	// doc psmMode into session, for directly use it in function
 	$_SESSION["psmMode"] = $psmMode;
+	$title=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Title");
+	$msoLogo= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogo");
+	$logo="cmn/syndication/img/".$msoLogo;
 ?>
 <head>
-	<title>Xfinity</title>
+	<title><?php echo $title; ?></title>
 	<!--CSS-->
 	<link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/common-min.css?sid=<?php echo $_SESSION["sid"]; ?>" />
 	<!--[if IE 6]>
@@ -171,7 +174,7 @@
 				else
 					echo '<p style="margin: 0">&nbsp;</p>';
 			?>
-			<h2 id="logo" style="margin-top: 10px"><img src="./cmn/img/logo_xfinity.png" alt="Xfinity" title="Xfinity" /></h2>
+			<h2 id="logo" style="margin-top: 10px"><?php echo "<img src='".$logo."' alt='".$title."'  title='".$title."' />"; ?></h2>
 		</div> <!-- end #header -->
 		<div id='div-skip-to' style="display: none;">
 			<a id="skip-link" name="skip-link" href="#content">Skip to content</a>
