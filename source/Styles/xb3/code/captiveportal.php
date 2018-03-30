@@ -124,25 +124,20 @@ svg.defs-only {
 	$network_name1	= $wifi_value['network_name1'];
 	$network_pass1	= $wifi_value['KeyPassphrase1'];
 	$ipv4_addr 	= getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
-	// logic to figure out LAN or WiFi from Connected Devices List
-	// get clients IP
-	// Known prefix
-	$v4mapped_prefix_hex = '00000000000000000000ffff';
-	$v4mapped_prefix_bin = pack("H*", $v4mapped_prefix_hex);
-	// Parse
-	$addr = $_SERVER['REMOTE_ADDR'];
-	$addr_bin = inet_pton($addr);
-	if( $addr_bin === FALSE ) {
-	  // Unparsable? How did they connect?!?
+	/*------	logic to figure out LAN or WiFi from Connected Devices List	------*/
+	/*------	get clients IP		------*/
+	$ipv4map_hexi = '00000000000000000000ffff';
+	$ipv4map_bin = pack("H*", $ipv4map_hexi);
+	$address = $_SERVER['REMOTE_ADDR'];
+	$address_bin = inet_pton($address);
+	if( $address_bin === FALSE ) {
 	  die('Invalid IP address');
 	}
-	// Check prefix
-	if( substr($addr_bin, 0, strlen($v4mapped_prefix_bin)) == $v4mapped_prefix_bin) {
-	  // Strip prefix
-	  $addr_bin = substr($addr_bin, strlen($v4mapped_prefix_bin));
+	if( substr($address_bin, 0, strlen($ipv4map_bin)) == $ipv4map_bin) {
+	  $address_bin = substr($address_bin, strlen($ipv4map_bin));
 	}
 	// Convert back to printable address in canonical form
-	$clientIP = inet_ntop($addr_bin);
+	$clientIP = inet_ntop($address_bin);
 	// cross check IP in Connected Devices List
 	function ProcessLay1Interface($interface){
 		if (stristr($interface, "WiFi")){
