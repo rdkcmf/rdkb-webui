@@ -474,4 +474,25 @@ function resolve_IPV6_global_address($address1, $address3){
 	}
 	return $IPV6_Addresses;
 }
+/**
+ * Discription: 
+ *     This function determines what the WAN type is
+ *              
+ * return: On a DOCSIS device returns "DOCSIS", on a EPON device retuns "EPON"
+ */
+function get_wan_type()
+{
+    static $type = null;
+    
+    if ($type != null) {
+        return $type;
+    }
+    
+    if (getStr("Device.DPoE.Mac_address")) {
+        $type = "EPON";
+    } else {
+        $type = "DOCSIS";
+    }
+    return $type;
+}
 ?>
