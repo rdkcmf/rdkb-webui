@@ -95,7 +95,7 @@ $firewall_log = array_reverse($Log);
 // echo "firewall log ...: \n";
 $fh=fopen("/tmp/parental_reports_".$mode."_".$timef.".txt","w");
 foreach ($firewall_log as $key=>$value){
-	fwrite($fh, $value["Des"].", ".$value["Count"]." Attemps, ".$value["time"]."\t".$value["Type"]."\r\n");
+	fwrite($fh, $value["Des"].", ".$value["Count"]." Attempts, ".$value["time"]."\t".$value["Type"]."\r\n");
 }
 fclose($fh);
 header("Content-Type: application/json");
