@@ -274,10 +274,10 @@ function popUp(URL) {
 				?>
 			</div>
 		</div>
-	<div class="module forms">
+	<!--div class="module forms">
 		<input type="button" onClick="javascript:popUp('at_downloading.php')" class="btn" value="Save Current Configuration"/>
 		<input type="button" onClick="javascript:popUp('at_mycomputer.php')" class="btn" value="Restore Saved Configuration"/>
-	</div>
+	</div-->
 	<div class="module block" id="home-network">
 		<div>
 			<h2>Home Network</h2>
