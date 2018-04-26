@@ -34,6 +34,11 @@ $(document).ready(function() {
 	$version		= getStr("Device.DeviceInfo.AdditionalSoftwareVersion");
 	$FirmwareName	= getStr("Device.DeviceInfo.X_CISCO_COM_FirmwareName");
 	$ModelName		= getStr("Device.DeviceInfo.ModelName");
+ 	if (get_wan_type() == "EPON") {
+	   $BackendSoftwareVersion = "EPON";
+	} else {
+	   $BackendSoftwareVersion = "eMTA & DOCSIS";
+	}
 ?>
 <div id="content">
 	<h1>Gateway > Software</h1>
@@ -44,7 +49,7 @@ $(document).ready(function() {
 	<div class="module forms">
 		<h2>System Software Version</h2>
 		<div class="form-row">
-			<span class="readonlyLabel">eMTA & DOCSIS Software Version:</span> <span class="value">
+			<span class="readonlyLabel"><?php echo $BackendSoftwareVersion ?> Software Version:</span> <span class="value">
 			<?php echo $version; ?></span>
 		</div>
 		<!--div class="form-row odd">
