@@ -53,7 +53,7 @@
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Connected Devices > Cordless Handsets", "nav-cordless-handsets");
+    gateway.page.init("Connected Devices > Cordless Handsets", "nav-cordless-handsets");
 	init_data();
 	var G_cat_iq = $("#catiq_switch").radioswitch("getState").on;
 	var eventHandler = function(){

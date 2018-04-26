@@ -28,7 +28,7 @@ $enable = getStr("Device.X_CISCO_COM_DDNS.Enable");
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");
+    gateway.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");
 	var jsEnable = <?php echo $enable === "true" ? "true" : "false"; ?>;
 	$("#ddns_switch").radioswitch({
 		id: "Dynamic-DNS-switch",

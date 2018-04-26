@@ -26,7 +26,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Parental Control > Managed Sites > Add Blocked Domain", "nav-sites");
+    gateway.page.init("Parental Control > Managed Sites > Add Blocked Domain", "nav-sites");
     jQuery.validator.addMethod("url2", function(value, element, param) {
         if (value.indexOf('//www.') > 0) {
             value = value.replace("//www.","//");

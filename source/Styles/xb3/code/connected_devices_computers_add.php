@@ -30,7 +30,7 @@ $endAddr 	= getStr("Device.DHCPv4.Server.Pool.1.MaxAddress");
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Connected Devices > Devices > Edit Device", "nav-cdevices");
+    gateway.page.init("Connected Devices > Devices > Edit Device", "nav-cdevices");
     $('#host_name').focus();
 	var beginAddr	= "<?php echo $beginAddr; ?>";
 	var endAddr	= "<?php echo $endAddr; ?>";

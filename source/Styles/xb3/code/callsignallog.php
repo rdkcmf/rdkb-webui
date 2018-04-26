@@ -28,7 +28,7 @@
 <script type="text/javascript" src="./cmn/js/lib/jquery-simple-pagination-plugin.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Connection > QoS", "nav-qos");
+    gateway.page.init("Gateway > Connection > QoS", "nav-qos");
 	// $("#showlogs").click(function() {
 		// jConfirm("This action may take more than one minute. Do you want to continue?", "Are You Sure?", function(ret){
 			// if(ret){

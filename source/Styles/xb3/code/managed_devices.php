@@ -45,7 +45,7 @@ $allowAll = getStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.AllowAll
 ?>
 <script  type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Parental Control > Managed Devices", "nav-devices");
+    gateway.page.init("Parental Control > Managed Devices", "nav-devices");
 	var jsEnableMD = <?php echo $enableMD ?>;
 	var jsAllowAll = <?php echo $allowAll ?>;
 	$("#managed_devices_switch").radioswitch({

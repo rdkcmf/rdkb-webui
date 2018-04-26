@@ -271,7 +271,7 @@ function destroy() {
 	}
 }
 $(document).ready(function() {
-	comcast.page.init("Troubleshooting > MoCA Diagnostics", "nav-moca-diagnostics");
+	gateway.page.init("Troubleshooting > MoCA Diagnostics", "nav-moca-diagnostics");
 	$('#refresh').click(function() {
 		ajax_moca_diagnostics();
 	});

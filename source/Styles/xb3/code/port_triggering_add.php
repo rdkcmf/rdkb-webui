@@ -26,7 +26,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Port Triggering Add - Advanced", "nav-port-triggering");
+    gateway.page.init("Port Triggering Add - Advanced", "nav-port-triggering");
     $('#service_name').focus();
 	jQuery.validator.addMethod("port",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 65535);

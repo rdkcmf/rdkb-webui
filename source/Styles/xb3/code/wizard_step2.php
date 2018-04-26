@@ -68,10 +68,10 @@
 $(document).ready(function() {
 	<?php
 		if("admin" == $_SESSION["loginuser"]){
-			echo 'comcast.page.init("Gateway > Home Network Wizard - Step 2", "nav-wizard");';
+			echo 'gateway.page.init("Gateway > Home Network Wizard - Step 2", "nav-wizard");';
 		}
 		else {
-			echo 'comcast.page.init("Gateway > Home Network Wizard", "nav-wizard");';
+			echo 'gateway.page.init("Gateway > Home Network Wizard", "nav-wizard");';
 		}
 	?>
 	var password_mso_user = '<?php echo $password_mso_user; ?>';

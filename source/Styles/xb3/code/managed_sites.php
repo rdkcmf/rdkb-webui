@@ -37,7 +37,7 @@ $isManageEnabled = getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.Ena
 ?>
 <script  type="text/javascript">
 $(document).ready(function() {
-	comcast.page.init("Parental Control > Managed Sites", "nav-sites");
+	gateway.page.init("Parental Control > Managed Sites", "nav-sites");
     jQuery.validator.addMethod("url2", function(value, element, param) {
        if (value.indexOf('//www.') > 0) {
             value = value.replace("//www.","//");

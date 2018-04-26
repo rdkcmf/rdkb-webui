@@ -75,7 +75,7 @@ session_start();
 <?php include('includes/utility.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-	comcast.page.init("Gateway > At a Glance", "nav-at-a-glance");
+	gateway.page.init("Gateway > At a Glance", "nav-at-a-glance");
 	/*
 	** view management: if admin login, remove brige mdoe part
 	*/

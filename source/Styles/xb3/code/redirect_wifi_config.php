@@ -36,7 +36,7 @@ $ipv4_addr = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIP
 <script type="text/javascript" src="cmn/js/lib/jquery.alerts.progress.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Private Wi-Fi Configuration", "nav-wifi-config");
+    gateway.page.init("Private Wi-Fi Configuration", "nav-wifi-config");
 	$("#password_show").change(function() {
 		if ($("#password_show").is(":checked")) {
 			document.getElementById("password_field").innerHTML = 

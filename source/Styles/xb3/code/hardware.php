@@ -27,7 +27,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Hardware > System Hardware", "nav-system-hardware");
+    gateway.page.init("Gateway > Hardware > System Hardware", "nav-system-hardware");
 });
 </script>
 <?php

@@ -29,7 +29,7 @@
 <script type="text/javascript">
 var o_disableFwForTSI = <?php echo (getStr('Device.X_CISCO_COM_Security.Firewall.TrueStaticIpEnable') === 'true') ? 'true' : 'false';?>;
 $(document).ready(function() {
-    comcast.page.init("Gateway > Firewall > IPv4", "nav-firewall-ipv4");
+    gateway.page.init("Gateway > Firewall > IPv4", "nav-firewall-ipv4");
     function keyboard_toggle(){
     	//var $link = $("#security-level label");
     	var $link = $("input[name='firewall_level']");

@@ -26,7 +26,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Connection > CallP/QoS ", "nav-qos");
+    gateway.page.init("Gateway > Connection > CallP/QoS ", "nav-qos");
 	$('#show_DSXlog').click(function(){
 		jConfirm(
 		"This action may take more than one minute. Do you want to continue?", 

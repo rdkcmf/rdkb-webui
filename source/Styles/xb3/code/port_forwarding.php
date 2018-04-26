@@ -33,7 +33,7 @@ $PFEnable = getStr("Device.NAT.X_Comcast_com_EnablePortMapping");
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-	comcast.page.init("Advanced > Port Forwarding", "nav-port-forwarding");
+	gateway.page.init("Advanced > Port Forwarding", "nav-port-forwarding");
 	$("#pf_switch").radioswitch({
 		id: "forwarding-switch",
 		radio_name: "forwarding",

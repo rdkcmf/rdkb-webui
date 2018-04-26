@@ -82,7 +82,7 @@ label{
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Connection > MoCA", "nav-moca");
+    gateway.page.init("Gateway > Connection > MoCA", "nav-moca");
 	$("#moca_switch").radioswitch({
 		id: "moca-switch",
 		radio_name: "enable_moca",

@@ -121,7 +121,7 @@
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Connection > Status", "nav-connection-status");
+    gateway.page.init("Gateway > Connection > Status", "nav-connection-status");
     var isBridge = "<?php echo $_SESSION["lanMode"]; ?>";
     if(isBridge == 'bridge-static'){
         $('.localIPNetwork *').addClass('disabled');
@@ -169,13 +169,16 @@ $(document).ready(function() {
   margin-left: 45px;
 }
 </style>
+<?php
+  $NetworkName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.HelpTip.NetworkName");
+?>
 <div id="content" style="margin-bottom:100px;">
 	<h1>Gateway > Connection > Status</h1>
 	<div id="educational-tip">
 			<p class="tip">View information about your network connections.</p>
-			<p class="hidden">View and manage the settings for your local IP, Wi-Fi, MoCA and XFINITY networks.</p>
+			<p class="hidden">View and manage the settings for your local IP, Wi-Fi, MoCA and <?php echo $NetworkName; ?>s.</p>
 	</div>
-  <div style="width:360px;float:left;"><!-- contain local ip, xfinity network, Moca -->
+  <div style="width:360px;float:left;"><!-- contain local ip, gateway network, Moca -->
     <div class="module forms block localIPNetwork">
         <h2>Local IP Network</h2>
         <p class="button"><a tabindex='0' href="local_ip_configuration.php" class="btn localBtn">Edit</a></p>
@@ -278,8 +281,8 @@ $(document).ready(function() {
               </div>
     </div><!-- end .module local ip network-->
     <div class="module forms block" style="margin-bottom:0px">
-        <h2>XFINITY Network</h2>
-        <p class="button"><a tabindex='0' href="comcast_network.php" class="btn">View</a></p>
+        <h2><?php echo $NetworkName; ?></h2>
+        <p class="button"><a tabindex='0' href="network_setup.php" class="btn">View</a></p>
         <div class="form-row">
         <span class="readonlyLabel">Internet:</span> <span class="value">
               <?php 
@@ -319,7 +322,7 @@ $(document).ready(function() {
                     ?>
                 </span>
         </div>
-    </div><!-- end .module xfinity network-->
+    </div><!-- end .module gateway network-->
     <div class="module forms block moca_section" style="position:relative;top:7px;right:0px;">
             <h2>MoCA</h2>
             <p class="button"><a tabindex='0' href="moca.php" class="btn">Edit</a></p>

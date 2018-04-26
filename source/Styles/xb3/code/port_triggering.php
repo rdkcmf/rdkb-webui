@@ -36,7 +36,7 @@ $PTEnable=getStr("Device.NAT.X_CISCO_COM_PortTriggers.Enable");
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Advanced > Port Triggering", "nav-port-triggering");
+    gateway.page.init("Advanced > Port Triggering", "nav-port-triggering");
 	$("#pt_switch").radioswitch({
 		id: "port-triggering-switch",
 		radio_name: "triggering",

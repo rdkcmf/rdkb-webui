@@ -153,7 +153,7 @@ function set_config(target)
 	});
 }
 $(document).ready(function() {
-    comcast.page.init("Gateway > Connection > Wireless > Add Wireless Client", "nav-wifi-config");
+    gateway.page.init("Gateway > Connection > Wireless > Add Wireless Client", "nav-wifi-config");
 	var G_wps_enabled	= <?php echo ($wps_enabled === "true" ? "true" : "false"); ?>;
 	var G_wps_method	= "<?php echo $wps_method; ?>";
 	$("#wps_switch").radioswitch({

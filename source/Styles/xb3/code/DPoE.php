@@ -29,9 +29,12 @@
 	display: none;
 }
 </style>
+<?php
+	$NetworkName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.HelpTip.NetworkName");
+?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Connection > XFINITY Network", "nav-comcast-network");
+    gateway.page.init("Gateway > Connection > <?php echo $NetworkName; ?>", "nav-gateway-network");
 	if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>"){
 		$(".div_dpoe").remove();
 		$(".div_mta").remove();
@@ -89,13 +92,13 @@ function sec2dhms($sec)
 	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
 ?>
 <div id="content">
-<h1>Gateway > Connection > XFINITY Network</h1>
+<h1>Gateway > Connection > <?php echo $NetworkName; ?></h1>
 <div id="educational-tip">
-	<p class="tip">View technical information related to your XFINITY network connection.</p>
+	<p class="tip">View technical information related to your <?php echo $NetworkName; ?> connection.</p>
 	<p class="hidden">You may need this information if you contact Comcast for troubleshooting assistance.</p>
 </div>
 <div class="module forms">
-	<h2>XFINITY Network (DPoE)</h2>
+	<h2><?php echo $NetworkName; ?> (DPoE)</h2>
 	<div class="form-row">
 		<span class="readonlyLabel">Internet:</span>
 		<span class="value"><?php echo ($sta_inet=="true") ? "Active" : "Inactive";?></span>

@@ -93,7 +93,7 @@ csrfprotector_rdkb::init();
 	}
 	// doc psmMode into session, for directly use it in function
 	$_SESSION["psmMode"] = $psmMode;
-	$title=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Title");
+	$title=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogoTitle");
 	$msoLogo= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogo");
 	$logo="cmn/syndication/img/".$msoLogo;
 ?>
@@ -121,7 +121,7 @@ csrfprotector_rdkb::init();
 	<script type="text/javascript" src="./cmn/js/lib/jquery.radioswitch.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.virtualDialog.js"></script>
 	<script type="text/javascript" src="./cmn/js/utilityFunctions.js"></script>
-    <script type="text/javascript" src="./cmn/js/comcast.js"></script>
+    <script type="text/javascript" src="./cmn/js/gateway.js"></script>
 	<style>
 	#div-skip-to {
 		position:relative; 

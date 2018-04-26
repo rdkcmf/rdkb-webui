@@ -26,7 +26,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Troubleshooting > Change Password", "nav-password");
+    gateway.page.init("Troubleshooting > Change Password", "nav-password");
     $("#pageForm").validate({
 		debug: false,
 		rules: {

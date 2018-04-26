@@ -53,7 +53,7 @@ if($Private_Ports == '0') {
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-	comcast.page.init("Port Forwarding Add ", "nav-HS-port-forwarding");
+	gateway.page.init("Port Forwarding Add ", "nav-HS-port-forwarding");
 	$('#service_name').focus();
 	jQuery.validator.addMethod("ip",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 255);

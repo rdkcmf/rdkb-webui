@@ -83,7 +83,7 @@ $CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-	comcast.page.init("Parental Control > Managed Devices > Add Blocked Device", "nav-devices");
+	gateway.page.init("Parental Control > Managed Devices > Add Blocked Device", "nav-devices");
 	var ID = "<?php echo $i ?>";
 	var jsName = "<?php echo $name ?>";
 	var jsMac = "<?php echo $mac ?>";

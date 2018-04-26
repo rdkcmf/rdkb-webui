@@ -48,7 +48,7 @@ if (isset($_GET['line']))
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Connection > Voice Quality Metrics", "nav-comcast-voice");
+    gateway.page.init("Gateway > Connection > Voice Quality Metrics", "nav-gateway-voice");
 	var line	= "<?php echo $line;?>";
 	var call	= "<?php echo $call;?>";
 	var action	= "<?php echo $action;?>";

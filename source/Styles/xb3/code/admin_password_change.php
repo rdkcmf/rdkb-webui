@@ -31,7 +31,7 @@ csrfprotector_rdkb::init();
 		echo '<script type="text/javascript">alert("Please Login First!"); location.href="home_loggedout.php";</script>';
 		exit(0);
 	}
-	$title=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Title");
+	$title=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogoTitle");
 	$msoLogo= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogo");
 	$logo="cmn/syndication/img/".$msoLogo;
 ?>
@@ -59,7 +59,7 @@ csrfprotector_rdkb::init();
 	<script type="text/javascript" src="./cmn/js/lib/jquery.radioswitch.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.virtualDialog.js"></script>
 	<script type="text/javascript" src="./cmn/js/utilityFunctions.js"></script>
-    <script type="text/javascript" src="./cmn/js/comcast.js"></script>
+    <script type="text/javascript" src="./cmn/js/gateway.js"></script>
 	<style>
 	#div-skip-to {
 		position:relative; 
@@ -94,7 +94,7 @@ csrfprotector_rdkb::init();
 		<div id="main-content">
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Troubleshooting > Change Password", "nav-password");
+    gateway.page.init("Troubleshooting > Change Password", "nav-password");
     $("#pageForm").validate({
 		debug: false,
 		rules: {

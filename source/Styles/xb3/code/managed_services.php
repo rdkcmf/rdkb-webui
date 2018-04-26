@@ -40,7 +40,7 @@ $enableMS = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Enable"
 ?>
 <script  type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Parental Control > Managed Services", "nav-services");
+    gateway.page.init("Parental Control > Managed Services", "nav-services");
 	jsEnableMS = <?php echo $enableMS ?>;
 	$("#managed_services_switch").radioswitch({
 		id: "managed-services-switch",

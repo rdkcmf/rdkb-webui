@@ -53,7 +53,7 @@ $IPv6Prefix = substr($IPv6Prefix,0, strrpos($IPv6Prefix, "::"));
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-	comcast.page.init("Advanced > DMZ", "nav-dmz");
+	gateway.page.init("Advanced > DMZ", "nav-dmz");
 	var jsEnableDMZ = <?php echo $enableDMZ ?>;
 	var jsHost = "<?php echo $host ?>".split(".");
 	var jsHostv6 = "<?php echo $hostv6; ?>";

@@ -36,7 +36,7 @@ $(document).ready(function() {
 	$("#system_logs_week").hide();
 	$("#system_logs_month").hide();
 	$("#system_logs_last").hide();
-	comcast.page.init("Troubleshooting > Logs", "nav-logs");
+	gateway.page.init("Troubleshooting > Logs", "nav-logs");
 	$('input[value="Print"]').prop("disabled",true).addClass("disabled");
 	$('input[value="Download"]').prop("disabled",true).addClass("disabled");
 	$('input[value="Print"]').click(function() {

@@ -28,7 +28,7 @@
 <script type="text/javascript" src="./cmn/js/lib/jquery.alerts.progress.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Firewall > IPv6", "nav-firewall-ipv6");
+    gateway.page.init("Gateway > Firewall > IPv6", "nav-firewall-ipv6");
     /*
      * Toggles Custom Security Checkboxes based on if the Custom Security is selected or not
      */

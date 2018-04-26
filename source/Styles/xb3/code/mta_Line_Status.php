@@ -25,7 +25,7 @@
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?><script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Connection > MTA > Line Status", "nav-line-status");
+    gateway.page.init("Gateway > Connection > MTA > Line Status", "nav-line-status");
 });
 </script>
 <div id="content">

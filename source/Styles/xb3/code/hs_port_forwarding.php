@@ -32,7 +32,7 @@
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Advanced > HS Port Forwarding", "nav-HS-port-forwarding");
+    gateway.page.init("Advanced > HS Port Forwarding", "nav-HS-port-forwarding");
 	$("#hspf_switch").radioswitch({
 		id: "hs-forwarding-switch",
 		radio_name: "hs-forwarding",
