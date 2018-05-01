@@ -669,8 +669,8 @@ for ($i=1, $j=1; $i<count($ds_ofdm_ids); $i++)
 	<tbody>
 		<tr class="">
 			<th class="row-label ">Index</td>
-			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$i.'</div></td>';?>
-                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++, $i++) echo '<td><div style="width: 100px">'.$i.'</div></td>';?>
+			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['ChannelID'].'</div></td>';?>
+                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++, $i++) echo '<td><div style="width:100px">'.$ds_ofdm_tab[$i]['ChannelID'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
 			<th class="row-label ">Lock Status</td>
