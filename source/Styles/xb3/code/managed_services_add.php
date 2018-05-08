@@ -26,7 +26,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Parental Control > Managed Services > Add Blocked Service", "nav-services");
+    gateway.page.init("Parental Control > Managed Services > Add Blocked Service", "nav-services");
     $('#user_defined_service').focus();
 	$("#always_switch").radioswitch({
 		id: "always-switch",

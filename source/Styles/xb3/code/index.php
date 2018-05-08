@@ -101,7 +101,7 @@ if ("Enabled" != $psmMode && "Disabled" != $psmMode){
 }
 // doc psmMode into session, for directly use it in function
 $_SESSION["psmMode"] = $psmMode;
-$title = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Title");
+$title = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogoTitle");
 $msoLogo = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogo");
 $logo = "cmn/syndication/img/".$msoLogo;
 ?>
@@ -129,7 +129,7 @@ $logo = "cmn/syndication/img/".$msoLogo;
 	<script type="text/javascript" src="./cmn/js/lib/jquery.radioswitch.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.virtualDialog.js"></script>
 	<script type="text/javascript" src="./cmn/js/utilityFunctions.js"></script>
-	<script type="text/javascript" src="./cmn/js/comcast.js"></script>
+	<script type="text/javascript" src="./cmn/js/gateway.js"></script>
 	<style>
 		#div-skip-to {
 			position:relative;
@@ -322,7 +322,7 @@ $(document).ready(function() {
 	$("#status a").blur(function() {
 		$(".tooltip").hide();
 	});
-	comcast.page.init("Login", "nav-login");
+	gateway.page.init("Login", "nav-login");
 	$("#pageForm").validate({
 		errorElement : "p"
 		,errorContainer : "#error-msg-box"

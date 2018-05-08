@@ -26,7 +26,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Add-ins > Overview", "nav-config-backup");
+    gateway.page.init("Add-ins > Overview", "nav-config-backup");
 });
 function f(){
 return openWindow(this, {width:790,height:450,center:true});

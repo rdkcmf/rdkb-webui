@@ -67,7 +67,7 @@ label{
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
-	comcast.page.init("Advanced > Remote Management", "nav-remote-management");
+	gateway.page.init("Advanced > Remote Management", "nav-remote-management");
 	var HTTP = <?php echo ($http_mode === 'true' ? "true" : "false"); ?>;
 	var HTTPPORT = "<?php echo $http_port;?>";
 	var HTTPS = <?php echo ($https_mode === 'true' ? "true" : "false"); ?>;

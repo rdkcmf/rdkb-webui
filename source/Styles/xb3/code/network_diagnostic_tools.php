@@ -37,7 +37,7 @@ label{
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
-	comcast.page.init("Troubleshooting > Network Diagnostic Tools", "nav-diagnostic-tools");
+	gateway.page.init("Troubleshooting > Network Diagnostic Tools", "nav-diagnostic-tools");
 	$.validator.addMethod("url_no_http", function(value, element) {
 		//A valid URL per the URL spec.
 		return this.optional(element)||/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/.test(value);

@@ -63,7 +63,7 @@ var o_pcbreach = <?php echo $parental_breach === 'true' ? 'true' : 'false';?>;
 var o_alertwarning = <?php echo $alerts_warnings === 'true' ? 'true' : 'false';?>;
 var o_sendlogs = <?php echo $send_logs === 'true' ? 'true' : 'false';?>;
 $(document).ready(function() {
-	comcast.page.init("Gateway > Email Notification", "nav-email-notification");	
+	gateway.page.init("Gateway > Email Notification", "nav-email-notification");	
 	$("#firewallbreach_switch").radioswitch({
 		id: "firewallbreach-switch",
 		radio_name: "block1",

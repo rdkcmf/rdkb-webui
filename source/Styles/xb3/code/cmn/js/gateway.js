@@ -23,9 +23,9 @@
  *	Declare the global object for namespacing.
  */
 
-var comcast = window.comcast || {};
+var gateway = window.comcast || {};
 
-comcast.page = function() {
+gateway.page = function() {
     function setupLeftNavigation(selectedNavElement) {
         if(typeof selectedNavElement == "string") {
             $("#nav li." + selectedNavElement + " a").addClass("selected");
@@ -335,7 +335,7 @@ comcast.page = function() {
     }
 }();
 
-comcast.breakWord = function(originalString, characterLimit) {
+gateway.breakWord = function(originalString, characterLimit) {
 	var originalString = ""+originalString; 						// Cast variable as string
 	var characterLimit = parseInt(characterLimit); 					// Cast variable to integer
 	

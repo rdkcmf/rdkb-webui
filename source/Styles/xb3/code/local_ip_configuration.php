@@ -95,7 +95,7 @@ label{
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
-	comcast.page.init("Gateway > Connection > Local IP Configuration", "nav-local-ip-network");
+	gateway.page.init("Gateway > Connection > Local IP Configuration", "nav-local-ip-network");
 	/*
 	** view management: if admin login, pop up alert msg if change gw ip addr
 	*/

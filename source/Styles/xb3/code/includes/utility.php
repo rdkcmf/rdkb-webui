@@ -189,7 +189,7 @@ function init_psmMode($title, $navElementId)
 	if ("Enabled"==$_SESSION["psmMode"])
 	{
 		$msg .= '<script type="text/javascript">';
-		$msg .= '	$(document).ready(function(){comcast.page.init("'.$title.'", "'.$navElementId.'");});';
+		$msg .= '	$(document).ready(function(){gateway.page.init("'.$title.'", "'.$navElementId.'");});';
 		$msg .= '</script>';
 		$msg .= '<div id="content" class="main_content">';
 		$msg .= '	<h1>'.$title.'</h1>';

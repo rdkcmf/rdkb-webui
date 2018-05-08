@@ -96,7 +96,7 @@ echo '<li class="nav-gateway">';
 		echo '<ul>';
 		echo '<li class="nav-connection-status"><a role="menuitem"  href="connection_status.php">Status</a></li>';
 		$Connection_MSOmenu = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Connection.MSOmenu");
-		echo '<li class="nav-comcast-network"><a role="menuitem"  href="comcast_network.php">'.$Connection_MSOmenu.'</a></li>';
+		echo '<li class="nav-gateway-network"><a role="menuitem"  href="network_setup.php">'.$Connection_MSOmenu.'</a></li>';
 		if($local_ip_config) echo '<li class="nav-local-ip-network"><a role="menuitem"  href="local_ip_configuration.php">Local IP Network</a></li>';
 		echo '<li class="nav-wifi-config"><a role="menuitem"  href="wireless_network_configuration.php">Wi-Fi</a></li>';
 		if ($eMTA) {
@@ -108,7 +108,7 @@ echo '<li class="nav-gateway">';
 				echo '</ul>';
 			echo '</li>';
 			echo '<li class="nav-qos"><a role="menuitem"  href="qos.php">CallP/QoS</a></li>';
-			echo '<li class="nav-comcast-voice"><a role="menuitem"  href="voice_quality_metrics.php">VQM</a></li>';
+			echo '<li class="nav-gateway-voice"><a role="menuitem"  href="voice_quality_metrics.php">VQM</a></li>';
 		}
 		echo '<li class="nav-moca"><a role="menuitem"  href="moca.php">MoCA</a></li>';
 		echo '</ul>';

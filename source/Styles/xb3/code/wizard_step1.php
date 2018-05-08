@@ -26,7 +26,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Home Network Wizard - Step 1", "nav-wizard");
+    gateway.page.init("Gateway > Home Network Wizard - Step 1", "nav-wizard");
     $("#pageForm").validate({
 		debug: false,
 		rules: {

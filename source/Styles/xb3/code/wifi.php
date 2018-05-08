@@ -27,7 +27,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Hardware > WiFi", "nav-wifi");
+    gateway.page.init("Gateway > Hardware > WiFi", "nav-wifi");
 });
 </script>
 <?php

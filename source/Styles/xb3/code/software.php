@@ -27,7 +27,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Software", "nav-software");
+    gateway.page.init("Gateway > Software", "nav-software");
 });
 </script>
 <?php

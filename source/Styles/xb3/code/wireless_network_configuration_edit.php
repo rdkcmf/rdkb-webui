@@ -257,7 +257,7 @@ function showDialog() {
 }
 	var fromOther;
 $(document).ready(function() {
-    comcast.page.init("Gateway > Connection > Wireless > Edit <?php echo $radio_band; ?> GHz", "nav-wifi-config");
+    gateway.page.init("Gateway > Connection > Wireless > Edit <?php echo $radio_band; ?> GHz", "nav-wifi-config");
 	$Mesh_Mode = '<?php echo $Mesh_Mode; ?>';
 	var MeshEnable= '<?php echo $Mesh_Enable; ?>';
 	$("#wireless_network_switch").radioswitch({

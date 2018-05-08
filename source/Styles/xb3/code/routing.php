@@ -68,7 +68,7 @@ label{
 <script type="text/javascript">
 var jsRIPEntry = <?php echo $jsRIPEntry; ?>;
 $(document).ready(function() {
-    comcast.page.init("Advanced > Routing", "nav-routing");
+    gateway.page.init("Advanced > Routing", "nav-routing");
     var $interface_name  = $('#interface_name');
 	var $send_version    = $('#send_version');
 	var $receive_version = $('#receive_version');

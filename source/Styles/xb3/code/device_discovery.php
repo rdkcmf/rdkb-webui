@@ -40,7 +40,7 @@ $enableZero = getStr("Device.X_CISCO_COM_DeviceControl.EnableZeroConfig");
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Advanced > Device Discovery", "nav-device-discovery");
+    gateway.page.init("Advanced > Device Discovery", "nav-device-discovery");
 //start by licha
 var jsEnableUPnP = <?php echo $enableUPnP ?>;
 var jsAdPeriod = <?php echo $adPeriod ?>;

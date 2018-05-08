@@ -31,7 +31,7 @@
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Advanced > Media Sharing > DLNA > DLNA Settings", "nav-dlna-settings");
+    gateway.page.init("Advanced > Media Sharing > DLNA > DLNA Settings", "nav-dlna-settings");
     $("#dlna_switch").radioswitch({
         id: "dlna-switch",
         radio_name: "DLNA",

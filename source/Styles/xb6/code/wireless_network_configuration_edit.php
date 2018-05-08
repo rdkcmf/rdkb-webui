@@ -279,6 +279,7 @@ $(document).ready(function() {
 	$security_val = '<?php echo $security; ?>';
 	var password_mso_user = '<?php echo $password_mso_user; ?>';
 	$("#security").change(function() {
+		var confirm_okay=false;
 		if ("more" == $("#security").val()) {
 			// only private(1,2) SSID have show-more option
 			showDialog();
@@ -296,8 +297,10 @@ $(document).ready(function() {
 					,function(ret) {
 						if(!ret) {
 							$('#security option[value="' + $security_val + '"]').prop('selected', true);
-							$("#network_password").prop("disabled", true);
+							$("#network_password").prop("disabled", false);
 						} else {
+							confirm_okay=true;
+							$("#network_password").prop("disabled", true);
 							$security_val = security_val;
 						}
 					});
@@ -317,7 +320,7 @@ $(document).ready(function() {
 					});	
 				}
 			}
-			if ("None" == $("#security").val()) {
+			if ("None" == $("#security").val() && (confirm_okay==true)) {
 				$("#network_password").val("");
 				$("#network_password").prop("disabled", true);
 			}

@@ -26,7 +26,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Parental Control > Managed Sites > Add Blocked Keyword", "nav-sites");
+    gateway.page.init("Parental Control > Managed Sites > Add Blocked Keyword", "nav-sites");
 	$("#always_switch").radioswitch({
 		id: "always-switch",
 		radio_name: "block",

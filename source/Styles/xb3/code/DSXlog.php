@@ -30,7 +30,7 @@
 <!--script type="text/javascript" src="../cmn/js/lib/jquery.alerts.progress.js"></script-->
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Connection > QoS", "nav-qos");
+    gateway.page.init("Gateway > Connection > QoS", "nav-qos");
 });
 </script>
 <div id="content">

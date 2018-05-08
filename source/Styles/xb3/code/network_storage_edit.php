@@ -26,7 +26,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Connected Devices - Edit Network Storage", "nav-network-storage");
+    gateway.page.init("Connected Devices - Edit Network Storage", "nav-network-storage");
     $("#pageForm").validate({
         rules: {
             storage_name: {

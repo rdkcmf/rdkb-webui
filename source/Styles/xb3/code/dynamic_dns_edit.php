@@ -42,7 +42,7 @@
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");
+    gateway.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");
 	jQuery.validator.addMethod("noSpace", function(value, element) { 
 		return value.indexOf(" ") < 0 && value != ""; 
 	}, "Space are not allowed");    

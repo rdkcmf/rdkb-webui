@@ -39,7 +39,7 @@ $(document).ready(function() {
 	$("#all_report_last").hide();
 	$('input[value="Print"]').prop("disabled",true).addClass("disabled");
 	$('input[value="Download"]').prop("disabled",true).addClass("disabled");
-	comcast.page.init("Parental Control > Reports", "nav-parental-reports");
+	gateway.page.init("Parental Control > Reports", "nav-parental-reports");
     $('input[value="Print"]').click(function() {
     	window.print();
     });

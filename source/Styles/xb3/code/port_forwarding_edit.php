@@ -79,7 +79,7 @@ label{
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Advanced > Port Forwarding > Add Service", "nav-port-forwarding");
+    gateway.page.init("Advanced > Port Forwarding > Add Service", "nav-port-forwarding");
     $('#service_name').focus();
     var jsNetMask = "<?php echo $LanSubnetMask; ?>";
     var beginAddr	= "<?php echo $beginAddr; ?>";

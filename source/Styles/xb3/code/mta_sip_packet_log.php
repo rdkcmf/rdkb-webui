@@ -28,7 +28,7 @@
 <script type="text/javascript" src="./cmn/js/lib/jquery-simple-pagination-plugin.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Connection > MTA >SIP Packet Log", "nav-service-sip");
+    gateway.page.init("Gateway > Connection > MTA >SIP Packet Log", "nav-service-sip");
 	var entities = {
 		'amp': '&',
 		'apos': '\'',

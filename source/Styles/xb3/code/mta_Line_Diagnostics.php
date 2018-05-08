@@ -26,7 +26,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-comcast.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line-diagnostics");
+gateway.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line-diagnostics");
 	$("#start_diagnostics1").click(function(){
 		var isTest1	= true;
 		document.getElementById('line1hp').value	= "InProgress";

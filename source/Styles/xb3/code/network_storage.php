@@ -22,7 +22,7 @@
 <!-- $Id: network_storage.php 3159 2010-01-11 20:10:58Z slemoine $ -->
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Connected Devices > Network Storage", "nav-network-storage");
+    gateway.page.init("Connected Devices > Network Storage", "nav-network-storage");
 });
 </script>
 <div id="sub-header">

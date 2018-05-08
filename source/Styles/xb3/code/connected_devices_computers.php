@@ -41,7 +41,7 @@ table a:link, table a:visited {
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Connected Devices - Devices", "nav-cdevices");
+    gateway.page.init("Connected Devices - Devices", "nav-cdevices");
 	var privateDisabled = ("<?php echo $_SESSION['lanMode']; ?>" == "bridge-static") ? true : false ;
 	var beginAddr	= "<?php echo $beginAddr; ?>";
 	var endAddr		= "<?php echo $endAddr; ?>";

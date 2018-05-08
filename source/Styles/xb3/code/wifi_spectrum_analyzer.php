@@ -109,7 +109,7 @@ function spanTable($rows, startIdx, endIdx){
 		});
 	}
 $(document).ready(function(){
-	comcast.page.init("Troubleshooting > Wi-Fi Spectrum Analyzer", "nav-wifi-spectrum-analyzer");
+	gateway.page.init("Troubleshooting > Wi-Fi Spectrum Analyzer", "nav-wifi-spectrum-analyzer");
 	$("#save_result").hide();
 	function popUp(URL) {
 	day = new Date();

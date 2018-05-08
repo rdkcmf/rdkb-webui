@@ -86,7 +86,7 @@
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-	comcast.page.init("Parental Control > Managed Services > Add Blocked Service", "nav-services");
+	gateway.page.init("Parental Control > Managed Services > Add Blocked Service", "nav-services");
 	$('#user_defined_service').focus();
 	var ID = "<?php echo $i ?>";
 	var jsServiceName = "<?php echo $serviceName ?>";
