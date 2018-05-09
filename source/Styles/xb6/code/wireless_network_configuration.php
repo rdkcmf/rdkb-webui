@@ -381,7 +381,7 @@ function update_Wi_Fi_control_list(){
 	});
 }
 $(document).ready(function() {
-    comcast.page.init("Gateway > Connection > WiFi", "nav-wifi-config");
+    gateway.page.init("Gateway > Connection > WiFi", "nav-wifi-config");
     $Mesh_Mode = '<?php echo $Mesh_Mode; ?>';
     var MeshEnable='<?php echo $Mesh_Enable; ?>';
     if(MeshEnable=="true"){

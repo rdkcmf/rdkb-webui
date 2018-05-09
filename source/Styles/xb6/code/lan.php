@@ -26,6 +26,7 @@
 <?php include('includes/nav.php'); ?>
 <?php include('includes/utility.php'); ?>
 <?php
+$HomeNetworkControl = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.HomeNetworkControl");
 function getPort4XHSEnabled() {
 	$rootObjName = "Device.X_CISCO_COM_MultiLAN.";
 	$paramNameArray = array("Device.X_CISCO_COM_MultiLAN.");
@@ -81,7 +82,7 @@ function initEvents() {
 	$("#saveXHSBtn").unbind("click").click(onsavePort4);
 }
 $(document).ready(function() {
-    comcast.page.init("Gateway > Hardware > LAN Ethernet", "nav-lan");
+    gateway.page.init("Gateway > Hardware > LAN Ethernet", "nav-lan");
 	$("#port2").prop("checked", o_isPort4XHSEnabled);
 	initEvents();
 });
@@ -149,7 +150,8 @@ $(document).ready(function() {
 		}
 		if ($ids[$id] === "2") {
 			/* port 2 as home security port */
-			echo '<div class="form-row odd ">'.
+			if($HomeNetworkControl == 'true'){
+				echo '<div class="form-row odd ">'.
 					'<label for="channel_selection">Associate Ethernet Port 2 to XFINITY HOME Network:</label>'.
 					'<span class="checkbox"><input type="checkbox" id="port2" name="port2" /></span></br></br></br></br>'.
 					'Note: Associating Ethernet Port 2 to XFINITY HOME network will remove the port from your home network.</br></br>'.
@@ -157,6 +159,7 @@ $(document).ready(function() {
 				'<div class="form-row odd" >'.
 					'<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="Save" class="btn submit" /></div>'.
 				'</div>';
+			}
 		}
 		echo '</div>';
 	}

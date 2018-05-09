@@ -26,7 +26,7 @@
 <?php include('includes/nav.php'); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Troubleshooting > Reset / Restore Gateway", "nav-restore-reboot");
+    gateway.page.init("Troubleshooting > Reset / Restore Gateway", "nav-restore-reboot");
 	//Having only Reset and Restore Factory Defaults under troubleshooting page in bridge mode is good enough.
 	//hide 2 3 4 6
 	if ("router" != "<?php echo $_SESSION["lanMode"]; ?>") {

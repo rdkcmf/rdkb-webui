@@ -57,7 +57,7 @@ $battery_param = array(
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Hardware > Battery", "nav-battery");
+    gateway.page.init("Hardware > Battery", "nav-battery");
 /*	if ("true" != "<?php echo $battery_value['installed']; ?>"){
 		$(".div_battery [id^='bat_']").text("");
 		$("#bat_power").text("AC");

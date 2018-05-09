@@ -29,9 +29,12 @@
 	display: none;
 }
 </style>
+<?php
+	$NetworkName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.HelpTip.NetworkName");
+?>
 <script type="text/javascript">
 $(document).ready(function() {
-    comcast.page.init("Gateway > Connection > XFINITY Network", "nav-comcast-network");
+    gateway.page.init("Gateway > Connection > <?php echo $NetworkName; ?>", "nav-gateway-network");
 	if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>"){
 		$(".div_cm").remove();
 		$(".div_mta").remove();
