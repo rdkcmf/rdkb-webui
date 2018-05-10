@@ -53,6 +53,9 @@ csrfprotector_rdkb::init();
 @media (max-width: 768px) {
 	body {
 		-moz-transform: scale(0.6, 0.6); /* Moz-browsers */
+		-ms-transform: scale(0.6); /* IE 9 */
+		-webkit-transform:scale(0.6); /* Safari */
+		-o-transform: scale(0.6); /* Opera */
 		zoom: 0.6; /* Other non-webkit browsers */
 		zoom: 60%; /* Webkit browsers */
 	}
@@ -60,6 +63,9 @@ csrfprotector_rdkb::init();
 @media (max-width: 480px) {
 	body {
 		-moz-transform: scale(0.4, 0.4); /* Moz-browsers */
+		-ms-transform: scale(0.4); /* IE 9 */
+		-webkit-transform:scale(0.4); /* Safari */
+		-o-transform: scale(0.4); /* Opera */
 		zoom: 0.4; /* Other non-webkit browsers */
 		zoom: 40%; /* Webkit browsers */
 	}
@@ -67,6 +73,9 @@ csrfprotector_rdkb::init();
 @media (max-width: 320px) {
 	body {
 		-moz-transform: scale(0.3, 0.3); /* Moz-browsers */
+		-ms-transform: scale(0.3); /* IE 9 */
+		-webkit-transform:scale(0.3); /* Safari */
+		-o-transform: scale(0.3); /* Opera */
 		zoom: 0.3; /* Other non-webkit browsers */
 		zoom: 30%; /* Webkit browsers */
 	}
@@ -74,6 +83,9 @@ csrfprotector_rdkb::init();
 @media (max-width: 200px) {
 	body {
 		-moz-transform: scale(0.27, 0.27); /* Moz-browsers */
+		-ms-transform: scale(0.27); /* IE 9 */
+		-webkit-transform:scale(0.27); /* Safari */
+		-o-transform: scale(0.27); /* Opera */
 		zoom: 0.27; /* Other non-webkit browsers */
 		zoom: 27%; /* Webkit browsers */
 	}
