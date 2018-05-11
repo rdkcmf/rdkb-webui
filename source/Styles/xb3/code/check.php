@@ -117,7 +117,7 @@ $server_ip		= $_SERVER["SERVER_ADDR"];
         }
         elseif ($_POST["username"] == "admin")
 		{
-			setStr("Device.Users.User.3.X_RDKCENTRAL-COM_ComparePassword",$_POST["password"],true);
+			$return_status = setStr("Device.Users.User.3.X_RDKCENTRAL-COM_ComparePassword",$_POST["password"],true);
 			sleep(1);
 			$passVal= getStr("Device.Users.User.3.X_RDKCENTRAL-COM_ComparePassword");
 			if ( !innerIP($client_ip) && (if_type($server_ip)!="rg_ip") )
@@ -137,7 +137,7 @@ $server_ip		= $_SERVER["SERVER_ADDR"];
 						echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
 					}
 				}
-				else if($passVal=="Invalid_PWD"){
+				else if($passVal=="Invalid_PWD" || !($return_status)){
 
 					setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_failed",true);
 					session_destroy();
