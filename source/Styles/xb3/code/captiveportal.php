@@ -117,7 +117,6 @@ svg.defs-only {
 	overflow: hidden;
 }
 </style>
-<?php include('includes/utility.php'); ?>
 <?php
 	// should we allow to Configure WiFi
 	// redirection logic - uncomment the code below while checking in
