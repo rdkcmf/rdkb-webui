@@ -433,7 +433,7 @@ $(document).ready(function() {
 		}
 	}).trigger("change");
     $("#wireless_network_switch").change(function() {
-		if ($(this).radioswitch("getState").on === false) {
+		if ($(this).radioswitch("getState").on === false || ($Mesh_Mode=="true")) {
 			$(":input:not('#save_settings, #restore-default-settings')").not(".radioswitch_cont input").prop("disabled", true);
 		}
 		else {
@@ -669,7 +669,7 @@ wpa2psk ==> 8 to 63 Ascii characters
 	//for Mesh WiFi integration
 	if($Mesh_Mode == 'true'){
 		//disable >> Channel Selection:, Channel:, Channel Bandwidth:
-		$('#channel_automatic, #channel_manual, #channel_number, input[name=channel_bandwidth]').prop("disabled", true);
+		$('#channel_automatic,#security, #channel_manual, #password_check, #password_show , #broadcastSSID ,#enableWMM ,#channel_number, input[name=channel_bandwidth]').prop("disabled", true);
 		//disable >> Network Name (SSID):, Network Password:
 		$('#network_name, #network_password').prop("disabled", true);
 	}
@@ -856,6 +856,19 @@ function setResetInfo(info) {
 	<div class="module forms">
 		<form action="#TBD" method="post" id="pageForm">
 		<h2><?php if ($id>2) echo "Public"; else echo "Private"; ?> Wi-Fi Network Configuration (<?php echo $radio_band; ?> GHz)</h2>
+		<?php
+			if($Mesh_Mode=="true"){
+		?>
+			<div   class="form-row odd">
+				<div id="content" style="text-align: center;">
+					<br>
+					<h3>Managing your home network settings is now easier than ever.<br>Visit <a href="http://xfinity.com/myxfi">xfinity.com/myxfi</a> to change other wifi configurations.</h3>
+					<br>
+				</div>
+			</div>
+		<?php
+			}
+		?>
 		<div class="form-row odd">
 			<span class="readonlyLabel label">Wireless Network:</span>
 			<span id="wireless_network_switch"></span>

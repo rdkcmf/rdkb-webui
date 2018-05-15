@@ -49,7 +49,7 @@ if ($i == 1 || $i == 2) {
 	if ("true" == getStr("Device.WiFi.Radio.$r.Enable")) {
 		//change SSID status first, if disable, no need to configure following
 		setStr("Device.WiFi.SSID.$i.Enable", $arConfig['radio_enable'], true);
-		if ("true" == $arConfig['radio_enable']) 
+		if ("true" == $arConfig['radio_enable'] && ($Mesh_Mode=="false") )
 		{
 			$validation = true;
 			if(($arConfig['password_update']=="false") && ("mso" == $thisUser)){
@@ -105,17 +105,15 @@ if ($i == 1 || $i == 2) {
 				}
 				// User "mso" have another page to configure this
 				if ("mso" != $thisUser){
-					if(!$Mesh_Mode) setStr("Device.WiFi.Radio.$i.OperatingChannelBandwidth", $arConfig['channel_bandwidth'], false);
+					setStr("Device.WiFi.Radio.$i.OperatingChannelBandwidth", $arConfig['channel_bandwidth'], false);
 					setStr("Device.WiFi.Radio.$i.OperatingStandards", $arConfig['wireless_mode'], true);
-					if(!$Mesh_Mode) {
-						setStr("Device.WiFi.Radio.$i.AutoChannelEnable", $arConfig['channel_automatic'], true);
+					setStr("Device.WiFi.Radio.$i.AutoChannelEnable", $arConfig['channel_automatic'], true);
 						if ("false"==$arConfig['channel_automatic']){
 							setStr("Device.WiFi.Radio.$i.Channel", $arConfig['channel_number'], true);
 						}
-					}
 				}
 				if ("None" == $arConfig['security']) {
-					if(!$Mesh_Mode) setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $encrypt_mode, true);
+					setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $encrypt_mode, true);
 				}
 				else if ("WEP_64" == $arConfig['security']) {
 					setStr("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_WEPKey64Bit.1.WEPKey",  $arConfig['network_password'], false);
@@ -136,9 +134,9 @@ if ($i == 1 || $i == 2) {
 					DmExtSetStrsWithRootObj("Device.WiFi.", true, array(
 						array("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", "string", $encrypt_mode), 
 						array("Device.WiFi.AccessPoint.$i.Security.X_CISCO_COM_EncryptionMethod", "string", $encrypt_method)));
-					if(!$Mesh_Mode) setStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_KeyPassphrase", $arConfig['network_password'], true);
+					setStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_KeyPassphrase", $arConfig['network_password'], true);
 				}
-				if(!$Mesh_Mode) setStr("Device.WiFi.SSID.$i.SSID", $arConfig['network_name'], true);
+				setStr("Device.WiFi.SSID.$i.SSID", $arConfig['network_name'], true);
 				setStr("Device.WiFi.AccessPoint.$i.SSIDAdvertisementEnabled", $arConfig['broadcastSSID'], true);
 				if ("mso" == $thisUser){
 					// if ("false" == $arConfig['enableWMM']){

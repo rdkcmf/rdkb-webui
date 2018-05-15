@@ -95,7 +95,7 @@ $(document).ready(function() {
 		state: "<?php echo ($bridge_mode != 'router' ? "on" : "off"); ?>"
 	});
 	<?php
-		if ($videoServiceEnable == "true" || $Mesh_Enable=="true") {
+		if ($videoServiceEnable == "true" ) {
 			echo '$("#bridge_switch").children(".rs_radiolist").addClass("disabled_state");';
 			echo '$("#bridge_switch").data("radioswitchstates", "false");';
 		}
@@ -266,10 +266,6 @@ function popUp(URL) {
 					if($videoServiceEnable=="true") {
 						echo '<br><br>';
 						echo '<p class="error"> Video Service only works in this setting. </p>';
-					}
-					if($Mesh_Enable=="true") {
-						echo '<br><br>';
-						echo '<p class="error"> Wi-Fi Mesh only works in this setting. </p>';
 					}
 				?>
 			</div>
