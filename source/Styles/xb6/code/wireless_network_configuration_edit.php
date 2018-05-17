@@ -777,7 +777,8 @@ function click_save()
 	var wireless_mode		= $("#wireless_mode").attr("value");
 	//var security			= $("#security").val();
 	var security_id 		= document.getElementById("security");
-	var security 			= security_id.options[security_id.selectedIndex].value;
+	if($Mesh_Mode=="false")
+		var security 			= security_id.options[security_id.selectedIndex].value;
 	var channel_automatic	= $("#channel_automatic").prop("checked");
 	var channel_number		= $("#channel_number").attr("value");
 	var password_update      = $("#password_check").prop("checked");
@@ -873,6 +874,9 @@ function setResetInfo(info) {
 			<span class="readonlyLabel label">Wireless Network:</span>
 			<span id="wireless_network_switch"></span>
 		</div>		
+		<?php
+			if($Mesh_Mode=="false"){
+		?>
 		<div class="form-row _network_name">
 			<label for="network_name">Network Name (SSID):</label>
 			<input type="text" size="23" value="<?php echo htmlspecialchars($network_name);?>" id="network_name" name="network_name" class="text" />
@@ -984,6 +988,9 @@ function setResetInfo(info) {
 			<label for="enableWMM">Enable WMM:</label>
 			<span class="checkbox"><input type="checkbox" id="enableWMM" name="enableWMM"  <?php if ("true" == $enableWMM) echo 'checked="checked"';?> /><b>Enabled</b></span>
 		</div>
+		<?php
+			}
+		?>
 		<div class="form-row form-btn">
 			<input type="submit" class="btn confirm" id="save_settings" name="save_settings" value="Save Settings" />
 			<!--input href="#" title="Restore Wi-Fi Module" id="restore-default-settings" name="restore_default_settings" type="button" style="text-transform: none;" value="RESTORE Wi-Fi SETTINGS" class="btn alt" /-->
