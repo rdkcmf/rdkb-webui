@@ -42,7 +42,6 @@ $local_users      	= FALSE;
 $remote_management  	= TRUE;		//for xb3, all user will have this page, but different content
 $eMTA               	= TRUE;		//for mso
 $routing          	= TRUE;		//for mso
-$email_notify		= TRUE;		//for mso
 $hs_port_forwarding 	= TRUE;		//for mso
 $dynamic_dns        	= TRUE;		//for mso
 $nat		        = FALSE;	//for mso
@@ -76,7 +75,6 @@ if (isset($_SESSION['lanMode']) && $_SESSION["lanMode"] == "bridge-static") {
 if (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'admin') {
 	$eMTA 			= FALSE;	
 	$routing 		= FALSE;
-	$email_notify		= FALSE;
 	$nat				= FALSE;
 	$dynamic_dns 		= FALSE;
 	$hs_port_forwarding	= FALSE;
@@ -91,7 +89,6 @@ echo '<li class="nav-gateway">';
 	echo '<a role="menuitem"  title="click to toggle sub menu" class="top-level" href="at_a_glance.php">Gateway</a>';
 	echo '<ul>';
 	echo '<li class="nav-at-a-glance"><a role="menuitem"  href="at_a_glance.php">At a Glance</a></li>';
-	if($email_notify) echo '<li class="nav-email-notification"><a role="menuitem"  href="email_notification.php">Email Notification</a></li>';
 	echo '<li class="nav-connection"><a role="menuitem"  title="click to toggle sub menu"  href="javascript:;">Connection</a>';
 		echo '<ul>';
 		echo '<li class="nav-connection-status"><a role="menuitem"  href="connection_status.php">Status</a></li>';
