@@ -49,7 +49,7 @@ if ($i == 1 || $i == 2) {
 	if ("true" == getStr("Device.WiFi.Radio.$r.Enable")) {
 		//change SSID status first, if disable, no need to configure following
 		setStr("Device.WiFi.SSID.$i.Enable", $arConfig['radio_enable'], true);
-		if ("true" == $arConfig['radio_enable'] && ($Mesh_Mode=="false") )
+		if ("true" == $arConfig['radio_enable'] && (!$Mesh_Mode) )
 		{
 			$validation = true;
 			if(($arConfig['password_update']=="false") && ("mso" == $thisUser)){
