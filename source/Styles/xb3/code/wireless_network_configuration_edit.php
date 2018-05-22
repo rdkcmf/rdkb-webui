@@ -778,8 +778,7 @@ function click_save()
 	var wireless_mode		= $("#wireless_mode").attr("value");
 	//var security			= $("#security").val();
 	var security_id 		= document.getElementById("security");
-	if($Mesh_Mode=="false")
-		var security 			= security_id.options[security_id.selectedIndex].value;
+	var security 			= security_id.options[security_id.selectedIndex].value;
 	var channel_automatic	= $("#channel_automatic").prop("checked");
 	var channel_number		= $("#channel_number").attr("value");
 	var password_update      = $("#password_check").prop("checked");
@@ -875,127 +874,121 @@ function setResetInfo(info) {
 			<span class="readonlyLabel label">Wireless Network:</span>
 			<span id="wireless_network_switch"></span>
 		</div>		
-		<?php
-			if($Mesh_Mode=="false"){
-		?>
-			<div class="form-row _network_name">
-				<label for="network_name">Network Name (SSID):</label>
-				<input type="text" size="23" value="<?php echo htmlspecialchars($network_name);?>" id="network_name" name="network_name" class="text" />
-			</div>
-			<div class="form-row odd" id="div_wireless_mode">
-				<label for="wireless_mode">Mode:</label>
-				<select name="wireless_mode" id="wireless_mode">
-				<?php
-					//zqiu: add "selected"
-					if ("5"==$radio_band){
-						if (strstr($support_mode_5g, "ac")){
-							echo '<option value="ac" ';     echo (    "ac"==$wireless_mode)? 'selected':''; echo'>802.11 ac</option>';
-							echo '<option value="n,ac" ';   echo (  "n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 n/ac</option>';
-							echo '<option value="a,n,ac" '; echo ("a,n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 a/n/ac</option>';
-							echo '<option value="n" ';      echo (     "n"==$wireless_mode)? 'selected':''; echo'>802.11 n</option>';
-						}
-						else {
-							echo '<option value="n" '   ; echo (     "n"==$wireless_mode)? 'selected':''; echo'>802.11 n</option>';
-							echo '<option value="a,n" ' ; echo (     "a,n"==$wireless_mode)? 'selected':''; echo'>802.11 a/n</option>';
-						}
+		<div class="form-row _network_name">
+			<label for="network_name">Network Name (SSID):</label>
+			<input type="text" size="23" value="<?php echo htmlspecialchars($network_name);?>" id="network_name" name="network_name" class="text" />
+		</div>
+		<div class="form-row odd" id="div_wireless_mode">
+			<label for="wireless_mode">Mode:</label>
+			<select name="wireless_mode" id="wireless_mode">
+			<?php
+				//zqiu: add "selected"
+				if ("5"==$radio_band){
+					if (strstr($support_mode_5g, "ac")){
+						echo '<option value="ac" ';     echo (    "ac"==$wireless_mode)? 'selected':''; echo'>802.11 ac</option>';
+						echo '<option value="n,ac" ';   echo (  "n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 n/ac</option>';
+						echo '<option value="a,n,ac" '; echo ("a,n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 a/n/ac</option>';
+						echo '<option value="n" ';      echo (     "n"==$wireless_mode)? 'selected':''; echo'>802.11 n</option>';
 					}
 					else {
-						//echo '<option value="n" ';     echo (    "n"==$wireless_mode)? 'selected':'';  echo '>802.11 n</option>';
-						echo '<option value="g,n" ';   echo (  "g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 g/n</option>';
-						echo '<option value="b,g,n" '; echo ("b,g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 b/g/n</option>';
+						echo '<option value="n" '   ; echo (     "n"==$wireless_mode)? 'selected':''; echo'>802.11 n</option>';
+						echo '<option value="a,n" ' ; echo (     "a,n"==$wireless_mode)? 'selected':''; echo'>802.11 a/n</option>';
 					}
-				?>
-				</select>
-			</div>
-			<div class="form-row">
-				<label for="security">Security Mode:</label>
-				<select name="encryption_method" id="security">
-					<option value="None" 				title="Open networks do not have a password." 			<?php if ("None"==$security) echo "selected";?> >Open (risky)</option>
-					<option value="WEP_64" 				title="WEP  64 requires a  5 ASCII character or  10 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_64"==$security)              echo "selected";?> >WEP 64 (risky)</option>
-					<option value="WEP_128" 			title="WEP 128 requires a 13 ASCII character or  26 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_128"==$security)             echo "selected";?> >WEP 128 (risky)</option>
-					<option value="WPA_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_TKIP"==$security)        echo "selected";?> >WPA-PSK (TKIP)</option>
-					<option value="WPA_PSK_AES" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_AES"==$security)         echo "selected";?> >WPA-PSK (AES)</option>
-					<option value="WPA2_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIP"==$security)       echo "selected";?> >WPA2-PSK (TKIP)</option>
-					<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_AES"==$security)        echo "selected";?> >WPA2-PSK (AES)(Recommended)</option>
-					<option value="WPA2_PSK_TKIPAES"	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIPAES"==$security)    echo "selected";?> >WPA2-PSK (TKIP/AES)</option>
-					<option value="WPAWPA2_PSK_TKIPAES" title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPAWPA2_PSK_TKIPAES"==$security) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)</option>
-				</select>
-				<p id="tip_security_mode" class="footnote">
+				}
+				else {
+					//echo '<option value="n" ';     echo (    "n"==$wireless_mode)? 'selected':'';  echo '>802.11 n</option>';
+					echo '<option value="g,n" ';   echo (  "g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 g/n</option>';
+					echo '<option value="b,g,n" '; echo ("b,g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 b/g/n</option>';
+				}
+			?>
+			</select>
+		</div>
+		<div class="form-row">
+			<label for="security">Security Mode:</label>
+			<select name="encryption_method" id="security">
+				<option value="None" 				title="Open networks do not have a password." 			<?php if ("None"==$security) echo "selected";?> >Open (risky)</option>
+				<option value="WEP_64" 				title="WEP  64 requires a  5 ASCII character or  10 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_64"==$security)              echo "selected";?> >WEP 64 (risky)</option>
+				<option value="WEP_128" 			title="WEP 128 requires a 13 ASCII character or  26 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_128"==$security)             echo "selected";?> >WEP 128 (risky)</option>
+				<option value="WPA_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_TKIP"==$security)        echo "selected";?> >WPA-PSK (TKIP)</option>
+				<option value="WPA_PSK_AES" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_AES"==$security)         echo "selected";?> >WPA-PSK (AES)</option>
+				<option value="WPA2_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIP"==$security)       echo "selected";?> >WPA2-PSK (TKIP)</option>
+				<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_AES"==$security)        echo "selected";?> >WPA2-PSK (AES)(Recommended)</option>
+				<option value="WPA2_PSK_TKIPAES"	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIPAES"==$security)    echo "selected";?> >WPA2-PSK (TKIP/AES)</option>
+				<option value="WPAWPA2_PSK_TKIPAES" title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPAWPA2_PSK_TKIPAES"==$security) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)</option>
+			</select>
+			<p id="tip_security_mode" class="footnote">
+			<?php
+				if ("5"==$radio_band && strstr($support_mode_5g, "ac")){
+					echo 'Please note 802.11 n/ac mode only compatible with AES and None encryption!!';
+				}
+				else{
+					echo 'Please note 802.11 n mode only compatible with AES and None encryption!!';
+				}
+			?>
+			</p>
+		</div>
+		<div class="form-row odd" id="div_channel_switch">
+			<label for="channel_automatic">Channel Selection:</label>
+			<input type="radio"  name="channel" value="auto" 	id="channel_automatic" checked="checked" /><b>Automatic</b>
+			<label for="channel_manual" class="acs-hide"></label>
+			<input type="radio"  name="channel" value="manual"  id="channel_manual"    <?php if ("false"==$channel_automatic) echo 'checked="checked"';?> /><b>Manual</b>
+		</div>
+		<div id="div_channel_number" class="form-row manual-only">
+			<label for="channel_number">Channel:</label>
+			<select name="channel_number" id="channel_number">
+				<!--option value="36" selected="selected">36</option-->
 				<?php
-					if ("5"==$radio_band && strstr($support_mode_5g, "ac")){
-						echo 'Please note 802.11 n/ac mode only compatible with AES and None encryption!!';
-					}
-					else{
-						echo 'Please note 802.11 n mode only compatible with AES and None encryption!!';
+					//dynamic generate possible channels
+					$channels = explode(",", $possible_channels);
+					foreach ($channels as $val){
+						echo '<option value="'.$val.($val==$channel_number ? '" selected="selected">' : '" >').$val.'</option>';
 					}
 				?>
-				</p>
-			</div>
-			<div class="form-row odd" id="div_channel_switch">
-				<label for="channel_automatic">Channel Selection:</label>
-				<input type="radio"  name="channel" value="auto" 	id="channel_automatic" checked="checked" /><b>Automatic</b>
-				<label for="channel_manual" class="acs-hide"></label>
-				<input type="radio"  name="channel" value="manual"  id="channel_manual"    <?php if ("false"==$channel_automatic) echo 'checked="checked"';?> /><b>Manual</b>
-			</div>
-			<div id="div_channel_number" class="form-row manual-only">
-				<label for="channel_number">Channel:</label>
-				<select name="channel_number" id="channel_number">
-					<!--option value="36" selected="selected">36</option-->
-					<?php
-						//dynamic generate possible channels
-						$channels = explode(",", $possible_channels);
-						foreach ($channels as $val){
-							echo '<option value="'.$val.($val==$channel_number ? '" selected="selected">' : '" >').$val.'</option>';
-						}
-					?>
-				</select>
-				<label for="auto_channel_number" class="acs-hide"></label>
-				<select id="auto_channel_number" disabled="disabled"><option selected="selected" ><?php echo $channel_number; ?></option></select>
-			</div>
-			<div class="form-row odd" id="bandwidth_switch" style="<?php if ('mso'==$_SESSION['loginuser']) {echo 'display:none'; } else {echo 'display:block'; } ?>" >
-			<?php if($rf == 1 ) { ?>
-				<label for="channel_bandwidth20">Channel Bandwidth:</label>
-				<input type="radio"  name="channel_bandwidth" value="20MHz" id="channel_bandwidth20" checked="checked" /><b>20</b>
-				<label for="channel_bandwidth" class="acs-hide"></label>
-				<input type="radio"  name="channel_bandwidth" value="40MHz" id="channel_bandwidth" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
-			<?php } else { ?>
-				<label for="channel_bandwidth201">Channel Bandwidth:</label>
-				<input type="radio"  name="channel_bandwidth1" value="20MHz" id="channel_bandwidth201" checked="checked" /><b>20</b>
-				<?php if (strstr($support_mode_5g, "ac")){ ?>
-					<label for="channel_bandwidth1" class="acs-hide"></label>
-					<input type="radio"  name="channel_bandwidth1" value="40MHz"  id="channel_bandwidth1" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
-					<label for="channel_bandwidth2" class="acs-hide"></label>
-					<input type="radio"  name="channel_bandwidth1" value="80MHz"  id="channel_bandwidth2" <?php if ("80MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40/80</b>
-				<?php } else{ ?>
-					<label for="channel_bandwidth1" class="acs-hide"></label>
-					<input type="radio"  name="channel_bandwidth1" value="40MHz"  id="channel_bandwidth1" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
-				<?php }	?>
-			<?php } ?>
-			</div>
-			<div class="form-row" id="div_network_password">
-				<label for="network_password">Network Password:</label>
-				<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password); ?>" </span>
-				<p id="netPassword-footnote" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
-			</div>
-			<div class="form-row" id="div_change_password">
-				<label for="change_password">Change Password:</label>
-				<span class="checkbox"><input type="checkbox" id="password_check" name="password_check" /></span>
-			</div>
-			<div class="form-row odd" id="div_password_show">
-				<label for="password_show">Show Network Password:</label>
-				<span class="checkbox"><input type="checkbox" id="password_show" name="password_show" /></span>
-			</div>
-			<div id="div_broadcastSSID" class="form-row">
-				<label for="broadcastSSID">Broadcast Network Name (SSID):</label>
-				<span class="checkbox"><input type="checkbox" id="broadcastSSID" name="broadcastSSID" <?php if ("true" == $broadcastSSID) echo 'checked="checked"';?> /><b>Enabled</b></span>
-			</div>
-			<div id="div_enableWMM" class="form-row odd">
-				<label for="enableWMM">Enable WMM:</label>
-				<span class="checkbox"><input type="checkbox" id="enableWMM" name="enableWMM"  <?php if ("true" == $enableWMM) echo 'checked="checked"';?> /><b>Enabled</b></span>
-			</div>
-		<?php
-			}
-		?>
+			</select>
+			<label for="auto_channel_number" class="acs-hide"></label>
+			<select id="auto_channel_number" disabled="disabled"><option selected="selected" ><?php echo $channel_number; ?></option></select>
+		</div>
+		<div class="form-row odd" id="bandwidth_switch" style="<?php if ('mso'==$_SESSION['loginuser']) {echo 'display:none'; } else {echo 'display:block'; } ?>" >
+		<?php if($rf == 1 ) { ?>
+			<label for="channel_bandwidth20">Channel Bandwidth:</label>
+			<input type="radio"  name="channel_bandwidth" value="20MHz" id="channel_bandwidth20" checked="checked" /><b>20</b>
+			<label for="channel_bandwidth" class="acs-hide"></label>
+			<input type="radio"  name="channel_bandwidth" value="40MHz" id="channel_bandwidth" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
+		<?php } else { ?>
+			<label for="channel_bandwidth201">Channel Bandwidth:</label>
+			<input type="radio"  name="channel_bandwidth1" value="20MHz" id="channel_bandwidth201" checked="checked" /><b>20</b>
+			<?php if (strstr($support_mode_5g, "ac")){ ?>
+				<label for="channel_bandwidth1" class="acs-hide"></label>
+				<input type="radio"  name="channel_bandwidth1" value="40MHz"  id="channel_bandwidth1" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
+				<label for="channel_bandwidth2" class="acs-hide"></label>
+				<input type="radio"  name="channel_bandwidth1" value="80MHz"  id="channel_bandwidth2" <?php if ("80MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40/80</b>
+			<?php } else{ ?>
+				<label for="channel_bandwidth1" class="acs-hide"></label>
+				<input type="radio"  name="channel_bandwidth1" value="40MHz"  id="channel_bandwidth1" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
+			<?php }	?>
+		<?php } ?>
+		</div>
+		<div class="form-row" id="div_network_password">
+			<label for="network_password">Network Password:</label>
+			<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password); ?>" </span>
+			<p id="netPassword-footnote" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
+		</div>
+		<div class="form-row" id="div_change_password">
+			<label for="change_password">Change Password:</label>
+			<span class="checkbox"><input type="checkbox" id="password_check" name="password_check" /></span>
+		</div>
+		<div class="form-row odd" id="div_password_show">
+			<label for="password_show">Show Network Password:</label>
+			<span class="checkbox"><input type="checkbox" id="password_show" name="password_show" /></span>
+		</div>
+		<div id="div_broadcastSSID" class="form-row">
+			<label for="broadcastSSID">Broadcast Network Name (SSID):</label>
+			<span class="checkbox"><input type="checkbox" id="broadcastSSID" name="broadcastSSID" <?php if ("true" == $broadcastSSID) echo 'checked="checked"';?> /><b>Enabled</b></span>
+		</div>
+		<div id="div_enableWMM" class="form-row odd">
+			<label for="enableWMM">Enable WMM:</label>
+			<span class="checkbox"><input type="checkbox" id="enableWMM" name="enableWMM"  <?php if ("true" == $enableWMM) echo 'checked="checked"';?> /><b>Enabled</b></span>
+		</div>
 		<div class="form-row form-btn">
 			<input type="submit" class="btn confirm" id="save_settings" name="save_settings" value="Save Settings" />
 			<!--input href="#" title="Restore Wi-Fi Module" id="restore-default-settings" name="restore_default_settings" type="button" style="text-transform: none;" value="RESTORE Wi-Fi SETTINGS" class="btn alt" /-->
