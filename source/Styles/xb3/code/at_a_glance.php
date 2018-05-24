@@ -122,7 +122,7 @@ $(document).ready(function() {
 		if ('Enabled' == isBridgeModelEnable) {
 			setTimeout(function(){
 				jConfirm(
-				"Enabling Bridge Mode will disable Router functionality of gateway and turn off the private Wi-Fi network. Are you sure you want to continue?"
+				"Enabling Bridge Mode will disable the Wi-Fi router functionality of your Xfinity Gateway and turn off your existing private Wi-Fi network. If you have xFi Pods, the Gateway cannot be in bridge mode since the Pods require using the Xfinity Gateway as your WiFi router. In addition, you will not be able to access the xFi experience to manage your Pods or any other xFi settings. Are you sure you want to continue?"
 				,"WARNING:"
 				,function(ret) {
 					if(ret) {

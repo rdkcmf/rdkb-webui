@@ -63,6 +63,9 @@
 	$defaultKeyPassphrase2	= $wifi_value['defaultKeyPassphrase2'];
 	//don't show current password for mso user
 	$password_mso_user = !($_SESSION["loginuser"] == "mso");
+	$Mesh_Enable 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.Enable");
+	$Mesh_State 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.State");
+	$Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')?true:false;
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -74,6 +77,11 @@ $(document).ready(function() {
 			echo 'gateway.page.init("Gateway > Home Network Wizard", "nav-wizard");';
 		}
 	?>
+	var mesh_mode = '<?php echo $Mesh_Mode; ?>';
+	if(mesh_mode){
+		//disable >>  Network Name:, Password: , Security:
+		 $('#network_name,#security, #network_password, #password_check, #network_name1 , #security1 ,#network_password1,#password_check1').prop("disabled", true);
+	}
 	var password_mso_user = '<?php echo $password_mso_user; ?>';
     /*
      *  Manage password field: open wep networks don't use passwords
@@ -91,7 +99,10 @@ $(document).ready(function() {
 				$("#div_change_password").show();
 			}
 			else {
-				$("#network_password").prop("disabled", false);
+				if(mesh_mode)
+					$("#network_password").prop("disabled", true);
+				else
+					$("#network_password").prop("disabled", false);
 				$("#div_change_password").hide();
 			}
     	}
@@ -116,7 +127,10 @@ $(document).ready(function() {
 				$("#div_change_password1").show();
 			}
 			else {
-				$("#network_password1").prop("disabled", false);
+				if(mesh_mode)
+					$("#network_password1").prop("disabled", true);
+				else
+					$("#network_password1").prop("disabled", false);
 				$("#div_change_password1").hide();
 			}
 		}
@@ -412,7 +426,21 @@ if ("WPA2-Personal" == $encrypt_mode1){
 					echo '<h2>Home Network Wizard</h2>';
 				}
 			?>
-			<p class="summary">Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi G, N) and 5GHz(Wi-Fi A, N, AC) compatible devices.</p>
+			<?php
+			if($Mesh_Mode){
+		?>
+			<div class="form-row odd">
+				<div id="content" style="text-align: center;" >
+					<br>
+					<h3 style="width:92%">Wi-Fi Mode, Security Mode, Channel Selection, Channel Mode, and Channel Bandwidth are being managed automatically to help optimize your home Wi-Fi network and improve Wi-Fi coverage. To edit your Wi-Fi Network Name & Network password, please download the Xfinity xFi app or visit <a href="http://xfinity.com/myxfi">xfinity.com/myxfi</a>.
+					</h3>
+					<br>
+				</div>
+			</div>
+		<?php
+			}
+		?>
+			<p class="summary">Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi B, G, N) and 5GHz(Wi-Fi A, N) compatible devices.</p>
 			<div class="form-row odd">
 				<label for="network_name">Wi-Fi Network Name (2.4GHz):</label>
 				<input type="text" size="23" value="<?php echo htmlspecialchars($network_name);?>" id="network_name" name="network_name" class="text" />

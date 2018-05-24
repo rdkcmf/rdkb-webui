@@ -42,7 +42,7 @@ $valid_ids	= array('1','2','3','4');
 // check if the LowerLayers radio is enabled. if disable, no need to configure
 if ("false" == getStr("Device.WiFi.Radio.$rf.Enable")) {
 	/*if (!$_SESSION['_DEBUG'])*/
-	echo '<script type="text/javascript">alert("Wi-Fi Radio is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
+	echo '<script type="text/javascript">alert("Wi-Fi Radio is disabled internally, please contact administrator!\n\nYou will be redirected to Wi-Fi status page...");location.href="wireless_network_configuration.php";</script>';
 	exit(0);
 }
 function KeyExtGet($root, $param)
@@ -859,10 +859,11 @@ function setResetInfo(info) {
 		<?php
 			if($Mesh_Mode=="true"){
 		?>
-			<div   class="form-row odd">
+			<div class="form-row odd">
 				<div id="content" style="text-align: center;">
 					<br>
-					<h3>Managing your home network settings is now easier than ever.<br>Visit <a href="http://xfinity.com/myxfi">xfinity.com/myxfi</a> to change other wifi configurations.</h3>
+					<h3 style="width:92%">Wi-Fi Mode, Security Mode, Channel Selection, Channel Mode, and Channel Bandwidth are being managed automatically to help optimize your home Wi-Fi network and improve Wi-Fi coverage. To edit your Wi-Fi Network Name & Network password, please download the Xfinity xFi app or visit <a href="http://xfinity.com/myxfi">xfinity.com/myxfi</a>.
+					</h3>
 					<br>
 				</div>
 			</div>

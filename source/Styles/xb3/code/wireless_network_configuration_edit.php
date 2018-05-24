@@ -42,7 +42,7 @@ $valid_ids	= array('1','2','3','4');
 // check if the LowerLayers radio is enabled. if disable, no need to configure
 if ("false" == getStr("Device.WiFi.Radio.$rf.Enable")) {
 	/*if (!$_SESSION['_DEBUG'])*/
-	echo '<script type="text/javascript">alert("Wi-Fi Radio is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
+	echo '<script type="text/javascript">alert("Wi-Fi Radio is disabled internally, please contact administrator!\n\nYou will be redirected to Wi-Fi status page...");location.href="wireless_network_configuration.php";</script>';
 	exit(0);
 }
 function KeyExtGet($root, $param)
@@ -863,7 +863,8 @@ function setResetInfo(info) {
 			<div class="form-row odd">
 				<div id="content" style="text-align: center;">
 					<br>
-					<h3>Managing your home network settings is now easier than ever.<br>Visit <a href="http://xfinity.com/myxfi">xfinity.com/myxfi</a> to change other Wi-Fi configurations.</h3>
+					<h3 style="width:92%">Wi-Fi Mode, Security Mode, Channel Selection, Channel Mode, and Channel Bandwidth are being managed automatically to help optimize your home Wi-Fi network and improve Wi-Fi coverage. To edit your Wi-Fi Network Name & Network password, please download the Xfinity xFi app or visit <a href="http://xfinity.com/myxfi">xfinity.com/myxfi</a>.
+					</h3>
 					<br>
 				</div>
 			</div>
@@ -998,11 +999,11 @@ function setResetInfo(info) {
 </div><!-- end #content -->
 <div id="pop_dialog" class="content_message" style="display: none;">
 	<div class="form-row odd">
-		<p style="color: green;"><b>The recommended security mode is "WPA2-PSK (AES)" as this mode gives best WiFi performance and optimum security.</b></p>
+		<p style="color: green;"><b>The recommended security mode is "WPA2-PSK (AES)" as this mode gives best Wi-Fi performance and optimum security.</b></p>
 	</div>
 	<div class="form-row">
 		<input name="path" id="path1" type="radio" value="WPAWPA2_PSK_TKIPAES"><b>WPAWPA2-PSK (TKIP/AES) </b><br><span>This mixed mode option will allow Wi-Fi devices to connect with WPA (with TKIP or AES encryption) or WPA2 (with TKIP or AES encryption). To achieve best Wi-Fi performance in this mode, the Wi-Fi devices must connect using WPA2 with AES encryption.</span><br>
-		<input name="path" id="path2" type="radio" value="WPA2_PSK_AES" checked="checked"><b>WPA2-PSK (AES) (Recommended)</b><br><span>This is the recommended and default option as this mode gives best WiFi performance and optimum security.Older Wi-Fi devices which doesn't support WPA2 and AES encryption will be unable to connect to your Wi-Fi network in this mode.</span><br>
+		<input name="path" id="path2" type="radio" value="WPA2_PSK_AES" checked="checked"><b>WPA2-PSK (AES) (Recommended)</b><br><span>This is the recommended and default option as this mode gives best Wi-Fi performance and optimum security.Older Wi-Fi devices which doesn't support WPA2 and AES encryption will be unable to connect to your Wi-Fi network in this mode.</span><br>
 		<!--input name="path" id="path3" type="radio" value="WEP_64"><b>WEP (64)</b><br><span style="color: red;">This is only applicable for legacy Wi-Fi devices. Using this option will impact your Wi-Fi performance and less secure. Select this option only if you have very old Wi-Fi device and if it does not support WPA or WPA2 option.</span><br>
 		<input name="path" id="path4" type="radio" value="WEP_128"><b>WEP (128)</b><br><span style="color: red;">This is only applicable for legacy Wi-Fi devices. Using this option will impact your Wi-Fi performance and less secure.Select this option only if you have very old Wi-Fi device and if it does not support WPA or WPA2 option.</span><br-->
 		<input name="path" id="path5" type="radio" value="None"><b>Open (Risky)</b><br><span style="color: red;">This is not recommended as it is doesn't have any security and anybody can connect to your Wi-Fi network.</span><br>
