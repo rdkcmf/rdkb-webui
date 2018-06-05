@@ -796,8 +796,8 @@ $(document).ready(function() {
 		$Hotspot_clients = get_hotspot_clients();
 		$clients_num = count($Hotspot_clients);
     echo '<div  class="module forms data div-pub-network" style="position:relative; top:10px; ">';
-      	echo '<h2>Online Devices-xfinitywifi SSID</h2>';
-      	echo '<table   class="data" summary="this table displays online devices connected to xfinitywifi SSID">';
+	echo '<h2>Online Devices - Public Wi-Fi SSID</h2>';
+      	echo '<table   class="data" summary="this table displays online devices connected to Public Wi-Fi SSID">';
       		echo '<tr>';
       			echo '<th id="xfinitywifi-host-name" width="30%">Host Name</th>';
       			echo '<th id="xfinitywifi-ipv4-address" width="30%">IPV4 Address</th>';

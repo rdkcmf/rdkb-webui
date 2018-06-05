@@ -44,7 +44,7 @@ $(document).ready(function() {
 	<h1>Gateway > Software</h1>
 	<div id="educational-tip">
 		<p class="tip">View details about the Gateway's software.</p>
-		<p class="hidden">You may need this information if you contact Comcast for troubleshooting assistance.</p>
+		<p class="hidden">You may need this information for troubleshooting assistance.</p>
 	</div>
 	<div class="module forms">
 		<h2>System Software Version</h2>
