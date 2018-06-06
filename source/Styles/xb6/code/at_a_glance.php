@@ -171,31 +171,42 @@ function popUp(URL) {
 	        "wifi_24_enabled" 	=> "Device.WiFi.SSID.1.Enable",
 			"wifi_24_ssid" 		=> "Device.WiFi.SSID.1.SSID",
 			"wifi_24_passkey" 	=> "Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase",
+			"wifi_24_secmode" 	=> "Device.WiFi.AccessPoint.1.Security.ModeEnabled",
 			"wifi_50_enabled" 	=> "Device.WiFi.SSID.2.Enable",
 			"wifi_50_ssid" 		=> "Device.WiFi.SSID.2.SSID",
 			"wifi_50_passkey" 	=> "Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase",
+			"wifi_50_secmode" 	=> "Device.WiFi.AccessPoint.2.Security.ModeEnabled",
+	        "wifi_24_radio" 	=> "Device.WiFi.Radio.1.Enable",
+	        "wifi_50_radio" 	=> "Device.WiFi.Radio.2.Enable",
 		);
 	    $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 		$wifi_24_enabled = $wifi_value["wifi_24_enabled"];
 		$wifi_24_ssid = htmlspecialchars($wifi_value["wifi_24_ssid"], ENT_NOQUOTES, 'UTF-8');
 		$wifi_24_passkey = htmlspecialchars($wifi_value["wifi_24_passkey"], ENT_NOQUOTES, 'UTF-8');
+		$wifi_24_secmode = htmlspecialchars($wifi_value["wifi_24_secmode"], ENT_NOQUOTES, 'UTF-8');
 		$wifi_50_enabled = $wifi_value["wifi_50_enabled"];
 		$wifi_50_ssid = htmlspecialchars($wifi_value["wifi_50_ssid"], ENT_NOQUOTES, 'UTF-8');
 		$wifi_50_passkey = htmlspecialchars($wifi_value["wifi_50_passkey"], ENT_NOQUOTES, 'UTF-8');
+		$wifi_50_secmode = htmlspecialchars($wifi_value["wifi_50_secmode"], ENT_NOQUOTES, 'UTF-8');
+		$wifi_24_radio = $wifi_value["wifi_24_radio"];
+		$wifi_50_radio = $wifi_value["wifi_50_radio"];
 		//If at least one private SSID is enabled
-		if ( $bridge_mode == "router" && ("true" == $wifi_24_enabled || "true" == $wifi_50_enabled) ) {
+		if ( $bridge_mode == "router" && ("true" == $wifi_24_enabled || "true" == $wifi_50_enabled) && ("true" == $wifi_24_radio || "true" == $wifi_50_radio)) {
 			echo '<div class="module forms" id="wifi-config">';
 				echo '<div>';
 					echo '<h2>Wi-Fi Configuration</h2>';
 				echo '</div>';
 				//If both 2.4ghz and 5ghz ssid's and passkeys are the same, or only one is active, then just show one row
-				if ((($wifi_24_ssid == $wifi_50_ssid) && ($wifi_24_passkey == $wifi_50_passkey)) || !("true" == $wifi_24_enabled && "true" == $wifi_50_enabled)) {
+                // Added for Radio Enable also.
+				if ((($wifi_24_ssid == $wifi_50_ssid) && ($wifi_24_passkey == $wifi_50_passkey)) || !("true" == $wifi_24_enabled && "true" == $wifi_50_enabled) || !("true" == $wifi_24_radio && "true" == $wifi_50_radio)  ) {
 					//Figure out whice one is active
-					if ("true" == $wifi_24_enabled) {
+					if ("true" == $wifi_24_enabled && "true" == $wifi_24_radio) {
 						$wifi_ssid = $wifi_24_ssid;
+                        $wifi_sec_mode=$wifi_24_secmode;
 						$wifi_passkey = $wifi_24_passkey;
-					} else {
+					} else if ("true" == $wifi_50_enabled && "true" == $wifi_50_radio){
 						$wifi_ssid = $wifi_50_ssid;
+                        $wifi_sec_mode=$wifi_50_secmode;
 						$wifi_passkey = $wifi_50_passkey;
 					}
 					$width_pass = strlen($wifi_passkey)>50?' style="width: 145px;"':'';
@@ -204,7 +215,7 @@ function popUp(URL) {
 							echo '<span class="readonlyLabel" style="white-space: pre;"'; echo $width_pass; echo '>Wi-Fi SSID:</span>';
 							echo '<span class="value" style="white-space: pre;">';echo $wifi_ssid;echo '</span>';
 						echo '</div>';
-						if ("admin" == $_SESSION["loginuser"]) {
+						if ("admin" == $_SESSION["loginuser"] && "None" != $wifi_sec_mode ) {
 							echo '<div class="form-row even">';
 								echo '<span class="readonlyLabel" style="white-space: pre;"'; echo $width_pass; echo '>Wi-Fi Passkey:</span>';
 								echo '<span class="value" style="white-space: pre;">';echo $wifi_passkey;echo '</span>';
@@ -212,31 +223,35 @@ function popUp(URL) {
 						}
 					echo '</div>';
 				} else {
+                    if ("true" == $wifi_24_enabled && "true" == $wifi_24_radio){
 					$width_pass = strlen($wifi_24_passkey)>50 || strlen($wifi_50_passkey)>50 ?' style="width: 145px;"':'';
 					echo '<div class="form-row even">';
 						echo '<div class="form-row even">';
 							echo '<span class="readonlyLabel" style="white-space: pre;"'; echo $width_pass; echo '>Wi-Fi SSID (2.4Ghz):</span>';
 							echo '<span class="value" style="white-space: pre;">';echo $wifi_24_ssid;echo '</span>';
 						echo '</div>';
-						if ("admin" == $_SESSION["loginuser"]) {
+						if ("admin" == $_SESSION["loginuser"] && "None" != $wifi_24_secmode) {
 							echo '<div class="form-row even">';
 								echo '<span class="readonlyLabel" style="white-space: pre;"'; echo $width_pass; echo '>Wi-Fi Passkey (2.4Ghz):</span>';
 								echo '<span class="value" style="white-space: pre;">';echo $wifi_24_passkey;echo '</span>';
 							echo '</div>';
 						}
 					echo '</div>';
+                    }
+                    if ("true" == $wifi_50_enabled && "true" == $wifi_50_radio){
 					echo '<div class="form-row odd">';
 						echo '<div class="form-row odd">';
 							echo '<span class="readonlyLabel" style="white-space: pre;"'; echo $width_pass; echo '>Wi-Fi SSID (5Ghz):</span>';
 							echo '<span class="value" style="white-space: pre;">';echo $wifi_50_ssid;echo '</span>';
 						echo '</div>';
-						if ("admin" == $_SESSION["loginuser"]) { 
+						if ("admin" == $_SESSION["loginuser"] && "None" != $wifi_50_secmode) { 
 							echo '<div class="form-row odd">';
 								echo '<span class="readonlyLabel" style="white-space: pre;"'; echo $width_pass; echo '>Wi-Fi Passkey (5Ghz):</span>';
 								echo '<span class="value" style="white-space: pre;">';echo $wifi_50_passkey;echo '</span>';
 							echo '</div>';
 						}
 					echo '</div>';
+                    }
 			}
 			echo '</div>';
 		}
