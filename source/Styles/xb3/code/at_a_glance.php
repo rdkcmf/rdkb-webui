@@ -52,13 +52,15 @@ session_start();
 		if($_SESSION['loginuser'] == 'admin') $ssids = array(1,2);
 		foreach ($ssids as $i){
 			$r = (2 - intval($i)%2);	//1,3,5,7==1(2.4G); 2,4,6,8==2(5G)
-			if ("true" == getStr("Device.WiFi.Radio.$r.Enable") && "true" == getStr("Device.WiFi.SSID.$i.Enable")){	//bwg has radio.enable, active status is “at least one SSID and its Radio is enabled”
+			if ("Up" == getStr("Device.WiFi.Radio.$r.Status") && "Up" == getStr("Device.WiFi.SSID.$i.Status")){	//bwg has radio.enable, active status is “at least one SSID and its Radio is enabled”
 				$sta_wifi = "true";
 				break;
 			}
 		}	
 	}
-	if("Disabled"==$_SESSION["psmMode"]) { $sta_moca = getStr("Device.MoCA.Interface.1.Enable"); }
+	if("Disabled"==$_SESSION["psmMode"]) { $sta_moca = getStr("Device.MoCA.Interface.1.Status");
+		$sta_moca = ($sta_moca=="Down") ? "false" : "true";
+	}
 	$sta_dect = getStr("Device.X_CISCO_COM_MTA.Dect.Enable");
 	$sta_fire = getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel");
 	$arConfig = array(
@@ -343,7 +345,7 @@ function popUp(URL) {
 				} else {
 					echo "<div class=\"form-row odd off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='WiFi Off' /></span> <span class=\"readonlyLabel\">Wi-Fi</span></div>";
 				}
-				if (getStr("Device.MoCA.Interface.1.Enable")=="true") {
+				if (getStr("Device.MoCA.Interface.1.Status")=="Up") {
 					echo "<div class=\"form-row\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='MoCA On' /></span> <span class=\"readonlyLabel\">MoCA</span></div>";
 				} else {
 					echo "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='MoCA Off' /></span> <span class=\"readonlyLabel\">MoCA</span></div>";

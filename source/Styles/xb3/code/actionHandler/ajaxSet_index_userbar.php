@@ -47,7 +47,7 @@ function get_tips($target, $status, $user_type)
 			}
 		}break;
 		case "sta_moca":{
-			if ("true"==$status && "Up"==getStr("Device.MoCA.Interface.1.Status")){
+			if ("true"==$status){
 				$tip = 'Status: Connected-'.getStr("Device.MoCA.Interface.1.X_CISCO_COM_NumberOfConnectedClients").' devices connected';
 			}
 			else{
