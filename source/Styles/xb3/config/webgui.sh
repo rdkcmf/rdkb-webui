@@ -123,7 +123,7 @@ else
     echo "\$SERVER[\"socket\"] == \"erouter0:$HTTP_PORT\" { server.use-ipv6 = \"enable\" }" >> $LIGHTTPD_CONF
 fi
 
-echo "\$SERVER[\"socket\"] == \"$INTERFACE:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
+echo "\$SERVER[\"socket\"] == \"$INTERFACE:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" ssl.use-compression = \"disable\" ssl.cipher-list = \"EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH\" ssl.use-sslv2 = \"disable\" ssl.use-sslv3 = \"disable\"}" >> $LIGHTTPD_CONF
 
 #If video analytics test is enabled in device.properties file, open 28081 securely.
 if [ "$VIDEO_ANALYTICS" = "enabled" ]
@@ -131,16 +131,16 @@ then
    echo "\$SERVER[\"socket\"] == \"$INTERFACE:28081\" { server.use-ipv6 = \"enable\" server.document-root = \"/usr/video_analytics\" ssl.engine = \"enable\" ssl.pemfile = \"/tmp/.webui/rdkb-video.pem\" }" >> $LIGHTTPD_CONF
 fi
 
-echo "\$SERVER[\"socket\"] == \"wan0:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
+echo "\$SERVER[\"socket\"] == \"wan0:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" ssl.use-compression = \"disable\" ssl.cipher-list = \"EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH\" ssl.use-sslv2 = \"disable\" ssl.use-sslv3 = \"disable\"}" >> $LIGHTTPD_CONF
 if [ $HTTPS_PORT -ne 0 ] && [ "$HTTPS_PORT" -ge 1025 ] && [ "$HTTPS_PORT" -le 65535 ]
 then
-  echo "\$SERVER[\"socket\"] == \"erouter0:$HTTPS_PORT\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
+    echo "\$SERVER[\"socket\"] == \"erouter0:$HTTPS_PORT\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" ssl.use-compression = \"disable\" ssl.cipher-list = \"EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH\" ssl.use-sslv2 = \"disable\" ssl.use-sslv3 = \"disable\"}" >> $LIGHTTPD_CONF
 else
     # When the httpsport is set to NULL. Always put default value into database.
     syscfg set mgmt_wan_httpsport 8081
     syscfg commit
     HTTPS_PORT=`syscfg get mgmt_wan_httpsport`
-    echo "\$SERVER[\"socket\"] == \"erouter0:$HTTPS_PORT\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
+    echo "\$SERVER[\"socket\"] == \"erouter0:$HTTPS_PORT\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" ssl.use-compression = \"disable\" ssl.cipher-list = \"EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH\" ssl.use-sslv2 = \"disable\" ssl.use-sslv3 = \"disable\"}" >> $LIGHTTPD_CONF
 fi
 
 #Changes for ArrisXb6-2949
