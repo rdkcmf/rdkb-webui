@@ -297,7 +297,8 @@ $redirect_page = "https://{$_SERVER["SERVER_NAME"]}" . $_SERVER["PHP_SELF"];
 			else if (strpos($v, 'inet6 addr')){
 				$tmp = explode('Scope', $v);
 				$tmp = explode('addr:', $tmp[0]);
-				$tmp = explode('/', $tmp[1]);
+				$tmp = explode('%', $tmp[1]);
+				$tmp = explode('/', $tmp[0]);
 				array_push($lan_ip, trim($tmp[0]));
 			}
 		}
