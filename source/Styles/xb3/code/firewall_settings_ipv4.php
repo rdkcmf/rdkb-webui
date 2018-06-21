@@ -193,7 +193,7 @@ $(document).ready(function() {
 	<div id="educational-tip">
 		<p class="tip">Manage your firewall settings.</p>
 		<p class="hidden">Select a security level for details. If you're unfamiliar with firewall settings, keep the default security level, Minimum Security (Low).</p>
-		<p class="hidden"><strong>Maxium Security (High):</strong> Blocks all applications, including voice applications (such as Gtalk, Skype) and P2P applications, but allows Internet, email, VPN, DNS, and iTunes services.</p>
+		<p class="hidden"><strong>Maximum Security (High):</strong> Blocks all applications, including voice applications (such as Gtalk, Skype) and P2P applications, but allows Internet, email, VPN, DNS, and iTunes services.</p>
 		<p class="hidden"><strong>Typical Security (Medium):</strong> Blocks P2P applications and pings to the Gateway, but allows all other traffic.</p>
 		<p class="hidden"><strong>Minimum Security (Low):</strong> No application or traffic is blocked. (Default setting)</p>
 		<p class="hidden"><strong>Custom security:</strong> Block specific services.</p>
