@@ -96,10 +96,20 @@ $(document).ready(function() {
 	<?php
 	function NameMap($str)
 	{
+		//true for Ethernet, False for Docsis
+		$wan_enable = getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
+		$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 		switch ($str)
 		{
 			case "Up":
-				return "Active";
+				if($partnerId=="cox"){
+					if($wan_enable=="true")
+						return "Active Ethernet WAN";
+					else
+						return "Active Docsis WAN";
+				} else {
+					return "Active";
+				}
 				break;
 			case "Down":
 				return "Inactive";

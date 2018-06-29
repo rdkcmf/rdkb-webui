@@ -50,6 +50,7 @@ $password_change	= FALSE;	//for admin only
 $wizard        		= TRUE;
 $wifi_spec_analyzer	= TRUE;
 $advanced_tab		= TRUE;
+$wan_network        = TRUE;
 /*if ($_DEBUG) {
 	$media_sharing = TRUE;
 }*/
@@ -83,6 +84,7 @@ if (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'admin') {
 /*
  * generate menu and submenu accroding to above configuration
  */
+$PartnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 echo '<div id="nav">';
 echo '<ul>';
 echo '<li class="nav-gateway">';
@@ -108,6 +110,9 @@ echo '<li class="nav-gateway">';
 			echo '<li class="nav-gateway-voice"><a role="menuitem"  href="voice_quality_metrics.php">VQM</a></li>';
 		}
 		echo '<li class="nav-moca"><a role="menuitem"  href="moca.php">MoCA</a></li>';
+		if($PartnerId=="cox"){
+			if($wan_network) echo '<li class="nav-wan-network"><a role="menuitem"  href="wan_network.php">WAN Network</a></li>';
+		}
 		echo '</ul>';
 	echo '</li>';
 	/*if($firewall) echo '<li class="nav-firewall"><a role="menuitem"  href="firewall_settings.php">Firewall</a></li>';*/

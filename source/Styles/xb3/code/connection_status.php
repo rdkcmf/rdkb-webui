@@ -170,7 +170,8 @@ $(document).ready(function() {
 }
 </style>
 <?php
-  $NetworkName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.HelpTip.NetworkName");
+	$NetworkName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.HelpTip.NetworkName");
+	$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 ?>
 <div id="content" style="margin-bottom:100px;">
 	<h1>Gateway > Connection > Status</h1>
@@ -280,6 +281,48 @@ $(document).ready(function() {
                   </span>
               </div>
     </div><!-- end .module local ip network-->
+<?php
+if($partnerId=="cox"){
+?>
+    <div class="module forms block" style="margin-bottom:0px"><!--- WAN Network -->
+      <h2>WAN Network</h2>
+        <p class="button"><a tabindex='0' href="wan_network.php" class="btn localBtn">Edit</a></p>
+                <div class="form-row ">
+                    <span class="readonlyLabel">WAN Network Status:</span> <span class="value">
+                         <?php
+                          $wan_enable= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
+                          if($wan_enable=="true")
+                              echo "Active Ethernet WAN";
+                          else
+                              echo "Active Docsis WAN";
+                         ?>
+                    </span>
+                </div>
+                <div class="form-row ">
+                    <span class="readonlyLabel">WAN IP Address (IPv4):</span> <span class="value">
+                         <?php
+                          $fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
+                          $WANIPv4 = getStr($fistUSif."IPv4Address.1.IPAddress");
+                          $ids = explode(",", getInstanceIds($fistUSif."IPv6Address."));
+                          foreach ($ids as $i){
+                            $val = getStr($fistUSif."IPv6Address.$i.IPAddress");
+                            if (!strstr($val, "fe80::")){
+                              $WANIPv6 = $val;
+                            }
+                          }
+                            echo $WANIPv4;
+                         ?>
+                    </span>
+                </div>
+                <div class="form-row ">
+                    <span class="readonlyLabel">WAN IP Address (IPv6):</span> <span class="value">
+                        <?php echo $WANIPv6; ?>
+                    </span>
+                </div>
+    </div><!-- End of Module -->
+<?php
+}
+?>
     <div class="module forms block" style="margin-bottom:0px">
         <h2><?php echo $NetworkName; ?></h2>
         <p class="button"><a tabindex='0' href="network_setup.php" class="btn">View</a></p>
