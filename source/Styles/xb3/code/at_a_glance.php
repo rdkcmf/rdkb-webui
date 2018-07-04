@@ -69,6 +69,7 @@ session_start();
 	$_SESSION['battery_class'] = $battery_class;
 	$videoServiceEnable = getStr("Device.X_RDKCENTRAL-COM_VideoService.Enabled");
 	$Mesh_Enable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.Enable");
+	$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 	?>
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
@@ -86,6 +87,7 @@ $(document).ready(function() {
     if(login_user == "admin") {
     	$('.div-bridge').remove();
     }*/
+    var partnerId = "<?php echo $partnerId; ?>";
 	<?php $bridge_mode = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode"); ?>
 	$("#bridge_switch").radioswitch({
 		id: "at-a-glance-switch",
@@ -121,11 +123,16 @@ $(document).ready(function() {
 	$("#bridge_switch").change(function(){
 		var isBridgeModelEnable = $("#bridge_switch").radioswitch("getState").on ? "Enabled" : "Disabled";
 		//the 200ms timer is only used to fix confirm dialogue not shown issue on IE
+		var warningMsg="";
+		if(partnerId=="comcast"){
+			warningMsg="Enabling Bridge Mode will disable the Wi-Fi router functionality of your Xfinity Gateway and turn off your existing private Wi-Fi network. If you have xFi Pods, the Gateway cannot be in bridge mode since the Pods require using the Xfinity Gateway as your WiFi router. In addition, you will not be able to access the xFi experience to manage your Pods or any other xFi settings. Are you sure you want to continue?";
+		}else{
+			warningMsg="Enabling Bridge Mode will disable the router functionality of your Gateway and turn off your existing private Wi-Fi network. Are you sure you want to continue?";
+		}
 		if ('Enabled' == isBridgeModelEnable) {
 			setTimeout(function(){
 				jConfirm(
-				"Enabling Bridge Mode will disable the Wi-Fi router functionality of your Xfinity Gateway and turn off your existing private Wi-Fi network. If you have xFi Pods, the Gateway cannot be in bridge mode since the Pods require using the Xfinity Gateway as your WiFi router. In addition, you will not be able to access the xFi experience to manage your Pods or any other xFi settings. Are you sure you want to continue?"
-				,"WARNING:"
+				warningMsg,"WARNING:"
 				,function(ret) {
 					if(ret) {
 						changeBridge(isBridgeModelEnable);
