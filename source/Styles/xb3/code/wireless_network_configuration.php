@@ -894,11 +894,12 @@ function add_row(tid, idex, name, addr)
 	name = name.replace(/</g,'&lt;').replace(/>/g,'&gt;');
 	var tb  = document.getElementById(tid);
 	var len = tb.rows.length;
+	var max_mac = 16;
 	if (len == -1) {
 		idex = tb.rows.length;
 	}
-	else if (len > 65) {
-		jAlert("No more than 64 devices can be added!");
+	else if (len > (max_mac + 1)) {
+		jAlert("No more than " + max_mac + " devices can be added!");
 		return;
 	}
 	if ("filter_table" == tid) {
