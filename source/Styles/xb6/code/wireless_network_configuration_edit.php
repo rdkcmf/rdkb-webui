@@ -259,6 +259,8 @@ $(document).ready(function() {
 			$("#channel_number").prop("disabled", false);
 			$("#channel_number").show();
 			$("#auto_channel_number").hide();
+			// update channel1 list
+			$("#channel_bandwidth1").change();
 		}
 		$("#auto_channel_number").prop("disabled", true);
 	}).trigger("change");

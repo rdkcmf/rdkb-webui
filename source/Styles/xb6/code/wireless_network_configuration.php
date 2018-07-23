@@ -528,6 +528,8 @@ $(document).ready(function() {
 			document.getElementById('channel_number1').disabled = false;
 			$("#channel_number1").show();
 			$("#auto_channel_number1").hide();
+			// update channel1 list
+			$("#channel_bandwidth1").change();
 		}
 	}).trigger("change");
     	$("#wireless_mode").change(function() {
