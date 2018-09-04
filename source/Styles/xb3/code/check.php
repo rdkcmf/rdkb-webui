@@ -17,8 +17,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-?>
-<?php
+require('includes/client.php');
+require('includes/GrantType/IGrantType.php');
+require('includes/GrantType/AuthorizationCode.php');
+require('includes/jwt.php');
+
 $flag=0;
 $flag_mso=0;
 $passLockEnable = getStr("Device.UserInterface.PasswordLockoutEnable");
@@ -27,10 +30,12 @@ $failedAttempt_mso=getStr("Device.Users.User.1.NumOfFailedAttempts");
 $passLockoutAttempt=getStr("Device.UserInterface.PasswordLockoutAttempts");
 $passLockoutTime=getStr("Device.UserInterface.PasswordLockoutTime");
 $passLockoutTimeMins=$passLockoutTime/(1000*60);
-$client_ip		= $_SERVER["REMOTE_ADDR"];			// $client_ip="::ffff:10.0.0.101";
-$server_ip		= $_SERVER["SERVER_ADDR"];
+$client_ip = $_SERVER["REMOTE_ADDR"];       // $client_ip="::ffff:10.0.0.101";
+$server_ip = $_SERVER["SERVER_ADDR"];
+$redirect_page = "https://{$_SERVER["SERVER_NAME"]}" . $_SERVER["PHP_SELF"];
+
     if (isset($_POST["username"]))
-	{
+    {
 		/*=============================================*/
 		// $dev_mode = true;
 		/*if (file_exists("/var/ui_dev_mode")) {
@@ -48,71 +53,103 @@ $server_ip		= $_SERVER["SERVER_ADDR"];
 		}*/
 		/*===============================================*/
         if ($_POST["username"] == "mso")
-	{
-	   //triggering password validation in back end
-	   $return_status = setStr("Device.Users.User.1.X_CISCO_COM_Password",$_POST["password"],true);
-	   sleep(1);
-	   $curPwd1 = getStr("Device.Users.User.1.X_CISCO_COM_Password");
-	    if ( innerIP($client_ip) || (if_type($server_ip)=="rg_ip") )
+        {
+            $authmode=getStr( "Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.OAUTH.AuthMode" );
+            if( $authmode != "sso" )
             {
-            	if($passLockEnable == "true"){
-					
-					if($failedAttempt_mso<$passLockoutAttempt){
-						$failedAttempt_mso=$failedAttempt_mso+1;
-						setStr("Device.Users.User.1.NumOfFailedAttempts",$failedAttempt_mso,true);
-					}
-					
-					if($failedAttempt_mso==$passLockoutAttempt){
-						$flag_mso=1;
-						echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
-								
-					}
-				}
-				if($flag_mso==0){
-            		session_destroy();
-                	echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
+                if( $authmode == "potd" || $_POST["password"] != "" )
+                {
+                    //triggering password validation in back end if "potd" or "mixed" and a password is supplied
+                    $return_status = setStr("Device.Users.User.1.X_CISCO_COM_Password",$_POST["password"],true);
+                    sleep(1);
+                    $curPwd1 = getStr("Device.Users.User.1.X_CISCO_COM_Password");
+                }
+                else
+                {
+                    $curPwd1 = "Invalid_PWD";    // trigger SSO login attempt
+                }
+            }
+            else
+            {
+                $curPwd1 = "Invalid_PWD";    // trigger SSO login attempt
+            }
+            if ( innerIP($client_ip) || (if_type($server_ip)=="rg_ip") )
+            {
+                if($passLockEnable == "true")
+                {
+                    if($failedAttempt_mso<$passLockoutAttempt){
+                        $failedAttempt_mso=$failedAttempt_mso+1;
+                        setStr("Device.Users.User.1.NumOfFailedAttempts",$failedAttempt_mso,true);
+                     }
+
+                     if($failedAttempt_mso==$passLockoutAttempt){
+                         $flag_mso=1;
+                         echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+
+                     }
+                }
+                if($flag_mso==0){
+                    session_destroy();
+                    echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
                 }
             }
             elseif ($curPwd1 == "Good_PWD" && $return_status)
             {
-            	if(($passLockEnable == "true") && ($failedAttempt_mso==$passLockoutAttempt)){
-						$flag_mso=1;
-						echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
-								
-				}else{
-					create_session();
-					$failedAttempt_mso=0;	
-					setStr("Device.Users.User.1.NumOfFailedAttempts",$failedAttempt_mso,true);
-            		exec("/usr/bin/logger -t GUI -p local5.notice 'User:mso login'");
-                	header("location:at_a_glance.php");
-                }	
-            	
+                if(($passLockEnable == "true") && ($failedAttempt_mso==$passLockoutAttempt)){
+                    $flag_mso=1;
+                    echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+
+                }
+                else{
+                    create_session();
+                    $failedAttempt_mso=0;
+                    setStr("Device.Users.User.1.NumOfFailedAttempts",$failedAttempt_mso,true);
+                    exec("/usr/bin/logger -t GUI -p local5.notice 'User:mso login'");
+                    header("location:at_a_glance.php");
+                }
             }
             elseif ("" == $curPwd1)
             {
-				session_destroy();
-				echo '<script type="text/javascript"> alert("Can not get password for mso from backend!"); history.back(); </script>';
+                session_destroy();
+                echo '<script type="text/javascript"> alert("Can not get password for mso from backend!"); history.back(); </script>';
             }
             else
-          	{
-				if($passLockEnable == "true"){
-					
-					if($failedAttempt_mso<$passLockoutAttempt){
-						$failedAttempt_mso=$failedAttempt_mso+1;
-						setStr("Device.Users.User.1.NumOfFailedAttempts",$failedAttempt_mso,true);
-					}
-					
-					if($failedAttempt_mso==$passLockoutAttempt){
-						$flag_mso=1;
-						echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
-								
-					}
-				}
-	
-				if($flag_mso==0){
-				 	session_destroy();
-					echo '<script type="text/javascript"> alert("Incorrect password for mso!"); history.back(); </script>';
-				}
+            {
+                $authendpoint=getStr( "Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.OAUTH.ServerUrl" );
+                $clientid=getStr( "Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.OAUTH.ClientId" );
+                if( $authmode != "potd" && $authendpoint && $clientid )
+                {
+                    $client = new OAuth2\Client( $clientid, NULL );
+                    if (!isset($_GET['code']))
+                    {
+                        create_session();
+                        $params = array('pfidpadapterid' => "loginform" );
+                        $auth_url = $client->getAuthenticationUrl( $authendpoint, $redirect_page, $params );
+                        echo "<script type='text/javascript'>document.location.href='{$auth_url}';</script>";
+                        die('Please wait ...');
+                    }
+                }
+                else
+                {
+                    if($passLockEnable == "true"){
+
+                        if($failedAttempt_mso<$passLockoutAttempt){
+                            $failedAttempt_mso=$failedAttempt_mso+1;
+                            setStr("Device.Users.User.1.NumOfFailedAttempts",$failedAttempt_mso,true);
+                        }
+
+                        if($failedAttempt_mso==$passLockoutAttempt){
+                            $flag_mso=1;
+                            echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+
+                        }
+                    }
+
+                    if($flag_mso==0){
+                        session_destroy();
+                        echo '<script type="text/javascript"> alert("Incorrect password for mso!"); history.back(); </script>';
+                    }
+                }
             }
         }
         elseif ($_POST["username"] == "admin")
@@ -182,10 +219,63 @@ $server_ip		= $_SERVER["SERVER_ADDR"];
 				}
 		}
         else
-	{
-		setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_failed",true);
-		session_destroy();
-		echo '<script type="text/javascript"> alert("Incorrect user name!"); history.back(); </script>';
+        {
+		    setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_failed",true);
+            if( session_status() == PHP_SESSION_ACTIVE )
+            {
+                session_destroy();
+            }
+            echo '<script type="text/javascript"> alert("Incorrect user name!"); history.back(); </script>';
+        }
+    }
+    else
+    {
+        if (isset($_GET['code']))
+        {
+            $clientid=getStr( "Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.OAUTH.ClientId" );
+            $clientsecret=getStr( "Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.OAUTH.ClientSecret" );
+            $tokenendpoint=getStr( "Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.OAUTH.TokenEndpoint" );
+            $client = new OAuth2\Client( $clientid, $clientsecret );
+            $params = array('code' => $_GET['code'], 'redirect_uri' => $redirect_page );
+            $response = $client->getAccessToken($tokenendpoint, 'authorization_code', $params);
+            if( isset($response['result']['access_token']) )
+            {
+                $token = $response['result']['access_token'];
+                $tokenvalid = VerifyToken( $token, $clientid );
+                if( $tokenvalid == true )
+                {
+                    $failedAttempt_mso=0;
+                    setStr("Device.Users.User.1.NumOfFailedAttempts",$failedAttempt_mso,true);
+                    exec("/usr/bin/logger -t GUI -p local5.notice 'User:mso login'");
+                    header("location:at_a_glance.php");
+                }
+                else
+                {
+                    setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","token_failed",true);
+                    if( session_status() == PHP_SESSION_ACTIVE )
+                    {
+                        session_destroy();
+                    }
+                    echo '<script type="text/javascript"> alert("Token is not valid!"); history.back(); </script>';
+                }
+            }
+            else
+            {
+                setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","token_fetch",true);
+                if( session_status() == PHP_SESSION_ACTIVE )
+                {
+                    session_destroy();
+                }
+                if( isset($response['result']['error_description']) && isset($response['code']) )
+                {
+                    $outstr = $response['code'] . " " . $response['result']['error_description'];
+                    echo '<script type="text/javascript"> alert("'.$outstr.'"); history.back(); </script>';
+                }
+                else
+                {
+                    echo '<script type="text/javascript"> alert("Access Denied, Unknown Error"); history.back(); </script>';
+                }
+            }
         }
     }
 	function innerIP($client_ip){		//for compatibility, $client_ip is not used
