@@ -141,6 +141,10 @@ function populateIPv6Addr(v6addr){
 	$.validator.addMethod("isIp4ValidSubnet",function(value,element){		
 		var netmask = jsNetMask;
 		var ipaddr = jsGatewayIP;
+		var v4blank = IsBlank("dmz_host_address_");
+		if (v4blank == true) {
+			return true;
+		}
 		var dhcp_addr = $("#dmz_host_address_1").val() + "." + $("#dmz_host_address_2").val() + "." + $("#dmz_host_address_3").val() + "." + $("#dmz_host_address_4").val();
 		isIp4Valid = ValidIp4Addr(dhcp_addr, ipaddr, netmask);
 		$("p:contains('DMZ v4 Host address is beyond the valid range.'):visible").remove();
