@@ -190,13 +190,13 @@ button.onclick=add1
 				</div>
 			</div>
 			<div class="form-row odd" >
-				<label for="User_name"> User Name:</label> <input type="text"  id="User_name" name="User_name" class="text" size="35"  value="USG"/>
+				<label for="User_name"> User Name:</label> <input type="text"  id="User_name" name="User_name" class="text" size="35"  value=""/>
 			</div>
 			<div class="form-row">
-				<label for="Password">Password:</label> <input type="password"  id="Password" name="Password" class="text" size="32"  value="Comcast123"/>
+				<label for="Password">Password:</label> <input type="password"  id="Password" name="Password" class="text" size="32"  value=""/>
 			</div>
 			<div class="form-row odd" id="show1">
-				<label for="Host_Name">Host Name:</label> <input type="text"  id="Host_Name1" name="Host_Name" class="text" size="35"  value="App1"/>
+				<label for="Host_Name">Host Name:</label> <input type="text"  id="Host_Name1" name="Host_Name" class="text" size="35"  value=""/>
 			</div>
 			<div class="form-row odd" ><div id="foo"></div></div>
 			<div class="form-btn">
