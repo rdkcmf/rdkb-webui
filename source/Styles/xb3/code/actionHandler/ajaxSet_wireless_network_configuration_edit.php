@@ -87,7 +87,7 @@ if ($i == 1 || $i == 2) {
 			} 
 				//Choose a different Network Password than the one provided on your gateway
 			$DefaultKeyPassphrase = getStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_DefaultKeyPassphrase");
-			if($validation && ($DefaultKeyPassphrase == $arConfig['network_password'])) {
+			if($validation && ($DefaultKeyPassphrase == $arConfig['network_password']) && ($arConfig['security']!="None")) {
 				$validation = false;
 				$response_message = 'Please change Network Password !';
 			}
