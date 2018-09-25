@@ -1131,7 +1131,7 @@ $(document).ready(function(){
 					</div>
 				</div>
 				<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;">Wi-Fi Password</p>
-				<span style="display:inline; margin: 4px 0 0 -26px;" id="password_field"><input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" ></span>
+				<span style="display:inline; margin: 4px 0 0 -26px;" id="password_field"><input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" autocorrect="off" autocapitalize="off"></span>
 				<div id="showPass" style="display:inline-table; margin: 4px 0 0 -90px;">
 					<a href="javascript:void(0)" style="white-space: pre;">Hide </a>
 			    </div>
@@ -1160,7 +1160,7 @@ $(document).ready(function(){
 						</div>
 					</div>
 					<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;">Wi-Fi Password</p>
-					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" ></span>
+					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" autocorrect="off" autocapitalize="off"></span>
 					<div id="show5Pass" style="display:inline-table; margin: 4px 0 0 -90px;">
 						<a href="javascript:void(0)" style="white-space: pre;">Hide </a>
 				    </div>
