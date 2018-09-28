@@ -62,6 +62,18 @@ csrfprotector_rdkb::init();
 	</head>
 <!-- for Dual Band Network -->
 <style>
+
+#topbar,#set_up > p,.portal{
+	width: 100%;
+}
+
+@media only screen 
+ and (max-device-width: 420px){
+  .rightbar{
+  	 right: 0px;
+  }
+}
+
 .confirm-text{
 	font-family: 'xfinSansLt';
 	font-size: 14px;
