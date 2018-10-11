@@ -150,7 +150,7 @@ $(document).ready(function() {
                 </tr>
                 <tr>
                         <td headers="battery_metric" class="row-label">Battery Life:</td>
-                        <td headers="battery_status" id="bat_capacity">8 hrs</td>
+                        <td headers="battery_status" id="bat_capacity"><?php echo $battery_value["bat_capacity"]; ?></td>
                 </tr>
                 <tr class="odd">
                         <td headers="battery_metric" class="row-label">Battery Health:</td>
