@@ -39,7 +39,7 @@ $(document).ready(function() {
 	$mem_total			= getStr("Device.DeviceInfo.MemoryStatus.Total");
 	$mem_used			= getStr("Device.DeviceInfo.MemoryStatus.Used");
 	$mem_free			= getStr("Device.DeviceInfo.MemoryStatus.Free");
-	$hardware			= getStr("Device.DeviceInfo.Hardware");
+	$hardware_mem_total	= getStr("Device.DeviceInfo.Hardware_MemUsed") + getStr("Device.DeviceInfo.Hardware_MemFree");
 	$hardware_mem_used	= getStr("Device.DeviceInfo.Hardware_MemUsed");
 	$hardware_mem_free	= getStr("Device.DeviceInfo.Hardware_MemFree");
 ?>
@@ -85,7 +85,7 @@ $(document).ready(function() {
 		</div>
 		<div class="form-row odd">
 			<span class="readonlyLabel">Flash Total Memory:</span> <span class="value">
-			<?php echo $hardware; ?> MB</span>
+			<?php echo $hardware_mem_total; ?> MB</span>
 		</div>
 		<div class="form-row">
 			<span class="readonlyLabel">Flash Used Memory:</span> <span class="value">
