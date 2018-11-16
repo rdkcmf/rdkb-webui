@@ -17,9 +17,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-require('includes/client.php');
-require('includes/GrantType/IGrantType.php');
-require('includes/GrantType/AuthorizationCode.php');
 require('includes/jwt.php');
 
 $flag=0;
@@ -33,6 +30,9 @@ $passLockoutTimeMins=$passLockoutTime/(1000*60);
 $client_ip = $_SERVER["REMOTE_ADDR"];       // $client_ip="::ffff:10.0.0.101";
 $server_ip = $_SERVER["SERVER_ADDR"];
 $redirect_page = "https://{$_SERVER["SERVER_NAME"]}" . $_SERVER["PHP_SELF"];
+$tokenendpoint = $clientid = $pStr = "";
+$JWTdir = "/tmp/.jwt/";
+$JWTfile = $JWTdir . "JWT.txt";
 
     if (isset($_POST["username"]))
     {
@@ -119,12 +119,11 @@ $redirect_page = "https://{$_SERVER["SERVER_NAME"]}" . $_SERVER["PHP_SELF"];
                 $clientid=getStr( "Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.OAUTH.ClientId" );
                 if( $authmode != "potd" && $authendpoint && $clientid )
                 {
-                    $client = new OAuth2\Client( $clientid, NULL );
                     if (!isset($_GET['code']))
                     {
                         create_session();
                         $params = array('pfidpadapterid' => "loginform" );
-                        $auth_url = $client->getAuthenticationUrl( $authendpoint, $redirect_page, $params );
+                        $auth_url = getAuthenticationUrl( $clientid, $authendpoint, $redirect_page, $params );
                         echo "<script type='text/javascript'>document.location.href='{$auth_url}';</script>";
                         die('Please wait ...');
                     }
@@ -233,15 +232,37 @@ $redirect_page = "https://{$_SERVER["SERVER_NAME"]}" . $_SERVER["PHP_SELF"];
         if (isset($_GET['code']))
         {
             $clientid=getStr( "Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.OAUTH.ClientId" );
-            $clientsecret=getStr( "Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.OAUTH.ClientSecret" );
             $tokenendpoint=getStr( "Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.OAUTH.TokenEndpoint" );
-            $client = new OAuth2\Client( $clientid, $clientsecret );
-            $params = array('code' => $_GET['code'], 'redirect_uri' => $redirect_page );
-            $response = $client->getAccessToken($tokenendpoint, 'authorization_code', $params);
-            if( isset($response['result']['access_token']) )
+            $pStr = 'code=' . $_GET['code'] . '&' . 'redirect_uri=' . $redirect_page; //$params = array('code' => $_GET['code'], 'redirect_uri' => $redirect_page );
+            if( is_dir( $JWTdir ) || mkdir( $JWTdir ) )
             {
-                $token = $response['result']['access_token'];
-                $tokenvalid = VerifyToken( $token, $clientid );
+                $retval = getJWT( $tokenendpoint, $clientid, $pStr, $JWTfile ); //$response = $client->getAccessToken($tokenendpoint, 'authorization_code', $params);
+            }
+            else
+            {
+                $retval = 15;
+            }
+            if( $retval == 0 && file_exists( $JWTfile ) )
+            {
+                $response = file_get_contents( $JWTfile );
+                array_map( 'unlink', glob( $JWTdir . "*" ) );    //delete everything in directory
+                rmdir( $JWTdir );
+            }
+
+            if( isset( $response ) && !is_null( $response ) ) // if( isset($response['result']['access_token']) )
+            {
+                $tokenvalid = false;
+                $response = trim( $response, "{}" );
+                $response = str_replace( '"', '', $response);
+                $token = array();
+                foreach ( explode( ',', $response) as $pair ) {
+                    list( $key, $val ) = explode( ':', $pair, 2 );
+                    $token[$key] = $val;
+                }
+                if( isset( $token['access_token'] ) )
+                {
+                    $tokenvalid = VerifyToken( $token['access_token'], $clientid );
+                }
                 if( $tokenvalid == true )
                 {
                     $failedAttempt_mso=0;
@@ -256,7 +277,7 @@ $redirect_page = "https://{$_SERVER["SERVER_NAME"]}" . $_SERVER["PHP_SELF"];
                     {
                         session_destroy();
                     }
-                    echo '<script type="text/javascript"> alert("Token is not valid!"); history.back(); </script>';
+                    echo '<script type="text/javascript"> alert("Access level is none!"); history.back(); </script>';
                 }
             }
             else
@@ -347,6 +368,17 @@ $redirect_page = "https://{$_SERVER["SERVER_NAME"]}" . $_SERVER["PHP_SELF"];
 		$_SESSION["sid"]	= session_id();
 		$_SESSION["loginuser"]	= $_POST["username"];
 	}
+
+function getAuthenticationUrl( $client_id, $auth_endpoint, $redirect_uri, array $extra_parameters = array() )
+{
+    $parameters = array_merge(array(
+        'response_type' => 'code',
+        'client_id'     => $client_id,
+        'redirect_uri'  => $redirect_uri
+    ), $extra_parameters);
+    return $auth_endpoint . '?' . http_build_query($parameters, null, '&');
+}
+
 /*	
 	function innerIP($client_ip)
 	{

@@ -7,11 +7,15 @@ function VerifyToken($token, $clientid)
     }
 
     $tokensegs = explode('.', $token);
-    if (count($tokensegs) != 3) {
+    $cnt = count($tokensegs);
+    if( $cnt != 3) {
+        $validtoken = false;
         throw new Exception('The JWT has an incorrect number of segments');
     }
-    $validtoken = VerifySignature( $tokensegs[0], $tokensegs[1], $tokensegs[2] );
-//    var_dump($validsig);
+    else
+    {
+        $validtoken = VerifySignature( $tokensegs[0], $tokensegs[1], $tokensegs[2] );
+    }
 
     if( $validtoken == true ) {
         $decodeddata = base64decode_url( $tokensegs[1] );
@@ -24,7 +28,11 @@ function VerifyToken($token, $clientid)
         }
         $validtoken &= VerifyTokenData( $tokendata, $clientid );
     }
-    LogTokenData( $tokendata );
+    else
+    {
+        $tokendata = "Invalid Token Received";
+    }
+    LogTokenData( $tokendata, $validtoken );
 
     return $validtoken;
 }
@@ -62,22 +70,32 @@ function VerifyTokenData($tkdata, $clientid )
     {
         if( $clientid == $tkdata['client_id'] )
         {
-            $retval = true;
+            if( $tkdata['scope'] != "none" && $tkdata['scope'] != "[none]" )
+            {
+                $retval = true;
+            }
         }
     }
     return $retval;
 }
 
-function LogTokenData($tkdata)
+function LogTokenData($tkdata, $usetoken)
 {
 
     $file = fopen( "/rdklogs/logs/webui.log", "a" );
     if( $file != FALSE )
     {
         $str = date("Y-m-d H:i:s");
-        $str = $str . " WebUI: OAUTH userId=" . $tkdata['COMCAST_EMAIL'];
-        $str = $str . " scope=" . $tkdata['scope'];
-        $str = $str . " expiration=" . $tkdata['exp'];
+        if( $usetoken == true )
+        {
+            $str = $str . " WebUI: OAUTH userId=" . $tkdata['COMCAST_EMAIL'];
+            $str = $str . " scope=" . $tkdata['scope'];
+            $str = $str . " expiration=" . $tkdata['exp'];
+        }
+        else
+        {
+            $str = $tkdata;
+        }
         $str = $str . "\n";
         fwrite( $file, $str );
         fclose( $file );

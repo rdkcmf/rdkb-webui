@@ -48,6 +48,7 @@
 #include "php_ini.h"
 #include "ext/standard/info.h"
 #include "php_cosa.h"
+#include "sso_api.h"
 
 #if PHP_MAJOR_VERSION < 7
 #define _RETURN_STRING(str) RETURN_STRING(str, 1)
@@ -273,6 +274,7 @@ static zend_function_entry cosa_functions[] = {
     PHP_FE(DmExtGetStrsWithRootObj, NULL)
     PHP_FE(DmExtSetStrsWithRootObj, NULL)
     PHP_FE(DmExtGetInstanceIds, NULL)
+    PHP_FE(getJWT, NULL)
     {NULL, NULL, NULL}
 };
 /* }}} */
@@ -422,6 +424,102 @@ PHP_MINFO_FUNCTION(cosa)
     }
 
     php_info_print_table_end();
+}
+/* }}} */
+
+/* {{{ proto string getJWT(string arg)
+   gets a string from the model */
+PHP_FUNCTION(getJWT)
+{
+    char *pURI = NULL;
+    char *pClientId = NULL;
+    char *pParams = NULL;
+    char *pFileName = NULL;
+    int iRet = 0;
+    int lenURI;
+    int lenClientId;
+    int lenParams;
+    int lenFileName;
+
+    do
+    {
+CosaPhpExtLog( "getJWT - Entry\n" );
+        if( zend_parse_parameters( ZEND_NUM_ARGS() TSRMLS_CC, "ssss",
+            &pURI, &lenURI, &pClientId, &lenClientId, &pParams, &lenParams, &pFileName, &lenFileName ) == FAILURE )
+        {
+            CosaPhpExtLog( "getJWT - zend_parse_parameters failed!\n" );
+                iRet = 1;
+                break;
+            }
+CosaPhpExtLog( "getJWT - zend_parse_parameters success!\n" );
+        if( pURI != NULL )
+        {
+            CosaPhpExtLog( "getJWT -pURI = %s\n", pURI );
+            if( !strlen( pURI ) )
+            {
+                    iRet = 2;
+                    break;
+            }
+        }
+        else
+        {
+            CosaPhpExtLog( "getJWT -pURI is NULL\n" );
+                iRet = 3;
+                break;
+        }
+        if( pClientId != NULL )
+        {
+            CosaPhpExtLog( "getJWT -pClientId = %s\n", pClientId );
+            if( !strlen( pClientId ) )
+            {
+                    iRet = 4;
+                    break;
+            }
+        }
+        else
+        {
+            CosaPhpExtLog( "getJWT -pClientId is NULL\n" );
+                iRet = 5;
+                break;
+        }
+        if( pParams != NULL )
+        {
+            CosaPhpExtLog( "getJWT - pParams = %s\n", pParams );
+            if( !strlen( pParams ) )
+            {
+                    iRet = 6;
+                    break;
+            }
+        }
+        else
+        {
+            CosaPhpExtLog( "getJWT - pParams is NULL\n" );
+            iRet = 7;
+            break;
+        }
+        if( pFileName != NULL )
+        {
+            CosaPhpExtLog( "getJWT - pFileName = %s\n", pParams );
+            if( !strlen( pParams ) )
+            {
+                iRet = 8;
+                break;
+            }
+        }
+        else
+        {
+            CosaPhpExtLog( "getJWT - pFileName is NULL\n" );
+            iRet = 9;
+            break;
+        }
+        CosaPhpExtLog( "getJWT - calling SSOgetJWT\n" );
+                
+        iRet = SSOgetJWT( pURI, pClientId, pParams, pFileName );
+        CosaPhpExtLog( "getJWT - iRet = %ld\n", iRet );
+    } while( 0 );
+
+    CosaPhpExtLog("getJWT - exit with value = %ld\n", iRet);
+    RETURN_LONG(iRet);
 }
 /* }}} */
 
