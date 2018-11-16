@@ -68,6 +68,7 @@ PHP_FUNCTION(setStr);
 PHP_FUNCTION(getInstanceIds);
 PHP_FUNCTION(addTblObj);
 PHP_FUNCTION(delTblObj);
+PHP_FUNCTION(getJWT);
 /* multi-get/set APIs */
 PHP_FUNCTION(DmExtGetStrsWithRootObj);
 PHP_FUNCTION(DmExtSetStrsWithRootObj);
