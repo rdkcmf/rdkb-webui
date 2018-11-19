@@ -40,10 +40,12 @@ if($validation)
 //if($validation) $validation = isValInArray($_POST['cus_mgmt'], array('true', 'false', 'notset'));
 if($validation) $validation = isValInArray($_POST['https'], array('true', 'false', 'notset'));
 //httpsport can only be 1025 ~ 65535
-/*if($validation && ($_POST['httpsport'] != 'notset') && !($_POST['httpsport'] >= 1025 && $_POST['httpsport'] <= 65535)) $validation = false;*/
+if($validation && ($_POST['httpsport'] != 'notset') && !($_POST['httpsport'] >= 1025 && $_POST['httpsport'] <= 65535)) 
+	$validation = false;
 if($validation) $validation = isValInArray($_POST['http'], array('true', 'false', 'notset'));
 //httpsport can only be 1025 ~ 65535
-/*if($validation && ($_POST['httpsport'] != 'notset') && !($_POST['httpport'] >= 1025 && $_POST['httpport'] <= 65535)) $validation = false;*/
+if($validation && ($_POST['httpport'] != 'notset') && !($_POST['httpport'] >= 1025 && $_POST['httpport'] <= 65535)) 
+	$validation = false;
 if($validation) {
 	if ($_POST['allowtype']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.FromAnyIP",$_POST['allowtype'],true);
 	if ($_POST['startIP']!="notset")	setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.StartIp",$_POST['startIP'],true);
