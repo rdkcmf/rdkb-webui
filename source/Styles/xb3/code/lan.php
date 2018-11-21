@@ -26,6 +26,7 @@
 <?php include('includes/nav.php'); ?>
 <?php include('includes/utility.php'); ?>
 <?php
+$PartnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 $HomeNetworkControl = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.HomeNetworkControl");
 function getPort4XHSEnabled() {
 	$rootObjName = "Device.X_CISCO_COM_MultiLAN.";
@@ -160,16 +161,31 @@ $(document).ready(function() {
 		}
 		if ($ids[$id] === "4") {
 			/* port 4 as home security port */
-			if($HomeNetworkControl == 'true'){
-				echo '<div class="form-row odd ">'.
-						'<label for="channel_selection">Associate Ethernet Port 4 to XFINITY HOME Network:</label>'.
-						'<span class="checkbox"><input type="checkbox" id="port4" name="port4" /></span></br></br></br></br>'.
-						'Note: Associating Ethernet Port 4 to XFINITY HOME network will remove the port from your home network.</br></br>'.
-					'</div>'.
-					'<div class="form-row odd" >'.
-						'<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="Save" class="btn submit" /></div>'.
-					'</div>';
-			}
+			//if($HomeNetworkControl == 'true'){
+				if($PartnerId == 'comcast'){
+
+                                echo '<div class="form-row odd ">'.
+                                        '<label for="channel_selection">Associate Ethernet Port 4 to XFINITY HOME Network:</label>'.
+                                        '<span class="checkbox"><input type="checkbox" id="port4" name="port4" /></span></br></br></br></br>'.
+                                        'Note: Associating Ethernet Port 4 to XFINITY HOME network will remove the port from your home network.</br></br>'.
+                                '</div>'.
+                                '<div class="form-row odd" >'.
+                                        '<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="Save" class="btn submit" /></div>'.
+                                '</div>';
+                                }
+                                else if($PartnerId == 'cox'){
+
+                                echo '<div class="form-row odd ">'.
+                                        '<label for="channel_selection">Associate Ethernet Port 4 to HOME SECURITY Network:</label>'.
+                                        '<span class="checkbox"><input type="checkbox" id="port4" name="port4" /></span></br></br></br></br>'.
+                                        'Note: Associating Ethernet Port 4 to HOME SECURITY network will remove the port from your home network.</br></br>'.
+                                '</div>'.
+                                '<div class="form-row odd" >'.
+                                        '<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="Save" class="btn submit" /></div>'.
+                                '</div>';
+                                }
+
+			//}
 		}
 		echo '</div>';
 	}
