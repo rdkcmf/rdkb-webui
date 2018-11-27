@@ -120,7 +120,7 @@ $(document).ready(function() {
 		var firewallLevel	= $("input[name='firewall_level']:checked").val();
         var blockHttp		= $("#block_http").prop("checked"); 
      <?php if($modelName != "X5001"){
-    echo ' var blockIcmp     = $("#block_icmp").prop("checked");';}
+           echo 'var blockIcmp     = $("#block_icmp").prop("checked");';}
      ?>
         var blockMulticast	= $("#block_multicast").prop("checked"); 
         var blockPeer		= $("#block_peer").prop("checked"); 
@@ -132,8 +132,7 @@ $(document).ready(function() {
         var firewallCfg = '{"firewallLevel": "' + firewallLevel + '", "block_http": "' + blockHttp + '", "block_icmp": "' + blockIcmp +
                                  '", "block_multicast": "' + blockMulticast + '", "block_peer": "' + blockPeer + '", "block_ident": "' + blockIdent + '"} ';
   <?php } else { ?>
-        var firewallCfg = '{"firewallLevel": "' + firewallLevel + '", "block_http": "' + blockHttp + '", 
-                                  "block_multicast": "' + blockMulticast + '", "block_peer": "' + blockPeer + '", "block_ident": "' + blockIdent + '"} ';
+        var firewallCfg = '{"firewallLevel": "' + firewallLevel + '", "block_http": "' + blockHttp + '", "block_multicast": "' + blockMulticast + '", "block_peer": "' + blockPeer + '", "block_ident": "' + blockIdent + '"} ';
 
        <?php } ?>
        // alert(firewallCfg);
@@ -267,7 +266,7 @@ $(document).ready(function() {
                                    {  
                                           echo '<input class="target disabled" type="checkbox" id="block_icmp" name="block_icmp" ' ; echo $block_icmp_status; echo '> <label for="block_icmp">Block ICMP</label><br/>';
                                    } 
-                               ?>	
+                                ?>	
 				<input class="target disabled"  type="checkbox" id="block_multicast" name="block_multicast"
 				<?php if ( !strcasecmp("true", $block_multicast)) echo "checked"; ?> /> 
 				<label for="block_multicast">Block Multicast</label><br />

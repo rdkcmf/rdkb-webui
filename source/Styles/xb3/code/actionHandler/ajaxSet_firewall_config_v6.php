@@ -16,12 +16,12 @@
 ?>
 <?php include('../includes/actionHandlerUtility.php') ?>
 <?php
+$modelName = getStr("Device.DeviceInfo.ModelName");
 session_start();
 if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
-$modelName= getStr("Device.DeviceInfo.ModelName");
 //$_POST['configInfo'] = {"firewallLevel": "Default", "block_http": "false", "block_icmp": "false", "block_multicast": "false", "block_peer": "false", "block_ident": "false"}
 $firewall_config = json_decode($_POST['configInfo'], true);
 $validation = true;
@@ -30,7 +30,9 @@ if ( $validation && $firewall_config['firewallLevel'] == "Custom" ){
     if($validation) $validation = isValInArray($firewall_config['block_http'], array("true", "false"));
       if($modelName != "X5001")
          {
-       if($validation) $validation = isValInArray($firewall_config['block_icmp'], array("true", "false"));
+       if($validation){
+             $validation = isValInArray($firewall_config['block_icmp'], array("true", "false"));
+                      }
          }
     if($validation) $validation = isValInArray($firewall_config['block_multicast'], array("true", "false"));
     if($validation) $validation = isValInArray($firewall_config['block_peer'], array("true", "false"));
