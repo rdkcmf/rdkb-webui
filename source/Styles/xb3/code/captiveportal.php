@@ -25,20 +25,18 @@ csrfprotector_rdkb::init();
 ?>
 <?php include('includes/utility.php'); ?>
 <?php
-
+	session_start();
 	$PartnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 	$default_lang                  = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.DefaultLanguage");
-        $partnerid                     = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");        
         $title                         = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Title");
-        $active_lang = $default_lang;
-	if($PartnerId == "videotron"){
-            $option1="Fran&#231;ais";
-            $option2="English";
-        } else {
-            $option2="Fran&#231;ais";
-            $option1="English";
-        };
-
+        //if (!isset($_SESSION['lang']))
+		$_SESSION['lang'] = $default_lang;
+	//else if (isset($_SESSION['lang']) && $_SESSION['lang'] != $_GET['lang'] && !empty($_GET['lang'])){
+	//	if ($_GET['lang'] == "eng")
+	//		$_SESSION['lang'] = "eng";
+	//	else if ($_GET['lang'] == "fre")
+	//		$_SESSION['lang'] = "fre";
+	//}
 	//WiFiPersonalization.Support UI inclusion/exclusion (on/off)
 	$personalization_param = array(
 		"Support"				=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Support",
@@ -50,6 +48,7 @@ csrfprotector_rdkb::init();
 		"captivePortal_WelcomeMessage"	=>	"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.WelcomeMessage",
 	);
 	$personalization_value = KeyExtGet("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.", $personalization_param);
+	 require_once "/usr/www/includes/".$_SESSION['lang'].".php";
 ?>
 <html lang="en">
 	<head>
@@ -58,51 +57,11 @@ csrfprotector_rdkb::init();
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="">
 		<meta name="author" content="">
-		<title><?php echo $personalization_value["captivePortal_Title"]; ?></title>
+		<title><?php echo $lang["captivePortal_Title"]; ?></title>
 		<link rel="stylesheet" href="cmn/css/styles.css">
 	</head>
 <!-- for Dual Band Network -->
 <style>
-@media (max-width: 768px) {
-	body {
-		-moz-transform: scale(0.6, 0.6); /* Moz-browsers */
-		-ms-transform: scale(0.6); /* IE 9 */
-		-webkit-transform:scale(0.6); /* Safari */
-		-o-transform: scale(0.6); /* Opera */
-		zoom: 0.6; /* Other non-webkit browsers */
-		zoom: 60%; /* Webkit browsers */
-	}
-}
-@media (max-width: 480px) {
-	body {
-		-moz-transform: scale(0.4, 0.4); /* Moz-browsers */
-		-ms-transform: scale(0.4); /* IE 9 */
-		-webkit-transform:scale(0.4); /* Safari */
-		-o-transform: scale(0.4); /* Opera */
-		zoom: 0.4; /* Other non-webkit browsers */
-		zoom: 40%; /* Webkit browsers */
-	}
-}
-@media (max-width: 320px) {
-	body {
-		-moz-transform: scale(0.3, 0.3); /* Moz-browsers */
-		-ms-transform: scale(0.3); /* IE 9 */
-		-webkit-transform:scale(0.3); /* Safari */
-		-o-transform: scale(0.3); /* Opera */
-		zoom: 0.3; /* Other non-webkit browsers */
-		zoom: 30%; /* Webkit browsers */
-	}
-}
-@media (max-width: 200px) {
-	body {
-		-moz-transform: scale(0.27, 0.27); /* Moz-browsers */
-		-ms-transform: scale(0.27); /* IE 9 */
-		-webkit-transform:scale(0.27); /* Safari */
-		-o-transform: scale(0.27); /* Opera */
-		zoom: 0.27; /* Other non-webkit browsers */
-		zoom: 27%; /* Webkit browsers */
-	}
-}
 .confirm-text{
 	font-family: 'xfinSansLt';
 	font-size: 14px;
@@ -129,65 +88,65 @@ svg.defs-only {
 	border: none;
 	overflow: hidden;
 }
-.rightbar {                                  
-    position: absolute;                       
-    top: 35px;                                           
-    right: 20px;                                 
-    font-family: 'xfinSansXtraLt';         
-}                              
-#dropdown_initial_state {                                
-    font-size: 16px;                             
-    border-radius: 0px;                    
-    outline: none;             
-    width: 110px;              
-    height: 40px;                                                
-    font-family: inherit;           
-    margin: 0;                      
-    overflow: hidden;               
-}                                   
-#dropdown_active_state {            
-    font-size: 16px;                
-    border-radius: 0px;             
-    outline: none;                  
-    width: 150px;                           
-    height: 81px;                   
-    color: white;                   
-    font-family: inherit;           
-    margin: 0;                      
-    overflow: hidden;               
-    background-color: #445159;      
-    -webkit-padding-start: 0px;     
-    text-align: right;              
-}                                           
-ele{                                 
-    color: white;                    
-    text-decoration: none;           
-    display: block;                  
-    -webkit-font-smoothing: initial;   
-    padding: 0px 20px;                 
-    line-height: 40px;                 
-    border-bottom: 1px solid black;    
-    text-align: left;                  
-}        
-ili{                                
-  position: absolute;                                    
-  top: 10;                                       
-  right: 20;                               
-  border: solid white;              
-  border-width: 0 3px 3px 0;        
-  display: inline-block;                                         
-  padding: 3px;                     
-}                                   
-.down {                             
-    transform: rotate(45deg);       
+.rightbar {
+    position: absolute;
+    top: 35px;
+    right: 20px;
+    font-family: 'xfinSansXtraLt';
+}
+#dropdown_initial_state {
+    font-size: 16px;
+    border-radius: 0px;
+    outline: none;
+    width: 110px;
+    height: 40px;
+    font-family: inherit;
+    margin: 0;
+    overflow: hidden;
+}
+#dropdown_active_state {
+    font-size: 16px;
+    border-radius: 0px;
+    outline: none;
+    width: 150px;
+    height: 81px;
+    color: white;
+    font-family: inherit;
+    margin: 0;
+    overflow: hidden;
+    background-color: #445159;
+    -webkit-padding-start: 0px;
+    text-align: right;
+}
+ele{
+    color: white;
+    text-decoration: none;
+    display: block;
+    -webkit-font-smoothing: initial;
+    padding: 0px 20px;
+    line-height: 40px;
+    border-bottom: 1px solid black;
+    text-align: left;
+}
+ili{
+  position: absolute;
+  top: 10;
+  right: 20;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+.down {
+    transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
-}                                    
-.up {                                
-    transform: rotate(-135deg);      
-    -webkit-transform: rotate(-135deg);     
-    top: 15px;                         
-    right: 20px;                       
-}        
+}
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    top: 15px;
+    right: 20px;
+}
 </style>
 <?php
 	// should we allow to Configure WiFi
@@ -621,68 +580,21 @@ $(document).ready(function(){
 		}
 	});
 	$("#dropdown_initial_state").mouseenter(function(){
-                $("#dropdown_initial_state").hide();              
-                $("#dropdown_active_state").show();                              
-        });                                                                        
-                                                                          
-        $("#dropdown_active_state").mouseleave(function(){             
-                $("#dropdown_initial_state").show();                                   
-                $("#dropdown_active_state").hide();                                   
-        });                                                      
-        var french = {                                                        
-                Welcome : "French Welcome to <?php echo $title ?>",                                             
-                inter_step : "French This step is required to get your devices online",
-                get_set_up : "French Let's Get Set Up",         
-                wifinamepassword : "French Wi-Fi Name and Password",                                           
-                createidpass : "French Create Your Wi-Fi Name & Password "       
-                };                                                                       
-        var english = {                                                                             
-                Welcome : " Welcome to <?php echo $title ?>",          
-                inter_step : "This step is required to get your devices online",
-                get_set_up : "Let's Get Set Up",                                               
-                wifinamepassword : "Wi-Fi Name and Password",
-                createidpass : "Create Your Wi-Fi Name & Password "                                         
-                };
-	var  count = 0;                                                                                                     
-        var option2 = "<?php echo $option2 ?>";                                                           
-        var option1 = "<?php echo $option1 ?>";                                                                             
-                                                                                                                  
-        $("#f_i_option1").click(function(){                                            
-                document.getElementById("f_i_option1").innerHTML = option1+ "<ili class=\"down\"></ili>";                   
-                document.getElementById("f_a_option1").innerHTML = option1+ "<ili class=\"up\"></ili>";                     
-                document.getElementById("f_a_option2").innerHTML = option2;                                                 
-                $("#dropdown_initial_state").show();                                                                 
-                $("#dropdown_active_state").hide();                                                      
-        });                                                                                              
-        $("#f_a_option2").click(function(){                                                              
-                                                                                                         
-                if(count == 0){                                                                          
-                        count = 1;                                                                       
-                                                                                                         
-                } else  {                                                                                
-                        option2 = [option1, option1 = option2][0];                                       
-                        $active_lang = option2;                                                          
-                }                                                                                        
-                        document.getElementById("f_i_option1").innerHTML = option2+ "<ili class=\"down\"></ili>";
-                        document.getElementById("f_a_option1").innerHTML = option2+ "<ili class=\"up\"></ili>";  
-                        document.getElementById("f_a_option2").innerHTML = option1;                              
-                        $("#dropdown_initial_state").show();                                                     
-                        $("#dropdown_active_state").hide();                                                      
-                                                                                                                 
-                        if(option2 == "English"){                                                                
-                                document.getElementById("welcome").innerHTML = english ["Welcome"];              
-                                document.getElementById("inter_step").innerHTML = english ["inter_step"];        
-                                document.getElementById("get_set_up").innerHTML = english ["get_set_up"];        
-                                document.getElementById("wifinamepassword").innerHTML = english ["wifinamepassword"];
-                                document.getElementById("createidpass").innerHTML = english ["createidpass"];        
-                        } else {                                                                                     
-                                document.getElementById("welcome").innerHTML =french ["Welcome"];                    
-                                document.getElementById("inter_step").innerHTML =french ["inter_step"];              
-                                document.getElementById("get_set_up").innerHTML =french ["get_set_up"];              
-                                document.getElementById("wifinamepassword").innerHTML = french ["wifinamepassword"]; 
-                                document.getElementById("createidpass").innerHTML = french ["createidpass"];         
-                        }                                                                                            
+                $("#dropdown_initial_state").hide();
+                $("#dropdown_active_state").show();
         });
+
+        $("#dropdown_active_state").mouseleave(function(){
+                $("#dropdown_initial_state").show();
+                $("#dropdown_active_state").hide();
+        });
+$("#f_i_option1").click(function(){
+                $("#dropdown_initial_state").show();
+                $("#dropdown_active_state").hide();
+        });
+         $("#f_a_option2").click(function(){
+		
+});
 	$("#visit_xfinity").click(function(){
 		location.href = "http://XFINITY.net";
 	});
@@ -993,7 +905,7 @@ $(document).ready(function(){
 			$("#WiFi_Name, #password_field").change();
 			$("#selectSettings").siblings('label').removeClass('checkLabel');
 		}
-		$("#showDualText").text(($("#dualSettings").css('display') != "block")?"Show More Settings":"Show Less Settings");
+		$("#showDualText").text(($("#dualSettings").css('display') != "block")?"<?php echo $lang["show_more_settings"]; ?>":"<?php echo $lang["show_less_settings"]; ?>");
 		toShowNext();
 	});
 	$("#selectSettings").change(function() {
@@ -1047,93 +959,80 @@ $(document).ready(function(){
 </script>
 	<body>
 		<div id="topbar">
-			<?xml version="1.0" encoding="UTF-8" standalone="no"?>                                              
-                        <svg viewBox="0 0 100 47"  height="60" style="margin-top: 20px;" style="text-align:right;">         
-                                <image xlink:href="<?php echo $personalization_param["captivePortal_MSOLogo"]; ?>"/>                    
-                        </svg>                                                                                              
-                                                                                                                            
-                                                                                                                            
-<?php                                                                                                                       
-        if($active_lang == "fre"){                                                                                          
-                echo '<div class="rightbar">                                                                               
-                                 <ul id="dropdown_initial_state">                                                           
-                                        <ele id="f_i_option1">'; echo $option1; echo '<ili class="down"></ili></ele>        
-                                </ul>                                                                                       
-                                 <ul id="dropdown_active_state" style="display:none;">                              
-                                        <ele id="f_a_option1">'; echo $option1; echo '<ili class="up"></ili></ele>          
-                                        <ele id="f_a_option2">'; echo $option2; echo '</ele>                                
-                                </ul>                                                                                       
-                </div>';                                                                                                    
-        } else {                                                                                                            
-                echo '<div class="rightbar">                                                                         
-                                <ul id="dropdown_initial_state">                                                            
-                                        <ele>English<ili class="down"></ili></ele>                                          
-                                </ul>                                                                                       
-                                 <ul id="dropdown_active_state" style="display:none;">                                      
-                                        <ele>English<ili class="up"></ili></ele>                                            
-                                        <ele>Fran&#231;ais</ele>                                                            
-                                </ul>                                                                                       
-                </div>';                                                                                                    
-        }                                                                                                                   
-                                                                                                                            
-?>               
+			<!-- XFINITY logo placement -->
+			 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                        <svg viewBox="0 0 100 47"  height="60" style="margin-top: 20px;" style="text-align:right;">
+<?php
+    //PartnerId = comcast cox rogers shaw
+      $logo="cmn/syndication/img/".$personalization_value['captivePortal_MSOLogo'];
+        if($PartnerId == 'comcast')
+                        include($logo);
+        else
+        echo "<image xlink:href=".$logo."  />";
+?>
+         </svg>
+<?php
+                echo '<div class="rightbar">
+                                 <ul id="dropdown_initial_state">
+ 				<a href = "captiveportal.php?lang='; echo  $lang['lang']; echo '"> <ele id="f_i_option1">'; echo $lang["option1"]; echo '<ili class="down"></ili></ele></a>
+                                </ul>
+                                 <ul id="dropdown_active_state" style="display:none;">
+                                <a href = "captiveportal.php?lang='; echo  $lang['lang']; echo '">  <ele id="f_a_option1">'; echo  $lang["option1"]; echo '<ili class="up"></ili></ele></a>
+                                <a href = "captiveportal.php?lang='; echo  $lang['otherlang']; echo '">  <ele id="f_a_option2">'; echo $lang["option2"]; echo '</ele></a>
+                                </ul>
+                </div>';
+
+?>
+			<!-- XFINITY logo svg code end -->
 		</div>
 		<div id="redirect_process">
 			<br><br><br>
 			<img src="cmn/img/progress.gif" height="75" width="75"/>
 		</div>
 		<div id="set_up" style="display: none;" class="portal">
-			<h1 id="welcome"><?php echo $personalization_value["captivePortal_WelcomeMessage"]; ?></h1>
+			<h1><?php echo $lang["captivePortal_WelcomeMessage"]; ?></h1>
 			<hr>
 			<p>
-			<b id= "inter_step">This step is required to get your devices online</b><br><br>
-				Your connection has been activated, but now we need to create your<br>
-				personal <b id="wifinamepassword">Wi-Fi Name and Password</b>.
+			<b><?php echo $lang["this_step"]; ?></b><br><br>
+			<?php echo $lang["your_connection"]; ?>
 			</p>
 			<hr>
 			<div>
-				<button id="get_set_up">
-					<?php                                                                                               
-                                        	if ($partnerid == "videotron"){ echo "French Lets Get Set Up";} else { echo "Let's Get Set Up";};
-                        		?>
-				</button>
+				<button id="get_set_up"><?php echo $lang["lets_get"]; ?></button>
 			</div>
 			<br><br>
 		</div>
 		<div id="personalize" style="display: none;" class="portal">
 			<br>
-			<h1 id = "createidpass" style="margin: 20px auto 0 auto;">
-				<?php                                                                                                            
-           				if ($partnerid == "videotron"){ echo "French Create Your Wi-Fi Name & Password";} else { echo "Create Your Wi-Fi Name & Password";};
-           			?>
+			<h1 style="margin: 20px auto 0 auto;">
+			 <?php echo $lang["create_wifi"]; ?>
 			</h1>
 			<p style="width: 500px;">
-				This step is <b style="color: #DC4343;">required</b>, so choose something that you will easily remember.<br>
-				You'll have to reconnect your devices using the new credentials.
+			 <?php echo $lang["this_step_2"]; ?>
 			</p>
 			<hr>
-				<p name="dualBand" style="margin: 1px 40px 0 0;">2.4 GHz Network</p>
+				<p name="dualBand" style="margin: 1px 40px 0 0;"><?php echo $lang["24network"]; ?></p>
 				<div id="NameContainer" class="container" style="display: none;">
 					<div class="requirements">
-						<div id="NameMessageTop" class="top">Let's try that again.</div>
-						<div id="NameMessageBottom" class="bottom">Choose a different name than the one printed on your gateway.</div>
+						<div id="NameMessageTop" class="top"> <?php echo $lang["lets_try_that"]; ?></div>
+						<div id="NameMessageBottom" class="bottom"> <?php echo $lang["choose_a_different"]; ?></div>
 						<div class="arrow"></div>
 					</div>
 				</div>
-				<p style="display:inline; margin: 1px 40px 0 0; text-align: right;">Wi-Fi Name</p>
+				<p style="display:inline; margin: 1px 40px 0 0; text-align: right;"><?php echo $lang["wifi_name"]; ?></p>
 				<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi_Name" type="text" placeholder="Example: [account name] Wi-Fi" maxlength="32" class="">
 				<br>
 				<div id="PasswordContainer" class="container" style="display: none;">
 					<div class="requirements">
-						<div id="PasswordMessageTop" class="top">Let's try that again.</div>
-						<div id="PasswordMessageBottom" class="bottom">Choose a different name than the one printed on your gateway.</div>
+						<div id="PasswordMessageTop" class="top"><?php echo $lang["lets_try_that"]; ?></div>
+						<div id="PasswordMessageBottom" class="bottom"> <?php echo $lang["choose_a_different"]; ?></div>
 						<div class="arrow"></div>
 					</div>
 				</div>
-				<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;">Wi-Fi Password</p>
+				<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;"><?php echo $lang["wifi_password"]; ?></p>
 				<span style="display:inline; margin: 4px 0 0 -26px;" id="password_field"><input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" autocorrect="off" autocapitalize="off"></span>
 				<div id="showPass" style="display:inline-table; margin: 4px 0 0 -90px;">
-					<a href="javascript:void(0)" style="white-space: pre;">Hide </a>
+					<a href="javascript:void(0)" style="white-space: pre;"><?php echo $lang["hide"]; ?></a>
 			    </div>
 				<div id="passwordIndicator" style="display: none;">
 					<div class="progress-bg"><div id="passwordStrength"></div></div>
@@ -1141,28 +1040,28 @@ $(document).ready(function(){
 				</div>
 				<div name="dualBand" id="showDualConfig">
 				<br>
-					<p style="margin: 10px 40px 0 -10px;">5 GHz Network</p>
+					<p style="margin: 10px 40px 0 -10px;"><?php echo $lang["5network"]; ?></p>
 					<div id="NameContainer5" class="container" style="display: none;">
 						<div class="requirements">
-							<div id="NameMessageTop5" class="top">Let's try that again.</div>
-							<div id="NameMessageBottom5" class="bottom">Choose a different name than the one printed on your gateway.</div>
+							<div id="NameMessageTop5" class="top"><?php echo $lang["lets_try_that"]; ?></div>
+							<div id="NameMessageBottom5" class="bottom"><?php echo $lang["choose_a_different"]; ?></div>
 							<div class="arrow"></div>
 						</div>
 					</div>
-					<p style="display:inline; margin: 1px 40px 0 0; text-align: right;">Wi-Fi Name</p>
+					<p style="display:inline; margin: 1px 40px 0 0; text-align: right;"><?php echo $lang["wifi_name"]; ?></p>
 					<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi5_Name" type="text" placeholder="Example: [account name] Wi-Fi" maxlength="32" class="">
 					<br>
 					<div id="PasswordContainer5" class="container" style="display: none;">
 						<div class="requirements">
-							<div id="PasswordMessageTop5" class="top">Let's try that again.</div>
-							<div id="PasswordMessageBottom5" class="bottom">Choose a different name than the one printed on your gateway.</div>
+							<div id="PasswordMessageTop5" class="top"><?php echo $lang["lets_try_that"]; ?></div>
+							<div id="PasswordMessageBottom5" class="bottom"><?php echo $lang["choose_a_different"]; ?></div>
 							<div class="arrow"></div>
 						</div>
 					</div>
-					<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;">Wi-Fi Password</p>
-					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" autocorrect="off" autocapitalize="off"></span>
+					<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;"><?php echo $lang["wifi_password"]; ?></p>
+					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" autocorrect="off" autocapitalize="off" ></span>
 					<div id="show5Pass" style="display:inline-table; margin: 4px 0 0 -90px;">
-						<a href="javascript:void(0)" style="white-space: pre;">Hide </a>
+						<a href="javascript:void(0)" style="white-space: pre;"><?php echo $lang["hide"]; ?> </a>
 				    </div>
 					<div id="passwordIndicator5" style="display: none;">
 						<div class="progress-bg"><div id="passwordStrength5"></div></div>
@@ -1171,14 +1070,14 @@ $(document).ready(function(){
 				</div>
 			<hr>
 			<div id="showDual" style="display:inline; margin:0 260px 0 0;">
-				<a id="showDualText" href="javascript:void(0)">Show More Settings</a>
+				<a id="showDualText" href="javascript:void(0)"><?php echo $lang["show_more_settings"]; ?></a>
 			</div>
 			<br>
 			<div id="dualSettings" class="checkbox" style="margin:0 50px; display: none;">
 				<br><br>
 				<input id="selectSettings" type="checkbox" name="selectSettings">
 			    	<label for="selectSettings" class="insertBox checkLabel"></label> 
-			    	<div class="check-copy" style="color: #888;">Use same settings for 2.4GHz and 5GHz Wi-Fi networks.</div>
+			    	<div class="check-copy" style="color: #888;"><?php echo $lang["same_settings"]; ?></div>
 		    	</div>
 			<br><br>
 			<div>
@@ -1187,24 +1086,24 @@ $(document).ready(function(){
 			<br><br>
 		</div>
 		<div id="confirm" style="display: none;" class="portal">
-			<h1>Confirm Wi-Fi Settings</h1>
+			<h1><?php echo $lang["confirm_settings"]; ?></h1>
 			<hr>
 			<table align="center" border="0">
 				<tr>
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" name="dualBand" >2.4 GHz Network</td>
+					<td class="confirm-text" name="dualBand" ><?php echo $lang["24network"]; ?></td>
 				</tr>
 				<tr>
-					<td class="left-settings" >Wi-Fi Name</td>
+					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
 					<td class="final-settings" id="WiFi_Name_01" ></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td class="left-settings" >Wi-Fi Password</td>
+					<td class="left-settings" ><?php echo $lang["wifi_password"]; ?></td>
 					<td class="final-settings" id="WiFi_Password_01" ></td>
 					<td class="final-settings" id="WiFi_Password_pass_01" ></td>
 					<td id="showPass01">
-						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+						<a href="javascript:void(0)" style="white-space: pre; display: none;"><?php echo $lang["hide"]; ?> </a>
 				    </td>
 				</tr>
 				<tr>
@@ -1212,19 +1111,19 @@ $(document).ready(function(){
 				</tr>
 				<tr name="dualBand">
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" >5 GHz Network</td>
+					<td class="confirm-text" ><?php echo $lang["5network"]; ?></td>
 				</tr>
 				<tr name="dualBand">
-					<td class="left-settings" >Wi-Fi Name</td>
+					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
 					<td class="final-settings" id="WiFi5_Name_01" ></td>
 					<td></td>
 				</tr>
 				<tr name="dualBand">
-					<td class="left-settings" >Wi-Fi Password</td>
+					<td class="left-settings" ><?php echo $lang["wifi_password"]; ?></td>
 					<td class="final-settings" id="WiFi5_Password_01" ></td>
 					<td class="final-settings" id="WiFi5_Password_pass_01" ></td>
 					<td id="show5Pass01">
-						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+						<a href="javascript:void(0)" style="white-space: pre; display: none;"><?php echo $lang["hide"]; ?></a>
 				    </td>
 				</tr>
 			</table>
@@ -1232,8 +1131,7 @@ $(document).ready(function(){
 			<?php $SMSsupport = ($personalization_value["SMSsupport"] == 'true') ? 'block' : 'none' ; ?>
 			<div style="display: <?php echo $SMSsupport; ?>">
 				<p style="text-align: left; margin: 13px 0 0 115px;">
-					Send yourself a text with your Wi-Fi name and password.<br>
-					This is an optional one-time-only text.
+				<?php echo $lang["send_ur_self_text"]; ?>
 				</p>
 				<div id="text_sms" style="display: <?php echo $SMSsupport; ?>">
 					<p style="text-align: left; margin: 27px 0 0 115px;">Your Mobile Number (<b>Optional</b>)</p>
