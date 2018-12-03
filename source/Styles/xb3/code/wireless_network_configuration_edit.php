@@ -322,16 +322,21 @@ $(document).ready(function() {
 						if("None" == $security_val){
 							$("#network_password").prop("disabled", true);
 						} else {
+                                                        var pass_val = $("#network_password").val();
+                                                        $("#network_password").val(pass_val);
 							$("#network_password").prop("disabled", false);
 							$("#netPassword-footnote").text($("option:selected", $("#security")).attr("title"));
 						}
 					} else {
 						$security_val = security_val;
+                                                  if("None" == $security_val){
+                                                    $("#network_password").val("");
+                                                    $("#div_password_show").hide();
+                                                  }
 					}
 				});
 			}
 			if ("None" == $("#security").val()) {
-				$("#network_password").val("");
 				$("#network_password").prop("disabled", true);
                                  $("#div_password_show").hide();
 			}
@@ -360,6 +365,9 @@ $(document).ready(function() {
 		$("#security").find("[value^='WEP'],[value='None']").prop('disabled',true);
 		fromOther = false;
     	});
+           if("None" == $("#security").val()) {
+                 $("#network_password").val("");
+           }
 	$("#password_show").change(function() {
 		var pass_val = $("#network_password").val();
 		if ($("#password_show").is(":checked")) {
