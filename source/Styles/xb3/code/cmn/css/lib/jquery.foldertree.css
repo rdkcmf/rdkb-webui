@@ -1,0 +1,44 @@
+/*
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright 2015 RDK Management
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
+/* jqueryFolderTree */
+
+#smallbrowser{height:159px;	width:448px; overflow: auto; border:1px solid #0078cc; padding:5px 5px 0px 5px;	margin-top:10px;}
+ul.jqueryFolderTree {padding: 0px; margin: 0px;}
+ul.jqueryFolderTree li {list-style: none;	padding: 2px 0px 0px 0px; margin: 0px; white-space: nowrap;}
+ul.jqueryFolderTree a {color: #1f75cc; text-decoration: none;	padding: 0px 2px;}
+ul.jqueryFolderTree a:hover {background: #bdf;}
+
+.jqueryFolderTree li a.expanded{cursor: default; display: block; float: left; width: 16px; height: 16px; background: url(../../img/minus.png) no-repeat;}
+.jqueryFolderTree li a.collapsed{cursor: default; display: block; float: left; width: 16px; height: 16px; background: url(../../img/plus.png) no-repeat;}
+.jqueryFolderTree li a.nosubs{cursor: default; display: block; float: left; width: 16px; height: 16px; background: url(../../img/nosubs.png) no-repeat;}
+
+.jqueryFolderTree .sel{background-color:#4291DF !important;}
+.jqueryFolderTree a.sel{color:#fff !important;}
+
+.jqueryFolderTree li a.folder{display: inline-block; padding:0px 4px 0px 20px; background: url(../../img/directory.png) no-repeat;}
+.jqueryFolderTree li a.home{display: inline-block; padding:0px 4px 0px 20px; background: url(../../img/house.png) no-repeat;}
+.jqueryFolderTree .wait {display: inline-block; padding:0px 4px 0px 20px; background: url(../../img/spinner.gif) no-repeat;}
+.jqueryFolderTree .waitb {display: inline-block; padding:0px 4px 0px 20px; background: url(../../img/spinnerb.gif) no-repeat;}
+
+/* Uploads */
+
+#upload_container .ufl{border: 1px solid #AACCEE; margin-bottom: 7px; padding:4px 4px 3px 4px;}
+#upload_container .sx {cursor:pointer; display: block; float: right; width: 8px; height: 8px; margin: 5px 0px 0px 0px; background:url(../../img/sx.png) no-repeat;}
+#upload_container .btn_cont {margin: 12px 0 9px 0; padding: 2px 0 5px 3px; float:right;}
+.upb10 {margin-bottom:10px;}

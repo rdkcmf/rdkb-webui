@@ -1,0 +1,77 @@
+##########################################################################
+# If not stated otherwise in this file or this component's Licenses.txt
+# file the following copyright and licenses apply:
+#
+# Copyright 2015 RDK Management
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+##########################################################################
+COSA EXTENSION FOR PHP5
+=======================
+
+This is a PHP5 extension (written in C) that provides access to the underlying
+CCSP Data Model via CCSP message bus.
+
+
+ABOUT THE PHP EXTENSION API
+===========================
+
+The details of PHP extension API design can be found in the document "CCSP Common Component Software Architecture Specification - CCSP Web UI Component" (CCSP_GW_Web_UI_Compoent_Spec.docx)
+
+Following functions are provided in the PHP extensions that PHP code can call,
+though it is encouraged to call the PHP APIs provided from ccspdm.php:
+
+1. DmExtGetStrsWithRootObj
+2. DmExtSetStrsWithRootObj
+3. DmExtGetInstanceIds
+4. addTblObj
+5. delTblObj
+6. getStr           - obsoleted by DmExtGetStrsWithRootObj
+7. setStr           - obsoleted by DmExtSetStrsWithRootObj
+8. getInstanceIds   - obsoleted by DmExtGetInstanceIds
+
+
+DEBUGGING
+=========
+
+To turn debugging log on, touch "/tmp/cosa_php_debug", then restart PHP extension (restart web server)
+
+The debug trace is logged in the file "/var/log/cosa_php_ext.log"
+
+
+BUILD INDEPENDENTLY ON PC SIMULATION
+====================================
+
+Do this from a bash prompt -
+
+    cd source/CcspPhpExtension
+    phpize
+    ./configure --enable-cosa
+    make
+
+The 'phpize' executable can be found in your distribution's PHP development package
+    "sudo apt-get install php5-dev" for Ubuntu
+    "sudo yum install php-devel" for Fedora
+
+This will build the PHP extension and produce a binary modules/cosa.so.
+
+Add this binary to the php.ini [extensions] section -
+
+    extension_dir = "/fss/gw/usr/ccsp"
+    extension=cosa.so
+
+Touch this file, "/tmp/cosa_php_pcsim"
+
+Finally restart the web server.
+
+    sudo /etc/init.d/apache2 restart
