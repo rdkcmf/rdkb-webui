@@ -625,7 +625,6 @@ if($allowEthWan=="true"){
 	{
 		echo '<div class="module forms block tr_hotspot" style="position:relative;top:0px;right:0px;">';
 		echo '<h2 style="white-space: pre-wrap;">Public Wi-Fi Network-'.$public_v[$j]['ssid_name'].'</h2>';
-		echo '<p class="button"><a class="btn" href="wireless_network_configuration_edit_public.php?id='.$public_v[$j]['ssid_id'].'">Edit</a></p>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Public Wi-Fi Capable:</span> <span class="value">'.("true"==$public_v[$j]['xf_capable']?"Yes":"No").'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Wireless Network (Wi-Fi '.$public_v[$j]['radio_freq'].' GHz):</span> <span class="value">'.("true"==$public_v[$j]['ssid_enable']?"Active":"Inactive").'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Time Since Last Status:</span> <span class="value">'.$public_v[$j]['time_last'].'</span></div>';
