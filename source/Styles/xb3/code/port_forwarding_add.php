@@ -349,7 +349,7 @@ function isIp4AddrRequired()
 				},
 				error:function(){
 					jHide();
-					jAlert("Someting wrong, please try later!");
+					jAlert("Something wrong, please try later!");
 				}
 			});
 		} //end of pageform valid
