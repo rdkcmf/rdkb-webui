@@ -359,7 +359,7 @@ $device_value["Manufacturer"] 				= getStr("Device.DPoE.DPoE_ManufacturerInfo.or
 $device_value["BootloaderVersion"] 			= getStr("Device.DeviceInfo.X_CISCO_COM_BootloaderVersion");
 $device_value["ModelName"] 					= getStr("Device.DeviceInfo.ModelName");
 $device_value["ProductClass"] 				= "XF3";
-$device_value["SoftwareVersion"]		 	= getStr("Device.DeviceInfo.SoftwareVersion");
+$device_value["AdditionalSoftwareVersion"]		 	= getStr("Device.DeviceInfo.AdditionalSoftwareVersion");
 $device_value["SerialNumber"] 				= getStr("Device.DeviceInfo.SerialNumber");
 $device_value["MFI_Date"]					= getStr("Device.DPoE.DPoE_ManufacturerInfo.manufacturerDate");
 ?>
@@ -387,7 +387,7 @@ $device_value["MFI_Date"]					= getStr("Device.DPoE.DPoE_ManufacturerInfo.manufa
 	</div>
 	<div class="form-row odd">
 		<span class="readonlyLabel" style="text-align:left; color:#333333">Download Version:</span>
-		<span class="value"><?php echo $device_value['SoftwareVersion'];?></span>
+		<span class="value"><?php echo $device_value['AdditionalSoftwareVersion'];?></span>
 	</div>
 	<div class="form-row ">
 		<span class="readonlyLabel" style="text-align:left; color:#333333">Serial Number:</span>
