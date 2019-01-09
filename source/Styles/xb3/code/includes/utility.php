@@ -374,7 +374,10 @@ function UTC_to_local_date_logs($utcTime){
 //
 function time_in_min($time){
 	$min = explode(':', $time);
-	return (($min[0]*60)+$min[1]);
+	if(count($min)>1)
+		return (($min[0]*60)+$min[1]);
+	else
+		return 0;
 }
 function cmp($a, $b) {
 	if ($a["StartTime"]==$b["StartTime"]) return 0;
@@ -383,7 +386,7 @@ function cmp($a, $b) {
 function merge_days($data){
 	usort($data, "cmp");
 	for ($i=0; $i < sizeof($data); $i++) {
-		if(time_in_min($data[$i]['EndTime'])+1 == time_in_min($data[$i+1]['StartTime'])){
+		if((isset($data[$i]['EndTime']) && time_in_min($data[$i]['EndTime'])+1) == (isset($data[$i+1]['StartTime']) && time_in_min($data[$i+1]['StartTime']) )) {
 			$data[$i]['__id'] = $data[$i]['__id'].'_'.$data[$i+1]['__id'];
 			$data[$i]['EndTime'] = $data[$i+1]['EndTime'];
 			unset($data[$i+1]);

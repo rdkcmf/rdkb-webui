@@ -671,10 +671,10 @@ $.validator.addMethod("no_space", function(value, element, param) {
     $ID = $blockedInfo['InstanceID'];
     $st_time = explode(":", $blockedInfo['StartTime']);	
     $st_hour = $st_time['0'];
-    $st_min  = $st_time['1'];
+    $st_min  = isset($st_time['1'])? $st_time['1'] : "";
     $end_time = explode(":", $blockedInfo['EndTime']);	
     $end_hour = $end_time['0'];
-    $end_min  = $end_time['1'];
+    $end_min  = isset($end_time['1']) ? $end_time['1'] : "";
     $rel_st_hour =  ((int)$st_hour)>12 ? $st_hour-12 : $st_hour;
     $rel_end_hour =  ((int)$end_hour)>12 ? $end_hour-12 : $end_hour;
     $block_days = $blockedInfo['BlockedDays'];

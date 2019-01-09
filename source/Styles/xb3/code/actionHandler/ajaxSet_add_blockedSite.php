@@ -27,9 +27,9 @@ $objPrefix = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 $rootObjName = $objPrefix;
 $exist = false;
 $block=$blockedSiteInfo['alwaysBlock'];
-$startTime=$blockedSiteInfo['StartTime'];
-$endTime=$blockedSiteInfo['EndTime'];
-$blockDays=$blockedSiteInfo['blockedDays'];
+$startTime=isset($blockedSiteInfo['StartTime']) ? $blockedSiteInfo['StartTime'] : "";
+$endTime=isset($blockedSiteInfo['EndTime']) ? $blockedSiteInfo['EndTime'] : "" ;
+$blockDays=isset($blockedSiteInfo['blockedDays']) ? $blockedSiteInfo['blockedDays'] : "" ;
 $result = "";
 if( array_key_exists('URL', $blockedSiteInfo) ) {
 	//this is to set blocked URL
