@@ -63,14 +63,16 @@ csrfprotector_rdkb::init();
 <!-- for Dual Band Network -->
 <style>
 
-#topbar,#set_up > p,.portal{
-	width: 100%;
+@media only screen 
+ and (max-device-width: 600px){
+#topbar,#set_up > p,#set_up{
+	width: 100% !important;
 }
-
+}	
 @media only screen 
  and (max-device-width: 420px){
   .rightbar{
-  	 right: 0px;
+  	 right: 0px !important;
   }
 }
 
