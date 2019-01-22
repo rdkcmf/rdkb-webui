@@ -593,26 +593,27 @@ $(document).ready(function() {
 			//40MHz
 			if ($("#channel_bandwidth1").prop("checked")) {
 				if ("BelowControlChannel" == "<?php echo $ext_channel1; ?>"){
-					$("#channel_number1").find("[value='116'],[value='140'],[value='144'],[value='149'],[value='165']").prop("disabled", true).prop("selected", false);
+					$("#channel_number1").find("[value='116'],[value='140'],[value='144'],[value='165']").prop("disabled", true).prop("selected", false);
 				}	
 				else{	//AboveControlChannel or Auto  //zqiu: exclude 116,140
-					$("#channel_number1").find("[value='40'],[value='48'],[value='56'],[value='64'],[value='104'],[value='112'],[value='116'],[value='136'],[value='140'],[value='144'],[value='153'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);
+					//$("#channel_number1").find("[value='40'],[value='48'],[value='56'],[value='64'],[value='104'],[value='112'],[value='116'],[value='136'],[value='140'],[value='144'],[value='153'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);
+					$("#channel_number1").find("[value='116'],[value='140'],[value='144'],[value='165']").prop("disabled", true).prop("selected", false);
 				}
 			} 
 			//80MHz
 			else if ($("#channel_bandwidth2").prop("checked")) {
-				$("#channel_number1").find("[value='116'],[value='120'],[value='124'],[value='128'],[value='136'],[value='140'],[value='144'],[value='165']").prop("disabled", true).prop("selected", false);
+				$("#channel_number1").find("[value='116'],[value='120'],[value='124'],[value='128'],[value='140'],[value='144'],[value='165']").prop("disabled", true).prop("selected", false);
 			}
 			//160MHz
 			else if ($("#channel_bandwidth3").prop("checked")) {
-				$("#channel_number1").find("[value='132'],[value='136'],[value='140'],[value='144'],[value='149'],[value='153'],[value='157'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);			
+				$("#channel_number1").find("[value='116'],[value='132'],[value='136'],[value='140'],[value='144'],[value='149'],[value='153'],[value='157'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);			
 			}
 			// NOT 20MHz, disable channel 165
-			$("#channel_number1").find("[value='165']").prop("disabled", true).prop("selected", false);
+			//$("#channel_number1").find("[value='165']").prop("disabled", true).prop("selected", false);
 		}
                 else {
                        //20MHz, disable channels 116, 140 Legacy Interop Disabled Channels
-                       $("#channel_number1").find("[value='116'],[value='140']").prop("disabled", true).prop("selected", false);
+                       //$("#channel_number1").find("[value='116'],[value='140']").prop("disabled", true).prop("selected", false);
                 }
 	}).trigger("change");
 	$("#pair_method_form").validate({

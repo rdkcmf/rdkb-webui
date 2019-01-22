@@ -398,34 +398,36 @@ $(document).ready(function() {
 			if ($("#channel_bandwidth1").is(":checked")) {
 				if ("BelowControlChannel" == "<?php echo $ext_channel; ?>"){
 					$("#channel_number").val('40');
-					$("#channel_number").find("[value='116'],[value='140'],[value='144'],[value='149'],[value='165']").prop("disabled", true).prop("selected", false);
+					$("#channel_number").find("[value='116'],[value='140'],[value='144'],[value='165']").prop("disabled", true).prop("selected", false);
 				}	
 				else{	//AboveControlChannel or Auto  //zqiu: exclude 116,140
 					$("#channel_number").val('36');
-					$("#channel_number").find("[value='40'],[value='48'],[value='56'],[value='64'],[value='104'],[value='112'],[value='116'],[value='136'],[value='140'],[value='144'],[value='153'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);
+					$("#channel_number").find("[value='116'],[value='140'],[value='144'],[value='165']").prop("disabled", true).prop("selected", false);
+					//$("#channel_number").find("[value='40'],[value='48'],[value='56'],[value='64'],[value='104'],[value='112'],[value='116'],[value='136'],[value='140'],[value='144'],[value='153'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);
 				}
 			} 
 			//80MHz
 			else if ($("#channel_bandwidth2").is(":checked")) {
 				$("#channel_number").val('36');
-				$("#channel_number").find("[value='116'],[value='120'],[value='124'],[value='128'],[value='136'],[value='140'],[value='144'],[value='165']").prop("disabled", true).prop("selected", false);
+				$("#channel_number").find("[value='116'],[value='120'],[value='124'],[value='128'],[value='140'],[value='144'],[value='165']").prop("disabled", true).prop("selected", false);
 			}
 			//160MHz
 			else if ($("#channel_bandwidth3").is(":checked")) {
 				$("#channel_number").val('36');
-				$("#channel_number").find("[value='132'],[value='136'],[value='140'],[value='144'],[value='149'],[value='153'],[value='157'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);			
+				$("#channel_number").find("[value='116'],[value='132'],[value='136'],[value='140'],[value='144'],[value='149'],[value='153'],[value='157'],[value='161'],[value='165']").prop("disabled", true).prop("selected", false);			
 			}
 		}
 		else {
 			//if Channel Bandwidth is 20MHz DFS Channels (Channels 50 - 144) should be greyed out
 			$("#channel_number").val('36');
-                        if ("true"!="<?php echo $DFS_Support1; ?>" || "true"!="<?php echo $DFS_Enable1; ?>") {
-			     $("#channel_number [value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true);
-                        }
-                        else {
+                        //if ("true"!="<?php echo $DFS_Support1; ?>" || "true"!="<?php echo $DFS_Enable1; ?>") {
+			     //$("#channel_number [value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true);
+                        //}
+                        //else {
                              //20MHz, disable channels 116, 140 Legacy Interop Disabled Channels
-                             $("#channel_number1").find("[value='116'],[value='140']").prop("disabled", true).prop("selected", false);
-                        }
+                             //$("#channel_number").find("[value='116'],[value='140']").prop("disabled", true).prop("selected", false);
+                        //}
+
 		}
 	});
 	$("#channel_number").change(function() {
@@ -726,7 +728,8 @@ function init_form()
 					$("#channel_number [value='36'],[value='44'],[value='52'],[value='60'],[value='100'],[value='108'],[value='116'],[value='132'],[value='140'],[value='149'],[value='157'],[value='165']").prop("disabled", true);
 				}	
 				else{	//AboveControlChannel or Auto
-					$("#channel_number [value='40'],[value='48'],[value='56'],[value='64'],[value='104'],[value='112'],[value='136'],[value='153'],[value='161']").prop("disabled", true);
+					//$("#channel_number [value='40'],[value='48'],[value='56'],[value='64'],[value='104'],[value='112'],[value='136'],[value='153'],[value='161']").prop("disabled", true);
+					$("#channel_number").find("[value='116'],[value='140'],[value='144'],[value='165']").prop("disabled", true).prop("selected", false);
 				}	
 			}
 		}
@@ -735,7 +738,7 @@ function init_form()
 	}
 	else {
 		//if Channel Bandwidth is 20MHz DFS Channels (Channels 50 - 144) should be greyed out
-		$("#channel_number [value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true);
+		//$("#channel_number [value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true);
 	}
 	//re-style for 802.11ac
 	$("#wireless_mode").val("<?php echo $wireless_mode; ?>");
