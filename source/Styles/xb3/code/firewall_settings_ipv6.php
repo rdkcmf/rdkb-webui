@@ -27,7 +27,6 @@
 <?php include('includes/nav.php'); 
 $modelName= getStr("Device.DeviceInfo.ModelName");
 ?>
-<script type="text/javascript" src="./cmn/js/lib/jquery.alerts.progress.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     gateway.page.init("Gateway > Firewall > IPv6", "nav-firewall-ipv6");

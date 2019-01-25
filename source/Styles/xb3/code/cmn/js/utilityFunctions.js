@@ -27,6 +27,10 @@
 /**
  * Given a IPv4 string, this converts it to binary representation.
  */
+
+
+var timeOutId =null;
+
 function ip4StrToBin(ip4Str) {
 	var ipArr = ip4Str.match(/(\d{1,3}).(\d{1,3}).(\d{1,3}).(\d{1,3})/);
 	var ipBin = 0;
@@ -125,6 +129,41 @@ function isValidIp6Str(v6Str) {
 
 	return true;
 }
+
+
+function jProgress(a,b){  
+//to show the progress bar   
+waitingDialog.show(a);
+ 
+     timeOutId=setTimeout(function () {
+     if (typeof(ajaxrequest)!='undefined') ajaxrequest.abort();
+     $(".modal-header").text('Operation in Progress');
+     $(".modal-body").text('Operation timeout, please try again!');
+     $(".progress-bar").remove();
+     $(".progress").remove();
+     $(".progress-striped").remove();
+     $(".modal-body").after('<div id="popup_box"><input type="button" value="ok" id="popup_ok" class="btn" /></div>');
+     $("#popup_ok").click( function() {
+       	
+    	waitingDialog.hide();
+	
+     });
+
+     $('.modal-header').attr('style', 'text-align: left !important; font-size: 1.1em; font-weight: bold');
+     $('.modal-body').attr('style', 'text-align: left !important; margin: 6px !important; background-color:#ededed');
+     $('#popup_box').attr('style', 'padding: 8px 0 0 !important; margin: -5px 8px 8px 425px !important'); 
+
+     }, b*1000);
+
+
+}
+function jHide(){
+	//to hide the progress bar
+	clearTimeout(timeOutId);
+	waitingDialog.hide();
+
+}
+
 
 function ValidIp4Addr(ip4Dec, subnetIpDec, subnetMaskDec){
 	//to check if "Server IPv4 Address" is in "DHCP Pool range"
