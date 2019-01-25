@@ -117,19 +117,21 @@ $logo = "cmn/syndication/img/".$msoLogo;
 	<![endif]-->
 	<link rel="stylesheet" type="text/css" media="print" href="./cmn/css/print.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/lib/jquery.radioswitch.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/lib/progressBar.css" />
 	<!--Character Encoding-->
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery-migrate-1.2.1.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.validate.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.alerts.js"></script>
-	<script type="text/javascript" src="./cmn/js/lib/jquery.alerts.progress.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.ciscoExt.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.highContrastDetect.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.radioswitch.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.virtualDialog.js"></script>
 	<script type="text/javascript" src="./cmn/js/utilityFunctions.js"></script>
 	<script type="text/javascript" src="./cmn/js/gateway.js"></script>
+	<script type="text/javascript" src="./cmn/js/lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./cmn/js/lib/bootstrap-waitingfor.js"></script>
 	<style>
 		#div-skip-to {
 			position:relative;

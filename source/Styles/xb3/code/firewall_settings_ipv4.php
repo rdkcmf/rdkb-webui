@@ -25,7 +25,6 @@
     <?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
-<script type="text/javascript" src="./cmn/js/lib/jquery.alerts.progress.js"></script>
 <script type="text/javascript">
 var o_disableFwForTSI = <?php echo (getStr('Device.X_CISCO_COM_Security.Firewall.TrueStaticIpEnable') === 'true') ? 'true' : 'false';?>;
 $(document).ready(function() {
