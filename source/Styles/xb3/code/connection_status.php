@@ -573,7 +573,6 @@ if($allowEthWan=="true"){
 		echo '<div class="module forms block" style="position:relative;top:0px;right:0px;">';
 		echo '<h2 style="white-space: pre-wrap;">HomeSecurityNetwork-'.$public_v[$j]['ssid_name'].'</h2>';
 		// !!!dont goto edit_public page!!! thant page just for hotspot tunnel configuration
-		echo '<p class="button"><a tabindex="0" class="btn" href="wireless_network_configuration_edit.php?id='.$public_v[$j]['ssid_id'].'">Edit</a></p>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Wireless Network (Wi-Fi '.$public_v[$j]['radio_freq'].' GHz):</span> <span class="value">'.$wifi_enable.'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Supported Protocols:</span> <span class="value">'.$public_v[$j]['radio_mode'].'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">Security:</span> <span class="value">'.$public_v[$j]['security'].'</span></div>';
