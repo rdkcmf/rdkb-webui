@@ -111,9 +111,9 @@
 		border: none;
 		overflow: hidden;
 	}
-   	@media(max-width: 320px){
+   	@media(max-width: 420px){
    		.dp-content {
-			width: 296px;
+			width: 296px !important;
 		}
 		.dp-space-filler-top {
 			height: 42px;
