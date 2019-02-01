@@ -82,7 +82,7 @@ $('#btn2').click(function(e) {
 	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
 	var info = new Array("btn2", "Wifi");
 	jConfirm(
-	message+"<br/><br/><strong>WARNING:</strong> Wi-Fi will be unavailable for at least 30 seconds!"
+	message+"<br/><br/><strong>WARNING:</strong> Wi-Fi will be unavailable for at least 90 seconds!"
 	, "Are You Sure?"
 	,function(ret) {
 	if(ret) {
@@ -96,7 +96,7 @@ $('#btn3').click(function(e) {
 	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
 	var info = new Array("btn3", "Wifi,Router");
 	jConfirm(
-	message+"<br/><br/><strong>WARNING:</strong> Wi-Fi will be unavailable for at least 30 seconds!"
+	message+"<br/><br/><strong>WARNING:</strong> Wi-Fi will be unavailable for at least 90 seconds!"
 	, "Are You Sure?"
 	,function(ret) {
 	if(ret) {
