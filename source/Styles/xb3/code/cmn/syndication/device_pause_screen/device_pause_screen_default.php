@@ -19,6 +19,16 @@
  limitations under the License.
 */
 ?>
+
+<?php
+
+$partner_url=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.link");
+$partner_logo_file=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.MSOLogo");
+$partner_brandname=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.brandname");
+$partner_productname=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.productname");
+
+
+?>
 <html>
 
 <head>
@@ -126,7 +136,9 @@
 </head>
 
 <body class="si-twilight-background">
-	
+	<div id="dp-nav">
+		<img src="cmn/syndication/img/<?php echo $partner_logo_file; ?>" style="margin: 15px;" />
+	</div>
 	<div class="dp-content">
 		<div class="dp-space-filler-top"></div>
 		<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -145,9 +157,9 @@
 		    </g>
 		</svg>
 		<div class="dp-space-filler-30"></div>
-		<p class="dp-header dp-white-text">This device is blocked.</p>
+		<p class="dp-header dp-white-text">This device is paused or in Bedtime Mode.</p>
 		<div class="dp-space-filler-30"></div>
-		<p class="dp-text dp-gray-text">Parental control rules were set on the Gateway for this device, so home network access to the Internet is currently blocked.</p>		
+		<p class="dp-text dp-gray-text">To resume access to the Internet on your home network, open the <?php echo $partner_brandname; ?> <?php echo $partner_productname; ?> app or visit <?php echo $partner_url; ?> using a different connection or device.</p>
 	</div>
 </body>
 
