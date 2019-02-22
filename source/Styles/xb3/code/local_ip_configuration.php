@@ -84,6 +84,7 @@ $tmp = substr($ipv6_local_addr, 6); //remove fe80::
 $tmp1 = explode('/', $tmp); //trim /64
 $local_ipv6 = $tmp1[0];
 $local_ipv6_arr = explode(':', $local_ipv6);
+$default_admin_ip= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.DefaultAdminIP");
 ?>
 <style type="text/css">
 label{
@@ -106,6 +107,7 @@ $(document).ready(function() {
 	var jsV6LeaseTime = "<?php echo $DHCPV6Time; ?>";
 	var old_beginning_ip4 = $("#ipv4_dhcp_beginning_address_4").val();
 	var old_ending_ip4 = $("#ipv4_dhcp_ending_address_4").val();
+	var default_admin_ip ="<?php echo $default_admin_ip; ?>";
 	function updateIPv4() {
 		var ip1 = $("#ipv4_gateway_address_1").val();
 		var ip2 = $("#ipv4_gateway_address_2").val();
@@ -508,25 +510,26 @@ $(document).ready(function() {
 		,"Reset Default IPv4 Settings"
 		,function(ret) {
 		if(ret) {
-		$("#ipv4_gateway_address_1").val(10);
-		$("#ipv4_gateway_address_2").val(0);
-		$("#ipv4_gateway_address_3").val(0);
-		$("#ipv4_gateway_address_4").val(1);
+		var default_ip = default_admin_ip.split('.');
+		$("#ipv4_gateway_address_1").val(default_ip[0]);
+		$("#ipv4_gateway_address_2").val(default_ip[1]);
+		$("#ipv4_gateway_address_3").val(default_ip[2]);
+		$("#ipv4_gateway_address_4").val(default_ip[3]);
 		$("#ipv4_subnet_mask").val("255.255.255.0");
-		$("#ipv4_dhcp_beginning_address_1").val(10);
-		$("#ipv4_dhcp_beginning_address_2").val(0);
+		$("#ipv4_dhcp_beginning_address_1").val(default_ip[0]);
+		$("#ipv4_dhcp_beginning_address_2").val(default_ip[1]);
 		$("#ipv4_dhcp_beginning_address_3").val(0);
 		$("#ipv4_dhcp_beginning_address_4").val(2);
-		$("#ipv4_dhcp_ending_address_1").val(10);
-		$("#ipv4_dhcp_ending_address_2").val(0);
+		$("#ipv4_dhcp_ending_address_1").val(default_ip[0]);
+		$("#ipv4_dhcp_ending_address_2").val(default_ip[1]);
 		$("#ipv4_dhcp_ending_address_3").val(0);
 		$("#ipv4_dhcp_ending_address_4").val(253);
 		$("#ipv4_dhcp_lease_time_amount").val(1);
 		$("#ipv4_dhcp_lease_time_measure").val("weeks");
-		var ipaddr = "10.0.0.1";
+		var ipaddr = default_admin_ip;
 		var subnet_mask = "255.255.255.0"; 
-		var dhcp_begin_addr = "10.0.0.2";
-		var dhcp_end_addr = "10.0.0.253";
+		var dhcp_begin_addr = default_ip[0]+"."+default_ip[1]+".0.2";
+		var dhcp_end_addr = default_ip[0]+"."+default_ip[1]+".0.253";
 		var lease_time = 604800; // 1 week	
         var Config = '{"Ipaddr":"' + ipaddr + '", "Subnet_mask":"' + subnet_mask + '", "Dhcp_begin_addr":"' + dhcp_begin_addr + '", "Dhcp_end_addr":"' + dhcp_end_addr +'", "Dhcp_lease_time":"' + lease_time + '"}';
         if((login_user == "admin") && (jsGwIP != ipaddr)) {
