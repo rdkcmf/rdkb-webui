@@ -282,7 +282,7 @@ $(document).ready(function() {
 	$security_val = '<?php echo $security; ?>';
 	var password_mso_user = '<?php echo $password_mso_user; ?>';
 	$("#security").change(function() {
-		var confirm_okay=false;
+	
 		if ("more" == $("#security").val()) {
 			// only private(1,2) SSID have show-more option
 			showDialog();
@@ -301,11 +301,21 @@ $(document).ready(function() {
 						if(!ret) {
 							$("#security").find("[value='"+ security_val +"']").remove();
 							$('#security option[value="' + $security_val + '"]').prop('selected', true);
-							$("#network_password").prop("disabled", false);
-						} else {
-							confirm_okay=true;
+                                                     if("None" == $security_val){
 							$("#network_password").prop("disabled", true);
+                                                      } 
+                                                     else{
+                                                        var pass_val = $("#network_password").val();
+                                                        $("#network_password").val(pass_val);
+                                                        $("#network_password").prop("disabled", false);
+                                                        $("#netPassword-footnote").text($("option:selected", $("#security")).attr("title")); 
+                                                         }
+						} else {
 							$security_val = security_val;
+                                                        if("None" == $security_val){
+                                                        $("#network_password").val("");
+                                                        $("#div_password_show").hide();
+                                                       }
 						}
 					});
 				}
@@ -324,9 +334,9 @@ $(document).ready(function() {
 					});	
 				}
 			}
-			if ("None" == $("#security").val() && (confirm_okay==true)) {
-				$("#network_password").val("");
+			if ("None" == $("#security").val()) {
 				$("#network_password").prop("disabled", true);
+                                $("#div_password_show").hide();
 			}
 			else {
 				if(!password_mso_user){
@@ -353,6 +363,9 @@ $(document).ready(function() {
 		$("#security").find("[value^='WEP'],[value='None']").prop('disabled',true);
 		fromOther = false;
     	});
+        if("None" == $("#security").val()) {
+          $("#network_password").val("");
+        }
 	$("#password_show").change(function() {
 		var pass_val = $("#network_password").val();
 		if ($("#password_show").is(":checked")) {
