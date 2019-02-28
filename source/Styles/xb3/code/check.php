@@ -33,7 +33,7 @@ $redirect_page = "https://{$_SERVER["SERVER_NAME"]}" . $_SERVER["PHP_SELF"];
 $tokenendpoint = $clientid = $pStr = "";
 $JWTdir = "/tmp/.jwt/";
 $JWTfile = $JWTdir . "JWT.txt";
-
+header('X-robots-tag: noindex,nofollow');
     if (isset($_POST["username"]))
     {
 		/*=============================================*/

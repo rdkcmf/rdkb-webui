@@ -20,6 +20,7 @@
 ?>
 <?php include('includes/utility.php'); ?>
 <?php
+        header('X-robots-tag: noindex,nofollow');
 	$CONFIGUREWIFI			= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi");
 	//$CloudUIEnable		= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
 	//$CloudUIWebURL		= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIWebURL");
@@ -120,6 +121,7 @@ $logo = "cmn/syndication/img/".$msoLogo;
 	<link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/lib/progressBar.css" />
 	<!--Character Encoding-->
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <meta name="robots" content="noindex,nofollow">
 	<script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery-migrate-1.2.1.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.validate.js"></script>
