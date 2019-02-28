@@ -25,6 +25,7 @@ csrfprotector_rdkb::init();
 ?>
 <?php include('includes/utility.php'); ?>
 <?php
+        header('X-robots-tag: noindex,nofollow');
 	session_start();
 	$PartnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 	$default_lang                  = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.DefaultLanguage");
@@ -54,6 +55,7 @@ csrfprotector_rdkb::init();
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="robots" content="noindex,nofollow">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="">
 		<meta name="author" content="">

@@ -26,6 +26,7 @@ csrfprotector_rdkb::init();
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <?php
+        header('X-robots-tag: noindex,nofollow');
 	session_start();
 	if (!isset($_SESSION["loginuser"])) {
 		echo '<script type="text/javascript">alert("Please Login First!"); location.href="home_loggedout.php";</script>';
@@ -112,6 +113,7 @@ csrfprotector_rdkb::init();
 	<link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/lib/progressBar.css" />
 	<!--Character Encoding-->
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <meta name="robots" content="noindex,nofollow">
     <script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="./cmn/js/lib/jquery-migrate-1.2.1.js"></script>
     <script type="text/javascript" src="./cmn/js/lib/jquery.validate.js"></script>

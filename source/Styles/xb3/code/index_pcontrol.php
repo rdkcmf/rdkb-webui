@@ -21,5 +21,6 @@
 <?php
 	$PauseScreenFileLocation = getStr('Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PauseScreenFileLocation');
 	include($PauseScreenFileLocation);
+	header('X-robots-tag: noindex,nofollow');
 ?>
 
