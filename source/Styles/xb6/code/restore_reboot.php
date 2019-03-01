@@ -209,7 +209,7 @@ function setResetInfo(info) {
 			else if(data.wifi) {
 				jProgress("Restarting Wi-Fi radios in up to 90 seconds...", 120);
 				//we don't know if Wi-Fi is ready (eth client can restart wifi also), so just delay 90 seconds
-				setTimeout(function(){jHide();}, 90 * 1000);
+				setTimeout(function(){jHide();window.location.reload();}, 90 * 1000);
 			}
 		},
 		error: function(){            
