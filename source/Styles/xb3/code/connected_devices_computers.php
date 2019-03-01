@@ -779,50 +779,43 @@ $(document).ready(function() {
 		/*
 	    ** Hotspot feature ----XfinitySSID part
 	    */
-		function get_hotspot_clients(){
-			//get_hotspot_clients() will get all the clients connected to Hotspot AssociatedDevice SSID's
-			$Hostspot_SSIDNumberOfEntries = getStr("Device.X_COMCAST-COM_GRE.Tunnel.1.SSIDNumberOfEntries");
-			$Hotspot_clients = array();
-			for($idx = 1; $idx <= $Hostspot_SSIDNumberOfEntries; $idx++) {
-				$rootObjName	= "Device.X_COMCAST-COM_GRE.Tunnel.1.SSID.$idx.AssociatedDevice.";
-				$paramNameArray	= array($rootObjName);
-				$mapping_array	= array("MACAddress", "Hostname", "RSSILevel", "IPv4Address", "DHCPv4Status", "IPv6Address", "IPv6Prefix", "DHCPv6Status", "IPv6LinkLocalAddress");
-				$Hotspot_SSID_idAr = DmExtGetInstanceIds($rootObjName);
-				if(0 == $Hotspot_SSID_idAr[0]){
-					// status code 0 = success
-					$Hotspot_SSID_clientsNum = count($Hotspot_SSID_idAr) - 1;
-				}
-				//$Hotspot_SSID_clientsNum = getStr("Device.X_COMCAST-COM_GRE.Tunnel.1.SSID.1.AssociatedDeviceNumberOfEntries");
-				if(!empty($Hotspot_SSID_clientsNum)){
-					$Hotspot_SSID_clients = getParaValues($rootObjName, $paramNameArray, $mapping_array);
-					$Hotspot_clients = array_merge($Hotspot_clients, $Hotspot_SSID_clients);
-				}
-			}
-			return $Hotspot_clients;
+		function get_hotspot_clients($idx){
+                        $Hotspot_SSID_clients = array();
+			$rootObjName	= "Device.X_COMCAST-COM_GRE.Tunnel.1.SSID.$idx.AssociatedDevice.";
+			$paramNameArray	= array($rootObjName);
+			$mapping_array	= array("MACAddress", "Hostname", "RSSILevel", "IPv4Address", "DHCPv4Status", "IPv6Address", "IPv6Prefix", "DHCPv6Status", "IPv6LinkLocalAddress");
+			$Hotspot_SSID_idAr = DmExtGetInstanceIds($rootObjName);
+			if(0 == $Hotspot_SSID_idAr[0]){
+			   // status code 0 = success
+			   $Hotspot_SSID_clients = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+	                }
+			//$Hotspot_SSID_clientsNum = getStr("Device.X_COMCAST-COM_GRE.Tunnel.1.SSID.1.AssociatedDeviceNumberOfEntries");
+			return $Hotspot_SSID_clients;
 		}
-		$Hotspot_clients = get_hotspot_clients();
-		$clients_num = count($Hotspot_clients);
-    echo '<div  class="module forms data div-pub-network" style="position:relative; top:10px; ">';
-	echo '<h2>Online Devices - Public Wi-Fi SSID</h2>';
-      	echo '<table   class="data" summary="this table displays online devices connected to Public Wi-Fi SSID">';
+		echo '<div  class="module forms data div-pub-network" style="position:relative; top:10px; ">';
+    	        echo '<h2>Online Devices - Public Wi-Fi SSID</h2>';
+                echo '<table   class="data" summary="this table displays online devices connected to Public Wi-Fi SSID">';
       		echo '<tr>';
-      			echo '<th id="xfinitywifi-host-name" width="30%">Host Name</th>';
-      			echo '<th id="xfinitywifi-ipv4-address" width="30%">IPV4 Address</th>';
-      			echo '<th id="xfinitywifi-rssi-level" width="20%">RSSI Level</th>';
-      			echo '<th id="xfinitywifi-mac-address" width="20%">MAC Address</th>';
-      			echo '<th id="xfinitywifi-disconnect-button" width="20%"></th>';
+      		echo '<th id="xfinitywifi-host-name" width="30%">Host Name</th>';
+      		echo '<th id="xfinitywifi-ipv4-address" width="30%">IPV4 Address</th>';
+      		echo '<th id="xfinitywifi-rssi-level" width="20%">RSSI Level</th>';
+      		echo '<th id="xfinitywifi-mac-address" width="20%">MAC Address</th>';
+      		echo '<th id="xfinitywifi-disconnect-button" width="20%"></th>';
       		echo '</tr>';
-      		for ($i=0; $i < $clients_num; $i++) { 
-	      		$Hostname      = htmlspecialchars($Hotspot_clients[$i]['Hostname'], ENT_NOQUOTES, 'UTF-8');
-	      		$MACAddress    = $Hotspot_clients[$i]['MACAddress'];
-	      		$RSSILevel     = $Hotspot_clients[$i]['RSSILevel'];
-	      		$IPv4Address   = $Hotspot_clients[$i]['IPv4Address'];
-	      		$DHCPv4Status  = $Hotspot_clients[$i]['DHCPv4Status'];
-	      		$IPv6Address   = $Hotspot_clients[$i]['IPv6Address'];
-	      		$IPv6Prefix    = $Hotspot_clients[$i]['IPv6Prefix'];
-	      		$DHCPv6Status  = $Hotspot_clients[$i]['DHCPv6Status'];
-	      		$IPv6LocalAddr = $Hotspot_clients[$i]['IPv6LinkLocalAddress'];
-	      		if ($i < $Hotspot_1_clientsNum) {
+                $Hotspot_SSIDNumberOfEntries = getStr("Device.X_COMCAST-COM_GRE.Tunnel.1.SSIDNumberOfEntries");
+      		for ($i=0; $i < $Hotspot_SSIDNumberOfEntries; $i++) { 
+                    $Hotspot_SSID_clients = get_hotspot_clients($i+1);
+                    for($j=0; $j < count($Hotspot_SSID_clients); $j++) {
+	      		$Hostname      = htmlspecialchars($Hotspot_SSID_clients[$j]['Hostname'], ENT_NOQUOTES, 'UTF-8');
+	      		$MACAddress    = $Hotspot_SSID_clients[$j]['MACAddress'];
+	      		$RSSILevel     = $Hotspot_SSID_clients[$j]['RSSILevel'];
+	      		$IPv4Address   = $Hotspot_SSID_clients[$j]['IPv4Address'];
+	      		$DHCPv4Status  = $Hotspot_SSID_clients[$j]['DHCPv4Status'];
+	      		$IPv6Address   = $Hotspot_SSID_clients[$j]['IPv6Address'];
+	      		$IPv6Prefix    = $Hotspot_SSID_clients[$j]['IPv6Prefix'];
+	      		$DHCPv6Status  = $Hotspot_SSID_clients[$j]['DHCPv6Status'];
+	      		$IPv6LocalAddr = $Hotspot_SSID_clients[$j]['IPv6LinkLocalAddress'];
+	      		if ($i == 0) {
 	      			$gre_ssid = 1;
 	      			$WiFiType = "Wi-Fi 2.4G";
 	      		}
@@ -834,22 +827,23 @@ $(document).ready(function() {
 					else $odd = " class='odd'";
          		echo '<tr' .$odd. '>';
          		echo '<td headers="xfinitywifi-host-name"><a href="javascript:void(0)" tabindex="0" class="label device-name"><u>'. $Hostname .'</u></a>';
-				echo '<div class="device-info">';	
-					echo '<dl><dd><br/></dd>';
-					echo '<dd><b>IPv6 Prefix</b><br/>'. $IPv6Prefix. '</dd>';
-					echo '<dd><b>IPv6 Address</b><br/>'. $IPv6Address. '</dd>';
-					echo '<dd><b>Local link IPv6 Address</b><br/>'. $IPv6LocalAddr. '</dd>';
-					echo '<dd><b>DHCPv4 Status</b><br/>'. $DHCPv4Status. '</dd>';
-					echo '<dd><b>DHCPv6 Status</b><br/>'. $DHCPv6Status. '</dd>';
-					echo '<dd><b>Connection</b><br/>'. $WiFiType . '</dd>';
-					echo '</dl>';	
-				echo '</div>';	
-                echo '</td>';
-                echo '<td headers="xfinitywifi-ipv4-address">'. $IPv4Address;
-                echo '<td headers="xfinitywifi-rssi-level">'. $RSSILevel." dBm";
-                echo '<td headers="xfinitywifi-mac-address">'. $MACAddress;
-                echo "<td headers=\"xfinitywifi-disconnect-button\"><input type='button' id=" . "'hotspot-X-" .$i. "'" . "  value='X' tabindex='0' name=\"{'gre_ssid':'$gre_ssid','dev_name':'$Hostname','mac_addr':'$MACAddress'}\" title='disconnect and deny Wi-Fi access to this device'  class='XfinitySSID btn confirm'></input></td>";
+			echo '<div class="device-info">';	
+			echo '<dl><dd><br/></dd>';
+			echo '<dd><b>IPv6 Prefix</b><br/>'. $IPv6Prefix. '</dd>';
+		        echo '<dd><b>IPv6 Address</b><br/>'. $IPv6Address. '</dd>';
+			echo '<dd><b>Local link IPv6 Address</b><br/>'. $IPv6LocalAddr. '</dd>';
+			echo '<dd><b>DHCPv4 Status</b><br/>'. $DHCPv4Status. '</dd>';
+			echo '<dd><b>DHCPv6 Status</b><br/>'. $DHCPv6Status. '</dd>';
+			echo '<dd><b>Connection</b><br/>'. $WiFiType . '</dd>';
+			echo '</dl>';	
+			echo '</div>';	
+                        echo '</td>';
+                        echo '<td headers="xfinitywifi-ipv4-address">'. $IPv4Address;
+                        echo '<td headers="xfinitywifi-rssi-level">'. $RSSILevel." dBm";
+                        echo '<td headers="xfinitywifi-mac-address">'. $MACAddress;
+                        echo "<td headers=\"xfinitywifi-disconnect-button\"><input type='button' id=" . "'hotspot-X-" .$i. "'" . "  value='X' tabindex='0' name=\"{'gre_ssid':'$gre_ssid','dev_name':'$Hostname','mac_addr':'$MACAddress'}\" title='disconnect and deny Wi-Fi access to this device'  class='XfinitySSID btn confirm'></input></td>";
 		    	echo '</tr>';
+                   }
       		}//end of for;
       		echo '<tfoot>';
 				echo '<tr class="acs-hide">';
