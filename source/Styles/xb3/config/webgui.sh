@@ -196,6 +196,9 @@ then
      			 	   echo "WEBGUI : Setting ConfigureWiFi to true is success"
 				uptime=`cat /proc/uptime | awk '{ print $1 }' | cut -d"." -f1`
 				   echo_t "Enter_WiFi_Personalization_captive_mode:$uptime"
+				   if [ -e "/usr/bin/onboarding_log" ]; then
+				       /usr/bin/onboarding_log "Enter_WiFi_Personalization_captive_mode:$uptime"
+				   fi
  	       			fi
       			   break
  	       		fi
