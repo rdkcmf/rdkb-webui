@@ -29,14 +29,14 @@ csrfprotector_rdkb::init();
 	$PartnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 	$default_lang                  = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.DefaultLanguage");
         $title                         = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Title");
-        //if (!isset($_SESSION['lang']))
+        if (!isset($_SESSION['lang']))
 		$_SESSION['lang'] = $default_lang;
-	//else if (isset($_SESSION['lang']) && $_SESSION['lang'] != $_GET['lang'] && !empty($_GET['lang'])){
-	//	if ($_GET['lang'] == "eng")
-	//		$_SESSION['lang'] = "eng";
-	//	else if ($_GET['lang'] == "fre")
-	//		$_SESSION['lang'] = "fre";
-	//}
+	else if (isset($_SESSION['lang']) && $_SESSION['lang'] != $_GET['lang'] && !empty($_GET['lang'])){
+		if ($_GET['lang'] == "eng")
+			$_SESSION['lang'] = "eng";
+		else if ($_GET['lang'] == "fre")
+			$_SESSION['lang'] = "fre";
+	}
 	//WiFiPersonalization.Support UI inclusion/exclusion (on/off)
 	$personalization_param = array(
 		"Support"				=> "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Support",
