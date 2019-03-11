@@ -21,6 +21,9 @@ $CONFIGUREWIFI = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi");
 $CaptivePortalEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CaptivePortalEnable");
 $personalization_support = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Support");
 $PersonalizationSMSsupport = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.SMSsupport");
+$DefaultSSID = getStr("Device.WiFi.SSID.1.X_COMCAST-COM_DefaultSSID");
+$DefaultSSID5 = getStr("Device.WiFi.SSID.2.X_COMCAST-COM_DefaultSSID");
+			
 if(!strcmp($personalization_support, "true")) {
   if(!strcmp($CaptivePortalEnable, "true")) {
         if(!strcmp($CONFIGUREWIFI, "true")) {
@@ -36,13 +39,16 @@ if($isCaptiveMode)
 		$validation = true;
 		if($validation) $validation = isValInArray($arConfig['dualband'], array('true', 'false'));
 		if($validation && $arConfig['dualband'] == 'true'){
-			if($validation) $validation = (preg_match("/^[ -~]{1,32}$/i", $arConfig['network_name'])==1);
+			if($validation) $validation = valid_ssid_name($arConfig['network_name']);
+			if($validation) $validation = ($DefaultSSID != $arConfig['network_name']);
 			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
-			if($validation) $validation = (preg_match("/^[ -~]{1,32}$/i", $arConfig['network5_name'])==1);
+			if($validation) $validation = valid_ssid_name($arConfig['network5_name']);
+			if($validation) $validation = ($DefaultSSID5 != $arConfig['network5_name']);
 			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network5_password'])==1);
 		}
 		else {
-			if($validation) $validation = (preg_match("/^[ -~]{1,32}$/i", $arConfig['network_name'])==1);
+			if($validation) $validation = valid_ssid_name($arConfig['network_name']);
+			if($validation) $validation = ($DefaultSSID != $arConfig['network_name']);
 			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
 		}
 		if($validation) $validation = (preg_match("/^\d{10}$/", $arConfig['phoneNumber'])==1);

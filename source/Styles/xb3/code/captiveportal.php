@@ -276,10 +276,14 @@ ili{
 	$MyAccountAppBox .=	'</p>';
 	$MyAccountAppBox .=	'</div>';
 	$MyAccountAppBox .=	'</div>';
+	$defaultssid = getStr("Device.WiFi.SSID.1.X_COMCAST-COM_DefaultSSID");
+	$defaultssid1 = getStr("Device.WiFi.SSID.2.X_COMCAST-COM_DefaultSSID");
 ?>
 <script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
 <script>
 $(document).ready(function(){
+	var Defaultssid = "<?php echo $defaultssid;?>";
+	var Defaultssid1 = "<?php echo $defaultssid1;?>";
 	$CloudPersonalizationURL = "<?php echo $CloudPersonalizationURL;?>";
 	$CloudUIEnable = <?php echo $CloudUIEnable;?>;
 	function cloudRedirection(cloudReachable){
@@ -630,11 +634,16 @@ $("#f_i_option1").click(function(){
 		isOnlySpaces = /^\s+$/.test(valLowerCase);
 		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
 		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/g,'').toLowerCase();
-		isOther	= str.indexOf("cablewifi") == -1 && str.indexOf("twcwifi") == -1 && str.indexOf("optimumwifi") == -1 && str.indexOf("xfinitywifi") == -1;
+		isOther	= str.indexOf("cablewifi") == -1 && str.indexOf("twcwifi") == -1 && str.indexOf("optimumwifi") == -1 && str.indexOf("xfinitywifi") == -1 && str.indexOf("coxwifi") == -1 && str.indexOf("coxwifi") == -1 && str.indexOf("spectrumwifi") == -1 && str.indexOf("shawopen") == -1 && str.indexOf("shawpasspoint") == -1 && str.indexOf("shawguest") == -1 && str.indexOf("shawmobilehotspot") == -1 && str.indexOf("shawgo") == -1 && str.indexOf("xfinity") == -1;
 		if(val == ""){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
 			messageHandler("name", "Wi-Fi Name", "Please enter Wi-Fi Name.");
+		}
+		else if(valLowerCase == Defaultssid.toLowerCase()){
+			goNextName = false;
+			$(this).addClass("error").removeClass("success");
+			messageHandler("name", "Let's try that again", "Choose a different name than the default one provided on your gateway");
 		}
 		else if(isOnlySpaces)
 		{
@@ -734,11 +743,16 @@ $("#f_i_option1").click(function(){
 		isOnlySpaces = /^\s+$/.test(valLowerCase);
 		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
 		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/g,'').toLowerCase();
-		isOther	= str.indexOf("cablewifi") == -1 && str.indexOf("twcwifi") == -1 && str.indexOf("optimumwifi") == -1 && str.indexOf("xfinitywifi") == -1;
+		isOther	= str.indexOf("cablewifi") == -1 && str.indexOf("twcwifi") == -1 && str.indexOf("optimumwifi") == -1 && str.indexOf("xfinitywifi") == -1 && str.indexOf("coxwifi") == -1 && str.indexOf("coxwifi") == -1 && str.indexOf("spectrumwifi") == -1 && str.indexOf("shawopen") == -1 && str.indexOf("shawpasspoint") == -1 && str.indexOf("shawguest") == -1 && str.indexOf("shawmobilehotspot") == -1 && str.indexOf("shawgo") == -1 && str.indexOf("xfinity") == -1;
 		if(val == ""){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
 			messageHandler("name5", "Wi-Fi Name", "Please enter Wi-Fi Name.");
+		}
+		else if(valLowerCase == Defaultssid1.toLowerCase()){
+			goNextName = false;
+			$(this).addClass("error").removeClass("success");
+			messageHandler("name", "Let's try that again", "Choose a different name than the default one provided on your gateway");
 		}
 		else if(isOnlySpaces)
 		{

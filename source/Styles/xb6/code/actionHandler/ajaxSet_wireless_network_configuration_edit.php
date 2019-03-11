@@ -74,10 +74,17 @@ if ($i == 1 || $i == 2) {
 			if($arConfig['security']!="None"){
 					if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
 			}
-			if($validation) $validation = valid_ssid_name($arConfig['network_name']);
+			if($validation && !valid_ssid_name($arConfig['network_name']))
+			{
+				$validation = false;
+				$response_message = 'WiFi name is not valid. Please enter a new name !';
+			}
 				//Choose a different Network Name (SSID) than the one provided on your gateway
 			$DefaultSSID = getStr("Device.WiFi.SSID.$i.X_COMCAST-COM_DefaultSSID");
-			if($validation) $validation = ($DefaultSSID != $arConfig['network_name']);
+			if($validation && (strtolower($DefaultSSID) == strtolower($arConfig['network_name']))){
+				$validation = false;
+				$response_message = 'WiFi name is not valid. Please enter a new name !';
+			} 
 				//Choose a different Network Password than the one provided on your gateway
 			$DefaultKeyPassphrase = getStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_DefaultKeyPassphrase");
 			if($validation && ($DefaultKeyPassphrase == $arConfig['network_password'])) {

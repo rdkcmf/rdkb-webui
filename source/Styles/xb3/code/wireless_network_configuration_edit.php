@@ -644,14 +644,7 @@ wpa2psk ==> 8 to 63 Ascii characters
     $("#pageForm").validate({
     	debug: true,
     	rules: {
-			network_name: {
-				ssid_name: true,
-				not_only_spaces: true,
-				not_hhs: true,
-				not_hhs2: true,
-				not_defaulSSID: true
-			},
-    		network_password: {
+			network_password: {
 			not_defaulPassword: true,
 			/*required: function() {
     				return ($("#security option:selected").val() != "None");
@@ -783,6 +776,7 @@ function addslashes( str ) {
 }
 function click_save()
 {
+	var network_name_1= '<?php echo $network_name; ?>';
 	var password_mso_user = '<?php echo $password_mso_user; ?>';
 	var network_password = "";
 	var rf = "<?php echo $rf == 1? "": 1; ?>";
@@ -827,6 +821,7 @@ function click_save()
 			// location.reload();
 			if(msg_parseJSON.error_message){
 				jAlert(msg_parseJSON.error_message);
+				$("#network_name").val(network_name_1);
 			} else location.href = 'wireless_network_configuration.php';
 		},
 		error: function(){            
