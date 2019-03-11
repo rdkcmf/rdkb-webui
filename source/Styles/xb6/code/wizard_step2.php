@@ -208,21 +208,7 @@ wpa2psk ==> 8 to 63 Ascii characters
     $("#pageForm").validate({
     	debug: true,
     	rules: {
-			network_name: {
-				ssid_name: true,
-				not_hhs: true,
-				not_hhs2: true,
-				not_only_spaces: true,
-				not_defaulSSID1: true
-			},
-			network_name1: {
-				ssid_name: true,
-				not_hhs: true,
-				not_hhs2: true,
-				not_only_spaces: true,
-				not_defaulSSID2: true
-			},
-    		network_password: {
+			network_password: {
 			not_defaulPassword1: true,
     			/*required: function() {
     				return ($("#security").val() != "None");
@@ -302,6 +288,8 @@ wpa2psk ==> 8 to 63 Ascii characters
 function set_config(jsConfig)
 {
 	// alert(jsConfig);
+	var network_name_1= '<?php echo $wifi_value['network_name']; ?>';
+	var network_name_2= '<?php echo $wifi_value['network_name1']; ?>';
 	jProgress('This may take several seconds...', 60);
 	$.post(
 		"actionHandler/ajaxSet_wizard_step2.php",
@@ -311,12 +299,22 @@ function set_config(jsConfig)
 		function(msg)
 		{
 			jHide();
+			msg_parseJSON = $.parseJSON(msg);
+			// location.reload();
+			if(msg_parseJSON.error_message){
+				jAlert(msg_parseJSON.error_message);
+				$("#network_name").val(network_name_1);
+				$("#network_name1").val(network_name_2);
+			}else{
+				
+			
 			<?php 
 				if($_SESSION["loginuser"] == "admin")
 					echo 'jAlert("Changes saved successfully. <br> Please login with the new password.");setTimeout(function(){jHide();location.href="home_loggedout.php";}, 5000);';
 				else
 					echo 'jAlert("Changes saved successfully.");setTimeout(function(){jHide();location.href="at_a_glance.php";}, 5000);';
 			?>
+		}
 		});
 }
 function addslashes( str ) {

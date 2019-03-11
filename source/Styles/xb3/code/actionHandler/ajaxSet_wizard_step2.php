@@ -30,6 +30,7 @@ function MiniApplySSID($ssid) {
 	setStr("Device.WiFi.Radio.$apply_rf.X_CISCO_COM_ApplySettingSSID", $apply_id, false);
 	setStr("Device.WiFi.Radio.$apply_rf.X_CISCO_COM_ApplySetting", "true", true);
 }
+$response_message = '';
 $Mesh_Enable 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.Enable");
 $Mesh_State 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.State");
 $Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')?true:false;
@@ -46,20 +47,34 @@ if(($arConfig['password_update1']=="false") && ("mso" == $thisUser)){
 if($arConfig['security']!="None"){
 	if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
 }
-if($validation) $validation = valid_ssid_name($arConfig['network_name']);
+if($validation && !valid_ssid_name($arConfig['network_name']))
+{
+	$validation = false;
+	$response_message = 'WiFi name (2.4GHz) is not valid. Please enter a new name !';
+}
 //Choose a different Network Name (SSID) than the one provided on your gateway
 $DefaultSSID = getStr("Device.WiFi.SSID.1.X_COMCAST-COM_DefaultSSID");
-if($validation) $validation = ($DefaultSSID != $arConfig['network_name']);
+if($validation && (strtolower($DefaultSSID) == strtolower($arConfig['network_name']))){
+	$validation = false;
+	$response_message = 'WiFi name (2.4GHz) is not valid. Please enter a new name !';
+} 
 //Choose a different Network Password than the one provided on your gateway
 $DefaultKeyPassphrase = getStr("Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_DefaultKeyPassphrase");
 if($validation) $validation = ($DefaultKeyPassphrase != $arConfig['network_password']);
 if($arConfig['security1']!="None"){
 	if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password1'])==1);
 }
-if($validation) $validation = valid_ssid_name($arConfig['network_name1']);
+if($validation && !valid_ssid_name($arConfig['network_name1']))
+{
+	$validation = false;
+	$response_message = 'WiFi name (5GHz) is not valid. Please enter a new name !';
+}
 //Choose a different Network Name (SSID) than the one provided on your gateway
 $DefaultSSID5 = getStr("Device.WiFi.SSID.2.X_COMCAST-COM_DefaultSSID");
-if($validation) $validation = ($DefaultSSID5 != $arConfig['network_name1']);
+if($validation && (strtolower($DefaultSSID5) == strtolower($arConfig['network_name1']))){
+	$validation = false;
+	$response_message = 'WiFi name (5GHz) is not valid. Please enter a new name !';
+} 
 //Choose a different Network Password than the one provided on your gateway
 $DefaultKeyPassphrase5 = getStr("Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_DefaultKeyPassphrase");
 if($validation) $validation = ($DefaultKeyPassphrase5 != $arConfig['network_password1']);
@@ -204,5 +219,11 @@ if($validation ){
 	//changing password for admin case
 	if($arConfig['newPassword']) setStr("Device.Users.User.3.X_CISCO_COM_Password", $arConfig['newPassword'], true);
 }
-echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
+if($response_message!='') {
+	$response->error_message = $response_message;
+	echo htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8');
+}
+else {
+	echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
+}
 ?>
