@@ -409,7 +409,7 @@ $(document).ready(function() {
 			$arrayBlockMAC=array();
 			foreach ($ManagedDevices as $key => $value) {
 				if($ManagedDevices[$key]['Type'] == "Block") {
-					array_push($arrayBlockMAC, $ManagedDevices[$key]['MACAddress']);
+					array_push($arrayBlockMAC, strtolower($ManagedDevices[$key]['MACAddress']));
 				}
 			}
 			//for WiFi Extender
@@ -457,7 +457,7 @@ $(document).ready(function() {
                     	$onlinePrivateNetworkHost[$j]['RSSI'] = $clients_RSSI[strtoupper($Host["$i"]['PhysAddress'])]." dBm";
                     else
                     	$onlinePrivateNetworkHost[$j]['RSSI'] = "NA";
-					if(in_array($onlinePrivateNetworkHost["$j"]['PhysAddress'], $arrayBlockMAC)){
+                    if(in_array(strtolower($onlinePrivateNetworkHost["$j"]['PhysAddress']), $arrayBlockMAC)){
 						$onlinePrivateNetworkHost["$j"]['Blocked'] = true;
 					} else {
 						$onlinePrivateNetworkHost["$j"]['Blocked'] = false;
@@ -480,7 +480,7 @@ $(document).ready(function() {
                     $offlinePrivateNetworkHost["$k"]['Connection'] = ($isExtendedDevice) ? $extDeviceConnType.' '.$tmpHost['connectionType'] : $tmpHost['connectionType'];
                     $offlinePrivateNetworkHost["$k"]['AddressSource'] = $Host["$i"]['AddressSource'];
                     $offlinePrivateNetworkHost["$k"]['Comments'] = $Host["$i"]['Comments'];
-					if(in_array($offlinePrivateNetworkHost["$k"]['PhysAddress'], $arrayBlockMAC)){
+					if(in_array(strtolower($offlinePrivateNetworkHost["$k"]['PhysAddress']), $arrayBlockMAC)){
 						$offlinePrivateNetworkHost["$k"]['Blocked'] = true;
 					} else {
 						$offlinePrivateNetworkHost["$k"]['Blocked'] = false;
