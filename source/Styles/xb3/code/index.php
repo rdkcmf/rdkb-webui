@@ -67,7 +67,7 @@ $Wan_IPv6 = getStr("Device.X_CISCO_COM_CableModem.IPv6Address");
 //if user is entering literal IPv6 address then remove "[" and "]"
 $url = str_replace("[","",$url);
 $url = str_replace("]","",$url);
-if((!strcmp($url, $Wan_IPv4) || ((inet_pton($url)!="") || (inet_pton($Wan_IPv6!==""))) &&(inet_pton($url) == inet_pton($Wan_IPv6)))){
+if((!strcmp($url, $Wan_IPv4) || ((inet_pton($url)!="") || (inet_pton($Wan_IPv6!==""))) &&(($Wan_IPv6!="") &&(inet_pton($url) == inet_pton($Wan_IPv6) )))) {
 	$isMSO  = true;
 }
 else {

@@ -49,7 +49,7 @@ if($wan_enabled=="true"){
 $url = str_replace("[","",$url);
 $url = str_replace("]","",$url);
 
-if((!strcmp($url, $Wan_IPv4) || ((inet_pton($url)!="") || (inet_pton($Wan_IPv6!==""))) &&(inet_pton($url) == inet_pton($Wan_IPv6)))){
+if((!strcmp($url, $Wan_IPv4) || ((inet_pton($url)!="") || (inet_pton($Wan_IPv6!==""))) &&(($Wan_IPv6!="") &&(inet_pton($url) == inet_pton($Wan_IPv6))))) {
 	$isMSO  = true;
 }
 else {
