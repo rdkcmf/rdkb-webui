@@ -17,7 +17,7 @@
 <?php include('../includes/actionHandlerUtility.php') ?>
 <?php
 session_start();
-if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] == 'admin') {
+if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] != 'mso') {
 	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
 	exit(0);
 }
