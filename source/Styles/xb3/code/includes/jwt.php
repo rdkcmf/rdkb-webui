@@ -84,32 +84,26 @@ function LogTokenData($tkdata)
     }
 }
 
- /***************************************************************************
- *   Copyright (C) 2006-2009 by Anton E. Lebedevich                        *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU Lesser General Public License as        *
- *   published by the Free Software Foundation; either version 3 of the    *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *    UrlSaveBase64* functions borrowed from comments on                   *
- *    http://www.php.net/manual/en/function.base64-encode.php              *
- *    by massimo dot scamarcia at gmail dot com                            *
- *                                                                         *
- ***************************************************************************/
-
 function base64decode_url($string)
 {
-    $data = str_replace( array('-', '_'),
-                         array('+', '/'),
-                         $string);
+	/* Need to map non-RFC-1421 characters in the URL to the proper base64 charset. */
+	$data = str_replace( "-", "+", $string);
+	$data = str_replace( "_", "/", $data);
+	/* Decode input must be a multiple of 4 bytes so pad up with “=”. */
+	$mod4 = strlen($data) % 4;
 
-    $mod4 = strlen($data) % 4;
-
-    if ($mod4) {
-        $data .= substr('====', $mod4);
-    }
-
-    return base64_decode($data);
+	switch ($mod4)
+	{ 
+		case 1: 
+			 $data = $data."==="; 
+			 break;
+	 	case 2:
+	 		 $data = $data."=="; 
+	 		 break;
+	 	case 3:
+	 		 $data = $data."=";
+	 		 break; 
+	}
+	 return base64_decode($data);
 }
 
