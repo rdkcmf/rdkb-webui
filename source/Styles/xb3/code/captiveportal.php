@@ -66,12 +66,145 @@ csrfprotector_rdkb::init();
 	width: 100% !important;
 }
 }	
+
+@media only screen 
+ and (max-device-width: 656px){
+
+.portal, #personalize > p {
+    width: 100% !important;
+   }
+}
+
+
 @media only screen 
  and (max-device-width: 420px){
   .rightbar{
-       right: 0px !important;
+  	 right: 0px !important;
   }
 }
+/* for mobiles*/
+@media only screen 
+ and (max-device-width: 480px){
+
+  #WiFi_Name, #WiFi_Password,#WiFi5_Name,#WiFi5_Password{    
+    display: block !important;   
+    margin-right: auto !important;
+    margin-left: auto !important;
+    text-align: center !important;
+    width: 80% !important;
+    font-size: 12px !important;
+       
+  }
+
+p {
+    margin-right: auto !important;
+    margin-left: auto !important;
+    font-size: 12px !important;
+    width: 100%;
+    text-align: center !important;
+
+}
+
+  #showPass{
+  	         margin: -36px 0 0 132px !important;
+  }
+
+  #show5Pass{
+
+  	margin: -36px 0 0 141px !important;
+  }
+
+#showDual{
+
+	margin-right: auto !important;
+    margin-left: auto !important;
+}
+
+.check-copy{
+margin-right: auto !important;
+    margin-left: auto !important;
+text-align: unset !important;
+}
+
+ #button_previous_01,#button_next_01 {
+
+margin-right: auto !important;
+    margin-left: auto !important;
+    display: table !important;
+
+ }
+
+.password-text{
+
+	margin-left: 10% !important;
+}
+
+.progress-bg{
+
+	margin-left: auto !important;
+    margin-right: auto !important;
+    width: 80% !important;
+}
+
+
+
+  input[type='text'].error{
+
+    background-position: 96% !important;
+
+}
+input[type='text'].success{
+  
+    background-position: 96% !important;
+  
+}
+
+.container .requirements {
+
+	left: 0px !important;
+    top: -13px;
+}
+
+#agreementContainer{
+
+	 top: -226px !important;
+}
+
+
+
+.container {
+
+	    margin-left: 93% !important;
+}
+
+
+.password-text{
+
+	text-align: left !important;
+}
+
+#phoneNumber{
+	width: 80% !important;
+}
+
+
+
+#agreementContainer .requirements{
+    left: 25px !important;
+    top: 94px !important;
+
+}
+
+}
+
+
+#agreementContainer .requirements{
+        top: -116px;
+    left: 352px;
+
+}
+
+
 .confirm-text{
 	font-family: 'xfinSansLt';
 	font-size: 14px;
@@ -911,7 +1044,7 @@ $("#f_i_option1").click(function(){
 					<p style="text-align: left; margin: 27px 0 0 115px;"><?php echo $lang["your_mobile_number"]; ?></p>
 					<input id="phoneNumber" type="text" placeholder="1(  )  -  " class="">
 					<div id="phoneNumberContainer" class="container" style="margin: 20px 30% auto auto; display: none;">
-						<div class="requirements" style="top: 130px; left: 150px;">
+						<div class="requirements" style="top: -120px; left: 337px;">
 							<div id="phoneNumberMessageTop" class="top"><?php echo $lang["textsms"]; ?></div>
 							<div id="phoneNumberMessageBottom" class="bottom"><?php echo $lang["text_are_not"]; ?></div>
 							<div class="arrow"></div>
@@ -927,7 +1060,7 @@ $("#f_i_option1").click(function(){
 						</div>
 				</div>
 				<div id="agreementContainer" class="container" style="margin: 20px 30% auto auto; display: none;">
-					<div class="requirements" style="top: -6px; left: 509px;">
+					<div class="requirements">
 						<div id="agreementMessageTop" class="top">Confirmation</div>
 						<div id="agreementMessageBottom" class="bottom"><?php echo $lang["confirm_receive_text"]; ?></div>
 						<div class="arrow"></div>
@@ -1033,4 +1166,3 @@ $("#f_i_option1").click(function(){
 		</div>
 	</body>
 </html>
-
