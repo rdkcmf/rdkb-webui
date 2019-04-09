@@ -248,8 +248,11 @@ if (strpos($partnersId, "sky-") !== false) {
 			}
 		}
 	}
-	if("Disabled"==$_SESSION["psmMode"]) { $sta_moca = getStr("Device.MoCA.Interface.1.Status");
-		$sta_moca = ($sta_moca=="Down") ? "false" : "true";
+
+	if("Disabled"==$_SESSION["psmMode"]) {
+		$sta_moca_enabled = getStr("Device.MoCA.Interface.1.Enable");
+		$sta_moca_status = getStr("Device.MoCA.Interface.1.Status");
+		$sta_moca = (($sta_moca_enabled=="true")&&(strtolower($sta_moca_status)=="up")) ? "true" : "false";
 	}
 	//$sta_dect = getStr("Device.X_CISCO_COM_MTA.Dect.Enable");
 	$sta_fire = getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel");
