@@ -56,7 +56,11 @@ session_start();
 			}
 		}	
 	}
-	if("Disabled"==$_SESSION["psmMode"]) { $sta_moca = getStr("Device.MoCA.Interface.1.Enable"); }
+	if("Disabled"==$_SESSION["psmMode"]) { 
+		$sta_moca_enabled = getStr("Device.MoCA.Interface.1.Enable");
+		$sta_moca_status = getStr("Device.MoCA.Interface.1.Status");
+		$sta_moca = (($sta_moca_enabled=="true")&&(strtolower($sta_moca_status)=="up")) ? "true" : "false";
+	}
 	$sta_dect = getStr("Device.X_CISCO_COM_MTA.Dect.Enable");
 	$sta_fire = getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel");
 	$arConfig = array(
@@ -356,7 +360,7 @@ function popUp(URL) {
 				} else {
 					echo "<div class=\"form-row odd off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='WiFi Off' /></span> <span class=\"readonlyLabel\">Wi-Fi</span></div>";
 				}
-				if (getStr("Device.MoCA.Interface.1.Enable")=="true") {
+				if ($sta_moca == "true") {
 					echo "<div class=\"form-row\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='MoCA On' /></span> <span class=\"readonlyLabel\">MoCA</span></div>";
 				} else {
 					echo "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='MoCA Off' /></span> <span class=\"readonlyLabel\">MoCA</span></div>";
