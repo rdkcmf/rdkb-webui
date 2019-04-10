@@ -17,6 +17,19 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/common-min.css" />
+    <!--Character Encoding-->
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="./cmn/js/lib/jquery-migrate-1.2.1.js"></script>
+    <script type="text/javascript" src="./cmn/js/lib/jquery.alerts.js"></script>
+</head>
+<?php
+
 require('includes/jwt.php');
 
 $flag=0;
@@ -206,10 +219,15 @@ header('X-robots-tag: noindex,nofollow');
 						if($passVal=="Default_PWD"){
 							session_start();
 							$_SESSION["password_change"] = "default_pwd";
-							echo '<script type="text/javascript"> alert("You are using default password. Please change the password.");
-								location.href = "admin_password_change.php";
-							</script>';
-							
+							echo '<script type="text/javascript">
+                                jAlert("You are using default password. Please change the password.", "Alert",
+                                function (ret) {
+                                    if(ret)
+                                        {
+                                            window.location = "admin_password_change.php";
+                                        }
+                                });
+                            </script>' ;
 						}else{
 							create_session();
 							header("location:at_a_glance.php");
