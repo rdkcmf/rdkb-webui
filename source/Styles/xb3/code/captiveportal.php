@@ -991,18 +991,18 @@ $("#f_i_option1").click(function(){
 		<div id="topbar">
 			<!-- XFINITY logo placement -->
 			 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-                        <svg viewBox="0 0 100 47"  height="60" style="margin-top: 20px;" style="text-align:right;">
 <?php
     //PartnerId = comcast cox rogers shaw
-      $logo="cmn/syndication/img/".$personalization_value['captivePortal_MSOLogo'];
-        if($PartnerId == 'comcast')
+	$logo="cmn/syndication/img/".$personalization_value['captivePortal_MSOLogo'];
+                if($PartnerId == 'comcast'){
+                        echo '<svg viewBox="0 0 100 47"  height="60" style="margin-top: 20px;" style="text-align:right;">';
                         include($logo);
-        else
-        echo "<image xlink:href=".$logo."  />";
-?>
-         </svg>
-<?php
-                echo '<div class="rightbar">
+                        echo '</svg>';
+                }
+                else {
+                        echo "<image src=".$logo."  >";
+                }
+		echo '<div class="rightbar">
                                  <ul id="dropdown_initial_state">
  				<a href = "captiveportal.php?lang='; echo  $lang['lang']; echo '"> <ele id="f_i_option1">'; echo $lang["option1"]; echo '<ili class="down"></ili></ele></a>
                                 </ul>
