@@ -56,11 +56,13 @@ $(document).ready(function() {
 			User_name: {
 				required: true,
 				noSpace: true,
+				maxlength: 64,
 				allowed_char: true
 			}
 			,Password: {
 				required: true,
 				noSpace: true,
+				maxlength: 64,
 				allowed_char: true
 			}
 			,Host_Name: {
@@ -124,7 +126,11 @@ $(document).ready(function() {
 	               return false;
 	           }
 	        }
-			if(spLC!="dyndns.org" && spLC!="tzo.com" && spLC!="changeip.com" && spLC!="freedns.afraid.org") {
+	        if(hostname.length>64){
+	        	alert("Host Name having greater than 64 characters");
+	        	return false;
+	        }
+	        if(spLC!="dyndns.org" && spLC!="tzo.com" && spLC!="changeip.com" && spLC!="freedns.afraid.org") {
 				alert("Service provider name should be \"DynDns.org\" or \"TZO.com\" or \"changeip.com\" or \"freedns.afraid.org\".");
 			} else {
 				jProgress('This may take several seconds', 60);

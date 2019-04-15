@@ -49,6 +49,9 @@ if (isset($_POST['add'])){
 	$result="";
 	$id = selectTable($sp);
 	$validation = true;
+	if($validation) $validation = (strlen($username)<=64);	
+	if($validation) $validation = (strlen($password)<=64);
+	if($validation) $validation = (strlen($hostname)<=64);
 	if($validation) $validation = noSpace($username);
 	if($validation) $validation = noSpace($password);
 	if($validation) $validation = noSpace($hostname);
@@ -118,6 +121,9 @@ if (isset($_POST['edit'])){
 	$hostname=$_POST['hostname'];
 	$validation = true;
 	if($validation) $validation = validId($_POST['ID']);
+	if($validation) $validation = (strlen($username)<=64);	
+	if($validation) $validation = (strlen($password)<=64);
+	if($validation) $validation = (strlen($hostname)<=64);
 	if($validation) $validation = noSpace($username);
 	if($validation) $validation = noSpace($password);
 	if($validation) $validation = noSpace($hostname);
