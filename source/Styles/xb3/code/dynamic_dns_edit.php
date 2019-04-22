@@ -45,7 +45,12 @@ $(document).ready(function() {
     gateway.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");
 	jQuery.validator.addMethod("noSpace", function(value, element) { 
 		return value.indexOf(" ") < 0 && value != ""; 
-	}, "Space are not allowed");    
+	}, "Space are not allowed");   
+	$.validator.addMethod("allowed_char_new", function(value, element, param) {
+	//Invalid characters are Less than (<), Greater than (>), Ampersand (&), Double quote ("), Single quote ('), Pipe (|).
+	return !param || (value.match(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/)==null);
+	}, 'Special characters are not allowed.');
+ 
 	$("#pageForm").validate({
 		rules: {
 			User_name: {
@@ -61,7 +66,8 @@ $(document).ready(function() {
 			,Host_Name: {
 				required: true,
 				noSpace: true,
-				allowed_char: true
+				allowed_char: true,
+				allowed_char_new: true
 			}
 		}
 	});
@@ -93,9 +99,31 @@ $(document).ready(function() {
 			var password = $("#Password").val();
 			var hostnames = document.getElementsByName("Host_Name");
 			var hostname = hostnames[0].value;
+			var hostArray=[];
+			hostArray[0]=hostnames[0].value;
 			for(var i=1;i<hostnames.length;i++) {
-				hostname += ","+hostnames[i].value
+				if(hostnames[i].value==""){
+					alert("Please enter HostName.");
+					return false;
+				}
+				if(hostnames[i].value!=""){
+					hostArray[i]=hostnames[i].value;
+					hostname += ","+hostnames[i].value;
+				}
 			}
+			var object = {};
+			hostArray.forEach(function (item) {
+	          if(!object[item])
+	              object[item] = 0;
+	            object[item] += 1;
+	        })
+
+	        for (var prop in object) {
+	           if(object[prop] >= 2) {
+	               alert("Host Name having Duplicate Values");
+	               return false;
+	           }
+	        }
 			if(spLC!="dyndns.org" && spLC!="tzo.com" && spLC!="changeip.com" && spLC!="freedns.afraid.org") {
 				alert("Service provider name should be \"DynDns.org\" or \"TZO.com\" or \"changeip.com\" or \"freedns.afraid.org\".");
 			} else {
