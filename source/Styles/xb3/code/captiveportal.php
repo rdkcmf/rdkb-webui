@@ -179,12 +179,18 @@ ili{
 		"network_name1"	 => "Device.WiFi.SSID.2.SSID",
 		"KeyPassphrase"	 => "Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase",
 		"KeyPassphrase1" => "Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase",
+                "freq_band"      => "Device.WiFi.Radio.1.OperatingFrequencyBand",
+                "freq_band1"     => "Device.WiFi.Radio.2.OperatingFrequencyBand",
 	);
 	$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 	$network_name	= $wifi_value['network_name'];
 	$network_pass	= $wifi_value['KeyPassphrase'];
 	$network_name1	= $wifi_value['network_name1'];
 	$network_pass1	= $wifi_value['KeyPassphrase1'];
+        $freq_band      = $wifi_value['freq_band'];
+        $freq_band1     = $wifi_value['freq_band1'];
+        $radioband1     = (strstr($freq_band,"5G")) ? "5" : "2.4";
+        $radioband2     = (strstr($freq_band1,"5G")) ? "5" : "2.4";
 	$ipv4_addr 	= getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
 	/*------	logic to figure out LAN or WiFi from Connected Devices List	------*/
 	/*------	get clients IP		------*/
@@ -205,11 +211,13 @@ ili{
 		if (stristr($interface, "WiFi")){
 			if (stristr($interface, "WiFi.SSID.1")) {
 				$host['networkType'] = "Private";
-				$host['connectionType'] = "Wi-Fi 2.4G";
+				$frequency_band = (strstr($freq_band,"5G")) ? "5G" : "2.4G";
+				$host['connectionType'] = "Wi-Fi $frequency_band";
 			}
 			elseif (stristr($interface, "WiFi.SSID.2")) {
 				$host['networkType'] = "Private";
-				$host['connectionType'] = "Wi-Fi 5G";
+				$frequency_band = (strstr($freq_band1,"5G")) ? "5G" : "2.4G";
+         			$host['connectionType'] = "Wi-Fi $frequency_band";
 			}
 			else {
 				$host['networkType'] = "Public";
@@ -1206,7 +1214,7 @@ $("#f_i_option1").click(function(){
 			<table align="center" border="0">
 				<tr>
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" name="dualBand" >2.4 GHz Network</td>
+					<td class="confirm-text" name="dualBand" ><?php echo $radioband1; ?> GHz Network</td>
 				</tr>
 				<tr>
 					<td class="left-settings" >Wi-Fi Name</td>
@@ -1225,7 +1233,7 @@ $("#f_i_option1").click(function(){
 				</tr>
 				<tr name="dualBand">
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" >5 GHz Network</td>
+					<td class="confirm-text" ><?php echo $radioband2; ?> GHz Network</td>
 				</tr>
 				<tr name="dualBand">
 					<td class="left-settings" >Wi-Fi Name</td>
@@ -1256,7 +1264,7 @@ $("#f_i_option1").click(function(){
 			<table align="center" border="0">
 				<tr>
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" name="dualBand" >2.4 GHz Network</td>
+					<td class="confirm-text" name="dualBand" ><?php echo $radioband1; ?> GHz Network</td>
 				</tr>
 				<tr>
 					<td class="left-settings" >Wi-Fi Name</td>
@@ -1275,7 +1283,7 @@ $("#f_i_option1").click(function(){
 				</tr>
 				<tr name="dualBand">
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" >5 GHz Network</td>
+					<td class="confirm-text" ><?php echo $radioband2; ?> GHz Network</td>
 				</tr>
 				<tr name="dualBand">
 					<td class="left-settings" >Wi-Fi Name</td>
@@ -1306,7 +1314,7 @@ $("#f_i_option1").click(function(){
 			<table align="center" border="0">
 				<tr>
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" name="dualBand" >2.4 GHz Network</td>
+					<td class="confirm-text" name="dualBand" ><?php echo $radioband1; ?> GHz Network</td>
 				</tr>
 				<tr>
 					<td class="left-settings" >Wi-Fi Name</td>
@@ -1325,7 +1333,7 @@ $("#f_i_option1").click(function(){
 				</tr>
 				<tr name="dualBand">
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" >5 GHz Network</td>
+					<td class="confirm-text" ><?php echo $radioband2; ?> GHz Network</td>
 				</tr>
 				<tr name="dualBand">
 					<td class="left-settings" >Wi-Fi Name</td>
