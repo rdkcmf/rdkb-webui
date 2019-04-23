@@ -61,6 +61,8 @@ if (isset($_POST['add'])){
 	if($validation) $validation = is_allowed_string($_POST['username']);
 	if($validation) $validation = is_allowed_string($_POST['password']);
 	if($validation) $validation = is_allowed_string($_POST['hostname']);
+	$hostArray= explode(",",$_POST['hostname']);
+	if($validation) $validation = (count($hostArray) === count(array_unique($hostArray)) );
 	if($validation){
 		if($id!=0) {
 			setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".ServiceName",$sp,false);
@@ -128,6 +130,8 @@ if (isset($_POST['edit'])){
 	if($validation) $validation = is_allowed_string($_POST['username']);
 	if($validation) $validation = is_allowed_string($_POST['password']);
 	if($validation) $validation = is_allowed_string($_POST['hostname']);
+	$hostArray= explode(",",$_POST['hostname']);
+	if($validation) $validation = (count($hostArray) === count(array_unique($hostArray)) );
 	if($validation){
 		//delete entry - we can't edit on same index so delete on one index and update on other index
 		if(strcasecmp($sp,getStr("Device.X_CISCO_COM_DDNS.Service.".$i.".ServiceName")) != 0){
