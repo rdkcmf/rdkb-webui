@@ -393,21 +393,36 @@ function f()
 	//Only do WiFi SSID check if we are not in power saving mode
 	if ("Disabled"==$_SESSION["psmMode"]) {
 		//Assumes that private network is always SSID's 1 and 2
-		$wifi_param = array(
-			"wifi_24_enabled"	=> "Device.WiFi.SSID.1.Enable",
-			"wifi_24_ssid"		=> "Device.WiFi.SSID.1.SSID",
-			"wifi_24_passkey"	=> "Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase",
-			"wifi_50_enabled"	=> "Device.WiFi.SSID.2.Enable",
-			"wifi_50_ssid"		=> "Device.WiFi.SSID.2.SSID",
-			"wifi_50_passkey"	=> "Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase",
-		);
-		$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
+		$frequency_band = getStr("Device.WiFi.Radio.1.OperatingFrequencyBand");
+                $frequency_band1 = getStr("Device.WiFi.Radio.2.OperatingFrequencyBand");
+		if (strstr($frequency_band,"2.4G")) {
+			$wifi_param = array(
+				"wifi_24_enabled"	=> "Device.WiFi.SSID.1.Enable",
+				"wifi_24_ssid"		=> "Device.WiFi.SSID.1.SSID",
+				"wifi_24_passkey"	=> "Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase",
+				"wifi_50_enabled"	=> "Device.WiFi.SSID.2.Enable",
+				"wifi_50_ssid"		=> "Device.WiFi.SSID.2.SSID",
+				"wifi_50_passkey"	=> "Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase",
+			);
+		} else {
+			$wifi_param = array(
+				"wifi_50_enabled"	=> "Device.WiFi.SSID.1.Enable",
+				"wifi_50_ssid"		=> "Device.WiFi.SSID.1.SSID",
+				"wifi_50_passkey"	=> "Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase",
+				"wifi_24_enabled"	=> "Device.WiFi.SSID.2.Enable",
+				"wifi_24_ssid"		=> "Device.WiFi.SSID.2.SSID",
+				"wifi_24_passkey"	=> "Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase",
+			);
+		}
+                $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 		$wifi_24_enabled 	= $wifi_value["wifi_24_enabled"];
 		$wifi_24_ssid 		= htmlspecialchars($wifi_value["wifi_24_ssid"], ENT_NOQUOTES, 'UTF-8');
 		$wifi_24_passkey 	= htmlspecialchars($wifi_value["wifi_24_passkey"], ENT_NOQUOTES, 'UTF-8');
 		$wifi_50_enabled 	= $wifi_value["wifi_50_enabled"];
 		$wifi_50_ssid 		= htmlspecialchars($wifi_value["wifi_50_ssid"], ENT_NOQUOTES, 'UTF-8');
 		$wifi_50_passkey 	= htmlspecialchars($wifi_value["wifi_50_passkey"], ENT_NOQUOTES, 'UTF-8');
+                $frequency_band         = $wifi_value["frequency_band"];
+                $frequency_band1        = $wifi_value["frequency_band1"];
 		//If at least one private SSID is enabled
 		if ( $lanMode == "router" && ("true" == $wifi_24_enabled || "true" == $wifi_50_enabled) ) {
 			echo '<div class="module block" id="wifi-config">';
@@ -450,13 +465,13 @@ function f()
 				if($isMSO) {
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (2.4GHz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID (<?php echo $wifi_value["frequency_band"]; ?>):</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_24_ssid.'</span>';
 					echo '</div>';
 				echo '</div>';
 				echo '<div class="form-row odd">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (5GHz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID (<?php echo $wifi_value["frequency_band1"]; ?>):</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_50_ssid.'</span>';
 					echo '</div>';
 				echo '</div>';
@@ -464,21 +479,21 @@ function f()
 				else{
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (2.4GHz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID (<?php echo $wifi_value["frequency_band"]; ?>):</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_24_ssid.'</span>';
 					echo '</div>';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi Passkey (2.4GHz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi Passkey (<?php echo $wifi_value["frequency_band"]; ?>):</span>';
 						echo '<span class="value">Log in to view passkey</span>';
 					echo '</div>';
 				echo '</div>';
 				echo '<div class="form-row odd">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (5GHz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID (<?php echo $wifi_value["frequency_band1"]; ?>):</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_50_ssid.'</span>';
 					echo '</div>';
 					echo '<div class="form-row odd">';
-						echo '<span class="readonlyLabel">Wi-Fi Passkey (5GHz):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi Passkey (<?php echo $wifi_value["frequency_band1"]; ?>):</span>';
 						echo '<span class="value">Log in to view passkey</span>';
 					echo '</div>';
 				echo '</div>';
@@ -560,11 +575,15 @@ function f()
 				if (stristr($interface, "WiFi")){
 					if (stristr($interface, "WiFi.SSID.1")) {
 						//$host['networkType'] = "Private";
-						$host['connectionType'] = "Wi-Fi 2.4G";
+						$frequency_band = getStr("Device.WiFi.Radio.1.OperatingFrequencyBand");
+						$frequency_band = (strstr($frequency_band,"5G")) ? "5G" : "2.4G";
+						$host['connectionType'] = "Wi-Fi $frequency_band";
 					}
 					elseif (stristr($interface, "WiFi.SSID.2")) {
 						//$host['networkType'] = "Private";
-						$host['connectionType'] = "Wi-Fi 5G";
+						$frequency_band = getStr("Device.WiFi.Radio.2.OperatingFrequencyBand");
+						$frequency_band = (strstr($frequency_band,"5G")) ? "5G" : "2.4G";
+						$host['connectionType'] = "Wi-Fi $frequency_band";
 					}
 					else {
 						//$host['networkType'] = "Public";
