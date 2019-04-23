@@ -34,6 +34,7 @@
 	$wan_enable= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
 	$wan_status= getStr("Device.Ethernet.Interface.1.Status");
 	$wnStatus= ($wan_enable=="true" && $wan_status=="Down") ? "true" : "false";
+	$bridge_mode = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode");
 	?>
 <style type="text/css">
 label{
@@ -60,6 +61,12 @@ $(document).ready(function() {
 		title_off: "Docsis Mode",
 		state: <?php echo ($wan_enable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});
+	 <?php
+		if ($bridge_mode == "bridge-static") {
+			echo '$("#wan_switch").children(".rs_radiolist").addClass("disabled_state");';
+			echo '$("#wan_switch").data("radioswitchstates", "false");';
+		}
+	?>	
 	$("#wan_switch").change(function()
 	{	
 		var wan_network	= $("#wan_switch").radioswitch("getState").on ? "true" : "false";
@@ -118,8 +125,9 @@ function changeMode(jsConfig){
 			<span id="wan_switch"></span>
 			<?php
 				if($wnStatus=="true"){
+					echo "<br><br>";
 			?>
-				<div class="select-row" id="noEth"><p class="error">No Ethernet WAN Connection is detected on Port 1.</p></div>
+				<p class="error">No Ethernet WAN Connection is detected on Port 1.</p>
 			<?php
 			}
 			?>			
@@ -140,6 +148,14 @@ function changeMode(jsConfig){
 		<?php
 		}
 		?>
+		<?php
+            if($bridge_mode=="bridge-static"){
+		?>
+		    <p class="error">EthernetWAN mode is not supported in bridge mode. Disable Bridge mode to enable Ethernet WAN mode.</p>
+            
+        <?php
+           }
+           ?> 
 		<div class="form-row odd">
 		<span class="readonlyLabel">WAN IP Address (IPv4):</span>
 		<span class="value"><?php echo $WANIPv4;?></span>
