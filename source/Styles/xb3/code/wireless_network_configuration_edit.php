@@ -37,7 +37,6 @@ if(!($_GET['id'] == 1 || $_GET['id'] == 2)){
 // put edit SSID which have similar layout into one page, but edit HotSpot SSID
 $id		= isset($_GET['id']) ? $_GET['id'] : "1";
 $rf		= (2 - intval($id)%2);	//1,3,5,7 == 1(2.4G); 2,4,6,8 == 2(5G)
-$radio_band	= (1 == $rf) ? "2.4" : "5";
 $valid_ids	= array('1','2','3','4');
 // check if the LowerLayers radio is enabled. if disable, no need to configure
 if ("false" == getStr("Device.WiFi.Radio.$rf.Enable")) {
@@ -60,6 +59,7 @@ function KeyExtGet($root, $param)
 }
 $wifi_param = array(
 	"radio_enable"		=> "Device.WiFi.SSID.$id.Enable",
+        "freq_band"		=> "Device.WiFi.Radio.$id.OperatingFrequencyBand",
 	"network_name"		=> "Device.WiFi.SSID.$id.SSID",
 	"wireless_mode"		=> "Device.WiFi.Radio.$rf.OperatingStandards",
 	"encrypt_mode"		=> "Device.WiFi.AccessPoint.$id.Security.ModeEnabled",
@@ -78,12 +78,14 @@ $wifi_param = array(
 	"DefaultKeyPassphrase"	=> "Device.WiFi.AccessPoint.$id.Security.X_COMCAST-COM_DefaultKeyPassphrase",
 	"AccessPoint_4_Enable"	=> "Device.WiFi.AccessPoint.4.Enable",
 	"Radio_".$rf."_Enable"	=> "Device.WiFi.Radio.$rf.Enable",
-	"2_SupportedStandards"	=> "Device.WiFi.Radio.2.SupportedStandards",
-	"DFS_Support1"		=> "Device.WiFi.Radio.2.X_COMCAST_COM_DFSSupport", //1-supported 0-not supported
-	"DFS_Enable1"		=> "Device.WiFi.Radio.2.X_COMCAST_COM_DFSEnable",
+	"SupportedStandards"	=> "Device.WiFi.Radio.$rf.SupportedStandards",
+	"DFS_Support1"		=> "Device.WiFi.Radio.$rf.X_COMCAST_COM_DFSSupport", //1-supported 0-not supported
+	"DFS_Enable1"		=> "Device.WiFi.Radio.$rf.X_COMCAST_COM_DFSEnable",
 	);
 $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 $radio_enable		= $wifi_value['radio_enable'];
+$freq_band		= $wifi_value['freq_band'];
+$radio_band		= (strstr($freq_band,"5G")) ? "5" : "2.4";
 $network_name		= $wifi_value['network_name'];
 $wireless_mode		= $wifi_value['wireless_mode'];
 $encrypt_mode		= $wifi_value['encrypt_mode'];
@@ -133,7 +135,7 @@ if ("false" == $wifi_value['Radio_'.$rf.'_Enable']){
 	$radio_enable = "false";
 }
 //check if support 802.11ac
-$support_mode_5g		= $wifi_value['2_SupportedStandards'];
+$supported_mode		= $wifi_value['SupportedStandards'];
 /*if ($_SESSION['_DEBUG']){
 	$radio_enable		= "true";
 	$network_name		= "string";
@@ -153,7 +155,7 @@ $support_mode_5g		= $wifi_value['2_SupportedStandards'];
 	$network_pass_128	= "wep128";
 	$possible_channels	= "36,40,44,48,149,153,157,161,165";
 	// $possible_channels	= "1-11";
-	$support_mode_5g 	= "a,n,ac";
+       	$supported_mode 	= "a,n,ac";
 }*/
 if ("1-11"==$possible_channels)
 $possible_channels = "1,2,3,4,5,6,7,8,9,10,11";
@@ -778,7 +780,7 @@ function click_save()
 	var network_name_1= '<?php echo $network_name; ?>';
 	var password_mso_user = '<?php echo $password_mso_user; ?>';
 	var network_password = "";
-	var rf = "<?php echo $rf == 1? "": 1; ?>";
+	var rf = "<?php echo $radio_band == "2.4"? "": 1; ?>";
 	var radio_enable		= $("#wireless_network_switch").radioswitch("getState").on;
 	var network_name		= addslashes($("#network_name").val());
 	var wireless_mode		= $("#wireless_mode").attr("value");
@@ -892,7 +894,7 @@ function setResetInfo(info) {
 			<?php
 				//zqiu: add "selected"
 				if ("5"==$radio_band){
-					if (strstr($support_mode_5g, "ac")){
+					if (strstr($supported_mode, "ac")){
 						echo '<option value="ac" ';     echo (    "ac"==$wireless_mode)? 'selected':''; echo'>802.11 ac</option>';
 						echo '<option value="n,ac" ';   echo (  "n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 n/ac</option>';
 						echo '<option value="a,n,ac" '; echo ("a,n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 a/n/ac</option>';
@@ -926,7 +928,8 @@ function setResetInfo(info) {
 			</select>
 			<p id="tip_security_mode" class="footnote">
 			<?php
-				if ("5"==$radio_band && strstr($support_mode_5g, "ac")){
+				if ("5"==$radio_band && strstr($supported_mode, "ac")){
+
 					echo 'Please note 802.11 n/ac mode only compatible with AES and None encryption!!';
 				}
 				else{
@@ -957,7 +960,7 @@ function setResetInfo(info) {
 			<select id="auto_channel_number" disabled="disabled"><option selected="selected" ><?php echo $channel_number; ?></option></select>
 		</div>
 		<div class="form-row odd" id="bandwidth_switch" style="<?php if ('mso'==$_SESSION['loginuser']) {echo 'display:none'; } else {echo 'display:block'; } ?>" >
-		<?php if($rf == 1 ) { ?>
+		<?php if($radio_band == "2.4" ) { ?>
 			<label for="channel_bandwidth20">Channel Bandwidth:</label>
 			<input type="radio"  name="channel_bandwidth" value="20MHz" id="channel_bandwidth20" checked="checked" /><b>20</b>
 			<label for="channel_bandwidth" class="acs-hide"></label>
@@ -965,7 +968,7 @@ function setResetInfo(info) {
 		<?php } else { ?>
 			<label for="channel_bandwidth201">Channel Bandwidth:</label>
 			<input type="radio"  name="channel_bandwidth1" value="20MHz" id="channel_bandwidth201" checked="checked" /><b>20</b>
-			<?php if (strstr($support_mode_5g, "ac")){ ?>
+			<?php if (strstr($supported_mode, "ac")){ ?>
 				<label for="channel_bandwidth1" class="acs-hide"></label>
 				<input type="radio"  name="channel_bandwidth1" value="40MHz"  id="channel_bandwidth1" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
 				<label for="channel_bandwidth2" class="acs-hide"></label>
