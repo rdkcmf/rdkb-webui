@@ -2,15 +2,11 @@
 /*
  If not stated otherwise in this file or this component's Licenses.txt file the
  following copyright and licenses apply:
-
  Copyright 2018 RDK Management
-
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
-
  http://www.apache.org/licenses/LICENSE-2.0
-
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -64,7 +60,6 @@ csrfprotector_rdkb::init();
 	</head>
 <!-- for Dual Band Network -->
 <style>
-
 @media only screen 
  and (max-device-width: 600px){
 #topbar,#set_up > p,#set_up{
@@ -74,10 +69,9 @@ csrfprotector_rdkb::init();
 @media only screen 
  and (max-device-width: 420px){
   .rightbar{
-  	 right: 0px !important;
+       right: 0px !important;
   }
 }
-
 .confirm-text{
 	font-family: 'xfinSansLt';
 	font-size: 14px;
@@ -531,34 +525,34 @@ $(document).ready(function(){
 			switch (strength) {
 			    case 0:
 				$passStrength.removeClass();
-				$passInfo.text("Your password does not meet the requirements yet.");
+				$passInfo.text("<?php echo $lang["pass_doesnt_yet"]; ?>");
 				break;
 			    case 1:
 				$passStrength.removeClass().addClass("weak-red");
-				$passInfo.text("Your password is currently: Weak");
+				$passInfo.text("<?php echo $lang["p_weak"]; ?>");
 				break;
 			    case 2:
 				$passStrength.removeClass().addClass("weak-red");
-				$passInfo.text("Your password is currently: Weak");
+				$passInfo.text("<?php echo $lang["p_weak"]; ?>");
 				break;
 			    case 3:
 				$passStrength.removeClass().addClass("average-yellow");
-				$passInfo.text("Your password is currently: Average");
+				$passInfo.text("<?php echo $lang["p_avg"]; ?>");
 				break;
 			    case 4:
 				$passStrength.removeClass().addClass("strong-green");
-				$passInfo.text("Your password is currently: Strong");
+				$passInfo.text("<?php echo $lang["p_strong"]; ?>");
 				break;
 			    case 5:
 				$passStrength.removeClass().addClass("too-long");
-				$passInfo.text("Your password is too long!");
+				$passInfo.text("<?php echo $lang["p_long"]; ?>");
 				break;
 			}
 		}
 		else {
 			$passStrength.removeClass();
 			passTeext = $passVal.val().length > 7 ? "" : " yet" ;
-			$passInfo.text("Your password does not meet the requirements"+passTeext+".");
+			$passInfo.text("<?php echo $lang["p_doesnt_req"]; ?>"+passTeext+".");
 		}
 	if($passVal.val().length > 7){
 		$("#passwordIndicator"+element).show();
@@ -603,7 +597,6 @@ $(document).ready(function(){
                 $("#dropdown_initial_state").hide();
                 $("#dropdown_active_state").show();
         });
-
         $("#dropdown_active_state").mouseleave(function(){
                 $("#dropdown_initial_state").show();
                 $("#dropdown_active_state").hide();
@@ -640,53 +633,53 @@ $("#f_i_option1").click(function(){
 		if(val == ""){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Wi-Fi Name", "Please enter Wi-Fi Name.");
+			messageHandler("name","<?php echo $lang["wifi_name"]; ?>" ," <?php echo $lang["please_enter"]; ?>");
 		}
 		else if(valLowerCase == Defaultssid.toLowerCase()){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", "Choose a different name than the default one provided on your gateway");
+			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff1"]; ?>");
 		}
 		else if(isOnlySpaces)
 		{
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", "Wifi Name cannot contain only spaces.");
+			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["name_cannot_space"]; ?>");
 		}
 		else if("<?php echo $network_name;?>".toLowerCase() == val.toLowerCase()){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", "Choose a different name than the one provided on your gateway.");
+			messageHandler("name","<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff"]; ?>");
 		}
 		else if(!isXHS){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", 'SSID is invalid/reserved.');
+			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", '<?php echo $lang["ssid_invalid"]; ?>');
 		}
 		else if(!isXFINITY){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", 'SSID is invalid/reserved.');
+			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", '<?php echo $lang["ssid_invalid"]; ?>');
 		}
 		else if(!isOther){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", 'SSID is invalid/reserved.');
+			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", '<?php echo $lang["ssid_invalid"]; ?>');
 		}
 		else if(!isValid){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", "1 to 32 ASCII characters.");
+			messageHandler("name","<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["ascii_characters"]; ?>");
 		}
 		else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi5_Name").val()){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", "This name is already in use. Please choose a different name.");
+			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["name_already"]; ?>");
 		}
 		else {
 			goNextName = true;
 			$(this).addClass("success").removeClass("error");
-			messageHandler("name", "Wi-Fi Name", "This identifies your Wi-Fi network from other nearby networks.");
+			messageHandler("name", "<?php echo $lang["wifi_name"]; ?>", "<?php echo $lang["this_identifies"]; ?>");
 		}
 		toShowNext();
 	}));
@@ -701,27 +694,27 @@ $("#f_i_option1").click(function(){
 		if(val == ""){
 			goNextPassword	= false;
 			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password", "Wi-Fi Password", "Please enter Wi-Fi Password.");
+			messageHandler("password", "<?php echo $lang["wifi_password"]; ?>", "<?php echo $lang["please_enter_p"]; ?>");
 		}
 		else if("<?php echo $network_pass;?>" == val){
 			goNextPassword	= false;
 			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password", "Let's try that again", "Choose a different password than the one provided on your gateway.");
+			messageHandler("password", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff"]; ?>");
 		}
 		else if(!isValid){
 			goNextPassword	= false;
 			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password", "Let's try that again", "Passwords are case sensitive and should include 8-63 ASCII characters or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.");
+			messageHandler("password","<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["pass_case_sensi"]; ?>");
 		}
 		/*else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi5_Password").val()){
 			goNextPassword = false;
 			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password", "Let's try that again", "Network Password for both bands cannot be the same.");
+			messageHandler("password", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["pass_cannot_besame"]; ?>");
 		}*/
 		else {
 			goNextPassword	= true;
 			$WiFiPass.addClass("success").removeClass("error");
-			messageHandler("password", "Wi-Fi Password", "Passwords are case sensitive and should include 8-63 ASCII characters or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.");
+			messageHandler("password", "<?php echo $lang["wifi_password"]; ?>", "<?php echo $lang["pass_case_sensi"]; ?>");
 		}
 		toShowNext();
 		showPasswordStrength("", goNextPassword);
@@ -749,53 +742,53 @@ $("#f_i_option1").click(function(){
 		if(val == ""){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Wi-Fi Name", "Please enter Wi-Fi Name.");
+			messageHandler("name5", "<?php echo $lang["wifi_name"]; ?>", "<?php echo $lang["please_enter"]; ?>");
 		}
 		else if(valLowerCase == Defaultssid1.toLowerCase()){
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "Let's try that again", "Choose a different name than the default one provided on your gateway");
+			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff1"]; ?>");
 		}
 		else if(isOnlySpaces)
 		{
 			goNextName = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Let's try that again", "Wifi Name cannot contain only spaces.");
+			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["name_cannot_space"]; ?>");
 		}
 		else if("<?php echo $network_name1;?>".toLowerCase() == val.toLowerCase()){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Let's try that again", "Choose a different name than the one provided on your gateway.");
+			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff"]; ?>");
 		}
 		else if(!isXHS){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Let's try that again", 'SSID is invalid/reserved.');
+			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", '<?php echo $lang["ssid_invalid"]; ?>');
 		}
 		else if(!isXFINITY){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Let's try that again", 'SSID is invalid/reserved.');
+			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", '<?php echo $lang["ssid_invalid"]; ?>');
 		}
 		else if(!isOther){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Let's try that again", 'SSID is invalid/reserved.');
+			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", '<?php echo $lang["ssid_invalid"]; ?>');
 		}
 		else if(!isValid){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Let's try that again", "1 to 32 ASCII characters.");
+			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["ascii_characters"]; ?>");
 		}
 		else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi_Name").val()){
 			goNextName5 = false;
 			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "Let's try that again", "This name is already in use. Please choose a different name.");
+			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["name_already"]; ?>");
 		}
 		else {
 			goNextName5 = true;
 			$(this).addClass("success").removeClass("error");
-			messageHandler("name5", "Wi-Fi Name", "This identifies your Wi-Fi network from other nearby networks.");
+			messageHandler("name5", "<?php echo $lang["wifi_name"]; ?>", "<?php echo $lang["this_identifies"]; ?>.");
 		}
 		toShowNext();
 	}));
@@ -810,27 +803,27 @@ $("#f_i_option1").click(function(){
 		if(val == ""){
 			goNextPassword5	= false;
 			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password5", "Wi-Fi Password", "Please enter Wi-Fi Password.");
+			messageHandler("password5", "<?php echo $lang["wifi_password"]; ?>", "<?php echo $lang["please_enter_p"]; ?>");
 		}
 		else if("<?php echo $network_pass1;?>" == val){
 			goNextPassword5	= false;
 			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password5", "Let's try that again", "Choose a different password than the one provided on your gateway.");
+			messageHandler("password5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff"]; ?>");
 		}
 		else if(!isValid){
 			goNextPassword5	= false;
 			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password5", "Let's try that again", "Passwords are case sensitive and should include 8-63 ASCII characters or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.");
+			messageHandler("password5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["pass_case_sensi"]; ?>");
 		}
 		/*else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi_Password").val()){
 			goNextPassword5 = false;
 			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password5", "Let's try that again", "Network Password for both bands cannot be the same.");
+			messageHandler("password5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["pass_case_sensi"]; ?>");
 		}*/
 		else {
 			goNextPassword5	= true;
 			$WiFiPass.addClass("success").removeClass("error");
-			messageHandler("password5", "Wi-Fi Password", "Passwords are case sensitive and should include 8-63 ASCII characters or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.");
+			messageHandler("password5", "<?php echo $lang["lets_try_again"];?>", "<?php echo $lang["pass_case_sensi"]; ?>");
 		}
 		toShowNext();
 		showPasswordStrength("5", goNextPassword5);
@@ -862,7 +855,7 @@ $("#f_i_option1").click(function(){
 			else if(!isValid){
 				goNextphoneNumber(false);
 				$phoneNumber.addClass("error").removeClass("success");
-				messageHandler("phoneNumber", "Let's try that again", "Please enter the 10 digit Phone Number.");
+				messageHandler("phoneNumber", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["ph_number"]; ?>");
 			}
 			else {
 				//goNextphoneNumber(true);
@@ -872,7 +865,7 @@ $("#f_i_option1").click(function(){
 					goNextphoneNumber(true);
 				}
 				else
-					messageHandler("concent_check", "Confirmation", "Please confirm your agreement to receive a text message.");
+					messageHandler("concent_check", "Confirmation", "<?php echo $lang["plz_confirm"]; ?>");
 			}
 		}
 	}));
@@ -880,15 +873,15 @@ $("#f_i_option1").click(function(){
 	$("#showPass").click(function() {
 		passwordVal = $("#WiFi_Password").val();
 		classVal = $("#WiFi_Password").attr('class');
-		if ($("#showPass").children().text() == "Hide ") {
-			$("[id^='showPass']").children().text("Show");
-			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="password" placeholder="Minimum Eight Characters" maxlength="64" class="">';
+		if ($("#showPass").children().text() == "<?php echo $lang["hide"]; ?>") {
+			$("[id^='showPass']").children().text("<?php echo $lang["show"]; ?>");
+			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="password" placeholder=<?php echo $lang["passwordtext"]; ?> maxlength="64" class="">';
 			$("[id^='WiFi_Password_0']").hide();
 			$("[id^='WiFi_Password_pass_0']").show();
 		}
 		else {
-			$("[id^='showPass']").children().text("Hide ");
-			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="">';
+			$("[id^='showPass']").children().text("<?php echo $lang["hide"]; ?>");
+			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="text" placeholder=<?php echo $lang["passwordtext"]; ?> maxlength="64" class="">';
 			$("[id^='WiFi_Password_0']").show();
 			$("[id^='WiFi_Password_pass_0']").hide();
 		}
@@ -898,15 +891,15 @@ $("#f_i_option1").click(function(){
 	$("#show5Pass").click(function() {
 		password5Val = $("#WiFi5_Password").val();
 		class5Val = $("#WiFi5_Password").attr('class');
-		if ($("#show5Pass").children().text() == "Hide ") {
-			$("[id^='show5Pass']").children().text("Show");
-			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="password" placeholder="Minimum Eight Characters" maxlength="64" class="">';
+		if ($("#show5Pass").children().text() == "<?php echo $lang["hide"]; ?>") {
+			$("[id^='show5Pass']").children().text("<?php echo $lang["show"]; ?>");
+			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="password" placeholder=<?php echo $lang["passwordtext"]; ?> maxlength="64" class="">';
 			$("[id^='WiFi5_Password_0']").hide();
 			$("[id^='WiFi5_Password_pass_0']").show();
 		}
 		else {
-			$("[id^='show5Pass']").children().text("Hide ");
-			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="">';
+			$("[id^='show5Pass']").children().text("<?php echo $lang["hide"]; ?>");
+			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="text" placeholder=<?php echo $lang["passwordtext"]; ?> maxlength="64" class="">';
 			$("[id^='WiFi5_Password_0']").show();
 			$("[id^='WiFi5_Password_pass_0']").hide();
 		}
@@ -966,7 +959,7 @@ $("#f_i_option1").click(function(){
 			else{
 				goNextphoneNumber(false);
 				$phoneNumber.addClass("error").removeClass("success");
-				messageHandler("phoneNumber", "Let's try that again", "Please enter the 10 digit Phone Number.");
+				messageHandler("phoneNumber", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["ph_number"]; ?>");
 			}
 		}
 		else {
@@ -1011,7 +1004,6 @@ $("#f_i_option1").click(function(){
                                 <a href = "captiveportal.php?lang='; echo  $lang['otherlang']; echo '">  <ele id="f_a_option2">'; echo $lang["option2"]; echo '</ele></a>
                                 </ul>
                 </div>';
-
 ?>
 			<!-- XFINITY logo svg code end -->
 		</div>
@@ -1050,7 +1042,7 @@ $("#f_i_option1").click(function(){
 					</div>
 				</div>
 				<p style="display:inline; margin: 1px 40px 0 0; text-align: right;"><?php echo $lang["wifi_name"]; ?></p>
-				<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi_Name" type="text" placeholder="Example: [account name] Wi-Fi" maxlength="32" class="">
+				<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi_Name" type="text" placeholder=<?php echo $lang["exampleaccounttext"]; ?> maxlength="32" class="">
 				<br>
 				<div id="PasswordContainer" class="container" style="display: none;">
 					<div class="requirements">
@@ -1060,7 +1052,7 @@ $("#f_i_option1").click(function(){
 					</div>
 				</div>
 				<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;"><?php echo $lang["wifi_password"]; ?></p>
-				<span style="display:inline; margin: 4px 0 0 -26px;" id="password_field"><input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" autocorrect="off" autocapitalize="off"></span>
+				<span style="display:inline; margin: 4px 0 0 -26px;" id="password_field"><input id="WiFi_Password" type="text" placeholder=<?php echo $lang["passwordtext"]; ?> maxlength="64" class="" autocorrect="off" autocapitalize="off"></span>
 				<div id="showPass" style="display:inline-table; margin: 4px 0 0 -90px;">
 					<a href="javascript:void(0)" style="white-space: pre;"><?php echo $lang["hide"]; ?></a>
 			    </div>
@@ -1079,7 +1071,7 @@ $("#f_i_option1").click(function(){
 						</div>
 					</div>
 					<p style="display:inline; margin: 1px 40px 0 0; text-align: right;"><?php echo $lang["wifi_name"]; ?></p>
-					<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi5_Name" type="text" placeholder="Example: [account name] Wi-Fi" maxlength="32" class="">
+					<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi5_Name" type="text" placeholder=<?php echo $lang["exampleaccounttext"]; ?> maxlength="32" class="">
 					<br>
 					<div id="PasswordContainer5" class="container" style="display: none;">
 						<div class="requirements">
@@ -1089,7 +1081,7 @@ $("#f_i_option1").click(function(){
 						</div>
 					</div>
 					<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;"><?php echo $lang["wifi_password"]; ?></p>
-					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" autocorrect="off" autocapitalize="off" ></span>
+					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder=<?php echo $lang["passwordtext"]; ?> maxlength="64" class="" autocorrect="off" autocapitalize="off" ></span>
 					<div id="show5Pass" style="display:inline-table; margin: 4px 0 0 -90px;">
 						<a href="javascript:void(0)" style="white-space: pre;"><?php echo $lang["hide"]; ?> </a>
 				    </div>
@@ -1111,7 +1103,7 @@ $("#f_i_option1").click(function(){
 		    	</div>
 			<br><br>
 			<div>
-				<button id="button_next" style="text-align: center; width: 215px; display: none;">Next</button>
+				<button id="button_next" style="text-align: center; width: 215px; display: none;"><?php echo $lang["next"]; ?></button>
 			</div>
 			<br><br>
 		</div>
@@ -1164,12 +1156,12 @@ $("#f_i_option1").click(function(){
 				<?php echo $lang["send_ur_self_text"]; ?>
 				</p>
 				<div id="text_sms" style="display: <?php echo $SMSsupport; ?>">
-					<p style="text-align: left; margin: 27px 0 0 115px;">Your Mobile Number (<b>Optional</b>)</p>
+					<p style="text-align: left; margin: 27px 0 0 115px;"><?php echo $lang["your_mobile_number"]; ?></p>
 					<input id="phoneNumber" type="text" placeholder="1(  )  -  " class="">
 					<div id="phoneNumberContainer" class="container" style="margin: 20px 30% auto auto; display: none;">
 						<div class="requirements" style="top: 130px; left: 150px;">
-							<div id="phoneNumberMessageTop" class="top">Text (SMS)</div>
-							<div id="phoneNumberMessageBottom" class="bottom">Texts are not encrypted. You can always view Wi-Fi name/password under My Account instead.</div>
+							<div id="phoneNumberMessageTop" class="top"><?php echo $lang["textsms"]; ?></div>
+							<div id="phoneNumberMessageBottom" class="bottom"><?php echo $lang["text_are_not"]; ?></div>
 							<div class="arrow"></div>
 						</div>
 					</div>
@@ -1179,47 +1171,44 @@ $("#f_i_option1").click(function(){
 					<input id="concent" type="checkbox" name="concent">
 					<label for="concent" class="insertBox" style="margin: -40px 10px 0 15px;"></label>
 					<div class="check-copy" style="text-align: left; color: #888;">
-							I agree to receive a text message from Comcast via<br/>
-							automated technology to my mobile number provided<br/>
-							regarding my Wi-Fi name and password.<br/>
+						<?php echo $lang["agree_to_receive_text"]; ?>
 						</div>
 				</div>
 				<div id="agreementContainer" class="container" style="margin: 20px 30% auto auto; display: none;">
 					<div class="requirements" style="top: -6px; left: 509px;">
 						<div id="agreementMessageTop" class="top">Confirmation</div>
-						<div id="agreementMessageBottom" class="bottom">Please confirm your agreement to receive a text message.</div>
+						<div id="agreementMessageBottom" class="bottom"><?php echo $lang["confirm_receive_text"]; ?></div>
 						<div class="arrow"></div>
 					</div>
 				</div>
 			</div>
 			<br/><br/>
 			<div>
-				<button id="button_previous_01" class="transparent">Previous Step</button>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-				<button id="button_next_01">Next</button>
+				<button id="button_previous_01" class="transparent"><?php echo $lang["pre_step"]; ?></button>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+				<button id="button_next_01"><?php echo $lang["next"]; ?></button>
 			</div>
 			<br><br>
 		</div>
 		<div id="setup" style="display: none;" class="portal">
-			<h1>Join your new Wi-Fi Network</h1>
-			<p>Your Wi-Fi will begin broadcasting in about a minute.<br>
-				<b>You'll have to reconnect your device using the new credentials.</b>
+			<h1><?php echo $lang["join_wifi"]; ?></h1>
+			<p><?php echo $lang["will_begin_broadcasting"]; ?>
 			</p>
 			<hr>
 			<table align="center" border="0">
 				<tr>
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" name="dualBand" >2.4 GHz Network</td>
+					<td class="confirm-text" name="dualBand" ><?php echo $lang["24network"]; ?></td>
 				</tr>
 				<tr>
-					<td class="left-settings" >Wi-Fi Name</td>
+					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
 					<td class="final-settings" id="WiFi_Name_02" ></td>
 				</tr>
 				<tr>
-					<td class="left-settings" >Wi-Fi Password</td>
+					<td class="left-settings" ><?php echo $lang["wifi_password"]; ?></td>
 					<td class="final-settings" id="WiFi_Password_02" ></td>
 					<td class="final-settings" id="WiFi_Password_pass_02" ></td>
 					<td id="showPass02">
-						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+						<a href="javascript:void(0)" style="white-space: pre; display: none;"><?php echo $lang["hide"]; ?></a>
 				    </td>
 				</tr>
 				<tr>
@@ -1227,18 +1216,18 @@ $("#f_i_option1").click(function(){
 				</tr>
 				<tr name="dualBand">
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" >5 GHz Network</td>
+					<td class="confirm-text" ><?php echo $lang["5network"]; ?></td>
 				</tr>
 				<tr name="dualBand">
-					<td class="left-settings" >Wi-Fi Name</td>
+					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
 					<td class="final-settings" id="WiFi5_Name_02" ></td>
 				</tr>
 				<tr name="dualBand">
-					<td class="left-settings" >Wi-Fi Password</td>
+					<td class="left-settings" ><?php echo $lang["wifi_password"]; ?></td>
 					<td class="final-settings" id="WiFi5_Password_02" ></td>
 					<td class="final-settings" id="WiFi5_Password_pass_02" ></td>
 					<td id="show5Pass02">
-						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+						<a href="javascript:void(0)" style="white-space: pre; display: none;"><?php echo $lang["hide"]; ?></a>
 				    </td>
 				</tr>
 			</table>
@@ -1247,29 +1236,28 @@ $("#f_i_option1").click(function(){
 			<br><br>
 		</div>
 		<div id="complete" style="display: none;" class="portal">
-			<h1>Your Wi-Fi is Nearly Complete</h1>
+			<h1><?php echo $lang["nearly_complete"]; ?></h1>
 			<img src="cmn/img/progress.gif" height="75" width="75"/>
 			<div class="link_example">
-				<p>We'll have this finished up shortly.<br>
-					Once complete, you can start connecting devices.
+				<p><?php echo $lang["progress_text"]; ?>
 				</p>
 			</div>
 			<hr>
 			<table align="center" border="0">
 				<tr>
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" name="dualBand" >2.4 GHz Network</td>
+					<td class="confirm-text" name="dualBand" ><?php echo $lang["24network"]; ?></td>
 				</tr>
 				<tr>
-					<td class="left-settings" >Wi-Fi Name</td>
+					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
 					<td class="final-settings" id="WiFi_Name_04" ></td>
 				</tr>
 				<tr>
-					<td class="left-settings" >Wi-Fi Password</td>
+					<td class="left-settings" ><?php echo $lang["wifi_password"]; ?></td>
 					<td class="final-settings" id="WiFi_Password_04" ></td>
 					<td class="final-settings" id="WiFi_Password_pass_04" ></td>
 					<td id="showPass03">
-						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+						<a href="javascript:void(0)" style="white-space: pre; display: none;"><?php echo $lang["hide"]; ?></a>
 				    </td>
 				</tr>
 				<tr>
@@ -1277,18 +1265,18 @@ $("#f_i_option1").click(function(){
 				</tr>
 				<tr name="dualBand">
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" >5 GHz Network</td>
+					<td class="confirm-text" ><?php echo $lang["5network"]; ?></td>
 				</tr>
 				<tr name="dualBand">
-					<td class="left-settings" >Wi-Fi Name</td>
+					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
 					<td class="final-settings" id="WiFi5_Name_04" ></td>
 				</tr>
 				<tr name="dualBand">
-					<td class="left-settings" >Wi-Fi Password</td>
+					<td class="left-settings" ><?php echo $lang["wifi_password"]; ?></td>
 					<td class="final-settings" id="WiFi5_Password_04" ></td>
 					<td class="final-settings" id="WiFi5_Password_pass_04" ></td>
 					<td id="show5Pass03">
-						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+						<a href="javascript:void(0)" style="white-space: pre; display: none;"><?php echo $lang["hide"]; ?></a>
 				    </td>
 				</tr>
 			</table>
@@ -1297,29 +1285,28 @@ $("#f_i_option1").click(function(){
 			<br><br>
 		</div>
 		<div id="ready" style="display: none;" class="portal">
-			<h1>Your Wi-Fi is Ready</h1>
+			<h1><?php echo $lang["wifi_ready"]; ?></h1>
 			<img src="cmn/img/success_lg.png"/>
 			<div class="link_example">
-				<p>You may begin using your Wi-Fi.<br>
-				<b>You'll have to reconnect your device using the new credentials.</b>
+				<p><?php echo $lang["begin_using"]; ?>
 				</p>
 			</div>
 			<hr>
 			<table align="center" border="0">
 				<tr>
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" name="dualBand" >2.4 GHz Network</td>
+					<td class="confirm-text" name="dualBand" ><?php echo $lang["24network"]; ?></td>
 				</tr>
 				<tr>
-					<td class="left-settings" >Wi-Fi Name</td>
+					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
 					<td class="final-settings" id="WiFi_Name_05" ></td>
 				</tr>
 				<tr>
-					<td class="left-settings" >Wi-Fi Password</td>
+					<td class="left-settings" ><?php echo $lang["wifi_password"]; ?></td>
 					<td class="final-settings" id="WiFi_Password_05" ></td>
 					<td class="final-settings" id="WiFi_Password_pass_05" ></td>
 					<td id="showPass04">
-						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+						<a href="javascript:void(0)" style="white-space: pre; display: none;"><?php echo $lang["hide"]; ?></a>
 				    </td>
 				</tr>
 				<tr>
@@ -1327,18 +1314,18 @@ $("#f_i_option1").click(function(){
 				</tr>
 				<tr name="dualBand">
 					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" >5 GHz Network</td>
+					<td class="confirm-text" ><?php echo $lang["5network"]; ?></td>
 				</tr>
 				<tr name="dualBand">
-					<td class="left-settings" >Wi-Fi Name</td>
+					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
 					<td class="final-settings" id="WiFi5_Name_05" ></td>
 				</tr>
 				<tr name="dualBand">
-					<td class="left-settings" >Wi-Fi Password</td>
+					<td class="left-settings" ><?php echo $lang["wifi_password"]; ?></td>
 					<td class="final-settings" id="WiFi5_Password_05" ></td>
 					<td class="final-settings" id="WiFi5_Password_pass_05" ></td>
 					<td id="show5Pass04">
-						<a href="javascript:void(0)" style="white-space: pre; display: none;">Hide </a>
+						<a href="javascript:void(0)" style="white-space: pre; display: none;"><?php echo $lang["hide"]; ?></a>
 				    </td>
 				</tr>
 			</table>
@@ -1348,3 +1335,4 @@ $("#f_i_option1").click(function(){
 		</div>
 	</body>
 </html>
+
