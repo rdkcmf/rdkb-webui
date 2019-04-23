@@ -1224,13 +1224,13 @@ function saveBandSteeringSettings()
 </div>
 <div class="module div_enable_radio">
 	<div class="select-row">
-	<span class="readonlyLabel label">Wi-Fi Radio(2.4 GHz)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>
+	<span class="readonlyLabel label">Wi-Fi Radio(<?php echo $wifi_value["feq_band"]; ?>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>
 	<span id="radio24_switch"></span>
 	</div>
 </div>
 <div class="module div_enable_radio">
 	<div class="select-row">
-	<span class="readonlyLabel label">Wi-Fi Radio(5 GHz)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>
+	<span class="readonlyLabel label">Wi-Fi Radio(<?php echo $wifi_value["feq_band1"]; ?>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>
 	<span id="radio5_switch"></span>
 	</div>
 </div>
@@ -1282,6 +1282,9 @@ function saveBandSteeringSettings()
 			if (intval($i)<3 || intval($i)>4){		//SSID 1,2 for Private, 3,4 for Home Security, 5,6 for Hot Spot
 				continue;
 			}
+                        $frequency_band = getStr("Device.WiFi.Radio.1.OperatingFrequencyBand");
+                        if (strstr($frequency_band,"2.4G"))
+                        {
 			array_push($other_v, array(
 				'sufix'	=> (intval($i)==5 || intval($i)==6) ? "_other" : "",
 				'id'	=> $i,
@@ -1290,6 +1293,18 @@ function saveBandSteeringSettings()
 				'bssid'	=> $wifi_value['SSID_BSSID'.$i],
 				'secur'	=> encrypt_map($wifi_value['ModeEnabled'.$i], $wifi_value['EncrypMethod'.$i])
 				));
+                        }
+                        else
+                        {
+                        array_push($other_v, array(
+                                'sufix' => (intval($i)==5 || intval($i)==6) ? "_other" : "",
+                                'id'    => $i,
+                                'ssid'  => $wifi_value['SSID_SSID'.$i],
+                                'freq'  => intval($i)%2 ? "5 GHz" : "2.4 GHz",
+                                'bssid' => $wifi_value['SSID_BSSID'.$i],
+                                'secur' => encrypt_map($wifi_value['ModeEnabled'.$i], $wifi_value['EncrypMethod'.$i])
+                                ));
+                        }
 		}
 		for ($j=0; $j<count($other_v); $j++)
 		{
@@ -1326,6 +1341,9 @@ function saveBandSteeringSettings()
 			if (intval($i)<5 || intval($i)>6){		//SSID 1,2 for Private, 3,4 for Home Security, 5,6 for Hot Spot
 				continue;
 			}
+                        $frequency_band = getStr("Device.WiFi.Radio.1.OperatingFrequencyBand");
+                        if (strstr($frequency_band,"2.4G"))
+                        {
 			array_push($public_v, array(
 				'sufix'	=> (intval($i)==5 || intval($i)==6) ? "_public" : "",
 				'id'	=> $i,
@@ -1334,6 +1352,18 @@ function saveBandSteeringSettings()
 				'bssid'	=> $wifi_value['SSID_BSSID'.$i],
 				'secur'	=> encrypt_map($wifi_value['ModeEnabled'.$i], $wifi_value['EncrypMethod'.$i])
 				));
+                        }
+                        else
+                        {
+                        array_push($public_v, array(
+                                'sufix' => (intval($i)==5 || intval($i)==6) ? "_public" : "",
+                                'id'    => $i,
+                                'ssid'  => $wifi_value['SSID_SSID'.$i],
+                                'freq'  => intval($i)%2 ? "5 GHz" : "2.4 GHz",
+                                'bssid' => $wifi_value['SSID_BSSID'.$i],
+                                'secur' => encrypt_map($wifi_value['ModeEnabled'.$i], $wifi_value['EncrypMethod'.$i])
+                                ));
+                        }
 		}
 		for ($j=0; $j<count($public_v); $j++)
 		{
@@ -1754,27 +1784,27 @@ function saveBandSteeringSettings()
 		<input type="button" id="BS_Logging" value="Steering History" class="btn" onclick="steering_history()"/>
 	</div>
 	<div class="form-row ">
-		<label for="BS_Logging">Utilzation Threshold(2.4GHz):</label>
+		<label for="BS_Logging">Utilzation Threshold(<?php echo $wifi_value["feq_band"]; ?>):</label>
 		<input type="text" id="UtilzThreshold1" value="<?php echo $UtilzThreshold1; ?>"/>
 	</div>
 	<div class="form-row odd">
-		<label for="BS_Logging">Signal Threshold(2.4GHz):</label>
+		<label for="BS_Logging">Signal Threshold(<?php echo $wifi_value["feq_band"]; ?>):</label>
 		<input type="text" id="RSSIThreshold1" value="<?php echo $RSSIThreshold1; ?>"/>
 	</div>
 	<div class="form-row ">
-		<label for="BS_Logging">Physical Rate Threshold(2.4GHz):</label>
+		<label for="BS_Logging">Physical Rate Threshold(<?php echo $wifi_value["feq_band"]; ?>):</label>
 		<input type="text" id="PhyRateThreshold1" value="<?php echo $PhyRateThreshold1; ?>"/>
 	</div>
 	<div class="form-row odd">
-		<label for="BS_Logging">Utilzation Threshold(5GHz):</label>
+		<label for="BS_Logging">Utilzation Threshold(<?php echo $wifi_value["feq_band1"]; ?>):</label>
 		<input type="text" id="UtilzThreshold2" value="<?php echo $UtilzThreshold2; ?>"/>
 	</div>
 	<div class="form-row ">
-		<label for="BS_Logging">Signal Threshold(5GHz):</label>
+		<label for="BS_Logging">Signal Threshold(<?php echo $wifi_value["feq_band1"]; ?>):</label>
 		<input type="text" id="RSSIThreshold2" value="<?php echo $RSSIThreshold2; ?>"/>
 	</div>
 	<div class="form-row odd">
-		<label for="BS_Logging">Physical Rate Threshold(5GHz):</label>
+		<label for="BS_Logging">Physical Rate Threshold(<?php echo $wifi_value["feq_band1"]; ?>):</label>
 		<input type="text" id="PhyRateThreshold2" value="<?php echo $PhyRateThreshold2; ?>"/>
 	</div>
 	<div class="form-row " id="band_steering_history_content" class="content_message" style="display: none;">
