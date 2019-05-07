@@ -151,15 +151,12 @@ then
 fi
 
 cp -rf /usr/www/cmn/ /tmp/pcontrol
+#Dynamically create pause screen file
+chmod 777 /etc/pauseBlockGenerateHtml.sh
+sh /etc/pauseBlockGenerateHtml.sh
 
-if [ ! -f "/tmp/www/index.php" ]
-then
-    cp /usr/www/index_pcontrol.php /tmp/pcontrol/index.php
-fi
+echo "\$SERVER[\"socket\"] == \"$INTERFACE:21515\" { server.use-ipv6 = \"enable\" server.document-root = \"/tmp/pcontrol/\" url.rewrite-if-not-file = \"('^/(.*)$' => '/index.html?fwd=$1')\" url.access-deny =(\".inc\" )  }" >> $LIGHTTPD_CONF
 
-echo "\$SERVER[\"socket\"] == \"$INTERFACE:21515\" { server.use-ipv6 = \"enable\" server.document-root = \"/tmp/pcontrol/\" }" >> $LIGHTTPD_CONF
-
- 
 WIFIUNCONFIGURED=`syscfg get redirection_flag`
 SET_CONFIGURE_FLAG=`psmcli get eRT.com.cisco.spvtg.ccsp.Device.WiFi.NotifyWiFiChanges`
 
