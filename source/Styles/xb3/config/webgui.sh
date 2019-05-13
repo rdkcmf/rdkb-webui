@@ -53,7 +53,12 @@ source /etc/utopia/service.d/log_capture_path.sh
 source /fss/gw/etc/utopia/service.d/log_env_var.sh
 source /etc/device.properties
 REVERT_FLAG="/nvram/reverted"
+if [ "$MODEL_NUM" = "TG3482G" ] ; then
+# RDKB-15633 from Arris XB6
+LIGHTTPD_CONF="/tmp/lighttpd.conf"   
+else
 LIGHTTPD_CONF="/var/lighttpd.conf"
+fi
 LIGHTTPD_DEF_CONF="/etc/lighttpd.conf"
 
 webgui_count=0
@@ -237,11 +242,28 @@ then
 	sed -i "s|${LOG_PATH_OLD}|${LOG_PATH}|g" $LIGHTTPD_CONF
 fi
 
-LD_LIBRARY_PATH=/fss/gw/usr/ccsp:$LD_LIBRARY_PATH lighttpd -f $LIGHTTPD_CONF
+if [ "$MODEL_NUM" = "TG3482G" ] ; then
+	# RDKB-15633 from Arris XB6
+	RFC_CONTAINER_SUPPORT=`syscfg get containersupport`
+	if [ "x$CONTAINER_SUPPORT" = "x1" -a  "x$RFC_CONTAINER_SUPPORT" = "xtrue" ]; then
+	  touch /tmp/.lxcenabled
+	  echo "WEBGUI: Started in Container."
+	else
+	  LD_LIBRARY_PATH=/fss/gw/usr/ccsp:$LD_LIBRARY_PATH lighttpd -f $LIGHTTPD_CONF
 
-if [ -f /tmp/.webui/rdkb-video.pem ]; then
+	  if [ -f /tmp/.webui/rdkb-video.pem ]; then
        rm -rf /tmp/.webui/rdkb-video.pem
+	  fi
+	  echo "WEBGUI: Started without Container."
+	fi
+else
+	  LD_LIBRARY_PATH=/fss/gw/usr/ccsp:$LD_LIBRARY_PATH lighttpd -f $LIGHTTPD_CONF
+
+	  if [ -f /tmp/.webui/rdkb-video.pem ]; then
+       rm -rf /tmp/.webui/rdkb-video.pem
+	  fi	  
 fi
+
 echo "WEBGUI : Set event"
 sysevent set webserver started
 touch /tmp/webgui_initialized
