@@ -77,24 +77,24 @@ function div_mod($n, $m)
 }
 ?>
 <div id="content">
-	<h1>Gateway > Hardware > Wireless</h1>
+	<h1><?php echo _("Gateway > Hardware > Wireless")?></h1>
 	<div id="educational-tip">
-		<p class="tip">View information about the Gateway's wireless components.</p>
-		<p class="hidden"><strong>Wi-Fi:</strong> The Gateway provides concurrent 2.4 GHz and 5 GHz for Wi-Fi connections.</p>
+		<p class="tip"><?php echo _("View information about the Gateway's wireless components.")?></p>
+		<p class="hidden"><?php echo _("<strong>Wi-Fi:</strong> The Gateway provides concurrent 2.4 GHz and 5 GHz for Wi-Fi connections.")?></p>
 		<!--<p class="hidden"><strong>DECT:</strong> Provides details of the cordless phone base built into the Gateway.</p>-->
 	</div>
 	<div class="module forms block">
-		<h2>Wi-Fi LAN port (<?php echo $radioband1; ?> GHZ)</h2>
+		<h2><?php echo _("Wi-Fi LAN port"); ?> (<?php echo $radioband1; ?> GHZ)</h2>
 		<div class="form-row">
-			<span class="readonlyLabel">Wi-Fi link status:</span>
-			<span class="value"><?php echo ($wifi_status1)?"Active":"Inactive";?></span>
+			<span class="readonlyLabel"><?php echo _("Wi-Fi link status:")?></span>
+			<span class="value"><?php echo ($wifi_status1)?_("Active"):_("Inactive");?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">MAC Address:</span>
+			<span class="readonlyLabel"><?php echo _("MAC Address:")?></span>
 			<span class="value"><?php echo $wifi_value['1_BSSID'];?></span>
 		</div>
 		<div class="form-row">
-			<span class="readonlyLabel">System Uptime:</span>
+			<span class="readonlyLabel"><?php echo _("System Uptime:")?></span>
 			<span class="value">
 			<?php
 			$sec = ($wifi_status1)?$wifi_value['1_RadioUpTime']:0;
@@ -104,22 +104,22 @@ function div_mod($n, $m)
 			$hor = $tmp[0];
 			$tmp = div_mod($tmp[1],    60);
 			$min = $tmp[0];
-			echo $day." days ".$hor."h: ".$min."m: ".$tmp[1]."s";
+			echo $day." "._("days")." ".$hor."h: ".$min."m: ".$tmp[1]."s";
 		?>
 		</span>	</div>
 	</div> <!-- end .module -->
 	<div class="module forms block">
-		<h2>Wi-Fi LAN port (<?php echo $radioband2; ?> GHZ)</h2>
+		<h2><?php echo _("Wi-Fi LAN port"); ?> (<?php echo $radioband2; ?> GHZ)</h2>
 		<div class="form-row">
-			<span class="readonlyLabel">Wi-Fi link status:</span>
-			<span class="value"><?php echo ($wifi_status2)?"Active":"Inactive";?></span>
+			<span class="readonlyLabel"><?php echo _("Wi-Fi link status:")?></span>
+			<span class="value"><?php echo ($wifi_status2)?_("Active"):_("Inactive");?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">MAC Address:</span>
+			<span class="readonlyLabel"<?php echo _(">MAC Address:")?></span>
 			<span class="value"><?php echo $wifi_value['2_BSSID'];?></span>
 		</div>
 		<div class="form-row">
-			<span class="readonlyLabel">System Uptime:</span>
+			<span class="readonlyLabel"><?php echo _("System Uptime:")?></span>
 			<span class="value">
 			<?php
 			$sec = ($wifi_status2)?$wifi_value['2_RadioUpTime']:0;
@@ -129,7 +129,7 @@ function div_mod($n, $m)
 			$hor = $tmp[0];
 			$tmp = div_mod($tmp[1],    60);
 			$min = $tmp[0];
-			echo $day." days ".$hor."h: ".$min."m: ".$tmp[1]."s";
+			echo $day." "._("days")." ".$hor."h: ".$min."m: ".$tmp[1]."s";
 		?>
 		</span>
 		</div>

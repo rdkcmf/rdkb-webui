@@ -34,22 +34,25 @@ $(document).ready(function() {
 	$version		= getStr("Device.DeviceInfo.AdditionalSoftwareVersion");
 	$FirmwareName	= getStr("Device.DeviceInfo.X_CISCO_COM_FirmwareName");
 	$ModelName		= getStr("Device.DeviceInfo.ModelName");
- 	if (get_wan_type() == "EPON") {
+	$wanType = get_wan_type();
+ 	if ($wanType == "EPON") {
 	   $BackendSoftwareVersion = "EPON";
+ 	} elseif ($wanType == "DSL") {
+	   $BackendSoftwareVersion = "DSL";
 	} else {
 	   $BackendSoftwareVersion = "eMTA & DOCSIS";
 	}
 ?>
 <div id="content">
-	<h1>Gateway > Software</h1>
+	<h1><?php echo _("Gateway > Software")?></h1>
 	<div id="educational-tip">
-		<p class="tip">View details about the Gateway's software.</p>
-		<p class="hidden">You may need this information for troubleshooting assistance.</p>
+		<p class="tip"><?php echo _("View details about the Gateway's software.")?></p>
+		<p class="hidden"><?php echo _("You may need this information for troubleshooting assistance.")?></p>
 	</div>
 	<div class="module forms">
-		<h2>System Software Version</h2>
+		<h2><?php echo _("System Software Version")?></h2>
 		<div class="form-row">
-			<span class="readonlyLabel"><?php echo $BackendSoftwareVersion ?> Software Version:</span> <span class="value">
+			<span class="readonlyLabel"><?php echo $BackendSoftwareVersion." "._("Software Version:")?></span> <span class="value">
 			<?php echo $version; ?></span>
 		</div>
 		<!--div class="form-row odd">
@@ -57,17 +60,21 @@ $(document).ready(function() {
 			<?php //echo getStr("Device.X_CISCO_COM_MTA.Dect.SoftwareVersion"); ?></span>
 		</div-->
 		<div class="form-row odd">
-			<span class="readonlyLabel">Software Image Name:</span> <span class="value">
+			<span class="readonlyLabel"><?php echo _("Software Image Name:")?></span> <span class="value">
 			<?php echo $FirmwareName; ?></span>
 		</div>
 		<div class="form-row ">
-			<span class="readonlyLabel">Advanced Services:</span> <span class="value">
+			<span class="readonlyLabel"><?php echo _("Advanced Services:")?></span> <span class="value">
 			<?php echo $ModelName; ?></span>
 		</div>
-		<div class="form-row odd">
-			<span class="readonlyLabel">Packet Cable:</span> <span class="value">
-			<?php echo getStr("Device.X_CISCO_COM_MTA.PCVersion"); ?></span>
-		</div>
+		<?php 
+		if ($wanType !== "DSL") {
+		  echo '<div class="form-row odd">
+                  <span class="readonlyLabel">'._("Packet Cable:").'</span> <span class="value">
+			      '.getStr("Device.X_CISCO_COM_MTA.PCVersion").'</span>
+		        </div>';
+        } 
+		?>
 	</div> <!-- end .module -->
 </div><!-- end #content -->
 <?php include('includes/footer.php'); ?>

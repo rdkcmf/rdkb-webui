@@ -50,14 +50,14 @@ $(document).ready(function() {
         	$("a.confirm").click(function(e) {
 		    e.preventDefault();            
 		    var href = $(this).attr("href");
-		    var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+		    var message = ($(this).attr("title").length > 0) ? "<?php echo _('Are you sure you want to')?> " + $(this).attr("title") + "?" : "<?php echo _('Are you sure?')?>";
 		    jConfirm(
 		        message
-		        ,"Are You Sure?"
+		        ,"<?php echo _('Are You Sure?')?>"
 		        ,function(ret) {
 		            if(ret) {
 						delVal = href.substring(href.indexOf("=")+1);
-						jProgress('This may take several seconds.',60);
+						jProgress('<?php echo _('This may take several seconds.')?>',60);
 						$.ajax({
 							type:"POST",
 							url:"actionHandler/ajax_hs_port_forwarding.php",
@@ -68,7 +68,7 @@ $(document).ready(function() {
 							},
 							error:function(){
 								jHide();
-								jAlert("Error! Please try later!");
+								jAlert("<?php echo _('Error! Please try later!')?>");
 							}
 						});
 		            }    
@@ -87,7 +87,7 @@ $(document).ready(function() {
 	$("#hspf_switch").change(function() {
 		var UHSPStatus = $("#hspf_switch").radioswitch("getState").on ? "Enabled" : "Disabled";
 		var isUHSPDisabled = $("#hspf_switch").radioswitch("getState").on === false;
-		jProgress('This may take several seconds.',60);
+		jProgress('<?php echo _('This may take several seconds.')?>',60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_hs_port_forwarding.php",
@@ -118,7 +118,7 @@ $(document).ready(function() {
 			},
 			error:function(){
 				jHide();
-				jAlert("Error! Please try later!");
+				jAlert("<?php echo _('Error! Please try later!')?>");
 			}
 		});
 	});
@@ -126,7 +126,7 @@ $(document).ready(function() {
 		var isChecked=$(this).is(":checked");
 		var id=$(this).prop("id").split("_");
 		id=id[1];
-		jProgress('This may take several seconds',60);
+		jProgress('<?php echo _('This may take several seconds')?>',60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_hs_port_forwarding.php",
@@ -136,39 +136,39 @@ $(document).ready(function() {
 			},
 			error:function(){
 				jHide();
-				jAlert("Error! Please try later!");
+				jAlert("<?php echo _('Error! Please try later!')?>");
 			}
 		});
 	});
 });
 </script>
 <div id="content">
-	<h1>Advanced > HS Port Forwarding</h1>
+	<h1><?php echo _('Advanced > HS Port Forwarding')?></h1>
 	<div id="educational-tip">
-		<p class="tip">Add port forwarding related to Home Security Device.</p>
-   		<p class="hidden">Users can configure the RG to provide the port forwarding services which allow the Internet users to
+		<p class="tip"><?php echo _('Add port forwarding related to Home Security Device.')?></p>
+   		<p class="hidden"><?php echo _('Users can configure the RG to provide the port forwarding services which allow the Internet users to
 		access local services such as the Web server or FTP server at your local site. This is done by
 		redirecting the combination of the WAN IP address and the service port to the local private IP and its
-        service port.</p>
+        service port.')?></p>
 	</div>
 	<div class="module">
 		<div class="select-row">
-    		<span class="readonlyLabel label">HS Port Forwarding:</span>
+    		<span class="readonlyLabel label"><?php echo _('HS Port Forwarding:')?></span>
     		<span id="hspf_switch"></span>
     	</div>
 	</div>
 	<div id="hs-port-forwarding-items">
 		<div class="module data">
-			<h2>HS Port Forwarding</h2>
-			<p class="button"><a tabindex='0' href="hs_port_forwarding_add.php" class="btn" id="add-port-forward">+ Add Port Forward</a></p>
-			<table class="data" summary="This table lists home security port forwarding entries">
+			<h2><?php echo _('HS Port Forwarding')?></h2>
+			<p class="button"><a tabindex='0' href="hs_port_forwarding_add.php" class="btn" id="add-port-forward"><?php echo _('+ Add Port Forward')?></a></p>
+			<table class="data" summary="<?php echo _('This table lists home security port forwarding entries')?>">
 				<tr>
-					<th id="service-name">Service Name</th>
-					<th id="service-type">Type</th>
-					<th id="public-port">Public Port</th>
-					<th id="private-port">Private Port</th>
-					<th id="server-ip">Server IP</th>
-					<th id="active">Active</th>
+					<th id="service-name"><?php echo _('Service Name')?></th>
+					<th id="service-type"><?php echo _('Type')?></th>
+					<th id="public-port"><?php echo _('Public Port')?></th>
+					<th id="private-port"><?php echo _('Private Port')?></th>
+					<th id="server-ip"><?php echo _('Server IP')?></th>
+					<th id="active"><?php echo _('Active')?></th>
 					<th id="edit-button">&nbsp;</th>
 					<th id="delete-button">&nbsp;</th>
 				</tr>
@@ -224,9 +224,9 @@ $(document).ready(function() {
 							echo "<td headers='server-ip'>"    .$hspf_entry['InternalClient']. "</td>";
 							echo "<td headers='active'><input tabindex='0' type=\"checkbox\" id=\"PortActive_$id\" name=\"PortActive\" $checked/>
 							<label for=\"PortActive_$id\"></label></td>";	
-							echo "<td headers='edit-button'  class=\"edit\"><a tabindex='0' href=\"hs_port_forwarding_edit.php?id=$id\" class=\"btn\"  id=\"edit_$id\">Edit</a></td>
+							echo "<td headers='edit-button'  class=\"edit\"><a tabindex='0' href=\"hs_port_forwarding_edit.php?id=$id\" class=\"btn\"  id=\"edit_$id\">"_("Edit")."</a></td>
 								<td headers='delete-button'  class=\"delete\"><a tabindex='0'  href=\"actionHandler/ajax_hs_port_forwarding.php?del=$id\" class=\"btn confirm\" 
-									title=\"delete this HS Port Forwarding service for " . $hspf_entry['Description'] . " \" id=\"delete_$id\">x</a></td>
+									title=\"".sprintf(_("delete this HS Port Forwarding service for %s"), $hspf_entry['Description'])." \" id=\"delete_$id\">x</a></td>
 								</tr>";
 							echo "</tr>";
 					}//end of foreach

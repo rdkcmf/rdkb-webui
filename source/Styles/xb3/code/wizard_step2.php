@@ -27,7 +27,7 @@
 <?php include('includes/nav.php'); ?>
 <?php
 	if("admin" == $_SESSION["loginuser"] && !$_POST["userPassword"]){
-		echo '<script type="text/javascript"> alert("Please finish Wizard - Step 1 first."); window.location = "wizard_step1.php";</script>';
+		echo '<script type="text/javascript"> alert("'._("Please finish Wizard - Step 1 first.").'"); window.location = "wizard_step1.php";</script>';
 		exit;
 	}
 ?>
@@ -153,50 +153,50 @@ $(document).ready(function() {
 	}).trigger("change");
     $.validator.addMethod("wep_64", function(value, element, param) {
 		return !param || /^[a-fA-F0-9]{10}$|^[\S]{5}$/i.test(value);
-	}, "5 Ascii characters or 10 Hex digits.");
+	}, "<?php echo _("5 Ascii characters or 10 Hex digits.")?>");
     $.validator.addMethod("wep_128", function(value, element, param) {
 		return !param || /^[a-fA-F0-9]{26}$|^[\S]{13}$/i.test(value);
-	}, "13 Ascii characters or 26 Hex digits.");
+	}, "<?php echo _("13 Ascii characters or 26 Hex digits.")?>");
     $.validator.addMethod("wpa", function(value, element, param) {
 		return !param || /^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i.test(value);
-	}, "8 to 63 ASCII characters or a 64 hex character password.");
+	}, "<?php echo _("8 to 63 ASCII characters or a 64 hex character password.")?>");
     $.validator.addMethod("wpa2", function(value, element, param) {
 		return !param || /^[\S]{8,63}$/i.test(value);
-	}, "8 to 63 ASCII characters.");
+	}, "<?php echo _("8 to 63 ASCII characters.")?>");
     $.validator.addMethod("ssid_name", function(value, element, param) {
 		return !param || /^[ -~]{1,32}$/i.test(value);
-	}, "1 to 32 ASCII characters.");
+	}, "<?php echo _("1 to 32 ASCII characters.")?>");
 	$.validator.addMethod("not_only_spaces", function(value, element, param) {
     	var res = /^\s+$/.test(value);
     	return !res;
-    }, "SSID name cannot contain only spaces");
+    }, "<?php echo _("SSID name cannot contain only spaces")?>");
     $.validator.addMethod("not_hhs", function(value, element, param) {
 		//prevent users to set XHSXXX or Xfinityxxx as ssid
 		return value.toLowerCase().indexOf("xhs-") !=0 && value.toLowerCase().indexOf("xh-") !=0;
-	}, 'SSID name starting with "XHS-" and "XH-" are reserved !');
+	}, '<?php echo _("SSID name starting with \"XHS-\" and \"XH-\" are reserved !")?>');
     $.validator.addMethod("not_hhs2", function(value, element, param) {
 		//prevent users to set optimumwifi or TWCWiFi  or CableWiFi as ssid
 		//zqiu:
                 var str = value.replace(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/g,'').toLowerCase();
 		return str.indexOf("cablewifi") == -1 && str.indexOf("twcwifi") == -1 && str.indexOf("optimumwifi") == -1 && str.indexOf("xfinity") == -1 && str.indexOf("xfinitywifi") == -1 ;
 		//return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
-	}, 'SSID containing "optimumwifi", "TWCWiFi", "cablewifi", "xfinity" and "xfinitywifi" are reserved !');
+	}, '<?php echo _("SSID containing \"optimumwifi\", \"TWCWiFi\", \"cablewifi\", \"xfinity\" and \"xfinitywifi\" are reserved !")?>');
     $.validator.addMethod("not_defaulSSID1", function(value, element, param) {
 		//prevent users to set defaul-SSID as ssid
 		return value.toLowerCase() != "<?php echo $defaultSSID1; ?>".toLowerCase();
-	}, 'Choose a different Network Name (SSID) (<?php echo $radioband1; ?>GHz) than the one provided on your gateway.');
+	}, '<?php echo _("Choose a different Network Name (SSID) (2.4GHz) than the one provided on your gateway.")?>');
     $.validator.addMethod("not_defaulPassword1", function(value, element, param) {
 		//prevent users to set defaul-Password as Password
 		return value != "<?php echo $defaultKeyPassphrase1; ?>";
-	}, 'Choose a different Network Password (<?php echo $radioband1; ?>GHz) than the one provided on your gateway.');
+	}, '<?php echo _("Choose a different Network Password (2.4GHz) than the one provided on your gateway.")?>');
     $.validator.addMethod("not_defaulSSID2", function(value, element, param) {
 		//prevent users to set defaul-SSID as ssid
 		return value.toLowerCase() != "<?php echo $defaultSSID2; ?>".toLowerCase();
-	}, 'Choose a different Network Name (SSID) (<?php echo $radioband2; ?> GHz) than the one provided on your gateway.');
+	}, '<?php echo _("Choose a different Network Name (SSID) (5 GHz) than the one provided on your gateway.")?>');
     $.validator.addMethod("not_defaulPassword2", function(value, element, param) {
 		//prevent users to set defaul-Password as Password
 		return value != "<?php echo $defaultKeyPassphrase2; ?>";
-	}, 'Choose a different Network Password (<?php echo $radioband2; ?> GHz) than the one provided on your gateway.');
+	}, '<?php echo _("Choose a different Network Password (5 GHz) than the one provided on your gateway.")?>');
     // XFSETUP HOME xfinitywifi cablewifi
     // a term starting with the following combination of text in uppercase or lowercase should not be allowed
    /* $.validator.addMethod("not_XFSETUP", function(value, element, param) {
@@ -296,7 +296,7 @@ function set_config(jsConfig)
 	// alert(jsConfig);
 	var network_name_1= '<?php echo $wifi_value['network_name']; ?>';
 	var network_name_2= '<?php echo $wifi_value['network_name1']; ?>';
-	jProgress('This may take several seconds...', 60);
+	jProgress('<?php echo _("This may take several seconds...")?>', 60);
 	$.post(
 		"actionHandler/ajaxSet_wizard_step2.php",
 		{
@@ -316,9 +316,9 @@ function set_config(jsConfig)
 			
 			<?php 
 				if($_SESSION["loginuser"] == "admin")
-					echo 'jAlert("Changes saved successfully. <br> Please login with the new password.");setTimeout(function(){jHide();location.href="home_loggedout.php";}, 5000);';
+					echo 'jAlert("'._("Changes saved successfully. <br> Please login with the new password.").'");setTimeout(function(){jHide();location.href="home_loggedout.php";}, 5000);';
 				else
-					echo 'jAlert("Changes saved successfully.");setTimeout(function(){jHide();location.href="at_a_glance.php";}, 5000);';
+					echo 'jAlert("'._("Changes saved successfully.").'");setTimeout(function(){jHide();location.href="at_a_glance.php";}, 5000);';
 			?>
 		}
 		});
@@ -444,18 +444,18 @@ if ("WEP-64" == $encrypt_mode1){
 <div id="content">
 	<?php
 		if("admin" == $_SESSION["loginuser"]){
-			echo '<h1>Gateway > Home Network Wizard - Step 2</h1>';
+			echo '<h1>'._("Gateway > Home Network Wizard - Step 2").'</h1>';
 		}
 		else {
-			echo '<h1>Gateway > Home Network Wizard</h1>';
+			echo '<h1>'._("Gateway > Home Network Wizard").'</h1>';
 		}
 	?>
 	<div id="educational-tip">
-		<p class="tip">You may want to edit information about your Wi-Fi network for both 2.4 GHz and 5 GHz Wi-Fi bands.</p>
-		<p class="hidden"><strong>Wi-Fi Network Name:</strong> Names of the 2.4 GHz and 5 GHz Wi-Fi networks of your Gateway. The default Network Names (SSIDs), located on the bottom label of the Gateway, is unique to this Gateway.</p>
-		<p class="hidden"><strong>Encryption Method:</strong> WPAWPA2-PSK (TKIP/AES), the default setting, offers the best security and performance.</p>
-		<p class="hidden"><strong>Network Password:</strong> The default Password (key), located on the bottom label of the Gateway, is unique to this Gateway.</p>
-		<p class="hidden"><strong>Note:</strong> If you change any of the default settings, you'll need to reconnect Wi-Fi products on your network (using the new information).</p>
+		<p class="tip"><?php echo _("You may want to edit information about your Wi-Fi network for both 2.4 GHz and 5 GHz Wi-Fi bands.")?></p>
+		<p class="hidden"><?php echo _("<strong>Wi-Fi Network Name:</strong> Names of the 2.4 GHz and 5 GHz Wi-Fi networks of your Gateway. The default Network Names (SSIDs), located on the bottom label of the Gateway, is unique to this Gateway.")?></p>
+		<p class="hidden"><?php echo _("<strong>Encryption Method:</strong> WPAWPA2-PSK (TKIP/AES), the default setting, offers the best security and performance.")?></p>
+		<p class="hidden"><?php echo _("<strong>Network Password:</strong> The default Password (key), located on the bottom label of the Gateway, is unique to this Gateway.")?></p>
+		<p class="hidden"><?php echo _("<strong>Note:</strong> If you change any of the default settings, you'll need to reconnect Wi-Fi products on your network (using the new information).")?></p>
 	</div>
 	<div class="module forms">
 		<form action="at_a_glance.php" method="post" id="pageForm">
@@ -464,7 +464,7 @@ if ("WEP-64" == $encrypt_mode1){
 					echo '<h2>Step 2 of 2</h2>';
 				}
 				else {
-					echo '<h2>Home Network Wizard</h2>';
+					echo '<h2>'._("Home Network Wizard").'</h2>';
 				}
 			?>
 			<?php
@@ -473,7 +473,7 @@ if ("WEP-64" == $encrypt_mode1){
 			<div class="form-row odd">
 				<div id="content" style="text-align: center;" >
 					<br>
-					<h3 style="width:92%">Wi-Fi Mode, Security Mode, Channel Selection, Channel Mode, and Channel Bandwidth are being managed automatically to help optimize your home Wi-Fi network and improve Wi-Fi coverage. To edit your Wi-Fi Network Name & Network password, please download the <?php echo $brandName.' '.$productName ?> app or visit <a href="http://<?php echo $productLink;?>"><?php echo $productLink ?></a>.
+					<h3 style="width:92%"><?php echo sprintf(_("Wi-Fi Mode, Security Mode, Channel Selection, Channel Mode, and Channel Bandwidth are being managed automatically to help optimize your home Wi-Fi network and improve Wi-Fi coverage. To edit your Wi-Fi Network Name & Network password, please download the %s %s app or visit <a href=\"http://%s\">%s"),$brandName,$productName,$productLink,$productLink);?></a>.
 					</h3>
 					<br>
 				</div>
@@ -481,67 +481,67 @@ if ("WEP-64" == $encrypt_mode1){
 		<?php
 			}
 		?>
-			<p class="summary">Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi B, G, N) and 5GHz(Wi-Fi A, N) compatible devices.</p>
+			<p class="summary"><?php echo _("Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi B, G, N) and 5GHz(Wi-Fi A, N) compatible devices.")?></p>
 			<div class="form-row odd">
-				<label for="network_name">Wi-Fi Network Name (<?php echo $radioband1; ?>GHz):</label>
+				<label for="network_name"><?php echo sprintf(_("Wi-Fi Network Name (%sGHz):"), $radioband1); ?></label>
 				<input type="text" size="23" value="<?php echo htmlspecialchars($network_name);?>" id="network_name" name="network_name" class="text" />
 			</div>
 			<div class="form-row">
-				<label for="security">Encryption Method (<?php echo $radioband1; ?>GHz):</label>
+				<label for="security"><?php echo sprintf(_("Encryption Method (%sGHz):"), $radioband1); ?></label>
 				<select name="encryption_method" id="security">
-					<option value="None" 				title="Open networks do not have a password." 			<?php if ("None"==$security) echo "selected";?> >Open (risky)</option>
+					<option value="None" 				title="<?php echo _("Open networks do not have a password.")?>" 			<?php if ("None"==$security) echo "selected";?> ><?php echo _("Open (risky)")?></option>
 					<!--option value="WEP_64" 				title="WEP  64 requires a  5 ASCII character or 10 hex character password.  Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_64"==$security)              echo "selected";?> >WEP 64 (risky)</option-->
 					<!--option value="WEP_128" 			title="WEP 128 requires a 13 ASCII character or 16 hex character password.  Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_128"==$security)             echo "selected";?> >WEP 128 (risky)</option-->
 					<!--option value="WPA_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_TKIP"==$security)        echo "selected";?> >WPA-PSK (TKIP)</option-->
 					<!--option value="WPA_PSK_AES" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_AES"==$security)         echo "selected";?> >WPA-PSK (AES)</option-->
 					<!--option value="WPA2_PSK_TKIP" 	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIP"==$security)       echo "selected";?> >WPA2-PSK (TKIP)</option-->
-					<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_AES"==$security)        echo "selected";?> >WPA2-PSK (AES)(Recommended)</option>
+					<option value="WPA2_PSK_AES" 		title="<?php echo _("WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>" <?php if ("WPA2_PSK_AES"==$security)        echo "selected";?> ><?php echo _("WPA2-PSK (AES)(Recommended)")?></option>
 					<!--option value="WPA2_PSK_TKIPAES" 	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIPAES"==$security)    echo "selected";?> >WPA2-PSK (TKIP/AES)</option-->
-					<option value="WPAWPA2_PSK_TKIPAES" 	title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPAWPA2_PSK_TKIPAES"==$security) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)</option>
+					<option value="WPAWPA2_PSK_TKIPAES" 	title="<?php echo _("WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>" <?php if ("WPAWPA2_PSK_TKIPAES"==$security) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)</option>
 				</select>
 			</div>
 			<div id="netPassword">
 				<div class="form-row odd">
-					<label for="network_password">Network Password (<?php echo $radioband1; ?>GHz):</label>
+					<label for="network_password"><?php echo sprintf(_("Network Password (%sGHz):"), $radioband1); ?></label>
 					<input type="text" size="23" id="network_password" name="network_password" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password); ?>"/>
 				</div>
-				<p id="netPassword-footnote" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
+				<p id="netPassword-footnote" class="footnote"><?php echo _("8 to 63 ASCII characters or a 64 hex character password. Case sensitive.")?></p>
 			</div>
 			<div class="form-row" id="div_change_password">
-				<label for="network_password">Change Password:</label>
+				<label for="network_password"><?php echo _("Change Password:")?></label>
 				<span class="checkbox"><input type="checkbox" id="password_check" name="password_check" /></span>
 			</div>
 			<div class="form-row odd">
-				<label for="network_name1">Wi-Fi Network Name (<?php echo $radioband2; ?> GHz):</label>
+				<label for="network_name1"><?php echo sprintf(_("Wi-Fi Network Name (%s GHz):"), $radioband2); ?></label>
 				<input type="text" size="23" value="<?php echo htmlspecialchars($network_name1);?>" id="network_name1" name="network_name1" class="text" />
 			</div>	
 			<div class="form-row">
-				<label for="security1">Encryption Method (<?php echo $radioband2; ?> GHz):</label>
+				<label for="security1"><?php echo sprintf(_("Encryption Method (%s GHz):"), $radioband2); ?></label>
 				<select name="encryption_method1" id="security1">
-					<option value="None" 			title="Open networks do not have a password." 			<?php if ("None"==$security1) echo "selected";?> >Open (risky)</option>
+					<option value="None" 			title="<?php echo _("Open networks do not have a password.")?>" 			<?php if ("None"==$security1) echo "selected";?> ><?php echo _("Open (risky)")?></option>
 					<!--option value="WEP_64"               title="WEP  64 requires a  5 ASCII character or 10 hex character password.  Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_64"==$security1)              echo "selected";?> >WEP 64 (risky)</option-->
 					<!--option value="WEP_128"          	title="WEP 128 requires a 13 ASCII character or 16 hex character password.  Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_128"==$security1)             echo "selected";?> >WEP 128 (risky)</option-->
 					<!--option value="WPA_PSK_TKIP" 	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_TKIP"==$security1)        echo "selected";?> >WPA-PSK (TKIP)</option-->
 					<!--option value="WPA_PSK_AES" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_AES"==$security1)         echo "selected";?> >WPA-PSK (AES)</option-->
 					<!--option value="WPA2_PSK_TKIP" 	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIP"==$security1)       echo "selected";?> >WPA2-PSK (TKIP)</option-->
-					<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_AES"==$security1)        echo "selected";?> >WPA2-PSK (AES)(Recommended)</option>
+					<option value="WPA2_PSK_AES" 		title="<?php echo _("WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>" <?php if ("WPA2_PSK_AES"==$security1)        echo "selected";?> ><?php echo _("WPA2-PSK (AES)(Recommended)")?></option>
 					<!--option value="WPA2_PSK_TKIPAES" 	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIPAES"==$security1)    echo "selected";?> >WPA2-PSK (TKIP/AES)</option-->
-					<option value="WPAWPA2_PSK_TKIPAES" 	title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPAWPA2_PSK_TKIPAES"==$security1) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)</option>
+					<option value="WPAWPA2_PSK_TKIPAES" 	title="<?php echo _("WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>" <?php if ("WPAWPA2_PSK_TKIPAES"==$security1) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)</option>
 				</select>
 			</div>
 			<div id="netPassword1">
 				<div class="form-row odd">
-					<label for="network_password1">Network Password (<?php echo $radioband2; ?> GHz):</label>
+					<label for="network_password1"><?php echo sprintf(_("Network Password (%s GHz):"), $radioband2); ?></label>
 					<input type="text" size="23" id="network_password1" name="network_password1" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password1); ?>"/>
 				</div>
-				<p id="netPassword-footnote1" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
+				<p id="netPassword-footnote1" class="footnote"><?php echo _("8 to 63 ASCII characters or a 64 hex character password. Case sensitive.")?></p>
 			</div>
 			<div class="form-row" id="div_change_password1">
-				<label for="network_password1">Change Password:</label>
+				<label for="network_password1"><?php echo _("Change Password:")?></label>
 				<span class="checkbox"><input type="checkbox" id="password_check1" name="password_check1" /></span>
 			</div>
 			<div id="wizard-form-buttons" class="form-row form-btn">
-				<input type="submit" value="Finish" class="btn" />
+				<input type="submit" value="<?php echo _("Finish")?>" class="btn" />
 			</div>
 		</form>
 	</div> <!-- end .module -->

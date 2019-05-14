@@ -24,7 +24,7 @@ include_once __DIR__ .'/CSRF-Protector-PHP/libs/csrf/csrfprotector_rdkb.php';
 csrfprotector_rdkb::init();
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="index.php";</script>';
 	exit(0);
 }
 	$filename="backup.cfg";

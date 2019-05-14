@@ -32,7 +32,7 @@ $(document).ready(function() {
 	// $("#showlogs").click(function() {
 		// jConfirm("This action may take more than one minute. Do you want to continue?", "Are You Sure?", function(ret){
 			// if(ret){
-				jProgress('This may take several seconds...', 180);
+				jProgress("<?php echo _('This may take several seconds...')?>", 180);
 			// }
 		// });
 	// });
@@ -48,12 +48,12 @@ $(window).load(function() {
 			var trClass="odd";
 			// $("#event_logs_today > tbody").empty();
 			if (""==results) {
-				document.getElementById('log_summary').innerHTML='<b>There are currently no Call Signal Logs</b>';
+				document.getElementById('log_summary').innerHTML='<?php echo _("<b>There are currently no Call Signal Logs</b>")?>';
 				jHide();
 				return;
 			}
 			else {
-				document.getElementById('event').innerHTML='<h2>Call Signal logs</h2><table summary="This table shows Call Signal logs" id="event_logs_today" class="data" style="word-break:break-all"><thead><th id="sip_value">Description</th><th width="111" id="sip_time">Time</th></thead><tbody></tbody><tfoot><tr class="acs-hide"><td headers="sip_value">null</td><td headers="sip_time">null</td></tr></tfoot></table>';
+				document.getElementById('event').innerHTML='<h2>'+<?php echo _("Call Signal logs")?>+'</h2><table summary="'+<?php echo _("This table shows Call Signal logs")?>+'" id="event_logs_today" class="data" style="word-break:break-all"><thead><th id="sip_value">'+<?php echo _("Description")?>+'</th><th width="111" id="sip_time">'+<?php echo _("Time")?>+'</th></thead><tbody></tbody><tfoot><tr class="acs-hide"><td headers="sip_value">null</td><td headers="sip_time">null</td></tr></tfoot></table>';
 			}
 			$.each(results,function(key,value) {
 				$("#event_logs_today > tbody").append('<tr class="'+trClass+'"><td headers="sip_value">'+value.Des.replace(/-/g, "<br/>")+'</td><td headers="sip_time">'+value.time+'</td></tr>');
@@ -71,9 +71,9 @@ $(window).load(function() {
 });
 </script>
 <div id="content">
-	<h1>Gateway > Connection > CallP/QoS > Call Signal logs</h1>
+	<h1><?php echo _("Gateway > Connection > CallP/QoS > Call Signal logs")?></h1>
 	<div class="module forms data" id="event">
-		<h3 id="log_summary">There are currently no Call Signal Logs</h3>
+		<h3 id="log_summary"><?php echo _("There are currently no Call Signal Logs")?></h3>
 	</div>
 </div> <!-- end #container -->
 <?php include('includes/footer.php'); ?>

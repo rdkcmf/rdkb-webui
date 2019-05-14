@@ -42,11 +42,11 @@ $(document).ready(function() {
 		radio_name: "allow",
 		id_on: "yes",
 		id_off: "no",
-		title_on: "Select always allow",
-		title_off: "Unselect always allow",
+		title_on: "<?php echo _('Select always allow')?>",
+		title_off: "<?php echo _('Unselect always allow')?>",
 		size: "small",
-		label_on: "Yes",
-		label_off: "No",
+		label_on: "<?php echo _('Yes')?>",
+		label_off: "<?php echo _('No')?>",
 		revertOrder: true,
 		state: "on"
 	}).change(function(event, data) {
@@ -127,7 +127,7 @@ $(document).ready(function() {
 	//		alert(name+";"+mac+";"+block);
 			if(isMacValid) {
 				if(block) {
-					jProgress('This may take several seconds', 60);
+					jProgress('<?php echo _('This may take several seconds')?>', 60);
 					$.ajax({
 						type:"POST",
 						url:"actionHandler/ajax_managed_devices.php",
@@ -135,12 +135,12 @@ $(document).ready(function() {
 						success:function(results){
 							//jAlert(results);
 							jHide();
-							if (results=="Success!") { window.location.href="managed_devices.php";}
+							if (results=="<?php echo _("Success!")?>") { window.location.href="managed_devices.php";}
 							else jAlert(results);
 						},
 						error:function(){
 							jHide();
-							jAlert("Failure, please try again.");
+							jAlert("<?php echo _('Failure, please try again.')?>");
 						}
 					});
 				} 
@@ -164,7 +164,7 @@ $(document).ready(function() {
 						endHour = 0;
 					}
 					if ((startHour>endHour) || ((startHour==endHour) && (sminute>=eminute))) {
-						jAlert("Start time should be smaller than End time !");
+						jAlert("<?php echo _('Start time should be smaller than End time !')?>");
 						return;
 					} 	
 					(0 === startHour) && (startHour = '00');
@@ -181,7 +181,7 @@ $(document).ready(function() {
 							days += ",";
 					});
 		//			alert(name+";"+mac+";"+block+";"+startTime+";"+endTime+";"+days);
-					jProgress('This may take several seconds', 60);
+					jProgress('<?php echo _('This may take several seconds')?>', 60);
 					$.ajax({
 						type:"POST",
 						url:"actionHandler/ajax_managed_devices.php",
@@ -189,20 +189,20 @@ $(document).ready(function() {
 						success:function(results){
 							//jAlert(results);
 							jHide();
-							if (results=="Success!") { window.location.href="managed_devices.php";}
+							if (results=="<?php echo _("Success!")?>") { window.location.href="managed_devices.php";}
 							else jAlert(results);
 						},
 						error:function(){
 							jHide();
-							jAlert("Failure, please try again.");
+							jAlert("<?php echo _('Failure, please try again.')?>");
 						}
 					});
 				} 
 			} else {
-				jAlert("MAC is not valid! Can not be saved.");
+				jAlert("<?php echo _('MAC is not valid! Can not be saved.')?>");
 			}
 		} else {
-				jAlert("Not valid! Can not be saved.");
+				jAlert("<?php echo _('Not valid! Can not be saved.')?>");
 		}
 	});
 	$("#pageForm").submit(function(e) {
@@ -210,10 +210,10 @@ $(document).ready(function() {
 		{
 			e.preventDefault();
 			var href = $(this).attr("href");
-			var message = "Conflicting Block MAC Address: \""+$("#custom_ip").val()+"\"!";
+			var message = "<?php echo _('Conflicting Block MAC Address:')?> " + $("#custom_ip").val() + "!";
 			jAlert(
 				message
-				, "Add/Edit Device to be Blocked Alert:"
+				, "<?php echo _('Add/Edit Device to be Blocked Alert:')?>"
 				,function(ret) {
 					if(ret) {
 					// window.location = href;
@@ -225,12 +225,12 @@ $(document).ready(function() {
 </script>
 <?php if($CloudUIEnable == "true"){ ?>
 <div id="content">
-	<h1>Parental Control > Managed Devices > Add Allowed Device</h1>
+	<h1><?php echo _('Parental Control > Managed Devices > Add Allowed Device')?></h1>
 	<div class="module">
 		<div class="forms">
 			<div id="content" style="text-align: center;">
 				<br>
-				<h3>Managing your home network settings is now easier than ever.<br>Visit <a href="http://<?php echo $productLink;?>"><?php echo $productLink ?></a> to enable parental controls for devices connected<br>to your home network, among many other features and settings.</h3>
+				<h3><?php echo sprintf(_('Managing your home network settings is now easier than ever.<br>Visit <a href="http://%s">%s</a> to enable parental controls for devices connected<br>to your home network, among many other features and settings.'),$productLink, $productLink)?></h3>
 				<br>
 			</div>
 		</div> <!-- end .module -->
@@ -238,19 +238,19 @@ $(document).ready(function() {
 </div><!-- end #content -->
 <?php } else { ?>
 <div id="content">
-	<h1>Parental Control > Managed Devices > Add Allowed Device</h1>
+	<h1><?php echo _('Parental Control > Managed Devices > Add Allowed Device')?></h1>
 <form id="pageForm" action="managed_devices.php" method="post">
 	<div class="module">
 		<div class="forms">
-			<h2>Add Device to be Allowed</h2>
-            <h3>Set Allowed Device</h3>
-            <label style="margin:20px 0 0 20px">Auto-Learned Devices:</label>
+			<h2><?php echo _('Add Device to be Allowed')?></h2>
+            <h3><?php echo _('Set Allowed Device')?></h3>
+            <label style="margin:20px 0 0 20px"><?php echo _('Auto-Learned Devices:')?></label>
 			<div class="form-row">
 			<table id="add_allowed_device" class="data">
 		    	<tr>
 		    		<th class="number">&nbsp;</th>
-			        <th class="computer_name">Computer Name</th>
-			        <th class="ip">MAC Address</th>
+			        <th class="computer_name"><?php echo _('Computer Name')?></th>
+			        <th class="ip"><?php echo _('MAC Address')?></th>
 			    </tr>
 			    <?php 
                     $rootObjName    = "Device.Hosts.Host.";
@@ -280,13 +280,13 @@ $(document).ready(function() {
 					} 
 				?>
 				</table>
-				<label style="margin:20px 0 0 15px">Custom Device:</label>
+				<label style="margin:20px 0 0 15px"><?php echo _('Custom Device:')?></label>
 				<div class="form-row">
 					<table id="add_allowed_device" class="data">
 						<tr>
 							<th class="number">&nbsp;</th>
-							<th class="computer_name">Computer Name</th>
-							<th class="ip">MAC Address</th>
+							<th class="computer_name"><?php echo _('Computer Name')?></th>
+							<th class="ip"><?php echo _('MAC Address')?></th>
 						</tr>
 						<tr class="odd">
 							<th class="row-label alt"><input type="radio" name="computer" checked="checked" value="custom" id="custom" /></th>
@@ -296,13 +296,13 @@ $(document).ready(function() {
 					</table>
 				</div>
 			<div class="form-row">
-				<label for="on">Always Allow?</label>
+				<label for="on"><?php echo _('Always Allow?')?></label>
 				<span id="always_switch"></span>
 			</div>
         	<div id="allow-time">
-        		<h3>Set Allow Time</h3>
+        		<h3><?php echo _('Set Allow Time')?></h3>
         		<div class="form-row">
-        	<label for="time_start_hour">Start from:</label>
+        	<label for="time_start_hour"><?php echo _('Start from:')?></label>
            <select id="time_start_hour" name="time_start_hour">
                 <option value"12">12</option>
                 <option value"1">1</option>
@@ -356,27 +356,27 @@ $(document).ready(function() {
         </select>
         <label for="time_end_ampm" class="acs-hide"></label>
         <select id="time_end_ampm" name="time_end_ampm">
-                <option value"AM">AM</option>
-                <option value"PM" selected="selected">PM</option>
+                <option value"AM"><?php echo _('AM')?></option>
+                <option value"PM" selected="selected"><?php echo _('PM')?></option>
         </select>
         </div>
-		<h3>Set Allow Days</h3>
+		<h3><?php echo _('Set Allow Days')?></h3>
 		<div class="select_all_none">
-		   <a rel="weekday" href="#select_all" id="weekday_select_all" class="">Select All</a> | <a rel="weekday" id="weekday_select_none" href="#select_none" class="">Select None</a>
+		   <a rel="weekday" href="#select_all" id="weekday_select_all" class=""><?php echo _('Select All')?></a> | <a rel="weekday" id="weekday_select_none" href="#select_none" class=""><?php echo _('Select None')?></a>
 		</div>
 		<div class="form-row" id="weekday">
-		   <input type="checkbox" name="day" id="monday" value="Mon" checked="checked" /><label class="checkbox" for="monday">Monday</label><br />
-		   <input type="checkbox" name="day" id="tuesday" value="Tue" checked="checked" /><label class="checkbox" for="tuesday">Tuesday</label><br />
-		   <input type="checkbox" name="day" id="wednesday" value="Wed" checked="checked" /><label class="checkbox" for="wednesday">Wednesday</label><br />
-		   <input type="checkbox" name="day" id="thursday" value="Thu" checked="checked" /><label class="checkbox" for="thursday">Thursday</label><br />
-		   <input type="checkbox" name="day" id="friday" value="Fri" checked="checked" /><label class="checkbox" for="friday">Friday</label><br />
-		   <input type="checkbox" name="day" id="saturday" value="Sat" checked="checked" /><label class="checkbox" for="saturday">Saturday</label><br />
-		   <input type="checkbox" name="day" id="sunday" value="Sun" checked="checked" /><label class="checkbox" for="sunday">Sunday</label>
+		   <input type="checkbox" name="day" id="monday" value="Mon" checked="checked" /><label class="checkbox" for="monday"><?php echo _('Monday')?></label><br />
+		   <input type="checkbox" name="day" id="tuesday" value="Tue" checked="checked" /><label class="checkbox" for="tuesday"><?php echo _('Tuesday')?></label><br />
+		   <input type="checkbox" name="day" id="wednesday" value="Wed" checked="checked" /><label class="checkbox" for="wednesday"><?php echo _('Wednesday')?></label><br />
+		   <input type="checkbox" name="day" id="thursday" value="Thu" checked="checked" /><label class="checkbox" for="thursday"><?php echo _('Thursday')?></label><br />
+		   <input type="checkbox" name="day" id="friday" value="Fri" checked="checked" /><label class="checkbox" for="friday"><?php echo _('Friday')?></label><br />
+		   <input type="checkbox" name="day" id="saturday" value="Sat" checked="checked" /><label class="checkbox" for="saturday"><?php echo _('Saturday')?></label><br />
+		   <input type="checkbox" name="day" id="sunday" value="Sun" checked="checked" /><label class="checkbox" for="sunday"><?php echo _('Sunday')?></label>
 		</div>
 		</div> <!-- end #block-time -->
             <div class="form-row form-btn">
-            	<input type="button" id="btn-save" name="save" class="btn submit" value="Save"/>
-            	<input type="button" id="btn-cancel" name="cancel" class="btn alt reset" value="Cancel"/>
+            	<input type="button" id="btn-save" name="save" class="btn submit" value="<?php echo _('Save')?>"/>
+            	<input type="button" id="btn-cancel" name="cancel" class="btn alt reset" value="<?php echo _('Cancel')?>"/>
             </div>
 	</div> <!-- end .module -->
 	</div>

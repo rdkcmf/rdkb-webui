@@ -18,7 +18,7 @@
 <?php 
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 $jsConfig = $_POST['configInfo'];
@@ -50,13 +50,13 @@ if($arConfig['security']!="None"){
 if($validation && !valid_ssid_name($arConfig['network_name']))
 {
 	$validation = false;
-	$response_message = 'WiFi name (2.4GHz) is not valid. Please enter a new name !';
+	$response_message = _('WiFi name (2.4GHz) is not valid. Please enter a new name !');
 }
 //Choose a different Network Name (SSID) than the one provided on your gateway
 $DefaultSSID = getStr("Device.WiFi.SSID.1.X_COMCAST-COM_DefaultSSID");
 if($validation && (strtolower($DefaultSSID) == strtolower($arConfig['network_name']))){
 	$validation = false;
-	$response_message = 'WiFi name (2.4GHz) is not valid. Please enter a new name !';
+	$response_message = _('WiFi name (2.4GHz) is not valid. Please enter a new name !');
 } 
 //Choose a different Network Password than the one provided on your gateway
 $DefaultKeyPassphrase = getStr("Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_DefaultKeyPassphrase");
@@ -70,13 +70,13 @@ if($arConfig['security1']!="None"){
 if($validation && !valid_ssid_name($arConfig['network_name1']))
 {
 	$validation = false;
-	$response_message = 'WiFi name (5GHz) is not valid. Please enter a new name !';
+	$response_message = _('WiFi name (5GHz) is not valid. Please enter a new name !');
 }
 //Choose a different Network Name (SSID) than the one provided on your gateway
 $DefaultSSID5 = getStr("Device.WiFi.SSID.2.X_COMCAST-COM_DefaultSSID");
 if($validation && (strtolower($DefaultSSID5) == strtolower($arConfig['network_name1']))){
 	$validation = false;
-	$response_message = 'WiFi name (5GHz) is not valid. Please enter a new name !';
+	$response_message = _('WiFi name (5GHz) is not valid. Please enter a new name !');
 } 
 //Choose a different Network Password than the one provided on your gateway
 $DefaultKeyPassphrase5 = getStr("Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_DefaultKeyPassphrase");

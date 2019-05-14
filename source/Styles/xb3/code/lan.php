@@ -52,7 +52,7 @@ function onsavePort4() {
 	var postData = {};
 	postData.op = "savePort4XHS";
 	postData.enable = $("#port4").prop("checked");
-	jProgress('This may take several seconds', 60);
+	jProgress('<?php echo _('This may take several seconds')?>', 60);
 	$.ajax({
 		type: 'POST',
 		url: 'actionHandler/ajaxSet_hardware_lan.php',
@@ -61,9 +61,9 @@ function onsavePort4() {
 		success: function(data) {
 			jHide();
 			if (data.status != 'success') {
-				var str = "Failed, please try again later.";
+				var str = "<?php echo _('Failed, please try again later.')?>";
 				if (data.msg) {
-					str += '\nMessage: ' + data.msg;
+					str += '\n<?php echo _('Message:')?> ' + data.msg;
 				}
 				jAlert(str);
 				return;
@@ -75,7 +75,7 @@ function onsavePort4() {
 		error: function() {
 			/* restore the previous state */
 			jHide();
-			jAlert("Failure, please try again.");
+			jAlert("<?php echo _('Failure, please try again.')?>");
 		}
 	});
 }
@@ -89,10 +89,10 @@ $(document).ready(function() {
 });
 </script>
 <div id="content">
-	<h1>Gateway > Hardware > LAN Ethernet</h1>
+	<h1><?php echo _('Gateway > Hardware > LAN Ethernet')?></h1>
 	<div id="educational-tip">
-		<p class="tip">View information about the Gateway's Ethernet Ports. </p>
-		<p class="hidden">The Gateway has 4 Gigabit (GbE) Ethernet Ports. When a device is connected to the Gateway with an Ethernet cable, you'll see an <i>Active</i> status for that port.</p>
+		<p class="tip"><?php echo _('View information about the Gateway\'s Ethernet Ports.')?> </p>
+		<p class="hidden"><?php echo _('The Gateway has 4 Gigabit (GbE) Ethernet Ports. When a device is connected to the Gateway with an Ethernet cable, you\'ll see an <i>Active</i> status for that port.')?></p>
 	</div>
 	<?php
 	function NameMap($str)
@@ -105,18 +105,18 @@ $(document).ready(function() {
 			case "Up":
 				if($allowEthWan=="true"){
 					if($wan_enable=="true")
-						return "Active Ethernet WAN";
+						return _("Active Ethernet WAN");
 					else
-						return "Active Docsis WAN";
+						return _("Active Docsis WAN");
 				} else {
-					return "Active";
+					return _("Active");
 				}
 				break;
 			case "Down":
-				return "Inactive";
+				return _("Inactive");
 				break;
 			default:
-				return $str;
+				return ($str == "Up" ? _("Up") : _("Down"));
 		}
 	}
 	$ids = array_filter(explode(",",getInstanceIds("Device.Ethernet.Interface.")));
@@ -129,20 +129,20 @@ $(document).ready(function() {
 			continue;		
 		}
 		echo '<div class="module forms block">';
-		echo '<h2>LAN Ethernet Port '.$ids[$id].'</h2>';
+		echo '<h2>'.sprintf(_("LAN Ethernet Port %s"),$ids[$id]).'</h2>';
 		$dm = array(
-			array("LAN Ethernet link status:", null, $ethernetParam[$id]["Status"]),
-			array("MAC Address:", null, $ethernetParam[$id]["MACAddress"])
+			array(_("LAN Ethernet link status:"), null, $ethernetParam[$id]["Status"]),
+			array(_("MAC Address:"), null, $ethernetParam[$id]["MACAddress"])
 		);
 		/* link speed */
 		$lspeed = $ethernetParam[$id]["CurrentBitRate"];
 		$lunit = " Mbps";
 		if (empty($lspeed)) {
-			$lspeed = "Not Applicable";
+			$lspeed = _("Not Applicable");
 			$lunit = "";
 		}
 		else if ((int)$lspeed < 0) {
-			$lspeed = "Disconnected";
+			$lspeed = _("Disconnected");
 			$lunit = "";
 		}
 		/* zqiu
@@ -151,7 +151,7 @@ $(document).ready(function() {
 			$lunit = " Gbps";
 		} 
 		*/
-		array_push($dm, array("Connection Speed:", $lspeed.$lunit));
+		array_push($dm, array(_("Connection Speed:"), $lspeed.$lunit));
 		for ($m=0, $i=0; $i<count($dm); $i++)
 		{
 			echo '<div class="form-row '.(($m++ % 2)?'odd':'').'" >';
@@ -165,23 +165,23 @@ $(document).ready(function() {
 				if($PartnerId == 'comcast'){
 
                                 echo '<div class="form-row odd ">'.
-                                        '<label for="channel_selection">Associate Ethernet Port 4 to XFINITY HOME Network:</label>'.
+                                        '<label for="channel_selection">'._("Associate Ethernet Port 4 to XFINITY HOME Network:").'</label>'.
                                         '<span class="checkbox"><input type="checkbox" id="port4" name="port4" /></span></br></br></br></br>'.
-                                        'Note: Associating Ethernet Port 4 to XFINITY HOME network will remove the port from your home network.</br></br>'.
+                                        _('Note: Associating Ethernet Port 4 to XFINITY HOME network will remove the port from your home network.').'</br></br>'.
                                 '</div>'.
                                 '<div class="form-row odd" >'.
-                                        '<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="Save" class="btn submit" /></div>'.
+                                        '<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="'._("Save").'" class="btn submit" /></div>'.
                                 '</div>';
                                 }
                                 else if($PartnerId == 'cox'){
 
                                 echo '<div class="form-row odd ">'.
-                                        '<label for="channel_selection">Associate Ethernet Port 4 to HOME SECURITY Network:</label>'.
+                                        '<label for="channel_selection">'._("Associate Ethernet Port 4 to HOME SECURITY Network:").'</label>'.
                                         '<span class="checkbox"><input type="checkbox" id="port4" name="port4" /></span></br></br></br></br>'.
-                                        'Note: Associating Ethernet Port 4 to HOME SECURITY network will remove the port from your home network.</br></br>'.
+                                        _('Note: Associating Ethernet Port 4 to HOME SECURITY network will remove the port from your home network.').'</br></br>'.
                                 '</div>'.
                                 '<div class="form-row odd" >'.
-                                        '<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="Save" class="btn submit" /></div>'.
+                                        '<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="'._("Save").'" class="btn submit" /></div>'.
                                 '</div>';
                                 }
 

@@ -27,6 +27,16 @@
 	$sta_wifi = $_SESSION['sta_wifi'];
 	$sta_moca = $_SESSION['sta_moca'];
 	$sta_fire = $_SESSION['sta_fire'];
+	$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
+	
+	/* Turn off Battery and MoCA based on Partner devices */
+	if (strpos($partnerId, "sky-") !== false) {
+	    $MoCA = FALSE;
+	    $battery = FALSE;
+	} else {
+	    $MoCA = TRUE;
+	    $battery = TRUE;
+	}
 ?>
 <script type="text/javascript">
 $(window).load(function() {
@@ -53,7 +63,7 @@ $(window).load(function() {
 					{
 						$("#"+msg.tags[i]).addClass("off");
 					}
-					$("#sta_fire a>span").text(msg.mainStatus[i] + " Security")
+					$("#sta_fire a>span").text("<?php echo sprintf(_("%s Security"), _($sta_fire)); ?>");
 				}
 			}
 			//$sta_batt,$battery_class
@@ -87,13 +97,13 @@ $(window).load(function() {
 				// (1)stop counter when less than 0, (2)hide warning when achieved 0, (3)add another alert to block user action if network unreachable
 				if (cnt<=0) {
 					clearInterval(h_cntd);
-					jAlert("You have been logged out due to inactivity!");
+					jAlert("<?php echo _("You have been logged out due to inactivity!")?>");
 					location.href="home_loggedout.php";
 				}
 			}, 1000);
 			// use jAlert instead of alert, or it will not auto log out untill OK pressed!
-			jAlert('Press <b>OK</b> to continue session. Otherwise you will be logged out in <span id="count_down" style="font-size: 200%; color: red;">'+cnt+'</span> seconds!'
-			, 'You are being logged out due to inactivity!'
+			jAlert("<?php echo _('Press <b>OK</b> to continue session. Otherwise you will be logged out in')?><span id=\"count_down\" style=\"font-size: 200%; color: red;\">" + cnt + "</span> <?php echo _("seconds!")?>"
+			, "<?php echo _('You are being logged out due to inactivity!')?>"
 			, function(){
 				clearInterval(h_cntd);
 			});
@@ -117,32 +127,36 @@ $(window).load(function() {
 }
 </style>
 <ul id="userToolbar" class="on">
-	<li class="first-child"> Hi <?php echo $_SESSION["loginuser"]; ?></li>
-	<li style="list-style:none outside none; margin-left:0">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;<a href="home_loggedout.php" tabindex="0">Logout</a></li>
+	<li class="first-child"><?php echo sprintf(_("Hi %s"), $_SESSION["loginuser"]);?></li>
+	<li style="list-style:none outside none; margin-left:0">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;<a href="home_loggedout.php" tabindex="0"><?php echo _("Logout"); ?></a></li>
 	<?php
 		if($_SESSION["loginuser"] == "admin")
-		echo '<li style="list-style:none outside none; margin-left:0">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;<a href="password_change.php" tabindex="0">Change Password</a></li>';
+		echo '<li style="list-style:none outside none; margin-left:0">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;<a href="password_change.php" tabindex="0">'._("Change Password").'</a></li>';
 	?>
 </ul>
 <ul id="status">
 	<?php
-	echo '<li id="sta_batt" class="battery first-child"><div class="sprite_cont"><span class="'.$battery_class.'" ><img src="./cmn/img/icn_battery.png"  alt="Battery icon" title="Battery icon" /></span></div><a role="toolbar" href="javascript: void(0);" tabindex="0">'.$sta_batt.'%</a>
-		<!-- NOTE: When this value changes JS will set the battery icon -->
-	</li>';
+	if ($battery) {
+    	echo '<li id="sta_batt" class="battery first-child"><div class="sprite_cont"><span class="'.$battery_class.'" ><img src="./cmn/img/icn_battery.png"  alt="'._("Battery icon").'" title="'._("Battery icon").'" /></span></div><a role="toolbar" href="javascript: void(0);" tabindex="0">'.$sta_batt.'%</a>
+    		<!-- NOTE: When this value changes JS will set the battery icon -->
+    	</li>';
+	}
 	if ("true"==$sta_inet) {
-		echo '<li id="sta_inet" class="internet"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Internet Online" /></span><a href="javascript: void(0);" tabindex="0">Internet<div class="tooltip">Loading...</div></a></li>';
+		echo '<li id="sta_inet" class="internet"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("Internet Online").'" /></span><a href="javascript: void(0);" tabindex="0">'._("Internet").'<div class="tooltip">'._("Loading...").'</div></a></li>';
 	} else {
-		echo '<li id="sta_inet" class="internet off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Internet Offline" /></span><a href="javascript: void(0);" tabindex="0">Internet<div class="tooltip">Loading...</div></a></li>';
+		echo '<li id="sta_inet" class="internet off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("Internet Offline").'" /></span><a href="javascript: void(0);" tabindex="0">'._("Internet").'<div class="tooltip">'._("Loading...").'</div></a></li>';
 	}
 	if ("true"==$sta_wifi) {
-		echo '<li id="sta_wifi" class="wifi"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="WiFi Online" /></span><a href="javascript: void(0);" tabindex="0">Wi-Fi<div class="tooltip">Loading...</div></a></li>';
+		echo '<li id="sta_wifi" class="wifi"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("WiFi Online").'" /></span><a href="javascript: void(0);" tabindex="0">'._("Wi-Fi").'<div class="tooltip">'._("Loading...").'</div></a></li>';
 	} else {
-		echo '<li id="sta_wifi" class="wifi off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="WiFi Offline" /></span><a href="javascript: void(0);" tabindex="0">Wi-Fi<div class="tooltip">Loading...</div></a></li>';
+		echo '<li id="sta_wifi" class="wifi off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("WiFi Offline").'" /></span><a href="javascript: void(0);" tabindex="0">'._("Wi-Fi").'<div class="tooltip">'._("Loading...").'</div></a></li>';
 	}
-	if ("true"==$sta_moca) {
-		echo '<li id="sta_moca" class="MoCA"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="MoCA Online" /></span><a href="javascript: void(0);" tabindex="0">MoCA<div class="tooltip">Loading...</div></a></li>';
-	} else {
-		echo '<li id="sta_moca" class="MoCA off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="MoCA Offline" /></span><a href="javascript: void(0);" tabindex="0">MoCA<div class="tooltip">Loading...</div></a></li>';
+	if ($MoCA) {
+    	if ("true"==$sta_moca) {
+    		echo '<li id="sta_moca" class="MoCA"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("MoCA Online").'" /></span><a href="javascript: void(0);" tabindex="0">'._("MoCA").'<div class="tooltip">'._("Loading...").'</div></a></li>';
+    	} else {
+    		echo '<li id="sta_moca" class="MoCA off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("MoCA Offline").'" /></span><a href="javascript: void(0);" tabindex="0">'._("MoCA").'<div class="tooltip">'._("Loading...").'</div></a></li>';
+    	}
 	}
 	/*if ("true"==$sta_dect) {
 		echo '<li id="sta_dect" class="DECT"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="DECT Online" /></span><a href="javascript: void(0);" tabindex="0">DECT<div class="tooltip">Loading...</div></a></li>';
@@ -150,9 +164,9 @@ $(window).load(function() {
 		echo '<li id="sta_dect" class="DECT off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="DECT Offline" /></span><a href="javascript: void(0);" tabindex="0">DECT<div class="tooltip">Loading...</div></a></li>';
 	}*/
 	if (("High"==$sta_fire) || ("Medium"==$sta_fire)) {
-		echo '<li id="sta_fire" class="security last"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Security On" /></span><a href="javascript: void(0);" tabindex="0"><span>'.$sta_fire.' Security</span><div class="tooltip">Loading...</div></a></li>';
+	    echo '<li id="sta_fire" class="security last"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("Security On").'" /></span><a href="javascript: void(0);" tabindex="0"><span>'.sprintf(_("%s Security"),_($sta_fire)).'</span><div class="tooltip">'._("Loading...").'</div></a></li>';
 	} else {
-		echo '<li id="sta_fire" class="security last off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Security Off" /></span><a href="javascript: void(0);" tabindex="0"><span>'.$sta_fire.' Security</span><div class="tooltip">Loading...</div></a></li>';
+	    echo '<li id="sta_fire" class="security last off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("Security Off").'" /></span><a href="javascript: void(0);" tabindex="0"><span>'.sprintf(_("%s Security"),_($sta_fire)).'</span><div class="tooltip">'._("Loading...").'</div></a></li>';
 	}
 	?>
 </ul>

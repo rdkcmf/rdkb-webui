@@ -380,7 +380,7 @@ function update_Wi_Fi_control_list(){
 		error: function(){
 			//jHide();
 			$("#mac_admin_temp, #mac_admin").toggle();
-			jAlert("Failure, please try again.");
+			jAlert("<?php echo _('Failure, please try again.')?>");
 		}
 	});
 }
@@ -414,8 +414,8 @@ $(document).ready(function() {
 		radio_name: "at_a_glance",
 		id_on: "radio_enable",
 		id_off: "radio_disable",
-		title_on: "Enable radio 2.4G",
-		title_off: "Disable radio 2.4G",
+		title_on: "<?php echo _('Enable radio 2.4G')?>",
+		title_off: "<?php echo _('Disable radio 2.4G')?>",
 		state: G_radio_enable ? "on" : "off"
 	}).change(function(){
 		save_enable("radio_enable");
@@ -425,8 +425,8 @@ $(document).ready(function() {
 		radio_name: "at_a_glance2",
 		id_on: "radio_enable1",
 		id_off: "radio_disable1",
-		title_on: "Enable radio 5G",
-		title_off: "Disable radio 5G",
+		title_on: "<?php echo _('Enable radio 5G')?>",
+		title_off: "<?php echo _('Disable radio 5G')?>",
 		state: G_radio_enable1 ? "on" : "off"
 	}).change(function(){
 		save_enable("radio_enable1");
@@ -436,8 +436,8 @@ $(document).ready(function() {
 		radio_name: "wps",
 		id_on: "wps_enabled",
 		id_off: "wps_disabled",
-		title_on: "Enable WPS",
-		title_off: "Disable WPS",
+		title_on: "<?php echo _('Enable WPS')?>",
+		title_off: "<?php echo _('Disable WPS')?>",
 		state: G_wps_enabled ? "on" : "off"
 	});
 	$("#pin_switch").radioswitch({
@@ -445,8 +445,8 @@ $(document).ready(function() {
 		radio_name: "pin_switch",
 		id_on: "pin_enable",
 		id_off: "pin_disable",
-		title_on: "Enable WPS PIN",
-		title_off: "Disable WPS PIN",
+		title_on: "<?php echo _('Enable WPS PIN')?>",
+		title_off: "<?php echo _('Disable WPS PIN')?>",
 		state: G_wps_method !== "PushButton" ? "on" : "off"
 	});
 	function disable_ssid_options(element, index){
@@ -537,8 +537,8 @@ $(document).ready(function() {
     	$("#wireless_mode").change(function() {
 		if($(this).val() == "b,g,n") {
 			jConfirm(
-				"WARNING:<br/> Changing the Wi-Fi mode to '802.11 b/g/n' will significantly reduce the performance of your Wi-Fi network. This setting is required only if you have older 'b only' Wi-Fi devices in your network. All newer Wi-Fi devices support '802.11 g/n' mode. Are you sure you want to continue with the change?"
-				, "Are You Sure?"
+				"<?php echo _("WARNING:<br/> Changing the Wi-Fi mode to '802.11 b/g/n' will significantly reduce the performance of your Wi-Fi network. This setting is required only if you have older 'b only' Wi-Fi devices in your network. All newer Wi-Fi devices support '802.11 g/n' mode. Are you sure you want to continue with the change?")?>"
+				, "<?php echo _('Are You Sure?')?>"
 				,function(ret) {
 					if(!ret) {
 						$("#wireless_mode").val('<?php echo $wireless_mode; ?>').attr("selected","selected");
@@ -621,7 +621,7 @@ $(document).ready(function() {
 			},
 		submitHandler: function() {
 			if($("#wps_disabled").is(":checked")) {
-				jAlert("Please enable WPS first!");
+				jAlert("<?php echo _('Please enable WPS first!')?>");
 			}
 			else {
 				pair_client();
@@ -738,8 +738,8 @@ $(document).ready(function() {
 		var channel = $("#channel_number1 option:selected").val();
 		if(channel >= 52 && channel <= 140 ) {
 			jConfirm(
-				"WARNING:<br/> You are selecting a Dynamic Frequency Selection (DFS) Channel (52-140). Some Wi-Fi devices do not support DFS channels in the 5 GHz band. For those devices that do not support DFS channels, the 5 GHz Wi-Fi Network Name (SSID) will not be displayed on the list of available networks. Do you wish to continue?"
-				, "Are You Sure?"
+				"<?php echo _("WARNING:<br/> You are selecting a Dynamic Frequency Selection (DFS) Channel (52-140). Some Wi-Fi devices do not support DFS channels in the 5 GHz band. For those devices that do not support DFS channels, the 5 GHz Wi-Fi Network Name (SSID) will not be displayed on the list of available networks. Do you wish to continue?")?>"
+				, "<?php echo _('Are You Sure?')?>"
 				,function(ret) {
 					if(!ret) {
 						$("#channel_number1").val('<?php echo $channel_number1; ?>').attr("selected","selected");
@@ -810,7 +810,7 @@ $(window).load(function() {
 function set_config(jsConfig)
 {
 	// alert(jsConfig);
-	jProgress('This may take several seconds...', 60);
+	jProgress('<?php echo _('This may take several seconds...')?>', 60);
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_wireless_network_configuration.php",
@@ -821,7 +821,7 @@ function set_config(jsConfig)
 		},
 		error: function(){            
 			jHide();
-			jAlert("Failure, please try again.");
+			jAlert("<?php echo _('Failure, please try again.')?>");
 		}
 	});
 }
@@ -843,7 +843,7 @@ function check_add()
 {
 	//check device_name
 	if($("#device_name").val().match(/[<>&"'|]/)!=null){
-		return ["ERROR", "Please enter valid Device Name! \n Less than (<), Greater than (>), Ampersand (&), Double quote (\"), \n Single quote (') and Pipe (|) characters are not allowed."];
+		return ["ERROR", "<?php echo _('Please enter valid Device Name! \n Less than (<), Greater than (>), Ampersand (&), Double quote (\"), \n Single quote (\') and Pipe (|) characters are not allowed.')?>"];
 	}
 	//check mac_address
 	var name = $("#device_name").val();
@@ -855,12 +855,12 @@ function check_add()
 		  +":"+$("#mac_address_6").attr("value");
 	var sHex = $("#mac_address_1").attr("value");
 	if ("" == name.replace(/\s/g, '')) {
-		return ["ERROR", "Please enter device name!"];
+		return ["ERROR", "<?php echo _('Please enter device name!')?>"];
 	}
 	if (!RegExp("^([0-9a-fA-F]{2})(([/\s:-][0-9a-fA-F]{2}){5})$").test(addr) 
 		|| ("00:00:00:00:00:00"==addr)
 		|| (parseInt(sHex,16)%2 != 0) ) {
-		return ["ERROR", "Please enter valid MAC address! \n First byte must be even. \n Each character must be [0-9a-fA-F]."];
+		return ["ERROR", "<?php echo _('Please enter valid MAC address! \n First byte must be even. \n Each character must be [0-9a-fA-F].')?>"];
 	}
 	$("#device_name").val("");
 	$("#mac_address_1").val("");
@@ -905,13 +905,13 @@ function add_row(tid, idex, name, addr)
 		idex = tb.rows.length;
 	}
 	else if (len > 65) {
-		jAlert("No more than 64 devices can be added!");
+		jAlert("<?php echo _('No more than 64 devices can be added!')?>");
 		return;
 	}
 	if ("filter_table" == tid) {
 		for (var i=1; i < tb.rows.length; i++) {
 			if (addr.toLowerCase() == tb.rows[i].cells[2].innerHTML.toLowerCase()) {
-				jAlert("MAC address already exist!");
+				jAlert("<?php echo _('MAC address already exist!')?>");
 				return;
 			}
 		}
@@ -921,20 +921,20 @@ function add_row(tid, idex, name, addr)
 	else if ("auto_table" == tid) {
 		for (var i=1; i < tb.rows.length; i++) {
 			if (addr.toLowerCase() == tb.rows[i].cells[1].innerHTML.toLowerCase()) {
-				jAlert("MAC address already exist!");
+				jAlert("<?php echo _('MAC address already exist!')?>");
 				return;
 			}
 		}
 		$("#auto_table").append('<tr><td headers="auto-Name">'+name+'</td><td headers="auto-MAC">'+addr+
-		'</td><td headers="auto-Blank" class="edit"><input class="btn" type="button" value="ADD" onclick="add_auto(this)"/></td></tr>');
+		'</td><td headers="auto-Blank" class="edit"><input class="btn" type="button" value="<?php echo _('ADD')?>" onclick="add_auto(this)"/></td></tr>');
 	}
 	adjust_row(tid);
 }
 function del_row(row) 
 {
 	jConfirm(
-		"Are you sure you want to delete this entry from Wi-Fi Control List?"
-		, "Are You Sure?"
+		"<?php echo _('Are you sure you want to delete this entry from Wi-Fi Control List?')?>"
+		, "<?php echo _('Are You Sure?')?>"
 		,function(ret) {
 			if(ret) {
 				var idex = row.parentNode.parentNode.rowIndex;
@@ -1072,17 +1072,17 @@ function pair_client()
 					+'", "target":"'+"pair_client"+'"}';	
 	if ("PushButton"!=pair_method && !validChecksum($("#pin_number").attr("value")))
 	{
-		jAlert("Invalid PIN!");
+		jAlert("<?php echo _('Invalid PIN!')?>");
 		return;
 	}
-	jProgress('This may take several seconds...', 60);
+	jProgress('<?php echo _('This may take several seconds...')?>', 60);
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_wireless_network_configuration.php",
 		data: { configInfo: jsConfig },
 		success: function(msg) {
 			jHide();
-			jAlert("WPS in Progress!");
+			jAlert("<?php echo _('WPS in Progress!')?>");
 			// if (msg.pair_res == "success")
 			// {
 				// jAlert("Connection established!");
@@ -1094,7 +1094,7 @@ function pair_client()
 		},
 		error: function(){            
 			jHide();
-			jAlert("Failure, please try again.");
+			jAlert("<?php echo _('Failure, please try again.')?>");
 		}
 	});	
 }
@@ -1104,26 +1104,26 @@ function pair_cancel()
 	var wps_enabled		= $("#wps_switch").radioswitch("getState").on;
 	var jsConfig = '{"ssid_number":"'+ssid_number+'", "target":"'+"pair_cancel"+'"}';	
 	if (!wps_enabled) {
-		jAlert("Please enable WPS first!");
+		jAlert("<?php echo _('Please enable WPS first!')?>");
 		return;
 	}	
 	jConfirm(
-		"Are you sure you want to cancel WPS progress?"
-		,"Confirm:"
+		"<?php echo _('Are you sure you want to cancel WPS progress?')?>"
+		,"<?php echo _('Confirm:')?>"
 		,function(ret) {
 			if(ret) {
-				jProgress('WPS progress cancelling...', 60);
+				jProgress('<?php echo _('WPS progress cancelling...')?>', 60);
 				$.ajax({
 					type: "POST",
 					url: "actionHandler/ajaxSet_wireless_network_configuration.php",
 					data: { configInfo: jsConfig },
 					success: function(msg) {
 						jHide();
-						jAlert("WPS progress is canceled!");
+						jAlert("<?php echo _('WPS progress is canceled!')?>");
 					},
 					error: function(){            
 						jHide();
-						jAlert("Failure, please try again.");
+						jAlert("<?php echo _('Failure, please try again.')?>");
 					}
 				});	
 			}
@@ -1132,9 +1132,9 @@ function pair_cancel()
 }
 function showSteeringHistoryDialog() {
 		$.virtualDialog({
-			title: "Band Steering History",
+			title: "<?php echo _('Band Steering History')?>",
 			content: $("#band_steering_history_content"),
-			footer: '<input id="pop_button" type="button" value="Close" style="float: right;" />',
+			footer: '<input id="pop_button" type="button" value="<?php echo _('Close')?>" style="float: right;" />',
 			width: "600px"
 		});
 		$("#pop_button").off("click").on("click", function(){
@@ -1142,7 +1142,7 @@ function showSteeringHistoryDialog() {
 		});
 	}
 function steering_history() {
-	jProgress('This may take several seconds...', 60);
+	jProgress('<?php echo _('This may take several seconds...')?>', 60);
 	$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_wireless_network_configuration.php",
@@ -1167,14 +1167,14 @@ function steering_history() {
 				},
 			failure: function(result) {
 					jHide();
-					jAlert("Failure, please try again.");
+					jAlert("<?php echo _('Failure, please try again.')?>");
 				}
 
 			});
 }
 function saveBandSteeringSettings()
 {
-	jProgress('This may take several seconds...', 60);
+	jProgress('<?php echo _('This may take several seconds...')?>', 60);
 	var bs_enable = $("#BS_enabled").prop("checked");
 	var UtilzThreshold1 = $("#UtilzThreshold1").val();
 	var RSSIThreshold1 = $("#RSSIThreshold1").val();
@@ -1197,74 +1197,74 @@ function saveBandSteeringSettings()
 		failure: function(result)
 		{
 			jHide();
-			jAlert("Failure, please try again.");
+			jAlert("<?php echo _('Failure, please try again.')?>");
 		}
 	});
 }
 </script>
 <div id="content">
-<h1>Gateway > Connection > Wi-Fi</h1>
+<h1><?php echo _('Gateway > Connection > Wi-Fi')?></h1>
 <div id="educational-tip">
-	<p class="tip">Manage your Wi-Fi connection settings.</p>
-	<p class="hidden">Click <strong>EDIT</strong> next to the Network Name you'd like to modify its Wi-Fi network settings: Network Name (SSID), Mode, Security Mode, Channel, Network Password (Key), and Broadcasting feature.</p>
-	<p class="hidden" ><strong>MAC Filter Setting</strong> is specific to each Network Name (SSID). Select a MAC Filtering Mode.</p>
-	<span class="hidden" style="position:relative; top:-15px ; left: 2px;"><ul style="margin: 1.3em; "><li type="disc" >Allow- All (Default): All wireless client stations can connect to the Gateway; no MAC filtering rules.</li>
-	<li type="disc">Allow: Only the devices in the "Wireless Control List" are allowed to connect to the Gateway.</li>
-	<li type="disc">Deny: Wireless devices in the "Wireless Control List" are not allowed to connect to the Gateway.</li></ul></span>
-	<p class="hidden" style="position:relative; top:-20px ; left: 2px;"><strong>Wireless Control List:</strong> Displays the wireless devices (by Network Name and MAC Address) that were manually added or auto-learned.</p>
-	<p class="hidden" style="position:relative; top:-20px ; left: 2px;"><strong>Auto-Learned Wireless Devices</strong> are currently connected to the Gateway. </p>
-	<p class="hidden" style="position:relative; top:-20px ; left: 2px;"><strong>Manually-Added Wireless Devices:</strong> Enter a unique name and MAC address for the wireless device you want to manually add, then click <strong>ADD.</strong> </p>
+	<p class="tip"><?php echo _('Manage your Wi-Fi connection settings.')?></p>
+	<p class="hidden"><?php echo _('Click <strong>EDIT</strong> next to the Network Name you\'d like to modify its Wi-Fi network settings: Network Name (SSID), Mode, Security Mode, Channel, Network Password (Key), and Broadcasting feature.')?></p>
+	<p class="hidden" ><?php echo _("<strong>MAC Filter Setting</strong> is specific to each Network Name (SSID). Select a MAC Filtering Mode.")?></p>
+	<span class="hidden" style="position:relative; top:-15px ; left: 2px;"><ul style="margin: 1.3em; "><li type="disc" ><?php echo _("Allow- All (Default): All wireless client stations can connect to the Gateway; no MAC filtering rules.")?></li>
+	<li type="disc"><?php echo _("Allow: Only the devices in the \"Wireless Control List\" are allowed to connect to the Gateway.")?></li>
+	<li type="disc"><?php echo _("Deny: Wireless devices in the \"Wireless Control List\" are not allowed to connect to the Gateway.")?></li></ul></span>
+	<p class="hidden" style="position:relative; top:-20px ; left: 2px;"><?php echo _("<strong>Wireless Control List:</strong> Displays the wireless devices (by Network Name and MAC Address) that were manually added or auto-learned.")?></p>
+	<p class="hidden" style="position:relative; top:-20px ; left: 2px;"><?php echo _("<strong>Auto-Learned Wireless Devices</strong> are currently connected to the Gateway.")?> </p>
+	<p class="hidden" style="position:relative; top:-20px ; left: 2px;"><?php echo _("<strong>Manually-Added Wireless Devices:</strong> Enter a unique name and MAC address for the wireless device you want to manually add, then click <strong>ADD.</strong>")?> </p>
 </div>
 <div class="module div_enable_radio">
 	<div class="select-row">
-	<span class="readonlyLabel label">Wi-Fi Radio(<?php echo $radioband1; ?> GHz)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>
+	<span class="readonlyLabel label"><?php echo sprintf(_("Wi-Fi Radio(%s GHz)"), $radioband1); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>
 	<span id="radio24_switch"></span>
 	</div>
 </div>
 <div class="module div_enable_radio">
 	<div class="select-row">
-	<span class="readonlyLabel label">Wi-Fi Radio(<?php echo $radioband2; ?> GHz)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>
+	<span class="readonlyLabel label"><?php echo sprintf(_("Wi-Fi Radio(%s GHz)"), $radioband2); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>
 	<span id="radio5_switch"></span>
 	</div>
 </div>
 <div class="module data data div_private_wifi">
-	<h2>Private Wi-Fi Network</h2>
-	<table class="data" id="private_wifi" summary="Private Wi-Fi Network">
+	<h2><?php echo _("Private Wi-Fi Network")?></h2>
+	<table class="data" id="private_wifi" summary="<?php echo _("Private Wi-Fi Network")?>">
 	<tr>
-		<th id="private-Name" class="name" width="20%">Name</th>
-		<th id="private-Frequency" class="name" width="20%">Frequency Band:</th>
-		<th id="private-MAC" class="protocals" width="20%">MAC Address</th>
-		<th id="private-Security" class="security" width="30%">Security Mode</th>
+		<th id="private-Name" class="name" width="20%"><?php echo _("Name")?></th>
+		<th id="private-Frequency" class="name" width="20%"><?php echo _("Frequency Band:")?></th>
+		<th id="private-MAC" class="protocals" width="20%"><?php echo _("MAC Address")?></th>
+		<th id="private-Security" class="security" width="30%"><?php echo _("Security Mode")?></th>
 		<th id="private-Blank" class="edit" width="10%">&nbsp;</th>
 	</tr>
 	<tr class="form-row odd">
 		<td headers="private-Name"><b><font color="black" style="white-space: pre-wrap;"><?php echo $network_name; ?></font></b></td>
 		<td headers="private-Frequency"><?php echo $feq_band; ?></td>
 		<td headers="private-MAC"><?php echo $mac_address; ?>   </td>
-		<td headers="private-Security"><?php echo encrypt_map($encrypt_mode, $encrypt_method);?></td>
-		<td headers="private-Blank"><a href="wireless_network_configuration_edit.php?id=1" class="btn">Edit</a></td>
+		<td headers="private-Security"><?php echo _(encrypt_map($encrypt_mode, $encrypt_method));?></td>
+		<td headers="private-Blank"><a href="wireless_network_configuration_edit.php?id=1" class="btn"><?php echo _("Edit")?></a></td>
 	</tr>
 	<tr class="form-row">
 		<td headers="private-Name"><b><font color="black" style="white-space: pre-wrap;"><?php echo $network_name1; ?></font></b></td>
 		<td headers="private-Frequency"><?php echo $feq_band1; ?></td>
 		<td headers="private-MAC"><?php echo $mac_address1; ?>   </td>
-		<td headers="private-Security"><?php echo encrypt_map($encrypt_mode1, $encrypt_method1); ?></td>
-		<td headers="private-Blank"><a href="wireless_network_configuration_edit.php?id=2" class="btn">Edit</a></td>
+		<td headers="private-Security"><?php echo _(encrypt_map($encrypt_mode1, $encrypt_method1)); ?></td>
+		<td headers="private-Blank"><a href="wireless_network_configuration_edit.php?id=2" class="btn"><?php echo _("Edit")?></a></td>
 	</tr>
 	</table>
 	<div class="btn-group" style="display: none;">
-		<a id="add_wps_client" href="wireless_network_configuration_wps.php" class="btn">Add Wi-Fi Protected Setup (WPS) Client</a>
+		<a id="add_wps_client" href="wireless_network_configuration_wps.php" class="btn"><?php echo _("Add Wi-Fi Protected Setup (WPS) Client")?></a>
 	</div>
 </div> <!-- end .module -->
 <div class="module data data div_other_wifi">
-	<h2>Other Wi-Fi Network</h2>
+	<h2><?php echo _("Other Wi-Fi Network")?></h2>
 	<table class="data" id="other_wifi" summary="Other Wi-Fi Network">
 		<tbody>
 		<tr>
-			<th id="other-Name" width="20%" class="name">Name</th>
-			<th id="other-Frequency" class="name">Frequency Band</th>
-			<th id="other-MAC" width="20%" class="protocals">MAC Address</th>
-			<th id="other-Security" width="30%" class="security">Security Mode</th>
+			<th id="other-Name" width="20%" class="name"><?php echo _("Name")?></th>
+			<th id="other-Frequency" class="name"><?php echo _("Frequency Band")?></th>
+			<th id="other-MAC" width="20%" class="protocals"><?php echo _("MAC Address")?></th>
+			<th id="other-Security" width="30%" class="security"><?php echo _("Security Mode")?></th>
 		</tr>
 		<?php
 		//$ssids 		= explode(",", getInstanceIds("Device.WiFi.SSID."));
@@ -1312,18 +1312,18 @@ function saveBandSteeringSettings()
 		</tbody>
 	</table>
 	<div id="no_other_wifi" style="display: none;">
-		<p>There are no valid Other Wi-Fi found!</p>
+		<p><?php echo _("There are no valid Other Wi-Fi found!")?></p>
 	</div>
 </div>
 <div class="module data data div_public_wifi">
-	<h2>Public Wi-Fi Network</h2>
-	<table class="data" id="public_wifi" summary="Public Wi-Fi Network">
+	<h2><?php echo _("Public Wi-Fi Network")?></h2>
+	<table class="data" id="public_wifi" summary="<?php echo _("Public Wi-Fi Network")?>">
 		<tbody>
 		<tr>
-			<th id="public-Name" width="20%" class="name">Name</th>
-			<th id="public-Frequency" class="name">Frequency Band</th>
-			<th id="public-MAC" width="20%" class="protocals">MAC Address</th>
-			<th id="public-Security" width="30%" class="security">Security Mode</th>
+			<th id="public-Name" width="20%" class="name"><?php echo _("Name")?></th>
+			<th id="public-Frequency" class="name"><?php echo _("Frequency Band")?></th>
+			<th id="public-MAC" width="20%" class="protocals"><?php echo _("MAC Address")?></th>
+			<th id="public-Security" width="30%" class="security"><?php echo _("Security Mode")?></th>
 		</tr>
 		<?php
 		//$ssids 		= explode(",", getInstanceIds("Device.WiFi.SSID."));
@@ -1371,13 +1371,13 @@ function saveBandSteeringSettings()
 		</tbody>
 	</table>
 	<div id="no_public_wifi" style="display: none;">
-		<p>There are no valid public Wi-Fi found!</p>
+		<p><?php echo _("There is no valid public Wi-Fi found!")?></p>
 	</div>
 </div>
 <div class="module data data div_radio_setting">
-	<h2>2.4GHz Wireless Basic Setting</h2>
+	<h2><?php echo _("2.4GHz Wireless Basic Setting")?></h2>
 	<div class="form-row">
-		<label for="wireless_mode">Mode:</label>
+		<label for="wireless_mode"><?php echo _("Mode:")?></label>
 		<select name="wireless_mode" id="wireless_mode">
 		<!--option value="n"  		<?php //if ("n" == $wireless_mode) echo 'selected="selected"';?> >802.11 n</option-->
 		<option value="g,n" 	<?php if ("g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 g/n</option>
@@ -1385,7 +1385,7 @@ function saveBandSteeringSettings()
 		</select>
 	</div>
 	<div class="form-row odd">
-		<label for="transmit_power">Transmit Power:</label>
+		<label for="transmit_power"><?php echo _("Transmit Power:")?></label>
 		<select name="transmit_power" id="transmit_power">
 			<?php $int_power = (int)$transmit_power; ?>
 			<option value="100" <?php if ($int_power>75) echo 'selected="selected"';?> >100%</option>
@@ -1396,13 +1396,13 @@ function saveBandSteeringSettings()
 		</select>
 	</div>
 	<div class="form-row " id="channel_switch">
-		<label for="channel_manual">Channel Selection:</label>
-		<input type="radio"  name="channel" value="manual"  id="channel_manual" checked="checked" /><b>Manual</b>
+		<label for="channel_manual"><?php echo _("Channel Selection:")?></label>
+		<input type="radio"  name="channel" value="manual"  id="channel_manual" checked="checked" /><b><?php echo _("Manual")?></b>
 		<label for="channel_automatic" class="acs-hide"></label>
-		<input type="radio"  name="channel" value="auto" 	id="channel_automatic" <?php if ("true" == $channel_automatic) echo 'checked="checked"';?> /><b>Automatic</b>
+		<input type="radio"  name="channel" value="auto" 	id="channel_automatic" <?php if ("true" == $channel_automatic) echo 'checked="checked"';?> /><b><?php echo _("Automatic")?></b>
 	</div>
 	<div id="old_channel_number" class="form-row odd manual-only">
-		<label for="channel_number">Channel:</label>
+		<label for="channel_number"><?php echo _("Channel:")?></label>
 		<select name="channel_number" id="channel_number">
 			<?php
 				//dynamic generate possible channels
@@ -1418,39 +1418,39 @@ function saveBandSteeringSettings()
 	<div class="form-row ">
 		<div class="form-btn">
 		<label for="save_basic" class="acs-hide"></label>
-			<input type="submit" id="save_basic" value="Save Basic Setting" class="btn right" onclick="save_config('1', 'save_basic');"/>
+			<input type="submit" id="save_basic" value="<?php echo _("Save Basic Setting")?>" class="btn right" onclick="save_config('1', 'save_basic');"/>
 		</div>
 	</div>
 </div>
 <div class="module data data div_radio_setting">
-	<h2>2.4GHz Wireless Advanced Setting</h2><br/>
+	<h2><?php echo _("2.4GHz Wireless Advanced Setting")?></h2><br/>
 	<div class="form-row">
-		<label for="BG_protection_mode">BG Protection Mode:</label>
+		<label for="BG_protection_mode"><?php echo _("BG Protection Mode:")?></label>
 		<select name="BG_protection_mode" id="BG_protection_mode">
-		<option value="Auto" selected="selected">Auto</option>
-		<option value="Disabled" <?php if ("Disabled"==$BG_protect_mode) echo 'selected="selected"';?> >Manual</option>
+		<option value="Auto" selected="selected"><?php echo _("Auto")?></option>
+		<option value="Disabled" <?php if ("Disabled"==$BG_protect_mode) echo 'selected="selected"';?> ><?php echo _("Manual")?></option>
 		</select>
 	</div>
 	<div class="form-row odd">
-		<label for="IGMP_Snooping_disabled">IGMP Snooping</label>
-		<input type="radio"  name="IGMP_Snooping" value="false" id="IGMP_Snooping_disabled" checked="checked" /><b>Disable</b>
+		<label for="IGMP_Snooping_disabled"><?php echo _("IGMP Snooping")?></label>
+		<input type="radio"  name="IGMP_Snooping" value="false" id="IGMP_Snooping_disabled" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="IGMP_Snooping_enabled" class="acs-hide"></label>
-		<input type="radio"  name="IGMP_Snooping" value="true"  id="IGMP_Snooping_enabled" <?php if ("true"==$IGMP_Snooping) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="IGMP_Snooping" value="true"  id="IGMP_Snooping_enabled" <?php if ("true"==$IGMP_Snooping) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row">
-		<label for="mixed_mode">Operation Mode:</label>
-		<input type="radio"  name="operation_mode" value="false" id="mixed_mode" checked="checked" /><b>Mixed Mode</b>
+		<label for="mixed_mode"><?php echo _("Operation Mode:")?></label>
+		<input type="radio"  name="operation_mode" value="false" id="mixed_mode" checked="checked" /><b><?php echo _("Mixed Mode")?></b>
 		<label for="operation_mode" class="acs-hide"></label>
-		<input type="radio"  name="operation_mode" value="true"  id="operation_mode" <?php if ("true"==$operation_mode) echo 'checked="checked"';?> /><b>Green Field</b>
+		<input type="radio"  name="operation_mode" value="true"  id="operation_mode" <?php if ("true"==$operation_mode) echo 'checked="checked"';?> /><b><?php echo _("Green Field")?></b>
 	</div>
 	<div class="form-row odd" id="bandwidth_switch">
-		<label for="channel_bandwidth20">Channel Bandwidth:</label>
+		<label for="channel_bandwidth20"><?php echo _("Channel Bandwidth:")?></label>
 		<input type="radio"  name="channel_bandwidth" value="20MHz" id="channel_bandwidth20" checked="checked" /><b>20</b>
 		<label for="channel_bandwidth" class="acs-hide"></label>
 		<input type="radio"  name="channel_bandwidth" value="40MHz" id="channel_bandwidth" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
 	</div>
 	<div class="form-row">
-		<label for="guard_interval800ns">Guard Interval:</label>
+		<label for="guard_interval800ns"><?php echo _("Guard Interval:")?></label>
 		<input type="radio"  name="guard_interval" value="400nsec"  id="guard_interval800ns" checked="checked" /><b>400ns</b>
 		<label for="guard_interval400ns" class="acs-hide"></label>
 		<input type="radio"  name="guard_interval" value="800nsec"  id="guard_interval400ns" <?php if ("800nsec"==$guard_interval) echo 'checked="checked"';?> /><b>800ns</b>
@@ -1458,103 +1458,103 @@ function saveBandSteeringSettings()
 		<input type="radio"  name="guard_interval" value="Auto"     id="guard_intervalauto"  <?php if ("Auto"==$guard_interval) echo 'checked="checked"';?> /><b>Auto</b>
 	</div>
 	<div class="form-row odd">
-		<label for="Reverse_Direction_Grant_disabled">Reverse Direction Grant</label>
-		<input type="radio"  name="Reverse_Direction_Grant" value="disabled" id="Reverse_Direction_Grant_disabled" checked="checked" /><b>Disable</b>
+		<label for="Reverse_Direction_Grant_disabled"><?php echo _("Reverse Direction Grant")?></label>
+		<input type="radio"  name="Reverse_Direction_Grant" value="disabled" id="Reverse_Direction_Grant_disabled" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="reverse_enabled" class="acs-hide"></label>
-		<input type="radio"  name="Reverse_Direction_Grant" value="enabled"  id="reverse_enabled" <?php if ("true"==$reverse_enabled) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="Reverse_Direction_Grant" value="enabled"  id="reverse_enabled" <?php if ("true"==$reverse_enabled) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row" id="Ext1" style="display:none;">
-		<label for="Extension_Channel1">Extension Channel:</label>
+		<label for="Extension_Channel1"><?php echo _("Extension Channel:")?></label>
 		<select name="Extension_Channel" id="Extension_Channel1">
-		<option value="AboveControlChannel" selected="selected">2442MHz(Channel5)</option>
+		<option value="AboveControlChannel" selected="selected"><?php echo _("2442MHz(Channel5)")?></option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext2" style="display:none;">
-		<label for="Extension_Channel2">Extension Channel:</label>
+		<label for="Extension_Channel2"><?php echo _("Extension Channel:")?></label>
 		<select name="Extension_Channel" id="Extension_Channel2">
-		<option value="AboveControlChannel" selected="selected">2447MHz(Channel6)</option>
+		<option value="AboveControlChannel" selected="selected"><?php echo _("2447MHz(Channel6)")?></option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext3" style="display:none;">
-		<label for="Extension_Channel3">Extension Channel:</label>
+		<label for="Extension_Channel3"><?php echo _("Extension Channel:")?></label>
 		<select name="Extension_Channel" id="Extension_Channel3">
-		<option value="AboveControlChannel" selected="selected">2452MHz(Channel7)</option>
+		<option value="AboveControlChannel" selected="selected"><?php echo _("2452MHz(Channel7)")?></option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext4" style="display:none;">
-		<label for="Extension_Channel4">Extension Channel:</label>
+		<label for="Extension_Channel4"><?php echo _("Extension Channel:")?></label>
 		<select name="Extension_Channel" id="Extension_Channel4">
-		<option value="AboveControlChannel" selected="selected">2457MHz(Channel8)</option>
+		<option value="AboveControlChannel" selected="selected"><?php echo _("2457MHz(Channel8)")?></option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext5" style="display:none;">
-		<label for="Extension_Channel5">Extension Channel:</label>
+		<label for="Extension_Channel5"><?php echo _("Extension Channel:")?></label>
 		<select name="Extension_Channel" id="Extension_Channel5">
-		<option value="AboveControlChannel" <?php if ("AboveControlChannel"==$ext_channel) echo 'selected="selected"';?> >2462MHz(Channel9)</option>
-		<option value="BelowControlChannel" <?php if ("BelowControlChannel"==$ext_channel) echo 'selected="selected"';?> >2437MHz(Channel1)</option>
+		<option value="AboveControlChannel" <?php if ("AboveControlChannel"==$ext_channel) echo 'selected="selected"';?> ><?php echo _("2462MHz(Channel9)")?></option>
+		<option value="BelowControlChannel" <?php if ("BelowControlChannel"==$ext_channel) echo 'selected="selected"';?> ><?php echo _("2437MHz(Channel1)")?></option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext6" style="display:none;">
-		<label for="Extension_Channel6">Extension Channel:</label>
+		<label for="Extension_Channel6"><?php echo _("Extension Channel:")?></label>
 		<select name="Extension_Channel" id="Extension_Channel6">
-		<option value="AboveControlChannel" <?php if ("AboveControlChannel"==$ext_channel) echo 'selected="selected"';?> >2467MHz(Channel10)</option>
-		<option value="BelowControlChannel" <?php if ("BelowControlChannel"==$ext_channel) echo 'selected="selected"';?> >2427MHz(Channel2)</option>
+		<option value="AboveControlChannel" <?php if ("AboveControlChannel"==$ext_channel) echo 'selected="selected"';?> ><?php echo _("2467MHz(Channel10)")?></option>
+		<option value="BelowControlChannel" <?php if ("BelowControlChannel"==$ext_channel) echo 'selected="selected"';?> ><?php echo _("2427MHz(Channel2)")?></option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext7" style="display:none;">
-		<label for="Extension_Channel7">Extension Channel:</label>
+		<label for="Extension_Channel7"><?php echo _("Extension Channel:")?></label>
 		<select name="Extension_Channel" id="Extension_Channel7">
-		<option value="AboveControlChannel" <?php if ("AboveControlChannel"==$ext_channel) echo 'selected="selected"';?> >2472MHz(Channel11)</option>
-		<option value="BelowControlChannel" <?php if ("BelowControlChannel"==$ext_channel) echo 'selected="selected"';?> >2432MHz(Channel3)</option>
+		<option value="AboveControlChannel" <?php if ("AboveControlChannel"==$ext_channel) echo 'selected="selected"';?> ><?php echo _("2472MHz(Channel11)")?></option>
+		<option value="BelowControlChannel" <?php if ("BelowControlChannel"==$ext_channel) echo 'selected="selected"';?> ><?php echo _("2432MHz(Channel3)")?></option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext8" style="display:none;">
-		<label for="Extension_Channel8">Extension Channel:</label>
+		<label for="Extension_Channel8"><?php echo _("Extension Channel:")?></label>
 		<select name="Extension_Channel" id="Extension_Channel8">
-		<option value="BelowControlChannel" selected="selected">2437MHz(Channel4)</option>
+		<option value="BelowControlChannel" selected="selected"><?php echo _("2437MHz(Channel4)")?></option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext9" style="display:none;">
-		<label for="Extension_Channel9">Extension Channel:</label>
+		<label for="Extension_Channel9"><?php echo _("Extension Channel:")?></label>
 		<select name="Extension_Channel" id="Extension_Channel9">
-		<option value="BelowControlChannel" selected="selected">2442MHz(Channel5)</option>
+		<option value="BelowControlChannel" selected="selected"><?php echo _("2442MHz(Channel5)")?></option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext10" style="display:none;">
-		<label for="Extension_Channel10">Extension Channel:</label>
+		<label for="Extension_Channel10"><?php echo _("Extension Channel:")?></label>
 		<select name="Extension_Channel" id="Extension_Channel10">
-		<option value="BelowControlChannel" selected="selected">2447MHz(Channel6)</option>
+		<option value="BelowControlChannel" selected="selected"><?php echo _("2447MHz(Channel6)")?></option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext11" style="display:none;">
-		<label for="Extension_Channel11">Extension Channel:</label>
+		<label for="Extension_Channel11"><?php echo _("Extension Channel:")?></label>
 		<select name="Extension_Channel" id="Extension_Channel11">
-		<option value="BelowControlChannel" selected="selected">2452MHz(Channel7)</option>
+		<option value="BelowControlChannel" selected="selected"><?php echo _("2452MHz(Channel7)")?></option>
 		</select>
 	</div>
 	<div class="form-row" id="Ext0" style="">
-		<label for="Extension_Channel0">Extension Channel:</label>
+		<label for="Extension_Channel0"><?php echo _("Extension Channel:")?></label>
 		<select name="Extension_Channel" id="Extension_Channel0">
-		<option value="Auto" selected="selected">Auto</option>
+		<option value="Auto" selected="selected"><?php echo _("Auto")?></option>
 		</select>
 	</div>
 	<div class="form-row odd">
-		<label for="Aggregation_MSDU(A-MSDU)_disabled">Aggregation MSDU(A-MSDU)</label>
-		<input type="radio"  name="Aggregation_MSDU(A-MSDU)" value="disabled" id="Aggregation_MSDU(A-MSDU)_disabled" checked="checked" /><b>Disable</b>
+		<label for="Aggregation_MSDU(A-MSDU)_disabled"><?php echo _("Aggregation MSDU(A-MSDU)")?></label>
+		<input type="radio"  name="Aggregation_MSDU(A-MSDU)" value="disabled" id="Aggregation_MSDU(A-MSDU)_disabled" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="MSDU_enabled" class="acs-hide"></label>
-		<input type="radio"  name="Aggregation_MSDU(A-MSDU)" value="enabled"  id="MSDU_enabled" <?php if ("true"==$MSDU_enabled) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="Aggregation_MSDU(A-MSDU)" value="enabled"  id="MSDU_enabled" <?php if ("true"==$MSDU_enabled) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row">
-		<label for="Auto_Block_Ack_disabled">Auto Block Ack:</label>
-		<input type="radio"  name="Auto_Block_Ack" value="disabled"  id="Auto_Block_Ack_disabled" checked="checked" /><b>Disable</b>
+		<label for="Auto_Block_Ack_disabled"><?php echo _("Auto Block Ack:")?></label>
+		<input type="radio"  name="Auto_Block_Ack" value="disabled"  id="Auto_Block_Ack_disabled" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="blockACK_enabled" class="acs-hide"></label>
-		<input type="radio"  name="Auto_Block_Ack" value="enabled"   id="blockACK_enabled" <?php if ("true"==$blockACK_enabled) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="Auto_Block_Ack" value="enabled"   id="blockACK_enabled" <?php if ("true"==$blockACK_enabled) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row odd">
-		<label for="Decline_BA_Request_disabled">Decline BA Request:</label>
-		<input type="radio"  name="Decline_BA_Request" value="disabled" id="Decline_BA_Request_disabled" checked="checked" /><b>Disable</b>
+		<label for="Decline_BA_Request_disabled"><?php echo _("Decline BA Request:")?></label>
+		<input type="radio"  name="Decline_BA_Request" value="disabled" id="Decline_BA_Request_disabled" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="blockBA_enabled" class="acs-hide"></label>
-		<input type="radio"  name="Decline_BA_Request" value="enabled"  id="blockBA_enabled" <?php if ("true"==$blockBA_enabled) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="Decline_BA_Request" value="enabled"  id="blockBA_enabled" <?php if ("true"==$blockBA_enabled) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 <!-- 	<div class="form-row">
 		<label for="HT_TxStream">HT TxStream:</label>
@@ -1573,33 +1573,33 @@ function saveBandSteeringSettings()
 		</select>
 	</div> -->
 	<div class="form-row">
-		<label for="WMM_power_save">WMM Power Save:</label>
+		<label for="WMM_power_save"><?php echo _("WMM Power Save:")?></label>
 		<input type="checkbox" id="WMM_power_save" name="WMM_power_save" <?php if ("true"==$WMM_power_save) echo 'checked="checked"';?> <?php if ("false"==$enableWMM) echo 'disabled="disabled"';?> /> 
-		<span class="footnote" >This item depends on WMM. Enable WMM in atleast one SSID to make this work.</span>
+		<span class="footnote" ><?php echo _("This item depends on WMM. Enable WMM in atleast one SSID to make this work.")?></span>
 	</div>
 	<div class="form-row odd">
 		<label for="STBC_disabled">STBC:</label>
-		<input type="radio"  name="STBC" value="disabled" id="STBC_disabled" checked="checked" /><b>Disable</b>
+		<input type="radio"  name="STBC" value="disabled" id="STBC_disabled" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="STBC_enabled" class="acs-hide"></label>
-		<input type="radio"  name="STBC" value="enabled"  id="STBC_enabled" <?php if ("true"==$STBC_enabled) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="STBC" value="enabled"  id="STBC_enabled" <?php if ("true"==$STBC_enabled) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row">	
-		<label for="DCS_Channel_Selection_disabled">Dynamic Channel Selection:</label>
-		<input type="radio"  name="DCS_Channel_Selection" value="disabled" id="DCS_Channel_Selection_disabled" checked="checked" /><b>Disable</b>
+		<label for="DCS_Channel_Selection_disabled"><?php echo _("Dynamic Channel Selection:")?></label>
+		<input type="radio"  name="DCS_Channel_Selection" value="disabled" id="DCS_Channel_Selection_disabled" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="DCS_Channel_Selection_enabled" class="acs-hide"></label>
-		<input type="radio"  name="DCS_Channel_Selection" value="enabled"  id="DCS_Channel_Selection_enabled" <?php if ("true"==$DCS_Enable) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="DCS_Channel_Selection" value="enabled"  id="DCS_Channel_Selection_enabled" <?php if ("true"==$DCS_Enable) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row odd">
 		<div class="form-btn">
 		<label for="save_advance" class="acs-hide"></label>
-			<input type="submit" id="save_advance" value="Save Advanced Settings" class="btn" onclick="save_config('1', 'save_advance');"/>
+			<input type="submit" id="save_advance" value="<?php echo _("Save Advanced Settings")?>" class="btn" onclick="save_config('1', 'save_advance');"/>
 		</div>
 	</div>
 </div>
 <div class="module data data div_radio_setting">
-	<h2>5GHz Wireless Basic Setting</h2>
+	<h2><?php echo _("5GHz Wireless Basic Setting")?></h2>
 	<div class="form-row">
-		<label for="wireless_mode1">Mode:</label>
+		<label for="wireless_mode1"><?php echo _("Mode:")?></label>
 		<select name="wireless_mode1" id="wireless_mode1">
 		<?php if (strstr($support_mode_5g, "ac")){ ?>
             <option value="n"       <?php if ("n"      == $wireless_mode1) echo 'selected="selected"';?> >802.11 n</option>
@@ -1613,7 +1613,7 @@ function saveBandSteeringSettings()
 		</select>
 	</div>
 	<div class="form-row odd">
-		<label for="transmit_power1">Transmit Power:</label>
+		<label for="transmit_power1"><?php echo _("Transmit Power:")?></label>
 		<select name="transmit_power1" id="transmit_power1">
 			<?php $int_power = (int)$transmit_power1; ?>
 			<option value="100" <?php if ($int_power>75) echo 'selected="selected"';?> >100%</option>
@@ -1624,13 +1624,13 @@ function saveBandSteeringSettings()
 		</select>
 	</div>
 	<div class="form-row " id="channel_switch1">
-		<label for="channel_manual1">Channel Selection:</label>
-		<input type="radio"  name="channel1" value="manual"  id="channel_manual1" <?php if ("true" != $channel_automatic1) echo 'checked="checked"';?> /><b>Manual</b>
+		<label for="channel_manual1"><?php echo _("Channel Selection:")?></label>
+		<input type="radio"  name="channel1" value="manual"  id="channel_manual1" <?php if ("true" != $channel_automatic1) echo 'checked="checked"';?> /><b><?php echo _("Manual")?></b>
 		<label for="channel_automatic1" class="acs-hide"></label>
-		<input type="radio"  name="channel1" value="auto" 	id="channel_automatic1" <?php if ("true" == $channel_automatic1) echo 'checked="checked"';?> /><b>Automatic</b>
+		<input type="radio"  name="channel1" value="auto" 	id="channel_automatic1" <?php if ("true" == $channel_automatic1) echo 'checked="checked"';?> /><b><?php echo _("Automatic")?></b>
 	</div>
 	<div id="new" class="form-row odd manual-only">
-		<label for="channel_number1">Channel:</label>
+		<label for="channel_number1"><?php echo _("Channel:")?></label>
 		<select name="channel_number1" id="channel_number1">
 			<?php
 				//dynamic generate possible channels
@@ -1646,33 +1646,33 @@ function saveBandSteeringSettings()
 	<div class="form-row ">
 		<div class="form-btn">
 		<label for="save_basic1" class="acs-hide"></label>
-			<input type="submit" id="save_basic1" value="Save Basic Setting" class="btn right" onclick="save_config('2', 'save_basic');"/>
+			<input type="submit" id="save_basic1" value="<?php echo _("Save Basic Setting")?>" class="btn right" onclick="save_config('2', 'save_basic');"/>
 		</div>
 	</div>
 </div>
 <div class="module data data div_radio_setting">
-	<h2>5GHz Wireless Advanced Setting</h2><br/>
+	<h2><?php echo _("5GHz Wireless Advanced Setting")?></h2><br/>
 	<div class="form-row odd" style="display:none;">
-		<label for="BG_protection_mode1">BG Protection Mode:</label>
+		<label for="BG_protection_mode1"><?php echo _("BG Protection Mode:")?></label>
 		<select name="BG_protection_mode1" id="BG_protection_mode1">
-			<option value="Auto" selected="selected">Auto</option>
-			<option value="Disabled" <?php //if ("Disabled"==$BG_protect_mode1) echo 'selected="selected"';?> >Manual</option>
+			<option value="Auto" selected="selected"><?php echo _("Auto")?></option>
+			<option value="Disabled" <?php //if ("Disabled"==$BG_protect_mode1) echo 'selected="selected"';?> ><?php echo _("Manual")?></option>
 		</select>
 	</div>
 	<div class="form-row">
-		<label for="IGMP_Snooping_disabled1">IGMP Snooping</label>
-		<input type="radio"  name="IGMP_Snooping1" value="false" id="IGMP_Snooping_disabled1" checked="checked" /><b>Disable</b>
+		<label for="IGMP_Snooping_disabled1"><?php echo _("IGMP Snooping")?></label>
+		<input type="radio"  name="IGMP_Snooping1" value="false" id="IGMP_Snooping_disabled1" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="IGMP_Snooping_enabled1" class="acs-hide"></label>
-		<input type="radio"  name="IGMP_Snooping1" value="true"  id="IGMP_Snooping_enabled1" <?php if ("true"==$IGMP_Snooping1) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="IGMP_Snooping1" value="true"  id="IGMP_Snooping_enabled1" <?php if ("true"==$IGMP_Snooping1) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row odd">
-		<label for="mixed_mode1">Operation Mode:</label>
-		<input type="radio"  name="operation_mode1" value="false" id="mixed_mode1" checked="checked" /><b>Mixed Mode</b>
+		<label for="mixed_mode1"><?php echo _("Operation Mode:")?></label>
+		<input type="radio"  name="operation_mode1" value="false" id="mixed_mode1" checked="checked" /><b><?php echo _("Mixed Mode")?></b>
 		<label for="operation_mode1" class="acs-hide"></label>
-		<input type="radio"  name="operation_mode1" value="true"  id="operation_mode1" <?php if ("true"==$operation_mode1) echo 'checked="checked"';?> /><b>Green Field</b>
+		<input type="radio"  name="operation_mode1" value="true"  id="operation_mode1" <?php if ("true"==$operation_mode1) echo 'checked="checked"';?> /><b><?php echo _("Green Field")?></b>
 	</div>
 	<div class="form-row" id="bandwidth_switch1">
-		<label for="channel_bandwidth201">Channel Bandwidth:</label>
+		<label for="channel_bandwidth201"><?php echo _("Channel Bandwidth:")?></label>
 		<input type="radio"  name="channel_bandwidth1" value="20MHz" id="channel_bandwidth201" checked="checked" /><b>20</b>
 		<?php if (strstr($support_mode_5g, "ac")){ ?>
 			<label for="channel_bandwidth1" class="acs-hide"></label>
@@ -1685,42 +1685,42 @@ function saveBandSteeringSettings()
 		<?php }	?>
 	</div>
 	<div class="form-row odd">
-		<label for="guard_interval800ns1">Guard Interval:</label>
+		<label for="guard_interval800ns1"><?php echo _("Guard Interval:")?></label>
 		<input type="radio"  name="guard_interval1" value="400nsec"  id="guard_interval800ns1" checked="checked" /><b>400ns</b>
 		<label for="guard_interval400ns1" class="acs-hide"></label>
 		<input type="radio"  name="guard_interval1" value="800nsec"  id="guard_interval400ns1" <?php if ("800nsec"==$guard_interval1) echo 'checked="checked"';?> /><b>800ns</b>
 		<label for="guard_intervalauto1" class="acs-hide"></label>
-		<input type="radio"  name="guard_interval1" value="Auto"     id="guard_intervalauto1"  <?php if ("Auto"==$guard_interval1) echo 'checked="checked"';?> /><b>Auto</b>
+		<input type="radio"  name="guard_interval1" value="Auto"     id="guard_intervalauto1"  <?php if ("Auto"==$guard_interval1) echo 'checked="checked"';?> /><b><?php echo _("Auto")?></b>
 	</div>
 	<div class="form-row">
-		<label for="Reverse_Direction_Grant_disabled1">Reverse Direction Grant</label>
-		<input type="radio"  name="Reverse_Direction_Grant1" value="disabled" id="Reverse_Direction_Grant_disabled1" checked="checked" /><b>Disable</b>
+		<label for="Reverse_Direction_Grant_disabled1"><?php echo _("Reverse Direction Grant")?></label>
+		<input type="radio"  name="Reverse_Direction_Grant1" value="disabled" id="Reverse_Direction_Grant_disabled1" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="reverse_enabled1" class="acs-hide"></label>
-		<input type="radio"  name="Reverse_Direction_Grant1" value="enabled"  id="reverse_enabled1" <?php if ("true"==$reverse_enabled1) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="Reverse_Direction_Grant1" value="enabled"  id="reverse_enabled1" <?php if ("true"==$reverse_enabled1) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row odd">
-		<label for="Aggregation_MSDU(A-MSDU)_disabled1">Aggregation MSDU(A-MSDU)</label>
-		<input type="radio"  name="Aggregation_MSDU(A-MSDU)1" value="disabled" id="Aggregation_MSDU(A-MSDU)_disabled1" checked="checked" /><b>Disable</b>
+		<label for="Aggregation_MSDU(A-MSDU)_disabled1"><?php echo _("Aggregation MSDU(A-MSDU)")?></label>
+		<input type="radio"  name="Aggregation_MSDU(A-MSDU)1" value="disabled" id="Aggregation_MSDU(A-MSDU)_disabled1" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="MSDU_enabled1" class="acs-hide"></label>
-		<input type="radio"  name="Aggregation_MSDU(A-MSDU)1" value="enabled"  id="MSDU_enabled1" <?php if ("true"==$MSDU_enabled1) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="Aggregation_MSDU(A-MSDU)1" value="enabled"  id="MSDU_enabled1" <?php if ("true"==$MSDU_enabled1) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row">
-		<label for="Auto_Block_Ack_disabled1">Auto Block Ack:</label>
-		<input type="radio"  name="Auto_Block_Ack1" value="disabled"  id="Auto_Block_Ack_disabled1" checked="checked" /><b>Disable</b>
+		<label for="Auto_Block_Ack_disabled1"><?php echo _("Auto Block Ack:")?></label>
+		<input type="radio"  name="Auto_Block_Ack1" value="disabled"  id="Auto_Block_Ack_disabled1" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="blockACK_enabled1" class="acs-hide"></label>
-		<input type="radio"  name="Auto_Block_Ack1" value="enabled"   id="blockACK_enabled1" <?php if ("true"==$blockACK_enabled1) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="Auto_Block_Ack1" value="enabled"   id="blockACK_enabled1" <?php if ("true"==$blockACK_enabled1) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row odd">
-		<label for="Decline_BA_Request_disabled1">Decline BA Request:</label>
-		<input type="radio"  name="Decline_BA_Request1" value="disabled" id="Decline_BA_Request_disabled1" checked="checked" /><b>Disable</b>
+		<label for="Decline_BA_Request_disabled1"><?php echo _("Decline BA Request:")?></label>
+		<input type="radio"  name="Decline_BA_Request1" value="disabled" id="Decline_BA_Request_disabled1" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="blockBA_enabled1" class="acs-hide"></label>
-		<input type="radio"  name="Decline_BA_Request1" value="enabled"  id="blockBA_enabled1" <?php if ("true"==$blockBA_enabled1) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="Decline_BA_Request1" value="enabled"  id="blockBA_enabled1" <?php if ("true"==$blockBA_enabled1) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row">
-		<label for="DFS_Channel_Selection_disabled">DFS Channel Selection In Auto Mode:</label>
-		<input type="radio"  name="DFS_Channel_Selection" value="disabled" id="DFS_Channel_Selection_disabled" checked="checked" /><b>Disable</b>
+		<label for="DFS_Channel_Selection_disabled"><?php echo _("DFS Channel Selection In Auto Mode:")?></label>
+		<input type="radio"  name="DFS_Channel_Selection" value="disabled" id="DFS_Channel_Selection_disabled" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="DFS_Channel_Selection_enabled" class="acs-hide"></label>
-		<input type="radio"  name="DFS_Channel_Selection" value="enabled"  id="DFS_Channel_Selection_enabled" <?php if ("true"==$DFS_Enable1) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="DFS_Channel_Selection" value="enabled"  id="DFS_Channel_Selection_enabled" <?php if ("true"==$DFS_Enable1) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 <!-- 	<div class="form-row odd">
 	<label for="HT_TxStream1">HT TxStream:</label>
@@ -1739,74 +1739,74 @@ function saveBandSteeringSettings()
 		</select>
 	</div>-->
 	<div class="form-row odd">
-		<label for="WMM_power_save1">WMM Power Save:</label>
+		<label for="WMM_power_save1"><?php echo _("WMM Power Save:")?></label>
 		<input type="checkbox" id="WMM_power_save1" name="WMM_power_save1" <?php if ("true"==$WMM_power_save1) echo 'checked="checked"';?> <?php if ("false"==$enableWMM1) echo 'disabled="disabled"';?> />
-		<span class="footnote" >This item depends on WMM. Enable WMM in atleast one SSID to make this work.</span>
+		<span class="footnote" ><?php echo _("This item depends on WMM. Enable WMM in atleast one SSID to make this work.")?></span>
 	</div>
 	<div class="form-row ">
 		<label for="STBC_disabled1">STBC:</label>
-		<input type="radio"  name="STBC1" value="disabled" id="STBC_disabled1" checked="checked" /><b>Disable</b>
+		<input type="radio"  name="STBC1" value="disabled" id="STBC_disabled1" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="STBC_enabled1" class="acs-hide"></label>
-		<input type="radio"  name="STBC1" value="enabled"  id="STBC_enabled1" <?php if ("true"==$STBC_enabled1) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="STBC1" value="enabled"  id="STBC_enabled1" <?php if ("true"==$STBC_enabled1) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row odd">
-		<label for="DCS_Channel_Selection_disabled1">Dynamic Channel Selection:</label>
-		<input type="radio"  name="DCS_Channel_Selection1" value="disabled" id="DCS_Channel_Selection_disabled1" checked="checked" /><b>Disable</b>
+		<label for="DCS_Channel_Selection_disabled1"><?php echo _("Dynamic Channel Selection:")?></label>
+		<input type="radio"  name="DCS_Channel_Selection1" value="disabled" id="DCS_Channel_Selection_disabled1" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="DCS_Channel_Selection_enabled1" class="acs-hide"></label>
-		<input type="radio"  name="DCS_Channel_Selection1" value="enabled"  id="DCS_Channel_Selection_enabled1" <?php if ("true"==$DCS_Enable1) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="DCS_Channel_Selection1" value="enabled"  id="DCS_Channel_Selection_enabled1" <?php if ("true"==$DCS_Enable1) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row"> 
 		<div class="form-btn">
 		<label for="save_advance1" class="acs-hide"></label>
-			<input type="submit" id="save_advance1" value="Save Advanced Settings" class="btn" onclick="save_config('2', 'save_advance');"/>
+			<input type="submit" id="save_advance1" value="<?php echo _("Save Advanced Settings")?>" class="btn" onclick="save_config('2', 'save_advance');"/>
 		</div>
 	</div>
 </div>
 <div class="module band_steering">
-	<h2>Band Steering</h2>
+	<h2><?php echo _("Band Steering")?></h2>
 	<div class="form-row ">
-		<label for="BS_disabled">Enable:</label>
-		<input type="radio"  name="BS" value="disabled" id="BS_disabled" checked="checked" /><b>Disable</b>
+		<label for="BS_disabled"><?php echo _("Enable:")?></label>
+		<input type="radio"  name="BS" value="disabled" id="BS_disabled" checked="checked" /><b><?php echo _("Disable")?></b>
 		<label for="BS_enabled" class="acs-hide"></label>
-		<input type="radio"  name="BS" value="enabled"  id="BS_enabled" <?php if ("true"==$BandSteeringEnable) echo 'checked="checked"';?> /><b>Enable</b>
+		<input type="radio"  name="BS" value="enabled"  id="BS_enabled" <?php if ("true"==$BandSteeringEnable) echo 'checked="checked"';?> /><b><?php echo _("Enable")?></b>
 	</div>
 	<div class="form-row odd">
-		<label for="BS_Logging">Logging:</label>
-		<input type="button" id="BS_Logging" value="Steering History" class="btn" onclick="steering_history()"/>
+		<label for="BS_Logging"><?php echo _("Logging:")?></label>
+		<input type="button" id="BS_Logging" value="<?php echo _("Steering History")?>" class="btn" onclick="steering_history()"/>
 	</div>
 	<div class="form-row ">
-		<label for="BS_Logging">Utilzation Threshold(<?php echo $radioband1; ?>GHz):</label>
+		<label for="BS_Logging"><?php echo sprintf(_("Utilzation Threshold(%sGHz):"), $radioband1); ?></label>
 		<input type="text" id="UtilzThreshold1" value="<?php echo $UtilzThreshold1; ?>"/>
 	</div>
 	<div class="form-row odd">
-		<label for="BS_Logging">Signal Threshold(<?php echo $radioband1; ?>GHz):</label>
+		<label for="BS_Logging"><?php echo sprintf(_("Signal Threshold(%sGHz):"), $radioband1); ?></label>
 		<input type="text" id="RSSIThreshold1" value="<?php echo $RSSIThreshold1; ?>"/>
 	</div>
 	<div class="form-row ">
-		<label for="BS_Logging">Physical Rate Threshold(<?php echo $radioband1; ?>GHz):</label>
+		<label for="BS_Logging"><?php echo sprintf(_("Physical Rate Threshold(%sGHz):"), $radioband1); ?></label>
 		<input type="text" id="PhyRateThreshold1" value="<?php echo $PhyRateThreshold1; ?>"/>
 	</div>
 	<div class="form-row odd">
-		<label for="BS_Logging">Utilzation Threshold(<?php echo $radioband2; ?>GHz):</label>
+		<label for="BS_Logging"><?php echo sprintf(_("Utilzation Threshold(%sGHz):"), $radioband2); ?></label>
 		<input type="text" id="UtilzThreshold2" value="<?php echo $UtilzThreshold2; ?>"/>
 	</div>
 	<div class="form-row ">
-		<label for="BS_Logging">Signal Threshold(<?php echo $radioband2; ?>GHz):</label>
+		<label for="BS_Logging"><?php echo sprintf(_("Signal Threshold(%sGHz):"), $radioband2); ?></label>
 		<input type="text" id="RSSIThreshold2" value="<?php echo $RSSIThreshold2; ?>"/>
 	</div>
 	<div class="form-row odd">
-		<label for="BS_Logging">Physical Rate Threshold(<?php echo $radioband2; ?>GHz):</label>
+		<label for="BS_Logging"><?php echo sprintf(_("Physical Rate Threshold(%sGHz):"), $radioband2); ?></label>
 		<input type="text" id="PhyRateThreshold2" value="<?php echo $PhyRateThreshold2; ?>"/>
 	</div>
 	<div class="form-row " id="band_steering_history_content" class="content_message" style="display: none;">
 	
 		<table class="data" id="table_band_steering" >
 		<tr>
-			<th id="steeringTime"  width="20%">SteeringTime</th>
-			<th id="clientMAC"  width="20%">ClientMAC</th>
-			<th id="SourceSSIDIndex"  width="20%">Source SSID Index</th>
-			<th id="DestSSIDIndex" width="30%">Destination SSID Index</th>
-			<th id="SteeringReason"  width="30%">SteeringReason</th>
+			<th id="steeringTime"  width="20%"><?php echo _("SteeringTime")?></th>
+			<th id="clientMAC"  width="20%"><?php echo _("ClientMAC")?></th>
+			<th id="SourceSSIDIndex"  width="20%"><?php echo _("Source SSID Index")?></th>
+			<th id="DestSSIDIndex" width="30%"><?php echo _("Destination SSID Index")?></th>
+			<th id="SteeringReason"  width="30%"><?php echo _("SteeringReason")?></th>
 		</tr>
 		
 		</table>
@@ -1814,20 +1814,20 @@ function saveBandSteeringSettings()
 	<div class="form-row "> 
 		<div class="form-btn">
 		<label for="save_steering" class="acs-hide"></label>
-			<input type="submit" id="save_steering" value="Save Band Steering Settings" class="btn" onclick="saveBandSteeringSettings();"/>
+			<input type="submit" id="save_steering" value="<?php echo _("Save Band Steering Settings")?>" class="btn" onclick="saveBandSteeringSettings();"/>
 		</div>
 	</div>
 </div>
 <div class="module data" id="mac_admin_temp" style="display: none;">
-	<h2>MAC Filter Setting</h2>
+	<h2><?php echo _("MAC Filter Setting")?></h2>
 	<div>
-		<p>This may take several seconds...</p>
+		<p><?php echo _("This may take several seconds...")?></p>
 	</div>
 </div>
 <div class="module data" id="mac_admin">
-	<h2>MAC Filter Setting</h2>
+	<h2><?php echo _("MAC Filter Setting")?></h2>
 	<div>
-		<p>You can control the Wi-Fi access to the USG using the below Mac-Filter settings.</p>
+		<p><?php echo _("You can control the Wi-Fi access to the USG using the below Mac-Filter settings.")?></p>
 	</div>
 	<div class="form-row">
 		<label for="mac_ssid">SSID:</label>
@@ -1844,21 +1844,21 @@ function saveBandSteeringSettings()
 		</select>
 	</div>
 	<div class="form-row">
-		<label for="filtering_mode">MAC Filtering Mode:</label>
+		<label for="filtering_mode"><?php echo _("MAC Filtering Mode:")?></label>
 		<select name="filtering_mode" id="filtering_mode">
-			<option value="allow_all" id="allow_all">Allow-All</option>
-			<option value="allow"     id="allow">Allow</option>
-			<option value="deny"      id="deny">Deny</option>
+			<option value="allow_all" id="allow_all"><?php echo _("Allow-All")?></option>
+			<option value="allow"     id="allow"><?php echo _("Allow")?></option>
+			<option value="deny"      id="deny"><?php echo _("Deny")?></option>
 		</select>
 	</div>	
 	<div class="form-row">
-		<p><strong>Wi-Fi Control List(up to 16 items)</strong></p>
-		<table class="data" id="filter_table" summary="Wi-Fi Control List">
+		<p><strong><?php echo _("Wi-Fi Control List(up to 16 items)")?></strong></p>
+		<table class="data" id="filter_table" summary="<?php echo _("Wi-Fi Control List")?>">
 			<thead>
 		    <tr>
 		        <th id="acl-Index">#</th>
-		        <th id="acl-Name">Device Name</th>
-				<th id="acl-MAC">MAC Address</th>
+		        <th id="acl-Name"><?php echo _("Device Name")?></th>
+				<th id="acl-MAC"><?php echo _("MAC Address")?></th>
 				<th id="acl-Blank" colspan="2">&nbsp;</th>
 		    </tr>
 			</thead>
@@ -1879,12 +1879,12 @@ function saveBandSteeringSettings()
 				</tr>
 			</tfoot>
 		</table><br>
-		<p><strong>Auto-Learned Wi-Fi Devices</strong></p>
-		<table class="data" id="auto_table" summary="Auto-Learned Wi-Fi Devices">
+		<p><strong><?php echo _("Auto-Learned Wi-Fi Devices")?></strong></p>
+		<table class="data" id="auto_table" summary="<?php echo _("Auto-Learned Wi-Fi Devices")?>">
 			<thead>
 		    <tr>
-		        <th id="auto-Name">Device Name</th>
-				<th id="auto-MAC">MAC Address</th>
+		        <th id="auto-Name"><?php echo _("Device Name")?></th>
+				<th id="auto-MAC"><?php echo _("MAC Address")?></th>
 				<th id="auto-Blank" colspan="2">&nbsp;</th>
 		    </tr>
 			</thead>
@@ -1904,12 +1904,12 @@ function saveBandSteeringSettings()
 			</tfoot>
 		</table>
 		<br>
-		<p><strong>Manually-Added Wi-Fi Devices</strong></p>
-		<table class="wireless data" id="manual_table" summary="Manually-Added Wi-Fi Devices">
+		<p><strong><?php echo _("Manually-Added Wi-Fi Devices")?></strong></p>
+		<table class="wireless data" id="manual_table" summary="<?php echo _("Manually-Added Wi-Fi Devices")?>">
 			<thead>
 			<tr>
-				<th id="manual-Name">Device Name</th>
-				<th id="manual-MAC">MAC Address</th>
+				<th id="manual-Name"><?php echo _("Device Name")?></th>
+				<th id="manual-MAC"><?php echo _("MAC Address")?></th>
 				<th id="manual-Blank" colspan="2">&nbsp;</th>
 			</tr>
 			</thead>
@@ -1930,7 +1930,7 @@ function saveBandSteeringSettings()
 				</td>
 				<td headers="manual-Blank" class="edit">
 				<label for="add_manual" class="acs-hide"></label>
-				<input type="button" id="add_manual" value="ADD" class="btn" onclick="add_manual()"/></td>
+				<input type="button" id="add_manual" value="<?php echo _("ADD")?>" class="btn" onclick="add_manual()"/></td>
 			</tr>
 			</tbody>
 			<tfoot>
@@ -1943,13 +1943,13 @@ function saveBandSteeringSettings()
 		</table>
 		<br>
 		<div class="form-row odd">
-			<p class="form-btn"><input type="submit" id="save_filter" value="SAVE FILTER SETTING" class="btn right" size="1" onclick="save_filter()"/></p>
+			<p class="form-btn"><input type="submit" id="save_filter" value="<?php echo _("SAVE FILTER SETTING")?>" class="btn right" size="1" onclick="save_filter()"/></p>
 		</div>
 	</div>
 </div>			
 <div id="wps_configuration" class="module forms enable div_wps_setting wps_config">
-	<h2>Wi-Fi Client Setup Configuration(WPS)</h2>
-	<div class="form-row"><p>You must enable WPS to connect your device to this device</p></div>
+	<h2><?php echo _("Wi-Fi Client Setup Configuration(WPS)")?></h2>
+	<div class="form-row"><p><?php echo _("You must enable WPS to connect your device to this device")?></p></div>
 	<!--div class="form-row">
 		<label for="ssid">SSID:</label>
 		<select name="ssid" id="wps_ssid">
@@ -1980,13 +1980,13 @@ function saveBandSteeringSettings()
 		<span class="value" id="wps_pin">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $wps_pin; ?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel label">WPS Pin Method:</span>
+		<span class="readonlyLabel label"><?php echo _("WPS Pin Method:")?></span>
 		<span id="pin_switch"></span>
 	</div>
 </div>
 <form id="pair_method_form">
 <div class="module data div_wps_setting wps_config" id="jjj">
-	<h2>Connect to your WPS-supported device</h2><br/>
+	<h2><?php echo _("Connect to your WPS-supported device")?></h2><br/>
 	<!--div class="form-row" style="position:relative; top:0px; right:-13px">
 		<label for="ssid"><b>SSID:</b></label>
 		<select name="ssid" id="wps_ssid">
@@ -1997,24 +1997,22 @@ function saveBandSteeringSettings()
 	<div class="form-row odd">
 		<h3>
 		<label for="pair_method_push" class="acs-hide"></label>
-			<input type="radio"  name="pair_method" value="PushButton" id="pair_method_push" checked="checked"><b>Push Button(recommended)</b>
-		</h3>&nbsp; &nbsp; Push the WPS button on the Gateway or click "PAIR WITH MY Wi-Fi CLIENT" below to connect your
-		<br/>  &nbsp; &nbsp; Wireless client to your network.<br/><br/>
+			<input type="radio"  name="pair_method" value="PushButton" id="pair_method_push" checked="checked"><b><?php echo _("Push Button(recommended)")?></b>
+		</h3>&nbsp; &nbsp; <?php echo _("Push the WPS button on the Gateway or click \"PAIR WITH MY Wi-Fi CLIENT\" below to connect your<br/>  &nbsp; &nbsp; Wireless client to your network.")?><br/><br/>
 	</div>
 	<div class="form-row" id="div_method_pin">
 		<h3>
 		<label for="pair_method_pin" class="acs-hide"></label>
-			<input type="radio"  name="pair_method" value="PIN" id="pair_method_pin" /><b>PIN Number</b>
-		</h3>&nbsp; &nbsp; If your Wireless client supports WPS(PIN Type), enter the PIN Number here.
-		<br/><br/> &nbsp; &nbsp; Enter Wireless Client's PIN
+			<input type="radio"  name="pair_method" value="PIN" id="pair_method_pin" /><b><?php echo _("PIN Number")?></b>
+		</h3>&nbsp; &nbsp; <?php echo _("If your Wireless client supports WPS(PIN Type), enter the PIN Number here.<br/><br/> &nbsp; &nbsp; Enter Wireless Client's PIN")?>
 		<label for="pin_number" class="acs-hide"></label>
 		<input type="text" size="15" maxlength="15" id="pin_number" name="pin_number" />
 	</div>
 	<div class="form-btn">
 	<label for="wps_pair" class="acs-hide"></label>
-		<input id="wps_pair"   name="wps_pair"   type="submit" style="text-transform : none;" value="PAIR WITH MY Wi-Fi CLIENT" class="btn" size="3" />
+		<input id="wps_pair"   name="wps_pair"   type="submit" style="text-transform : none;" value="<?php echo _("PAIR WITH MY Wi-Fi CLIENT")?>" class="btn" size="3" />
 		<label for="wps_cancel" class="acs-hide"></label>
-		<input id="wps_cancel" name="wps_cancel" type="button" value="CANCEL " class="btn" onclick="pair_cancel()"/>
+		<input id="wps_cancel" name="wps_cancel" type="button" value="<?php echo _("CANCEL")?> " class="btn" onclick="pair_cancel()"/>
 	</div>
 </div>
 </form>

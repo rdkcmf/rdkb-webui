@@ -18,7 +18,7 @@
 <?php 
 session_start();
 if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] != 'mso') {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 $ripInfo = json_decode($_POST['ripInfo'], true);

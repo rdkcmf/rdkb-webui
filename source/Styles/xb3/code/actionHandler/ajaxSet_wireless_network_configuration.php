@@ -19,7 +19,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 $Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')? true : false;

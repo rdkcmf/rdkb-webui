@@ -26,14 +26,14 @@ csrfprotector_rdkb::init();
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="index.php";</script>';
+    echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="index.php";</script>';
 	exit(0);
 }
 function file_download($file_path, $file_name)
 {
 	//$file_path path to a file to output
 	//$file_name filename that the browser will see
-	if(!is_readable($file_path)) die('File not found or inaccessible!');
+	if(!is_readable($file_path)) die(_('File not found or inaccessible!'));
 	$file_size = filesize($file_path);
 	$file_name = rawurldecode($file_name);
 	@ob_end_clean(); //Clean (erase) the output buffer and turn off output buffering
@@ -82,13 +82,13 @@ function file_download($file_path, $file_name)
 			$bytesSent += strlen($buffer);
 		}
 		fclose($file_path);
-	} else die('Error - can not open file.');
+	} else die(_('Error - can not open file.'));
 	die();
 }
 set_time_limit(0);
 $report=$_POST['report_type']."_".$_POST['time_frame'];
 $report_type_array = array("all", "site", "service", "device");
-$time_frame_array = array("Today", "Yesterday", "Last week", "Last month", "Last 90 days");
+$time_frame_array = array(_("Today"), _("Yesterday"), _("Last week"), _("Last month"), _("Last 90 days"));
 if (!in_array($_POST["report_type"], $report_type_array))	die('Not allowed!');
 if (!in_array($_POST["time_frame"], $time_frame_array))	die('Not allowed!');
 $file_path="/tmp/parental_reports_{$report}.txt";

@@ -55,8 +55,8 @@ $(document).ready(function() {
 		radio_name: "managed_sites",
 		id_on: "managed_sites_enabled",
 		id_off: "managed_sites_disabled",
-		title_on: "Enable managed sites",
-		title_off: "Disable managed sites",
+		title_on: "<?php echo _("Enable managed sites")?>",
+		title_off: "<?php echo _("Disable managed sites")?>",
 		state: isManageEnabled === 'true' ? "on" : "off"
 	});
 	$("span[id^=trusted_user_]").each(function(){
@@ -68,17 +68,17 @@ $(document).ready(function() {
 			radio_name: "device_trusted-"+idx,
 			id_on: "device_trusted-"+idx,
 			id_off: "device_notrusted-"+idx,
-			title_on: "Select trust",
-			title_off: "Select untrust",
+			title_on: "<?php echo _("Select trust")?>",
+			title_off: "<?php echo _("Select untrust")?>",
 			size: "small",
-			label_on: "Yes",
-			label_off: "No",
+			label_on: "<?php echo _("Yes")?>",
+			label_off: "<?php echo _("No")?>",
 			revertOrder: true,
 			state: val
 		}).change(function(){
     		var trustFlag = $(this).radioswitch("getState").on;
     		//alert(trustFlag);	
-			jProgress('This may take several seconds', 60);
+			jProgress('<?php echo _("This may take several seconds")?>', 60);
 			$.ajax({                  
 				type: "POST",
 				url: "actionHandler/ajaxSet_trust_computer.php",
@@ -89,7 +89,7 @@ $(document).ready(function() {
 				},
 				error: function(){
 					jHide();
-					jAlert("Failure, please try again.");
+					jAlert("<?php echo _("Failure, please try again.")?>");
 				}
 			});
     	});
@@ -103,11 +103,11 @@ $(document).ready(function() {
 			radio_name: "block-"+idx,
 			id_on: "yes-"+idx,
 			id_off: "no-"+idx,
-			title_on: "Select always block",
-			title_off: "Unselect always block",
+			title_on: "<?php echo _("Select always block")?>",
+			title_off: "<?php echo _("Unselect always block")?>",
 			size: "small",
-			label_on: "Yes",
-			label_off: "No",
+			label_on: "<?php echo _("Yes")?>",
+			label_off: "<?php echo _("No")?>",
 			revertOrder: true,
 			state: val
 		}).change(function(){
@@ -140,15 +140,15 @@ $(document).ready(function() {
     $(".del-btn").unbind('click').click(function(e){
 	e.preventDefault();
     var href = $(this).attr("href");
-    var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+    var message = ($(this).attr("title").length > 0) ? "<?php echo _("Are you sure you want to")?> " + $(this).attr("title") + "?" : "<?php echo _("Are you sure?")?>";
     var InstanceID = $(this).attr("id");
     var removeBlockInfo = 
     jConfirm(
         message
-        ,"Are You Sure?"
+        ,"<?php echo _("Are You Sure?")?>"
         ,function(ret) {
             if(ret) {
-				jProgress('This may take several seconds', 60); 
+				jProgress('<?php echo _("This may take several seconds")?>', 60); 
 				$.ajax({                   
 					type: "POST",
 					url: "actionHandler/ajaxSet_remove_blockedSite.php",
@@ -159,7 +159,7 @@ $(document).ready(function() {
 					},
 					error: function(){
 						jHide();
-						jAlert("Failure, please try again.");
+						jAlert("<?php echo _("Failure, please try again.")?>");
 					}
 				});
             }    
@@ -186,14 +186,14 @@ $("#managed_sites_switch").change(function() {
 		$("a.confirm").click(function(e) {
 			e.preventDefault();
 			var href = $(this).attr("href");
-			var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+			var message = ($(this).attr("title").length > 0) ? "<?php echo _("Are you sure you want to")?> " + $(this).attr("title") + "?" : "<?php echo _("Are you sure?")?>";
 			var InstanceID = $(this).attr("id");
 			var removeBlockInfo = jConfirm(
 				message
-				,"Are You Sure?"
+				,"<?php echo _("Are You Sure?")?>"
 				,function(ret) {
 					if(ret) {
-						jProgress('This may take several seconds', 60); 
+						jProgress('<?php echo _("This may take several seconds")?>', 60); 
 						$.ajax({
 							type: "POST",
 							url: "actionHandler/ajaxSet_remove_blockedSite.php",
@@ -204,7 +204,7 @@ $("#managed_sites_switch").change(function() {
 							},
 							error: function(){
 								jHide();
-								jAlert("Failure, please try again.");
+								jAlert("<?php echo _("Failure, please try again.")?>");
 							}
 						});
 					}    
@@ -213,7 +213,7 @@ $("#managed_sites_switch").change(function() {
  	}//end of else
  	var enable = $("#managed_sites_switch").radioswitch("getState").on;
  	//alert(enable);
-	jProgress('This may take several seconds', 60); 
+	jProgress('<?php echo _("This may take several seconds")?>', 60); 
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_enable_manageSite.php",
@@ -224,7 +224,7 @@ $("#managed_sites_switch").change(function() {
 		},
 		error: function(){
 			jHide();
-			jAlert("Failure, please try again.");
+			jAlert("<?php echo _("Failure, please try again.")?>");
 		}
 	});
 });// end of function
@@ -253,7 +253,7 @@ $("#managed_sites_switch").change(function() {
 	 $(function() {
 $.validator.addMethod("no_space", function(value, element, param) {
 		return !param || /^[a-zA-Z0-9]*$/i.test(value);
-	}, "Letters and Numbers only. Case sensitive.");
+	}, "<?php echo _("Letters and Numbers only. Case sensitive.")?>");
 				$(pageFORM).validate({
 					rules: {
 						url: {
@@ -273,7 +273,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 						}
 					},
 					messages:{
-						url: "Please input a valid URL, start with 'http://' or 'https://'"
+						url: "<?php echo _("Please input a valid URL, start with 'http://' or 'https://'")?>"
 					}
 				});
 			});
@@ -300,21 +300,21 @@ $.validator.addMethod("no_space", function(value, element, param) {
 					var endHour   = parseInt($(time_end_hour).val());
 					var sminute   = parseInt($(time_start_minute).val());
 					var eminute   = parseInt($(time_end_minute).val());
-					if (startTime_unit === "PM" && startHour !== 12) {      
+					if (startTime_unit === "<?php echo _("PM")?>" && startHour !== 12) {      
 						startHour += 12;
 					}
-					else if (startTime_unit === "AM" && startHour === 12) {
+					else if (startTime_unit === "<?php echo _("AM")?>" && startHour === 12) {
 						startHour = 0;
 					}
-					if (endTime_unit === "PM" && endHour !== 12) {      
+					if (endTime_unit === "<?php echo _("PM")?>" && endHour !== 12) {      
 						endHour += 12;
 					}
-					else if (endTime_unit === "AM" && endHour === 12) {
+					else if (endTime_unit === "<?php echo _("AM")?>" && endHour === 12) {
 						endHour = 0;
 					}
 					if(! alwaysBlock){
 						if ((startHour>endHour) || ((startHour==endHour) && (sminute>=eminute))) {
-							jAlert("Start time should be smaller than End time !");
+							jAlert("<?php echo _("Start time should be smaller than End time !")?>");
 							return;
 						} 
 					}
@@ -346,21 +346,21 @@ $.validator.addMethod("no_space", function(value, element, param) {
 					var endHour   = parseInt($(time_end_hour).val());
 					var sminute   = parseInt($(time_start_minute).val());
 					var eminute   = parseInt($(time_end_minute).val());
-					if (startTime_unit === "PM" && startHour !== 12) {      
+					if (startTime_unit === "<?php echo _("PM")?>" && startHour !== 12) {      
 						startHour += 12;
 					}
-					else if (startTime_unit === "AM" && startHour === 12) {
+					else if (startTime_unit === "<?php echo _("AM")?>" && startHour === 12) {
 						startHour = 0;
 					}
-					if (endTime_unit === "PM" && endHour !== 12) {      
+					if (endTime_unit === "<?php echo _("PM")?>" && endHour !== 12) {      
 						endHour += 12;
 					}
-					else if (endTime_unit === "AM" && endHour === 12) {
+					else if (endTime_unit === "<?php echo _("AM")?>" && endHour === 12) {
 						endHour = 0;
 					}
 					if(! alwaysBlock){
 						if ((startHour>endHour) || ((startHour==endHour) && (sminute>=eminute))) {
-							jAlert("Start time should be smaller than End time !");
+							jAlert("<?php echo _("Start time should be smaller than End time !")?>");
 							return;
 						} 
 					}
@@ -382,14 +382,14 @@ $.validator.addMethod("no_space", function(value, element, param) {
 					//alert(blockInfo); 
 	    		}//end of else
 				if($(pageFORM).valid()){
-					jProgress('This may take several seconds', 60);
+					jProgress('<?php echo _("This may take several seconds")?>', 60);
 					$.ajax({
 						type: "POST",
 						url: "actionHandler/ajaxSet_edit_blockedSite.php",
 						data: { BlockInfo: blockInfo },
 						success: function(data){
 							jHide();
-							if (data != "Success!") {
+							if (data != "<?php echo _("Success!")?>") {
 								jAlert(data);
 							}else{
 								window.location.href = "managed_sites.php";
@@ -397,7 +397,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 						},
 						error: function(){
 							jHide();
-							jAlert("Failure, please try again.");	          
+							jAlert("<?php echo _("Failure, please try again.")?>");	          
 						}
 					});
 				}
@@ -407,19 +407,19 @@ $.validator.addMethod("no_space", function(value, element, param) {
 });
 </script>
 <div id="content" class="main_content">
-<h1>Parental Control > Managed Sites</h1>
+<h1><?php echo _("Parental Control > Managed Sites")?></h1>
 	<div id="educational-tip">
-		<p class="tip">Manage access to specific websites by network devices.</p>
-    <p class="hidden">Select <strong>Enable</strong> to manage sites, or <strong>Disable</strong> to turn off.</p>
-    <p class="hidden"><strong>+ADD:</strong> Add a new website or keyword.</p>
-    <p class="hidden"><strong>Blocked Sites:</strong> Deny access to specific websites (URLs).</p>
-    <p class="hidden"><strong>Blocked Keywords:</strong> Deny access to websites containing specific words.</p>
-    <p class="hidden">The Gateway will block connections to websites on all untrusted computers, based on the specified rules. If you don't want restrictions for a particular computer, select <strong>Yes</strong> under <strong>Trusted Computers</strong>.</p>
+	<p class="tip"><?php echo _("Manage access to specific websites by network devices.")?></p>
+    <p class="hidden"><?php echo _("Select <strong>Enable</strong> to manage sites, or <strong>Disable</strong> to turn off.")?></p>
+    <p class="hidden"><?php echo _("<strong>+ADD:</strong> Add a new website or keyword.")?></p>
+    <p class="hidden"><?php echo _("<strong>Blocked Sites:</strong> Deny access to specific websites (URLs).")?></p>
+    <p class="hidden"><?php echo _("<strong>Blocked Keywords:</strong> Deny access to websites containing specific words.")?></p>
+    <p class="hidden"><?php echo _("The Gateway will block connections to websites on all untrusted computers, based on the specified rules. If you don't want restrictions for a particular computer, select <strong>Yes</strong> under <strong>Trusted Computers</strong>.")?></p>
 	</div>
 	<form action="managed_sites.php" method="post"  name="managed_sites">
 	<div class="module">
 		<div class="select-row">
- 	    	<span class="readonlyLabel label">Managed Sites:</span>
+ 	    	<span class="readonlyLabel label"><?php echo _("Managed Sites:")?></span>
 			<span id="managed_sites_switch"></span>
 		</div>
 	</div>
@@ -490,13 +490,13 @@ $.validator.addMethod("no_space", function(value, element, param) {
 	?>
 	<div id="managed-sites-items">
 		<div class="module data">
-			<h2>Blocked Sites</h2>
-			<p class="button"><a tabindex='0' href="managed_sites_add_site.php" id="add_blocked_site" class="btn add-btn">+ Add</a></p>
-			<table class="data" summary="This table lists blocked URLs">
+			<h2><?php echo _("Blocked Sites")?></h2>
+			<p class="button"><a tabindex='0' href="managed_sites_add_site.php" id="add_blocked_site" class="btn add-btn"><?php echo _("+ Add")?></a></p>
+			<table class="data" summary="<?php echo _("This table lists blocked URLs")?>">
 				<tr>
 					<th id="url-number" class="number">&nbsp;</th>
-					<th id="url" class="url">URL</th>
-					<th id="url-blocked-time" class="when">When</th>
+					<th id="url" class="url"><?php echo _("URL")?></th>
+					<th id="url-blocked-time" class="when"><?php echo _("When")?></th>
 					<th id="edit-url" class="edit">&nbsp;</th>
 					<th id="delete-url" class="delete">&nbsp;</th>
 				</tr>
@@ -509,9 +509,9 @@ $.validator.addMethod("no_space", function(value, element, param) {
 					echo "<tr $odd>
 					<td headers='url-number' class=\"row-label alt\">" .$k. "</td>
 					<td headers='url'>" .$blockedSitesURL["$i"]['Site']. "</td>
-					<td headers='url-blocked-time'>" . ( ($URLAlwaysBlock == 'true') ? "Always" : $URLBlockTime ) . "</td>
-					<td headers='edit-url' class=\"edit\"><button tabindex='0' class=\"btn\" id=\"edit-btn-" .$blockedSitesURL["$i"]['InstanceID']. "\">edit</button></td>
-					<td headers='delete-url' class=\"delete\"><a  tabindex='0' href=\"#\" class=\"btn confirm del-btn\" title=\"Delete Blocked Site\" id=\"" .$blockedSitesURL["$i"]['RealID']. "\">x</a></td>
+					<td headers='url-blocked-time'>" . ( ($URLAlwaysBlock == 'true') ? ""._("Always")."" : $URLBlockTime ) . "</td>
+					<td headers='edit-url' class=\"edit\"><button tabindex='0' class=\"btn\" id=\"edit-btn-" .$blockedSitesURL["$i"]['InstanceID']. "\">"._("edit")."</button></td>
+					<td headers='delete-url' class=\"delete\"><a  tabindex='0' href=\"#\" class=\"btn confirm del-btn\" title=\""._("Delete Blocked Site")."\" id=\"" .$blockedSitesURL["$i"]['RealID']. "\">x</a></td>
 					</tr>
 					";
 				}
@@ -528,13 +528,13 @@ $.validator.addMethod("no_space", function(value, element, param) {
 			</table>
 		</div> <!-- end blocked URL .module -->
 		<div class="module data">
-			<h2>Blocked Keywords</h2>
-			<p class="button"><a tabindex='0' href="managed_sites_add_keyword.php" class="btn add-btn" id="add-blocked-keywords">+ Add</a></p>
-			<table class="data" summary="This table lists blocked Keywords">
+			<h2><?php echo _("Blocked Keywords")?></h2>
+			<p class="button"><a tabindex='0' href="managed_sites_add_keyword.php" class="btn add-btn" id="add-blocked-keywords"><?php echo _("+ Add")?></a></p>
+			<table class="data" summary="<?php echo _("This table lists blocked Keywords")?>">
 				<tr>
 					<th id="keyword-number" class="number">&nbsp;</th>
-					<th id="keyword" class="keyword">Keyword</th>
-					<th id="keyword-blocked-time" class="when">When</th>
+					<th id="keyword" class="keyword"><?php echo _("Keyword")?></th>
+					<th id="keyword-blocked-time" class="when"><?php echo _("When")?></th>
 					<th id="edit-keyword" class="edit">&nbsp;</th>
 					<th id="delete-keyword" class="delete">&nbsp;</th>
 				</tr>
@@ -547,9 +547,9 @@ $.validator.addMethod("no_space", function(value, element, param) {
 					echo "<tr $odd>
 					<td headers='keyword-number' class=\"row-label alt\">" .$k. "</td>
 					<td headers='keyword'>" .$blockedSitesKeyWord["$i"]['Site']. "</td>
-					<td headers='keyword-blocked-time'>" . ( ($KeywordAlwaysBlock == 'true') ? "Always" : $KeywordBlockTime ) . "</td>
-					<td headers='edit-keyword' class=\"edit\"><button tabindex='0' class=\"btn\" id=\"edit-btn-" .$blockedSitesKeyWord["$i"]['InstanceID']. "\">edit</button></td>
-					<td headers='delete-keyword' class=\"delete\"><a tabindex='0' href=\"#\" class=\"btn confirm del-btn\" title=\"Delete Blocked Keyword\" id=\"" .$blockedSitesKeyWord["$i"]['RealID']. "\">x</a></td>
+					<td headers='keyword-blocked-time'>" . ( ($KeywordAlwaysBlock == 'true') ? ""._("Always")."" : $KeywordBlockTime ) . "</td>
+					<td headers='edit-keyword' class=\"edit\"><button tabindex='0' class=\"btn\" id=\"edit-btn-" .$blockedSitesKeyWord["$i"]['InstanceID']. "\">"._("edit")."</button></td>
+					<td headers='delete-keyword' class=\"delete\"><a tabindex='0' href=\"#\" class=\"btn confirm del-btn\" title=\""._("Delete Blocked Keyword")."\" id=\"" .$blockedSitesKeyWord["$i"]['RealID']. "\">x</a></td>
 					</tr>
 					";
 				}
@@ -567,7 +567,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 		</div> <!-- end blocked Keywords.module -->
 		<form action="managed_sites.php" method="post">
       <fieldset>
-      <legend class="acs-hide">Trusted devices management</legend>
+      <legend class="acs-hide"><?php echo _("Trusted devices management")?></legend>
 			<input  type="hidden"  name="update_trusted_computers"  value="true" />
 		<?php
 		$hostsInstance = getInstanceIds("Device.Hosts.Host.");
@@ -618,13 +618,13 @@ $.validator.addMethod("no_space", function(value, element, param) {
 		}*/
 		 ?>
 			<div class="module data">
-				<h2>Trusted Computers</h2>		
-        <table  id="trusted_computers" class="data" summary="This table allows you to set trusted or untrusted devices for above blocked URLs or Keywords">
+				<h2><?php echo _("Trusted Computers")?></h2>		
+        <table  id="trusted_computers" class="data" summary="<?php echo _("This table allows you to set trusted or untrusted devices for above blocked URLs or Keywords")?>">
           <tr>
             <th id="number" class="number">&nbsp;</th>
-            <th id="device-name" class="computer_name">Computer Name</th>
-            <th id="IP" class="ip">IP</th>
-            <th id="trusted-or-not" class="trusted">Trusted</th>
+            <th id="device-name" class="computer_name"><?php echo _("Computer Name")?></th>
+            <th id="IP" class="ip"><?php echo _("IP")?></th>
+            <th id="trusted-or-not" class="trusted"><?php echo _("Trusted")?></th>
           </tr>  
 					<?php 
 					for ($i=0,$k=1; $i < $hostNums; $i++,$k++) {
@@ -683,13 +683,13 @@ $.validator.addMethod("no_space", function(value, element, param) {
     if((int)$rel_end_hour == 0) 
     	$rel_end_hour = 12;
         $str_edit = "<div class=\"form-row\">
-				<label for=\"on\">Always Block?</label>
+				<label for=\"on\">"._("Always Block?")."</label>
 				<span id=\"blockRadio_".$ID."\" switch-val=\"".($blockedInfo['AlwaysBlock'] == 'true' ? "on" : "off")."\"></span>
 			</div>
         	<div id=\"block-time-" .$ID. "\" class=\"block-time\">
-        		<h3>Set Block Time</h3>
+        		<h3>"._("Set Block Time")."</h3>
         		<div class=\"form-row\">
-        			<label for=\"time_start_hour-" .$ID. "\">Start from:</label> 
+        			<label for=\"time_start_hour-" .$ID. "\">"._("Start from:")."</label> 
         			<select id=\"time_start_hour-" .$ID. "\"  name=\"time_start_hour\">
                         <option ". ( (int)$rel_st_hour == 12 ? " selected='selected'" : "") ."  value=\"12\">12</option>
                         <option ". ( (int)$rel_st_hour == 1 ? " selected='selected'" : "") ."  value=\"1\">1</option>
@@ -713,12 +713,12 @@ $.validator.addMethod("no_space", function(value, element, param) {
         			</select>
               <label for=\"time_start_ampm-" .$ID. "\" class='acs-hide'></label>
         			<select id=\"time_start_ampm-" .$ID. "\"  name=\"time_start_ampm\">
-                        <option  value=\"AM\" " . ( $st_hour < 12 ? " selected='selected'" : "") . ">AM</option>
-                        <option  value=\"PM\"" . ( $st_hour  < 12 ? "" : " selected='selected'"). ">PM</option>
+                        <option  value=\"AM\" " . ( $st_hour < 12 ? " selected='selected'" : "") . ">"._("AM")."</option>
+                        <option  value=\"PM\"" . ( $st_hour  < 12 ? "" : " selected='selected'"). ">"._("PM")."</option>
         			</select>
                 </div>
         		<div class=\"form-row\">
-        			<label for=\"time_end_hour-" .$ID. "\">End on:</label>
+        			<label for=\"time_end_hour-" .$ID. "\">"._("End on:")."</label>
                     <select id=\"time_end_hour-" .$ID. "\"  name=\"time_end_hour\">
                         <option ". ( (int)$rel_end_hour == 12 ? " selected='selected'" : "") ."  value=\"12\">12</option> 
                         <option ". ( (int)$rel_end_hour == 1 ? " selected='selected'" : "") ."  value=\"1\">1</option>
@@ -743,40 +743,40 @@ $.validator.addMethod("no_space", function(value, element, param) {
         			</select>
               <label for=\"time_end_ampm-" .$ID. "\" class='acs-hide'></label>
         			<select id=\"time_end_ampm-" .$ID. "\"  name=\"time_end_ampm\">
-                        <option  value=\"AM\" " . ( $end_hour < 12 ? " selected='selected'" : "") . ">AM</option>
-                        <option  value=\"PM\"" . ( $end_hour < 12 ? "" : " selected='selected'"). ">PM</option>
+                        <option  value=\"AM\" " . ( $end_hour < 12 ? " selected='selected'" : "") . ">"._("AM")."</option>
+                        <option  value=\"PM\"" . ( $end_hour < 12 ? "" : " selected='selected'"). ">"._("PM")."</option>
         			</select>
         		</div>
-        		<h3>Set Blocked Days</h3>
+        		<h3>"._("Set Blocked Days")."</h3>
         		<div class=\"select_all_none\">
-        			<a rel=\"weekday\" href=\"#select_all\"  class=\"weekday_select_all\">Select All</a> | <a rel=\"weekday\"  href=\"#select_none\" class=\"weekday_select_none\">Select None</a>
+        			<a rel=\"weekday\" href=\"#select_all\"  class=\"weekday_select_all\">"._("Select All")."</a> | <a rel=\"weekday\"  href=\"#select_none\" class=\"weekday_select_none\">"._("Select None")."</a>
                 </div>
         		<div class=\"form-row weekday\">
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"monday-" .$ID. "\"  value=\"Mon\"" . ( (stristr($block_days, "Mon") != false) ? " checked='checked'" : "" ). "/><label class=\"checkbox\" for=\"monday-" .$ID. "\">Monday</label><br />
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"tuesday-" .$ID. "\"  value=\"Tue\"" . ( (stristr($block_days, "Tue") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"tuesday-" .$ID. "\">Tuesday</label><br />
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"wednesday-" .$ID. "\"  value=\"Wed\"" . ((stristr($block_days, "Wed") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"wednesday-" .$ID. "\">Wednesday</label><br />
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"thursday-" .$ID. "\"  value=\"Thu\"" . ( (stristr($block_days, "Thu") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"thursday-" .$ID. "\">Thursday</label><br />
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"friday-" .$ID. "\"  value=\"Fri\"" . ( (stristr($block_days, "Fri") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"friday-" .$ID. "\">Friday</label><br />
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"saturday-" .$ID. "\"  value=\"Sat\"" . ((stristr($block_days, "Sat") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"saturday-" .$ID. "\">Saturday</label><br />
-        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"sunday-" .$ID. "\"  value=\"Sun\"" . ( (stristr($block_days, "Sun") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"sunday-" .$ID. "\">Sunday</label>
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"monday-" .$ID. "\"  value=\"Mon\"" . ( (stristr($block_days, "Mon") != false) ? " checked='checked'" : "" ). "/><label class=\"checkbox\" for=\"monday-" .$ID. "\">"._("Monday")."</label><br />
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"tuesday-" .$ID. "\"  value=\"Tue\"" . ( (stristr($block_days, "Tue") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"tuesday-" .$ID. "\">"._("Tuesday")."</label><br />
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"wednesday-" .$ID. "\"  value=\"Wed\"" . ((stristr($block_days, "Wed") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"wednesday-" .$ID. "\">"._("Wednesday")."</label><br />
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"thursday-" .$ID. "\"  value=\"Thu\"" . ( (stristr($block_days, "Thu") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"thursday-" .$ID. "\">"._("Thursday")."</label><br />
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"friday-" .$ID. "\"  value=\"Fri\"" . ( (stristr($block_days, "Fri") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"friday-" .$ID. "\">"._("Friday")."</label><br />
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"saturday-" .$ID. "\"  value=\"Sat\"" . ((stristr($block_days, "Sat") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"saturday-" .$ID. "\">"._("Saturday")."</label><br />
+        			<input  name=\"day\" class=\"blockedDay-" .$ID. "\"  type=\"checkbox\" id=\"sunday-" .$ID. "\"  value=\"Sun\"" . ( (stristr($block_days, "Sun") != false) ? " checked='checked'" : "" ). " /><label class=\"checkbox\" for=\"sunday-" .$ID. "\">"._("Sunday")."</label>
         		</div>
         	</div> <!-- end #block-time -->
             <div class=\"form-row form-btn\">
-            	<input  type=\"button\"  name='" .$blockedInfo['RealID']. "' id=\"save-edit-" .$ID. "\" class=\"btn submit\"  value=\"Save\"/>
-            	<input  type=\"button\"  class=\"btn alt reset edit-cancel\"  value=\"Cancel\"/>
+            	<input  type=\"button\"  name='" .$blockedInfo['RealID']. "' id=\"save-edit-" .$ID. "\" class=\"btn submit\"  value=\""._("Save")."\"/>
+            	<input  type=\"button\"  class=\"btn alt reset edit-cancel\"  value=\""._("Cancel")."\"/>
             </div>";
             return $str_edit;
 	}
     for($i=0; $i<$URLNums; $i++){
      //generate edit blocked URL part 
     	echo "<div id=\"edit-" . $blockedSitesURL["$i"]['InstanceID'] . "\" class=\"edit-URL content\" style='display:none'>
-    	<h1>Parental Control > Managed Sites > Edit Blocked Site</h1>
+    	<h1>"._("Parental Control > Managed Sites > Edit Blocked Site")."</h1>
       <form id=\"pageForm-" . $blockedSitesURL["$i"]['InstanceID'] . "\" class=\"pageForm\">
 	    <div class=\"module\">
     		<div class=\"forms\">
-    		<h2>Edit Site to be Blocked</h2>
+    		<h2>"._("Edit Site to be Blocked")."</h2>
     			<div class=\"form-row\">
-    			<label for=\"url-" .$blockedSitesURL["$i"]['InstanceID']. "\" class=\"checkbox\">URL:</label>
+    			<label for=\"url-" .$blockedSitesURL["$i"]['InstanceID']. "\" class=\"checkbox\">"._("URL:")."</label>
     			<input id=\"url-" .$blockedSitesURL["$i"]['InstanceID']. "\"  type=\"text\"  value=\"" .$blockedSitesURL["$i"]['Site'] . "\"  name=\"url\" class=\"text\" size=\"50\"  />
     		    </div>" 
     		    .generateEditPart($blockedSitesURL["$i"]) .
@@ -789,11 +789,11 @@ $.validator.addMethod("no_space", function(value, element, param) {
     for($i=0; $i<$KeywordNums; $i++){
      //generate edit blocked Keyword part 
     	echo "<div id=\"edit-" . $blockedSitesKeyWord["$i"]['InstanceID'] . "\" class=\"edit-Keyword content\" style='display:none'>
-    	<h1>Parental Control > Managed Sites > Edit Blocked Keyword </h1>
+    	<h1>"._("Parental Control > Managed Sites > Edit Blocked Keyword")."</h1>
       <form id=\"pageForm-" . $blockedSitesKeyWord["$i"]['InstanceID'] . "\" class=\"pageForm\">
 	    <div class=\"module\">
     		<div class=\"forms\">
-    		<h2>Edit Keyword to be Blocked</h2>
+    		<h2>"._("Edit Keyword to be Blocked")."</h2>
     			<div class=\"form-row\">
     			<label for=\"Keyword-" .$blockedSitesKeyWord["$i"]['InstanceID']. "\" class=\"checkbox\">Keyword:</label>
     			<input id=\"Keyword-" .$blockedSitesKeyWord["$i"]['InstanceID']. "\"  type=\"text\"  value=\"" .$blockedSitesKeyWord["$i"]['Site']. "\"  name=\"Keyword\" class=\"text\" size=\"50\" maxlength='64' />

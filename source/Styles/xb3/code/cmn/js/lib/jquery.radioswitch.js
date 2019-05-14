@@ -99,8 +99,8 @@
 		id_on: "switch_on",
 		id_off: "switch_off",
 		radio_name: "switch_radio",
-		label_on: "Enable",
-		label_off: "Disable",
+		label_on: "",
+		label_off: "",
 		title_on: "Enable this switch",
 		title_off: "Disable this switch",
 		size: "normal",
@@ -146,6 +146,18 @@
 				);
 			};
 
+			/* fetch a cookie */
+		    function getCookie (name) {
+		        var value = "; " + document.cookie;
+		        var parts = value.split("; " + name + "=");
+		        if (parts.length == 2)
+		            return parts.pop().split(";").shift();
+		    } 
+			/* Set the default labels */
+	        var label_obj = JSON.parse(decodeURIComponent(getCookie('enable_disable_label')));
+			opts.label_on = label_obj.enable;
+			opts.label_off = label_obj.disable;
+			
 			/* add switch buttons */
 			var btnTypes = ['on', 'off'];
 			if (opts.revertOrder) {
@@ -272,6 +284,7 @@
 			var states = $(this).data("radioswitchstates");
 
 			return {on: states.on, enabled: states.enabled};
-		}
+		},
+
 	};
 }(jQuery));

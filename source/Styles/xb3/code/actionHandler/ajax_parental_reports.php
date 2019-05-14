@@ -19,7 +19,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 $mode=$_POST['mode'];
@@ -48,7 +48,7 @@ switch($timef){			//	[$mintime, $maxtime)
 		$mintime=strtotime("-90 days");
 	break;
 	default:
-		die('Not allowed!');
+		die(_('Not allowed!'));
 }
 switch($mode){
 	case "site":
@@ -64,7 +64,7 @@ switch($mode){
 		$type="all";
 		break;
 	default:
-		die('Not allowed!');
+		die(_('Not allowed!'));
 }
 exec("/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /tmp/log_parental.txt");
 $file= fopen("/tmp/log_parental.txt", "r");

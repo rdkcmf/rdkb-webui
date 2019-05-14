@@ -47,8 +47,8 @@ $(document).ready(function() {
 		radio_name: "managed_services",
 		id_on: "managed_services_enabled",
 		id_off: "managed_services_disabled",
-		title_on: "Enable managed services",
-		title_off: "Disable managed services",
+		title_on: "<?php echo _("Enable managed services")?>",
+		title_off: "<?php echo _("Disable managed services")?>",
 		state: jsEnableMS ? "on" : "off"
 	});
 	$("span[id^=trusted_user_]").each(function(){
@@ -60,17 +60,17 @@ $(document).ready(function() {
 			radio_name: "device_trusted-"+idx,
 			id_on: "device_trusted-"+idx,
 			id_off: "device_notrusted-"+idx,
-			title_on: "Select trust",
-			title_off: "Select untrust",
+			title_on: "<?php echo _("Select trust")?>",
+			title_off: "<?php echo _("Select untrust")?>",
 			size: "small",
-			label_on: "Yes",
-			label_off: "No",
+			label_on: "<?php echo _("Yes")?>",
+			label_off: "<?php echo _("No")?>",
 			revertOrder: true,
 			state: val
 		}).change(function(){
     		var trustFlag = $(this).radioswitch("getState").on;
     		//alert(trustFlag);	
-			jProgress('This may take several seconds', 60);
+			jProgress('<?php echo _("This may take several seconds")?>', 60);
 			$.ajax({                  
 				type: "POST",
 				url: "actionHandler/ajaxSet_trust_computer_service.php",
@@ -81,7 +81,7 @@ $(document).ready(function() {
 				},
 				error: function(){
 					jHide();
-					jAlert("Failure, please try again.");
+					jAlert("<?php echo _("Failure, please try again.")?>");
 				}
 			});
     	});
@@ -97,12 +97,12 @@ $(document).ready(function() {
 			var btnHander = $(this);
 			if (btnHander.attr("id").indexOf("delete")!=-1)	{
 				jConfirm(
-					"Are you sure you want to delete this service?"
-					,"Are You Sure?"
+					"<?php echo _("Are you sure you want to delete this service?")?>"
+					,"<?php echo _("Are You Sure?")?>"
 					,function(ret) {
 						if(ret) {
 							delVal = btnHander.attr('href').substring(btnHander.attr('href').indexOf("=")+1);
-							jProgress('This may take several seconds.',60);
+							jProgress('<?php echo _("This may take several seconds.")?>',60);
 							$.ajax({
 								type:"POST",
 								url:"actionHandler/ajax_managed_services.php",
@@ -113,7 +113,7 @@ $(document).ready(function() {
 								},
 								error:function(){
 									jHide();
-									jAlert("Error! Please try later!");
+									jAlert("<?php echo _("Error! Please try later!")?>");
 								}
 							});
 						}
@@ -135,7 +135,7 @@ $(document).ready(function() {
 	$("#managed_services_switch").change(function() {
 		var UMSStatus = $("#managed_services_switch").radioswitch("getState").on ? "Enabled" : "Disabled";
 //		var UMSStatus = $("#managed_services_enabled").is(":checked");
-		jProgress('This may take several seconds', 60);
+		jProgress('<?php echo _("This may take several seconds")?>', 60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_managed_services.php",
@@ -144,7 +144,7 @@ $(document).ready(function() {
 				//jAlert(results);
 				jHide();
 				if (UMSStatus!=results){ 
-					jAlert("Could not do it!");
+					jAlert("<?php echo _("Could not do it!")?>");
 					$("#managed_services_switch").radioswitch("doSwitch", results === 'Enabled' ? 'on' : 'off');
 				}
 				var isUMSDisabled = $("#managed_services_switch").radioswitch("getState").on === false;
@@ -160,7 +160,7 @@ $(document).ready(function() {
 			},
 			error:function(){
 				jHide();
-				jAlert("Failure, please try again.");
+				jAlert("<?php echo _("Failure, please try again.")?>");
 			}
 		});
 	});
@@ -193,38 +193,38 @@ $(document).ready(function() {
 });
 </script>
 <div  id="content" class="main_content">
-	<h1>Parental Control > Managed Services</h1>
+	<h1>Parental Control > <?php echo _("Managed Services")?></h1>
 	<div  id="educational-tip">
-        <p class="tip">Manage access to specific services and applications by network devices.</p>
-		<p class="hidden">Select <strong>Enable</strong> to manage services and applications, or <strong> Disable</strong>  to turn off.</p>
-		<p class="hidden"><strong>+ADD:</strong> Add to block a new service or application.</p>
-		<p class="hidden">The Gateway will block services and applications on all untrusted computers, based on the specified rules. If you don't want restrictions for a particular computer, select <strong>Yes</strong> under <strong>Trusted Computers</strong>.</p>
+        <p class="tip"><?php echo _("Manage access to specific services and applications by network devices.")?></p>
+		<p class="hidden"><?php echo _("Select <strong>Enable</strong> to manage services and applications, or <strong> Disable</strong>  to turn off.")?></p>
+		<p class="hidden"><?php echo _("<strong>+ADD:</strong> Add to block a new service or application.")?></p>
+		<p class="hidden"><?php echo _("The Gateway will block services and applications on all untrusted computers, based on the specified rules. If you don't want restrictions for a particular computer, select <strong>Yes</strong> under <strong>Trusted Computers</strong>.")?></p>
     </div>
 	<div class="module">
 		<div class="select-row">
-		<span class="readonlyLabel label">Managed Services:</span>
+		<span class="readonlyLabel label"><?php echo _("Managed Services:")?></span>
 		<span id="managed_services_switch"></span>
 		</div>
 	</div>
 	<div  id="managed-services-items">
 	<div class="module data">
-		<h2>Blocked Services</h2>
-		<p class="button"><a tabindex='0' href="managed_services_add.php"  id="add-blocked-services" class="btn">+ Add</a></p>
+		<h2><?php echo _("Blocked Services")?></h2>
+		<p class="button"><a tabindex='0' href="managed_services_add.php"  id="add-blocked-services" class="btn"><?php echo _("+ Add")?></a></p>
 		<table  id="blocked-services" class="data" summary="This table lists available managed services">
 	    <tr>
             <th id='service-number' class="number"></th>
-            <th id='service-name' class="services">Services</th>
-	    	<th id='protocol-type' class="type">TCP/UDP</th>
-            <th id='start-port' class="port">Starting Port</th>
-            <th id='end-port' class="port">Ending Port</th>
-            <th id='effect-time' class="when">When</th>
+            <th id='service-name' class="services"><?php echo _("Services")?></th>
+	    	<th id='protocol-type' class="type"><?php echo _("TCP/UDP")?></th>
+            <th id='start-port' class="port"><?php echo _("Starting Port")?></th>
+            <th id='end-port' class="port"><?php echo _("Ending Port")?></th>
+            <th id='effect-time' class="when"><?php echo _("When")?></th>
             <th id='edit-button' class="edit">&nbsp;</th>
             <th id='delete-button' class="delete">&nbsp;</th>
 	    </tr>
 	    <?php 
              	$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedServices.Service.";
 	          	$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.");
-	           	$mapping_array  = array("Protocol", "AlwaysBlock", "Description", "StartPort", "EndPort","StartTime", "EndTime", "BlockDays");
+	          	$mapping_array  = array("Protocol", "AlwaysBlock", "Description", "StartPort", "EndPort","StartTime", "EndTime", "BlockDays");
 		   		$blockedServicesInstance = array();
 	           	$blockedServicesInstanceArr = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
 	           	if($UTC_local_Time_conversion) $blockedServicesInstanceArr = days_time_conversion_get($blockedServicesInstanceArr, 'Description');
@@ -268,8 +268,8 @@ $(document).ready(function() {
 						<td headers='start-port'>".$value["StartPort"]."</td>
 						<td headers='end-port'>".$value["EndPort"]."</td>
 						<td headers='effect-time'>".$blockStatus."</td>
-						<td headers='edit-button' class=\"edit\"><a tabindex='0' href=\"managed_services_edit.php?id=$i\" class=\"btn\"  id=\"edit_$i\">Edit</a></td>
-						<td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_services.php?del=$i\" class=\"btn confirm\" title=\"delete this service for ".$value["Description"]." \" id=\"delete_$i\">x</a></td>
+						<td headers='edit-button' class=\"edit\"><a tabindex='0' href=\"managed_services_edit.php?id=$i\" class=\"btn\"  id=\"edit_$i\">"._("Edit")."</a></td>
+						<td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_services.php?del=$i\" class=\"btn confirm\" title=\"".sprintf(_("delete this service for %s"),$value["Description"])." \" id=\"delete_$i\">x</a></td>
 					</tr>"; 
 					}
 					unset($value);
@@ -340,13 +340,13 @@ $(document).ready(function() {
 			}*/
 		 ?>
 			<div class="module data">
-				<h2>Trusted Computers</h2>
-				<table  id="trusted_computers" class="data" summary="This table allows you to set trusted or untrusted devices for above managed services">
+				<h2><?php echo _("Trusted Computers")?></h2>
+				<table  id="trusted_computers" class="data" summary="<?php echo _("This table allows you to set trusted or untrusted devices for above managed services")?>">
 					<tr>
 						<th id="number" class="number">&nbsp;</th>
-						<th id="device-name" class="computer_name">Computer Name</th>
-						<th id="IP" class="ip">IP</th>
-						<th id="trusted-or-not" class="trusted">Trusted</th>
+						<th id="device-name" class="computer_name"><?php echo _("Computer Name")?></th>
+						<th id="IP" class="ip"><?php echo _("IP")?></th>
+						<th id="trusted-or-not" class="trusted"><?php echo _("Trusted")?></th>
 					</tr>
 					<?php 
 					for ($i=0,$k=1; $i < $hostNums; $i++,$k++) {

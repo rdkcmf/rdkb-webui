@@ -47,8 +47,8 @@ $(document).ready(function() {
 		var mode=$("select#report_type").val();
 		var timef=$("select#time_frame").val();
 		jConfirm(
-		'This action may take more than one minute. Do you want to continue?'
-		,'Are You Sure?'
+		'<?php echo _("This action may take more than one minute. Do you want to continue?")?>'
+		,'<?php echo _("Are You Sure?")?>'
 		,function(ret){
 			if(ret){
 		if(mode == "site") {
@@ -286,7 +286,7 @@ function ajaxDo(mode,timef){
 			default:
 				timef2="last";
 	}
-	jProgress('This may take several seconds.',120);
+	jProgress('<?php echo _("This may take several seconds.")?>',120);
 	ajaxrequest=$.ajax({
 		type:"POST",
 		url:"actionHandler/ajax_parental_reports.php",
@@ -315,7 +315,7 @@ function ajaxDo(mode,timef){
 		},
 		error: function(){
 			jHide();
-			jAlert("Something wrong, please try later.");
+			jAlert("<?php echo _("Something is wrong, please try later.")?>");
 		}
 	});
 }; //end of ajaxDo
@@ -324,42 +324,42 @@ function ajaxDo(mode,timef){
 	$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 ?>
 <div id="content">
-	<h1>Parental Control > Reports</h1>
+	<h1><?php echo _("Parental Control > Reports")?></h1>
 	<div id="educational-tip" class="noprint">
-		<p class="tip">Generate, download, and print reports based on your parental controls. </p>
+		<p class="tip"><?php echo _("Generate, download, and print reports based on your parental controls.")?> </p>
 	</div>
 	<div class="module noprint">
-		<h2>Report Filters</h2>
+		<h2><?php echo _("Report Filters")?></h2>
 <form action="parental_reports_download.php" method="post">
-			<label for="report_type" class="readonlyLabel">Report Type:</label>
+			<label for="report_type" class="readonlyLabel"><?php echo _("Report Type:")?></label>
 			<select id="report_type" name="report_type">
-				<option value="all" selected="selected">All</option>
+				<option value="all" selected="selected"><?php echo _("All")?></option>
 				<?php
 					if($partnerId!="cox"){
 				?>
-				<option value="site">Managed Sites</option>
+				<option value="site"><?php echo _("Managed Sites")?></option>
 				<?php
 					}
 				?>
-				<option value="service">Managed Services</option>
-				<option value="device">Managed Devices</option>
+				<option value="service"><?php echo _("Managed Services")?></option>
+				<option value="device"><?php echo _("Managed Devices")?></option>
 			</select>
-			<label for="time_frame" class="readonlyLabel">Time Frame:</label>
+			<label for="time_frame" class="readonlyLabel"><?php echo _("Time Frame:")?></label>
 			<select id="time_frame" name="time_frame">
-				<option selected="selected">Today</option>
-				<option>Yesterday</option>
-				<option>Last week</option>
-				<option>Last month</option>
-				<option>Last 90 days</option>
+				<option selected="selected" value="Today"><?php echo _("Today")?></option>
+				<option value="Yesterday"><?php echo _("Yesterday")?></option>
+				<option value="Last week"><?php echo _("Last week")?></option>
+				<option value="Last month"><?php echo _("Last month")?></option>
+				<option value="Last 90 days"><?php echo _("Last 90 days")?></option>
 			</select>
-			<input  id="generate-report" type="button" value="GENERATE REPORT" class="btn"/>
+			<input  id="generate-report" type="button" value="<?php echo _("GENERATE REPORT")?>" class="btn"/>
 	</div>
 	<div class="module forms data" id="site">
-		<h2>Managed Sites Reports</h2>
+		<h2><?php echo _("Managed Sites Reports")?></h2>
 		<table id="site_report_today" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col"  colspan="3">Reports for Today</td>
+					<td class="acs-th" scope="col"  colspan="3"><?php echo _("Reports for Today")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -368,7 +368,7 @@ function ajaxDo(mode,timef){
 		<table id="site_report_yesterday" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col"  colspan="3">Reports from Yesterday</td>
+					<td class="acs-th" scope="col"  colspan="3"><?php echo _("Reports from Yesterday")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -377,7 +377,7 @@ function ajaxDo(mode,timef){
 		<table id="site_report_week" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col"  colspan="3">Reports from Last week</td>
+					<td class="acs-th" scope="col"  colspan="3"><?php echo _("Reports from Last week")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -386,7 +386,7 @@ function ajaxDo(mode,timef){
 		<table id="site_report_month" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col"  colspan="3">Reports from Last month</td>
+					<td class="acs-th" scope="col"  colspan="3"><?php echo _("Reports from Last month")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -395,23 +395,23 @@ function ajaxDo(mode,timef){
 		<table id="site_report_last" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col"  colspan="3">Reports from Last 90 days</td>
+					<td class="acs-th" scope="col"  colspan="3"><?php echo _("Reports from Last 90 days")?></td>
 				</tr>
 			</thead>
 			<tbody>
 			</tbody>
 		</table> <!-- or class-->
 		<div class="btn-group">
-			<input type="button" value="Print" class="btn alt"/>
-			<input type="submit" value="Download" class="btn alt"/>
+			<input type="button" value="<?php echo _("Print")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
 	<div class="module forms data" id="service" style="display:none">
-		<h2>Managed Services Reports</h2>
+		<h2><?php echo _("Managed Services Reports")?></h2>
 		<table id="service_report_today" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td  class="acs-th" scope="col" id="" colspan="3">Reports for Today</td>
+					<td  class="acs-th" scope="col" id="" colspan="3"><?php echo _("Reports for Today")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -420,7 +420,7 @@ function ajaxDo(mode,timef){
 		<table id="service_report_yesterday" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td  class="acs-th" scope="col" id="" colspan="3">Reports from Yesterday</td>
+					<td  class="acs-th" scope="col" id="" colspan="3"><?php echo _("Reports from Yesterday")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -429,7 +429,7 @@ function ajaxDo(mode,timef){
 		<table id="service_report_week" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td  class="acs-th" scope="col" id="" colspan="3">Reports from Last week</td>
+					<td  class="acs-th" scope="col" id="" colspan="3"><?php echo _("Reports from Last week")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -438,7 +438,7 @@ function ajaxDo(mode,timef){
 		<table id="service_report_month" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td  class="acs-th" scope="col" id="" colspan="3">Reports from Last month</td>
+					<td  class="acs-th" scope="col" id="" colspan="3"><?php echo _("Reports from Last month")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -447,23 +447,23 @@ function ajaxDo(mode,timef){
 		<table id="service_report_last" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td  class="acs-th" scope="col" id="" colspan="3">Reports from Last 90 days</td>
+					<td  class="acs-th" scope="col" id="" colspan="3"><?php echo _("Reports from Last 90 days")?></td>
 				</tr>
 			</thead>
 			<tbody>
 			</tbody>
 		</table>
 		<div class="btn-group">
-			<input type="button" value="Print" class="btn alt"/>
-			<input type="submit" value="Download" class="btn alt"/>
+			<input type="button" value="<?php echo _("Print")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
 	<div class="module forms data" id="all" style="display:none">
-		<h2>All Reports</h2>
+		<h2><?php echo _("All Reports")?></h2>
 		<table id="all_report_today" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td  class="acs-th" scope="col" id="" colspan="3">Reports for Today</td>
+					<td  class="acs-th" scope="col" id="" colspan="3"><?php echo _("Reports for Today")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -472,7 +472,7 @@ function ajaxDo(mode,timef){
 		<table id="all_report_yesterday" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td  class="acs-th" scope="col" id="" colspan="3">Reports from Yesterday</td>
+					<td  class="acs-th" scope="col" id="" colspan="3"><?php echo _("Reports from Yesterday")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -481,7 +481,7 @@ function ajaxDo(mode,timef){
 		<table id="all_report_week" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td  class="acs-th" scope="col" id="" colspan="3">Reports from Last week</td>
+					<td  class="acs-th" scope="col" id="" colspan="3"><?php echo _("Reports from Last week")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -490,7 +490,7 @@ function ajaxDo(mode,timef){
 		<table id="all_report_month" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td  class="acs-th" scope="col" id="" colspan="3">Reports from Last month</td>
+					<td  class="acs-th" scope="col" id="" colspan="3"><?php echo _("Reports from Last month")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -499,23 +499,23 @@ function ajaxDo(mode,timef){
 		<table id="all_report_last" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td  class="acs-th" scope="col" id="" colspan="3">Reports from Last 90 days</td>
+					<td  class="acs-th" scope="col" id="" colspan="3"><?php echo _("Reports from Last 90 days")?></td>
 				</tr>
 			</thead>
 			<tbody>
 			</tbody>
 		</table>
 		<div class="btn-group">
-			<input type="button" value="Print" class="btn alt"/>
-			<input type="submit" value="Download" class="btn alt"/>
+			<input type="button" value="<?php echo _("Print")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
 	<div class="module forms data" id="device" style="display:none">
-		<h2>Managed Devices Reports</h2>
+		<h2><?php echo _("Managed Devices Reports")?></h2>
 		<table id="device_report_today" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td  class="acs-th" scope="col" id="firewall_time_today" colspan="2">Reports for Today</td>
+					<td  class="acs-th" scope="col" id="firewall_time_today" colspan="2"><?php echo _("Reports for Today")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -524,7 +524,7 @@ function ajaxDo(mode,timef){
 		<table id="device_report_yesterday" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td  class="acs-th" scope="col" id="firewall_time_yesterday" colspan="2">Reports from Yesterday</td>
+					<td  class="acs-th" scope="col" id="firewall_time_yesterday" colspan="2"><?php echo _("Reports from Yesterday")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -533,7 +533,7 @@ function ajaxDo(mode,timef){
 		<table id="device_report_week" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td class="acs-th"  scope="col" id="firewall_time_lweek" colspan="2">Reports from Last Week</td>
+					<td class="acs-th"  scope="col" id="firewall_time_lweek" colspan="2"><?php echo _("Reports from Last Week")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -542,7 +542,7 @@ function ajaxDo(mode,timef){
 		<table id="device_report_month" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td class="acs-th"  scope="col" id="firewall_time_lmonth" colspan="2">Reports from Last Month</td>
+					<td class="acs-th"  scope="col" id="firewall_time_lmonth" colspan="2"><?php echo _("Reports from Last Month")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -551,15 +551,15 @@ function ajaxDo(mode,timef){
 		<table id="device_report_last" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td class="acs-th"  scope="col" id="firewall_time_l90days" colspan="2">Reports from Last 90 days</td>
+					<td class="acs-th"  scope="col" id="firewall_time_l90days" colspan="2"><?php echo _("Reports from Last 90 days")?></td>
 				</tr>
 			</thead>
 			<tbody>
 			</tbody>
 		</table>
 		<div class="btn-group">
-			<input type="button" value="Print" class="btn alt"/>
-			<input type="submit" value="Download" class="btn alt"/>
+			<input type="button" value="<?php echo _("Print")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
 </form>

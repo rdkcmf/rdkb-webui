@@ -19,7 +19,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 if (isset($_POST['set'])){
@@ -122,7 +122,7 @@ if (isset($_POST['add'])){
 					$TD1=array($startTime, $endTime, $blockDays);
 					$TD2=array($start_Time, $end_Time, $block_Days);
 					if(($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)){
-						$result .= "Conflict with other device. Please check your input!";
+						$result .= _("Conflict with other device. Please check your input!");
 						break;
 					}
 				}
@@ -158,7 +158,7 @@ if (isset($_POST['add'])){
 					}
 					setStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".AlwaysBlock",$block,true);
 				}
-				$result="Success!";
+				$result=_("Success!");
 			}
 		}
 	}
@@ -176,7 +176,7 @@ if (isset($_POST['edit'])){
 		if($validation) $validation = validTime($_POST['startTime'], $_POST['endTime']);
 		if($validation) $validation = validDays($_POST['days']);
 	}
-	$result = ($validation)?'':'Invalid Inputs!';
+	$result = ($validation)?'':_('Invalid Inputs!');
 	if($validation) {
 		$i=$_POST['ID'];
 		$name=$_POST['name'];
@@ -208,7 +208,7 @@ if (isset($_POST['edit'])){
 				$TD1=array($startTime, $endTime, $blockDays);
 				$TD2=array($start_Time, $end_Time, $block_Days);
 				if(($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)){
-					$result .= "Conflict with other device. Please check your input!";
+					$result .= _("Conflict with other device. Please check your input!");
 					break;
 				}
 			}
@@ -251,7 +251,7 @@ if (isset($_POST['edit'])){
 			else {
 				if(array_key_exists(1, $i)) delTblObj("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i[1].".");
 			}
-			$result="Success!";
+			$result=_("Success!");
 		}
 	}
 	header("Content-Type: application/json");

@@ -91,7 +91,7 @@ function getInstanceNum()
 }
 function set_config(jsConfig)
 {
-	jProgress('This may take several seconds...', 60);
+	jProgress('<?php echo _("This may take several seconds...")?>', 60);
 	$.post(
 		"actionHandler/ajaxSet_wizard_step1.php",
 		{
@@ -108,7 +108,7 @@ function set_config(jsConfig)
 				}
 				else
 				{
-					jAlert("Current Password Wrong!");
+					jAlert("<?php echo _("Current Password Wrong!")?>");
 				}
 			 }, 5000);
 		},
@@ -123,7 +123,7 @@ function next_step()
 	var jsConfig = '{"newPassword": "' + newPwd + '", "instanceNum": "' + intNum + '", "oldPassword": "' + oldPwd + '"}';
 	if (oldPwd == newPwd)
 	{
-		jAlert("Current Password and New Password Can't Be Same!");
+		jAlert("<?php echo _("Current Password and New Password Can't Be Same!")?>");
 	}
 	else
 	{
@@ -132,35 +132,35 @@ function next_step()
 }
 </script>
 <div id="content">
-	<h1>Gateway > Home Network Wizard - Step 1</h1>
+	<h1><?php echo _("Gateway > Home Network Wizard - Step 1")?></h1>
 	<div id="educational-tip">
-		<p class="tip">The Home Network Wizard walks you through settings you may want to change for better network security.</p>
-		<p class="hidden">If you have never changed the default information, the <strong>Current Password </strong>is <i>password</i>. Step 1 changes the Admin Tool password (the password to log into this site in the future) .</p>
+		<p class="tip"><?php echo _("The Home Network Wizard walks you through settings you may want to change for better network security.")?></p>
+		<p class="hidden"><?php echo _("If you have never changed the default information, the <strong>Current Password </strong>is <i>password</i>. Step 1 changes the Admin Tool password (the password to log into this site in the future).")?></p>
 	</div>
 	<div class="module forms">
 		<!--form action="wizard_step2.php" method="post" id="pageForm"-->
 		<form action="wizard_step2.php" method="post" id="pageForm">
 			<h2>Step 1 of 2</h2>
-			<p class="summary">To configure your home network, we need some basic information</p>
+			<p class="summary"><?php echo _("To configure your home network, we need some basic information")?></p>
 			<div class="form-row password">
-				<label for="oldPassword">Current Password:</label>
+				<label for="oldPassword"><?php echo _("Current Password:")?></label>
 				<span id="password_field_1"><input type="password" size="23" id="oldPassword" name="oldPassword" class="text" value=""></span>
    			</div>
 			<div class="form-row odd password">
-				<label for="userPassword">New Password:</label>
+				<label for="userPassword"><?php echo _("New Password:")?></label>
 				<span id="password_field_2"><input type="password" size="23" id="userPassword" name="userPassword" class="text" value=""></span>
 			</div>
 			<div class="form-row password">
-				<label for="verifyPassword">Re-enter New Password:</label>
+				<label for="verifyPassword"><?php echo _("Re-enter New Password:")?></label>
 				<span id="password_field_3"><input type="password" size="23" id="verifyPassword" name="verifyPassword" class="text" value=""></span>
 			</div>
 			<div class="form-row odd">
-				<label for="password_show">Show Typed Password:</label>
+				<label for="password_show"><?php echo _("Show Typed Password:")?></label>
 				<span class="checkbox"><input type="checkbox" id="password_show" name="password_show" /></span>
 			</div> 
-			<p class="footnote">8-20 characters. Alphanumeric only. No spaces. Case sensitive.</p>
+			<p class="footnote"><?php echo _("8-20 characters. Alphanumeric only. No spaces. Case sensitive.")?></p>
 			<div class="form-row form-btn">
-				<input id="submit_pwd" type="submit" value="Next Step" class="btn" />
+				<input id="submit_pwd" type="submit" value="<?php echo _("Next Step")?>" class="btn" />
 			</div>
 		</form>
 	</div> <!-- end .module -->	

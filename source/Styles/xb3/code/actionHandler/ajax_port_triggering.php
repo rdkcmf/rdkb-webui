@@ -19,7 +19,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 $result="";
@@ -103,7 +103,7 @@ if (isset($_POST['add'])){
 					$fptest=PORTTEST($fsp,$fep,$arrayFsp,$arrayFep);
 					$tptest=PORTTEST($tsp,$tep,$arrayTsp,$arratTep);
 					if ($fptest==1 || $tptest==1) {
-						$result.="Conflict with other service. Please check Trigger and Target Ports!";
+						$result.=_("Conflict with other service. Please check Trigger and Target Ports!");
 						break;
 					}
 				}
@@ -121,7 +121,7 @@ if (isset($_POST['add'])){
 						if($type=="BOTH" || $portMappingType=="BOTH" || $type==$portMappingType){
 							$porttest=PORTTEST($tsp,$tep,$arraySPort,$arrayEPort);
 							if ($porttest==1) {
-								$result.="Conflict with other service. Please check port and IP!";
+								$result.=_("Conflict with other service. Please check port and IP!");
 								break;
 							}
 						}
@@ -154,7 +154,7 @@ if (isset($_POST['add'])){
 						array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Enable",           "bool",   "true"),
 					);
 				$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);	
-				if (!$retStatus){$result="Success!";}
+				if (!$retStatus){$result=_("Success!");}
 			}
 			// echo json_encode($result);
 		}
@@ -195,13 +195,13 @@ if (isset($_POST['edit'])){
 				$arrayTsp = $key["ForwardPortStart"];
 				$arratTep = $key["ForwardPortEnd"];
 			if(!strcmp($name, $arrayName)) {
-				$result.="Service name has been used!\n";
+				$result.=_("Service name has been used!\n");
 				break;
 			} else if($type=="BOTH"||$arrayType=="BOTH"||$type==$arrayType){
 				$fptest=PORTTEST($fsp,$fep,$arrayFsp,$arrayFep);
 				$tptest=PORTTEST($tsp,$tep,$arrayTsp,$arratTep);
 				if ($fptest==1 || $tptest==1) {
-					$result.="Conflict with other service. Please check Trigger and Target Ports!";
+					$result.=_("Conflict with other service. Please check Trigger and Target Ports!");
 					break;
 				}
 			}
@@ -219,7 +219,7 @@ if (isset($_POST['edit'])){
 					if($type=="BOTH" || $portMappingType=="BOTH" || $type==$portMappingType){
 						$porttest=PORTTEST($tsp,$tep,$arraySPort,$arrayEPort);
 						if ($porttest==1) {
-							$result.="Conflict with other service. Please check port and IP!";
+							$result.=_("Conflict with other service. Please check port and IP!");
 							break;
 						}
 					}
@@ -249,7 +249,7 @@ if (isset($_POST['edit'])){
 					array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Enable",           "bool",   "true"),
 				);
 			$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);	
-			if (!$retStatus){$result="Success!";}
+			if (!$retStatus){$result=_("Success!");}
 		}
 		// echo json_encode($result);
 	}

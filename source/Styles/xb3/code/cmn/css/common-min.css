@@ -1513,3 +1513,205 @@ margin:0 0 0 -35px;
 	margin-top: 8px;
 }
 
+/*Voice_hidden page*/
+#voip_container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+#voip_container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 1.5em;
+  left: 14em;
+  height: 30px;
+  width: 30px;
+  background-color: #f1f1f1;
+  border:5px solid #868686;
+}
+
+/* On mouse-over, add a grey background color */
+#voip_container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+#voip_container input:checked ~ .checkmark {
+  background-color: #14c764;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+#voip_container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+#voip_container .checkmark:after {
+  left: 11px;
+  top: 6px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/*selfheal css start*/
+
+.module_self {
+    background: #fff;
+    margin: 8px;
+    padding: 14px;
+    overflow: hidden;
+    position: relative;
+    -moz-box-shadow: 0 0 12px 0 #e0e0e0;
+    -webkit-box-shadow: 0 0 12px #e0e0e0;
+    position: relative;
+}
+
+.module_self h2 {
+    background: #39baf1;
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 8px;
+}
+
+.block_self {
+    width: 45%;
+    min-height: 365px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.block_self .img {
+    height: 250px;
+}
+
+.img>img {
+    width: 100%;
+}
+
+.block_self .form-btn .btn {
+    margin: 0 42%;
+}
+
+#container_selfheal {
+    width: 100%;
+    float: left;
+
+}
+
+#sub-header>h1.selfheal_title {
+    float: right;
+}
+
+.con_check_status {
+    width: 65%;
+    float: left;
+}
+
+.con_check {
+    width: 18%;
+    padding: 2px;
+    float: left;
+}
+
+.con_check img{
+    width: 49px;
+    padding:25px 0;
+    overflow: hidden;
+    background: transparent url(../img/sky_self_heal_ONT_led_sprite.gif) no-repeat;
+    background-position: 0 0;
+    margin: 0 auto;
+}
+
+.clear_fix {
+    clear: both;
+}
+
+.con_check_status_img {
+    width: 35%;
+    float: right;
+}
+
+.con_check_status_img>img {
+    width: 100%;
+}
+
+.p_t60{
+    padding-top: 60px;
+}
+
+/* The Modal (background) SelfHeal */
+.modal_sky_selfheal {
+  display: none;
+  position: fixed;
+  z-index: 9;
+  padding-top: 15%;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+/* Modal Content */
+.modal-content_sky_selfheal {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+}
+
+.modal-content_sky_selfheal h2 {
+	font-size: 2em;
+	text-align: center;
+}
+
+.modal-content_sky_selfheal p {
+	text-align: center;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}

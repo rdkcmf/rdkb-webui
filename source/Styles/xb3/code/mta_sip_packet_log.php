@@ -47,9 +47,9 @@ function decodeHTMLEntities (text) {
   })
 }
 	$("#showlogs").click(function() {
-		jConfirm("This action may take more than one minute. Do you want to continue?", "Are You Sure?", function(ret){
+		jConfirm("<?php echo _("This action may take more than one minute. Do you want to continue?")?>", "<?php echo _("Are You Sure?")?>", function(ret){
 			if(ret){
-				jProgress('This may take several seconds...', 180);
+				jProgress('<?php echo _("This may take several seconds...")?>', 180);
 				$.ajax({
 					type:"GET",
 					url:"actionHandler/ajaxSet_mta_sip_packet_log.php",
@@ -59,12 +59,12 @@ function decodeHTMLEntities (text) {
 						var trClass="odd";	
 						// $("#event_logs_today > tbody").empty();
 						if (""==results) {
-							document.getElementById('log_summary').innerHTML='<b>There are currently no SIP Packet Logs</b>';
+							document.getElementById('log_summary').innerHTML='<?php echo _("<b>There are currently no SIP Packet Logs</b>")?>';
 							jHide();
 							return;
 						}
 						else {
-							document.getElementById('event').innerHTML='<h2>MTA SIP Packet Log</h2><table summary="This table shows SIP Packet Log" id="event_logs_today" class="data" style="word-break:break-all"><thead><th id="sip_value">Description</th><th width="111" id="sip_time">Time</th></thead><tbody></tbody><tfoot><tr class="acs-hide"><td headers="sip_value">null</td><td headers="sip_time">null</td></tr></tfoot></table>';
+							document.getElementById('event').innerHTML='<h2><?php echo _("MTA SIP Packet Log")?></h2><table summary="<?php echo _("This table shows SIP Packet Log")?>" id="event_logs_today" class="data" style="word-break:break-all"><thead><th id="sip_value"><?php echo _("Description")?></th><th width="111" id="sip_time"><?php echo _("Time")?></th></thead><tbody></tbody><tfoot><tr class="acs-hide"><td headers="sip_value">null</td><td headers="sip_time">null</td></tr></tfoot></table>';
 						}
 						$.each(results,function(key,value) {
 							$("#event_logs_today > tbody").append('<tr class="'+trClass+'"><td headers="sip_value">'+value.Des+'</td><td headers="sip_time">'+value.time+'</td></tr>');
@@ -80,7 +80,7 @@ function decodeHTMLEntities (text) {
 					},
 					error: function(){            
 						jHide();
-						jAlert("Failure, please try again.");
+						jAlert("<?php echo _("Failure, please try again.")?>");
 					}
 				});
 			}
@@ -89,18 +89,18 @@ function decodeHTMLEntities (text) {
 });
 </script>
 <div id="content">
-	<h1>Gateway > Connection > MTA >SIP Packet Log</h1>
+	<h1><?php echo _("Gateway > Connection > MTA >SIP Packet Log")?></h1>
 	<div id="educational-tip">
-		<p class="tip">Information related to the SIP Packet Log.</p>
+		<p class="tip"><?php echo _("Information related to the SIP Packet Log.")?></p>
 	</div>
 	<div class="module forms data" id="event">
-		<h2>MTA SIP Packet Log</h2>
+		<h2><?php echo _("MTA SIP Packet Log")?></h2>
 		<div class="form-row">
-			<span class="" id="log_summary"><b>The SIP trace log didn't generate yet</b></span>
+			<span class="" id="log_summary"><b><?php echo _("The SIP trace log didn't generate yet")?></b></span>
 		</div>
 	</div> <!-- end .module -->
 	<div class="form-btn">
-		<input id="showlogs" type="button" value="REFRESH" class="btn" style="position:relative;top:0px;left:300px;"/>
+		<input id="showlogs" type="button" value="<?php echo _("REFRESH")?>" class="btn" style="position:relative;top:0px;left:300px;"/>
 	</div>
 </div><!-- end #content -->
 <?php include('includes/footer.php'); ?>

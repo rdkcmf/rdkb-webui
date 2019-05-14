@@ -22,7 +22,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-        echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+        echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
         exit(0);
 }
 header("Content-Type: application/json");
@@ -36,10 +36,10 @@ function discoverBattery() {
 
         $retStatus = DmExtSetStrsWithRootObj("Device.DeviceInfo.", TRUE, $paramArray);
         if (!$retStatus){
-                echo "Success!";
+                echo _("Success!");
         }
         else {
-                echo 'Failed to add';
+                echo _('Failed to add');
         }
 }
 

@@ -48,6 +48,7 @@ $prefix_arr = explode('::/', getStr("Device.IP.Interface.1.IPv6Prefix.1.Prefix")
 $v6_begin_addr = "0000:0000:0000:0001";
 $v6_end_addr = "ffff:ffff:ffff:fffe";
 $productLink = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.link");
+$partnersId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 ?>
 <style type="text/css">
 label{
@@ -159,23 +160,23 @@ function isIp4AddrRequired()
 	return !IsBlank('server_ip_address_');
 }
 	jQuery.validator.addMethod("blank",function(value,element){
-		return this.optional(element) || (value!='Choose or input a service name');
-	}, "Please enter a service name.");
+		return this.optional(element) || (value!='<?php echo _("Choose or input a service name")?>');
+	}, "<?php echo _('Please enter a service name.')?>");
 	jQuery.validator.addMethod("ip",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 255);
-	}, "Please enter a valid IP address.");
+	}, "<?php echo _('Please enter a valid IP address.')?>");
 	jQuery.validator.addMethod("ip4",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 1 && value <= 254);
-	}, "Please enter a valid IP address.");
+	}, "<?php echo _('Please enter a valid IP address.')?>");
 	jQuery.validator.addMethod("ip4_end",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 1 && value <= 253);
-	}, "Please enter a valid IP address.");
+	}, "<?php echo _('Please enter a valid IP address.')?>");
 	jQuery.validator.addMethod("port",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 65535);
-	}, "Please enter a port number less than 65536.");
+	}, "<?php echo _('Please enter a port number less than 65536.')?>");
 	jQuery.validator.addMethod("ltstart",function(value,element){
 		return this.optional(element) || value>=parseInt($("#start_port").val());
-	}, "Please enter a value more than or equal to Start Port.");
+	}, "<?php echo _('Please enter a value more than or equal to Start Port.')?>");
 	var validator = $("#pageForm").validate({
     	onfocusout: false,
 		onkeyup: false,
@@ -262,11 +263,11 @@ function isIp4AddrRequired()
         if($("#common_services").find("option:selected").val() == "other") {
         	var name = $('#service_name').val().replace(/^\s+|\s+$/g, '');
         	if (name.length == 0){
-        		jAlert("Please input a service name !");
+        		jAlert("<?php echo _('Please input a service name !')?>");
         		return;
         	}
         	else if(name.match(/[<>&"'|]/)!=null){
-        		jAlert('Please input valid Service Name ! \n Less than (<), Greater than (>), Ampersand (&), Double quote ("), \n Single quote (\') and Pipe (|) characters are not allowed.');
+        		jAlert('<?php echo _("Please input valid Service Name ! \\n Less than (<), Greater than (>), Ampersand (&), Double quote (\"), \\n Single quote (\') and Pipe (|) characters are not allowed.")?>');
 				return;
         	}
         }
@@ -283,7 +284,7 @@ function isIp4AddrRequired()
 		var host2 = parseInt($("#server_ip_address_3").val());
 		var host3 = parseInt($("#server_ip_address_4").val());
 	    if (IsBlank("server_ip_address_") && IsBlank("ip6_address_r")) {
-	   	  	jAlert("Please input valid server address !");
+	   	  	jAlert("<?php echo _('Please input valid server address !')?>");
 	   	  	return;
 		}
 		if (!IsBlank("server_ip_address_")) {
@@ -291,13 +292,12 @@ function isIp4AddrRequired()
 			var IPv4_valid = ValidIp4Addr(ip, jsGatewayIP, jsNetMask);
 			//IPv4 validation
 			if (ip == jsGatewayIP){
-				jAlert("Server IP can't be equal to the Gateway IP address !");
+				jAlert("<?php echo _('Server IP can\'t be equal to the Gateway IP address !')?>");
 				return;
 			} else if(!IPv4_valid){
-				jAlert("Server IP addr is not in valid range !");
+				jAlert("<?php echo _('Server IP addr is not in valid range !')?>");
 				return;
-			}
-		}
+			}		}
 		if (!IsBlank("ip6_address_r")) {
 			//IPv6 validation
 			//if Stateful(Use Dhcp Server) then accept inrange values
@@ -312,11 +312,11 @@ function isIp4AddrRequired()
 			end_int 	= ipv6_in_int(end1);
 			//is valid "interface id" is converted to int for ipv6
 			if(!(isHex(ipv6res1[0]) && isHex(ipv6res1[1]) && isHex(ipv6res1[2]) && isHex(ipv6res1[3]))){
-				jAlert("Server IPv6 addr is not valid!");
+				jAlert("<?php echo _('Server IPv6 addr is not valid!')?>");
 				return;
 			}
 			if(!validate_v6addr_pool(start_int, ipv6res_int) || !validate_v6addr_pool(ipv6res_int, end_int)){
-				jAlert("Server IPv6 addr is not in valid range:\n <?php echo $prefix_arr[0].':'.$v6_begin_addr.' ~ '.$prefix_arr[0].':'.$v6_end_addr; ?>");
+				jAlert("<?php echo _('Server IPv6 addr is not in valid range:')?> \n <?php echo $prefix_arr[0].':'.$v6_begin_addr.' ~ '.$prefix_arr[0].':'.$v6_end_addr; ?>");
 				return;
 			}
 		}
@@ -333,7 +333,7 @@ function isIp4AddrRequired()
 		    	ipv6addr = "x"; 
 		}
 		if($("#pageForm").valid()) {
-			jProgress('This may take several seconds.',60);
+			jProgress('<?php echo _("This may take several seconds.")?>',60);
 			$.ajax({
 				type:"POST",
 				url:"actionHandler/ajax_port_forwarding.php",
@@ -341,15 +341,15 @@ function isIp4AddrRequired()
 				dataType: "json",
 				success:function(results){
 					jHide();
-					if (results=="Success!") { 
+					if (results=="<?php echo _('Success!')?>") { 
 						window.location.href="port_forwarding.php";
 					}
-					else if (results=="") {jAlert('Failure! Please check your inputs.');}
+					else if (results=="") {jAlert('<?php echo _("Failure! Please check your inputs.")?>');}
 					else jAlert(results);
 				},
 				error:function(){
 					jHide();
-					jAlert("Something wrong, please try later!");
+					jAlert("<?php echo _('Something went wrong, please try later!')?>");
 				}
 			});
 		} //end of pageform valid
@@ -374,19 +374,20 @@ function isIp4AddrRequired()
     }).trigger("change");
 $('#device').click(function(){
 	$.virtualDialog({
-		title: "Select from below Connected Devices:",
+		title: "<?php echo _('Select from below Connected Devices:')?>",
 		content: $("#device_list"),
 		footer: '<div id="pop-btn-group">' +
 					'<div style="float:left; position:relative; left:140px">' +
-					'<input id="add_btn" type="button" value="Add"/>' +
+					'<input id="add_btn" type="button" value="<?php echo _("Add")?>"/>' +
 					'</div>' +
 					'<div style="position:relative; left:200px">' +
-					'<input id="close_btn" type="button" value="Close" />' +
+					'<input id="close_btn" type="button" value="<?php echo _("Close")?>" />' +
 					'</div>' +
 				'</div>',
 		width: "550px",
 	});
 	$('#add_btn').click(function() {
+		var partner_Id = '<?php echo $partnersId ?>';
 		var ipv4_addr = $('input[type="radio"]:checked').parent().parent().find("td:eq(1)").text().replace(/^\s+|\s+$/g, '');
 		var ipv6_addr = $('input[type="radio"]:checked').parent().parent().find("td:eq(2)").text().replace(/^\s+|\s+$/g, '');
 		var ipv4_arr = ipv4_addr.split(".");
@@ -395,10 +396,12 @@ $('#device').click(function(){
 		$("#server_ip_address_2").val(ipv4_arr[1]);
 		$("#server_ip_address_3").val(ipv4_arr[2]);
 		$("#server_ip_address_4").val(ipv4_arr[3]);
-		/*$("#ip6_address_r1").val(ipv6_arr[0]);
+		if(partner_Id.includes('sky-')){
+		$("#ip6_address_r1").val(ipv6_arr[0]);
 		$("#ip6_address_r2").val(ipv6_arr[1]);
 		$("#ip6_address_r3").val(ipv6_arr[2]);
-		$("#ip6_address_r4").val(ipv6_arr[3]);*/
+		$("#ip6_address_r4").val(ipv6_arr[3]);
+		}
 		$("#ip6_address_r5").val(ipv6_arr[4]);
 		$("#ip6_address_r6").val(ipv6_arr[5]);
 		$("#ip6_address_r7").val(ipv6_arr[6]);
@@ -419,28 +422,28 @@ $('#device').click(function(){
 </script>
 <?php if($CloudUIEnable == "true"){ ?>
 <div id="content">
-	<h1>Advanced > Port Forwarding > Add Service</h1>
+	<h1><?php echo _("Advanced > Port Forwarding > Add Service")?></h1>
 	<div class="module forms">
 		<div id="content" style="text-align: center;">
 			<br>
-			<h3>Managing your home network settings is now easier than ever.<br>Visit <a href="http://<?php echo $productLink;?>"><?php echo $productLink ?></a> to set up port forwards, among many other features and settings.</h3>
+			<h3><?php echo sprintf(_("Managing your home network settings is now easier than ever.<br>Visit <a href='http://%s'>%s</a> to set up port forwards, among many other features and settings."),$productLink, $productLink)?></h3>
 			<br>
 		</div>
 	</div> <!-- end .module -->
 </div><!-- end #content -->
 <?php } else { ?>
 <div id="content">
-	<h1>Advanced > Port Forwarding > Add Service</h1>
+	<h1><?php echo _("Advanced > Port Forwarding > Add Service")?></h1>
     <div id="educational-tip">
-        <p class="tip"> Add a rule for port forwarding services by user.</p>
-        <p class="hidden">Port forwarding permits communications from external hosts by forwarding them to a particular port.</p>
-		<p class="hidden">Port forwarding settings can affect the Gateway's performance.</p>
+        <p class="tip"> <?php echo _("Add a rule for port forwarding services by user.")?></p>
+        <p class="hidden"><?php echo _("Port forwarding permits communications from external hosts by forwarding them to a particular port.")?></p>
+		<p class="hidden"><?php echo _("Port forwarding settings can affect the Gateway's performance.")?></p>
     </div>
 	<form method="post" id="pageForm" action="">
 	<div class="module forms">
-		<h2>Add Port Forward</h2>
+		<h2><?php echo _("Add Port Forward")?></h2>
 		<div  class="form-row odd">
-					<label for="common_services">Common Service:</label>
+					<label for="common_services"><?php echo _("Common Service:")?></label>
 					<select  id="common_services" name="common_services">
 					<option  value="21|21" >FTP</option>
 					<option  value="5190|5190">AIM</option>
@@ -449,15 +452,15 @@ $('#device').click(function(){
 					<option  value="443|443">HTTPs</option>
 					<option  value="23|23">Telnet</option>
 					<option  value="22|22">SSH</option>
-					<option  value="other" class="other" selected="selected">Other</option>
+					<option  value="other" class="other" selected="selected"><?php echo _("Other")?></option>
 					</select>
 				</div>
 				<div class="form-row ">
-			<label  for="service_name">Service Name:</label> 
+			<label  for="service_name"><?php echo _("Service Name:")?></label> 
 			<input type="text"  class="text" value="" id="service_name" name="service_name" />
 		</div>
 		<div  class="form-row odd">
-			<label for="service_type">Service Type:</label>
+			<label for="service_type"><?php echo _("Service Type:")?></label>
 			<select id="service_type">
 				<option value="tcp_udp" selected="selected">TCP/UDP</option>
 				<option value="tcp">TCP</option>
@@ -465,7 +468,7 @@ $('#device').click(function(){
 			</select>
 		</div>
 		<div class="form-row ">
-			<label for="server_ip_address_1">Server IPv4 Address:</label>
+			<label for="server_ip_address_1"><?php echo _("Server IPv4 Address:")?></label>
 	        <input type="text" size="2"  maxlength="3"  id="server_ip_address_1" name="server_ip_address_1" class="ipv4-addr smallInput" />
 	        <label for="server_ip_address_2" class="acs-hide"></label>
 			.<input type="text" size="2" maxlength="3"  id="server_ip_address_2" name="server_ip_address_2" class="ipv4-addr smallInput" />
@@ -479,7 +482,7 @@ $('#device').click(function(){
 			$ipa_size = count($ipv6_prefix_arr);
 		?>
 		<div class="form-row odd">		
-			<label for="ip6_address_r1">Server IPv6 Address:</label>
+			<label for="ip6_address_r1"><?php echo _("Server IPv6 Address:")?></label>
 			<input type="text" size="1" maxlength="4" id="ip6_address_r1" name="ip_address_1" disabled="disabled" class="ipv6-addr ipv6-input" value="<?php if($DeviceMode!='Ipv4') {echo $ipv6_prefix_arr[0];} ?>"/>:
 	        <label for="ip6_address_r2" class="acs-hide"></label>
 			<input type="text" size="1" maxlength="4" id="ip6_address_r2" name="ip_address_2" disabled="disabled" class="ipv6-addr ipv6-input" value="<?php if($DeviceMode!='Ipv4') {if($ipa_size > 1) echo $ipv6_prefix_arr[1]; else echo '0';} ?>"/>:
@@ -497,30 +500,30 @@ $('#device').click(function(){
 			<input type="text" size="1" maxlength="4" id="ip6_address_r8" name="ip_address_8" class="ipv6-addr ipv6-input"/>
     	</div>
 		<div class="form-row ">
-			<label for="start_port">Start Port:</label>  <input type="text" class="port" value="" id="start_port" name="start_port" />
+			<label for="start_port"><?php echo _("Start Port:")?></label>  <input type="text" class="port" value="" id="start_port" name="start_port" />
 		</div>
 		<div class="form-row odd">
-			<label for="end_port">End Port:</label>  <input type="text" class="port" value="" id="end_port" name="end_port" />
+			<label for="end_port"><?php echo _("End Port:")?></label>  <input type="text" class="port" value="" id="end_port" name="end_port" />
 		</div>
 		<div class="form-row">
-			<strong><p>Select a device to add IPv4 and IPv6 address</p></strong>
-			<input  id="device" type="button" value="Connected Device" class="btn"  style="position:relative;top:0px;right: 0px;"/>
+			<strong><p><?php echo _("Select a device to add IPv4 and IPv6 address")?></p></strong>
+			<input  id="device" type="button" value="<?php echo _('Connected Device')?>" class="btn"  style="position:relative;top:0px;right: 0px;"/>
 		</div>
 		<div class="form-btn">
-			<input type="button" id="btn-save" value="save" class="btn submit"/>
-			<input type="button" id="btn-cancel" value="Cancel" class="btn alt reset"/>
+			<input type="button" id="btn-save" value="<?php echo _('save')?>" class="btn submit"/>
+			<input type="button" id="btn-cancel" value="<?php echo _('Cancel')?>" class="btn alt reset"/>
 		</div>
 	</div> <!-- end .module -->
 	</form>
 </div><!-- end #content -->
 <?php } ?>
 <div id="device_list" style="display: none;">
-	<table summary="This table lists connected devices">
+	<table summary="<?php echo _("This table lists connected devices")?>">
 	<tr>
-		<th id="device-nmae">Device Name</th>
-		<th id="ipv4-addr">IPv4 Address</th>
-		<th id="ipv6-addr">IPv6 Address</th>
-		<th id="add-radio">Add</th>					
+		<th id="device-nmae"><?php echo _("Device Name")?></th>
+		<th id="ipv4-addr"><?php echo _("IPv4 Address")?></th>
+		<th id="ipv6-addr"><?php echo _("IPv6 Address")?></th>
+		<th id="add-radio"><?php echo _("Add")?></th>					
 		<th colspan="2">&nbsp;</th>
 	</tr>
 	<?php 
@@ -542,9 +545,17 @@ $('#device').click(function(){
 					if ($j === '') break;
 					$val = getStr("Device.Hosts.Host.$hostsInstanceArr[$i].IPv6Address.$j.IPAddress");
 					if (stripos($val, "fe80:") === 0) continue;
-					if (stripos($val, "EMPTY") !== 0) {
+					if(strpos($partnersId, "sky-") !== false){
+						if (stripos($val, "fd") === 0) {
+							$IPv6Addr = $val;
+							break;
+						}
+					}
+					else{
+					  if (stripos($val, "EMPTY") !== 0) {
 	 					$IPv6Addr = $val;
 	 					break;
+					  }  
 					}
 				}
 			}

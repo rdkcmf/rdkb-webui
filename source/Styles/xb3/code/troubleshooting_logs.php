@@ -46,8 +46,8 @@ $(document).ready(function() {
 		var mode=$("select#log_type").val();
 		var timef=$("select#time_frame").val();
 		jConfirm(
-		'This action may take more than one minute. Do you want to continue?'
-		, 'Are You Sure?'
+		'<?php echo _("This action may take more than one minute. Do you want to continue?")?>'
+		, '<?php echo _("Are You Sure?")?>'
 		, function(ret){
 			if(ret){
 		if(mode == "system") {
@@ -221,7 +221,7 @@ function ajaxDo(mode,timef){
 		default:
 			timef2="last";
 	}
-	jProgress('This may take several seconds.',180);
+	jProgress('<?php echo _("This may take several seconds.")?>',180);
 	$.ajax({
 		type:"POST",
 		url:"actionHandler/ajax_troubleshooting_logs.php",
@@ -256,42 +256,42 @@ function ajaxDo(mode,timef){
 		},
 		error: function(){
 			jHide();
-			jAlert("Something wrong, please try again.");
+			jAlert("<?php echo _("Something went wrong, please try again.")?>");
 		}
 	});
 }
 </script>
 <div id="content">
-	<h1>Troubleshooting > Logs</h1>
+	<h1><?php echo _("Troubleshooting > Logs")?></h1>
 	<div id="educational-tip" class="noprint">
-		<p class="tip">View information about the Gateway's performance and system operation.</p>
-		<p class="hidden">Use the logs to troubleshoot issues and to identify potential security risks.</p>
+		<p class="tip"><?php echo _("View information about the Gateway's performance and system operation.")?></p>
+		<p class="hidden"><?php echo _("Use the logs to troubleshoot issues and to identify potential security risks.")?></p>
 	</div>
 	<div class="module noprint">
-		<h2>Log Filters</h2>
+		<h2><?php echo _("Log Filters")?></h2>
     <form action="troubleshooting_logs_download.php" method="post">
-			<label for="log_type" class="readonlyLabel">Log Type:</label>
+			<label for="log_type" class="readonlyLabel"><?php echo _("Log Type:")?></label>
 			<select id="log_type" name="log_type">
-				<option value="system" selected="selected">System Logs</option>
-				<option value="event">Event Logs</option>
-				<option value="firewall">Firewall Logs</option>
+				<option value="system" selected="selected"><?php echo _("System Logs")?></option>
+				<option value="event"><?php echo _("Event Logs")?></option>
+				<option value="firewall"><?php echo _("Firewall Logs")?></option>
 			</select>
-			<label for="time_frame" class="readonlyLabel">Time Frame:</label>
+			<label for="time_frame" class="readonlyLabel"><?php echo _("Time Frame:")?></label>
 			<select id="time_frame" name="time_frame">
-				<option selected="selected">Today</option>
-				<option>Yesterday</option>
-				<option>Last week</option>
-				<option>Last month</option>
-				<option>Last 90 days</option>
+				<option value="Today" selected="selected"><?php echo _("Today")?></option>
+				<option value="Yesterday"><?php echo _("Yesterday")?></option>
+				<option value="Last week"><?php echo _("Last week")?></option>
+				<option value="Last month"><?php echo _("Last month")?></option>
+				<option value="Last 90 days"><?php echo _("Last 90 days")?></option>
 			</select>
-			<input  id="showlogs" type="button" value="Show Logs" class="btn alt" />
+			<input  id="showlogs" type="button" value="<?php echo _("Show Logs")?>" class="btn alt" />
 	</div>
 	<div class="module forms data" id="system">
-		<h2>System Logs</h2>
+		<h2><?php echo _("System Logs")?></h2>
 		<table id="system_logs_today" cellpadding="0" cellspacing="0" class="data">
 			<thead>
 				<tr>
-				<td class="acs-th" scope="col" colspan="3">All logs for Today</td>
+				<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs for Today")?></td>
 				</tr>
 			</thead>
 				<tbody>
@@ -300,7 +300,7 @@ function ajaxDo(mode,timef){
 		<table id="system_logs_yesterday" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-				<td class="acs-th" scope="col" colspan="3">All logs from Yesterday</td>
+				<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs from Yesterday")?></td>
 				</tr>
 			</thead>
 				<tbody>
@@ -309,7 +309,7 @@ function ajaxDo(mode,timef){
 		<table id="system_logs_week" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-				<td class="acs-th" scope="col" colspan="3">All logs from Last Week</td>
+				<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs from Last Week")?></td>
 				</tr>
 			</thead>
 				<tbody>
@@ -318,7 +318,7 @@ function ajaxDo(mode,timef){
 		<table id="system_logs_month" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-				<td class="acs-th" scope="col" colspan="3">All logs from Last Month</td>
+				<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs from Last Month")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -327,15 +327,15 @@ function ajaxDo(mode,timef){
 		<table id="system_logs_last" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-				<td class="acs-th" scope="col" colspan="3">All logs for Last 90 Days</td>
+				<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs for Last 90 Days")?></td>
 				</tr>
 			</thead>
 			<tbody>
 			</tbody>
 		</table>
 		<div class="btn-group">
-			<input type="button" value="Print" class="btn alt"/>
-			<input type="submit" value="Download" class="btn alt"/>
+			<input type="button" value="<?php echo _("Print")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
 	<div class="module forms data" id="event" style="display:none">
@@ -343,7 +343,7 @@ function ajaxDo(mode,timef){
 		<table id="event_logs_today" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-				<td class="acs-th" scope="col" colspan="3">All logs for Today</td>
+				<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs for Today")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -352,7 +352,7 @@ function ajaxDo(mode,timef){
 		<table id="event_logs_yesterday" cellpadding="0" cellspacing="0" class="data" style="display:none">
 				<thead>
 					<tr>
-					<td class="acs-th" scope="col" colspan="3">All logs from Yesterday</td>
+					<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs from Yesterday")?></td>
 					</tr>
 				</thead>
 				<tbody>
@@ -361,7 +361,7 @@ function ajaxDo(mode,timef){
 		<table id="event_logs_week" cellpadding="0" cellspacing="0" class="data" style="display:none">
 				<thead>
 					<tr>
-					<td class="acs-th" scope="col" colspan="3">All logs from Last Week</td>
+					<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs from Last Week")?></td>
 					</tr>
 				</thead>
 				<tbody>
@@ -370,7 +370,7 @@ function ajaxDo(mode,timef){
 		<table id="event_logs_month" cellpadding="0" cellspacing="0" class="data" style="display:none">
 				<thead>
 					<tr>
-					<td class="acs-th" scope="col" colspan="3">All logs from Last Month</td>
+					<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs from Last Month")?></td>
 					</tr>
 				</thead>
 				<tbody>
@@ -379,24 +379,24 @@ function ajaxDo(mode,timef){
 		<table id="event_logs_last" cellpadding="0" cellspacing="0" class="data" style="display:none">
 				<thead>
 					<tr>
-					<td class="acs-th" scope="col" colspan="3">All logs for Last 90 Days</td>
+					<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs for Last 90 Days")?></td>
 					</tr>
 				</thead>
 				<tbody>
 				</tbody>
 		</table>
 		<div class="btn-group">
-			<input type="button" value="Print" class="btn alt"/>
-			<input type="submit" value="Download" class="btn alt"/>
+			<input type="button" value="<?php echo _("Print")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
 			<!--a  id="download_event_logs" href="#" class="btn alt">Download</a-->
 		</div>
 	</div> <!-- end .module -->
 	<div class="module forms data" id="firewall" style="display:none">
-		<h2>Firewall Logs</h2>
+		<h2><?php echo _("Firewall Logs")?></h2>
 		<table id="firewall_logs_today" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col" colspan="3">All logs for Today</td>
+					<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs for Today")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -405,7 +405,7 @@ function ajaxDo(mode,timef){
 		<table id="firewall_logs_yesterday" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col" colspan="3">All logs from Yesterday</td>
+					<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs from Yesterday")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -414,7 +414,7 @@ function ajaxDo(mode,timef){
 		<table id="firewall_logs_week" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col" colspan="3">All logs from Last Week</td>
+					<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs from Last Week")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -423,7 +423,7 @@ function ajaxDo(mode,timef){
 		<table id="firewall_logs_month" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col" colspan="3">All logs from Last Month</td>
+					<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs from Last Month")?></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -432,15 +432,15 @@ function ajaxDo(mode,timef){
 		<table id="firewall_logs_last" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
-					<td class="acs-th" scope="col" colspan="3">All logs for Last 90 Days</td>
+					<td class="acs-th" scope="col" colspan="3"><?php echo _("All logs for Last 90 Days")?></td>
 				</tr>
 			</thead>
 			<tbody>
 			</tbody>
 		</table>
 		<div class="btn-group">
-			<input type="button" value="Print" class="btn alt"/>
-			<input type="submit" value="Download" class="btn alt"/>
+			<input type="button" value="<?php echo _("Print")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
 </form>

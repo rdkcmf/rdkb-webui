@@ -35,8 +35,8 @@ $(document).ready(function() {
 		radio_name: "DNS",
 		id_on: "DNS_enabled",
 		id_off: "DNS_disabled",
-		title_on: "Enable Dynamic DNS",
-		title_off: "Disable Dynamic DNS",
+		title_on: "<?php echo _('Enable Dynamic DNS')?>",
+		title_off: "<?php echo _('Disable Dynamic DNS')?>",
 		state: jsEnable ? "on" : "off"
 	});
 	$("a.confirm").unbind('click');
@@ -47,14 +47,14 @@ $(document).ready(function() {
 		$("a.confirm").click(function(e) {
 			e.preventDefault();            
 			var href = $(this).attr("href");
-		    	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+		    	var message = ($(this).attr("title").length > 0) ? "<?php echo _('Are you sure you want to')?> " + $(this).attr("title") + "?" : "<?php echo _('Are you sure?')?>";
 			jConfirm(
 				message
-				,"Are You Sure?"
+				,"<?php echo _('Are You Sure?')?>"
 				,function(ret) {
 				    if(ret) {
 						delVal = href.substring(href.indexOf("=")+1);
-						jProgress('This may take several seconds.',60);
+						jProgress('<?php echo _('This may take several seconds.')?>',60);
 						$.ajax({
 							type:"POST",
 							url:"actionHandler/ajax_ddns.php",
@@ -65,7 +65,7 @@ $(document).ready(function() {
 							},
 							error:function(){
 								jHide();
-								jAlert("Error! Please try later!");
+								jAlert("<?php echo _('Error! Please try later!')?>");
 							}
 						});
 				    }    
@@ -98,7 +98,7 @@ $(document).ready(function() {
 			$("#DNS-items").prop("disabled",false).removeClass("disabled");
 			setupDeleteConfirmDialogs();
 		}
-		jProgress('This may take several seconds', 60);
+		jProgress('<?php echo _('This may take several seconds')?>', 60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_ddns.php",
@@ -107,7 +107,7 @@ $(document).ready(function() {
 				//jAlert(results);
 				jHide();
 				if (status!=results){ 
-					jAlert("Could not do it!");
+					jAlert("<?php echo _('Could not do it!')?>");
 					$("#ddns_switch").radioswitch("doSwitch", results === 'Enabled' ? 'on' : 'off');
 				} else {
 					window.location.href="dynamic_dns.php";
@@ -115,7 +115,7 @@ $(document).ready(function() {
 			},
 			error:function(){
 				jHide();
-				jAlert("Failure, please try again.");
+				jAlert("<?php echo _('Failure, please try again.')?>");
 			}
 		});
 	});
@@ -127,7 +127,7 @@ $(document).ready(function() {
 		if ($('#add-service').hasClass('disabled'))
 			return;
 		else if ($('.edit').length > 3) {
-			jAlert("No more than 4 Dynamic DNS rules can be added!");
+			jAlert("<?php echo _('No more than 4 Dynamic DNS rules can be added!')?>");
 			return;
 		} else {
 			location.href="dynamic_dns_add.php";
@@ -135,32 +135,32 @@ $(document).ready(function() {
 	}
 </script>
 <div id="content">
-   	<h1>Advanced > Dynamic DNS</h1>
+   	<h1><?php echo _('Advanced > Dynamic DNS')?></h1>
     <div id="educational-tip">
-        <p class="tip">Configure the Gateway's router functionality as a Dynamic DNS client. </p>
-        <p class="hidden"><strong>Service Provider:</strong> Dynamic DNS Service Provider Domain name</p>
-        <p class="hidden"><strong>User Name:</strong> Name registered with the service provider</p>
-        <p class="hidden"><strong>Password:</strong> Password registered with the service provider</p>
-        <p class="hidden"><strong>Host Name:</strong> Host Name registered with the service provider</p>
+        <p class="tip"><?php echo _('Configure the Gateway\'s router functionality as a Dynamic DNS client.')?></p>
+        <p class="hidden"><?php echo _('<strong>Service Provider:</strong> Dynamic DNS Service Provider Domain name')?></p>
+        <p class="hidden"><?php echo _('<strong>User Name:</strong> Name registered with the service provider')?></p>
+        <p class="hidden"><?php echo _('<strong>Password:</strong> Password registered with the service provider')?></p>
+        <p class="hidden"><?php echo _('<strong>Host Name:</strong> Host Name registered with the service provider')?></p>
     </div>
 <form action="dynamic_dns.php" method="post">
 	<div class="module">
 		<div class="select-row">
-    		<span class="readonlyLabel label">Dynamic DNS:</span>
+    		<span class="readonlyLabel label"><?php echo _('Dynamic DNS:')?></span>
 			<span id="ddns_switch"></span>
     	</div>
 	</div>
 	</form>
 <div id="DNS-items">
 <div class="module data">
-		<h2>Dynamic DNS</h2>
-		<p class="button"><a class="btn" id="add-service" onclick="add_service()">+ ADD DDNS</a></p>
+		<h2><?php echo _('Dynamic DNS')?></h2>
+		<p class="button"><a class="btn" id="add-service" onclick="add_service()"><?php echo _('+ ADD DDNS')?></a></p>
 		<table class="data">
 			<tr>
-				<td class="acs-th">Service Provider</td>
-				<td class="acs-th">User Name</td>
-				<td class="acs-th">Password</td>
-				<td class="acs-th">HostName(s)</td>
+				<td class="acs-th"><?php echo _('Service Provider')?></td>
+				<td class="acs-th"><?php echo _('User Name')?></td>
+				<td class="acs-th"><?php echo _('Password')?></td>
+				<td class="acs-th"><?php echo _('HostName(s)')?></td>
 				<td class="acs-th" colspan="2">&nbsp;</td>
 			</tr>
 			<?php 
@@ -189,8 +189,8 @@ $(document).ready(function() {
 								<td>".$username."</td>
 								<td >".$passwordStr."</td>
 								<td>".$hostname."</td>
-								<td class=\"edit\"><a  tabindex='0' href=\"dynamic_dns_edit.php?id=$i\" class=\"btn\" id=\"edit_$i\">Edit</a></td>
-								<td class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_ddns.php?del=$i\" class=\"btn confirm\" title=\"delete this service for ".getStr("Device.X_CISCO_COM_DDNS.Service."."$i".".ServiceName")." \"id=\"delete_$i\">x</a></td>
+								<td class=\"edit\"><a  tabindex='0' href=\"dynamic_dns_edit.php?id=$i\" class=\"btn\" id=\"edit_$i\">"._('Edit')."</a></td>
+								<td class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_ddns.php?del=$i\" class=\"btn confirm\" title=\".sprintf(_('delete this service for %s'),getStr("Device.X_CISCO_COM_DDNS.Service."."$i".".ServiceName"))." \"id=\"delete_$i\">x</a></td>
 							</tr>"; 
 						}
 					} 

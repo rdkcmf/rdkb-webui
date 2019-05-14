@@ -27,9 +27,29 @@ csrfprotector_rdkb::init();
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <?php
         header('X-robots-tag: noindex,nofollow');
+
 	session_start();
+	
+	/*
+	 * Set the Locale for the Web UI based on the LANG setting or current linux locale
+	 */
+	$locale = getenv("LANG");
+	if(isset($locale)) {
+	    if(!isset($_SESSION['language']) || setlocale(LC_MESSAGES, 0) != $locale){
+    	    //putenv("LANG=" . $locale);
+    	    setlocale(LC_MESSAGES, $locale);
+    	    setlocale(LC_TIME, $locale);
+    	    
+    	    $domain = "rdkb";
+    	    bindtextdomain($domain, 'locales');
+    	    bind_textdomain_codeset($domain, 'UTF-8');
+    	    textdomain($domain);
+    	    $_SESSION['language'] = $locale; // set the default locale for future pages
+	   }
+    }
+    
 	if (!isset($_SESSION["loginuser"])) {
-		echo '<script type="text/javascript">alert("Please Login First!"); location.href="home_loggedout.php";</script>';
+		echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="home_loggedout.php";</script>';
 		exit(0);
 	}
 	$not_admin_pages = array('email_notification.php', 'hs_port_forwarding', 'routing.php', 'dynamic_dns', 'mta', 'voice_quality_metrics' ,'qos');
@@ -38,7 +58,7 @@ csrfprotector_rdkb::init();
 	if ($_SESSION['loginuser'] == 'admin') {
 		foreach ($not_admin_pages as $page) {
 			if (strstr($_SERVER['SCRIPT_FILENAME'], $page)) {
-				echo '<script type="text/javascript"> alert("Access Denied!"); window.history.back(); </script>';
+				echo '<script type="text/javascript"> alert("'._("Access Denied!").'"); window.history.back(); </script>';
 				exit(0);	
 			}
 		}
@@ -46,7 +66,7 @@ csrfprotector_rdkb::init();
 	else if ($_SESSION['loginuser'] == 'mso') {
 		foreach ($not_mso_pages as $page) {
 			if (strstr($_SERVER['SCRIPT_FILENAME'], $page)) {
-				echo '<script type="text/javascript"> alert("Access Denied!"); window.history.back(); </script>';
+				echo '<script type="text/javascript"> alert("'._("Access Denied!").'"); window.history.back(); </script>';
 				exit(0);	
 			}
 		}
@@ -54,7 +74,7 @@ csrfprotector_rdkb::init();
 	if (isset($_SESSION['lanMode']) && $_SESSION["lanMode"] == "bridge-static") {
 		foreach ($not_bridge_static_pages as $page) {
 			if (strstr($_SERVER['SCRIPT_FILENAME'], $page)) {
-				echo '<script type="text/javascript"> alert("Access Denied!"); window.history.back(); </script>';
+				echo '<script type="text/javascript"> alert("'._("Access Denied!").'"); window.history.back(); </script>';
 				exit(0);	
 			}
 		}
@@ -164,14 +184,14 @@ csrfprotector_rdkb::init();
 		<div id="header">
 			<?php
 				if($lanMode != "router")
-					echo '<p style="margin: 0">The Device is currently in Bridge Mode.</p>';
+					echo '<p style="margin: 0">'._("The Device is currently in Bridge Mode.").'</p>';
 				else
 					echo '<p style="margin: 0">&nbsp;</p>';
 			?>
 			<h2 id="logo" style="margin-top: 10px"><?php echo "<img src='".$logo."' alt='".$title."'  title='".$title."' />"; ?></h2>
 		</div> <!-- end #header -->
 		<div id='div-skip-to' style="display: none;">
-			<a id="skip-link" name="skip-link" href="#content">Skip to content</a>
+			<a id="skip-link" name="skip-link" href="#content"><?php echo _("Skip to content")?></a>
 		</div>
 		<!--Main Content-->
 		<div id="main-content">

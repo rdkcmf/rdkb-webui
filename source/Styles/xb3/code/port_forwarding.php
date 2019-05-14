@@ -40,8 +40,8 @@ $(document).ready(function() {
 		radio_name: "forwarding",
 		id_on: "forwarding_enabled",
 		id_off: "forwarding_disabled",
-		title_on: "Enable port forwarding",
-		title_off: "Disable port forwarding",
+		title_on: "<?php echo _("Enable port forwarding")?>",
+		title_off: "<?php echo _("Disable port forwarding")?>",
 		state: <?php echo ($PFEnable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});
 	$("a.confirm").unbind('click');
@@ -52,14 +52,14 @@ $(document).ready(function() {
         $("a.confirm").click(function(e) {
             e.preventDefault();            
             var href = $(this).attr("href");
-            var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+            var message = ($(this).attr("title").length > 0) ? "<?php echo _("Are you sure you want to")?> " + $(this).attr("title") + "?" : "<?php echo _("Are you sure?")?>";
             jConfirm(
                 message
-                ,"Are You Sure?"
+                ,"<?php echo _("Are You Sure?")?>"
                 ,function(ret) {
                     if(ret) {
 						delVal = href.substring(href.indexOf("=")+1);
-						jProgress('This may take several seconds.',60);
+						jProgress('<?php echo _("This may take several seconds.")?>',60);
 						$.ajax({
 							type:"POST",
 							url:"actionHandler/ajax_port_forwarding.php",
@@ -70,7 +70,7 @@ $(document).ready(function() {
 							},
 							error:function(){
 								jHide();
-								jAlert("Error! Please try later!");
+								jAlert("<?php echo _("Error! Please try later!")?>");
 							}
 						});
                     }
@@ -106,7 +106,7 @@ $(document).ready(function() {
 			setupDeleteConfirmDialogs();
 			$(':checkbox').removeClass("disabled").prop("disabled", false);
 		}
-		jProgress("This may take several seconds.",60);
+		jProgress("<?php echo _("This may take several seconds.")?>",60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_port_forwarding.php",
@@ -139,7 +139,7 @@ $(document).ready(function() {
 			},
 			error: function(){
 				jHide();
-				jAlert("Error! Please try later!");
+				jAlert("<?php echo _("Error! Please try later!")?>");
 			}
 		}); //end of ajax
 	});//end of change
@@ -147,7 +147,7 @@ $(document).ready(function() {
 		var isChecked=$(this).is(":checked");
 		var id=$(this).attr("id").split("_");
 		id=id[1];
-		jProgress('This may take several seconds.',60);
+		jProgress('<?php echo _("This may take several seconds.")?>',60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_port_forwarding.php",
@@ -157,7 +157,7 @@ $(document).ready(function() {
 			},
 			error:function(){
 				jHide();
-				jAlert("Error! Please try later!");
+				jAlert("<?php echo _("Error! Please try later!")?>");
 			}
 		});
 	});
@@ -165,12 +165,12 @@ $(document).ready(function() {
 </script>
 <?php if($CloudUIEnable == "true"){ ?>
 <div  id="content">
-	<h1>Advanced > Port Forwarding</h1>
+	<h1><?php echo _("Advanced > Port Forwarding")?></h1>
 	<div  id=forwarding-items>
 		<div class="module data">
 			<div id="content" style="text-align: center;">
 				<br>
-				<h3>Managing your home network settings is now easier than ever.<br>Visit <a href="http://<?php echo $productLink;?>"><?php echo $productLink ?></a> to set up port forwards, among many other features and settings.</h3>
+				<h3><?php echo sprintf(_("Managing your home network settings is now easier than ever.<br>Visit <a href='http://%s'>%s</a> to set up port forwards, among many other features and settings."),$productLink, $productLink)?></h3>
 				<br>
 			</div>
 		</div> <!-- end .module -->
@@ -178,33 +178,33 @@ $(document).ready(function() {
 </div><!-- end #content -->
 <?php } else { ?>
 <div  id="content">
-	<h1>Advanced > Port Forwarding</h1>
+	<h1><?php echo _("Advanced > Port Forwarding")?></h1>
 	<div  id="educational-tip">
-		<p class="tip">Manage external access to specific ports on your network.</p>
-		<p class="hidden">Port forwarding permits communications from external hosts by forwarding them to a particular port.</p>
-		<p class="hidden">Select <strong>Enable</strong> to manage external access to specific ports on your network.</p>
-		<p class="hidden">Click <strong>+ADD SERVICE</strong> to add new port forwarding rules.</p>
-		<p class="hidden">Port forwarding settings can affect the Gateway's performance.</p>
+		<p class="tip"><?php echo _("Manage external access to specific ports on your network.")?></p>
+		<p class="hidden"><?php echo _("Port forwarding permits communications from external hosts by forwarding them to a particular port.")?></p>
+		<p class="hidden"><?php echo _("Select <strong>Enable</strong> to manage external access to specific ports on your network.")?></p>
+		<p class="hidden"><?php echo _("Click <strong>+ADD SERVICE</strong> to add new port forwarding rules.")?></p>
+		<p class="hidden"><?php echo _("Port forwarding settings can affect the Gateway's performance.")?></p>
 	</div>
 	<div class="module">
 		<div class="select-row">
-    		<span class="readonlyLabel label">Port Forwarding:</span>
+    		<span class="readonlyLabel label"><?php echo _("Port Forwarding:")?></span>
 			<span id="pf_switch"></span>
     	</div>
 	</div>
 	<div  id=forwarding-items>
 		<div class="module data">
-		<h2>Port Forwarding</h2>
-			<p class="button"><a tabindex='0'  href="port_forwarding_add.php" class="btn"  id="add-service">+ ADD SERVICE</a></p>
+		<h2><?php echo _("Port Forwarding")?></h2>
+			<p class="button"><a tabindex='0'  href="port_forwarding_add.php" class="btn"  id="add-service"><?php echo _("+ ADD SERVICE")?></a></p>
 			<table class="data" summary="This table list available port forwarding entries">
 				<tr>
-					<th id="service-name">Service Name</th>
-					<th id="service-type">Type</th>
-					<th id="start-port">Start Port</th>
-					<th id="end-port">End Port</th>
-					<th id="server-ip">Server IPv4</th>
-					<th id="server-ipv6">Server IPv6</th>
-					<th id="active">Active</th>
+					<th id="service-name"><?php echo _("Service Name")?></th>
+					<th id="service-type"><?php echo _("Type")?></th>
+					<th id="start-port"><?php echo _("Start Port")?></th>
+					<th id="end-port"><?php echo _("End Port")?></th>
+					<th id="server-ip"><?php echo _("Server IPv4")?></th>
+					<th id="server-ipv6"><?php echo _("Server IPv6")?></th>
+					<th id="active"><?php echo _("Active")?></th>
 					<th id="edit-button">&nbsp;</th>
 					<th id="delete-button">&nbsp;</th>
 				</tr>
@@ -260,10 +260,10 @@ $(document).ready(function() {
 								<td headers='end-port'>" . $resArray[$i]['ExternalPortEndRange'] . "</td>
 								<td headers='server-ip'>" . $resArray[$i]['InternalClient'] . "</td>
 								<td headers='server-ipv6'>" . $resArray[$i]['X_CISCO_COM_InternalClientV6'] . "</td>
-								<td headers='active'><input type=\"checkbox\" id=\"PortActive_$index\" name=\"PortActive\" $checked /></td>
-								<td headers='edit-button'  class=\"edit\"><a tabindex='0' href=\"port_forwarding_edit.php?id=$index\" class=\"btn\"  id=\"edit_$index\">Edit</a></td>
+								<td headers='active'><input type=\"checkbox\" id=\"PortActive_$index\" name=\""._("PortActive")."\" $checked /></td>
+								<td headers='edit-button'  class=\"edit\"><a tabindex='0' href=\"port_forwarding_edit.php?id=$index\" class=\"btn\"  id=\"edit_$index\">"._("Edit")."</a></td>
 								<td headers='delete-button'  class=\"delete\"><a tabindex='0'  href=\"actionHandler/ajax_port_forwarding.php?del=$index\" class=\"btn confirm\" 
-								    title=\"delete this Port Forwarding service for " . $resArray[$i]['Description'] . " \" id=\"delete_$index\">x</a></td>
+								    title=\"".sprintf(_("delete this Port Forwarding service for %s."),$resArray[$i]['Description'])." \" id=\"delete_$index\">x</a></td>
 								</tr>
 					    	    ";
 					    }//end of for

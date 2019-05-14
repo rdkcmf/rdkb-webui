@@ -19,7 +19,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 function PORTTEST($sport,$eport,$arraySPort,$arrayEPort) {
@@ -57,7 +57,7 @@ if (isset($_POST['trust_not'])){
 		$ID=$_POST['ID'];
 		setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser.".$ID.".Trusted",$_POST['status'],true);
 		$status=getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser.".$ID.".Trusted");
-		$status=($status=="true")?"Trusted":"Not trusted";
+		$status=($status=="true")?_("Trusted"):_("Not trusted");
 	}
 	header("Content-Type: application/json");
 	echo htmlspecialchars(json_encode($status), ENT_NOQUOTES, 'UTF-8');
@@ -78,7 +78,7 @@ if (isset($_POST['add'])){
 		if($validation) $validation = validTime($_POST['startTime'], $_POST['endTime']);
 		if($validation) $validation = validDays($_POST['days']);
 	}
-	$result = ($validation)?'':'Invalid Inputs!';
+	$result = ($validation)?'':_('Invalid Inputs!');
 	if($validation) {
 		$service=$_POST['service'];
 		$protocol=$_POST['protocol'];
@@ -126,7 +126,7 @@ if (isset($_POST['add'])){
 				}
 				setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".AlwaysBlock",$block,true);
 			}
-			$result="Success!";
+			$result=_("Success!");
 		}
 		else {
 			$result="";
@@ -145,7 +145,7 @@ if (isset($_POST['add'])){
 				$end_Time = $key["EndTime"];
 				$block_Days = $key["BlockDays"];
 				if ($service == $serviceName) {
-					$result .= "Service Name has been used!\n";
+					$result .= _("Service Name has been used!\n");
 					break;
 				}			
 				elseif ($type=="BOTH" || $ptcol_type=="BOTH" || $type==$ptcol_type) {
@@ -155,7 +155,7 @@ if (isset($_POST['add'])){
 						$TD1=array($startTime, $endTime, $blockDays);
 						$TD2=array($start_Time, $end_Time, $block_Days);
 						if(($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)){
-							$result .= "Conflict with other service. Please check your input!";
+							$result .= _("Conflict with other service. Please check your input!");
 							break;
 						}
 					}
@@ -194,7 +194,7 @@ if (isset($_POST['add'])){
 					}
 					setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i.".AlwaysBlock",$block,true);
 				}
-				$result = "Success!";
+				$result = _("Success!");
 			}
 		}
 	}
@@ -217,7 +217,7 @@ if (isset($_POST['edit'])){
 		if($validation) $validation = validTime($_POST['startTime'], $_POST['endTime']);
 		if($validation) $validation = validDays($_POST['days']);
 	}
-	$result = ($validation)?'':'Invalid Inputs!';
+	$result = ($validation)?'':_('Invalid Inputs!');
 	if($validation) {
 		$i=$_POST['ID'];
 		$service=$_POST['service'];
@@ -251,7 +251,7 @@ if (isset($_POST['edit'])){
 			$end_Time = $key["EndTime"];
 			$block_Days = $key["BlockDays"];
 			if ($service == $serviceName) {
-				$result .= "Service Name has been used!\n";
+				$result .= _("Service Name has been used!\n");
 				break;
 			}			
 			elseif ($type=="BOTH" || $ptcol_type=="BOTH" || $type==$ptcol_type) {
@@ -261,7 +261,7 @@ if (isset($_POST['edit'])){
 					$TD1=array($startTime, $endTime, $blockDays);
 					$TD2=array($start_Time, $end_Time, $block_Days);
 					if(($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)){
-						$result .= "Conflict with other service. Please check your input!";
+						$result .= _("Conflict with other service. Please check your input!");
 						break;
 					}
 				}
@@ -307,7 +307,7 @@ if (isset($_POST['edit'])){
 			else {
 				if(array_key_exists(1, $i)) delTblObj("Device.X_Comcast_com_ParentalControl.ManagedServices.Service.".$i[1].".");
 			}
-			$result="Success!";
+			$result=_("Success!");
 		}
 	}
 	header("Content-Type: application/json");

@@ -88,8 +88,8 @@ $(document).ready(function() {
 		radio_name: "enable_moca",
 		id_on: "moca_enable",
 		id_off: "moca_disable",
-		title_on: "Enable MoCA",
-		title_off: "Disable MoCA",
+		title_on: "<?php echo _("Enable MoCA")?>",
+		title_off: "<?php echo _("Disable MoCA")?>",
 		state: <?php echo ($moca_enable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});
 	<?php
@@ -292,7 +292,7 @@ function next_step()
 	+ '"} ';
 	var jsConfig = ("admin" == "<?php echo $_SESSION["loginuser"]; ?>")?jsConfig_admin:jsConfig_others;
 	// alert(jsConfig);
-	jProgress('Waiting for backend to be fully executed, please be patient...', 100);
+	jProgress('<?php echo _("Waiting for backend to be fully executed, please be patient...")?>', 100);
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_moca_config.php",
@@ -305,38 +305,38 @@ function next_step()
 		},
 		error: function(){
 			jHide();
-			jAlert("Failure, please try again.");
+			jAlert("<?php echo _("Failure, please try again.")?>");
 		}
 	});
 }
 </script>
 <div id="content" >
-    <h1>Gateway > Connection > MoCA</h1>
+    <h1><?php echo _("Gateway > Connection > MoCA")?></h1>
 	<div id="educational-tip">
-		<p class="tip">You have the option to enable or disable the Gateway's MoCA Network. </p>
+		<p class="tip"><?php echo _("You have the option to enable or disable the Gateway's MoCA Network.")?> </p>
 		<?php
 		if("admin" != $_SESSION["loginuser"]){
-			echo "<p class=\"hidden\"><strong>MoCA Privacy: </strong> You can enable or disable MoCA Privacy. If Privacy is enabled, all the devices connecting to the Gateway via MoCA will use the MoCA Network Password. </p><p class=\"hidden\"><strong>Network Password:</strong> This is the password for the MoCA network, and will only be used when MoCA Privacy is enabled. </p>";
+			echo "<p class=\"hidden\">"._("<strong>MoCA Privacy: </strong> You can enable or disable MoCA Privacy. If Privacy is enabled, all the devices connecting to the Gateway via MoCA will use the MoCA Network Password. </p><p class=\"hidden\"><strong>Network Password:</strong> This is the password for the MoCA network, and will only be used when MoCA Privacy is enabled.")." </p>";
 		}
 		?>
 	</div>
     <form id="pageForm">
 	<fieldset>
-    <legend class="acs-hide">MoCA information</legend>
+    <legend class="acs-hide"><?php echo _("MoCA information")?></legend>
     <div class="module forms enable">
-        <h2>MoCA</h2>
+        <h2><?php echo _("MoCA")?></h2>
 		<div class="select-row">
-			<label>MoCA:</label>
+			<label><?php echo _("MoCA:")?></label>
 			<span id="moca_switch"></span>
 			<?php
 				if($videoServiceEnable=="true" || $mocaForceEnable=="true"){
 					echo '<br><br>';
-					echo '<p align="center" class="error"> Video Service only works in this setting. </p>';
+					echo '<p align="center" class="error"> '._("Video Service only works in this setting.").' </p>';
 				}
 			?>
 		</div>
 		<div class="form-row odd" id="div_channel_switch">
-			<label for="channel_selection">Channel Selection:</label>
+			<label for="channel_selection"><?php echo _("Channel Selection:")?></label>
 			<input tabindex='0' id="scan_auto"   type="radio" value="auto"   name="channel_switch" checked="checked">
 			<label for="scan_auto" class="acs-hide"></label>
 			<b>Scan</b>
@@ -345,7 +345,7 @@ function next_step()
 			<b>Manual</b>
 		</div>
 		<div class="form-row" id="div_channel_select">
-			<label for="mode_option">Channel:</label>
+			<label for="mode_option"><?php echo _("Channel:")?></label>
 			<select id="mode_option" disabled="disabled">
 				<option disabled="disabled">-- MoCA 1.1 --</option>
 				<option id="d1"   value="1150"  selected="selected"                                          >D1(1150 MHz)</option>
@@ -356,7 +356,7 @@ function next_step()
 				<option id="d6"   value="1400"  <?php if (($channel == "1400") && $isNotAdmin) echo 'selected="selected"'; ?> >D6(1400 MHz)</option>      
 				<option id="d7"   value="1450"  <?php if (($channel == "1450") && $isNotAdmin) echo 'selected="selected"'; ?> >D7(1450 MHz)</option>      
 				<option id="d8"   value="1500"  <?php if (($channel == "1500") && $isNotAdmin) echo 'selected="selected"'; ?> >D8(1500 MHz)</option>      
-				<option disabled="disabled">-- MoCA 2.0 --</option>                                                         
+				<option disabled="disabled">"-- MoCA 2.0 --</option>                                                         
 				<option id="d1a"  value="1175"  <?php if (($channel == "1175") && $isNotAdmin) echo 'selected="selected"'; ?> >D1a(1175 MHz)</option>
 				<option id="d2a"  value="1225"  <?php if (($channel == "1225") && $isNotAdmin) echo 'selected="selected"'; ?> >D2a(1225 MHz)</option>
 				<option id="d3a"  value="1275"  <?php if (($channel == "1275") && $isNotAdmin) echo 'selected="selected"'; ?> >D3a(1275 MHz)</option>
@@ -395,11 +395,11 @@ function next_step()
 			else $PNC_Show = "No";
 			if("admin" == $_SESSION["loginuser"]) {
 				echo '<div class="form-row"> <label >Channel:</label> <span class="readonlyValue">'.$channel_show.'</span> </div>';
-				echo '<div class="form-row "> <label>Preferred Network Controller:</label> <span class="readonlyValue">'.$PNC_Show.'</span> </div>';
+				echo '<div class="form-row "> <label>'._("Preferred Network Controller:").'</label> <span class="readonlyValue">'.$PNC_Show.'</span> </div>';
 			}
 		?>
 		<div class="form-row odd" id="div_beacon_select">
-			<label for="beacon_power">Beacon Power Reduction(dB):</label>
+			<label for="beacon_power"><?php echo _("Beacon Power Reduction(dB):")?></label>
 			<select id="beacon_power">
 				<option selected="selected"                                           >0</option>
 				<option <?php if (($beacon_power == 3) && $isNotAdmin)  echo 'selected="selected"'; ?> >3</option>
@@ -410,7 +410,7 @@ function next_step()
 			</select>
 		</div>
 		<div class="form-row odd" id="div_taboo_list">
-			<label>Taboo Frequency:</label>
+			<label><?php echo _("Taboo Frequency:")?></label>
 			<div class="moca_row1" style="position:relative;top:0px;right:0px">
 				<input class="moca11" type="checkbox" id="tf_2"  value="0000000000000400" <?php if ((php_str_and($taboo_freq, "0000000000000400") == "0000000000000400") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="2" class="acs-hide"></label> <b>1050MHz</b>&nbsp;&nbsp;
 				<input class="moca11" type="checkbox" id="tf_4"  value="0000000000001000" <?php if ((php_str_and($taboo_freq, "0000000000001000") == "0000000000001000") && $isNotAdmin) echo "checked=\"checked\""; ?> /> <label for="4" class="acs-hide"></label> <b>1100MHz</b>&nbsp;&nbsp;
@@ -449,27 +449,27 @@ function next_step()
 			</div>
 		</div>
 		<div class="form-row " id="div_nc_switch">
-			<label>Preferred Network Controller:</label>
-			<input type="radio"  id="nc_enable"  name="Network" value="enabled"  checked="checked" /> <label for="nc_enable" class="acs-hide"></label><b>Enabled</b>
-			<input type="radio"  id="nc_disable" name="Network" value="disabled" <?php if (("false"==$nc_enable) && $isNotAdmin) echo 'checked="checked"'; ?> /> <label for="nc_disable" class="acs-hide"></label><b>Disabled</b>
+			<label><?php echo _("Preferred Network Controller:")?></label>
+			<input type="radio"  id="nc_enable"  name="Network" value="enabled"  checked="checked" /> <label for="nc_enable" class="acs-hide"></label><b><?php echo _("Enabled")?></b>
+			<input type="radio"  id="nc_disable" name="Network" value="disabled" <?php if (("false"==$nc_enable) && $isNotAdmin) echo 'checked="checked"'; ?> /> <label for="nc_disable" class="acs-hide"></label><b><?php echo _("Disabled")?></b>
 		</div>
 		<div class="form-row" id="privacy_switch" >
-			<label for="Privacy">MoCA Privacy:</label>
-			<input type="radio"  id="privacy_enable"  name="privacy_switch" value="enabled"  checked="checked" /> <label for="privacy_enable" class="acs-hide"></label><b>Enabled</b>
-			<input type="radio"  id="privacy_disable" name="privacy_switch" value="disabled" <?php if (("false"==$privacy_enable) && $isNotAdmin) echo 'checked="checked"'; ?> /> <label for="privacy_disable" class="acs-hide"></label><b>Disabled</b>
+			<label for="Privacy"><?php echo _("MoCA Privacy:")?></label>
+			<input type="radio"  id="privacy_enable"  name="privacy_switch" value="enabled"  checked="checked" /> <label for="privacy_enable" class="acs-hide"></label><b><?php echo _("Enabled")?></b>
+			<input type="radio"  id="privacy_disable" name="privacy_switch" value="disabled" <?php if (("false"==$privacy_enable) && $isNotAdmin) echo 'checked="checked"'; ?> /> <label for="privacy_disable" class="acs-hide"></label><b><?php echo _("Disabled")?></b>
 		</div>
 		<div class="form-row add" id="net_password_top">
-			<label for="net_password">Network Password:</label>
+			<label for="net_password"><?php echo _("Network Password:")?></label>
 			<span id="password_field">
 				<input type="password" size="23" id="net_password" name="net_password" class="text" value="<?php if ($isNotAdmin) echo $net_password; ?>" />
-			</span>&nbsp;<span style="font-size: .8em;">12 Digits Min,17 Digits Max<span/>
+			</span>&nbsp;<span style="font-size: .8em;"><?php echo _("12 Digits Min,17 Digits Max")?><span/>
 		</div>
 		<div class="form-row" id="password_show_top">
-			<label for="password_show">Show Network Password:</label>
+			<label for="password_show"><?php echo _("Show Network Password:")?></label>
 			<span class="checkbox" style="margin: 0"><input type="checkbox" id="password_show" name="password_show" /> </span>
 		</div> 
 		<div class="form-row odd">
-			<label for="network_controller_mac">Network Controller MAC:</label>
+			<label for="network_controller_mac"><?php echo _("Network Controller MAC:")?></label>
 			<span id="network_controller_mac" class="readonlyValue"><?php
 				/*if Node ID of the Network Coordinator is same with Node ID of the Local Node, 
 					Network Controller MAC should be MAC Address of the Local Node, 
@@ -486,7 +486,7 @@ function next_step()
 			<span id="qos_switch"></span>
 		</div-->
 		<div class="form-btn">
-			<input id="submit_moca" type="submit" value="Save" class="btn" />
+			<input id="submit_moca" type="submit" value="<?php echo _("Save")?>" class="btn" />
 		</div>
     </div> <!-- end .module -->
 	</fieldset>

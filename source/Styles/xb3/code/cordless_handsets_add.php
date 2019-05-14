@@ -38,17 +38,17 @@ $(document).ready(function() {
 	}
 	$(".btn").click(function(){		
 		var reg_mode = "true";
-		msg = '<b>Do you want to register handset?</b>';
+		msg = '<b><?php echo _("Do you want to register handset?")?></b>';
 		if ("Cancel"==$(this).val()){
 			reg_mode = "false";
-			msg = '<b>Do you want to abort registration?</b>';
+			msg = '<b><?php echo _("Do you want to abort registration?")?></b>';
 		}
 		jConfirm(
 			msg
-			, 'Are You Sure?'
+			, '<?php echo _("Are You Sure?")?>'
 			, function(ret){
 				if(ret){
-					jProgress('This may take several seconds...',60);
+					jProgress('<?php echo _("This may take several seconds...")?>',60);
 					ajaxrequest=$.ajax({
 						type:"POST",
 						url:"actionHandler/ajaxSet_cordless_handsets.php",
@@ -83,16 +83,16 @@ $(document).ready(function() {
 </script>
 <form action="">
 	<div id="content">
-		<h1>Connected Devices > Cordless Handsets > Register Handset</h1>
+		<h1><?php echo _("Connected Devices > Cordless Handsets > Register Handset")?></h1>
 		<div class="module">
-			<h2>Register Handset</h2>
+			<h2><?php echo _("Register Handset")?></h2>
 			<div id="turn_on" class="form-row" style="display:none;">
-				<b>The Base is in Registration mode.</b>
+				<b><?php echo _("The Base is in Registration mode.")?></b>
 				<br/>
-				<p>On the handset, follow the registration flow to register with the CAT-iq Base.</p>
+				<p><?php echo _("On the handset, follow the registration flow to register with the CAT-iq Base.")?></p>
 			</div>
 			<div id="turn_off" class="form-row" style="display:none;">
-				<b>Press "REGISTER" button to turn the base into registration mode.</b>
+				<b><?php echo _('Press "REGISTER" button to turn the base into registration mode.')?></b>
 			</div>
 			<div class="btn-group">
 				<input type="button" id="btn-save" class="btn" value="Register" />

@@ -34,7 +34,7 @@ gateway.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 		document.getElementById('line1rf').value	= "InProgress";
 		document.getElementById('line1roh').value	= "InProgress";
 		document.getElementById('line1re').value	= "InProgress";
-		jProgress('Check telephony line status, please wait...', 60);
+		jProgress('<?php echo _("Check telephony line status, please wait...")?>', 60);
 		$.post(
 			"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
 			{"get_status1":"true"},
@@ -43,11 +43,11 @@ gateway.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 				jHide();
 				if ("Off-Hook" == msg.line1hook){
 					jConfirm(
-					'Phone is Off-Hook, do you want to start the test anyway?'
-					, 'Are You Sure?'
+					'<?php echo _("Phone is Off-Hook, do you want to start the test anyway?")?>'
+					, '<?php echo _("Are You Sure?")?>'
 					, function(ret){
 						if(ret){
-							jProgress('This may take several seconds...', 60);
+							jProgress('<?php echo _("This may take several seconds...")?>', 60);
 							$.post(
 								"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
 								{"start_diagnostics1":"true"},
@@ -66,7 +66,7 @@ gateway.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 					});
 				}
 				else{
-					jProgress('This may take several seconds...', 60);
+					jProgress('<?php echo _("This may take several seconds...")?>', 60);
 					$.post(
 						"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
 						{"start_diagnostics1":"true"},
@@ -92,7 +92,7 @@ gateway.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 		document.getElementById('line2rf').value	= "InProgress";
 		document.getElementById('line2roh').value	= "InProgress";
 		document.getElementById('line2re').value	= "InProgress";
-		jProgress('Check telephony line status, please wait...', 60);
+		jProgress('<?php echo _("Check telephony line status, please wait...")?>', 60);
 		$.post(
 			"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
 			{"get_status2":"true"},
@@ -101,11 +101,11 @@ gateway.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 				jHide();
 				if ("Off-Hook" == msg.line2hook){
 					jConfirm(
-					'Phone is Off-Hook, do you want to start the test anyway?'
-					, 'Are You Sure?'
+					'<?php echo _("Phone is Off-Hook, do you want to start the test anyway?")?>'
+					, '<?php echo _("Are You Sure?")?>'
 					, function(ret){
 						if(ret){
-							jProgress('This may take several seconds...', 60);
+							jProgress('<?php echo _("This may take several seconds...")?>', 60);
 							$.post(
 								"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
 								{"start_diagnostics2":"true"},
@@ -124,7 +124,7 @@ gateway.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 					});
 				}
 				else{
-					jProgress('This may take several seconds...', 60);
+					jProgress('<?php echo _("This may take several seconds...")?>', 60);
 					$.post(
 						"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
 						{"start_diagnostics2":"true"},
@@ -147,43 +147,43 @@ gateway.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 });
 </script>
 <div id="content">
-<h1>Gateway > Connection > MTA > Line Diagnostics</h1>
+<h1><?php echo _("Gateway > Connection > MTA > Line Diagnostics")?></h1>
 <div id="educational-tip">
-<p class="tip">Information related to the MTA Line Diagnostics.</p>
+<p class="tip"><?php echo _("Information related to the MTA Line Diagnostics.")?></p>
 </div>
 <div class="module forms">
 	<input type="hidden" value="mta_line_diagnostics" name="file"/>
 	<input type="hidden" value="admin/" name="dir"/>
 	<input type="hidden" name="line1" id="line1_name" value="1" />
-	<h2>MTA Line 1 Diagnostics</h2>
+	<h2><?php echo _("MTA Line 1 Diagnostics")?></h2>
 	<div class="form-row">
 		<!--div>Hazardous Potential:</div-->
-<span class="valuemta">Hazardous Potential:</span>
+<span class="valuemta"><?php echo _("Hazardous Potential:")?></span>
 		<label for="line1hp" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1hp">Not Started</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1hp"><?php echo _("Not Started")?></textarea>
 	</div>
 	<div class="form-row odd">
-		<div>Foreign EMF:</div>
+		<div><?php echo _("Foreign EMF:")?></div>
 		<label for="line1femf" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1femf">Not Started</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1femf"><?php echo _("Not Started")?></textarea>
 	</div>
 	<div class="form-row">
-		<div>Resistive Faults:</div>
+		<div><?php echo _("Resistive Faults:")?></div>
 		<label for="line1rf" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1rf">Not Started</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1rf"><?php echo _("Not Started")?></textarea>
 	</div>
 	<div class="form-row odd">
-		<div>Receiver Off Hook:</div>
+		<div><?php echo _("Receiver Off Hook:")?></div>
 		<label for="line1roh" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1roh">Not Started</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1roh"><?php echo _("Not Started")?></textarea>
 	</div>
 	<div class="form-row">
-		<div>Ringer Equivalency:</div>
+		<div><?php echo _("Ringer Equivalency:")?></div>
 		<label for="line1re" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1re">Not Started</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line1re"><?php echo _("Not Started")?></textarea>
 	</div>
 	<div class="form-btn odd">
-		<input id="start_diagnostics1" type="button" value="Start Diagnostics" class="btn" />
+		<input id="start_diagnostics1" type="button" value="<?php echo _("Start Diagnostics")?>" class="btn" />
 	</div>
 	<input type="hidden" name="webcheck">
 </div> <!-- end .module -->
@@ -191,34 +191,34 @@ gateway.page.init("Gateway > Connection > MTA > Line Diagnostics", "nav-mta-line
 	<input type="hidden" value="mta_line_diagnostics" name="file"/>
 	<input type="hidden" value="admin/" name="dir"/>
 	<input type="hidden" name="line2" id="line2_name" value="1" />
-	<h2>MTA Line 2 Diagnostics</h2>
+	<h2><?php echo _("MTA Line 2 Diagnostics")?></h2>
 	<div class="form-row">
-		<div>Hazardous Potential:</div>
+		<div><?php echo _("Hazardous Potential:")?></div>
 		<label for="line2hp" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2hp">Not Started</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2hp"><?php echo _("Not Started")?></textarea>
 	</div>
 	<div class="form-row odd">
-		<div>Foreign EMF:</div>
+		<div><?php echo _("Foreign EMF:")?></div>
 		<label for="line2femf" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2femf">Not Started</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2femf"><?php echo _("Not Started")?></textarea>
 	</div>
 	<div class="form-row">
-		<div>Resistive Faults:</div>
+		<div><?php echo _("Resistive Faults:")?></div>
 		<label for="line2rf" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2rf">Not Started</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2rf"><?php echo _("Not Started")?></textarea>
 	</div>
 	<div class="form-row odd">
-		<div>Receiver Off Hook:</div>
+		<div><?php echo _("Receiver Off Hook:")?></div>
 		<label for="line2roh" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2roh">Not Started</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2roh"><?php echo _("Not Started")?></textarea>
 	</div>
 	<div class="form-row">
-		<div>Ringer Equivalency:</div>
+		<div><?php echo _("Ringer Equivalency:")?></div>
 		<label for="line2re" class="acs-hide"></label>
-		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2re">Not Started</textarea>
+		<textarea class="textAreaDiagnostic" cols="80" rows="3" value="" id="line2re"><?php echo _("Not Started")?></textarea>
 	</div>
 	<div class="form-btn odd">
-		<input id="start_diagnostics2" type="button" value="Start Diagnostics" class="btn" />
+		<input id="start_diagnostics2" type="button" value="<?php echo _("Start Diagnostics")?>" class="btn" />
 	</div>
 	<input type="hidden" name="webcheck">
 </div> <!-- end .module -->

@@ -18,7 +18,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'_("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 $myfile = fopen("/var/tmp/Wifi_Spectrum_Analyzer_Table.html", "w");
@@ -31,5 +31,5 @@ fwrite($myfile, "td { border: 1px solid white; }");
 fwrite($myfile, "</style>");
 fwrite($myfile, $_POST['configInfo']);
 fclose($myfile);
-echo "success";
+echo _("success");
 ?>

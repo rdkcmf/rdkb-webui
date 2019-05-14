@@ -19,7 +19,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 $result="";
@@ -99,10 +99,10 @@ if (isset($_POST['add'])){
 					$InternalPort = $key["InternalPort"];
 					if($name==$arrayName) { 
 						if($InternalPort !=0){
-							$result.="Service name has been used in HS Port Forwarding service!\n";
+							$result.=_("Service name has been used in HS Port Forwarding service!\n");
 							break;
 						} else {
-							$result.="Service name has been used in Port Forwarding service!\n";
+							$result.=_("Service name has been used in Port Forwarding service!\n");
 							break;
 						}
 					} 
@@ -110,10 +110,10 @@ if (isset($_POST['add'])){
 						$porttest=PORTTEST($sport,$eport,$arraySPort,$arrayEPort);
 						if ($porttest==1) {
 							if($InternalPort !=0){
-								$result.="Conflict with other HS Port Forwarding service. Please check port and IP!";
+								$result.=_("Conflict with other HS Port Forwarding service. Please check port and IP!");
 								break;
 							} else {
-								$result.="Conflict with other Port Forwarding service. Please check port and IP!";
+								$result.=_("Conflict with other Port Forwarding service. Please check port and IP!");
 								break;
 							}
 						}
@@ -137,7 +137,7 @@ if (isset($_POST['add'])){
 						array("Device.NAT.PortMapping.".$i.".Description", "string", $name),
 					);
 				$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);	
-				if (!$retStatus){$result="Success!";}	
+				if (!$retStatus){$result=_("Success!");}	
 			}
 		}
 	}
@@ -179,10 +179,10 @@ if (isset($_POST['edit'])){
 				$InternalPort = $key["InternalPort"];
 				if($name==$arrayName) { 
 					if($InternalPort !=0){
-						$result.="Service name has been used in HS Port Forwarding service!\n";
+						$result.=_("Service name has been used in HS Port Forwarding service!\n");
 						break;
 					} else {
-						$result.="Service name has been used in Port Forwarding service!\n";
+						$result.=_("Service name has been used in Port Forwarding service!\n");
 						break;
 					}
 				}
@@ -190,10 +190,10 @@ if (isset($_POST['edit'])){
 					$porttest=PORTTEST($sport,$eport,$arraySPort,$arrayEPort);
 					if ($porttest==1) {
 						if($InternalPort !=0){
-							$result.="Conflict with other HS Port Forwarding service. Please check port and IP!";
+							$result.=_("Conflict with other HS Port Forwarding service. Please check port and IP!");
 							break;
 						} else {
-							$result.="Conflict with other Port Forwarding service. Please check port and IP!";
+							$result.=_("Conflict with other Port Forwarding service. Please check port and IP!");
 							break;
 						}
 					}
@@ -214,7 +214,7 @@ if (isset($_POST['edit'])){
 					array("Device.NAT.PortMapping.".$i.".Description", "string", $name),
 				);
 			$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);	
-			if (!$retStatus){$result="Success!";}
+			if (!$retStatus){$result=_("Success!");}
 		}
 	}
 }
@@ -226,7 +226,7 @@ if (isset($_POST['active'])){
 		$isChecked=$_POST['isChecked'];
 		$i=$_POST['id'];
 		if (setStr("Device.NAT.PortMapping.$i.Enable",$isChecked,true) === true) {
-			$result="Success!";
+			$result=_("Success!");
 		}
 	}
 }

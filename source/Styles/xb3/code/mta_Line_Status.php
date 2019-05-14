@@ -29,18 +29,18 @@ $(document).ready(function() {
 });
 </script>
 <div id="content">
-	<h1>Gateway > Connection > MTA > Line Status</h1>
+	<h1><?php echo _("Gateway > Connection > MTA > Line Status")?></h1>
 	<div id="educational-tip">
-			<p class="tip">Information related to the MTA Line Status.</p>
+			<p class="tip"><?php echo _("Information related to the MTA Line Status.")?></p>
 	</div>
 	<div class="module forms">
-		<h2>MTA Line Status</h2>
+		<h2><?php echo _("MTA Line Status")?></h2>
 		<div class="form-row">
-			<span class="readonlyLabel">Line 1 Status:</span> 
+			<span class="readonlyLabel"><?php echo _("Line 1 Status:")?></span> 
 			<span class="value"><?php echo getStr("Device.X_CISCO_COM_MTA.LineTable.1.Status");?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">Line 2 Status:</span>
+			<span class="readonlyLabel"><?php echo _("Line 2 Status:")?></span>
 			<span class="value"><?php echo getStr("Device.X_CISCO_COM_MTA.LineTable.2.Status");?></span>
 		</div>
 	</div>

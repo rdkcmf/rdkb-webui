@@ -21,16 +21,21 @@ $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);
 function get_tips($target, $status, $user_type)
 {
-	$tip = "No Tips!";
+	// $tip = _("No Tips!");
+    $tip_labels = json_decode($_COOKIE['tip_labels'], true);
+    $tip = $tip_labels['none'];
+    
 	switch($target)
 	{
 		case "sta_inet":{
-			if ("true"==$status){
-				$tip = 'Status: Connected-'.getStr("Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber").' devices connected';
-			}
-			else{
-				$tip = 'Status: Unconnected-no devices';
-			}
+		    if ("true"==$status){
+		        // _('Status: Connected-%s devices connected')
+		        $tip = sprintf($tip_labels['devices'],getStr("Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber"));
+		    }
+		    else{
+		        // _('Status: Unconnected-no devices');
+		        $tip = $tip_labels['no_devices'];
+		    }
 		}break;
 		case "sta_wifi":{
 			if ("true"==$status){
@@ -40,19 +45,23 @@ function get_tips($target, $status, $user_type)
 				foreach($ids as $i){
 					$sum += getStr("Device.WiFi.AccessPoint.$i.AssociatedDeviceNumberOfEntries");
 				}
-				$tip = 'Status: Connected-'.$sum.' devices connected';
+				// _('Status: Connected-%s devices connected')
+				$tip = sprintf($tip_labels['devices'],$sum);
 			}
 			else{
-				$tip = 'Status: Unconnected-no devices';
+			    // _('Status: Unconnected-no devices')
+			    $tip = $tip_labels['no_devices'];
 			}
 		}break;
 		case "sta_moca":{
-			if ("true"==$status){
-				$tip = 'Status: Connected-'.getStr("Device.MoCA.Interface.1.X_CISCO_COM_NumberOfConnectedClients").' devices connected';
-			}
-			else{
-				$tip = 'Status: Unconnected-no devices';
-			}	
+		    if ("true"==$status ){
+		        // _('Status: Connected-%s devices connected')
+		        $tip = sprintf($tip_labels['devices'],getStr("Device.MoCA.Interface.1.X_CISCO_COM_NumberOfConnectedClients"));
+		    }
+		    else{
+		        // _('Status: Unconnected-no devices')
+		        $tip = $tip_labels['no_devices'];
+		    }	
 		}break;
 		/*case "sta_dect":{
 			if ("true"==$status){
@@ -63,10 +72,12 @@ function get_tips($target, $status, $user_type)
 			}
 		}break;*/
 		case "sta_fire":{
-			$tip = 'Firewall is set to '.$status;
+		    // _('Firewall is set to %s')
+		    $tip = sprintf($tip_labels['firewall'],_($status));
 		}break;
 		default:{
-			$tip = "No Tips!";
+		    // _("No Tips!")
+		    $tip = $tip_labels['none'];
 		}break;
 	}
 	return $tip;

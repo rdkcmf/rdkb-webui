@@ -124,23 +124,23 @@ $channel_array = array(
 <script type="text/javascript">
 var network = null;
 function ajax_moca_diagnostics() {
-		jProgress('This may take several seconds', 60);
+		jProgress('<?php echo _("This may take several seconds")?>', 60);
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajax_moca_diagnostics.php",
 			data: { moca_diagnostics: 'diagnostics' },
 			success: function(result) {
 				jHide();
-				if(result['MeshTableEntries']=='0') jAlert("Currently MoCA devices are not connected to the Gateway.");
+				if(result['MeshTableEntries']=='0') jAlert("<?php echo _("Currently MoCA devices are not connected to the Gateway.")?>");
 				else draw(result);
 			},
 			failure: function() {
 				jHide();
-				jAlert("Failure, please try again.");
+				jAlert("<?php echo _("Failure, please try again.")?>");
 			},
 			error: function(){
 				jHide();
-				jAlert("Failure, please try again.");
+				jAlert("<?php echo _("Failure, please try again.")?>");
 			}
 		});
 	}
@@ -281,57 +281,57 @@ $(window).load(function() {
 });
 </script>
 <div id="content" >
-	<h1>Troubleshooting > MoCA Diagnostics</h1>
+	<h1><?php echo _("Troubleshooting > MoCA Diagnostics")?></h1>
 	<div id="educational-tip">
-		<p class="tip">View information about devices currently connected to the Gateway's MoCA Network.</p>
-		<p class="hidden"><strong>MoCA Privacy: </strong> If MoCA Privacy is enabled, all the devices connecting to the Gateway via MoCA will use the MoCA Network Password. </p>
+		<p class="tip"><?php echo _("View information about devices currently connected to the Gateway's MoCA Network.")?></p>
+		<p class="hidden"><?php echo _("<strong>MoCA Privacy: </strong> If MoCA Privacy is enabled, all the devices connecting to the Gateway via MoCA will use the MoCA Network Password.")?> </p>
 	</div>
 	<form id="pageForm">
-		<legend class="acs-hide">MoCA Diagnostics</legend>
+		<legend class="acs-hide"><?php echo _("MoCA Diagnostics")?></legend>
 		<div class="module forms">
-			<h2>MoCA Diagnostics</h2>
+			<h2><?php echo _("MoCA Diagnostics")?></h2>
 			<div class="form-row">
-				<label>Status:</label>
-				<span class="readonlyValue"><?php echo ($moca_enable == 'true')?'Enabled':'Disabled'; ?></span>
+				<label><?php echo _("Status:")?></label>
+				<span class="readonlyValue"><?php echo ($moca_enable == 'true')?_('Enabled'):_('Disabled'); ?></span>
 			</div>
 			<div class="form-row odd">
-				<label>MAC Address:</label>
+				<label><?php echo _("MAC Address:")?></label>
 				<span class="readonlyValue"><?php echo strtoupper($MACAddress); ?></span>
 			</div>
 			<div class="form-row">
-				<label>Maximum Version Supported:</label>
+				<label><?php echo _("Maximum Version Supported:")?></label>
 				<span class="readonlyValue"><?php echo $HighestVersion; ?></span>
 			</div>
 			<div class="form-row odd">
-				<label>Current Operational Capabilities:</label>
+				<label><?php echo _("Current Operational Capabilities:")?></label>
 				<span class="readonlyValue"><?php echo $CurrentVersion; ?></span>
 			</div>
 			<div class="form-row">
-				<label>Preferred Network Controller:</label>
+				<label><?php echo _("Preferred Network Controller:")?></label>
 				<span class="readonlyValue"><?php echo $PreferredNC; ?></span>
 			</div>
 			<div class="form-row odd">
-				<label>Active Network Controller:</label>
+				<label><?php echo _("Active Network Controller:")?></label>
 				<span class="readonlyValue" id="active_NC"><?php echo $PreferredNC_data; ?></span>
 			</div>
 			<div class="form-row">
-				<label>Backup Network Controller:</label>
+				<label><?php echo _("Backup Network Controller:")?></label>
 				<span class="readonlyValue" id="backup_NC"><?php echo $BackupNC_data; ?></span>
 			</div>
 			<div class="form-row odd">
-				<label>Beacon Frequency:</label>
+				<label><?php echo _("Beacon Frequency:")?></label>
 				<span class="readonlyValue"><?php echo $channel_array[$CurrentOperFreq]; ?></span>
 			</div>
 			<div class="form-row">
-				<label>Center frequency:</label>
+				<label><?php echo _("Center frequency:")?></label>
 				<span class="readonlyValue"><?php echo $channel_array[$CurrentOperFreq]; ?></span>
 			</div>
 			<div class="form-row odd">
-				<label>Beacon Backoff Power Level:</label>
+				<label><?php echo _("Beacon Backoff Power Level:")?></label>
 				<span class="readonlyValue"><?php echo $BeaconPowerLimit.'dB'; ?></span>
 			</div>
 			<div class="form-row">
-				<label>Link Uptime:</label>
+				<label><?php echo _("Link Uptime:")?></label>
 				<span class="readonlyValue">
 					<?php
 						$tmp = div_mod($LinkUpTime, 24*60*60);
@@ -345,40 +345,40 @@ $(window).load(function() {
 				</span>
 			</div>
 			<div class="form-row odd">
-				<label>Number of Packets Transmitted:</label>
+				<label><?php echo _("Number of Packets Transmitted:")?></label>
 				<span class="readonlyValue"><?php echo $PacketsSent; ?></span>
 			</div>
 			<div class="form-row">
-				<label>Number of Packets Received:</label>
+				<label><?php echo _("Number of Packets Received:")?></label>
 				<span class="readonlyValue"><?php echo $PacketsReceived; ?></span>
 			</div>
 			<div class="form-row odd">
-				<label>Number of Uncorrectable Error Packets Received:</label>
+				<label><?php echo _("Number of Uncorrectable Error Packets Received:")?></label>
 				<span class="readonlyValue"><?php echo $Discard_Received; ?></span>
 			</div>
 			<div class="form-row">
-				<label>Number of Corrected Error Packets Received:</label>
+				<label><?php echo _("Number of Corrected Error Packets Received:")?></label>
 				<span class="readonlyValue"><?php echo ($ErrorsReceived - $Discard_Received); ?></span>
 			</div>
 			<div class="form-row odd">
-				<label>Channel Mask:</label>
+				<label><?php echo _("Channel Mask:")?></label>
 				<span class="readonlyValue"><?php echo $NodeTabooMask; ?></span>
 			</div>
 			<div class="form-row">
-				<label for="Privacy">Privacy:</label>
-				<span class="readonlyValue"><?php echo ($Privacy_Setting == 'true')?'Enabled':'Disabled'; ?></span>
+				<label for="Privacy"><?php echo _("Privacy:")?></label>
+				<span class="readonlyValue"><?php echo ($Privacy_Setting == 'true')?_('Enabled'):_('Disabled'); ?></span>
 			</div>
 		</div> <!-- end .module -->
 	</form>
 	<div id='moca-online' class="module data">
-		<h2>MoCA Nodes</h2>
-		<table class="data" id="moca_nodes" summary="This table displays Online Devices connected to MoCA network">
+		<h2><?php echo _("MoCA Nodes")?></h2>
+		<table class="data" id="moca_nodes" summary="<?php echo _("This table displays Online Devices connected to MoCA network")?>">
 			<tr>
-				<th id="node-id">Node ID</th>
-				<th id="mac-address">MoCA MAC Address</th>
-				<th id="network-controller">Network Controller</th>
-				<th id="transmit-power-level" width="20%">MoCA Transmit Power Reduction</th>
-				<th id="receive-power-level" width="20%">MoCA Receive Power Level</th>
+				<th id="node-id"><?php echo _("Node ID")?></th>
+				<th id="mac-address"><?php echo _("MoCA MAC Address")?></th>
+				<th id="network-controller"><?php echo _("Network Controller")?></th>
+				<th id="transmit-power-level" width="20%"><?php echo _("MoCA Transmit Power Reduction")?></th>
+				<th id="receive-power-level" width="20%"><?php echo _("MoCA Receive Power Level")?></th>
 			</tr>
 			<?php
 				$class = false;
@@ -409,8 +409,8 @@ $(window).load(function() {
 		</table>
 	</div>
 	<div class="module data">
-		<h2>MoCA Network Diagram</h2>
-		<input style="float: right; margin-top: 10px;" type="button" value="Refresh" id="refresh">
+		<h2><?php echo _("MoCA Network Diagram")?></h2>
+		<input style="float: right; margin-top: 10px;" type="button" value="<?php echo _("Refresh")?>" id="refresh">
 		<div id="network_diagram" style="height: 400px; border: 1px solid lightgray; margin-top: 8px; padding-bottom: 50px;"></div>
 	</div>
 </div><!-- end #content -->

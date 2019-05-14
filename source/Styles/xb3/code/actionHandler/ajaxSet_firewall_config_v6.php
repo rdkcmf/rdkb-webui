@@ -19,7 +19,7 @@
 $modelName = getStr("Device.DeviceInfo.ModelName");
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 //$_POST['configInfo'] = {"firewallLevel": "Default", "block_http": "false", "block_icmp": "false", "block_multicast": "false", "block_peer": "false", "block_ident": "false"}

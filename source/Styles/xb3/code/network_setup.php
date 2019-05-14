@@ -31,6 +31,7 @@
 </style>
 <?php
 	$NetworkName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.HelpTip.NetworkName");
+	$wanType = get_wan_type();
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -38,6 +39,18 @@ $(document).ready(function() {
 	if ("admin" == "<?php echo $_SESSION["loginuser"]; ?>"){
 		$(".div_cm").remove();
 		$(".div_mta").remove();
+	}
+
+	var wanType="<?php echo $wanType;?>"
+	if (wanType == "DSL"){
+		$(".div_cm").remove();
+		$(".div_mta").remove();
+		$(".div_init").remove();
+		$(".div_up").remove();
+		$(".div_down").remove();
+		$(".div_code").remove();
+	} else {
+		$(".div_dsl").remove();
 	}
 	// now we can show target content
 	$("#content").show();
@@ -68,26 +81,52 @@ function sec2dhms($sec)
 	$min = $tmp[0];
 	return "D: $day H: $hor M: $min S: $tmp[1]";
 }
+	$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 	$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
 	$WANIPv4 = getStr($fistUSif."IPv4Address.1.IPAddress");
-	$ids = explode(",", getInstanceIds($fistUSif."IPv6Address."));
-	foreach ($ids as $i){
-		$val = getStr($fistUSif."IPv6Address.$i.IPAddress");
-		if (!strstr($val, "fe80::")){
-			$WANIPv6 = $val;
-				//DHCP Lease Expire Time (IPv6):
-				// echo $fistUSif."IPv6Address.$i.X_Comcast_com_LeaseTime";
-				$sec = getStr($fistUSif."IPv6Address.$i.X_CISCO_COM_PreferredLifetime");
-				$tmp = div_mod($sec, 24*60*60);
-				$day = $tmp[0];
-				$tmp = div_mod($tmp[1], 60*60);
-				$hor = $tmp[0];
-				$tmp = div_mod($tmp[1],    60);
-				$min = $tmp[0];
-				$DHCP_LET_IPv6 = $day."d:".$hor."h:".$min."m";
+	if (strpos($partnerId, "sky-") !== false) {
+		$IPv6Adr = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstDownstreamIpInterface");
+		$ids = explode(",", getInstanceIds($IPv6Adr."IPv6Address."));
+		foreach ($ids as $i){
+			$val = getStr($IPv6Adr."IPv6Address.$i.IPAddress");
+			if (!strstr($val, "fe80::")){
+				$WANIPv6 = $val;
+					//DHCP Lease Expire Time (IPv6):
+					// echo $fistUSif."IPv6Address.$i.X_Comcast_com_LeaseTime";
+					$sec = getStr($IPv6Adr."IPv6Address.$i.X_CISCO_COM_PreferredLifetime");
+					$tmp = div_mod($sec, 24*60*60);
+					$day = $tmp[0];
+					$tmp = div_mod($tmp[1], 60*60);
+					$hor = $tmp[0];
+					$tmp = div_mod($tmp[1],    60);
+					$min = $tmp[0];
+					$DHCP_LET_IPv6 = $day."d:".$hor."h:".$min."m";
+			}
+			if (strstr($val, "fe80::")){
+				$WANIPv6LinkLocal = $val;
+			}
 		}
-		if (strstr($val, "fe80::")){
-			$WANIPv6LinkLocal = $val;
+	}
+	else{
+		$ids = explode(",", getInstanceIds($fistUSif."IPv6Address."));
+		foreach ($ids as $i){
+			$val = getStr($fistUSif."IPv6Address.$i.IPAddress");
+			if (!strstr($val, "fe80::")){
+				$WANIPv6 = $val;
+					//DHCP Lease Expire Time (IPv6):
+					// echo $fistUSif."IPv6Address.$i.X_Comcast_com_LeaseTime";
+					$sec = getStr($fistUSif."IPv6Address.$i.X_CISCO_COM_PreferredLifetime");
+					$tmp = div_mod($sec, 24*60*60);
+					$day = $tmp[0];
+					$tmp = div_mod($tmp[1], 60*60);
+					$hor = $tmp[0];
+					$tmp = div_mod($tmp[1],    60);
+					$min = $tmp[0];
+					$DHCP_LET_IPv6 = $day."d:".$hor."h:".$min."m";
+			}
+			if (strstr($val, "fe80::")){
+				$WANIPv6LinkLocal = $val;
+			}
 		}
 	}
 	$sta_inet = ($WANIPv4 != "0.0.0.0" || strlen($WANIPv6) > 0) ? "true" : "false";
@@ -95,7 +134,7 @@ function sec2dhms($sec)
 	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
 ?>
 <div id="content">
-<h1>Gateway > Connection > <?php echo $Connection_values[0]['StatusTitle']; ?></h1>
+<h1><?php echo sprintf(_("Gateway > Connection > %s"),$Connection_values[0]['StatusTitle']); ?></h1>
 <div id="educational-tip">
 	<p class="tip"><?php echo $Connection_values[0]['MSOinfo']; ?></p>
 	<p class="hidden"><?php echo $Connection_values[0]['StatusInfo']; ?></p>
@@ -103,15 +142,15 @@ function sec2dhms($sec)
 <div class="module forms">
 	<h2><?php echo $Connection_values[0]['StatusTitle']; ?></h2>
 	<div class="form-row">
-		<span class="readonlyLabel">Internet:</span>
-		<span class="value"><?php echo ($sta_inet=="true") ? "Active" : "Inactive";?></span>
+		<span class="readonlyLabel"><?php echo _("Internet:")?></span>
+		<span class="value"><?php echo ($sta_inet=="true") ? _("Active") : _("Inactive");?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Local time:</span>
+		<span class="readonlyLabel"><?php echo _("Local time:")?></span>
 		<span class="value"><?php echo getStr("Device.Time.CurrentLocalTime");?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">System Uptime:</span>
+		<span class="readonlyLabel"><?php echo _("System Uptime:")?></span>
 		<span class="value">
 		<?php
 			$sec = getStr("Device.DeviceInfo.UpTime");
@@ -121,16 +160,16 @@ function sec2dhms($sec)
 			$hor = $tmp[0];
 			$tmp = div_mod($tmp[1],    60);
 			$min = $tmp[0];
-			echo $day." days ".$hor."h: ".$min."m: ".$tmp[1]."s";
+			echo $day." "._("days")." ".$hor."h: ".$min."m: ".$tmp[1]."s";
 		?>
 		</span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">WAN IP Address (IPv4):</span>
+		<span class="readonlyLabel"><?php echo _("WAN IP Address (IPv4):")?></span>
 		<span class="value"><?php echo $WANIPv4;?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">WAN Default Gateway Address (IPv4):</span> <span class="value">
+		<span class="readonlyLabel"><?php echo _("WAN Default Gateway Address (IPv4):")?></span> <span class="value">
 		<?php
 			//echo getStr("Device.Routing.Router.1.IPv4Forwarding.1.GatewayIPAddress");
 			/* For BWG, we just use the DHCP GW received from upstream as the wan side GW */
@@ -139,14 +178,14 @@ function sec2dhms($sec)
 		</span>
 	</div>		
 	<div class="form-row odd">
-		<span class="readonlyLabel">WAN IP Address (IPv6):</span> <span class="value">
+		<span class="readonlyLabel"><?php echo _("WAN IP Address (IPv6):")?></span> <span class="value">
 		<?php
 			echo $WANIPv6;
 		?>
 		</span>
 	</div>	
 	<div class="form-row ">
-		<span class="readonlyLabel">WAN Default Gateway Address (IPv6):</span> <span class="value">
+		<span class="readonlyLabel"><?php echo _("WAN Default Gateway Address (IPv6):")?></span> <span class="value">
 		<?php
 		$ids = explode(",", getInstanceIds("Device.Routing.Router.1.IPv6Forwarding."));
 		foreach ($ids as $i){
@@ -161,7 +200,7 @@ function sec2dhms($sec)
 		</span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Delegated prefix (IPv6):</span> <span class="value">
+		<span class="readonlyLabel"><?php echo _("Delegated prefix (IPv6):")?></span> <span class="value">
 		<?php
 		$ids = explode(",", getInstanceIds($fistUSif."IPv6Prefix."));
 		echo getStr($fistUSif."IPv6Prefix.$ids[0].Prefix");
@@ -169,7 +208,7 @@ function sec2dhms($sec)
 		</span>
 	</div>			
 	<div class="form-row ">
-		<span class="readonlyLabel">Primary DNS Server (IPv4):</span> <span class="value">
+		<span class="readonlyLabel"><?php echo _("Primary DNS Server (IPv4):")?></span> <span class="value">
 		<?php
 		$ids    = explode(",", getInstanceIds("Device.DNS.Client.Server."));
 		$dns_v4 = array();
@@ -189,16 +228,16 @@ function sec2dhms($sec)
 		</span>
 	</div>	
 	<div class="form-row odd">
-		<span class="readonlyLabel">Secondary DNS Server (IPv4):</span> <span class="value"><?php if (isset($dns_v4[1])) echo $dns_v4[1];?></span>
+		<span class="readonlyLabel"><?php echo _("Secondary DNS Server (IPv4):")?></span> <span class="value"><?php if (isset($dns_v4[1])) echo $dns_v4[1];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">Primary DNS Server (IPv6):</span> <span class="value"><?php if (isset($dns_v6[0])) echo $dns_v6[0];?></span>
+		<span class="readonlyLabel"><?php echo _("Primary DNS Server (IPv6):")?></span> <span class="value"><?php if (isset($dns_v6[0])) echo $dns_v6[0];?></span>
 	</div>	
 	<div class="form-row odd">
-		<span class="readonlyLabel">Secondary DNS Server (IPv6):</span> <span class="value"><?php if (isset($dns_v6[1])) echo $dns_v6[1];?></span>
+		<span class="readonlyLabel"><?php echo _("Secondary DNS Server (IPv6):")?></span> <span class="value"><?php if (isset($dns_v6[1])) echo $dns_v6[1];?></span>
 	</div>		
 	<div class="form-row ">
-		<span class="readonlyLabel">WAN Link Local Address (IPv6):</span>
+		<span class="readonlyLabel"><?php echo _("WAN Link Local Address (IPv6):")?></span>
 		<span class="value">
 		<?php
 			echo $WANIPv6LinkLocal;
@@ -206,16 +245,16 @@ function sec2dhms($sec)
 		</span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">DHCP Client (IPv4):</span>
-		<span class="value"><?php echo ("DHCP"==getStr("Device.X_CISCO_COM_DeviceControl.WanAddressMode")) ? "Enabled" : "Disabled";?></span>
+		<span class="readonlyLabel"><?php echo _("DHCP Client (IPv4):")?></span>
+		<span class="value"><?php echo ("DHCP"==getStr("Device.X_CISCO_COM_DeviceControl.WanAddressMode")) ? _("Enabled") : _("Disabled");?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">DHCP Client (IPv6):</span> <span class="value">
-		<?php echo ("true"==getStr("Device.DHCPv6.Client.1.Enable")) ? "Enabled" : "Disabled";?>
+		<span class="readonlyLabel"><?php echo _("DHCP Client (IPv6):")?></span> <span class="value">
+		<?php echo ("true"==getStr("Device.DHCPv6.Client.1.Enable")) ? _("Enabled") : _("Disabled");?>
 		</span>
 	</div>	
 	<div class="form-row odd">
-		<span class="readonlyLabel">DHCP Lease Expire Time (IPv4):</span>
+		<span class="readonlyLabel"><?php echo _("DHCP Lease Expire Time (IPv4):")?></span>
 		<span class="value">
 		<?php
 			$sec = getStr("Device.DHCPv4.Client.1.LeaseTimeRemaining");
@@ -230,20 +269,20 @@ function sec2dhms($sec)
 		</span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">DHCP Lease Expire Time (IPv6):</span> <span class="value">
+		<span class="readonlyLabel"><?php echo _("DHCP Lease Expire Time (IPv6):")?></span> <span class="value">
 		<?php
 			echo $DHCP_LET_IPv6;
 		?>		
 		</span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">WAN MAC:</span>
+		<span class="readonlyLabel"><?php echo _("WAN MAC:")?></span>
 		<span class="value">
 			<?php echo strtoupper(getStr(getStr(getStr($fistUSif."LowerLayers").".LowerLayers").".MACAddress")); ?>
 		</span>
 	</div>
-	<div class="form-row">
-		<span class="readonlyLabel">eMTA MAC:</span>
+	<div class="form-row div_mta">
+		<span class="readonlyLabel"><?php echo _("eMTA MAC:")?></span>
 		<span class="value"><?php echo strtoupper(getStr("Device.X_CISCO_COM_MTA.MACAddress"));?></span>
 	</div>
 	<?php
@@ -254,8 +293,8 @@ function sec2dhms($sec)
 		);
 		$CM_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $CM_param);
 	?>
-	<div class="form-row odd">
-		<span class="readonlyLabel">CM MAC:</span>
+	<div class="form-row odd div_cm">
+		<span class="readonlyLabel"><?php echo _("CM MAC:")?></span>
 		<span class="value"><?php echo strtoupper($CM_value["MACAddress"]);?></span>
 	</div>
 </div>
@@ -308,34 +347,34 @@ else {
 	$initStatus = array("NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted");
 }
 ?>
-<div class="module forms">
-	<h2>Initialization Procedure</h2>
+<div class="module forms div_init">
+	<h2><?php echo _("Initialization Procedure")?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel">Initialize Hardware:</span>
+		<span class="readonlyLabel"><?php echo _("Initialize Hardware:")?></span>
 		<span class="value"><?php echo $initStatus[0];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Acquire Downstream Channel:</span>
+		<span class="readonlyLabel"><?php echo _("Acquire Downstream Channel:")?></span>
 		<span class="value"><?php echo $initStatus[1];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">Upstream Ranging:</span>
+		<span class="readonlyLabel"><?php echo _("Upstream Ranging:")?></span>
 		<span class="value"><?php echo $initStatus[2];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">DHCP bound:</span>
+		<span class="readonlyLabel"><?php echo _("DHCP bound:")?></span>
 		<span class="value"><?php echo $initStatus[3];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">Set Time-of-Day:</span>
+		<span class="readonlyLabel"><?php echo _("Set Time-of-Day:")?></span>
 		<span class="value"><?php echo $initStatus[4];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Configuration File Download:</span>
+		<span class="readonlyLabel"><?php echo _("Configuration File Download:")?></span>
 		<span class="value"><?php echo $initStatus[5];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">Registration:</span>
+		<span class="readonlyLabel"><?php echo _("Registration:")?></span>
 		<span class="value"><?php echo $initStatus[6];?></span>
 	</div>
 </div>
@@ -381,56 +420,56 @@ if($_SESSION["loginuser"] == "mso"){
 }
 ?>
 <div class="module forms div_cm">
-	<h2>CM DHCP Parameters</h2>
+	<h2><?php echo _("CM DHCP Parameters")?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel">CM IP Address:</span>
+		<span class="readonlyLabel"><?php echo _("CM IP Address:")?></span>
 		<span class="value"><?php echo $cm_value['IPAddress'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">CM Subnet Mask:</span>
+		<span class="readonlyLabel"><?php echo _("CM Subnet Mask:")?></span>
 		<span class="value"><?php echo $cm_value['SubnetMask'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">CM IP Gateway:</span>
+		<span class="readonlyLabel"><?php echo _("CM IP Gateway:")?></span>
 		<span class="value"><?php echo $cm_value['Gateway'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">CM TFTP Server:</span>
+		<span class="readonlyLabel"><?php echo _("CM TFTP Server:")?></span>
 		<span class="value"><?php echo $cm_value['TFTPServer'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">CM Time Server:</span>
+		<span class="readonlyLabel"><?php echo _("CM Time Server:")?></span>
 		<span class="value"><?php echo $cm_value['TimeServer'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">CM Time Offset:</span>
+		<span class="readonlyLabel"><?php echo _("CM Time Offset:")?></span>
 		<span class="value"><?php echo $cm_value['TimeOffset'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">CM Boot File:</span>
+		<span class="readonlyLabel"><?php echo _("CM Boot File:")?></span>
 		<span class="value"><?php echo $cm_value['BootFileName'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">MDD IP Mode Override:</span>
+		<span class="readonlyLabel"><?php echo _("MDD IP Mode Override:")?></span>
 		<span class="value"><?php echo $cm_value['MDDIPOverride'];?></span>
 	</div>
 	<div class="form-row">
-		<span class="readonlyLabel">Learned IP Mode:</span>
+		<span class="readonlyLabel"><?php echo _("Learned IP Mode:")?></span>
 		<span class="value"><?php echo $cm_value['LearnedIPMode'];?></span>
 	</div>
 </div>
 <div class="module forms div_cm">
-	<h2>CM IP Time Remaining</h2>
+	<h2><?php echo _("CM IP Time Remaining")?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel">DHCP Lease Time:</span>
+		<span class="readonlyLabel"><?php echo _("DHCP Lease Time:")?></span>
 		<span class="value"><?php echo sec2dhms($cm_value['LeaseTimeRemaining']);?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">DHCP Rebind Time:</span>
+		<span class="readonlyLabel"><?php echo _("DHCP Rebind Time:")?></span>
 		<span class="value"><?php echo sec2dhms($cm_value['RebindTimeRemaining']);?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">DHCP Renew Time:</span>
+		<span class="readonlyLabel"><?php echo _("DHCP Renew Time:")?></span>
 		<span class="value"><?php echo sec2dhms($cm_value['RenewTimeRemaining']);?></span>
 	</div>
 </div>
@@ -473,81 +512,81 @@ if($_SESSION["loginuser"] == "mso"){
 }
 ?>
 <div class="module forms div_cm">
-	<h2>CM PacketCable Options</h2>
+	<h2><?php echo _("CM PacketCable Options")?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel">Sub-option 1 Service Provider's Primary DHCP:</span>
+		<span class="readonlyLabel"><?php echo _("Sub-option 1 Service Provider's Primary DHCP:")?></span>
 		<span class="value"><?php echo $mta_value['PrimaryDHCPServer'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Sub-option 1 Service Provider's Secondary DHCP:</span>
+		<span class="readonlyLabel"><?php echo _("Sub-option 1 Service Provider's Secondary DHCP:")?></span>
 		<span class="value"><?php echo $mta_value['SecondaryDHCPServer'];?></span>
 	</div>
 </div>
 <div class="module forms div_mta">
-	<h2>MTA DHCP Parameters</h2>
+	<h2><?php echo _("MTA DHCP Parameters")?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel">MTA FQDN:</span>
+		<span class="readonlyLabel"><?php echo _("MTA FQDN:")?></span>
 		<span class="value"><?php echo $mta_value['FQDN'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">MTA IP Address:</span>
+		<span class="readonlyLabel"><?php echo _("MTA IP Address:")?></span>
 		<span class="value"><?php echo $mta_value['IPAddress'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">MTA IP Subnet Mask:</span>
+		<span class="readonlyLabel"><?php echo _("MTA IP Subnet Mask:")?></span>
 		<span class="value"><?php echo $mta_value['SubnetMask'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">MTA IP Gateway:</span>
+		<span class="readonlyLabel"><?php echo _("MTA IP Gateway:")?></span>
 		<span class="value"><?php echo $mta_value['Gateway'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">MTA Bootfile:</span>
+		<span class="readonlyLabel"><?php echo _("MTA Bootfile:")?></span>
 		<span class="value"><?php echo $mta_value['BootFileName'];?></span>
 	</div>
 </div>
 <div class="module forms div_mta">
-	<h2>MTA IP Time Remaining</h2>
+	<h2><?php echo _("MTA IP Time Remaining")?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel">DHCP Lease Time:</span>
+		<span class="readonlyLabel"><?php echo _("DHCP Lease Time:")?></span>
 		<span class="value"><?php echo sec2dhms($mta_value['LeaseTimeRemaining']);?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">DHCP Rebind Time:</span>
+		<span class="readonlyLabel"><?php echo _("DHCP Rebind Time:")?></span>
 		<span class="value"><?php echo sec2dhms($mta_value['RebindTimeRemaining']);?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">DHCP Renew Time:</span>
+		<span class="readonlyLabel"><?php echo _("DHCP Renew Time:")?></span>
 		<span class="value"><?php echo sec2dhms($mta_value['RenewTimeRemaining']);?></span>
 	</div>
 </div>
 <div class="module forms div_mta">
-	<h2>MTA DHCP Option 6</h2>
+	<h2><?php echo _("MTA DHCP Option 6")?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel">Network Primary DNS:</span>
+		<span class="readonlyLabel"><?php echo _("Network Primary DNS:")?></span>
 		<span class="value"><?php echo $mta_value['PrimaryDNS'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Network Secondary DNS:</span>
+		<span class="readonlyLabel"><?php echo _("Network Secondary DNS:")?></span>
 		<span class="value"><?php echo $mta_value['SecondaryDNS'];?></span>
 	</div>
 </div>
 <div class="module forms div_mta">
-	<h2>MTA PacketCable Options(Option 122)</h2>
+	<h2><?php echo _("MTA PacketCable Options(Option 122)")?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel">Sub-option 3:</span>
+		<span class="readonlyLabel"><?php echo _("Sub-option 3:")?></span>
 		<span class="value"><?php echo $mta_value['DHCPOption3'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Sub-option 6:</span>
+		<span class="readonlyLabel"><?php echo _("Sub-option 6:")?></span>
 		<span class="value"><?php echo $mta_value['DHCPOption6'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">Sub-option 7:</span>
+		<span class="readonlyLabel"><?php echo _("Sub-option 7:")?></span>
 		<span class="value"><?php echo $mta_value['DHCPOption7'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Sub-option 8:</span>
+		<span class="readonlyLabel"><?php echo _("Sub-option 8:")?></span>
 		<span class="value"><?php echo $mta_value['DHCPOption8'];?></span>
 	</div>
 </div>
@@ -572,43 +611,48 @@ $device_value["ProductClass"] 				= getStr("Device.DeviceInfo.ProductClass");
 $device_value["Hardware"] 					= getStr("Device.DeviceInfo.Hardware");
 $device_value["AdditionalSoftwareVersion"] 	= getStr("Device.DeviceInfo.AdditionalSoftwareVersion");
 $device_value["SerialNumber"] 				= getStr("Device.DeviceInfo.SerialNumber");
+if ($wanType == "DSL") {
+    $modemType = _("DSL Modem");
+} else {
+    $modemType = _("Cable Modem");
+}
 ?>
 <div class="module forms">
-	<h2>Cable Modem</h2>
+	<h2><?php echo $modemType;?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">HW Version:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("HW Version:")?></span>
 		<span class="value"><?php echo $device_value['HardwareVersion'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">Vendor:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("Vendor:")?></span>
 		<span class="value"><?php echo $device_value['Manufacturer'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">BOOT Version:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("BOOT Version:")?></span>
 		<span class="value"><?php echo $device_value['BootloaderVersion'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">Core Version:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("Core Version:")?></span>
 		<span class="value"><?php echo $CM_value["CoreVersion"];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">Model:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("Model:")?></span>
 		<span class="value"><?php echo $device_value['ModelName'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">Product Type:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("Product Type:")?></span>
 		<span class="value"><?php echo $device_value['ProductClass'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">Flash Part:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("Flash Part:")?></span>
 		<span class="value"><?php echo $device_value['Hardware'];?> MB</span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">Download Version:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("Download Version:")?></span>
 		<span class="value"><?php echo $device_value['AdditionalSoftwareVersion'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">Serial Number:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("Serial Number:")?></span>
 		<span class="value"><?php echo $device_value['SerialNumber'];?></span>
 	</div>
 </div>
@@ -630,37 +674,37 @@ for ($i=1, $j=1; $i<count($ds_ids); $i++)
 	$ds_tab[$i]['LockStatus']		= $ds_val[$j++][1];
 }
 ?>
-<div class="module" style="overflow:auto">
+<div class="module div_down" style="overflow:auto">
 	<table class="data" cellspacing="0" cellpadding="0">
 	<thead>
 		<tr>
-			<td class="row-label acs-th"><div style="width: 100px">Downstream</div></td>
-			<td class="row-label acs-th" colspan="<?php echo count($ds_ids);?>">Channel Bonding Value</td>
+			<td class="row-label acs-th"><div style="width: 100px"><?php echo _("Downstream");?></div></td>
+			<td class="row-label acs-th" colspan="<?php echo count($ds_ids);?>"><?php echo _("Channel Bonding Value")?></td>
 		</tr>
 	</thead>
 	<tbody>
 		<tr class="">
-			<th class="row-label ">Index</td>
+			<th class="row-label "><?php echo _("Index")?></td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$i.'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<th class="row-label ">Lock Status</td>
+			<th class="row-label "><?php echo _("Lock Status")?></td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['LockStatus'].'</div></td>';?>
 		</tr>
 		<tr class="">
-			<th class="row-label ">Frequency</td>
+			<th class="row-label "><?php echo _("Frequency")?></td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['Frequency'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<th class="row-label ">SNR</td>
+			<th class="row-label "><?php echo _("SNR")?></td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['SNRLevel'].'</div></td>';?>
 		</tr>
 		<tr class="">
-			<th class="row-label ">Power Level</td>
+			<th class="row-label "><?php echo _("Power Level")?></td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['PowerLevel'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<th class="row-label ">Modulation</td>
+			<th class="row-label "><?php echo _("Modulation")?></td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['Modulation'].'</div></td>';?>
 		</tr>
 	</tbody>
@@ -682,41 +726,41 @@ for ($i=1, $j=1; $i<count($us_ids); $i++)
 	$us_tab[$i]['LockStatus']		= $us_val[$j++][1];
 }
 ?>
-<div class="module" style="overflow:auto">
+<div class="module div_up" style="overflow:auto">
 	<table class="data" cellspacing="0" cellpadding="0">
 	<thead>
 		<tr>
-			<td class="row-label acs-th"><div style="width: 100px">Upstream</div></td>
-			<td class="row-label acs-th" colspan="<?php echo count($us_ids);?>">Channel Bonding Value</td>
+			<td class="row-label acs-th"><div style="width: 100px"><?php echo _("Upstream")?></div></td>
+			<td class="row-label acs-th" colspan="<?php echo count($us_ids);?>"><?php echo _("Channel Bonding Value")?></td>
 		</tr>
 	</thead>
 	<tbody>
 		<tr class="">
-			<th class="row-label ">Index</td>
+			<th class="row-label "><?php echo _("Index")?></td>
 			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$i.'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<th class="row-label ">Lock Status</td>
+			<th class="row-label "><?php echo _("Lock Status")?></td>
 			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$us_tab[$i]['LockStatus'].'</div></td>';?>
 		</tr>
 		<tr class="">
-			<th class="row-label ">Frequency</td>
+			<th class="row-label "><?php echo _("Frequency")?></td>
 			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$us_tab[$i]['Frequency'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<th class="row-label ">Symbol Rate</td>
+			<th class="row-label "><?php echo _("Symbol Rate")?></td>
 			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$us_tab[$i]['SymbolRate'].'</div></td>';?>
 		</tr>
 		<tr class="">
-			<th class="row-label ">Power Level</td>
+			<th class="row-label "><?php echo _("Power Level")?></td>
 			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$us_tab[$i]['PowerLevel'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<th class="row-label ">Modulation</td>
+			<th class="row-label "><?php echo _("Modulation")?></td>
 			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$us_tab[$i]['Modulation'].'</div></td>';?>
 		</tr>
 		<tr class="">
-			<th class="row-label ">Channel Type</td>
+			<th class="row-label "><?php echo _("Channel Type")?></td>
 			<?php for ($i=1; $i<count($us_ids); $i++) echo '<td><div style="width: 100px">'.$us_tab[$i]['ChannelType'].'</div></td>';?>
 		</tr>
 	</tbody>
@@ -734,28 +778,89 @@ for ($i=1, $j=1; $i<count($ec_ids); $i++)
         $ec_tab[$i]['UncorrectableCodewords']            = $ec_val[$j++][1];
 }
 ?>
-<div class="module" style="overflow:auto">
+<div class="module div_code" style="overflow:auto">
 	<table class="data" cellspacing="0" cellpadding="0">
 	<thead>
 		<tr>
-			<td class="row-label acs-th" colspan="<?php echo count($ds_ids);?>">CM Error Codewords</td>
+			<td class="row-label acs-th" colspan="<?php echo count($ds_ids);?>"><?php echo _("CM Error Codewords")?></td>
 		</tr>
 	</thead>
 	<tbody>
 		<tr class="">
-			<th class="row-label ">Unerrored Codewords</td>
+			<th class="row-label "><?php echo _("Unerrored Codewords")?></td>
 			<?php for ($i=1; $i<count($ec_ids); $i++) echo '<td><div style="width: 100px">'.$ec_tab[$i]['UnerroredCodewords'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
-			<th class="row-label ">Correctable Codewords</td>
+			<th class="row-label "><?php echo _("Correctable Codewords")?></td>
 			<?php for ($i=1; $i<count($ec_ids); $i++) echo '<td><div style="width: 100px">'.$ec_tab[$i]['CorrectableCodewords'].'</div></td>';?>
 		</tr>
 		<tr class="">
-			<th class="row-label ">Uncorrectable Codewords</td>
+			<th class="row-label "><?php echo _("Uncorrectable Codewords")?></td>
 			<?php for ($i=1; $i<count($ec_ids); $i++) echo '<td><div style="width: 100px">'.$ec_tab[$i]['UncorrectableCodewords'].'</div></td>';?>
 		</tr>
 	</tbody>
 	</table>
+</div>
+<?php 
+//WAN details Fetching
+
+$wan_Interface_obj = "Device.IP.Interface.";
+$wan_Interface_ids =  DmExtGetInstanceIds($wan_Interface_obj);
+$wan_er_name = array();
+for ($i= 1; $i< count($wan_Interface_ids);$i++){
+    $val_get = "Device.IP.Interface.".$i.".Name";
+    $wan_er_name[$id] = getStr($val_get);
+    if($wan_er_name[$id] == "erouter0"){
+        $wan_ip = "Device.IP.Interface.".$i.".IPv4Address.1.IPAddress";
+        $wan_ip_val = getStr($wan_ip);
+  		if (filter_var($wan_ip_val, FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)) {
+  		    if($wan_ip_val != "0.0.0.0"){
+                $Wan_Port_Status ="Connected";
+  		    } else {
+            	$Wan_Port_Status ="disconnected";
+            }
+        } else if (filter_var($WANIPv6, FILTER_VALIDATE_IP,FILTER_FLAG_IPV6)){
+   			if($WANIPv6){
+				$Wan_Port_Status ="Connected";
+			} else {
+    				$Wan_Port_Status ="disconnected";
+    		}
+    	}
+        $port_detail= "Device.IP.Interface.".$i.".LowerLayers";
+    }
+}
+$Wan_Port_Detail = getStr($port_detail);
+$wan_port_value = substr($Wan_Port_Detail, -1);
+if($Wan_Port_Status !="disconnected"){
+    $wan_port_value = sprintf(_("Port %d"), $wan_port_value + 1);
+} else{
+    $wan_port_value = _('WAN is not connected');
+}
+                                                                        
+$modem_downstream = getStr("Device.X_RDK-Central_COM_WanAgent.WanOE.DownstreamCurrRate");
+$modem_upstream = getStr("Device.X_RDK-Central_COM_WanAgent.WanOE.UpstreamCurrRate");
+?>
+<div class="module forms div_dsl">
+	<h2><?php echo _("Modem Stats");?></h2>
+ 	<div class="form-row ">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("Modem Status:");?></span>
+		<span class="value"><?php echo $Wan_Port_Status;?></span>
+ 	</div>
+ 	<div class="form-row odd">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("DownStream Connection Speed:");?></span>
+		<span class="value"><?php echo $modem_downstream;?></span>
+ 	</div>
+	<div class="form-row ">
+ 		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("UpStream Connection Speed:");?></span>
+		<span class="value"><?php echo $modem_upstream;?></span>
+	</div>
+</div>
+<div class="module forms div_dsl">
+	<h2><?php echo _("WAN Port");?></h2>
+ 	<div class="form-row">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("Port Detail:");?></span>
+		<span class="value"><?php echo $wan_port_value ?></span>
+	</div>		
 </div>
 </div> <!-- end #container -->
 <?php include('includes/footer.php'); ?>
