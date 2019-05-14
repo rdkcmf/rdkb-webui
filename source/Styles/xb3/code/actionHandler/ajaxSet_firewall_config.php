@@ -18,7 +18,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 //$_POST['configInfo'] = '{"firewallLevel": "High", "block_http": "Enabled","block_icmp": "Enabled",
@@ -85,6 +85,7 @@ if($validation) {
     	//sleep(1);   
     }
     setStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel", $firewall_config['firewallLevel'], true);
+    $_SESSION["sta_fire"] = $firewall_config['firewallLevel'];
     // sleep(3);
 }
 echo htmlspecialchars($_POST['configInfo'], ENT_NOQUOTES, 'UTF-8');

@@ -25,12 +25,12 @@ csrfprotector_rdkb::init();
 ?>
 <html>
 <head>
-	<title>Access blocked</title>
+	<title><?php echo _('Access blocked')?></title>
 </head>
 <body>
-<h2>Access blocked! Please contact with Administrator!</h2>
+<h2><?php echo _('Access blocked! Please contact with Administrator!')?></h2>
 </body>
 </html>
 <script>
-	alert('Access blocked! Please contact with Administrator!');
+	alert('<?php echo _('Access blocked! Please contact with Administrator!')?>');
 </script>

@@ -18,6 +18,25 @@
  limitations under the License.
 */
 ?>
+<?php
+/*
+ * Set the Locale for the Web UI based on the LANG setting or current linux locale
+ */
+$locale = getenv("LANG");
+if(isset($locale)) {
+    if(!isset($_SESSION['language'])){
+        //putenv("LANG=" . $locale);
+        setlocale(LC_MESSAGES, $locale);
+        setlocale(LC_TIME, $locale);
+        
+        $domain = "rdkb";
+        bindtextdomain($domain, 'locales');
+        bind_textdomain_codeset($domain, 'UTF-8');
+        textdomain($domain);
+        $_SESSION['language'] = $locale; // set the default locale for future pages
+    }
+}
+?>
 <?php include('includes/utility.php'); ?>
 <?php
         header('X-robots-tag: noindex,nofollow');
@@ -105,6 +124,16 @@ $_SESSION["psmMode"] = $psmMode;
 $title = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogoTitle");
 $msoLogo = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogo");
 $logo = "cmn/syndication/img/".$msoLogo;
+$partnersId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
+if (strpos($partnersId, "sky-") !== false) {
+    $battery = FALSE;
+    $MoCA = FALSE;
+    $voice_Dig = TRUE;
+} else {
+    $battery = TRUE;
+    $MoCA = TRUE;
+    $voice_Dig = FALSE;
+}
 ?>
 <head>
 	<title><?php echo $title; ?></title>
@@ -233,23 +262,28 @@ $logo = "cmn/syndication/img/".$msoLogo;
 </style>
 <ul id="status">
 	<?php
-	echo '<li id="sta_batt" class="battery first-child"><div class="sprite_cont"><span class="'.$battery_class.'" ><img src="./cmn/img/icn_battery.png"  alt="Battery icon" title="Battery icon" /></span></div><a role="toolbar" href="javascript: void(0);" tabindex="0">'.$sta_batt.'%</a>
-		<!-- NOTE: When this value changes JS will set the battery icon -->
-	</li>';
+	
+	if ($battery) {
+    	echo '<li id="sta_batt" class="battery first-child"><div class="sprite_cont"><span class="'.$battery_class.'" ><img src="./cmn/img/icn_battery.png"  alt="'._("Battery icon").'" title="'._("Battery icon").'" /></span></div><a role="toolbar" href="javascript: void(0);" tabindex="0">'.$sta_batt.'%</a>
+    		<!-- NOTE: When this value changes JS will set the battery icon -->
+    	</li>';
+	}
 	if ("true"==$sta_inet) {
-		echo '<li id="sta_inet" class="internet"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Internet Online" /></span><a href="javascript: void(0);" tabindex="0">Internet<div class="tooltip">Loading...</div></a></li>';
+		echo '<li id="sta_inet" class="internet"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("Internet Online").'" /></span><a href="javascript: void(0);" tabindex="0">'._("Internet").'<div class="tooltip">'._("Loading...").'</div></a></li>';
 	} else {
-		echo '<li id="sta_inet" class="internet off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Internet Offline" /></span><a href="javascript: void(0);" tabindex="0">Internet<div class="tooltip">Loading...</div></a></li>';
+		echo '<li id="sta_inet" class="internet off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("Internet Offline").'" /></span><a href="javascript: void(0);" tabindex="0">'._("Internet").'<div class="tooltip">'._("Loading...").'</div></a></li>';
 	}
 	if ("true"==$sta_wifi) {
-		echo '<li id="sta_wifi" class="wifi"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Wi-Fi Online" /></span><a href="javascript: void(0);" tabindex="0">Wi-Fi<div class="tooltip">Loading...</div></a></li>';
+		echo '<li id="sta_wifi" class="wifi"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("Wi-Fi Online").'" /></span><a href="javascript: void(0);" tabindex="0">'._("Wi-Fi").'<div class="tooltip">'._("Loading...").'</div></a></li>';
 	} else {
-		echo '<li id="sta_wifi" class="wifi off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Wi-Fi Offline" /></span><a href="javascript: void(0);" tabindex="0">Wi-Fi<div class="tooltip">Loading...</div></a></li>';
+		echo '<li id="sta_wifi" class="wifi off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("Wi-Fi Offline").'" /></span><a href="javascript: void(0);" tabindex="0">'._("Wi-Fi").'<div class="tooltip">'._("Loading...").'</div></a></li>';
 	}
-	if ("true"==$sta_moca) {
-		echo '<li id="sta_moca" class="MoCA"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="MoCA Online" /></span><a href="javascript: void(0);" tabindex="0">MoCA<div class="tooltip">Loading...</div></a></li>';
-	} else {
-		echo '<li id="sta_moca" class="MoCA off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="MoCA Offline" /></span><a href="javascript: void(0);" tabindex="0">MoCA<div class="tooltip">Loading...</div></a></li>';
+	if ($MoCA) {
+    	if ("true"==$sta_moca) {
+    		echo '<li id="sta_moca" class="MoCA"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("MoCA Online").'" /></span><a href="javascript: void(0);" tabindex="0">'._("MoCA").'<div class="tooltip">'._("Loading...").'</div></a></li>';
+    	} else {
+    		echo '<li id="sta_moca" class="MoCA off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("MoCA Offline").'" /></span><a href="javascript: void(0);" tabindex="0">'._("MoCA").'<div class="tooltip">'._("Loading...").'</div></a></li>';
+    	}
 	}
 	/*if ("true"==$sta_dect) {
 		echo '<li id="sta_dect" class="DECT"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="DECT Online" /></span><a href="javascript: void(0);" tabindex="0">DECT<div class="tooltip">Loading...</div></a></li>';
@@ -257,9 +291,9 @@ $logo = "cmn/syndication/img/".$msoLogo;
 		echo '<li id="sta_dect" class="DECT off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="DECT Offline" /></span><a href="javascript: void(0);" tabindex="0">DECT<div class="tooltip">Loading...</div></a></li>';
 	}*/
 	if (("High"==$sta_fire) || ("Medium"==$sta_fire)) {
-		echo '<li id="sta_fire" class="security last"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Security On" /></span><a href="javascript: void(0);" tabindex="0"><span>'.$sta_fire.' Security</span><div class="tooltip">Loading...</div></a></li>';
+		echo '<li id="sta_fire" class="security last"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("Security On").'" /></span><a href="javascript: void(0);" tabindex="0"><span>'.sprintf(_('%s Security'), _($sta_fire)).'</span><div class="tooltip">'._("Loading...").'</div></a></li>';
 	} else {
-		echo '<li id="sta_fire" class="security last off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="Security Off" /></span><a href="javascript: void(0);" tabindex="0"><span>'.$sta_fire.' Security</span><div class="tooltip">Loading...</div></a></li>';
+		echo '<li id="sta_fire" class="security last off"><span class="value on-off sprite_cont"><img src="./cmn/img/icn_on_off.png" alt="'._("Security Off").'" /></span><a href="javascript: void(0);" tabindex="0"><span>'.sprintf(_('%s Security'), _($sta_fire)).'</span><div class="tooltip">'._("Loading...").'</div></a></li>';
 	}
 	?>
 </ul>
@@ -277,11 +311,11 @@ $logo = "cmn/syndication/img/".$msoLogo;
 	<div>
 		<table>
 			<tr>
-				<td><label for="username"><b>Username:</b></label></td>
+				<td><label for="username"><b><?php echo _('Username:')?></b></label></td>
 				<td><input type="text"     id="username" name="username" style="width: 120px;" class="text" autocomplete="off" /></td>
 			</tr>
 			<tr>
-				<td><label for="password"><b>Password:</b></label></td>
+				<td><label for="password"><b><?php echo _('Password:')?></b></label></td>
 				<td><input type="password" id="password" name="password" style="width: 120px;" class="text" autocomplete="off" /></td>
 			</tr>
 		</table>
@@ -343,7 +377,7 @@ $(document).ready(function() {
 		,invalidHandler: function(form, validator) {
 			var errors = validator.numberOfInvalids();
 			if (errors) {
-				var message = errors == 1 ? 'You missed 1 field. It has been highlighted' : 'You missed ' + errors + ' fields. They have been highlighted';
+				var message = errors == 1 ? '<?php echo _("You missed 1 field. It has been highlighted")?>' : '<?php echo _("You missed") ?> ' + errors + ' <?php echo _("fields. They have been highlighted")?>';
 				$("div.error").html(message);
 				$("div.error").show();
 			} else {
@@ -362,11 +396,11 @@ $(document).ready(function() {
 		}
 		,messages: {
 			username: {
-				required: "Username cannot be blank. Please enter a valid username."
+				required: "<?php echo _('Username cannot be blank. Please enter a valid username.')?>"
 			}
 			,password: {
-				required: "Password cannot be blank. Please enter a valid password."
-				,minlength: "Password must be at least 3 characters."
+				required: "<?php echo _('Password cannot be blank. Please enter a valid password.')?>"
+				,minlength: "<?php echo _('Password must be at least 3 characters.')?>"
 			}
 		}
 	});
@@ -386,9 +420,9 @@ function f()
 }
 </script>
 <div id="content">
-	<h1>Gateway > Login</h1>
+	<h1><?php echo _('Gateway > Login')?></h1>
 	<div id="educational-tip">
-		<p class="tip">Please login to view your Wi-Fi passkey or to view and edit detailed network settings.</p>
+		<p class="tip"><?php echo _('Please login to view your Wi-Fi passkey or to view and edit detailed network settings.')?></p>
 	</div>
 <?php
 	//Home Network WiFi Settings
@@ -427,7 +461,7 @@ function f()
 		if ( $lanMode == "router" && ("true" == $wifi_24_enabled || "true" == $wifi_50_enabled) ) {
 			echo '<div class="module block" id="wifi-config">';
 				echo '<div>';
-					echo '<h2>Wi-Fi Configuration</h2>';
+					echo '<h2>'._("Wi-Fi Configuration").'</h2>';
 				echo '</div>';
 			//If both 2.4ghz and 5ghz ssid's and passkeys are the same, or only one is active, then just show one row
 			if ((($wifi_24_ssid == $wifi_50_ssid) && ($wifi_24_passkey == $wifi_50_passkey)) || !("true" == $wifi_24_enabled && "true" == $wifi_50_enabled)) {
@@ -442,7 +476,7 @@ function f()
 				if($isMSO) {
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID:</span>';
+						echo '<span class="readonlyLabel">'._("Wi-Fi SSID:").'</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_ssid.'</span>';
 					echo '</div>';
 				echo '</div>';
@@ -451,12 +485,12 @@ function f()
 				{
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID:</span>';
+						echo '<span class="readonlyLabel">'._("Wi-Fi SSID:").'</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_ssid.'</span>';
 					echo '</div>';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi Passkey:</span>';
-						echo '<span class="value">Log in to view passkey</span>';
+						echo '<span class="readonlyLabel">'._('Wi-Fi Passkey:').'</span>';
+						echo '<span class="value">'._('Log in to view passkey').'</span>';
 					echo '</div>';
 				echo '</div>';
 				}
@@ -465,13 +499,13 @@ function f()
 				if($isMSO) {
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID ('.$frequency_band.'):</span>';
+						echo '<span class="readonlyLabel">'._('Wi-Fi SSID').' (<?php echo $wifi_value["frequency_band"]; ?>):</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_24_ssid.'</span>';
 					echo '</div>';
 				echo '</div>';
 				echo '<div class="form-row odd">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID ('.$frequency_band1.'):</span>';
+						echo '<span class="readonlyLabel">'._('Wi-Fi SSID').' (<?php echo $wifi_value["frequency_band1"]; ?>):</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_50_ssid.'</span>';
 					echo '</div>';
 				echo '</div>';
@@ -479,22 +513,22 @@ function f()
 				else{
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID ('.$frequency_band.'):</span>';
+						echo '<span class="readonlyLabel">'._('Wi-Fi SSID').' (<?php echo $wifi_value["frequency_band"]; ?>):</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_24_ssid.'</span>';
 					echo '</div>';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi Passkey ('.$frequency_band.'):</span>';
-						echo '<span class="value">Log in to view passkey</span>';
+						echo '<span class="readonlyLabel">'._('Wi-Fi Passkey').'  (<?php echo $wifi_value["frequency_band"]; ?>):</span>';
+						echo '<span class="value">'._('Log in to view passkey').'</span>';
 					echo '</div>';
 				echo '</div>';
 				echo '<div class="form-row odd">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID ('.$frequency_band1.'):</span>';
+						echo '<span class="readonlyLabel">'._('Wi-Fi SSID').' (<?php echo $wifi_value["frequency_band1"]; ?>):</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_50_ssid.'</span>';
 					echo '</div>';
 					echo '<div class="form-row odd">';
-						echo '<span class="readonlyLabel">Wi-Fi Passkey ('.$frequency_band1.'):</span>';
-						echo '<span class="value">Log in to view passkey</span>';
+						echo '<span class="readonlyLabel">'._('Wi-Fi Passkey').' (<?php echo $wifi_value["frequency_band1"]; ?>):</span>';
+						echo '<span class="value">'._('Log in to view passkey').'</span>';
 					echo '</div>';
 				echo '</div>';
 				}
@@ -505,13 +539,13 @@ function f()
 	//Power Saving Mode is Enabled
 		echo '<div class="module psm">';
 			echo '<div class="select-row">';
-				echo '<span class="readonlyLabel label">Power Saving Mode is enabled!</span>';
+				echo '<span class="readonlyLabel label">'._('Power Saving Mode is enabled!').'</span>';
 			echo '</div>';
 		echo '</div>';
 	}
 	echo '<div class="module block" id="home-network">';
 		echo '<div>';
-			echo '<h2>Home Network</h2>';
+	echo '<h2>'._('Home Network').'</h2>';
 			if ("Disabled"==$_SESSION["psmMode"]) {
 				/*
 				$InterfaceNumber=getStr("Device.Ethernet.InterfaceNumberOfEntries");$InterfaceEnable=0;
@@ -533,41 +567,52 @@ function f()
 					}
 				}
 				if ($ethEnable) {
-					echo "<div class=\"form-row\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Ethernet On' /></span> <span class=\"readonlyLabel\">Ethernet</span></div>";
+					echo "<div class=\"form-row\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"._("Ethernet On")."' /></span> <span class=\"readonlyLabel\">"._("Ethernet")."</span></div>";
 				} else {
-					echo "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Ethernet Off' /></span> <span class=\"readonlyLabel\">Ethernet</span></div>";
+					echo "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"._("Ethernet Off")."' /></span> <span class=\"readonlyLabel\">"._("Ethernet")."</span></div>";
 				}
 				// if (getStr("Device.WiFi.SSID.1.Enable")=="true" || getStr("Device.WiFi.SSID.2.Enable")=="true") {
 				if ("true" == $sta_wifi) {		// define in userhar, should have defined every componet status in userbar
-					echo "<div class=\"form-row odd\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Wi-Fi On' /></span> <span class=\"readonlyLabel\">Wi-Fi</span></div>";
+					echo "<div class=\"form-row odd\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"._("Wi-Fi On")."' /></span> <span class=\"readonlyLabel\">"._("Wi-Fi")."</span></div>";
 				} else {
-					echo "<div class=\"form-row odd off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Wi-Fi Off' /></span> <span class=\"readonlyLabel\">Wi-Fi</span></div>";
+					echo "<div class=\"form-row odd off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"._("Wi-Fi Off")."' /></span> <span class=\"readonlyLabel\">"._("Wi-Fi")."</span></div>";
 				}
-				if (getStr("Device.MoCA.Interface.1.Status")=="Up") {
-					echo "<div class=\"form-row\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='MoCA On' /></span> <span class=\"readonlyLabel\">MoCA</span></div>";
-				} else {
-					echo "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='MoCA Off' /></span> <span class=\"readonlyLabel\">MoCA</span></div>";
+				if ($MoCA) {
+    				if (getStr("Device.MoCA.Interface.1.Status")=="Up") {
+    					echo "<div class=\"form-row\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"._("MoCA On")."' /></span> <span class=\"readonlyLabel\">"._("MoCA")."</span></div>";
+    				} else {
+    					echo "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"._("MoCA Off")."' /></span> <span class=\"readonlyLabel\">"._("MoCA")."</span></div>";
+    				}
 				}
 			}
 			else {
-				echo "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Ethernet Off' /></span> <span class=\"readonlyLabel\">Ethernet</span></div>";
-				echo "<div class=\"form-row odd off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Wi-Fi Off' /></span> <span class=\"readonlyLabel\">Wi-Fi</span></div>";
-				echo "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='MoCA Off' /></span> <span class=\"readonlyLabel\">MoCA</span></div>";
+				echo "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"._("Ethernet Off")."' /></span> <span class=\"readonlyLabel\">"._("Ethernet")."</span></div>";
+				echo "<div class=\"form-row odd off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"._("Wi-Fi Off")>"' /></span> <span class=\"readonlyLabel\">"._("Wi-Fi")."</span></div>";
+				if ($MoCA) {
+				    echo "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"._("MoCA Off")."' /></span> <span class=\"readonlyLabel\">"._("MoCA")."</span></div>";
+				}
 			}
+                        if($voice_Dig){
+				$voice_status = getStr('Device.Services.VoiceService.1.VoiceProfile.1.Line.1.Status');
+				if($voice_status){$voice_state =$voice_status;}
+				else{$voice_state='Disabled';}
+				echo "<div class=\"form-row \">
+				<span class=\"readonlyLabel\" style=\"white-space: pre;\">"._("Voice:")."</span> <span class=\"value\" style=\"white-space: pre;\">"._($voice_state)."</span></div>";
+			} 
 			?>
 			<div class="form-row odd">
-				<span class="readonlyLabel">Firewall Security Level:</span> <span class="value"><?php echo getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel")?></span>
+				<span class="readonlyLabel"><?php echo _('Firewall Security Level:')?></span> <span class="value"><?php echo _(getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel")); ?></span>
 			</div>
 		</div>
 	</div> <!-- end .module -->
 	<div id="internet-usage" class="module form">
-		<h2 style="margin-bottom: -5px;">Connected Devices</h2>
-		<table class="data" summary="This table displays Online Devices connected">
+		<h2 style="margin-bottom: -5px;"><?php echo _('Connected Devices')?></h2>
+		<table class="data" summary="<?php echo _('This table displays Online Devices connected')?>">
 		    <tr>
 			<th style="background: #f85f01;" id="active-icon" ></th>
-			<th style="background: #f85f01;" id="host-name" >Host Name</th>
-			<th style="background: #f85f01;" id="mac-address" >MAC Address</th>
-			<th style="background: #f85f01;" id="connection-type" >Connection Type</th>
+			<th style="background: #f85f01;" id="host-name" ><?php echo _('Host Name')?></th>
+			<th style="background: #f85f01;" id="mac-address" ><?php echo _('MAC Address')?></th>
+			<th style="background: #f85f01;" id="connection-type" ><?php echo _('Connection Type')?></th>
 		    </tr>
 		<?php
 		if ("Disabled"==$_SESSION["psmMode"]) {
@@ -638,7 +683,7 @@ function f()
 							$HostName = "";
 						}
 						echo "<tr $divClass>
-							<td width='5%' class='readonlyLabel' headers='active-icon'><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Host On' /></span></td>
+							<td width='5%' class='readonlyLabel' headers='active-icon'><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"._("Host On")."' /></span></td>
 							<td width='40%' class='readonlyLabel' headers='host-name'>$HostName</td>
 							<td width='' class='readonlyLabel' headers='mac-address'>".strtoupper($HostInfo[$i]['PhysAddress'])."</td>
 							<td width='' class='readonlyLabel' headers='connection-type'>$ConnectionType</td>
@@ -650,7 +695,7 @@ function f()
 		}//end of psmMode condition
 		?>
 		</table>
-		<?php if((isset($j)) && ($j > 15)) echo "<div>Maximum of 15 connected devices are listed. Please login to view all! </div>" ?>
+		<?php if((isset($j)) && ($j > 15)) echo "<div>"._("Maximum of 15 connected devices are listed. Please login to view all!")." </div>" ?>
 	</div> <!-- end .module -->
 	<!--div class="module">
 		<div class="select-row">
@@ -663,22 +708,22 @@ function f()
 			<ul id="IGMP_snooping_switch" class="radio-btns enable">
 				<li>
 					<input id="IGMP_snooping_enabled" name="IGMP_snooping" type="radio"  value="Enabled" checked="checked" />
-					<label for="IGMP_snooping_enabled" >Enable </label>
+					<label for="IGMP_snooping_enabled" ><?php echo _('Enable')?> </label>
 				</li>
 				<li class="radio-off">
 					<input id="IGMP_snooping_disabled" name="IGMP_snooping" type="radio"  value="Disabled" />
-					<label for="IGMP_snooping_disabled" >Disable </label>
+					<label for="IGMP_snooping_disabled" ><?php echo _('Disable')?> </label>
 				</li>
 			</ul>
 			<?php }else{?>
 			<ul id="IGMP_snooping_switch" class="radio-btns enable">
 				<li>
-					<input id="IGMP_snooping_enabled" name="IGMP_snooping" type="radio"  value="Enabled"/>
-					<label for="IGMP_snooping_enabled" >Enable </label>
+					<input id="IGMP_snooping_enabled" name="IGMP_snooping" type="radio"  value="<?php echo _('Enabled')?>"/>
+					<label for="IGMP_snooping_enabled" ><?php echo _('Enable')?> </label>
 				</li>
 				<li class="radio-off">
-					<input id="IGMP_snooping_disabled" name="IGMP_snooping" type="radio"  value="Disabled" checked="checked"/>
-					<label for="IGMP_snooping_disabled" >Disable </label>
+					<input id="IGMP_snooping_disabled" name="IGMP_snooping" type="radio"  value="<?php echo _('Disabled')?>" checked="checked"/>
+					<label for="IGMP_snooping_disabled" ><?php echo _('Disable')?> </label>
 				</li>
 			</ul>
 			<?php } ?>

@@ -54,8 +54,8 @@ $(document).ready(function() {
 		radio_name: "managed_devices",
 		id_on: "managed_devices_enabled",
 		id_off: "managed_devices_disabled",
-		title_on: "Enable managed devices",
-		title_off: "Disable managed devices",
+		title_on: "<?php echo _("Enable managed devices")?>",
+		title_off: "<?php echo _("Disable managed devices")?>",
 		state: jsEnableMD ? "on" : "off"
 	});
 	$("#allow_block_switch").radioswitch({
@@ -63,10 +63,10 @@ $(document).ready(function() {
 		radio_name: "access_type",
 		id_on: "allow_all",
 		id_off: "block_all",
-		title_on: "Select allow all",
-		title_off: "Select block all",
-		label_on: "Allow All",
-		label_off: "Block All",
+		title_on: "<?php echo _("Select allow all")?>",
+		title_off:"<?php echo _("Select block all")?>",
+		label_on: "<?php echo _("Allow All")?>",
+		label_off: "<?php echo _("Block All")?>",
 		state: jsAllowAll ? "on" : "off"
 	});
     $("a.confirm").unbind('click');
@@ -80,12 +80,12 @@ $(document).ready(function() {
 			var btnHander = $(this);
 			if (btnHander.attr("id").indexOf("delete")!=-1)	{
 				jConfirm(
-					"Are you sure you want to delete this device?"
-					,"Are You Sure?"
+					"<?php echo _("Are you sure you want to delete this device?")?>"
+					,"<?php echo _("Are You Sure?")?>"
 					,function(ret) {
 						if(ret) {
 							delVal = btnHander.attr('href').substring(btnHander.attr('href').indexOf("=")+1);
-							jProgress('This may take several seconds.',60);
+							jProgress('<?php echo _("This may take several seconds.")?>',60);
 							$.ajax({
 								type:"POST",
 								url:"actionHandler/ajax_managed_devices.php",
@@ -96,7 +96,7 @@ $(document).ready(function() {
 								},
 								error:function(){
 									jHide();
-									jAlert("Error! Please try later!");
+									jAlert("<?php echo _("Error! Please try later!")?>");
 								}
 							});
 						}
@@ -139,7 +139,7 @@ $(document).ready(function() {
 				//jAlert(results);
 				jHide();
 				if (UMDStatus!=results){ 
-					jAlert("Could not do it!");
+					jAlert("<?php echo _("Could not do it!")?>");
 					$("#managed_devices_switch").radioswitch("doSwitch", results === 'Enabled' ? 'on' : 'off');
 				}
 				var isUMGDDisabled = $("#managed_devices_switch").radioswitch("getState").on === false;
@@ -158,7 +158,7 @@ $(document).ready(function() {
 			},
 			error:function(){
 				jHide();
-				jAlert("Failure, please try again.");
+				jAlert("<?php echo _("Failure, please try again.")?>");
 			}
 		});
 	});
@@ -169,7 +169,7 @@ $(document).ready(function() {
 		else
 			updateAllowedDevicesVisibility("block_all");
 		var AllowBlock = isAllowBlock ? "allow_all" : "block_all";
-		jProgress('This may take several seconds', 60);
+		jProgress('<?php echo _("This may take several seconds")?>', 60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_managed_devices.php",
@@ -188,7 +188,7 @@ $(document).ready(function() {
 			},
 			error:function(){
 				jHide();
-				jAlert("Failure, please try again.");
+				jAlert("<?php echo _("Failure, please try again.")?>");
 			}
 		});
 	});
@@ -196,32 +196,32 @@ $(document).ready(function() {
 </script>
 <?php if($CloudUIEnable == "true"){ ?>
 <div  id="content">
-	<h1>Parental Control > Managed Devices</h1>
+	<h1><?php echo _("Parental Control > Managed Devices")?></h1>
 	<div class="module forms enable">
 		<div id="content" style="text-align: center;">
 			<br>
-			<h3>Managing your home network settings is now easier than ever.<br>Visit <a href="http://<?php echo $productLink;?>"><?php echo $productLink ?></a> to enable parental controls for devices connected<br>to your home network, among many other features and settings.</h3>
+			<h3><?php echo sprintf(_("Managing your home network settings is now easier than ever.<br>Visit <a href='http://%s'>%s</a> to enable parental controls for devices connected<br>to your home network, among many other features and settings."),$productLink, $productLin)?></h3>
 			<br>
 		</div>
 	</div> <!-- end .module -->
 </div><!-- end #content -->
 <?php } else { ?>
 <div  id="content" class="main_content">
-	<h1>Parental Control > Managed Devices</h1>
+	<h1><?php echo _("Parental Control > Managed Devices")?></h1>
 	<div  id="educational-tip">
-			<p class="tip">Manage access by specific devices on your network.</p>
-			<p class="hidden">Select <strong>Enable</strong> to manage network devices, or <strong>Disable</strong> to turn off.</p>
-			<p class="hidden"><strong>Access Type:</strong> If you don't want your devices to be restricted, select <strong>Allow All</strong>. Then select <strong>+ADD BLOCKED DEVICE</strong> to add only the device you want to restrict.</p>
-			<p class="hidden">If you want your devices to be restricted, select <strong>Block All.</strong> Click <strong>+ADD ALLOWED DEVICE</strong> to add the device you don't want to restrict.</p>
+			<p class="tip"><?php echo _("Manage access by specific devices on your network.")?></p>
+			<p class="hidden"><?php echo _("Select <strong>Enable</strong> to manage network devices, or <strong>Disable</strong> to turn off.")?></p>
+			<p class="hidden"><?php echo _("<strong>Access Type:</strong> If you don't want your devices to be restricted, select <strong>Allow All</strong>. Then select <strong>+ADD BLOCKED DEVICE</strong> to add only the device you want to restrict.")?></p>
+			<p class="hidden"><?php echo _("If you want your devices to be restricted, select <strong>Block All.</strong> Click <strong>+ADD ALLOWED DEVICE</strong> to add the device you don't want to restrict.")?></p>
 	</div>
 	<div class="module forms enable">
-		<h2>Managed Devices</h2>
+		<h2><?php echo _("Managed Devices")?></h2>
 		<div class="form-row">
-			<span class="readonlyLabel label">Managed Devices:</span>
+			<span class="readonlyLabel label"><?php echo _("Managed Devices:")?></span>
 			<span id="managed_devices_switch"></span>
 		</div>
 		<div class="form-row">
-			<label for="access_type">Access Type:</label>
+			<label for="access_type"><?php echo _("Access Type:")?></label>
 			<span id="allow_block_switch"></span>
 		</div>
 	</div>
@@ -274,14 +274,14 @@ $(document).ready(function() {
 		}
 	?>
 	<div  id="allowed-devices" class="module data">
-		<h2>Allowed Devices</h2>
-		<p class="button"><a tabindex='0' href="managed_devices_add_computer_allowed.php" class="btn"  id="add-allowed-devices">+ ADD ALLOWED DEVICE</a></p>
+		<h2><?php echo _("Allowed Devices")?></h2>
+		<p class="button"><a tabindex='0' href="managed_devices_add_computer_allowed.php" class="btn"  id="add-allowed-devices"><?php echo _("+ ADD ALLOWED DEVICE")?></a></p>
 		<table class="data" summary="This table lists allowed devices">
 		    <tr>
 		    	<th id="allowed-number" class=" number">&nbsp;</th>
-		        <th id="allowed-device-name" class="">Computer Name</th>
-		        <th id="allowed-mac-address" class="">MAC Address</th>
-		        <th id="allowed-time" class="">When Allowed</th>
+		        <th id="allowed-device-name" class=""><?php echo _("Computer Name")?></th>
+		        <th id="allowed-mac-address" class=""><?php echo _("MAC Address")?></th>
+		        <th id="allowed-time" class=""><?php echo _("When Allowed")?></th>
 		        <th id="allowed-edit-button" class=" edit">&nbsp;</th>
         		<th id="allowed-delete-button" class=" delete">&nbsp;</th>
 		    </tr>
@@ -296,8 +296,8 @@ $(document).ready(function() {
 						<td headers='allowed-device-name'>".$arrayAllowName[$i]."</td>
 						<td headers='allowed-mac-address'>".$arrayAllowMAC[$i]."</td>
 						<td headers='allowed-time'>".$arrayAllowStatus[$i]."</td>
-						<td headers='allowed-edit-button' class=\"edit\"><a tabindex='0' href=\"managed_devices_edit_allowed.php?id=$arrayAllowID[$i]\" class=\"btn\"  id=\"edit_$arrayAllowID[$i]\">Edit</a></td>
-						<td headers='allowed-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.php?del=$arrayAllowID[$i]\" class=\"btn confirm\" title=\"Delete this device\" id=\"delete_$arrayAllowID[$i]\">x</a></td>
+						<td headers='allowed-edit-button' class=\"edit\"><a tabindex='0' href=\"managed_devices_edit_allowed.php?id=$arrayAllowID[$i]\" class=\"btn\"  id=\"edit_$arrayAllowID[$i]\">"._("Edit")."</a></td>
+						<td headers='allowed-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.php?del=$arrayAllowID[$i]\" class=\"btn confirm\" title=\""._("Delete this device")."\" id=\"delete_$arrayAllowID[$i]\">x</a></td>
 					</tr>"; 
 				} 
 			?>
@@ -314,14 +314,14 @@ $(document).ready(function() {
 		</table>
 	</div> <!-- end .module -->
 	<div  id="blocked-devices" class="module data">
-		<h2>Blocked Devices</h2>
-		<p class="button"><a tabindex='0' href="managed_devices_add_computer_blocked.php" class="btn"  id="add-blocked-devices">+ ADD BLOCKED DEVICE</a></p>
+		<h2><?php echo _("Blocked Devices")?></h2>
+		<p class="button"><a tabindex='0' href="managed_devices_add_computer_blocked.php" class="btn"  id="add-blocked-devices"><?php echo _("+ ADD BLOCKED DEVICE")?></a></p>
 		<table class="data" summary="This table lists blocked devices">
 		    <tr> 	
         		<th id="blocked-number" class=" number">&nbsp;</th>
-		        <th id="blocked-device-name" class="">Computer Name</th>
-		        <th id="blocked-mac-address" class="">MAC Address</th>
-		        <th id="blocked-time" class="">When Blocked</th>
+		        <th id="blocked-device-name" class=""><?php echo _("Computer Name")?></th>
+		        <th id="blocked-mac-address" class=""><?php echo _("MAC Address")?></th>
+		        <th id="blocked-time" class=""><?php echo _("When Blocked")?></th>
 		        <th id="blocked-edit-button" class=" edit">&nbsp;</th>
         		<th id="blocked-delete-button" class=" delete">&nbsp;</th>
 		    </tr> 
@@ -336,8 +336,8 @@ $(document).ready(function() {
 						<td headers='blocked-device-name'>".$arrayBlockName[$i]."</td>
 						<td headers='blocked-mac-address'>".$arrayBlockMAC[$i]."</td>
 						<td headers='blocked-time'>".$arrayBlockStatus[$i]."</td>
-						<td headers='blocked-edit-button' class=\"edit\"><a tabindex='0' href=\"managed_devices_edit_blocked.php?id=$arrayBlockID[$i]\" class=\"btn\"  id=\"edit_$arrayBlockID[$i]\">Edit</a></td>
-						<td headers='blocked-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.php?del=$arrayBlockID[$i]\" class=\"btn confirm\" title=\"Delete this device\" id=\"delete_$arrayBlockID[$i]\">x</a></td>
+						<td headers='blocked-edit-button' class=\"edit\"><a tabindex='0' href=\"managed_devices_edit_blocked.php?id=$arrayBlockID[$i]\" class=\"btn\"  id=\"edit_$arrayBlockID[$i]\">"._("Edit")."</a></td>
+						<td headers='blocked-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.php?del=$arrayBlockID[$i]\" class=\"btn confirm\" title=\""._("Delete this device")."\" id=\"delete_$arrayBlockID[$i]\">x</a></td>
 					</tr>"; 
 				} 
 			?>

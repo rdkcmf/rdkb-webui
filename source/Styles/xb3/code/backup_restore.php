@@ -72,11 +72,11 @@ function openWindow(anchor, options) {
 <div id="content">
 	<h1>Add-ins > Overview</h1>
     <div id="educational-tip">
-		<p class="tip">TIP: Click on the configure button to configure the Addin device.</p>
+		<p class="tip"><?php echo _("TIP: Click on the configure button to configure the Addin device.")?></p>
     </div>
 	<div class="module data">
 		<h2>Add-ins</h2>
-					<input type="button" onclick="f()"> Configure</td>
+					<input type="button" onclick="f()"> <?php echo _("Configure")?></td>
 				</div>
 	</div> <!-- end .module -->
 </div><!-- end #content -->

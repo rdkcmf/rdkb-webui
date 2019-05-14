@@ -19,7 +19,7 @@
 <?php 
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 $blockedSiteInfo = json_decode($_POST['BlockInfo'], true);
@@ -41,7 +41,7 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 		if($validation) $validation = validTime($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime']);
 		if($validation) $validation = validDays($blockedSiteInfo['blockedDays']);
 	}
-	$result = ($validation)?'':'Invalid Inputs!';
+	$result = ($validation)?'':_('Invalid Inputs!');
 	if ($result == ""){
 	   	//firstly, check whether URL exist or not
 		$url = $blockedSiteInfo['URL'];
@@ -59,7 +59,7 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 			$TD1=array($startTime, $endTime, $blockDays);
 			$TD2=array($start_Time, $end_Time, $block_Days);
 			if (($url == $value["Site"]) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
-				$result .= "Conflict with other blocked site rule. Please check your input!";
+				$result .= _("Conflict with other blocked site rule. Please check your input!");
 				break;
 			}
 		}
@@ -77,10 +77,10 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 			);
 			$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);	
 			if (!$retStatus){
-				$result="Success!";
+				$result=_("Success!");
 			}	
 			else {
-				$result = 'Failed to add';
+				$result = _('Failed to add');
 			}
 			/*setStr($objPrefix.$index.".Site", $blockedSiteInfo['URL'], false);
 			setStr($objPrefix.$index.".AlwaysBlock", $blockedSiteInfo['alwaysBlock'], false);
@@ -115,10 +115,10 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 				$retStatus2 = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);
 			}
 			if ((!$retStatus1 && !$timeData[3]) || (!$retStatus1 && $timeData[3] && !$retStatus2)){
-				$result="Success!";
+				$result=_("Success!");
 			}
 			else {
-				$result = 'Failed to add';
+				$result = _('Failed to add');
 			}
 /*
 			setStr($objPrefix.$index.".Site", $blockedSiteInfo['URL'], false);
@@ -141,7 +141,7 @@ else{
 		if($validation) $validation = validTime($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime']);
 		if($validation) $validation = validDays($blockedSiteInfo['blockedDays']);
 	}
-	$result = ($validation)?'':'Invalid Inputs!';
+	$result = ($validation)?'':_('Invalid Inputs!');
 	$keyword = $blockedSiteInfo['Keyword'];
 		$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 		$paramNameArray = array("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
@@ -157,7 +157,7 @@ else{
 		$TD1=array($startTime, $endTime, $blockDays);
 		$TD2=array($start_Time, $end_Time, $block_Days);
 		if (($keyword == $value["Site"]) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
-			$result .= "Conflict with other blocked Keyword rule. Please check your input!";
+			$result .= _("Conflict with other blocked Keyword rule. Please check your input!");
 			break;
 		}
 	}
@@ -174,10 +174,10 @@ else{
 			);
 			$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);	
 			if (!$retStatus){
-				$result="Success!";
+				$result=_("Success!");
 			}	
 			else {
-				$result = 'Failed to add';
+				$result = _('Failed to add');
 			}
 			/*setStr($objPrefix.$index.".Site", $blockedSiteInfo['Keyword'], false);
 			setStr($objPrefix.$index.".AlwaysBlock", $blockedSiteInfo['alwaysBlock'], false);
@@ -212,10 +212,10 @@ else{
 				$retStatus2 = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);
 			}
 			if ((!$retStatus1 && !$timeData[3]) || (!$retStatus1 && $timeData[3] && !$retStatus2)){
-				$result="Success!";
+				$result=_("Success!");
 			}
 			else {
-				$result = 'Failed to add';
+				$result = _('Failed to add');
 			}
 /*
 			setStr($objPrefix.$index.".Site", $blockedSiteInfo['Keyword'], false);

@@ -78,7 +78,7 @@ $(document).ready(function() {
 			if (G_cat_iq == cat_iq){
 				return;
 			}
-			jProgress('Check telephony line status, please wait...', 60);
+			jProgress('<?php echo _("Check telephony line status, please wait...")?>', 60);
 			$.post(
 				"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
 				{"get_statusx":"true"},
@@ -87,15 +87,15 @@ $(document).ready(function() {
 					jHide();
 					if ("Off-Hook" == msg.linexhook && false == cat_iq){
 						jConfirm(
-							"<b>WARNING:</b><br/>Handset is on a call or is off-hook. Can't disable DECT now. Try later please..."
-							, 'Can not proceed!'
+							"<?php echo _('<b>WARNING:</b><br/>Handset is on a call or is off-hook. Can\'t disable DECT now. Try later please...')?>"
+							, '<?php echo _("Can not proceed!")?>'
 							, function(ret){location.reload();}
 						);
 					}
 					else{
 						jConfirm(
-							"<b>WARNING:</b><br/>Make sure that you are aware of the changes you are making. <br/>In a single line telephone configuration,CAT-iq should be enabled. <br/>In a two line telephone configuration, CAT-iq should be disabled. <br/>Enabling CAT-iq base in a two line telephone configuration in the device will impact the call seizure functionality for legacy home alarm systems. <br/><b>Are you sure you want to continue?</b>"
-							, 'Are You Sure?'
+							"<?php echo _('<b>WARNING:</b><br/>Make sure that you are aware of the changes you are making. <br/>In a single line telephone configuration,CAT-iq should be enabled. <br/>In a two line telephone configuration, CAT-iq should be disabled. <br/>Enabling CAT-iq base in a two line telephone configuration in the device will impact the call seizure functionality for legacy home alarm systems. <br/><b>Are you sure you want to continue?</b>')?>"
+							, '<?php echo _("Are You Sure?")?>'
 							, function(ret){
 								if(ret){
 									ajax_do(ajax_data);
@@ -119,8 +119,8 @@ $(document).ready(function() {
 		}
 		else if ("deregister" == target){
 			jConfirm(
-				"Are you sure you want to deregister DECT handset #"+$(this).attr("id")+"?"
-				, 'Are You Sure?'
+				"<?php echo _('Are you sure you want to deregister DECT handset #')?>" + $(this).attr("id") + "?"
+				, '<?php echo _("Are You Sure?")?>'
 				, function(ret){
 					if(ret){
 						ajax_do(ajax_data);
@@ -136,7 +136,7 @@ $(document).ready(function() {
 	$("#catiq_switch").change(eventHandler);
 });
 function ajax_do(ajax_data){
-	jProgress('This may take several seconds...',60);
+	jProgress('<?php echo _("This may take several seconds...")?>',60);
 	ajaxrequest = $.ajax({
 		type:	"POST",
 		url:	"actionHandler/ajaxSet_cordless_handsets.php",
@@ -147,7 +147,7 @@ function ajax_do(ajax_data){
 		},
 		error:function(){
 			jHide();
-			jAlert("Sorry, please try again.");
+			jAlert("<?php echo _('Sorry, please try again.')?>");
 		}
 	});	
 }
@@ -195,17 +195,17 @@ function init_data(){
 		$('.cat-iq, .save-pin, .save-tn, #tn_div').hide();
 		$("#DECT_PIN").attr("disabled", true);
 		if ("true" != cat_iq){
-			$(".cat-iq").show().html('<p style="color: red;">CAT-iq function is disabled internally, please contact administrator!</p>');
+			$(".cat-iq").show().html('<p style="color: red;"><?php echo _('CAT-iq function is disabled internally, please contact administrator!')?></p>');
 		}
 	}
 }
 </script>
 <div id="content">
-	<h1>Connected Devices > Cordless Handsets</h1>
+	<h1><?php echo _('Connected Devices > Cordless Handsets')?></h1>
 	<div id="educational-tip">
-		<p class="tip">Connect/Disconnect a certified CAT-iq 2.0 cordless handset (up to five) to the Gateway.  </p>
-		<p class="hidden"><strong>REGISTER NEW HANDSET:</strong> Click to connect a new handset and follow the instructions. </p>
-		<p class="hidden"><strong>DEREGISTER:</strong> Click to disassociate the handset from the Gateway. </p>
+		<p class="tip"><?php echo _('Connect/Disconnect a certified CAT-iq 2.0 cordless handset (up to five) to the Gateway.')?>  </p>
+		<p class="hidden"><?php echo _('<strong>REGISTER NEW HANDSET:</strong> Click to connect a new handset and follow the instructions.')?> </p>
+		<p class="hidden"><?php echo _('<strong>DEREGISTER:</strong> Click to disassociate the handset from the Gateway.')?> </p>
 	</div>
 <form action="cordless_handsets.php" method="post">
 	<div class="module cat-iq">
@@ -217,14 +217,14 @@ function init_data(){
 	</form>
 	<div id=forwarding-items>
 	<div class="module forms data">
-		<h2>Cordless Handsets</h2>
-		<table id="hs_table" cellpadding="0" cellspacing="0" class="data" summary="This table shows status of connected Cordless Handsets">
+		<h2><?php echo _('Cordless Handsets')?></h2>
+		<table id="hs_table" cellpadding="0" cellspacing="0" class="data" summary="<?php echo _('This table shows status of connected Cordless Handsets')?>">
 			<thead>
 				<tr>
-					<th id="hs-Handset">Handset</th>
-					<th id="hs-TN">Registered TN</th>
-					<th id="hs-Activity">Last Activity</th>
-					<th id="hs-Status">Line Status</th>
+					<th id="hs-Handset"><?php echo _('Handset')?></th>
+					<th id="hs-TN"><?php echo _('Registered TN')?></th>
+					<th id="hs-Activity"><?php echo _('Last Activity')?></th>
+					<th id="hs-Status"><?php echo _('Line Status')?></th>
 					<th id="hs-Blank">&nbsp;</th>
 				</tr>
 			</thead>
@@ -249,7 +249,7 @@ function init_data(){
 		</table>
 	</div> <!-- end .module -->
 	<div class="form-btn">
-		<input id="registernew" type="button" value="Register New Handset"  posttag="register" />
+		<input id="registernew" type="button" value="<?php echo _('Register New Handset')?>"  posttag="register" />
 	</div>
 	<div class="module">
 		<div class="form-row odd">
@@ -269,7 +269,7 @@ function init_data(){
 	</div>
 	<div class="form-btn save-tn">
 		<input type="button" value="save" class="btn"  posttag="save_tn" />
-		<input type="button" id="btn-cancel" value="Cancel" class="btn alt reset" onclick="location.reload();"/>
+		<input type="button" id="btn-cancel" value="<?php echo _('Cancel')?>" class="btn alt reset" onclick="location.reload();"/>
 	</div>
 </div><!-- end #content -->
 </div>

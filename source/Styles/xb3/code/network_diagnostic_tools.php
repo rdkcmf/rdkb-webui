@@ -41,7 +41,7 @@ $(document).ready(function() {
 	$.validator.addMethod("url_no_http", function(value, element) {
 		//A valid URL per the URL spec.
 		return this.optional(element)||/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/.test(value);
-	}, "Please enter a valid Hostname.");
+	}, "<?php echo _("Please enter a valid Hostname.")?>");
     $("#pageForm1").validate({
 		debug: true,
 		rules: {
@@ -198,7 +198,7 @@ $(document).ready(function() {
 		if ($("#pageForm1").valid()) {
 			var destination_address=$("#destination_address").val();
 			var count1=$("#count1").val();
-			jProgress('This may take several seconds...',120);
+			jProgress('<?php echo _("This may take several seconds...")?>',120);
 			ajaxrequest=$.ajax({
 				type:"POST",
 				url:"actionHandler/ajax_network_diagnostic_tools.php",
@@ -212,7 +212,7 @@ $(document).ready(function() {
 				},
 				error:function(){
 					jHide();
-					jAlert("Sorry, please try again.");
+					jAlert("<?php echo _("Sorry, please try again.")?>");
 				}
 			});	
 		}
@@ -221,7 +221,7 @@ $(document).ready(function() {
 		if ($("#pageForm2").valid()) {
 			var destination_ipv4=$("#ipv4_address_1").val()+"."+$("#ipv4_address_2").val()+"."+$("#ipv4_address_3").val()+"."+$("#ipv4_address_4").val();
 			var count2=$("#count2").val();
-			jProgress('This may take several seconds...',60);
+			jProgress('<?php echo _("This may take several seconds...")?>',60);
 			ajaxrequest=$.ajax({
 				type:"POST",
 				url:"actionHandler/ajax_network_diagnostic_tools.php",
@@ -233,7 +233,7 @@ $(document).ready(function() {
 				},
 				error:function(){
 					jHide();
-					jAlert("Sorry, please try again.");
+					jAlert("<?php echo _("Sorry, please try again.")?>");
 				}
 			});
 		}
@@ -249,7 +249,7 @@ $(document).ready(function() {
 			+":"+$("#ipv6_address_7").val()
 			+":"+$("#ipv6_address_8").val();
 			var count3=$("#count3").val();
-			jProgress('This may take several seconds...',120);
+			jProgress('<?php echo _("This may take several seconds...")?>',120);
 			ajaxrequest=$.ajax({
 				type:"POST",
 				url:"actionHandler/ajax_network_diagnostic_tools.php",
@@ -261,7 +261,7 @@ $(document).ready(function() {
 				},
 				error:function(){
 					jHide();
-					jAlert("Sorry, please try again.");
+					jAlert("<?php echo _("Sorry, please try again.")?>");
 				}
 			});
 		}
@@ -272,7 +272,7 @@ $(document).ready(function() {
 			+"."+$("#trace_ipv4_address_2").val()
 			+"."+$("#trace_ipv4_address_3").val()
 			+"."+$("#trace_ipv4_address_4").val();
-			jProgress('This may take several seconds...',120);
+			jProgress('<?php echo _("This may take several seconds...")?>',120);
 			// if another var name, jprogress can't auto abort, but have to abort manually.
 			ajaxrequest = $.ajax({
 				type:"POST",
@@ -282,7 +282,7 @@ $(document).ready(function() {
 				success:function(results){
 					var trace_ipv4_status = results.trace_ipv4_status;
 					var trace_ipv4_result = results.trace_ipv4_result;
-					$("#pop_trace").text("Status: "+trace_ipv4_status+" !\n");
+					$("#pop_trace").text("<?php echo _("Status:")?> "+trace_ipv4_status+" !\n");
 					jHide();				
 					showTracerouteDialog();
 					if ("Complete" == trace_ipv4_status){
@@ -297,7 +297,7 @@ $(document).ready(function() {
 				},
 				error:function(){
 					jHide();
-					jAlert("Sorry, please try again.");
+					jAlert("<?php echo _("Sorry, please try again.")?>");
 				}
 			});
 		}
@@ -312,7 +312,7 @@ $(document).ready(function() {
 			+":"+$("#trace_ipv6_address_6").val()
 			+":"+$("#trace_ipv6_address_7").val()
 			+":"+$("#trace_ipv6_address_8").val();
-			jProgress('This may take several seconds...',120);
+			jProgress('<?php echo _("This may take several seconds...")?>',120);
 			// if another var name, jprogress can't auto abort, but have to abort manually.
 			ajaxrequest = $.ajax({
 				type:"POST",
@@ -322,7 +322,7 @@ $(document).ready(function() {
 				success:function(results){
 					var trace_ipv6_status = results.trace_ipv6_status;
 					var trace_ipv6_result = results.trace_ipv6_result;
-					$("#pop_trace").text("Status: "+trace_ipv6_status+" !\n");
+					$("#pop_trace").text("<?php echo _("Status:")?> "+trace_ipv6_status+" !\n");
 					jHide();				
 					showTracerouteDialog();
 					if ("Complete" == trace_ipv6_status){
@@ -337,7 +337,7 @@ $(document).ready(function() {
 				},
 				error:function(){
 					jHide();
-					jAlert("Sorry, please try again.");
+					jAlert("<?php echo _("Sorry, please try again.")?>");
 				}
 			});
 		}
@@ -347,7 +347,7 @@ function showTracerouteDialog() {
 	$.virtualDialog({
 		title: "Traceroute Tool",
 		content: $("#traceroute_dialog"),
-		footer: '<input id="pop_button" type="button" value="Close" style="float: right;" />',
+		footer: '<input id="pop_button" type="button" value="<?php echo _("Close")?>" style="float: right;" />',
 		width: "600px"
 	});
 	$("#pop_button").off("click").on("click", function(){
@@ -359,42 +359,42 @@ function showTracerouteDialog() {
 	$ConnectivityTestURL = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.NetworkDiagnosticTools.ConnectivityTestURL");
 ?>
 <div id="content">
-	<h1>Troubleshooting > Network Diagnostic Tools</h1>
+	<h1><?php echo _("Troubleshooting > Network Diagnostic Tools")?></h1>
 	<div id="educational-tip">
-		<p class="tip">Troubleshoot your network connectivity.</p>
-		<p class="hidden"><strong>Test Connectivity Results:</strong> Checks your connectivity to the Internet.</p>
-		<p class="hidden"><strong>Check IPv4 and IPv6 Address Results:</strong> Identifies accessibility to specific IP addresses.</p>
-		<p class="hidden"><strong>Traceroute Results:</strong> Displays the route of packets across an Internet Protocol (IP) network.</p>
+		<p class="tip"><?php echo _("Troubleshoot your network connectivity.")?></p>
+		<p class="hidden"><?php echo _("<strong>Test Connectivity Results:</strong> Checks your connectivity to the Internet.")?></p>
+		<p class="hidden"><?php echo _("<strong>Check IPv4 and IPv6 Address Results:</strong> Identifies accessibility to specific IP addresses.")?></p>
+		<p class="hidden"><?php echo _("<strong>Traceroute Results:</strong> Displays the route of packets across an Internet Protocol (IP) network.")?></p>
 	</div>
 	<form method="post" id="pageForm1">
 	<div class="module forms">
-		<h2>Test Connectivity Results</h2>
+		<h2><?php echo _("Test Connectivity Results")?></h2>
     	<div class="form-row">
-			<span class="readonlyLabel">Connectivity to the Internet:</span> <span class="value" id="connectivity_internet">Not Tested</span>
+			<span class="readonlyLabel"><?php echo _("Connectivity to the Internet:")?></span> <span class="value" id="connectivity_internet"><?php echo _("Not Tested")?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">Packets Sent:</span> <span class="value" id="packets_sent">Not Tested</span>
+			<span class="readonlyLabel"><?php echo _("Packets Sent:")?></span> <span class="value" id="packets_sent"><?php echo _("Not Tested")?></span>
 		</div>
 		<div class="form-row">
-			<span class="readonlyLabel">Packets Received:</span> <span class="value" id="packets_received">Not Tested</span>
+			<span class="readonlyLabel"><?php echo _("Packets Received:")?></span> <span class="value" id="packets_received"><?php echo _("Not Tested")?></span>
 		</div>
 		<div class="form-row odd">
-			<label for="destination_address"> Destination Address: </label>
+			<label for="destination_address"> <?php echo _("Destination Address:")?> </label>
 			<input type="text" value="<?php echo $ConnectivityTestURL; ?>" id="destination_address" name="destination_address"  size="25" />
-			<span for="count" ><b> Count: </b></span>
+			<span for="count" ><b> <?php echo _("Count:")?> </b></span>
 			<label for="count1"  class="acs-hide"></label>
 			<input type="text" value=4 id="count1" name="count1" maxlength="1" size="1" />
 		</div>
 		<div class="form-row">
-			<input type="button" class="btn" id="test_connectivity" value="Test  Connectivity"/>
+			<input type="button" class="btn" id="test_connectivity" value="<?php echo _("Test  Connectivity")?>"/>
 		</div>
 	</div> <!-- end .module -->
 	</form>
 	<form method="post" id="pageForm2">
 	<div class="module forms">
-		<h2>Check for IPv4 Address Results</h2>
+		<h2><?php echo _("Check for IPv4 Address Results")?></h2>
 		<div class="form-row">
-			<label for="ipv4_address_1">IPv4 Address:</label>
+			<label for="ipv4_address_1"><?php echo _("IPv4 Address:")?></label>
 			<input type="text" maxlength="3" id="ipv4_address_1" name="ipv4_address_1" class="gateway_address"  value="" />.
 			<label for="ipv4_address_2"  class="acs-hide"></label>
 			<input type="text" maxlength="3" id="ipv4_address_2" name="ipv4_address_2" class="gateway_address"  value="" />.
@@ -402,15 +402,15 @@ function showTracerouteDialog() {
 	        <input type="text" maxlength="3" id="ipv4_address_3" name="ipv4_address_3" class="gateway_address"  value="" />.
 			<label for="ipv4_address_4"  class="acs-hide"></label>
 	        <input type="text" maxlength="3" id="ipv4_address_4" name="ipv4_address_4" class="gateway_address"  value="" />
-	        <span for="count" ><b> Count: </b></span>
+	        <span for="count" ><b> <?php echo _("Count:")?> </b></span>
 			<label for="count2"  class="acs-hide"></label>
 			<input type="text" value=4 id="count2" name="count2" maxlength="1" size="1" />
 		</div>
     	<div class="form-row odd">
-			<span class="readonlyLabel">Connectivity:</span> <span class="value" id="connectivity_ipv4">Not Tested</span>
+			<span class="readonlyLabel"><?php echo _("Connectivity:")?></span> <span class="value" id="connectivity_ipv4"><?php echo _("Not Tested")?></span>
 		</div>
 		<div class="form-row">
-			<input type="button" class="btn" id="check_ipv4" value="Check for IP Addresses"/>
+			<input type="button" class="btn" id="check_ipv4" value="<?php echo _("Check for IP Addresses")?>"/>
 		</div>
 	</div> <!-- end .module -->
 	</form>
@@ -422,9 +422,9 @@ function showTracerouteDialog() {
 	// fe80::223:beff:fe75:9db6/64 
 ?>
 	<div class="module forms">
-			<h2>Check for IPv6 Address Results</h2>
+			<h2><?php echo _("Check for IPv6 Address Results")?></h2>
 			<div class="form-row">
-				<label for="ipv6_address_1">IPv6 Address:</label>
+				<label for="ipv6_address_1"><?php echo _("IPv6 Address:")?></label>
 	            <input type="text" class="gateway_address" name="ipv6_address_1" id="ipv6_address_1" maxlength="4" value="">:
 				<label for="ipv6_address_2"  class="acs-hide"></label>
 				<input type="text" class="gateway_address" name="ipv6_address_2" id="ipv6_address_2" maxlength="4" value="">:
@@ -440,24 +440,24 @@ function showTracerouteDialog() {
 				<input type="text" class="gateway_address" name="ipv6_address_7" id="ipv6_address_7" maxlength="4" value="">:
 				<label for="ipv6_address_8"  class="acs-hide"></label>
 				<input type="text" class="gateway_address" name="ipv6_address_8" id="ipv6_address_8" maxlength="4" value="">
-		        <span for="count1"><b> Count: </b></span>
+		        <span for="count1"><b> <?php echo _("Count:")?> </b></span>
 				<label for="count3"  class="acs-hide"></label>
 				<input type="text" value=4 id="count3" name="count3" maxlength="1" size="1" />
 	   		</div>
 	    	<div class="form-row odd">
-				<span  class="readonlyLabel">Connectivity:</span>
-				<span class="value" id="connectivity_ipv6">Not Tested</span>
+				<span  class="readonlyLabel"><?php echo _("Connectivity:")?></span>
+				<span class="value" id="connectivity_ipv6"<?php echo _(">Not Tested")?></span>
 		    </div>
 			<div class="form-row">
-				<input type="button" class="btn" id="check_ipv6" value="Check for IP Addresses"/>
+				<input type="button" class="btn" id="check_ipv6" value="<?php echo _("Check for IP Addresses")?>"/>
 			</div>
 	</div>	
 	</form>
 	<form method="post" id="pageForm4">
 	<div class="module forms">
-			<h2>Traceroute Results</h2>	
+			<h2><?php echo _("Traceroute Results")?></h2>	
 			<div class="form-row" id="ipv4">
-				<label for="trace_ipv4_address_1">IPv4 Address:</label>
+				<label for="trace_ipv4_address_1"><?php echo _("IPv4 Address:")?></label>
 					<input type="text" maxlength="3" id="trace_ipv4_address_1" name="ipv4_address_1" class="gateway_address" value="" />.
 				<label for="trace_ipv4_address_2"  class="acs-hide"></label>
 					<input type="text" maxlength="3" id="trace_ipv4_address_2" name="ipv4_address_2" class="gateway_address" value="" />.
@@ -468,7 +468,7 @@ function showTracerouteDialog() {
 				<input id="trace_ipv4" name="trace_ipv4" type="button" value="Start Traceroute" class="btn" style="float: right;" />
 			</div>	
 			<div class="form-row odd">
-				<label for="trace_ipv6_address_1">IPv6 Address:</label>
+				<label for="trace_ipv6_address_1"><?php echo _("IPv6 Address:")?></label>
 	            <input type="text" class="gateway_address" name="ipv6_address_1" id="trace_ipv6_address_1" maxlength="4" value="">:
 				<label for="trace_ipv6_address_2"  class="acs-hide"></label>
 				<input type="text" class="gateway_address" name="ipv6_address_2" id="trace_ipv6_address_2" maxlength="4" value="">:
@@ -484,15 +484,15 @@ function showTracerouteDialog() {
 				<input type="text" class="gateway_address" name="ipv6_address_7" id="trace_ipv6_address_7" maxlength="4" value="">:
 				<label for="trace_ipv6_address_8"  class="acs-hide"></label>
 				<input type="text" class="gateway_address" name="ipv6_address_8" id="trace_ipv6_address_8" maxlength="4" value="">
-				<input id="trace_ipv6" name="trace_ipv6" type="button" value="Start Traceroute" class="btn" style="float: right;" />
+				<input id="trace_ipv6" name="trace_ipv6" type="button" value="<?php echo _("Start Traceroute")?>" class="btn" style="float: right;" />
 	   		</div>			
 	</div> <!-- end .module -->	
 	</form>
 </div><!-- end #content -->
 <div id="traceroute_dialog" class="content_message" style="display: none;">
-	<p>Traceroute Results:</p>
+	<p><?php echo _("Traceroute Results:")?></p>
 	<label for="pop_trace" class="acs-hide"></label>
-	<textarea id="pop_trace" name="pop_trace" readonly="readonly" cols="69" rows="16" style="resize: none;">Loading...
+	<textarea id="pop_trace" name="pop_trace" readonly="readonly" cols="69" rows="16" style="resize: none;"><?php echo _("Loading...")?>
 	</textarea>
 </div>
 <?php include('includes/footer.php'); ?>

@@ -18,7 +18,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 	$a = getStr("Device.X_CISCO_COM_MTA.Battery.RemainingCharge");
@@ -78,15 +78,19 @@ if (!isset($_SESSION["loginuser"])) {
 	$_SESSION['battery_class'] = $battery_class;
 function get_tips($target, $status)
 {
-	$tip = "No Tips!";
+	// _("No Tips!");
+	$tip_labels = json_decode($_COOKIE['tip_labels'], true);
+	$tip = $tip_labels['none'];
 	switch($target)
 	{
 		case "sta_inet":{
 			if ("true"==$status){
-				$tip = 'Status: Connected-'.getStr("Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber").' devices connected';
+			    // _('Status: Connected-%s devices connected')
+				$tip = sprintf($tip_labels['devices'],getStr("Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber"));
 			}
 			else{
-				$tip = 'Status: Unconnected-no devices';
+				// _('Status: Unconnected-no devices');
+				$tip = $tip_labels['no_devices'];
 			}
 		}break;
 		case "sta_wifi":{
@@ -97,18 +101,22 @@ function get_tips($target, $status)
 				foreach($ids as $i){
 					$sum += getStr("Device.WiFi.AccessPoint.$i.AssociatedDeviceNumberOfEntries");
 				}
-				$tip = 'Status: Connected-'.$sum.' devices connected';
+				// _('Status: Connected-%s devices connected')
+				$tip = sprintf($tip_labels['devices'],$sum);
 			}
 			else{
-				$tip = 'Status: Unconnected-no devices';
+			    // _('Status: Unconnected-no devices')
+				$tip = $tip_labels['no_devices'];
 			}
 		}break;
 		case "sta_moca":{
 			if ("true"==$status ){
-				$tip = 'Status: Connected-'.getStr("Device.MoCA.Interface.1.X_CISCO_COM_NumberOfConnectedClients").' devices connected';
+			    // _('Status: Connected-%s devices connected')
+				$tip = sprintf($tip_labels['devices'],getStr("Device.MoCA.Interface.1.X_CISCO_COM_NumberOfConnectedClients"));
 			}
 			else{
-				$tip = 'Status: Unconnected-no devices';
+			    // _('Status: Unconnected-no devices')
+				$tip = $tip_labels['no_devices'];
 			}	
 		}break;
 		/*case "sta_dect":{
@@ -120,10 +128,12 @@ function get_tips($target, $status)
 			}
 		}break;*/
 		case "sta_fire":{
-			$tip = 'Firewall is set to '.$status;
+		    // _('Firewall is set to %s')
+			$tip = sprintf($tip_labels['firewall'],_($status));
 		}break;
 		default:{
-			$tip = "No Tips!";
+		    // _("No Tips!")
+			$tip = $tip_labels['none'];
 		}break;
 	}
 	return $tip;

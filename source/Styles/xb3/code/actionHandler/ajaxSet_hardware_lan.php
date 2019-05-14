@@ -18,7 +18,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 require_once("../includes/utility.php");
@@ -26,7 +26,7 @@ $opType = $_POST['op'];
 $r_enable = $_POST['enable'];
 try {
 	if ($opType !== 'savePort4XHS' || !($r_enable == 'true' || $r_enable == 'false')) {
-		throw new Exception('Parameters are invalid');
+		throw new Exception(_('Parameters are invalid'));
 	}
 	$response = array();
 	/* get the flag path first */
@@ -35,17 +35,17 @@ try {
 	$mapping_array  = array("PrimaryLANBridge", "PrimaryLANBridgeHSPorts", "HomeSecurityBridge", "HomeSecurityBridgePorts");
 	$multiLan = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 	if (empty($multiLan)) {
-		throw new Exception('failed to fetch parameters from backend');
+		throw new Exception(_('failed to fetch parameters from backend'));
 	}
 	$pLanBridgeHSPortEnablePath = ($multiLan[0]["PrimaryLANBridge"].".Port.".$multiLan[0]["PrimaryLANBridgeHSPorts"].".Enable");
 	$HSBridgePortEnablePath = ($multiLan[0]["HomeSecurityBridge"].".Port.".$multiLan[0]["HomeSecurityBridgePorts"].".Enable");
 	if (empty($pLanBridgeHSPortEnablePath) || empty($HSBridgePortEnablePath)) {
-		throw new Exception('failed to fetch parameters from backend');
+		throw new Exception(_('failed to fetch parameters from backend'));
 	}
 	if ($r_enable === 'true') {
 		if (setStr($pLanBridgeHSPortEnablePath, "false", true) !== true
 			|| setStr($HSBridgePortEnablePath, "true", true) !== true) {
-			throw new Exception('failed to set parameters to backend');
+			throw new Exception(_('failed to set parameters to backend'));
 		}
 	}
 	else {
@@ -54,15 +54,15 @@ try {
 		#	|| setStr($HSBridgePortEnablePath, "false", true) !== true) {
 		if (setStr($HSBridgePortEnablePath, "false", true) !== true
                         || setStr($pLanBridgeHSPortEnablePath, "true", true) !== true) {
-			throw new Exception('failed to set parameters to backend');
+			throw new Exception(_('failed to set parameters to backend'));
 		}
 	}
-	$response["status"] = "success";
+	$response["status"] = _("success");
 	header("Content-Type: application/json");
 	echo htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8');
 }
 catch (Exception $e) {
-	$response = array("status" => "Failed", "msg" => $e->getMessage());
+	$response = array("status" => _("Failed"), "msg" => $e->getMessage());
 	header("Content-Type: application/json");
 	echo htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8');
 }

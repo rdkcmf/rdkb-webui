@@ -18,7 +18,7 @@
 <?php 
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 /**
@@ -34,29 +34,29 @@ function isIPValid($IP, $MAC){
     $gwIP       = explode('.', $LanGwIP);
     $hostIP     = explode('.', $IP); 
     if ($LanGwIP == $IP) {
-        $msg = "This IP is reserved for Lan Gateway!";
+        $msg = _("This IP is reserved for Lan Gateway!");
         $ret = FALSE;
     }
     elseif (strstr($IP, '172.16.12')) {
-        $msg = "This IP is reserved for Home Security!";
+        $msg = _("This IP is reserved for Home Security!");
         $ret = FALSE;
     }     
     elseif (strstr($LanSubMask, '255.255.255')) {
         //the first three field should be equal to gw ip field
         if (($gwIP[0] != $hostIP[0]) || ($gwIP[1] != $hostIP[1]) || ($gwIP[2] != $hostIP[2])) {
-           $msg = "Input IP is not in valid range:\n" . "$gwIP[0].$gwIP[1].$gwIP[2].[2~253]!";
+           $msg = _("Input IP is not in valid range:\n") . "$gwIP[0].$gwIP[1].$gwIP[2].[2~253]!";
            $ret = FALSE;
         }      
     }
     elseif ($LanSubMask == '255.255.0.0') {
         if (($gwIP[0] != $hostIP[0]) || ($gwIP[1] != $hostIP[1])) {
-           $msg = "Input IP is not in valid range:\n" . "$gwIP[0].$gwIP[1].0.1 - $gwIP[0].$gwIP[1].255.254 !";
+           $msg = _("Input IP is not in valid range:\n") . "$gwIP[0].$gwIP[1].0.1 - $gwIP[0].$gwIP[1].255.254 !";
            $ret = FALSE;
         }      
     } 
     else {
         if ($gwIP[0] != $hostIP[0]) {
-           $msg = "Input IP is not in valid range:\n [10.0.0.2 ~ 10.255.255.254]!";
+           $msg = _("Input IP is not in valid range:\n [10.0.0.2 ~ 10.255.255.254]!");
            $ret = FALSE;
         } 
     } 
@@ -95,7 +95,7 @@ function isIPValid($IP, $MAC){
                     //if IP is not same, then checking whether it has been assigned to any DHCP or Static client
                     elseif(in_array(strtoupper($IP), $arrayDHCPIPs) || in_array(strtoupper($IP), $arrayStaticIPs))
                     {
-                        $msg = "IP has already been reserved for another device.\nPlease try using another IP address!";
+                        $msg = _("IP has already been reserved for another device.\nPlease try using another IP address!");
                         $ret = FALSE;
                         break;
                     }
@@ -116,7 +116,7 @@ function isIPValid($IP, $MAC){
                     //if IP is not same, then checking whether it has been assigned to any DHCP or Static client
                     elseif(in_array(strtoupper($IP), $arrayDHCPIPs) || in_array(strtoupper($IP), $arrayStaticIPs))
                     {
-					    $msg = "IP has already been reserved for another device.\nPlease try using another IP address!";
+					    $msg = _("IP has already been reserved for another device.\nPlease try using another IP address!");
                         $ret = FALSE;
 					    break;
 				    }
@@ -128,7 +128,7 @@ function isIPValid($IP, $MAC){
              //checking whether it has been assigned to any DHCP or Static client
             if(in_array(strtoupper($IP), $arrayDHCPIPs) || in_array(strtoupper($IP), $arrayStaticIPs)) 
                 {
-                    $msg = "IP has already been reserved for another device.\nPlease try using another IP address!";
+                    $msg = _("IP has already been reserved for another device.\nPlease try using another IP address!");
                     $ret = FALSE; 
                 }
         }   
@@ -144,7 +144,7 @@ if($validation) $validation = validMAC($deviceInfo['macAddress']);
 if($validation) $validation = validIPAddr($deviceInfo['reseverd_ipAddr']);
 if($validation) $validation = printableCharacters($deviceInfo['Comments']);
 if($validation) $validation = is_allowed_string($deviceInfo['Comments']);
-$result = ($validation)?'':'Invalid Inputs!';
+$result = ($validation)?'':_('Invalid Inputs!');
 if( !array_key_exists('delFlag', $deviceInfo) ) {
     //key kelFlag is not exist, so this is to reserve a ip addr for host 
     //firstly check whether this device is already in the reserved ip list
@@ -168,7 +168,7 @@ if( !array_key_exists('delFlag', $deviceInfo) ) {
         if( isSet($index) ){
            setStr("Device.Hosts.Host.$index.Comments", $deviceInfo['Comments'], true);
         }    
-        $result = "success";        
+        $result = _("success");        
     }//end of array_key_exist updateComments
     //First of all, check whether the user post IP address available or not
     elseif ($resp[0] == FALSE) {
@@ -197,7 +197,7 @@ if( !array_key_exists('delFlag', $deviceInfo) ) {
             setStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$instanceid.Chaddr", $deviceInfo['macAddress'], false);
             setStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$instanceid.Yiaddr", $deviceInfo['reseverd_ipAddr'], false);
             if(setStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$instanceid.X_CISCO_COM_Comment", $deviceInfo['Comments'], true)){
-                $result = "success";
+                $result = _("success");
             }
             if (array_key_exists('addResvIP', $deviceInfo)){
                 //this post is from add device page, only set staticAddress table, do nothing any more
@@ -222,7 +222,7 @@ if( !array_key_exists('delFlag', $deviceInfo) ) {
         } //end of exist
         else{
             if ( array_key_exists('addResvIP', $deviceInfo) ) {
-                $result = "Confilct MAC address, please input again.";
+                $result = _("Conflicting MAC address, please input again.");
             }
             else {
                 /* 
@@ -231,7 +231,7 @@ if( !array_key_exists('delFlag', $deviceInfo) ) {
                 setStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$existIndex.Chaddr", $deviceInfo['macAddress'], false);
                 setStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$existIndex.Yiaddr", $deviceInfo['reseverd_ipAddr'], false);
                 if(setStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$existIndex.X_CISCO_COM_Comment", $deviceInfo['Comments'], true)){
-                    $result = "success";
+                    $result = _("success");
                 }
                 $idArr = explode(",", getInstanceIds("Device.Hosts.Host."));
                 $macArr = array();
@@ -283,7 +283,7 @@ else{
        setStr("Device.Hosts.Host.$i.Comments", $deviceInfo['Comments'], true);
        setStr("Device.Hosts.Host.$i.AddressSource", "DHCP", true);
     }
-    $result = "success";
+    $result = _("success");
 }
 echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 ?>

@@ -324,20 +324,20 @@ $(document).ready(function() {
 		var ipaddr = $('#ipv4_gateway_address_1').val() + "." + $('#ipv4_gateway_address_2').val() + "." + $('#ipv4_gateway_address_3').val() + ".1";
 		var dhcp_addr = $('#ipv4_dhcp_beginning_address_1').val() + "." + $('#ipv4_dhcp_beginning_address_2').val() + "." + $('#ipv4_dhcp_beginning_address_3').val() + "." + $('#ipv4_dhcp_beginning_address_4').val();
 		isIp4Valid = ValidIp4Addr(dhcp_addr, ipaddr, netmask);
-		$("p:contains('DHCP Beginning address is beyond the valid range.'):visible").remove();
+		$("p:contains('<?php echo _('DHCP Beginning address is beyond the valid range.')?>'):visible").remove();
 		return isIp4Valid;
-	}, "DHCP Beginning address is beyond the valid range.");
+	}, "<?php echo _('DHCP Beginning address is beyond the valid range.')?>");
 	jQuery.validator.addMethod("checkMaskEnd",function(value,element){		
 		var netmask = $('#ipv4_subnet_mask').val();
 		var ipaddr = $('#ipv4_gateway_address_1').val() + "." + $('#ipv4_gateway_address_2').val() + "." + $('#ipv4_gateway_address_3').val() + ".1";
 		var dhcp_addr = $('#ipv4_dhcp_ending_address_1').val() + "." + $('#ipv4_dhcp_ending_address_2').val() + "." + $('#ipv4_dhcp_ending_address_3').val() + "." + $('#ipv4_dhcp_ending_address_4').val();
 		isIp4Valid = ValidIp4Addr(dhcp_addr, ipaddr, netmask);
-		$("p:contains('DHCP Ending address is beyond the valid range.'):visible").remove();
+		$("p:contains('<?php echo _('DHCP Ending address is beyond the valid range.')?>'):visible").remove();
 		return isIp4Valid;
-	}, "DHCP Ending address is beyond the valid range.");
+	}, "<?php echo _('DHCP Ending address is beyond the valid range.')?>");
 	$.validator.addMethod("hexadecimal", function(value, element) {
 		return this.optional(element) || /^[a-fA-F0-9]+$/i.test(value);
-	}, "Only hexadecimal characters are valid. Acceptable characters are ABCDEF0123456789.");
+	}, "<?php echo _('Only hexadecimal characters are valid. Acceptable characters are ABCDEF0123456789.')?>");
 	$("#pageForm").validate({
 		groups: {
 	    	ip_set: "ipv4_gateway_address_1 ipv4_gateway_address_2 ipv4_gateway_address_3",
@@ -506,8 +506,8 @@ $(document).ready(function() {
 	$("#restore-default-settings-ipv4").click(function(e) {
 		e.preventDefault();
 		jConfirm(
-		"Are you sure you want to change LAN IPv4 to default settings?"
-		,"Reset Default IPv4 Settings"
+		"<?php echo _('Are you sure you want to change LAN IPv4 to default settings?')?>"
+		,"<?php echo _('Reset Default IPv4 Settings')?>"
 		,function(ret) {
 		if(ret) {
 		var default_ip = default_admin_ip.split('.');
@@ -534,11 +534,11 @@ $(document).ready(function() {
         var Config = '{"Ipaddr":"' + ipaddr + '", "Subnet_mask":"' + subnet_mask + '", "Dhcp_begin_addr":"' + dhcp_begin_addr + '", "Dhcp_end_addr":"' + dhcp_end_addr +'", "Dhcp_lease_time":"' + lease_time + '"}';
         if((login_user == "admin") && (jsGwIP != ipaddr)) {
     	jConfirm(	        
-	        "This may need you to relogin with new Gateway IP address"
-	        , "Are you sure?"
+	        "<?php echo _('This may need you to relogin with new Gateway IP address')?>"
+	        , "<?php echo _('Are you sure?')?>"
 	        ,function(ret) {
 	            if(ret) {	
-	            	jProgress('Please be patient...', 600);               
+	            	jProgress('<?php echo _('Please be patient...')?>', 600);               
             		$.ajax({
             			type: "POST",
             			url:  "actionHandler/ajaxSet_IP_configuration.php",
@@ -637,16 +637,16 @@ $('#submit_ipv4').click(function(e){
     var gw_ip2 = parseInt($('#ipv4_gateway_address_2').val());
     var gw_ip3 = parseInt($('#ipv4_gateway_address_3').val());
     if( ((gw_ip1 != 10) && (gw_ip1 != 172) && (gw_ip1 != 192)) || ((gw_ip1 == 172) && ((gw_ip2<16) || (gw_ip2>31)))  || ((gw_ip1== 192) && ((gw_ip2 != 168) || (gw_ip3== 147)) ) ){
-		jAlert("Gateway IP is not in valid private IP range\n [10.0.0.1 ~ 10.255.255.253,\n172.16.0.1 ~ 172.31.255.254,\n192.168.0.1 ~ 192.168.146.254,\n192.168.148.1 ~ 192.168.255.254]");
+		jAlert("<?php echo _('Gateway IP is not in valid private IP range')?>\n [10.0.0.1 ~ 10.255.255.253,\n172.16.0.1 ~ 172.31.255.254,\n192.168.0.1 ~ 192.168.146.254,\n192.168.148.1 ~ 192.168.255.254]");
     	return;
     }
     if ((gw_ip1==172) && (gw_ip2==16) && (gw_ip3==12)) {
-    	jAlert("This IP address is reserved for Home Security, please input again");
+    	jAlert("<?php echo _('This IP address is reserved for Home Security, please input again')?>");
     	return;
     }
 
     if ((gw_ip1==192) && (gw_ip2==168) && (gw_ip3==245)) {
-    	jAlert("This IP address is reserved for XFi Pods, please input again");
+    	jAlert("<?php echo _('This IP address is reserved for XFi Pods, please input again')?>");
     	return;
     }
 	var ipaddr = $('#ipv4_gateway_address_1').val() + "." + $('#ipv4_gateway_address_2').val() + "." + $('#ipv4_gateway_address_3').val() + ".1";
@@ -660,19 +660,19 @@ $('#submit_ipv4').click(function(e){
 	var WAN_GW_IPv4_Address = "<?php echo $WAN_GW_IPv4_Address;?>";
 	var LAN_GW_IPv4_Address = "<?php echo $LAN_GW_IPv4_Address;?>";
 	if(ipaddr == CM_GW_IP_Address){
-		jAlert("This IP address is reserved for CM Gateway IP Address, please input again!");
+		jAlert("<?php echo _('This IP address is reserved for CM Gateway IP Address, please input again!')?>");
 	    	return;
 	}
 	else if(ipaddr == WAN_GW_IPv4_Address){
-		jAlert("This IP address is reserved for WAN Gateway IPv4 Address, please input again!");
+		jAlert("<?php echo _('This IP address is reserved for WAN Gateway IPv4 Address, please input again!')?>");
     		return;
 	}
 	else if(ipaddr == LAN_GW_IPv4_Address){
-		jAlert("This IP address is reserved for Virtual LAN IPv4 Address, please input again!");
+		jAlert("<?php echo _('This IP address is reserved for Virtual LAN IPv4 Address, please input again!')?>");
     		return;
 	}
 	else if(dhcp_begin_addr == dhcp_end_addr){
-		jAlert("DHCP beginning and ending address cannot be same, Please input again!");
+		jAlert("<?php echo _('DHCP beginning and ending address cannot be same, Please input again!')?>");
     		return;
 	}
 	var IPv4Config = '{"Ipaddr":"' + ipaddr + '", "Subnet_mask":"' + subnet_mask + '", "Dhcp_begin_addr":"' + dhcp_begin_addr 
@@ -680,11 +680,11 @@ $('#submit_ipv4').click(function(e){
     //alert(IPv4Config)
     if((login_user == "admin") && (jsGwIP != ipaddr)) {
     	jConfirm(	        
-	        "This may need you to relogin with new Gateway IP address"
-	        , "Are you sure?"
+	        "<?php echo _('This may need you to relogin with new Gateway IP address')?>"
+	        , "<?php echo _('Are you sure?')?>"
 	        ,function(ret) {
 	            if(ret) {
-	            	jProgress('Please be patient...', 600);	               
+	            	jProgress('<?php echo _('Please be patient...')?>', 600);	               
             		$.ajax({
             			type: "POST",
             			url:  "actionHandler/ajaxSet_IP_configuration.php",
@@ -714,7 +714,7 @@ $('#submit_ipv4').click(function(e){
 });
 function setIPconfiguration(configuration){
 	if($("#pageForm").valid()){
-		jProgress('This may take several seconds...', 120);
+		jProgress('<?php echo _('This may take several seconds...')?>', 120);
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_IP_configuration.php",
@@ -732,7 +732,7 @@ function setIPconfiguration(configuration){
 }
 function setIPv6configuration(configuration){
 	if($("#pageFormV6").valid()){
-		jProgress('This may take several seconds...', 120);
+		jProgress('<?php echo _('This may take several seconds...')?>', 120);
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_IP_configuration.php",
@@ -940,7 +940,7 @@ $('#submit_ipv6').click(function(e){
     var DBArr = Array(DBA_5, DBA_6, DBA_7, DBA_8);
     var DEArr = Array(DEA_5, DEA_6, DEA_7, DEA_8);
     if (! validate_v6addr_pool(DBArr, DEArr)) {
-    	jAlert("DHCPv6 beginning address can't be larger than ending address!");
+    	jAlert("<?php echo _('DHCPv6 beginning address can\'t be larger than ending address!')?>");
     	return;
     }
     var Stateful = $('#Stateful').is(":checked"); //bool, true/false
@@ -955,8 +955,8 @@ $('#submit_ipv6').click(function(e){
 $('#restore_ipv6').click(function(e) {
 	e.preventDefault();
 	jConfirm(
-	"Are you sure you want to change LAN IPv6 to default settings?"
-	,"Reset Default IPv6 Settings"
+	"<?php echo _('Are you sure you want to change LAN IPv6 to default settings?')?>"
+	,"<?php echo _('Reset Default IPv6 Settings')?>"
 	,function(ret) {
 	if(ret) {
 		$('#DBA_5').val(0);
@@ -995,20 +995,20 @@ $('#restore_ipv6').click(function(e) {
 }); //end of document ready
 </script>
 <div id="content">
-	<h1>Gateway > Connection > Local IP Configuration</h1>
+	<h1><?php echo _('Gateway > Connection > Local IP Configuration')?></h1>
 	<div id="educational-tip">
-			<p class="tip">Manage your home network settings.</p>
-			<p class="hidden"><strong>Gateway address:</strong> Enter the IP address of the Gateway.</p>
-			<p class="hidden"><strong>Subnet Mask:</strong> The subnet mask is associated with the IP address. Select the appropriate subnet mask based on the number of devices that will be connected to your network.</p>
-	<p class="hidden"><strong>DHCP Beginning and Ending Addresses:</strong> The DHCP server in the Gateway allows the router to manage IP address assignment for the connected devices.</p>
-			<p class="hidden"><strong>DHCP Lease time:</strong> The lease time is the length of time the Gateway offers an IP address to a connected device. The lease is renewed while it is connected to the network. After the time expires, the IP address is freed and may be assigned to any new device that connects to the Gateway.</p>
+			<p class="tip"><?php echo _('Manage your home network settings.')?></p>
+			<p class="hidden"><?php echo _('<strong>Gateway address:</strong> Enter the IP address of the Gateway.')?></p>
+			<p class="hidden"><?php echo _('<strong>Subnet Mask:</strong> The subnet mask is associated with the IP address. Select the appropriate subnet mask based on the number of devices that will be connected to your network.')?></p>
+	        <p class="hidden"><?php echo _('<strong>DHCP Beginning and Ending Addresses:</strong> The DHCP server in the Gateway allows the router to manage IP address assignment for the connected devices.')?></p>
+			<p class="hidden"><?php echo _('<strong>DHCP Lease time:</strong> The lease time is the length of time the Gateway offers an IP address to a connected device. The lease is renewed while it is connected to the network. After the time expires, the IP address is freed and may be assigned to any new device that connects to the Gateway.')?></p>
 	</div>
 	<form action="#TBD" method="post" id="pageForm">
     <div class="module forms">
    	    <h2>IPv4</h2>
 			<div id="dhcp-portion">	
     		<div class="form-row">
-    			<label for="ipv4_gateway_address_1">Gateway Address:</label>
+    			<label for="ipv4_gateway_address_1"><?php echo _('Gateway Address:')?></label>
     			<?php  
     			   $ipv4_addr = $LanGwIP;
     			   $ipArr = explode(".", $ipv4_addr);    			   
@@ -1022,7 +1022,7 @@ $('#restore_ipv6').click(function(e) {
     	        .<input type="text" size="3" maxlength="3" value="<?php echo $ipArr['3']; ?>" id="ipv4_gateway_address_4" disabled="disabled" name="ipv4_gateway_address_4" class="gateway_address smallInput" />
     		</div>
     		<div class="form-row odd">
-    			<label for="ipv4_subnet_mask">Subnet Mask:</label>
+    			<label for="ipv4_subnet_mask"><?php echo _('Subnet Mask:')?></label>
     			<?php 
                     $subnetmask = $device_ctrl_value["subnetmask"];
     			?>
@@ -1035,7 +1035,7 @@ $('#restore_ipv6').click(function(e) {
     			</select>
     	    </div>
     		<div class="form-row">
-    			<label for="ipv4_dhcp_beginning_address_1">DHCP Beginning Address:</label>
+    			<label for="ipv4_dhcp_beginning_address_1"><?php echo _('DHCP Beginning Address:')?></label>
 <!--     			<span id="ipv4_dhcp_beginning_address" class="readonlyValue"></span> -->
                 <?php  
     			   $beginAddr = $dhcpv4_value["beginAddr"];
@@ -1050,7 +1050,7 @@ $('#restore_ipv6').click(function(e) {
     	        .<input type="text" size="3" maxlength="3" value="<?php echo $beginArr['3']; ?>" id="ipv4_dhcp_beginning_address_4" name="ipv4_dhcp_beginning_address_4" class="smallInput" />
     		</div>
     		<div class="form-row odd">
-                <label for="ipv4_dhcp_ending_address_1">DHCP Ending Address:</label>
+                <label for="ipv4_dhcp_ending_address_1"><?php echo _('DHCP Ending Address:')?></label>
                 <?php  
     			   $endAddr = $dhcpv4_value["endAddr"];
     			   $endArr = explode(".", $endAddr);    
@@ -1064,22 +1064,22 @@ $('#restore_ipv6').click(function(e) {
     	        .<input type="text" size="3" maxlength="3" value="<?php echo $endArr['3']; ?>" id="ipv4_dhcp_ending_address_4" name="ipv4_dhcp_ending_address_4" class="smallInput"  />
     		 </div>
     		<div class="form-row" id="ipv4_dhcp_lease_time">
-    			<label for="ipv4_dhcp_lease_time_amount">DHCP Lease Time:</label>                 
+    			<label for="ipv4_dhcp_lease_time_amount"><?php echo _('DHCP Lease Time:')?></label>                 
     			<input type="text" maxlength="3" id="ipv4_dhcp_lease_time_amount" name="ipv4_dhcp_lease_time_amount" class="smallInput" />
     			<label for="ipv4_dhcp_lease_time_measure" class="acs-hide"></label>
                 <select id="ipv4_dhcp_lease_time_measure" name="ipv4_dhcp_lease_time_measure">
-    	            <option value="seconds">Seconds</option>
-    	            <option value="minutes">Minutes</option>
-    	            <option value="hours">Hours</option>
-    	            <option value="days">Days</option>
-    	            <option value="weeks">Weeks</option>
-    	            <option value="forever">Forever</option>
+    	            <option value="seconds"><?php echo _('Seconds')?></option>
+    	            <option value="minutes"><?php echo _('Minutes')?></option>
+    	            <option value="hours"><?php echo _('Hours')?></option>
+    	            <option value="days"><?php echo _('Days')?></option>
+    	            <option value="weeks"><?php echo _('Weeks')?></option>
+    	            <option value="forever"><?php echo _('Forever')?></option>
     	        </select>
     		</div>
     	</div> <!-- end of dhcp portion -->
   	    		<div class="form-btn">
-					<input id="submit_ipv4" type="button" value="Save Settings" class="btn" />
-					<input id="restore-default-settings-ipv4" type="button" value="Restore Default Settings" class="btn alt" />
+					<input id="submit_ipv4" type="button" value="<?php echo _('Save Settings')?>" class="btn" />
+					<input id="restore-default-settings-ipv4" type="button" value="<?php echo _('Restore Default Settings')?>" class="btn alt" />
 				</div>
     		</div> <!-- End Module -->
 			</form>
@@ -1087,7 +1087,7 @@ $('#restore_ipv6').click(function(e) {
     		 <div class="module forms">
     		 <h2>IPv6</h2>
     	   <div class="form-row odd">				
-				<label for="LLGA_1">Link-Local Gateway Address:</label>
+				<label for="LLGA_1"><?php echo _('Link-Local Gateway Address:')?></label>
 				<input type="text"  class="ipv6-input" size="2" maxlength="2"  id="LLGA_1" name="LLGA_1" disabled="disabled" value="fe80"/>
 				<label for="LLGA_2" class="acs-hide"></label>
 	    	        :<input type="text" class="ipv6-input" size="2" maxlength="2" id="LLGA_2" name="LLGA_2"  disabled="disabled" value="0"/>
@@ -1106,7 +1106,7 @@ $('#restore_ipv6').click(function(e) {
 				<br/>
 				</div> 
 				<div class="form-row ">
-				<label for="GGA_1">Global Gateway Address:</label>
+				<label for="GGA_1"><?php echo _('Global Gateway Address:')?></label>
 				<input type="text"  class="ipv6-input" size="2" maxlength="4"  id="GGA_1" name="GGA_1" disabled="disabled" >
 	    	    <label for="GGA_2" class="acs-hide"></label>
 	    	        :<input type="text" class="ipv6-input" size="2" maxlength="4" id="GGA_2" name="GGA_2" disabled="disabled" >
@@ -1124,15 +1124,15 @@ $('#restore_ipv6').click(function(e) {
 					:<input type="text" class="ipv6-input" size="2" maxlength="4" id="GGA_8" name="GGA_8" disabled="disabled" >
 				<br/>
 				</div> 
-			<div class="form-row odd">	<p><strong>LAN IPv6 Address Assignment</strong></p></div>
+			<div class="form-row odd">	<p><strong><?php echo _('LAN IPv6 Address Assignment')?></strong></p></div>
 			<div class="form-row ">
 			<?php 			    
 			    $state = $dhcpv6_value["state"];
 			?>	
 				<input type="checkbox"  name="State" value="Stateless" checked="checked" id="Stateless" disabled="disabled" />
-				<label for="Stateless" class="acs-hide"></label> <b>Stateless(Auto-Config)</b>
+				<label for="Stateless" class="acs-hide"></label> <b><?php echo _('Stateless(Auto-Config)')?></b>
 				<input type="checkbox"  name="State" value="Stateful" <?php if($state == 'Stateful') echo 'checked="checked"'; ?> id="Stateful" />
-				<label for="Stateful" class="acs-hide"></label> <b>Stateful(Use Dhcp Server)</b>
+				<label for="Stateful" class="acs-hide"></label> <b><?php echo _('Stateful(Use Dhcp Server)')?></b>
 			</div>
     	   <div class="form-row odd">
 			    <?php  
@@ -1143,7 +1143,7 @@ $('#restore_ipv6').click(function(e) {
 			      $v6_begin_addr = $dhcpv6_value["v6_begin_addr"];
 			      $v6_beg_add_arr = explode(':', $v6_begin_addr);
 			    ?>	
-				<label for="DBA_1">DHCPv6 Beginning Address:</label>
+				<label for="DBA_1"><?php echo _('DHCPv6 Beginning Address:')?></label>
 				<input type="text"  class="ipv6-input" size="2" maxlength="4"  id="DBA_1" name="DBA_1" disabled="disabled" value="<?php echo $ipv6_prefix_arr[0]; ?>" />
 	    	    <label for="DBA_2" class="acs-hide"></label>
 	    	        :<input type="text" class="ipv6-input" size="2" maxlength="4" id="DBA_2" name="DBA_2" disabled="disabled" value="<?php if($ipa_size > 1) echo $ipv6_prefix_arr[1]; else echo "0"; ?>" />
@@ -1168,7 +1168,7 @@ $('#restore_ipv6').click(function(e) {
 			      $v6_end_addr = $dhcpv6_value["v6_end_addr"];
 			      $v6_end_add_arr = explode(':', $v6_end_addr);
 			    ?>	
-				<label for="DEA_1">DHCPv6 Ending Address:</label>
+				<label for="DEA_1"><?php echo _('DHCPv6 Ending Address:')?></label>
 				<input type="text"  class="ipv6-input" size="2" maxlength="4"  id="DEA_1" name="DEA_1" disabled="disabled" value="<?php echo $ipv6_prefix_arr[0]; ?>" />
 	    	    <label for="DEA_2" class="acs-hide"></label>
 	    	        :<input type="text" class="ipv6-input" size="2" maxlength="4" id="DEA_2" name="DEA_2" disabled="disabled" value="<?php if($ipa_size > 1) echo $ipv6_prefix_arr[1]; else echo "0"; ?>" />
@@ -1189,21 +1189,21 @@ $('#restore_ipv6').click(function(e) {
 				<br/>
 				</div> 		
     		<div class="form-row odd" id="ipv6_dhcp_lease_time">
-    			<label for="ipv6_dhcp_lease_time_amount">DHCPv6 Lease Time:</label>
+    			<label for="ipv6_dhcp_lease_time_amount"><?php echo _('DHCPv6 Lease Time:')?></label>
     			<input type="text" size="3" maxlength="3" id="ipv6_dhcp_lease_time_amount" name="ipv6_dhcp_lease_time_amount" class="smallInput" />
                 <label for="ipv6_dhcp_lease_time_measure" class="acs-hide"></label>
                 <select id="ipv6_dhcp_lease_time_measure" name="ipv6_dhcp_lease_time_measure">
-    	            <option value="seconds">Seconds</option>
-    	            <option value="minutes">Minutes</option>
-    	            <option value="hours">Hours</option>
-    	            <option value="days">Days</option>
-    	            <option selected value="weeks">Weeks</option>
-    	            <option value="forever">Forever</option>
+    	            <option value="seconds"><?php echo _('Seconds')?></option>
+    	            <option value="minutes"><?php echo _('Minutes')?></option>
+    	            <option value="hours"><?php echo _('Hours')?></option>
+    	            <option value="days"><?php echo _('Days')?></option>
+    	            <option selected value="weeks"><?php echo _('Weeks')?></option>
+    	            <option value="forever"><?php echo _('Forever')?></option>
     	        </select>
     		</div>
   	    		<div class="form-btn">
-					<input type="button" id="submit_ipv6" value="Save Settings" class="btn" />
-					<input id="restore_ipv6" type="button" value="Restore Default Settings" class="btn alt" />
+					<input type="button" id="submit_ipv6" value="<?php echo _('Save Settings')?>" class="btn" />
+					<input id="restore_ipv6" type="button" value="<?php echo _('Restore Default Settings')?>" class="btn alt" />
 				</div>				
  	    </div> <!-- end .module -->
  	   	</form>

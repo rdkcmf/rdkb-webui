@@ -40,14 +40,14 @@ $(document).ready(function() {
 $('#btn1').click(function(e) {
 	e.preventDefault();
 	var href = $(this).attr("href");
-	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+	var message = ($(this).attr("title").length > 0) ? "<?php echo _('Are you sure you want to')?> " + $(this).attr("title") + "?" : "<?php echo _('Are you sure?')?>";
 	var info = new Array("btn1", "Device");
 	jConfirm(
-	message+"<br/><br/><strong>WARNING:</strong> Gateway will be rebooted!<br/>Incoming/outgoing call and internet connection will be interrupted!"
-	, "Are You Sure?"
+	message+"<br/><br/><?php echo _('<strong>WARNING:</strong> Gateway will be rebooted!<br/>Incoming/outgoing call and internet connection will be interrupted!')?>"
+	, "<?php echo _("Are You Sure?")?>"
 	,function(ret) {
 	if(ret) {
-		jProgress('Check telephony line status, please wait...', 60);
+		jProgress('<?php echo _("Check telephony line status, please wait...")?>', 60);
 		$.post(
 			"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
 			{"get_statusx":"true"},
@@ -56,8 +56,8 @@ $('#btn1').click(function(e) {
 				jHide();
 				if ("Off-Hook" == msg.linexhook){
 					jConfirm(
-					'Phone is Off-Hook, do you want to proceed anyway?'
-					, 'Are You Sure?'
+					'<?php echo _("Phone is Off-Hook, do you want to proceed anyway?")?>'
+					, '<?php echo _("Are You Sure?")?>'
 					, function(ret){
 						if(ret){
 							setResetInfo(info);		//async
@@ -79,11 +79,11 @@ $('#btn1').click(function(e) {
 $('#btn2').click(function(e) {
 	e.preventDefault();
 	var href = $(this).attr("href");
-	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+	var message = ($(this).attr("title").length > 0) ? "<?php echo _('Are you sure you want to')?> " + $(this).attr("title") + "?" : "<?php echo _('Are you sure?')?>";
 	var info = new Array("btn2", "Wifi");
 	jConfirm(
-	message+"<br/><br/><strong>WARNING:</strong> Wi-Fi will be unavailable for at least 90 seconds!"
-	, "Are You Sure?"
+	message+"<br/><br/><?php echo _('<strong>WARNING:</strong> Wi-Fi will be unavailable for at least 90 seconds!')?>"
+	, "<?php echo _('Are You Sure?')?>"
 	,function(ret) {
 	if(ret) {
 		setResetInfo(info);
@@ -93,11 +93,11 @@ $('#btn2').click(function(e) {
 $('#btn3').click(function(e) {
 	e.preventDefault();
 	var href = $(this).attr("href");
-	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+	var message = ($(this).attr("title").length > 0) ? "<?php echo _('Are you sure you want to')?> " + $(this).attr("title") + "?" : "<?php echo _('Are you sure?')?>";
 	var info = new Array("btn3", "Wifi,Router");
 	jConfirm(
-	message+"<br/><br/><strong>WARNING:</strong> Wi-Fi will be unavailable for at least 90 seconds!"
-	, "Are You Sure?"
+	message+"<br/><br/><?php echo _('<strong>WARNING:</strong> Wi-Fi will be unavailable for at least 90 seconds!')?>"
+	, "<?php echo _('Are You Sure?')?>"
 	,function(ret) {
 	if(ret) {
 		setResetInfo(info);
@@ -107,11 +107,11 @@ $('#btn3').click(function(e) {
 $('#btn4').click(function(e) {
 	e.preventDefault();
 	var href = $(this).attr("href");
-	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+	var message = ($(this).attr("title").length > 0) ? "<?php echo _('Are you sure you want to')?> " + $(this).attr("title") +"?" : "<?php echo _('Are you sure?')?>";
 	var info = new Array("btn4", "Wifi");
 	jConfirm(
-	message+"<br/><br/><strong>WARNING:</strong> Wi-Fi will be unavailable for at least 90 seconds!"
-	, "Are You Sure?"
+	message+"<br/><br/><?php echo _('<strong>WARNING:</strong> Wi-Fi will be unavailable for at least 90 seconds!')?>"
+	, "<?php echo _("Are You Sure?")?>"
 	,function(ret) {
 	if(ret) {
 		setResetInfo(info);
@@ -121,14 +121,14 @@ $('#btn4').click(function(e) {
 $('#btn5').click(function(e) {
 	e.preventDefault();
 	var href = $(this).attr("href");
-	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+	var message = ($(this).attr("title").length > 0) ? "<?php echo _('Are you sure you want to')?> " + $(this).attr("title") + "?" : "<?php echo _('Are you sure?')?>";
 	var info = new Array("btn5", "Router,Wifi,VoIP,Dect,MoCA");
 	jConfirm(
-	message+"<br/><br/><strong>WARNING:</strong> Gateway will be rebooted!<br/>Incoming/outgoing call and internet connection will be interrupted!"
-	, "Are You Sure?"
+	message+"<br/><br/><?php echo _('<strong>WARNING:</strong> Gateway will be rebooted!<br/>Incoming/outgoing call and internet connection will be interrupted!')?>"
+	, "<?php echo _("Are You Sure?")?>"
 	,function(ret) {
 	if(ret) {
-		jProgress('Check telephony line status, please wait...', 60);
+		jProgress('<?php echo _("Check telephony line status, please wait...")?>', 60);
 		$.post(
 			"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
 			{"get_statusx":"true"},
@@ -137,8 +137,8 @@ $('#btn5').click(function(e) {
 				jHide();
 				if ("Off-Hook" == msg.linexhook){
 					jConfirm(
-					'Phone is Off-Hook, do you want to proceed anyway?'
-					, 'Are You Sure?'
+					'<?php echo _("Phone is Off-Hook, do you want to proceed anyway?")?>'
+					, '<?php echo _("Are You Sure?")?>'
 					, function(ret){
 						if(ret){
 							setResetInfo(info);		//async
@@ -160,11 +160,11 @@ $('#btn5').click(function(e) {
 $('#btn6').click(function(e) {
 	e.preventDefault();
 	var href = $(this).attr("href");
-	var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+	var message = ($(this).attr("title").length > 0) ? "<?php echo _('Are you sure you want to')?> " + $(this).attr("title") +"?" : "<?php echo _('Are you sure?')?>";
 	var info = new Array("btn6", "password");
 	jConfirm(
 	message
-	, "Are You Sure?"
+	, "<?php echo _('Are You Sure?')?>"
 	,function(ret) {
 	if(ret) {
 		setResetInfo(info);
@@ -173,13 +173,13 @@ $('#btn6').click(function(e) {
 });
 	if("Enabled"=="<?php echo $_SESSION["psmMode"]; ?>") {
 		$('#btn2,#btn3,#btn4').unbind("click").click(function(){
-			jAlert("Your device is in battery mode that can't reset or restore Wi-Fi.");
+			jAlert("<?php echo _('Your device is in battery mode that can\'t reset or restore Wi-Fi.')?>");
 		});
 	}
 function setResetInfo(info) {
 //	alert(info);
 	var jsonInfo = '["' + info[0] + '","' + info[1]+ '","' + "<?php echo $_SESSION["loginuser"]; ?>" + '"]';
-	jProgress('This may take several seconds...', 60);
+	jProgress('<?php echo _("This may take several seconds...")?>', 60);
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_Reset_Restore.php",
@@ -187,11 +187,11 @@ function setResetInfo(info) {
 		success: function(data){
 			jHide();
 			if (data.reboot) {
-				jProgress("Please wait for rebooting ...", 999999);
+				jProgress("<?php echo _('Please wait for rebooting ...')?>", 999999);
 				setTimeout(checkForRebooting, 4 * 60 * 1000);
 			}
 			else if(data.wifi) {
-				jProgress("Restarting Wi-Fi radios. This may take up to 90 seconds...", 120);
+				jProgress("<?php echo _('Restarting Wi-Fi radios. This may take up to 90 seconds...')?>", 120);
 				//we don't know if Wi-Fi is ready (eth client can restart wifi also), so just delay 90 seconds
 				setTimeout(function(){jHide();window.location.reload();}, 90 * 1000);
 			}
@@ -221,38 +221,38 @@ function checkForRebooting() {
 }
 </script>
 <div id="content">
-  	<h1>Troubleshooting > Reset / Restore Gateway</h1>
+  	<h1><?php echo _("Troubleshooting > Reset / Restore Gateway")?></h1>
 	<div id="educational-tip">
-		<p class="tip">Reset or restore the Gateway.</p>
-		<p class="hidden">If you're having problems with the Gateway, click <strong>RESET</strong> to restart or <strong>RESTORE</strong> to the default factory settings.</p>
-		<p class="hidden">CAUTION:<strong> RESTORE </strong>will erase all your settings (passwords, parental controls, firewall).</p>
+		<p class="tip"><?php echo _("Reset or restore the Gateway.")?></p>
+		<p class="hidden"><?php echo _("If you're having problems with the Gateway, click <strong>RESET</strong> to restart or <strong>RESTORE</strong> to the default factory settings.")?></p>
+		<p class="hidden"><?php echo _("CAUTION:<strong> RESTORE </strong>will erase all your settings (passwords, parental controls, firewall).")?></p>
 	</div>
 	<form>
 	<div class="module forms" id="restore">
-		<h2>Reset / Restore Gateway</h2>
+		<h2><?php echo _("Reset / Restore Gateway")?></h2>
 		<div id="div1" class="form-row odd">
-			<span class="readonlyLabel"><a href="#" class="btn" id="btn1" title="Reset the Gateway" style="text-transform : none;">RESET</a></span> 
-			<span class="value">Press "Reset" button to restart the gateway.</span>
+			<span class="readonlyLabel"><a href="#" class="btn" id="btn1" title="<?php echo _('Reset the Gateway')?>" style="text-transform : none;"><?php echo _("RESET")?></a></span> 
+			<span class="value"><?php echo _("Press \"Reset\" button to restart the gateway.")?></span>
 		</div>
 		<div id="div2" class="form-row">
-			<span class="readonlyLabel"><a href="#" class="btn" id="btn2" title="Reset Wi-Fi Module" style="text-transform : none;">RESET Wi-Fi MODULE</a></span> 
-			<span class="value">Press "Reset Wi-Fi Module" to restart just the Wi-Fi Module only.</span>
+			<span class="readonlyLabel"><a href="#" class="btn" id="btn2" title="<?php echo _("Reset Wi-Fi Module")?>" style="text-transform : none;"><?php echo _("RESET Wi-Fi MODULE")?></a></span> 
+			<span class="value"><?php echo _("Press \"Reset Wi-Fi Module\" to restart just the Wi-Fi Module only.")?></span>
 		</div>
 		<div id="div3" class="form-row odd">
-			<span class="readonlyLabel"><a href="#" class="btn" id="btn3" title="Reset the Wi-Fi Gateway" style="text-transform : none;">RESET Wi-Fi ROUTER</a></span> 
-			<span class="value">Press "Reset Wi-Fi Router" to restart Wi-Fi and Router modules.</span>
+			<span class="readonlyLabel"><a href="#" class="btn" id="btn3" title="<?php echo _("Reset the Wi-Fi Gateway")?>" style="text-transform : none;"><?php echo _("RESET Wi-Fi ROUTER")?></a></span> 
+			<span class="value"><?php echo _("Press \"Reset Wi-Fi Router\" to restart Wi-Fi and Router modules.")?></span>
 		</div>
 		<div id="div4" class="form-row">
-			<span class="readonlyLabel"><a href="#" class="btn" id="btn4" title="Restore manufacturer defaults for Wi-Fi Only" style="text-transform : none;">RESTORE Wi-Fi SETTINGS</a></span> 
-			<span class="value">Press "Restore Wi-Fi Settings" to activate your Gateway <span style="padding-left:231px">Default Settings for Wi-Fi only. Only your Wi-Fi settings will be lost.</span></span>
+			<span class="readonlyLabel"><a href="#" class="btn" id="btn4" title="<?php echo _("Restore manufacturer defaults for Wi-Fi Only")?>" style="text-transform : none;"><?php echo _("RESTORE Wi-Fi SETTINGS")?></a></span> 
+			<span class="value"><?php echo _('Press "Restore Wi-Fi Settings" to activate your Gateway')?> <span style="padding-left:231px"><?php echo _("Default Settings for Wi-Fi only. Only your Wi-Fi settings will be lost.")?></span></span>
 		</div>
 		<div id="div6" class="form-row odd">
-			<span class="readonlyLabel"><a href="#" class="btn" id="btn6" title="Reset Password" style="text-transform : none;">RESET PASSWORD</a></span> 
-			<span class="value">Press "Reset Password" to reset User Admin tool password to factory <span style="padding-left:231px">default</span></span>
+			<span class="readonlyLabel"><a href="#" class="btn" id="btn6" title="<?php echo _("Reset Password")?>" style="text-transform : none;"><?php echo _("RESET PASSWORD")?></a></span> 
+			<span class="value"><?php echo _('Press "Reset Password" to reset User Admin tool password to factory')?> <span style="padding-left:231px"><?php echo _("default")?></span></span>
 		</div>
 		<div id="div5" class="form-row">
-			<span class="readonlyLabel"><a href="#" class="btn" id="btn5" title="Restore Factory settings" style="text-transform : none;">RESTORE FACTORY SETTINGS</a></span> 
-			<span class="value">Press "Restore Factory Settings" to activate your Gateway <span style="padding-left:231px">Default Settings. All your previous settings will be lost.</span></span>
+			<span class="readonlyLabel"><a href="#" class="btn" id="btn5" title="<?php echo _("Restore Factory settings")?>" style="text-transform : none;"><?php echo _("RESTORE FACTORY SETTINGS")?></a></span> 
+			<span class="value"><?php echo _('Press "Restore Factory Settings" to activate your Gateway')?> <span style="padding-left:231px"><?php echo _("Default Settings. All your previous settings will be lost.")?></span></span>
 		</div>
 	</div> <!-- end .module -->
 	</form>

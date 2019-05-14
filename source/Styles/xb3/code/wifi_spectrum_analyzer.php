@@ -58,7 +58,7 @@ function spanTable($rows, startIdx, endIdx){
 	function ajax_spec_analyzer()
 	{
 		$("#save_result").hide();
-		$("#scan_status").html("Scanning...").show();
+		$("#scan_status").html("<?php echo _("Scanning...")?>").show();
 		$("#start_scan").hide();
 		$("#spec_capture_table tr").slice(1).remove()
 		$.ajax({
@@ -121,7 +121,7 @@ $(document).ready(function(){
 	});
 	$("#save_result").click(function(){
 		table_data = $("#table_WSA").html();
-		jProgress('This may take several seconds', 60);
+		jProgress('<?php echo _("This may take several seconds")?>', 60);
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajax_at_saving.php",
@@ -141,27 +141,27 @@ $(window).load(function() {
 });
 </script>
 <div id="content" class="main_content">
-<h1>Troubleshooting > Wi-Fi Spectrum Analyzer</h1>
+<h1><?php echo _("Troubleshooting > Wi-Fi Spectrum Analyzer")?></h1>
 	<div class="module">
 		<div>
-			<input type="button" class="btn" value="Start Scan" id = "start_scan"/>
+			<input type="button" class="btn" value="<?php echo _("Start Scan")?>" id = "start_scan"/>
 			<span id="scan_status"></span>
-			<input type="button" class="btn button" value="Save Result" id = "save_result" style="top: 8px;"/>
+			<input type="button" class="btn button" value="<?php echo _("Save Result")?>" id = "save_result" style="top: 8px;"/>
 		</div>
 	</div>
 	<div id="table_WSA" class="module data">
-		<h2>Wi-Fi Spectrum Analyzer Data</h2>
+		<h2><?php echo _("Wi-Fi Spectrum Analyzer Data")?></h2>
 		<div style="overflow: auto;">
-			<table class="data" summary="Wi-Fi Spectrum Analyzer" id="spec_capture_table">
+			<table class="data" summary="<?php echo _("Wi-Fi Spectrum Analyzer")?>" id="spec_capture_table">
 				<tr>
-					<th id="band_id">Band</th>
-					<th id="channel_number" >Channel</th>
+					<th id="band_id"><?php echo _("Band")?></th>
+					<th id="channel_number" ><?php echo _("Channel")?></th>
 					<th id="mac_id">MAC</th>
 					<th id="ssid_name">SSID</th>
-					<th id="Signal_level">SignalLevel</th>
-					<th id="mode">Mode</th>
-					<th id="security">Security</th>
-					<th id="max_rate">MaxRate</th>
+					<th id="Signal_level"><?php echo _("SignalLevel")?></th>
+					<th id="mode"><?php echo _("Mode")?></th>
+					<th id="security"><?php echo _("Security")?></th>
+					<th id="max_rate"><?php echo _("MaxRate")?></th>
 				</tr>
 			</table>
 		</div>			

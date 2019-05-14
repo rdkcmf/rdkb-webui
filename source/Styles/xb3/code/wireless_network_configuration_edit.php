@@ -105,6 +105,7 @@ $defaultKeyPassphrase	= ($id == 3)?"":$wifi_value['DefaultKeyPassphrase'];
 $DFS_Support1		= $wifi_value['DFS_Support1'];
 $DFS_Enable1		= $wifi_value['DFS_Enable1'];
 $DFS_Support1 = "false" ; //Remove/disable DFS channels, DFS_Support1 1-supported 0-not supported
+$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 $Mesh_Enable 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.Enable");
 $Mesh_State 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.State");
 $Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')?'true':'false';
@@ -209,9 +210,9 @@ function showDialog() {
 	$("#pop_dialog").find("input[value^='WEP']").nextUntil("input").toggle( "ac" == $("#wireless_mode").val() );
 	$("#pop_dialog").find("input[value^='WEP']").toggle( "ac" == $("#wireless_mode").val() );
 	$.virtualDialog({
-		title: "Wi-Fi Security Modes",
+		title: "<?php echo _("Wi-Fi Security Modes")?>",
 		content: $("#pop_dialog"),
-		footer: '<input id="pop_cancel" type="button" value="Cancel" style="margin-left: 31px;float: right;"/><input id="pop_ok" type="button" value="Apply" style="margin-left: 31px;float: right;" />',
+		footer: '<input id="pop_cancel" type="button" value="<?php echo _("Cancel")?>" style="margin-left: 31px;float: right;"/><input id="pop_ok" type="button" value="<?php echo _("Apply")?>" style="margin-left: 31px;float: right;" />',
 		width: "600px"
 	});
 	//disable wep if 11n
@@ -227,13 +228,13 @@ function showDialog() {
 		var popSec = $("#pop_dialog [name='path']:checked").val();
 		$("#security").find("[value^='WEP'],[value='None']").remove();
 		if ("None" == popSec) {
-			$("#security").prepend('<option value="None" title="Open networks do not have a password.">Open (risky)</option>');
+			$("#security").prepend('<option value="None" title="<?php echo _("Open networks do not have a password.")?>"><?php echo _("Open (risky)")?></option>');
 		}
 		else if ("WEP_64" == popSec) {
-			$("#security").prepend('<option value="WEP_64" title="WEP  64 requires a  5 ASCII character or  10 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.">WEP 64 (risky)</option>');
+			$("#security").prepend('<option value="WEP_64" title="<?php echo _("WEP  64 requires a  5 ASCII character or  10 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>"><?php echo _("WEP 64 (risky)")?></option>');
 		}
 		else if ("WEP_128" == popSec) {
-			$("#security").prepend('<option value="WEP_128" title="WEP 128 requires a 13 ASCII character or  26 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.">WEP 128 (risky)</option>');
+			$("#security").prepend('<option value="WEP_128" title="<?php echo _("WEP 128 requires a 13 ASCII character or  26 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>"><?php echo _("WEP 128 (risky)")?></option>');
 		}
 		$("#security").val(popSec);
 		$.virtualDialog("hide");
@@ -245,13 +246,13 @@ function showDialog() {
 		//location.reload();
 		$("#security").find("[value^='WEP'],[value='None']").remove();
 		if ("None" == $security_val) {
-			$("#security").prepend('<option value="None" title="Open networks do not have a password.">Open (risky)</option>');
+			$("#security").prepend('<option value="None" title="<?php echo _("Open networks do not have a password.")?>"><?php echo _("Open (risky)")?></option>');
 		}
 		else if ("WEP_64" == $security_val) {
-			$("#security").prepend('<option value="WEP_64" title="WEP  64 requires a  5 ASCII character or  10 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.">WEP 64 (risky)</option>');
+			$("#security").prepend('<option value="WEP_64" title="<?php echo _("WEP  64 requires a  5 ASCII character or  10 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>"><?php echo _("WEP 64 (risky)")?></option>');
 		}
 		else if ("WEP_128" == $security_val) {
-			$("#security").prepend('<option value="WEP_128" title="WEP 128 requires a 13 ASCII character or  26 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.">WEP 128 (risky)</option>');
+			$("#security").prepend('<option value="WEP_128" title="<?php echo _("WEP 128 requires a 13 ASCII character or  26 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>"><?php echo _("WEP 128 (risky)")?></option>');
 		}
 		$("#security").val($security_val);
 		$.virtualDialog("hide");
@@ -270,8 +271,8 @@ $(document).ready(function() {
 		radio_name: "wireless_network",
 		id_on: "radio_enable",
 		id_off: "radio_disabled",
-		title_on: "Enable radio",
-		title_off: "Disable radio",
+		title_on: "<?php echo _("Enable radio")?>",
+		title_off: "<?php echo _("Disable radio")?>",
 		state: <?php echo ($radio_enable === "true" ? "true" : "false");?> ? "on" : "off"
 	});
 	init_form();
@@ -294,8 +295,8 @@ $(document).ready(function() {
 		if (!$("#broadcastSSID").prop("checked") && ("1"==ssid_number || "2"==ssid_number))
 		{
 			jConfirm(
-				"WARNING:<br/> Disabling Broadcast Network Name (SSID) will disable Wi-Fi Protected Setup (WPS) functionality. Are you sure you want to change?"
-				, "Are You Sure?"
+				"<?php echo _("WARNING:<br/> Disabling Broadcast Network Name (SSID) will disable Wi-Fi Protected Setup (WPS) functionality. Are you sure you want to change?")?>"
+				, "<?php echo _("Are You Sure?")?>"
 				,function(ret) {
 				if(!ret) {
 					$("#broadcastSSID").prop("checked", true)
@@ -315,8 +316,8 @@ $(document).ready(function() {
 			{
 				var security_val = $("#security").val();
 				jConfirm(
-					"WARNING:<br/>Changing the Security Mode to Open will disable Wi-Fi Protected Setup(WPS) functionality. Are you sure you want to change?"
-					, "Are You Sure?"
+					"<?php echo _("WARNING:<br/>Changing the Security Mode to Open will disable Wi-Fi Protected Setup(WPS) functionality. Are you sure you want to change?")?>"
+					, "<?php echo _("Are You Sure?")?>"
 					,function(ret) {
 					if(!ret) {
 						$("#security").find("[value='"+ security_val +"']").remove();
@@ -468,8 +469,8 @@ $(document).ready(function() {
 		var channel = $("#channel_number option:selected").val();
 		if(channel >= 52 && channel <= 140 ) {
 			jConfirm(
-				"WARNING:<br/> You are selecting a Dynamic Frequency Selection (DFS) Channel (52-140). Some Wi-Fi devices do not support DFS channels in the 5 GHz band. For those devices that do not support DFS channels, the 5 GHz Wi-Fi Network Name (SSID) will not be displayed on the list of available networks. Do you wish to continue?"
-				, "Are You Sure?"
+				"<?php echo _("WARNING:<br/> You are selecting a Dynamic Frequency Selection (DFS) Channel (52-140). Some Wi-Fi devices do not support DFS channels in the 5 GHz band. For those devices that do not support DFS channels, the 5 GHz Wi-Fi Network Name (SSID) will not be displayed on the list of available networks. Do you wish to continue?")?>"
+				, "<?php echo _("Are You Sure?")?>"
 				,function(ret) {
 					if(!ret) {
 						$("#channel_number").val('<?php echo $channel_number; ?>').attr("selected","selected");
@@ -480,7 +481,7 @@ $(document).ready(function() {
 //zqiu >>	
 	$("#restore-default-settings").click(function() {
 		var href = $(this).attr("href");
-		var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+		var message = ($(this).attr("title").length > 0) ? "<?php echo _("Are you sure you want to ")?> " + $(this).attr("title") + "?" : "<?php echo _("Are you sure?")?>";
 		//var info = new Array("btn4", "Wifi");
 		var radioIndex="<?php echo $rf; ?>";
 		var apIndex="<?php echo $id; ?>";
@@ -490,8 +491,8 @@ $(document).ready(function() {
 		}
 		var info = new Array("FactoryResetRadioAndAp", radioIndex+";"+apIndex, thisUser);
 		jConfirm(
-		message+"<br/><br/><strong>WARNING:</strong> Wi-Fi will be unavailable for at least 30 seconds!"
-		, "Are You Sure?"
+		message+"<br/><br/><?php echo _("<strong>WARNING:</strong> Wi-Fi will be unavailable for at least 30 seconds!")?>"
+		, "<?php echo _("Are You Sure?")?>"
 		,function(ret) {
 		if(ret) {
 			setResetInfo(info);
@@ -601,42 +602,56 @@ $(document).ready(function() {
  */
     $.validator.addMethod("wep_64", function(value, element, param) {
 		return !param || /^[a-fA-F0-9]{10}$|^[\S]{5}$/i.test(value);
-	}, "5 Ascii characters or 10 Hex digits.");
+	}, "<?php echo _("5 Ascii characters or 10 Hex digits.")?>");
     $.validator.addMethod("wep_128", function(value, element, param) {
 		return !param || /^[a-fA-F0-9]{26}$|^[\S]{13}$/i.test(value);
-	}, "13 Ascii characters or 26 Hex digits.");
+	}, "<?php echo _("13 Ascii characters or 26 Hex digits.")?>");
     $.validator.addMethod("wpa", function(value, element, param) {
 		return !param || /^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i.test(value);
-	}, "8 to 63 ASCII characters or a 64 hex character password.");
+	}, "<?php echo _("8 to 63 ASCII characters or a 64 hex character password.")?>");
     $.validator.addMethod("wpa2", function(value, element, param) {
 		return !param || /^[\S]{8,63}$/i.test(value);
-	}, "8 to 63 ASCII characters.");
+	}, "<?php echo _("8 to 63 ASCII characters.")?>");
     $.validator.addMethod("ssid_name", function(value, element, param) {
 		return !param || /^[ -~]{1,32}$/i.test(value);
-	}, "1 to 32 ASCII characters.");
+	}, "<?php echo _("1 to 32 ASCII characters.")?>");
     $.validator.addMethod("not_only_spaces", function(value, element, param) {
     	var res = /^\s+$/.test(value);
     	return !res;
-    }, "SSID name cannot contain only spaces");
+    }, "<?php echo _("SSID name cannot contain only spaces")?>");
     $.validator.addMethod("not_hhs", function(value, element, param) {
 		//prevent users to set XHSXXX or Xfinityxxx as ssid
 		return value.toLowerCase().indexOf("xhs-") != 0 && value.toLowerCase().indexOf("xh-") != 0;
-	}, 'SSID name starting with "XHS-" and "XH-" are reserved !');
+	}, '<?php echo _('SSID name starting with "XHS-" and "XH-" are reserved !')?>');
     $.validator.addMethod("not_hhs2", function(value, element, param) {
 		//prevent users to set optimumwifi or TWCWiFi  or CableWiFi or CoxWiFi or BHNWifi as ssid
 		//zqiu:
 		var str = value.replace(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/g,'').toLowerCase();
 		return str.indexOf("cablewifi") == -1 && str.indexOf("twcwifi") == -1 && str.indexOf("optimumwifi") == -1 && str.indexOf("xfinity") == -1 && str.indexOf("xfinitywifi") == -1 ;
 		//return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
-	}, 'SSID containing "optimumwifi", "TWCWiFi", "cablewifi", "xfinity" and "xfinitywifi" are reserved !');
-    $.validator.addMethod("not_defaulSSID", function(value, element, param) {
-		//prevent users to set defaul-SSID as ssid
-		return value.toLowerCase() != "<?php echo $defaultSSID; ?>".toLowerCase();
-	}, 'Choose a different Network Name (SSID) than the one provided on your gateway.');
-    $.validator.addMethod("not_defaulPassword", function(value, element, param) {
-		//prevent users to set defaul-Password as Password
-		return value != "<?php echo $defaultKeyPassphrase; ?>";
-	}, 'Choose a different Network Password than the one provided on your gateway.');
+	}, '<?php echo _('SSID containing "optimumwifi", "TWCWiFi", "cablewifi", "xfinity" and "xfinitywifi" are reserved !')?>');
+    <?php 
+    if (strpos($partnerId, "sky-") !== false) {
+        echo "$.validator.addMethod('not_defaulSSID', function(value, element, param) {
+    		//prevent users to set defaul-SSID as ssid
+    		return true;
+    	}, '');
+        $.validator.addMethod('not_defaulPassword', function(value, element, param) {
+    		//prevent users to set defaul-Password as Password
+    		return true;
+    	}, '');";
+        
+    } else {
+        echo "$.validator.addMethod('not_defaulSSID', function(value, element, param) {
+    		//prevent users to set defaul-SSID as ssid
+    		return value.toLowerCase() != '".$defaultSSID."'.toLowerCase();
+    	}, '"._('Choose a different Network Name (SSID) than the one provided on your gateway.')."');
+        $.validator.addMethod('not_defaulPassword', function(value, element, param) {
+    		//prevent users to set defaul-Password as Password
+    		return value != '".$defaultKeyPassphrase."';
+    	}, '"._('Choose a different Network Password than the one provided on your gateway.')."');";
+	}
+    ?>
     // XFSETUP HOME xfinitywifi cablewifi
     // a term starting with the following combination of text in uppercase or lowercase should not be allowed
 	/* $.validator.addMethod("not_XFSETUP", function(value, element, param) {
@@ -773,13 +788,13 @@ function init_form()
 		$("#pop_dialog").find("input[value^='WEP']").remove();
 	}
 	if ("None" == security) {
-		$("#security").prepend('<option value="None" title="Open networks do not have a password.">Open (risky)</option>');
+		$("#security").prepend('<option value="None" title="<?php echo _("Open networks do not have a password.")?>"><?php echo _("Open (risky)")?></option>');
 	}
 	else if ("WEP_64" == security) {
-		$("#security").prepend('<option value="WEP_64" title="WEP  64 requires a  5 ASCII character or  10 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.">WEP 64 (risky)</option>');
+		$("#security").prepend('<option value="WEP_64" title="<?php echo _("WEP  64 requires a  5 ASCII character or  10 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>"><?php echo _("WEP 64 (risky)")?></option>');
 	}
 	else if ("WEP_128" == security) {
-		$("#security").prepend('<option value="WEP_128" title="WEP 128 requires a 13 ASCII character or  26 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.">WEP 128 (risky)</option>');
+		$("#security").prepend('<option value="WEP_128" title="<?php echo _("WEP 128 requires a 13 ASCII character or  26 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>"><?php echo _("WEP 128 (risky)")?></option>');
 	}
 	$("#security").val(security);
 }
@@ -788,7 +803,7 @@ function addslashes( str ) {
 }
 function click_save()
 {
-	var network_name_1= '<?php echo $network_name; ?>';
+	var network_name_1= "<?php echo htmlspecialchars($network_name); ?>";
 	var password_mso_user = '<?php echo $password_mso_user; ?>';
 	var network_password = "";
 	var rf = "<?php echo $radio_band == "2.4"? "": 1; ?>";
@@ -822,7 +837,7 @@ function click_save()
 	+'", "thisUser":"'+"<?php echo $_SESSION["loginuser"]; ?>"
 	+'"}';	
 	// alert(jsConfig);
-	jProgress('This may take several seconds...', 60);
+	jProgress('<?php echo _("This may take several seconds...")?>', 60);
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_wireless_network_configuration_edit.php",
@@ -838,21 +853,21 @@ function click_save()
 		},
 		error: function(){            
 			jHide();
-			jAlert("Please connect to Wi-Fi using new Network Name (SSID) and Password.");
+			jAlert("<?php echo _("Please connect to Wi-Fi using new Network Name (SSID) and Password.")?>");
 		}
 	});
 }
 //zqiu >>
 function setResetInfo(info) {
 	var jsonInfo = '["' + info[0] + '","' + info[1]+ '","' + "<?php echo $_SESSION["loginuser"]; ?>" + '"]';
-	jProgress('This may take several seconds...', 60);
+	jProgress('<?php echo _("This may take several seconds...")?>', 60);
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_Reset_Restore.php",
 		data: { resetInfo: jsonInfo },
 		success: function(data){
 			jHide();
-			jProgress("Restoring Wi-Fi Settings is in progress...", 999999);
+			jProgress("<?php echo _("Restoring Wi-Fi Settings is in progress...")?>", 999999);
 			setTimeout(function(){location.reload();}, 1 * 60 * 1000);
 		},
 		error: function(){  
@@ -864,26 +879,26 @@ function setResetInfo(info) {
 //zqiu <<
 </script>
 <div id="content">
-	<h1>Gateway > Connection >  Wi-Fi > Edit <?php echo $radio_band; ?> GHz</h1>
+	<h1><?php echo _("Gateway > Connection >  Wi-Fi > Edit")." ".$radio_band; ?> GHz</h1>
 	<div id="educational-tip">
-		<p class="tip">Manage your <?php echo $radio_band; ?> GHz network settings.</p>
-		<p class="hidden"><strong>Network Name (SSID):</strong> Identifies your home network from other nearby networks. Your default name can be found on the bottom label of the Gateway, but can be changed for easier identification.</p>
-		<p class="hidden"><strong>Mode:</strong>  <?php echo $radio_band; ?> GHz operates in b/g/n modes. Unless you have older Wi-Fi devices that use only 'b' mode, use the default 802.11 g/n for faster performance.</p>
-		<p class="hidden"><strong>Security Mode:</strong> Secures data between your Wi-Fi devices and the Gateway. The default WPAWPA2-PSK (TKIP/AES) setting is compatible with most devices and provides the best security and performance.</p>
-		<p class="hidden"><strong>Channel Selection:</strong>  Channel to be used for your home Wi-Fi network. In Automatic mode (default), the Gateway will select the channel with the least amount of Wi-Fi interference. In Manual mode, you can choose the channel to be used.</p>
-		<p class="hidden"><strong>Network Password(Key):</strong> Required by Wi-Fi products to connect to your secure network. The default setting can be found on the bottom label of the Gateway. </p>
-		<p class="hidden"><strong>Broadcast Network Name (SSID):</strong>  If enabled, the Network Name (SSID) will be shown in the list of available networks. (If unchecked, you'll need to enter the exact Network Name (SSID) to connect.)</p>
+		<p class="tip"><?php echo sprintf(_("Manage your %s GHz network settings."),$radio_band)?></p>
+		<p class="hidden"><?php echo _("<strong>Network Name (SSID):</strong> Identifies your home network from other nearby networks. Your default name can be found on the bottom label of the Gateway, but can be changed for easier identification.")?></p>
+		<p class="hidden"><?php echo sprintf(_("<strong>Mode:</strong>  %s GHz operates in b/g/n modes. Unless you have older Wi-Fi devices that use only 'b' mode, use the default 802.11 g/n for faster performance."),$radio_band)?></p>
+		<p class="hidden"><?php echo _("<strong>Security Mode:</strong> Secures data between your Wi-Fi devices and the Gateway. The default WPAWPA2-PSK (TKIP/AES) setting is compatible with most devices and provides the best security and performance.")?></p>
+		<p class="hidden"><?php echo _("<strong>Channel Selection:</strong>  Channel to be used for your home Wi-Fi network. In Automatic mode (default), the Gateway will select the channel with the least amount of Wi-Fi interference. In Manual mode, you can choose the channel to be used.")?></p>
+		<p class="hidden"><?php echo _("<strong>Network Password(Key):</strong> Required by Wi-Fi products to connect to your secure network. The default setting can be found on the bottom label of the Gateway.")?> </p>
+		<p class="hidden"><?php echo _("<strong>Broadcast Network Name (SSID):</strong>  If enabled, the Network Name (SSID) will be shown in the list of available networks. (If unchecked, you'll need to enter the exact Network Name (SSID) to connect.)")?></p>
 	</div>
 	<div class="module forms">
 		<form action="#TBD" method="post" id="pageForm">
-		<h2><?php if ($id>2) echo "Public"; else echo "Private"; ?> Wi-Fi Network Configuration (<?php echo $radio_band; ?> GHz)</h2>
+		<h2><?php if ($id>2) echo sprintf(_("Public Wi-Fi Network Configuration (%s GHz)"),$radio_band); else echo sprintf(_("Private Wi-Fi Network Configuration (%s GHz)"),$radio_band); ?></h2>
 		<?php
 			if($Mesh_Mode=="true"){
 		?>
 			<div class="form-row odd">
 				<div id="content" style="text-align: center;">
 					<br>
-					<h3 style="width:92%">Wi-Fi Mode, Security Mode, Channel Selection, Channel Mode, and Channel Bandwidth are being managed automatically to help optimize your home Wi-Fi network and improve Wi-Fi coverage. To edit your Wi-Fi Network Name & Network password, please download the <?php echo $brandName.' '.$productName ?> app or visit <a href="http://<?php echo $productLink;?>"><?php echo $productLink ?></a>.
+					<h3 style="width:92%"><?php echo sprintf(_("Wi-Fi Mode, Security Mode, Channel Selection, Channel Mode, and Channel Bandwidth are being managed automatically to help optimize your home Wi-Fi network and improve Wi-Fi coverage. To edit your Wi-Fi Network Name & Network password, please download the %s %s app or visit <a href='http://%s'>%s"), $brandName,$productName,$productLink,$productLink) ?></a>.
 					</h3>
 					<br>
 				</div>
@@ -892,71 +907,87 @@ function setResetInfo(info) {
 			}
 		?>
 		<div class="form-row odd">
-			<span class="readonlyLabel label">Wireless Network:</span>
+			<span class="readonlyLabel label"><?php echo _("Wireless Network:")?></span>
 			<span id="wireless_network_switch"></span>
 		</div>		
 		<div class="form-row _network_name">
-			<label for="network_name">Network Name (SSID):</label>
+			<label for="network_name"><?php echo _("Network Name (SSID):")?></label>
 			<input type="text" size="23" value="<?php echo htmlspecialchars($network_name);?>" id="network_name" name="network_name" class="text" />
 		</div>
 		<div class="form-row odd" id="div_wireless_mode">
-			<label for="wireless_mode">Mode:</label>
+			<label for="wireless_mode"><?php echo _("Mode:")?></label>
 			<select name="wireless_mode" id="wireless_mode">
 			<?php
-				//zqiu: add "selected"
-				if ("5"==$radio_band){
-					if (strstr($supported_mode, "ac")){
-						echo '<option value="ac" ';     echo (    "ac"==$wireless_mode)? 'selected':''; echo'>802.11 ac</option>';
-						echo '<option value="n,ac" ';   echo (  "n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 n/ac</option>';
-						echo '<option value="a,n,ac" '; echo ("a,n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 a/n/ac</option>';
-						echo '<option value="n" ';      echo (     "n"==$wireless_mode)? 'selected':''; echo'>802.11 n</option>';
+		                //zqiu: add "selected"
+		                // this IF condition is for SKY
+				if(strpos($partnerId, "sky-") !== false){
+					if("5"==$radio_band){
+						if (strstr($supported_mode, "ac")){
+							echo '<option value="n,ac" ';   echo (  "n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 n/ac</option>';
+						}
 					}
-					else {
-						echo '<option value="n" '   ; echo (     "n"==$wireless_mode)? 'selected':''; echo'>802.11 n</option>';
-						echo '<option value="a,n" ' ; echo (     "a,n"==$wireless_mode)? 'selected':''; echo'>802.11 a/n</option>';
+					else{
+						echo '<option value="b,g,n" '; echo ("b,g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 b/g/n</option>';
 					}
 				}
-				else {
-					//echo '<option value="n" ';     echo (    "n"==$wireless_mode)? 'selected':'';  echo '>802.11 n</option>';
-					echo '<option value="g,n" ';   echo (  "g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 g/n</option>';
-					echo '<option value="b,g,n" '; echo ("b,g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 b/g/n</option>';
+				else{
+					if ("5"==$radio_band){
+						if (strstr($supported_mode, "ac")){
+							echo '<option value="ac" ';     echo (    "ac"==$wireless_mode)? 'selected':''; echo'>802.11 ac</option>';
+							echo '<option value="n,ac" ';   echo (  "n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 n/ac</option>';
+							echo '<option value="a,n,ac" '; echo ("a,n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 a/n/ac</option>';
+							echo '<option value="n" ';      echo (     "n"==$wireless_mode)? 'selected':''; echo'>802.11 n</option>';
+						}
+						else {
+							echo '<option value="n" '   ; echo (     "n"==$wireless_mode)? 'selected':''; echo'>802.11 n</option>';
+							echo '<option value="a,n" ' ; echo (     "a,n"==$wireless_mode)? 'selected':''; echo'>802.11 a/n</option>';
+						}
+					}
+					else {
+						//echo '<option value="n" ';     echo (    "n"==$wireless_mode)? 'selected':'';  echo '>802.11 n</option>';
+						echo '<option value="g,n" ';   echo (  "g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 g/n</option>';
+						echo '<option value="b,g,n" '; echo ("b,g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 b/g/n</option>';
+					}
 				}
 			?>
 			</select>
 		</div>
 		<div class="form-row">
-			<label for="security">Security Mode:</label>
+			<label for="security"><?php echo _("Security Mode:")?></label>
 			<select name="encryption_method" id="security">
-				<option value="None" 				title="Open networks do not have a password." 			<?php if ("None"==$security) echo "selected";?> >Open (risky)</option>
-				<option value="WEP_64" 				title="WEP  64 requires a  5 ASCII character or  10 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_64"==$security)              echo "selected";?> >WEP 64 (risky)</option>
-				<option value="WEP_128" 			title="WEP 128 requires a 13 ASCII character or  26 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_128"==$security)             echo "selected";?> >WEP 128 (risky)</option>
-				<option value="WPA_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_TKIP"==$security)        echo "selected";?> >WPA-PSK (TKIP)</option>
-				<option value="WPA_PSK_AES" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA_PSK_AES"==$security)         echo "selected";?> >WPA-PSK (AES)</option>
-				<option value="WPA2_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIP"==$security)       echo "selected";?> >WPA2-PSK (TKIP)</option>
-				<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_AES"==$security)        echo "selected";?> >WPA2-PSK (AES)(Recommended)</option>
-				<option value="WPA2_PSK_TKIPAES"	title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPA2_PSK_TKIPAES"==$security)    echo "selected";?> >WPA2-PSK (TKIP/AES)</option>
-				<option value="WPAWPA2_PSK_TKIPAES" title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WPAWPA2_PSK_TKIPAES"==$security) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)</option>
+				<option value="None" 				title="<?php echo _("Open networks do not have a password.")?>" 			<?php if ("None"==$security) echo "selected";?> ><?php echo _("Open (risky)")?></option>
+				<option value="WEP_64" 				title="<?php echo _("WEP  64 requires a  5 ASCII character or  10 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>" <?php if ("WEP_64"==$security)              echo "selected";?> ><?php echo _("WEP 64 (risky")?>)</option>
+				<option value="WEP_128" 			title="<?php echo _("WEP 128 requires a 13 ASCII character or  26 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>" <?php if ("WEP_128"==$security)             echo "selected";?> ><?php echo _("WEP 128 (risky)")?></option>
+				<option value="WPA_PSK_TKIP" 		title="<?php echo _("WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>" <?php if ("WPA_PSK_TKIP"==$security)        echo "selected";?> >WPA-PSK (TKIP)</option>
+				<option value="WPA_PSK_AES" 		title="<?php echo _("WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>" <?php if ("WPA_PSK_AES"==$security)         echo "selected";?> >WPA-PSK (AES)</option>
+				<option value="WPA2_PSK_TKIP" 		title="<?php echo _("WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>" <?php if ("WPA2_PSK_TKIP"==$security)       echo "selected";?> >WPA2-PSK (TKIP)</option>
+				<option value="WPA2_PSK_AES" 		title="<?php echo _("WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>" <?php if ("WPA2_PSK_AES"==$security)        echo "selected";?> ><?php echo _("WPA2-PSK (AES)(Recommended)")?></option>
+				<option value="WPA2_PSK_TKIPAES"	title="<?php echo _("WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>" <?php if ("WPA2_PSK_TKIPAES"==$security)    echo "selected";?> >WPA2-PSK (TKIP/AES)</option>
+				<option value="WPAWPA2_PSK_TKIPAES" title="<?php echo _("WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789.")?>" <?php if ("WPAWPA2_PSK_TKIPAES"==$security) echo "selected";?> >WPAWPA2-PSK (TKIP/AES)</option>
 			</select>
 			<p id="tip_security_mode" class="footnote">
 			<?php
 				if ("5"==$radio_band && strstr($supported_mode, "ac")){
-
-					echo 'Please note 802.11 n/ac mode only compatible with AES and None encryption!!';
+					echo '<?php echo _("Please note 802.11 n/ac mode only compatible with AES and None encryption!!")?>';
 				}
 				else{
-					echo 'Please note 802.11 n mode only compatible with AES and None encryption!!';
+					echo '<?php echo _("Please note 802.11 n mode only compatible with AES and None encryption!!")?>';
 				}
 			?>
 			</p>
 		</div>
 		<div class="form-row odd" id="div_channel_switch">
-			<label for="channel_automatic">Channel Selection:</label>
-			<input type="radio"  name="channel" value="auto" 	id="channel_automatic" checked="checked" /><b>Automatic</b>
+			<label for="channel_automatic"><?php echo _("Channel Selection:")?></label>
+                        <?php
+				if('5'!=$radio_band && strpos($partnerId, "sky-") !== false){
+					echo '<input type="radio"  name="channel" value="auto" 	id="channel_automatic" checked="checked" /><b>'._("Automatic").'</b>';
+				}
+			?>
 			<label for="channel_manual" class="acs-hide"></label>
-			<input type="radio"  name="channel" value="manual"  id="channel_manual"    <?php if ("false"==$channel_automatic) echo 'checked="checked"';?> /><b>Manual</b>
+			<input type="radio"  name="channel" value="manual"  id="channel_manual"    <?php if ("false"==$channel_automatic) echo 'checked="checked"';?> /><b><?php echo _("Manual")?></b>
 		</div>
 		<div id="div_channel_number" class="form-row manual-only">
-			<label for="channel_number">Channel:</label>
+			<label for="channel_number"><?php echo _("Channel:")?></label>
 			<select name="channel_number" id="channel_number">
 				<!--option value="36" selected="selected">36</option-->
 				<?php
@@ -972,12 +1003,12 @@ function setResetInfo(info) {
 		</div>
 		<div class="form-row odd" id="bandwidth_switch" style="<?php if ('mso'==$_SESSION['loginuser']) {echo 'display:none'; } else {echo 'display:block'; } ?>" >
 		<?php if($radio_band == "2.4" ) { ?>
-			<label for="channel_bandwidth20">Channel Bandwidth:</label>
+			<label for="channel_bandwidth20"><?php echo _("Channel Bandwidth:")?></label>
 			<input type="radio"  name="channel_bandwidth" value="20MHz" id="channel_bandwidth20" checked="checked" /><b>20</b>
 			<label for="channel_bandwidth" class="acs-hide"></label>
 			<input type="radio"  name="channel_bandwidth" value="40MHz" id="channel_bandwidth" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
 		<?php } else { ?>
-			<label for="channel_bandwidth201">Channel Bandwidth:</label>
+			<label for="channel_bandwidth201"><?php echo _("Channel Bandwidth:")?></label>
 			<input type="radio"  name="channel_bandwidth1" value="20MHz" id="channel_bandwidth201" checked="checked" /><b>20</b>
 			<?php if (strstr($supported_mode, "ac")){ ?>
 				<label for="channel_bandwidth1" class="acs-hide"></label>
@@ -991,28 +1022,28 @@ function setResetInfo(info) {
 		<?php } ?>
 		</div>
 		<div class="form-row" id="div_network_password">
-			<label for="network_password">Network Password:</label>
+			<label for="network_password"><?php echo _("Network Password:")?></label>
 			<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password); ?>" </span>
-			<p id="netPassword-footnote" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
+			<p id="netPassword-footnote" class="footnote"><?php echo _("8 to 63 ASCII characters or a 64 hex character password. Case sensitive.")?></p>
 		</div>
 		<div class="form-row" id="div_change_password">
-			<label for="change_password">Change Password:</label>
+			<label for="change_password"><?php echo _("Change Password:")?></label>
 			<span class="checkbox"><input type="checkbox" id="password_check" name="password_check" /></span>
 		</div>
 		<div class="form-row odd" id="div_password_show">
-			<label for="password_show">Show Network Password:</label>
+			<label for="password_show"><?php echo _("Show Network Password:")?></label>
 			<span class="checkbox"><input type="checkbox" id="password_show" name="password_show" /></span>
 		</div>
 		<div id="div_broadcastSSID" class="form-row">
-			<label for="broadcastSSID">Broadcast Network Name (SSID):</label>
-			<span class="checkbox"><input type="checkbox" id="broadcastSSID" name="broadcastSSID" <?php if ("true" == $broadcastSSID) echo 'checked="checked"';?> /><b>Enabled</b></span>
+			<label for="broadcastSSID"><?php echo _("Broadcast Network Name (SSID):")?></label>
+			<span class="checkbox"><input type="checkbox" id="broadcastSSID" name="broadcastSSID" <?php if ("true" == $broadcastSSID) echo 'checked="checked"';?> /><b><?php echo _("Enabled")?></b></span>
 		</div>
 		<div id="div_enableWMM" class="form-row odd">
-			<label for="enableWMM">Enable WMM:</label>
-			<span class="checkbox"><input type="checkbox" id="enableWMM" name="enableWMM"  <?php if ("true" == $enableWMM) echo 'checked="checked"';?> /><b>Enabled</b></span>
+			<label for="enableWMM"><?php echo _("Enable WMM:")?></label>
+			<span class="checkbox"><input type="checkbox" id="enableWMM" name="enableWMM"  <?php if ("true" == $enableWMM) echo 'checked="checked"';?> /><b><?php echo _("Enabled")?></b></span>
 		</div>
 		<div class="form-row form-btn">
-			<input type="submit" class="btn confirm" id="save_settings" name="save_settings" value="Save Settings" />
+			<input type="submit" class="btn confirm" id="save_settings" name="save_settings" value="<?php echo _("Save Settings")?>" />
 			<!--input href="#" title="Restore Wi-Fi Module" id="restore-default-settings" name="restore_default_settings" type="button" style="text-transform: none;" value="RESTORE Wi-Fi SETTINGS" class="btn alt" /-->
 		</div>
 		</form>
@@ -1020,14 +1051,14 @@ function setResetInfo(info) {
 </div><!-- end #content -->
 <div id="pop_dialog" class="content_message" style="display: none;">
 	<div class="form-row odd">
-		<p style="color: green;"><b>The recommended security mode is "WPA2-PSK (AES)" as this mode gives best Wi-Fi performance and optimum security.</b></p>
+		<p style="color: green;"><b><?php echo _('The recommended security mode is "WPA2-PSK (AES)" as this mode gives best Wi-Fi performance and optimum security.')?></b></p>
 	</div>
 	<div class="form-row">
-		<input name="path" id="path1" type="radio" value="WPAWPA2_PSK_TKIPAES"><b>WPAWPA2-PSK (TKIP/AES) </b><br><span>This mixed mode option will allow Wi-Fi devices to connect with WPA (with TKIP or AES encryption) or WPA2 (with TKIP or AES encryption). To achieve best Wi-Fi performance in this mode, the Wi-Fi devices must connect using WPA2 with AES encryption.</span><br>
-		<input name="path" id="path2" type="radio" value="WPA2_PSK_AES" checked="checked"><b>WPA2-PSK (AES) (Recommended)</b><br><span>This is the recommended and default option as this mode gives best Wi-Fi performance and optimum security.Older Wi-Fi devices which doesn't support WPA2 and AES encryption will be unable to connect to your Wi-Fi network in this mode.</span><br>
+		<input name="path" id="path1" type="radio" value="WPAWPA2_PSK_TKIPAES"><b>WPAWPA2-PSK (TKIP/AES) </b><br><span><?php echo _("This mixed mode option will allow Wi-Fi devices to connect with WPA (with TKIP or AES encryption) or WPA2 (with TKIP or AES encryption). To achieve best Wi-Fi performance in this mode, the Wi-Fi devices must connect using WPA2 with AES encryption.")?></span><br>
+		<input name="path" id="path2" type="radio" value="WPA2_PSK_AES" checked="checked"><b><?php echo _("WPA2-PSK (AES) (Recommended)")?></b><br><span><?php echo _("This is the recommended and default option as this mode gives best Wi-Fi performance and optimum security.Older Wi-Fi devices which doesn't support WPA2 and AES encryption will be unable to connect to your Wi-Fi network in this mode.")?></span><br>
 		<!--input name="path" id="path3" type="radio" value="WEP_64"><b>WEP (64)</b><br><span style="color: red;">This is only applicable for legacy Wi-Fi devices. Using this option will impact your Wi-Fi performance and less secure. Select this option only if you have very old Wi-Fi device and if it does not support WPA or WPA2 option.</span><br>
 		<input name="path" id="path4" type="radio" value="WEP_128"><b>WEP (128)</b><br><span style="color: red;">This is only applicable for legacy Wi-Fi devices. Using this option will impact your Wi-Fi performance and less secure.Select this option only if you have very old Wi-Fi device and if it does not support WPA or WPA2 option.</span><br-->
-		<input name="path" id="path5" type="radio" value="None"><b>Open (Risky)</b><br><span style="color: red;">This is not recommended as it is doesn't have any security and anybody can connect to your Wi-Fi network.</span><br>
+		<input name="path" id="path5" type="radio" value="None"><b><?php echo _("Open (Risky)")?></b><br><span style="color: red;"><?php echo _("This is not recommended as it is doesn't have any security and anybody can connect to your Wi-Fi network.")?></span><br>
 		<br>
 	</div>
 </div>

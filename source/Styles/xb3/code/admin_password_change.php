@@ -29,7 +29,7 @@ csrfprotector_rdkb::init();
         header('X-robots-tag: noindex,nofollow');
 	session_start();
 	if (!isset($_SESSION["password_change"])) {
-		echo '<script type="text/javascript">alert("Please Login First!"); location.href="home_loggedout.php";</script>';
+		echo '<script type="text/javascript">alert(\"'._("Please Login First!").'\"); location.href="home_loggedout.php";</script>';
 		exit(0);
 	}
 	$title=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogoTitle");
@@ -144,7 +144,7 @@ function cancel_save(){
 }
 function set_config(jsConfig)
 {
-	jProgress('This may take several seconds...', 60);
+	jProgress('<?php echo _('This may take several seconds...')?>', 60);
 	$.post(
 		"actionHandler/ajaxSet_wizard_step1.php",
 		{
@@ -155,13 +155,13 @@ function set_config(jsConfig)
 			jHide();
 			//msg.p_status >> Good_PWD, Default_PWD, Invalid_PWD
 			if ("Good_PWD" == msg.p_status) {
-				jAlert("Changes saved successfully . <br/> Please login with the new password.", "Alert",function () {
+				jAlert('<?php echo _("Changes saved successfully . <br/> Please login with the new password.")?>', "Alert",function () {
 				  window.location = "home_loggedout.php";
 				});
 			}
 			else
 			{
-				jAlert("Current Password Wrong!");
+				jAlert('<?php echo _("Current Password Wrong!")?>');
 			}
 		},
 		"json"     
@@ -174,7 +174,7 @@ function next_step()
 	var jsConfig = '{"newPassword": "' + newPwd + '", "instanceNum": "3", "oldPassword": "' + oldPwd + '", "ChangePassword": "true"}';
 	if (oldPwd == newPwd)
 	{
-		jAlert("Current Password and New Password Can't Be Same!");
+		jAlert('<?php echo _("Current Password and New Password Can\'t Be Same!")?>');
 	}
 	else
 	{
@@ -183,31 +183,31 @@ function next_step()
 }
 </script>
 <div id="content">
-    <h1 style="margin-left: 107px;margin-top:86px">Change Password</h1>
+    <h1 style="margin-left: 107px;margin-top:86px"><?php echo _("Change Password");?></h1>
     <div id="educational-tip"  style="margin-left: 107px;width: 684px">
-        <p class="tip">Periodically change your Admin Tool password to protect your network.</p>
+        <p class="tip"><?php echo _("Periodically change your Admin Tool password to protect your network.");?></p>
 	</div>
 <form method="post" id="pageForm">
 	<div class="module forms" style="margin-left: 107px">
 		<h2>Password</h2>
 		<div class="form-row password">
-			<label for="oldPassword">Current Password:</label><input type="password" value="" name="oldPassword" id="oldPassword" autocomplete="off" />
+			<label for="oldPassword"><?php echo _("Current Password:")?></label><input type="password" value="" name="oldPassword" id="oldPassword" autocomplete="off" />
 		</div>
 		<div class="form-row odd password">
-			<label for="userPassword">New Password:</label> <input type="password" value="" name="userPassword" id="userPassword" autocomplete="off" />
+			<label for="userPassword"><?php echo _("New Password:")?></label> <input type="password" value="" name="userPassword" id="userPassword" autocomplete="off" />
 		</div>
 		<div class="form-row password">
-			<label for="verifyPassword">Re-enter New Password:</label> <input type="password" value="" name="verifyPassword" id="verifyPassword" autocomplete="off" />
+			<label for="verifyPassword"><?php echo _("Re-enter New Password:")?></label> <input type="password" value="" name="verifyPassword" id="verifyPassword" autocomplete="off" />
 		</div>
 		<div class="form-row odd">
-			<label for="password_show">Show Typed Password:</label>
+			<label for="password_show"><?php echo _("Show Typed Password:")?></label>
 			<span class="checkbox"><input type="checkbox" id="password_show" name="password_show" /></span>
 		</div> 			
-		<p class="footnote">Password Must be minimum 8 characters(Alphanumeric only). No spaces. Case sensitive.</p>
+		<p class="footnote"><?php echo _("Password Must be minimum 8 characters(Alphanumeric only). No spaces. Case sensitive.");?></p>
 	</div> <!-- end .module -->
 	<div class="form-row form-btn">
-		<input id="submit_pwd" type="submit" value="Save" class="btn" />
-		<input id="cancel_pwd" type="reset" value="Cancel" onclick="cancel_save(this)" class="btn alt" />
+		<input id="submit_pwd" type="submit" value="<?php echo _('Save');?>" class="btn" />
+		<input id="cancel_pwd" type="reset" value="<?php echo _('Cancel');?>" onclick="cancel_save(this)" class="btn alt" />
 	</div>
 </form>
 </div><!-- end #content -->

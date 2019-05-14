@@ -30,15 +30,15 @@ $(document).ready(function() {
     $('#service_name').focus();
 	jQuery.validator.addMethod("port",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 65535);
-	}, "Please enter a port number less than 65536.");
+	}, "<?php echo _("Please enter a port number less than 65536.")?>");
 	jQuery.validator.addMethod("triggermore",function(value,element){
 		var fstartport=parseInt($("#from_start_port").val());
 		return this.optional(element) || value>=fstartport;
-	}, "Please enter a value more than or equal to Trigger Port From.");
+	}, "<?php echo _("Please enter a value more than or equal to Trigger Port From.")?>");
 	jQuery.validator.addMethod("targetmore",function(value,element){
 		var tstartport=parseInt($("#to_start_port").val());
 		return this.optional(element) || value>=tstartport;
-	}, "Please enter a value more than or equal to Target Port From.");
+	}, "<?php echo _("Please enter a value more than or equal to Target Port From.")?>");
     $("#pageForm").validate({
         rules: {
             service_name: {
@@ -90,7 +90,7 @@ $(document).ready(function() {
 		var tsp=$('#to_start_port').val();
 		var tep=$('#to_end_port').val();
 		if($("#pageForm").valid()){
-		jProgress('This may take several seconds.',60);
+		jProgress('<?php echo _("This may take several seconds.")?>',60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_port_triggering.php",
@@ -98,13 +98,13 @@ $(document).ready(function() {
 			dataType: "json",
 			success:function(results){
 				jHide();
-				if (results=="Success!") { window.location.href="port_triggering.php";}
-				else if (results=="") {jAlert('Failure! As Port Triggering/Port Forwarding rule exists for the same port.');}
+				if (results=="<?php echo _("Success!")?>") { window.location.href="port_triggering.php";}
+				else if (results=="") {jAlert('<?php echo _("Failure! As Port Triggering/Port Forwarding rule exists for the same port.")?>');}
 				else jAlert(results);
 			},
 			error:function(){
 				jHide();
-				jAlert("Something wrong, please try later!");
+				jAlert("<?php echo _("Something went wrong, please try later!")?>");
 			}
 		});
 		}
@@ -112,20 +112,20 @@ $(document).ready(function() {
 });
 </script>
 <div id="content">
-	<h1>Advanced > Port Triggering > Add Port Trigger</h1>
+	<h1><?php echo _("Advanced > Port Triggering > Add Port Trigger")?></h1>
     <div id="educational-tip">
-		<p class="tip">Add a rule for port triggering services by user.</p>
-		<p class="hidden">Port triggering monitors outbound traffic on your network. When traffic is detected on a particular outbound port, the Gateway remembers that computer's IP address, triggers the inbound port to accept the incoming traffic, and directs the communications to the same computer.</p>
-		<p class="hidden">Port triggering settings can affect the Gateway's performance.</p>
+		<p class="tip"><?php echo _("Add a rule for port triggering services by user.")?></p>
+		<p class="hidden"><?php echo _("Port triggering monitors outbound traffic on your network. When traffic is detected on a particular outbound port, the Gateway remembers that computer's IP address, triggers the inbound port to accept the incoming traffic, and directs the communications to the same computer.")?></p>
+		<p class="hidden"><?php echo _("Port triggering settings can affect the Gateway's performance.")?></p>
 	</div>
 	<form method="post" id="pageForm" action="">
 	<div class="module forms">
-		<h2>Add Port Trigger</h2>
+		<h2><?php echo _("Add Port Trigger")?></h2>
 		<div class="form-row odd">
-			<label for="service_name">Service Name:</label> <input tabindex='0' type="text" class="text" value="" id="service_name" name="service_name" />
+			<label for="service_name"><?php echo _("Service Name:")?></label> <input tabindex='0' type="text" class="text" value="" id="service_name" name="service_name" />
 		</div>
 		<div class="form-row">
-			<label for="service_type">Service Type:</label>
+			<label for="service_type"><?php echo _("Service Type:")?></label>
 			<select id="service_type">
 				<option value="tcp_udp" >TCP/UDP</option>
 				<option value="tcp" selected="selected">TCP</option>
@@ -133,20 +133,20 @@ $(document).ready(function() {
 			</select>
 		</div>
 		<div class="form-row odd">
-			<label for="from_start_port">Trigger Port From:</label>  <input tabindex='0' type="text" class="text" value="" id="from_start_port" name="from_start_port" />
+			<label for="from_start_port"><?php echo _("Trigger Port From:")?></label>  <input tabindex='0' type="text" class="text" value="" id="from_start_port" name="from_start_port" />
 		</div>
 		<div class="form-row">
-			<label for="from_end_port">Trigger Port To:</label>  <input tabindex='0'  type="text" class="text" value="" id="from_end_port" name="from_end_port" />
+			<label for="from_end_port"><?php echo _("Trigger Port To:")?></label>  <input tabindex='0'  type="text" class="text" value="" id="from_end_port" name="from_end_port" />
 		</div>
 	    <div class="form-row odd">
-			<label for="to_start_port">Target Port From:</label>  <input tabindex='0' type="text" class="text" value="" id="to_start_port" name="to_start_port" />
+			<label for="to_start_port"><?php echo _("Target Port From:")?></label>  <input tabindex='0' type="text" class="text" value="" id="to_start_port" name="to_start_port" />
 		</div>
 		<div class="form-row">
-			<label for="to_end_port">Target Port To:</label>  <input tabindex='0' type="text" class="text" value="" id="to_end_port" name="to_end_port" />
+			<label for="to_end_port"><?php echo _("Target Port To:")?></label>  <input tabindex='0' type="text" class="text" value="" id="to_end_port" name="to_end_port" />
 		</div>
 		<div class="form-btn">
-			<input tabindex='0' type="button" id="btn-save" value="Add" class="btn submit"/>
-			<input tabindex='0' type="reset" id="btn-cancel" value="Cancel" class="btn alt reset"/>
+			<input tabindex='0' type="button" id="btn-save" value="<?php echo _("Add")?>" class="btn submit"/>
+			<input tabindex='0' type="reset" id="btn-cancel" value="<?php echo _("Cancel")?>" class="btn alt reset"/>
 		</div>
 	</div> <!-- end .module -->
 	</form>

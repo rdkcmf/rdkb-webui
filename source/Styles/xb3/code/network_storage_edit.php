@@ -37,28 +37,28 @@ $(document).ready(function() {
 });
 </script>
 <div id="content">
-	<h1>Connected Devices > Network Storage > Edit Network Storage</h1>
+	<h1><?php echo _("Connected Devices > Network Storage > Edit Network Storage")?></h1>
 	<form id="pageForm" action="network_storage.php">
 		<div class="module forms">
-			<h2>Edit Network Storage</h2>
+			<h2><?php echo _("Edit Network Storage")?></h2>
 			<div class="form-row odd">
-				<label for="storage_name">Storage Name</label> <input type="text" name="storage_name" id="storage_name" class="text" maxlength="40" value="" /> 
+				<label for="storage_name"><?php echo _("Storage Name")?></label> <input type="text" name="storage_name" id="storage_name" class="text" maxlength="40" value="" /> 
 			</div>
 			<div class="form-row">
-				<label for="file_system" class="readonlyLabel">File System</label> <span id="file_system" class="value">FAT 32</span>
+				<label for="file_system" class="readonlyLabel"><?php echo _("File System")?></label> <span id="file_system" class="value">FAT 32</span>
 			</div> 
 			<div class="form-row odd">
-				<label for="space" class="readonlyLabel">Space Available</label> <span id="space" class="value">500 GB</span>
+				<label for="space" class="readonlyLabel"><?php echo _("Space Available")?></label> <span id="space" class="value">500 GB</span>
 			</div>
 			<div class="form-row">
-				<label for="space" class="readonlyLabel">Total Space</label> <span id="space" class="value">500 GB</span>
+				<label for="space" class="readonlyLabel"><?php echo _("Total Space")?></label> <span id="space" class="value">500 GB</span>
 			</div>			
 			<div class="form-row odd">
-				<label for="location" class="readonlyLabel">Location</label> <span id="location" class="value">USB Port 4</span>
+				<label for="location" class="readonlyLabel"><?php echo _("Location")?></label> <span id="location" class="value"><?php echo _("USB Port 4")?></span>
 			</div>
 	<div class="form-btn">
-		<input type="button" class="btn submit" value="Save"/>
-		<input type="reset" class="btn alt reset" value="Cancel"/>
+		<input type="button" class="btn submit" value="<?php echo _("Save")?>"/>
+		<input type="reset" class="btn alt reset" value="<?php echo _("Cancel")?>"/>
 	</div>
 		</div> <!-- end .module -->
 	</form>

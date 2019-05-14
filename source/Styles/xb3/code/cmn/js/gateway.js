@@ -23,6 +23,7 @@
  *	Declare the global object for namespacing.
  */
 
+
 var gateway = window.comcast || {};
 
 gateway.page = function() {
@@ -146,19 +147,28 @@ gateway.page = function() {
 			$icon.removeClass().addClass("bat-0");
 		};
 	}
+	
+    function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2)
+            return parts.pop().split(";").shift();
+    } 
     
     function setupEducationalTip() {
         if($("#educational-tip:has(.hidden)").length > 0) {
            var closed = true;
-           var $link = $("<a href=\"javascript:;\" class=\"tip-more\">more</a>").click(function() {
+           var label_obj = JSON.parse(decodeURIComponent(getCookie('more_less_label')));
+           
+           var $link = $("<a href=\"javascript:;\" class=\"tip-more\">" + label_obj.more + "</a>").click(function() {
                if(closed) {
         	       $("#educational-tip .hidden").fadeIn();
         	       closed = false;
-        	       $(this).html("less");
+        	       $(this).html(label_obj.less);
         	   } else {
         	       $("#educational-tip .hidden").fadeOut();
         	       closed = true;
-        	       $(this).html("more");
+        	       $(this).html(label_obj.more);
         	   
         	   }
            }).appendTo("#educational-tip");
@@ -317,6 +327,7 @@ gateway.page = function() {
     
     return {
         init: function(title, navElementId) {
+
             document.title = title + " - " + document.title;
             setupLeftNavigation(navElementId);
             setupDeleteConfirmDialogs();

@@ -50,6 +50,12 @@ $IPv6Prefix = substr($IPv6Prefix,0, strrpos($IPv6Prefix, "::"));
 // these means disable, MUST show empty on GUI!!!
 ("0.0.0.0" == $host)	&& ($host = "");
 ("x" == $hostv6)	&& ($hostv6 = "");
+$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
+if (strpos($partnersId, "sky-") !== false) {
+	$dmz_v6 =FALSE;
+} else {
+    $dmz_v6=TRUE;
+}
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -137,7 +143,7 @@ function populateIPv6Addr(v6addr){
 	}
 	$.validator.addMethod("hexadecimal", function(value, element) {
 		return this.optional(element) || /^[a-fA-F0-9]+$/i.test(value);
-	}, "Only hexadecimal characters are valid. Acceptable characters are ABCDEF0123456789.");
+	}, "<?php echo _('Only hexadecimal characters are valid. Acceptable characters are ABCDEF0123456789.')?>");
 	$.validator.addMethod("isIp4ValidSubnet",function(value,element){		
 		var netmask = jsNetMask;
 		var ipaddr = jsGatewayIP;
@@ -147,9 +153,9 @@ function populateIPv6Addr(v6addr){
 		}
 		var dhcp_addr = $("#dmz_host_address_1").val() + "." + $("#dmz_host_address_2").val() + "." + $("#dmz_host_address_3").val() + "." + $("#dmz_host_address_4").val();
 		isIp4Valid = ValidIp4Addr(dhcp_addr, ipaddr, netmask);
-		$("p:contains('DMZ v4 Host address is beyond the valid range.'):visible").remove();
+		$("p:contains('<?php echo _("DMZ v4 Host address is beyond the valid range.")?>'):visible").remove();
 		return isIp4Valid;
-	}, "DMZ v4 Host address is beyond the valid range.");
+	}, "<?php echo _('DMZ v4 Host address is beyond the valid range.')?>");
 	var validator =	$("#pageForm").validate({
 		debug: true,
 		onfocusout: false,
@@ -182,8 +188,8 @@ function populateIPv6Addr(v6addr){
 		radio_name: "dmz",
 		id_on: "dmz_enabled",
 		id_off: "dmz_disabled",
-		title_on: "Enable DMZ",
-		title_off: "Disable DMZ",
+		title_on: "<?php echo _('Enable DMZ')?>",
+		title_off: "<?php echo _('Disable DMZ')?>",
 		state: jsEnableDMZ ? "on" : "off"
 	});	
 	$('[id^=dmz_host_address_]').each(function(index){
@@ -235,25 +241,25 @@ $('#save_setting').click(function() {
 		// check some extra IPv4 rule. TODO: add IPv6 checking
 		if(isValid && !IsBlank("dmz_host_address_")) {
 			if (host == jsGatewayIP){
-				jAlert("DMZ v4 Host IP can't be equal to the Gateway IP address !");
+				jAlert("<?php echo _('DMZ v4 Host IP can\'t be equal to the Gateway IP address !')?>");
 				isValid = false;
 			}
 			else if(jsNetMask.indexOf('255.255.255') >= 0){
 				//the first three field should be equal to gw ip field
 				if((jsGwIP[0] != host0) || (jsGwIP[1] != host1) || (jsGwIP[2] != host2) || host3<2 || host3>253){
-					jAlert('DMZ v4 Host IP is not in valid range:\n' + jsGwIP[0] + '.' + jsGwIP[1] + '.' + jsGwIP[2] + '.[2~253]');
+					jAlert('<?php echo _("DMZ v4 Host IP is not in valid range:")?>\n' + jsGwIP[0] + '.' + jsGwIP[1] + '.' + jsGwIP[2] + '.[2~253]');
 					isValid = false;
 				}
 			}
 			else if(jsNetMask == "255.255.0.0"){
 				if((jsGwIP[0] != host0) || (jsGwIP[1] != host1)){
-					jAlert('DMZ v4 Host IP is not in valid range:\n' + jsGwIP[0] + '.' + jsGwIP[1] + '.[0~255]' + '.[2~253]');
+					jAlert('<?php echo _("DMZ v4 Host IP is not in valid range:")?>\n' + jsGwIP[0] + '.' + jsGwIP[1] + '.[0~255]' + '.[2~253]');
 					isValid = false;
 				}
 			}
 			else{
 				if(jsGwIP[0] != host0){
-					jAlert("DMZ v4 Host IP is not in valid range:\n");
+					jAlert("<?php echo _('DMZ v4 Host IP is not in valid range:')?>\n");
 					isValid = false;
 				}
 			}
@@ -274,7 +280,7 @@ $('#save_setting').click(function() {
 });
 function saveQoS(information){
 //alert(information);
-	jProgress('This may take several seconds', 60);
+	jProgress('<?php echo _("This may take several seconds")?>', 60);
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_DMZ_configuration.php",
@@ -285,7 +291,7 @@ function saveQoS(information){
 		},
 		error: function(){            
 			jHide();
-			jAlert("Failure, please try again.");
+			jAlert("<?php echo _('Failure, please try again.')?>");
 		}
 	});
 }
@@ -322,15 +328,15 @@ populate_IPv6();
 });
 </script>
 <div id="content">
-	<h1>Advanced > DMZ</h1>
+	<h1><?php echo _('Advanced > DMZ')?></h1>
 	<div id="educational-tip">
-		<p class="tip">Configure DMZ to allow a single computer on your LAN to open all of its ports.</p>
+		<p class="tip"><?php echo _('Configure DMZ to allow a single computer on your LAN to open all of its ports.')?></p>
 	</div>
 	<form action="dmz.php" method="post" id="pageForm">
 	<div class="module forms">
 		<h2>DMZ</h2>
 		<div class="form-row odd">
-			<label for="dmz">DMZ:</label>
+			<label for="dmz"><?php echo _('DMZ:')?></label>
 			<span id="dmz_switch"></span>
 		</div>
 		<div class="form-row">
@@ -351,9 +357,11 @@ populate_IPv6();
     	        .<input type="text" size="3" maxlength="3" value="0" id="dmz_host_address_3" name="dmz_host_address_3" class="" />
     	        .<input type="text" size="3" maxlength="3" value="1" id="dmz_host_address_4" name="dmz_host_address_4" class="" />
 				-->
-    		 </div>
-    	<div class="form-row odd">		
-			<label for="dmz_host_address">DMZ v6 Host:</label>
+		 </div>
+	<?php
+         if($dmz_v6){
+    	   echo ' <div class="form-row odd">
+			<label for="dmz_host_address">'._("DMZ v6 Host:").'</label>
 			<input type="text" value ="" size="2" maxlength="4" id="ip6_address_r1" name="ip_address_1" class="ipv6-input"/>:
 			<input type="text" value ="" size="2" maxlength="4" id="ip6_address_r2" name="ip_address_2" class="ipv6-input"/>:
 			<input type="text" value ="" size="2" maxlength="4" id="ip6_address_r3" name="ip_address_3" class="ipv6-input"/>:
@@ -362,7 +370,9 @@ populate_IPv6();
 			<input type="text" value ="" size="2" maxlength="4" id="ip6_address_r6" name="ip_address_6" class="ipv6-input"/>:
 			<input type="text" value ="" size="2" maxlength="4" id="ip6_address_r7" name="ip_address_7" class="ipv6-input"/>:
 			<input type="text" value ="" size="2" maxlength="4" id="ip6_address_r8" name="ip_address_8" class="ipv6-input"/>
-    	</div>	
+	</div>';
+	 }
+          ?>
     		 <div class="form-btn">
 			<input id="save_setting" name="save_setting" type="button" value="Save" class="btn right" />
 		</div>

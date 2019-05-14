@@ -97,21 +97,19 @@ header('X-robots-tag: noindex,nofollow');
 
                      if($failedAttempt_mso==$passLockoutAttempt){
                          $flag_mso=1;
-                         echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
-
+                         echo '<script type="text/javascript"> alert("'.sprintf(_("You have %d failed login attempts and your account will be locked for %d minutes"), $passLockoutAttempt, $passLockoutTimeMins).'");history.back();</script>';
                      }
                 }
                 if($flag_mso==0){
                     session_destroy();
-                    echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
+                    echo '<script type="text/javascript"> alert("'._("Access denied!").'"); history.back(); </script>';
                 }
             }
             elseif ($curPwd1 == "Good_PWD" && $return_status)
             {
                 if(($passLockEnable == "true") && ($failedAttempt_mso==$passLockoutAttempt)){
                     $flag_mso=1;
-                    echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
-
+                    echo '<script type="text/javascript"> alert("'.sprintf(_("You have %d failed login attempts and your account will be locked for %d minutes"), $passLockoutAttempt, $passLockoutTimeMins).'");history.back();</script>';
                 }
                 else{
                     create_session();
@@ -124,7 +122,7 @@ header('X-robots-tag: noindex,nofollow');
             elseif ("" == $curPwd1)
             {
                 session_destroy();
-                echo '<script type="text/javascript"> alert("Can not get password for mso from backend!"); history.back(); </script>';
+                echo '<script type="text/javascript"> alert("'._("Can not get password for mso from backend!").'"); history.back(); </script>';
             }
             else
             {
@@ -138,7 +136,7 @@ header('X-robots-tag: noindex,nofollow');
                         $params = array('pfidpadapterid' => "loginform" );
                         $auth_url = getAuthenticationUrl( $clientid, $authendpoint, $redirect_page, $params );
                         echo "<script type='text/javascript'>document.location.href='{$auth_url}';</script>";
-                        die('Please wait ...');
+                        die('_("Please wait ...")');
                     }
                 }
                 else
@@ -152,14 +150,13 @@ header('X-robots-tag: noindex,nofollow');
 
                         if($failedAttempt_mso==$passLockoutAttempt){
                             $flag_mso=1;
-                            echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
-
+                            echo '<script type="text/javascript"> alert("'.sprintf(_("You have %d failed login attempts and your account will be locked for %d minutes"), $passLockoutAttempt, $passLockoutTimeMins).'");history.back();</script>';
                         }
                     }
 
                     if($flag_mso==0){
                         session_destroy();
-                        echo '<script type="text/javascript"> alert("Incorrect password for mso!"); history.back(); </script>';
+                        echo '<script type="text/javascript"> alert("'._("Incorrect password for mso!").'"); history.back(); </script>';
                     }
                 }
             }
@@ -179,12 +176,12 @@ header('X-robots-tag: noindex,nofollow');
 							}
 							if($failedAttempt==$passLockoutAttempt){
 								$flag=1;
-								echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+								echo '<script type="text/javascript"> alert("'.sprintf(_("You have %d failed login attempts and your account will be locked for %d minutes"), $passLockoutAttempt, $passLockoutTimeMins).'");history.back();</script>';
 							}
 					}
 					if($flag==0){
 						session_destroy();
-						echo '<script type="text/javascript"> alert("Access denied!"); history.back(); </script>';
+						echo '<script type="text/javascript"> alert("'._("Access denied!").'"); history.back(); </script>';
 					}
 				}
 				else if($passVal=="Invalid_PWD"){
@@ -198,19 +195,19 @@ header('X-robots-tag: noindex,nofollow');
 						}
 						if($failedAttempt==$passLockoutAttempt){
 							$flag=1;
-							echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+							echo '<script type="text/javascript"> alert("'.sprintf(_("You have %d failed login attempts and your account will be locked for %d minutes"), $passLockoutAttempt, $passLockoutTimeMins).'");history.back();</script>';
 						}
 					}
 					if($flag==0){
 						session_destroy();
-						echo '<script type="text/javascript"> alert("Incorrect password for admin!");history.back(); </script>';
+						echo '<script type="text/javascript"> alert("'._("Incorrect password for admin!").'");history.back(); </script>';
 					}
 				}
 				else
 				{
 					if(($passLockEnable == "true") && ($failedAttempt==$passLockoutAttempt)){
 							$flag=1;
-							echo '<script type="text/javascript"> alert("You have '.$passLockoutAttempt.' failed login attempts and your account will be locked for '.$passLockoutTimeMins.' minutes");history.back();</script>';
+							echo '<script type="text/javascript"> alert("'.sprintf(_("You have %d failed login attempts and your account will be locked for %d minutes"), $passLockoutAttempt, $passLockoutTimeMins).'");history.back();</script>';
 					}else{
 						$failedAttempt=0;
 						setStr("Device.Users.User.3.NumOfFailedAttempts",$failedAttempt,true);
@@ -220,7 +217,7 @@ header('X-robots-tag: noindex,nofollow');
 							session_start();
 							$_SESSION["password_change"] = "default_pwd";
 							echo '<script type="text/javascript">
-                                jAlert("You are using default password. Please change the password.", "Alert",
+                                jAlert("'._("You are using default password. Please change the password.").'", "Alert",
                                 function (ret) {
                                     if(ret)
                                         {
@@ -242,7 +239,7 @@ header('X-robots-tag: noindex,nofollow');
             {
                 session_destroy();
             }
-            echo '<script type="text/javascript"> alert("Incorrect user name!"); history.back(); </script>';
+            echo '<script type="text/javascript"> alert("'._("Incorrect user name!").'"); history.back(); </script>';
         }
     }
     else
@@ -295,7 +292,7 @@ header('X-robots-tag: noindex,nofollow');
                     {
                         session_destroy();
                     }
-                    echo '<script type="text/javascript"> alert("Access level is none!"); history.back(); </script>';
+                    echo '<script type="text/javascript"> alert("',_("Access level is none!").'"); history.back(); </script>';
                 }
             }
             else
@@ -312,7 +309,7 @@ header('X-robots-tag: noindex,nofollow');
                 }
                 else
                 {
-                    echo '<script type="text/javascript"> alert("Access Denied, Unknown Error"); history.back(); </script>';
+                    echo '<script type="text/javascript"> alert("'.("Access Denied, Unknown Error").'"); history.back(); </script>';
                 }
             }
         }

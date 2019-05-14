@@ -56,10 +56,10 @@ $(document).ready(function() {
 		radio_name: "wan_network",
 		id_on: "ethernet",
 		id_off: "docsis",
-		label_on:"Ethernet",
-		label_off:"Docsis",
-		title_on: "Ethernet Mode",
-		title_off: "Docsis Mode",
+		label_on:"<?php echo _("Ethernet")?>",
+		label_off:"<?php echo _("Docsis")?>",
+		title_on: "<?php echo _("Ethernet Mode")?>",
+		title_off: "<?php echo _("Docsis Mode")?>",
 		state: <?php echo ($wan_enable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});
 	 <?php
@@ -74,7 +74,7 @@ $(document).ready(function() {
 		var jsConfig='{"wan_network": "' + wan_network + '"} ';
 		if ($(this).radioswitch("getState").on)
 		{
-			jConfirm("Please note that changing the configuration to Ethernet WAN requires connection of an Ethernet cable to a service provider gateway.","WARNING:"
+			jConfirm("<?php echo _("Please note that changing the configuration to Ethernet WAN requires connection of an Ethernet cable to a service provider gateway.")?>","<?php echo _("WARNING:")?>"
 				,function(ret) {
 					if(ret) {
 						changeMode(jsConfig);
@@ -90,7 +90,7 @@ $(document).ready(function() {
 	});
 });
 function changeMode(jsConfig){
-	jProgress('Waiting for backend to be fully executed, please be patient...', 100);
+	jProgress('<?php echo _("Waiting for backend to be fully executed, please be patient...")?>', 100);
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_wan_network.php",
@@ -103,32 +103,32 @@ function changeMode(jsConfig){
 		},
 		error: function(){
 			jHide();
-			jAlert("Failure, please try again.");
+			jAlert("<?php echo _("Failure, please try again.")?>");
 		}
 	});
 }
 </script>
 <div id="content" >
-    <h1>Gateway > Connection > WAN Network</h1>
+    <h1><?php echo _("Gateway > Connection > WAN Network")?></h1>
 	<div id="educational-tip">
-		<p class="tip">You have the option to enable or disable the Gateway's as Ethernet WAN or DOCSIS WAN. </p>
+		<p class="tip"><?php echo _("You have the option to enable or disable the Gateway's as Ethernet WAN or DOCSIS WAN.")?> </p>
 	</div>
     <form id="pageForm">
 	<fieldset>
-    <legend class="acs-hide">WAN Network</legend>
+    <legend class="acs-hide"><?php echo _("WAN Network")?></legend>
     <div class="module forms enable">
         <h2>WAN Network</h2>
         <?php
         	if ("admin" == $_SESSION["loginuser"]){       	 
         ?>
 		<div class="select-row">
-			<label>WAN Network:</label>
+			<label><?php echo _("WAN Network:")?></label>
 			<span id="wan_switch"></span>
 			<?php
 				if($wnStatus=="true"){
 					echo "<br><br>";
 			?>
-				<p class="error">No Ethernet WAN Connection is detected on Port 1.</p>
+				<div class="select-row" id="noEth"><p class="error"><?php echo _("No Ethernet WAN Connection is detected on Port 1.")?></p></div>
 			<?php
 			}
 			?>			
@@ -137,12 +137,12 @@ function changeMode(jsConfig){
 		}else{
 		?>
 		<div class="form-row">
-		<span class="readonlyLabel">WAN Network:</span>
+		<span class="readonlyLabel"><?php echo _("WAN Network:")?></span>
 		<span class="value"><?php 
 		if($wan_enable=="true"){
-			echo "Active Ethernet WAN";
+			echo _("Active Ethernet WAN");
 		}else{
-			echo "Active Docsis WAN";
+			echo _("Active Docsis WAN");
 		}
 		?></span>
 		</div>
@@ -158,11 +158,11 @@ function changeMode(jsConfig){
            }
            ?> 
 		<div class="form-row odd">
-		<span class="readonlyLabel">WAN IP Address (IPv4):</span>
+		<span class="readonlyLabel"><?php echo _("WAN IP Address (IPv4):")?></span>
 		<span class="value"><?php echo $WANIPv4;?></span>
 	</div>
 		<div class="form-row">
-		<span class="readonlyLabel">WAN IP Address (IPv6):</span> <span class="value">
+		<span class="readonlyLabel"><?php echo _("WAN IP Address (IPv6):")?></span> <span class="value">
 		<?php
 			echo $WANIPv6;
 		?>

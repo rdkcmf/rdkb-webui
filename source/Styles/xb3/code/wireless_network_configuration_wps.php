@@ -28,7 +28,7 @@
 <?php
 if ("false" == getStr("Device.WiFi.Radio.1.Enable") && "false" == getStr("Device.WiFi.Radio.2.Enable")) {
 	/*if (!$_SESSION['_DEBUG'])*/
-	echo '<script type="text/javascript">alert("Wi-Fi Radio is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...");location.href="wireless_network_configuration.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Wi-Fi Radio is disabled internally, please contact administrator!\n\nYou will be redirected to WiFi status page...").'");location.href="wireless_network_configuration.php";</script>';
 	exit(0);
 }
 // $ssids			= explode(",", getInstanceIds("Device.WiFi.SSID."));
@@ -129,7 +129,7 @@ function set_config(target)
 		+'", "pair_method":"'+pair_method
 		+'", "pin_number":"'+pin_number
 		+'"}';
-	jProgress('This may take several seconds...', 60);
+	jProgress('<?php echo _('This may take several seconds...')?>', 60);
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_wps_config.php",
@@ -148,7 +148,7 @@ function set_config(target)
 		},
 		error: function(){            
 			jHide();
-			jAlert("Failure, please try again.");
+			jAlert("<?php echo _('Failure, please try again.')?>");
 		}
 	});
 }
@@ -161,8 +161,8 @@ $(document).ready(function() {
 		radio_name: "wps",
 		id_on: "wps_enabled",
 		id_off: "wps_disabled",
-		title_on: "Enable WPS",
-		title_off: "Disable WPS",
+		title_on: "<?php echo _('Enable WPS')?>",
+		title_off: "<?php echo _('Disable WPS')?>",
 		state: G_wps_enabled ? "on" : "off"
 	});
 	$("#pin_switch").radioswitch({
@@ -170,8 +170,8 @@ $(document).ready(function() {
 		radio_name: "pin_switch",
 		id_on: "pin_enable",
 		id_off: "pin_disable",
-		title_on: "Enable WPS PIN",
-		title_off: "Disable WPS PIN",
+		title_on: "<?php echo _('Enable WPS PIN')?>",
+		title_off: "<?php echo _('Disable WPS PIN')?>",
 		state: G_wps_method !== "PushButton" ? "on" : "off"
 	});
     $("#wps_switch").change(function(e, skipSave) {
@@ -223,8 +223,8 @@ $(document).ready(function() {
 	});
 	$("#wps_cancel").click(function(){
 		jConfirm(
-			"Are you sure you want to cancel WPS progress?"
-			,"Confirm:"
+			"<?php echo _('Are you sure you want to cancel WPS progress?')?>"
+			,"<?php echo _('Confirm:')?>"
 			,function(ret) {
 				if(ret) {
 					set_config("pair_cancel");
@@ -236,13 +236,13 @@ $(document).ready(function() {
 	$("#pin_switch").trigger("change", [true]);
 	if ("false"=="<?php echo $wps_config;?>"){
 		$(".wps_config").html('<h2>Add Wi-Fi Client (WPS)</h2>'
-		+'<p style="color:red;font-size:130%;font-style:bold;">WPS function is disabled and can not be enabled now!</p>'
-		+'<p style="color: #838c91;">You can take these steps to enable WPS:</p>'
-		+'<p style="color: #838c91;">(1) Enable at least one private Wi-Fi interface</p>'
-		+'<p style="color: #838c91;">(2) Its security mode is not WEP/WPA-TKIP/WPA2-TKIP</p>'
-		+'<p style="color: #838c91;">(3) Its network name is not hidden</p>'
-		+'<!--p style="color: #838c91;">(4) Its MAC filter function is not enabled</p-->'
-		+'<p style="color: #838c91;">Then please refresh(or back to) this page and try again.</p>');
+		+'<p style="color:red;font-size:130%;font-style:bold;"><?php echo _('WPS function is disabled and can not be enabled now!')?></p>'
+		+'<p style="color: #838c91;"><?php echo _('You can take these steps to enable WPS:')?></p>'
+		+'<p style="color: #838c91;"><?php echo _('(1) Enable at least one private Wi-Fi interface')?></p>'
+		+'<p style="color: #838c91;"><?php echo _('(2) Its security mode is not WEP/WPA-TKIP/WPA2-TKIP')?></p>'
+		+'<p style="color: #838c91;"><?php echo _('(3) Its network name is not hidden')?></p>'
+		+'<!--p style="color: #838c91;"><?php echo _('(4) Its MAC filter function is not enabled')?></p-->'
+		+'<p style="color: #838c91;"><?php echo _('Then please refresh(or back to) this page and try again.')?></p>');
 		return;
 		$(".wps_config *").not(".radioswitch_cont, .radioswitch_cont *").unbind("click").prop("disabled", true).addClass("disabled").removeClass("selected");
 		$(".wps_config .radioswitch_cont").radioswitch("doEnable", false);
@@ -250,16 +250,16 @@ $(document).ready(function() {
 });
 </script>
 <div id="content">
-	<h1>Gateway > Connection > Wi-Fi > Add Wi-Fi Client</h1>
+	<h1><?php echo _('Gateway > Connection > Wi-Fi > Add Wi-Fi Client')?></h1>
 	<div id="educational-tip">
-		<p class="tip">If a Wi-Fi device supports Wi-Fi Protected Setup (WPS), use the Gateway's WPS feature to simplify connection to your network.</p>
-		<p class="hidden">WPS is a standard for easy setup of secure wireless networks. To add a Wi-Fi device to your network, choose a WPS connection option, depending on your product.</p>
-		<p class="hidden"><strong>Push Button:</strong> Press the WPS Button on the Gateway's top panel, or click the PAIR  button on this page. Within 2 minutes, press the WPS push button (either a physical button or a virtual button via software) on the Wi-Fi device to connect to the Gateway.</p>
-		<p class="hidden"><strong>PIN Connectivity:</strong> For WPS capable devices supporting PIN, select <i>PIN Number</i> for <strong>Connection Options.</strong> Enter the PIN number generated by the wireless device in the <strong>Wireless Client's PIN</strong> field and click PAIR. If prompted for a PIN, enter the PIN from the label on the Gateway's bottom panel.</p>
+		<p class="tip"><?php echo _('If a Wi-Fi device supports Wi-Fi Protected Setup (WPS), use the Gateway\'s WPS feature to simplify connection to your network.')?></p>
+		<p class="hidden"><?php echo _('WPS is a standard for easy setup of secure wireless networks. To add a Wi-Fi device to your network, choose a WPS connection option, depending on your product.')?></p>
+		<p class="hidden"><?php echo _('<strong>Push Button:</strong> Press the WPS Button on the Gateway\'s top panel, or click the PAIR  button on this page. Within 2 minutes, press the WPS push button (either a physical button or a virtual button via software) on the Wi-Fi device to connect to the Gateway.')?></p>
+		<p class="hidden"><?php echo _('<strong>PIN Connectivity:</strong> For WPS capable devices supporting PIN, select <i>PIN Number</i> for <strong>Connection Options.</strong> Enter the PIN number generated by the wireless device in the <strong>Wireless Client\'s PIN</strong> field and click PAIR. If prompted for a PIN, enter the PIN from the label on the Gateway\'s bottom panel.')?></p>
 	</div>
 	<form method="post" id="wps_form">
 		<div class="module forms enable wps_config">
-			<h2>Add Wi-Fi Client (WPS)</h2>
+			<h2><?php echo _('Add Wi-Fi Client (WPS)')?></h2>
 			<div class="form-row" style="display: none;">
 				<label for="ssid">SSID:</label>
 				<select name="ssid" id="wps_ssid">
@@ -267,32 +267,32 @@ $(document).ready(function() {
 				</select>
 			</div>
 			<div class="form-row">
-				<span class="readonlyLabel label"> Wi-Fi Protected Setup (WPS):</span>
+				<span class="readonlyLabel label"> <?php echo _('Wi-Fi Protected Setup (WPS):')?></span>
 				<span id="wps_switch"></span>
 			</div>
 			<div class="form-row odd">
-				<span class="readonlyLabel">AP PIN:</span> 
+				<span class="readonlyLabel"><?php echo _('AP PIN:')?></span> 
 				<span class="value" id="wps_pin">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $wps_pin; ?></span>
 			</div>
 			<div class="form-row">
-				<span class="readonlyLabel label">WPS Pin Method:</span>
+				<span class="readonlyLabel label"><?php echo _('WPS Pin Method:')?></span>
 				<span id="pin_switch"></span>
 			</div>
 			<div id="opt_switch" class="form-row odd">
-				<label for="connection_options">Connection Options:</label>
+				<label for="connection_options"><?php echo _('Connection Options:')?></label>
 				<select class="valid" id="connection_options">
-					<option id="pair_method_push" value="PushButton" selected="selected">Push Button</option>
-					<option id="pair_method_pin"  value="PIN">PIN Method</option>
+					<option id="pair_method_push" value="PushButton" selected="selected"><?php echo _('Push Button')?></option>
+					<option id="pair_method_pin"  value="PIN"><?php echo _('PIN Method')?></option>
 				</select>
-				<p class="footnote">To pair, select the Pair button and your wireless device will connect within two minutes.</p>
+				<p class="footnote"><?php echo _('To pair, select the Pair button and your wireless device will connect within two minutes.')?></p>
 				<div id="div_pin_number" class="form-row">
-					<label for="pin_number">Wireless Client's PIN:</label>
+					<label for="pin_number"><?php echo _('Wireless Client\'s PIN:')?></label>
 					<input type="text" id="pin_number" name="pin_number" class="text" />
 				</div>			
 			</div>
 			<div class="form-row form-btn">
-				<input id="wps_pair"   name="wps_pair"   type="button" value="Pair" class="btn" size="3" />
-				<input id="wps_cancel" name="wps_cancel" type="button" value="CANCEL " class="btn" />
+				<input id="wps_pair"   name="wps_pair"   type="button" value="<?php echo _('Pair')?>" class="btn" size="3" />
+				<input id="wps_cancel" name="wps_cancel" type="button" value="<?php echo _('CANCEL')?> " class="btn" />
 			</div>
 		</div>
 	</form>

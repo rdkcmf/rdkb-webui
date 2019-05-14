@@ -43,7 +43,7 @@ $(document).ready(function() {
 	*/
         $.validator.addMethod("allowed_char_HostName", function(value, element) {      
           return this.optional(element) || /^[a-z0-9]+$/i.test(value);         
-}, "Special characters are not allowed, Only letters and Numbers are allowed.");
+}, "<?php echo _("Special characters are not allowed, Only letters and Numbers are allowed.")?>");
 	$("#pageForm").validate({
 	    rules : {
 	    	staticIPAddress: {
@@ -80,7 +80,7 @@ $(document).ready(function() {
     	e.preventDefault();
     	var lengthF = $("textarea").val();
     	if (lengthF.length > 63){
-    		jAlert("The comments should be no more than 63 characters !");
+    		jAlert("<?php echo _("The comments should be no more than 63 characters !")?>");
     		return;
     	}
     	var hostName = $('#host_name').val();
@@ -91,7 +91,7 @@ $(document).ready(function() {
 		var reseverd_ipArr	= reseverd_ipAddr.split(".");
 		for(i=0;i<4;i++){
 			if(parseInt(beginArr[i]) > parseInt(reseverd_ipArr[i]) || parseInt(reseverd_ipArr[i]) > parseInt(endArr[i])){
-				jAlert("Reserved IP Address is not in valid range:\n"+beginAddr+" ~ "+endAddr);
+				jAlert("<?php echo _('Reserved IP Address is not in valid range:\n')?>"+beginAddr+" ~ "+endAddr);
 				return;
 			}
 		}
@@ -101,10 +101,10 @@ $(document).ready(function() {
 	        var mac2bit = macAddress.substr(0,2); //it's a string type variable
 	        if( 1 == (mac2bit & 1) ){
 		  		//mac2bit is odd
-		  		jAlert("The MAC address is invalid, please input again.");
+		  		jAlert("<?php echo _("The MAC address is invalid, please input again.")?>");
 		  		return;
 		  	}
-			jProgress('This may take several seconds', 60); 
+			jProgress("<?php echo _('This may take several seconds')?>", 60); 
 			$.ajax({
 				type: "POST",
 				url: "actionHandler/ajaxSet_add_device.php",
@@ -113,12 +113,12 @@ $(document).ready(function() {
 				success: function(results){
 					jHide();
 					if (results=="success") { window.location.href="connected_devices_computers.php";}
-					else if (results=="") {jAlert('Failure! Please check your inputs.');}
+					else if (results=="") {jAlert("<?php echo _('Failure! Please check your inputs.')?>");}
 					else jAlert(results);
 				},           
 				error: function(){
 					jHide();
-					jAlert("Failure, Please check your inputs and try again.");
+					jAlert("<?php echo _("Failure, Please check your inputs and try again.")?>");
 				}
 		    });
   		}

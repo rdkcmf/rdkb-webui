@@ -91,23 +91,23 @@ function sec2dhms($sec)
 	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
 ?>
 <div id="content">
-<h1>Gateway > Connection > <?php echo $NetworkName; ?></h1>
+<h1><?php echo sprintf(_('Gateway > Connection > %s'), $NetworkName); ?></h1>
 <div id="educational-tip">
-	<p class="tip">View technical information related to your <?php echo $NetworkName; ?> connection.</p>
-	<p class="hidden">You may need this information if you contact Comcast for troubleshooting assistance.</p>
+	<p class="tip"><?php echo sprintf (_('View technical information related to your %s connection.'), $NetworkName); ?></p>
+	<p class="hidden"><?php echo _('You may need this information if you contact Comcast for troubleshooting assistance.')?></p>
 </div>
 <div class="module forms">
 	<h2><?php echo $NetworkName; ?> (DPoE)</h2>
 	<div class="form-row">
-		<span class="readonlyLabel">Internet:</span>
-		<span class="value"><?php echo ($sta_inet=="true") ? "Active" : "Inactive";?></span>
+		<span class="readonlyLabel"><?php echo _('Internet:')?></span>
+		<span class="value"><?php echo ($sta_inet=="true") ? _("Active") : _("Inactive");?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Local time:</span>
+		<span class="readonlyLabel"><?php echo _('Local time:')?></span>
 		<span class="value"><?php echo getStr("Device.Time.CurrentLocalTime");?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">System Uptime:</span>
+		<span class="readonlyLabel"><?php echo _('System Uptime:')?></span>
 		<span class="value">
 		<?php
 			$sec = getStr("Device.DeviceInfo.UpTime");
@@ -122,11 +122,11 @@ function sec2dhms($sec)
 		</span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">WAN IP Address (IPv4):</span>
+		<span class="readonlyLabel"><?php echo _('WAN IP Address (IPv4):')?></span>
 		<span class="value"><?php echo $WANIPv4;?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">WAN Default Gateway Address (IPv4):</span> <span class="value">
+		<span class="readonlyLabel"><?php echo _('WAN Default Gateway Address (IPv4):')?></span> <span class="value">
 		<?php
 			//echo getStr("Device.Routing.Router.1.IPv4Forwarding.1.GatewayIPAddress");
 			/* For BWG, we just use the DHCP GW received from upstream as the wan side GW */
@@ -135,14 +135,14 @@ function sec2dhms($sec)
 		</span>
 	</div>		
 	<div class="form-row odd">
-		<span class="readonlyLabel">WAN IP Address (IPv6):</span> <span class="value">
+		<span class="readonlyLabel"><?php echo _('WAN IP Address (IPv6):')?></span> <span class="value">
 		<?php
 			echo $WANIPv6;
 		?>
 		</span>
 	</div>	
 	<div class="form-row ">
-		<span class="readonlyLabel">WAN Default Gateway Address (IPv6):</span> <span class="value">
+		<span class="readonlyLabel"><?php echo _('WAN Default Gateway Address (IPv6):')?></span> <span class="value">
 		<?php
 		$ids = explode(",", getInstanceIds("Device.Routing.Router.1.IPv6Forwarding."));
 		foreach ($ids as $i){
@@ -157,7 +157,7 @@ function sec2dhms($sec)
 		</span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Delegated prefix (IPv6):</span> <span class="value">
+		<span class="readonlyLabel"><?php echo _('Delegated prefix (IPv6):')?></span> <span class="value">
 		<?php
 		$ids = explode(",", getInstanceIds($fistUSif."IPv6Prefix."));
 		echo getStr($fistUSif."IPv6Prefix.$ids[0].Prefix");
@@ -165,7 +165,7 @@ function sec2dhms($sec)
 		</span>
 	</div>			
 	<div class="form-row ">
-		<span class="readonlyLabel">Primary DNS Server (IPv4):</span> <span class="value">
+		<span class="readonlyLabel"><?php echo _('Primary DNS Server (IPv4):')?></span> <span class="value">
 		<?php
 		$ids    = explode(",", getInstanceIds("Device.DNS.Client.Server."));
 		$dns_v4 = array();
@@ -185,16 +185,16 @@ function sec2dhms($sec)
 		</span>
 	</div>	
 	<div class="form-row odd">
-		<span class="readonlyLabel">Secondary DNS Server (IPv4):</span> <span class="value"><?php if (isset($dns_v4[1])) echo $dns_v4[1];?></span>
+		<span class="readonlyLabel"><?php echo _('Secondary DNS Server (IPv4):')?></span> <span class="value"><?php if (isset($dns_v4[1])) echo $dns_v4[1];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">Primary DNS Server (IPv6):</span> <span class="value"><?php if (isset($dns_v6[0])) echo $dns_v6[0];?></span>
+		<span class="readonlyLabel"><?php echo _('Primary DNS Server (IPv6):')?></span> <span class="value"><?php if (isset($dns_v6[0])) echo $dns_v6[0];?></span>
 	</div>	
 	<div class="form-row odd">
-		<span class="readonlyLabel">Secondary DNS Server (IPv6):</span> <span class="value"><?php if (isset($dns_v6[1])) echo $dns_v6[1];?></span>
+		<span class="readonlyLabel"><?php echo _('Secondary DNS Server (IPv6):')?></span> <span class="value"><?php if (isset($dns_v6[1])) echo $dns_v6[1];?></span>
 	</div>		
 	<div class="form-row ">
-		<span class="readonlyLabel">WAN Link Local Address (IPv6):</span>
+		<span class="readonlyLabel"><?php echo _('WAN Link Local Address (IPv6):')?></span>
 		<span class="value">
 		<?php
 			echo $WANIPv6LinkLocal;
@@ -202,16 +202,16 @@ function sec2dhms($sec)
 		</span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">DHCP Client (IPv4):</span>
-		<span class="value"><?php echo ("DHCP"==getStr("Device.X_CISCO_COM_DeviceControl.WanAddressMode")) ? "Enabled" : "Disabled";?></span>
+		<span class="readonlyLabel"><?php echo _('DHCP Client (IPv4):')?></span>
+		<span class="value"><?php echo ("DHCP"==getStr("Device.X_CISCO_COM_DeviceControl.WanAddressMode")) ? _("Enabled") : _("Disabled");?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">DHCP Client (IPv6):</span> <span class="value">
-		<?php echo ("true"==getStr("Device.DHCPv6.Client.1.Enable")) ? "Enabled" : "Disabled";?>
+		<span class="readonlyLabel"><?php echo _('DHCP Client (IPv6):')?></span> <span class="value">
+		<?php echo ("true"==getStr("Device.DHCPv6.Client.1.Enable")) ? _("Enabled") : _("Disabled");?>
 		</span>
 	</div>	
 	<div class="form-row odd">
-		<span class="readonlyLabel">DHCP Lease Expire Time (IPv4):</span>
+		<span class="readonlyLabel"><?php echo _('DHCP Lease Expire Time (IPv4):')?></span>
 		<span class="value">
 		<?php
 			$sec = getStr("Device.DHCPv4.Client.1.LeaseTimeRemaining");
@@ -226,24 +226,24 @@ function sec2dhms($sec)
 		</span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">DHCP Lease Expire Time (IPv6):</span> <span class="value">
+		<span class="readonlyLabel"><?php echo _('DHCP Lease Expire Time (IPv6):')?></span> <span class="value">
 		<?php
 			echo $DHCP_LET_IPv6;
 		?>		
 		</span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">WAN MAC:</span>
+		<span class="readonlyLabel"><?php echo _('WAN MAC:')?></span>
 		<span class="value">
 			<?php echo strtoupper(getStr(getStr(getStr($fistUSif."LowerLayers").".LowerLayers").".MACAddress")); ?>
 		</span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">eMTA MAC:</span>
+		<span class="readonlyLabel"><?php echo _('eMTA MAC:')?></span>
 		<span class="value"><?php echo strtoupper(getStr("Device.X_CISCO_COM_MTA.MACAddress"));?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">DPoE MAC:</span>
+		<span class="readonlyLabel"><?php echo _('DPoE MAC:')?></span>
 		<span class="value"><?php echo strtoupper(getStr("Device.DPoE.Mac_address"));?></span>
 	</div>
 </div>
@@ -269,81 +269,81 @@ $mta_param = array(
 $mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
 ?>
 <div class="module forms div_dpoe">
-	<h2>DPoE PacketCable Options</h2>
+	<h2><?php echo _('DPoE PacketCable Options')?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel">Sub-option 1 Service Provider's Primary DHCP:</span>
+		<span class="readonlyLabel"><?php echo _('Sub-option 1 Service Provider\'s Primary DHCP:')?></span>
 		<span class="value"><?php echo $mta_value['PrimaryDHCPServer'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Sub-option 1 Service Provider's Secondary DHCP:</span>
+		<span class="readonlyLabel"><?php echo _('Sub-option 1 Service Provider\'s Secondary DHCP:')?></span>
 		<span class="value"><?php echo $mta_value['SecondaryDHCPServer'];?></span>
 	</div>
 </div>
 <div class="module forms div_mta">
-	<h2>MTA DHCP Parameters</h2>
+	<h2><?php echo _('MTA DHCP Parameters')?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel">MTA FQDN:</span>
+		<span class="readonlyLabel"><?php echo _('MTA FQDN:')?></span>
 		<span class="value"><?php echo $mta_value['FQDN'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">MTA IP Address:</span>
+		<span class="readonlyLabel"><?php echo _('MTA IP Address:')?></span>
 		<span class="value"><?php echo $mta_value['IPAddress'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">MTA IP Subnet Mask:</span>
+		<span class="readonlyLabel"><?php echo _('MTA IP Subnet Mask:')?></span>
 		<span class="value"><?php echo $mta_value['SubnetMask'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">MTA IP Gateway:</span>
+		<span class="readonlyLabel"><?php echo _('MTA IP Gateway:')?></span>
 		<span class="value"><?php echo $mta_value['Gateway'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">MTA Bootfile:</span>
+		<span class="readonlyLabel"><?php echo _('MTA Bootfile:')?></span>
 		<span class="value"><?php echo $mta_value['BootFileName'];?></span>
 	</div>
 </div>
 <div class="module forms div_mta">
-	<h2>MTA IP Time Remaining</h2>
+	<h2><?php echo _('MTA IP Time Remaining')?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel">DHCP Lease Time:</span>
+		<span class="readonlyLabel"><?php echo _('DHCP Lease Time:')?></span>
 		<span class="value"><?php echo sec2dhms($mta_value['LeaseTimeRemaining']);?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">DHCP Rebind Time:</span>
+		<span class="readonlyLabel"><?php echo _('DHCP Rebind Time:')?></span>
 		<span class="value"><?php echo sec2dhms($mta_value['RebindTimeRemaining']);?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">DHCP Renew Time:</span>
+		<span class="readonlyLabel"><?php echo _('DHCP Renew Time:')?></span>
 		<span class="value"><?php echo sec2dhms($mta_value['RenewTimeRemaining']);?></span>
 	</div>
 </div>
 <div class="module forms div_mta">
-	<h2>MTA DHCP Option 6</h2>
+	<h2><?php echo _('MTA DHCP Option 6')?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel">Network Primary DNS:</span>
+		<span class="readonlyLabel"><?php echo _('Network Primary DNS:')?></span>
 		<span class="value"><?php echo $mta_value['PrimaryDNS'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Network Secondary DNS:</span>
+		<span class="readonlyLabel"><?php echo _('Network Secondary DNS:')?></span>
 		<span class="value"><?php echo $mta_value['SecondaryDNS'];?></span>
 	</div>
 </div>
 <div class="module forms div_mta">
-	<h2>MTA PacketCable Options(Option 122)</h2>
+	<h2><?php echo _('MTA PacketCable Options(Option 122)')?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel">Sub-option 3:</span>
+		<span class="readonlyLabel"><?php echo _('Sub-option 3:')?></span>
 		<span class="value"><?php echo $mta_value['DHCPOption3'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Sub-option 6:</span>
+		<span class="readonlyLabel"><?php echo _('Sub-option 6:')?></span>
 		<span class="value"><?php echo $mta_value['DHCPOption6'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel">Sub-option 7:</span>
+		<span class="readonlyLabel"><?php echo _('Sub-option 7:')?></span>
 		<span class="value"><?php echo $mta_value['DHCPOption7'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel">Sub-option 8:</span>
+		<span class="readonlyLabel"><?php echo _('Sub-option 8:')?></span>
 		<span class="value"><?php echo $mta_value['DHCPOption8'];?></span>
 	</div>
 </div>
@@ -364,37 +364,37 @@ $device_value["SerialNumber"] 				= getStr("Device.DeviceInfo.SerialNumber");
 $device_value["MFI_Date"]					= getStr("Device.DPoE.DPoE_ManufacturerInfo.manufacturerDate");
 ?>
 <div class="module forms">
-	<h2>DPoE Modem Info</h2>
+	<h2><?php echo _('DPoE Modem Info')?></h2>
 	<div class="form-row ">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">HW Version:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _('HW Version:')?></span>
 		<span class="value"><?php echo $device_value['HardwareVersion'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">Vendor:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _('Vendor:')?></span>
 		<span class="value"><?php echo $device_value['Manufacturer'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">BOOT Version:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _('BOOT Version:')?></span>
 		<span class="value"><?php echo $device_value['BootloaderVersion'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">Model:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _('Model:')?></span>
 		<span class="value"><?php echo $device_value['ModelName'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">Product Type:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _('Product Type:')?></span>
 		<span class="value"><?php echo $device_value['ProductClass'];?></span>
 	</div>
 	<div class="form-row odd">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">Download Version:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _('Download Version:')?></span>
 		<span class="value"><?php echo $device_value['AdditionalSoftwareVersion'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">Serial Number:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _('Serial Number:')?></span>
 		<span class="value"><?php echo $device_value['SerialNumber'];?></span>
 	</div>
 	<div class="form-row ">
-		<span class="readonlyLabel" style="text-align:left; color:#333333">Manufacturer Date:</span>
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _('Manufacturer Date:')?></span>
 		<span class="value"><?php echo $device_value['MFI_Date']; ?></span>
 	</div>
 </div>
@@ -474,282 +474,282 @@ $DPoE_param = array(
     $DPoE_OLS_Values = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
 ?>
 	<div class="module forms div_dpoe">
-		<h2>DPoE Network</h2>
+		<h2><?php echo _('DPoE Network')?></h2>
 		<div class="form-row odd">
-			<span class="readonlyLabel">Number Of Network Ports:</span>
+			<span class="readonlyLabel"><?php echo _('Number Of Network Ports:')?></span>
 			<span class="value"><?php echo $DPoE_value['DPoE_NOfNetworkPorts']; ?></span>
 		</div>
 		<div class="form-row ">
-			<span class="readonlyLabel">Number Of S1 Interfaces:</span>
+			<span class="readonlyLabel"><?php echo _('Number Of S1 Interfaces:')?></span>
 			<span class="value"><?php echo $DPoE_value['DPoE_NOfS1Interfaces']; ?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">Reset Onu:</span>
+			<span class="readonlyLabel"><?php echo _('Reset Onu:')?></span>
 			<span class="value"><?php echo $DPoE_value['DPoE_ResetOnu']; ?></span>
 		</div>
 		<div class="form-row ">
-			<span class="readonlyLabel">Dynamic MAC Address Age Limit:</span>
+			<span class="readonlyLabel"><?php echo _('Dynamic MAC Address Age Limit:')?></span>
 			<span class="value"><?php echo $DPoE_value['DPoE_DMacAddrAgeLimit']; ?></span>
 		</div>		
 		<div class="form-row odd">
-			<span class="readonlyLabel">Dynamic MAC Learning Table Size:</span>
+			<span class="readonlyLabel"><?php echo _('Dynamic MAC Learning Table Size:')?></span>
 			<span class="value"><?php echo $DPoE_value['DPoE_DMacLTableSize']; ?></span>
 		</div>	
 		<div class="form-row ">
-			<span class="readonlyLabel">MAC Learning Aggregate Limit:</span>
+			<span class="readonlyLabel"><?php echo _('MAC Learning Aggregate Limit:')?></span>
 			<span class="value"><?php echo $DPoE_value['DPoE_MacLAL']; ?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">Clear Onu Link Statistics:</span>
+			<span class="readonlyLabel"><?php echo _('Clear Onu Link Statistics:')?></span>
 			<span class="value"><?php echo $DPoE_value['DPoE_COLStatistics']; ?></span>
 		</div>
 	</div>
 	<div class="module forms div_dpoe">
-		<h2>DPoE Firmware Info</h2>
+		<h2><?php echo _('DPoE Firmware Info')?></h2>
 		<div class="form-row ">
-			<span class="readonlyLabel">Boot Version:</span>
+			<span class="readonlyLabel"><?php echo _('Boot Version:')?></span>
 			<span class="value"><?php echo $DPoE_value['FWI_bootVersion']; ?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">Boot Crc32:</span>
+			<span class="readonlyLabel"><?php echo _('Boot Crc32:')?></span>
 			<span class="value"><?php echo $DPoE_value['FWI_bootCrc32']; ?></span>
 		</div>
 		<div class="form-row ">
-			<span class="readonlyLabel">App Version:</span>
+			<span class="readonlyLabel"><?php echo _('App Version:')?></span>
 			<span class="value"><?php echo $DPoE_value['FWI_appVersion']; ?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">App Crc32:</span>
+			<span class="readonlyLabel"><?php echo _('App Crc32:')?></span>
 			<span class="value"><?php echo $DPoE_value['FWI_appCrc32']; ?></span>
 		</div>
 	</div>
 	<div class="module forms div_dpoe">
-		<h2>DPoE Chip Info</h2>
+		<h2><?php echo _('DPoE Chip Info')?></h2>
 		<div class="form-row ">
-			<span class="readonlyLabel">JEDEC ID:</span>
+			<span class="readonlyLabel"><?php echo _('JEDEC ID:')?></span>
 			<span class="value"><?php echo $DPoE_value['CI_jedecId']; ?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">Chip Model:</span>
+			<span class="readonlyLabel"><?php echo _('Chip Model:')?></span>
 			<span class="value"><?php echo $DPoE_value['CI_chipModel']; ?></span>
 		</div>
 		<div class="form-row ">
-			<span class="readonlyLabel">Chip Version:</span>
+			<span class="readonlyLabel"><?php echo _('Chip Version:')?></span>
 			<span class="value"><?php echo $DPoE_value['CI_chipVersion']; ?></span>
 		</div>
 	</div>
 	<div class="module forms div_dpoe">
-		<h2>DPoE OnuPacketBufferCapabilities</h2>
+		<h2><?php echo _('DPoE OnuPacketBufferCapabilities')?></h2>
 		<div class="form-row ">
-			<span class="readonlyLabel">Upstream Queues:</span>
+			<span class="readonlyLabel"><?php echo _('Upstream Queues:')?></span>
 			<span class="value"><?php echo $DPoE_value['OPBC_upstreamQueues']; ?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">Up Queues Max Per Link:</span>
+			<span class="readonlyLabel"><?php echo _('Up Queues Max Per Link:')?></span>
 			<span class="value"><?php echo $DPoE_value['OPBC_upQueuesMaxPerLink']; ?></span>
 		</div>
 		<div class="form-row ">
-			<span class="readonlyLabel">Up Queue Increment:</span>
+			<span class="readonlyLabel"><?php echo _('Up Queue Increment:')?></span>
 			<span class="value"><?php echo $DPoE_value['OPBC_upQueueIncrement']; ?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">Downstream Queues:</span>
+			<span class="readonlyLabel"><?php echo _('Downstream Queues:')?></span>
 			<span class="value"><?php echo $DPoE_value['OPBC_downstreamQueues']; ?></span>
 		</div>
 		<div class="form-row ">
-			<span class="readonlyLabel">Dn Queues MaxPer Port:</span>
+			<span class="readonlyLabel"><?php echo _('Dn Queues MaxPer Port:')?></span>
 			<span class="value"><?php echo $DPoE_value['OPBC_dnQueuesMaxPerPort']; ?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">Dn Queue Increment:</span>
+			<span class="readonlyLabel"><?php echo _('Dn Queue Increment:')?></span>
 			<span class="value"><?php echo $DPoE_value['OPBC_dnQueueIncrement']; ?></span>
 		</div>
 		<div class="form-row ">
-			<span class="readonlyLabel">Total Packet Buffer:</span>
+			<span class="readonlyLabel"><?php echo _('Total Packet Buffer:')?></span>
 			<span class="value"><?php echo $DPoE_value['OPBC_totalPacketBuffer']; ?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel">Dn Packet Buffer:</span>
+			<span class="readonlyLabel"><?php echo _('Dn Packet Buffer:')?></span>
 			<span class="value"><?php echo $DPoE_value['OPBC_dnPacketBuffer']; ?></span>
 		</div>	
 	</div>
 	<div class="module" style="overflow:auto">
-		<h2>DPoE Llid Forwarding State</h2>
+		<h2><?php echo _('DPoE Llid Forwarding State')?></h2>
 		<table class="data">
 		<tbody>
 			<tr class="">
-				<th class="row-label ">Index</th>
+				<th class="row-label "><?php echo _('Index')?></th>
 				<?php foreach ($DPoE_LFWState_Values as $key => $value) echo '<td><div style="width: 100px">'.$key.'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Forwarding State</th>
+				<th class="row-label "><?php echo _('Forwarding State')?></th>
 				<?php foreach ($DPoE_LFWState_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["forwardingState"].'</div></td>';?>
 			</tr>
 			<tr>
-				<th class="row-label ">Link</th>
+				<th class="row-label "><?php echo _('Link')?></th>
 				<?php foreach ($DPoE_LFWState_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["link"].'</div></td>';?>
 			</tr>
 		</tbody>
 		</table>
 	</div>
 	<div class="module" style="overflow:auto">
-		<h2>DPoE Oam Frame Rate</h2>
+		<h2><?php echo _('DPoE Oam Frame Rate')?></h2>
 		<table class="data">	
 		<tbody>
 			<tr class="">
-				<th class="row-label ">Index</th>
+				<th class="row-label "><?php echo _('Index')?></th>
 				<?php foreach ($DPoE_OFR_Values as $key => $value) echo '<td><div style="width: 100px">'.$key.'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Max Rate</th>
+				<th class="row-label "><?php echo _('Max Rate')?></th>
 				<?php foreach ($DPoE_OFR_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["maxRate"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">Min Rate</th>
+				<th class="row-label "><?php echo _('Min Rate')?></th>
 				<?php foreach ($DPoE_OFR_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["minRate"].'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Link</th>
+				<th class="row-label "><?php echo _('Link')?></th>
 				<?php foreach ($DPoE_OFR_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["link"].'</div></td>';?>
 			</tr>
 		</tbody>
 		</table>
 	</div>
 	<div class="module form div_dpoe" style="overflow:auto">
-		<h2>DPoE DynamicMACTable</h2>
+		<h2><?php echo _('DPoE DynamicMACTable')?></h2>
 		<table class="data">	
 		<tbody>
 			<tr class="">
-				<th class="row-label ">Index</th>
+				<th class="row-label "><?php echo _('Index')?></th>
 				<?php foreach ($DPoE_DMacTable_Values as $key => $value) echo '<td><div style="width: 100px">'.$key.'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Link</th>
+				<th class="row-label "><?php echo _('Link')?></th>
 				<?php foreach ($DPoE_DMacTable_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["link"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">MAC Address</th>
+				<th class="row-label "><?php echo _('MAC Address')?></th>
 				<?php foreach ($DPoE_DMacTable_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["macAddress"].'</div></td>';?>
 			</tr>
 		</tbody>
 		</table>
 	</div><div class="module form div_dpoe" style="overflow:auto">
-		<h2>DPoE StaticMACTable</h2>
+		<h2><?php echo _('DPoE StaticMACTable')?></h2>
 		<table class="data">	
 		<tbody>
 			<tr class="">
-				<th class="row-label ">Index</th>
+				<th class="row-label "><?php echo _('Index')?></th>
 				<?php foreach ($DPoE_SMacTable_Values as $key => $value) echo '<td><div style="width: 100px">'.$key.'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Link</th>
+				<th class="row-label "><?php echo _('Link')?></th>
 				<?php foreach ($DPoE_SMacTable_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["link"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">MAC Address</th>
+				<th class="row-label "><?php echo _('MAC Address')?></th>
 				<?php foreach ($DPoE_SMacTable_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["macAddress"].'</div></td>';?>
 			</tr>
 		</tbody>
 		</table>
 	</div>
 	<div class="module form div_dpoe" style="overflow:auto">
-		<h2>DPoE OnuLinkStatistics</h2>
+		<h2><?php echo _('DPoE OnuLinkStatistics')?></h2>
 		<table class="data">	
 		<tbody>
 			<tr class="">
-				<th class="row-label ">Index</th>
+				<th class="row-label "><?php echo _('Index')?></th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$key.'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Rx Unicast Frames</th>
+				<th class="row-label "><?php echo _('Rx Unicast Frames')?></th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["rxUnicastFrames"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">Tx Unicast Frames</th>
+				<th class="row-label "><?php echo _('Tx Unicast Frames')?></th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["txUnicastFrames"].'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Rx Frame Too Short</th>
+				<th class="row-label "><?php echo _('Rx Frame Too Short')?></th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["rxFrameTooShort"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">Rx Frame 64</th>
+				<th class="row-label "><?php echo _('Rx Frame');?> 64</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["rxFrame64"].'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Rx Frame 65-127</th>
+				<th class="row-label "><?php echo _('Rx Frame');?> 65-127</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["rxFrame65_127"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">Rx Frame 128-255</th>
+				<th class="row-label "><?php echo _('Rx Frame');?> 128-255</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["rxFrame128_255"].'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Rx Frame 256-511</th>
+				<th class="row-label "><?php echo _('Rx Frame');?> 256-511</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["rxFrame256_511"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">Rx Frame 512-1023</th>
+				<th class="row-label "><?php echo _('Rx Frame');?> 512-1023</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["rxFrame512_1023"].'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Rx Frame 1024-1518</th>
+				<th class="row-label "><?php echo _('Rx Frame');?> 1024-1518</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["rxFrame1024_1518"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">Rx Frame 1519-Plus</th>
+				<th class="row-label "><?php echo _('Rx Frame');?> 1519-Plus</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["rxFrame1519_Plus"].'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Tx Frame 64</th>
+				<th class="row-label "><?php echo _('Tx Frame');?> 64</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["txFrame64"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">Tx Frame 65-127</th>
+				<th class="row-label "><?php echo _('Tx Frame');?> 65-127</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["txFrame65_127"].'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Tx Frame 128-255</th>
+				<th class="row-label "><?php echo _('Tx Frame');?> 128-255</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["txFrame128_255"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">Tx Frame 256-511</th>
+				<th class="row-label "><?php echo _('Tx Frame');?> 256-511</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["txFrame256_511"].'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Tx Frame 512-1023</th>
+				<th class="row-label "><?php echo _('Tx Frame');?> 512-1023</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["txFrame512_1023"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">Tx Frame 1024-1518</th>
+				<th class="row-label "><?php echo _('Tx Frame');?> 1024-1518</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["txFrame_1024_1518"].'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Tx Frame 1519-Plus</th>
+				<th class="row-label "><?php echo _('Tx Frame');?> 1519-Plus</th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["txFrame_1519_Plus"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">Frames Dropped</th>
+				<th class="row-label "><?php echo _('Frames Dropped')?></th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["framesDropped"].'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Bytes Dropped</th>
+				<th class="row-label "><?php echo _('Bytes Dropped')?></th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["bytesDropped"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">Optical Mon Vcc</th>
+				<th class="row-label "><?php echo _('Optical Mon Vcc')?></th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["opticalMonVcc"].'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Optical Mon Tx Bias Current</th>
+				<th class="row-label "><?php echo _('Optical Mon Tx Bias Current')?></th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["opticalMonTxBiasCurrent"].'</div></td>';?>
 			</tr>
 			<tr class="">
-				<th class="row-label ">Optical Mon Tx Power</th>
+				<th class="row-label "><?php echo _('Optical Mon Tx Power')?></th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["opticalMonTxPower"].'</div></td>';?>
 			</tr>
 			<tr class="odd">
-				<th class="row-label ">Optical Mon Rx Power</th>
+				<th class="row-label "><?php echo _('Optical Mon Rx Power')?></th>
 				<?php foreach ($DPoE_OLS_Values as $key => $value) echo '<td><div style="width: 100px">'.$value["opticalMonRxPower"].'</div></td>';?>
 			</tr>
 		</tbody>

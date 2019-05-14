@@ -45,11 +45,11 @@ $(document).ready(function() {
     gateway.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");
 	jQuery.validator.addMethod("noSpace", function(value, element) { 
 		return value.indexOf(" ") < 0 && value != ""; 
-	}, "Space are not allowed");   
+	}, "<?php echo _('Spaces are not allowed')?>");   
 	$.validator.addMethod("allowed_char_new", function(value, element, param) {
 	//Invalid characters are Less than (<), Greater than (>), Ampersand (&), Double quote ("), Single quote ('), Pipe (|).
 	return !param || (value.match(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/)==null);
-	}, 'Special characters are not allowed.');
+	}, '<?php echo _('Special characters are not allowed.')?>');
  
 	$("#pageForm").validate({
 		rules: {
@@ -105,7 +105,7 @@ $(document).ready(function() {
 			hostArray[0]=hostnames[0].value;
 			for(var i=1;i<hostnames.length;i++) {
 				if(hostnames[i].value==""){
-					alert("Please enter HostName.");
+					alert("<?php echo _('Please enter HostName.')?>");
 					return false;
 				}
 				if(hostnames[i].value!=""){
@@ -122,18 +122,18 @@ $(document).ready(function() {
 
 	        for (var prop in object) {
 	           if(object[prop] >= 2) {
-	               alert("Host Name having Duplicate Values");
+	               alert("<?php echo _('Host Name having Duplicate Values')?>");
 	               return false;
 	           }
 	        }
 	        if(hostname.length>64){
-	        	alert("Host Name having greater than 64 characters");
+	        	alert("<?php echo _('Host Name having greater than 64 characters')?>");
 	        	return false;
 	        }
-	        if(spLC!="dyndns.org" && spLC!="tzo.com" && spLC!="changeip.com" && spLC!="freedns.afraid.org") {
-				alert("Service provider name should be \"DynDns.org\" or \"TZO.com\" or \"changeip.com\" or \"freedns.afraid.org\".");
+			if(spLC!="dyndns.org" && spLC!="tzo.com" && spLC!="changeip.com" && spLC!="freedns.afraid.org") {
+				alert("<?php echo _('Service provider name should be \"DynDns.org\" or \"TZO.com\" or \"changeip.com\" or \"freedns.afraid.org\".')?>");
 			} else {
-				jProgress('This may take several seconds', 60);
+				jProgress('<?php echo _('This may take several seconds')?>', 60);
 				$.ajax({
 					type:"POST",
 					url:"actionHandler/ajax_ddns.php",
@@ -141,11 +141,11 @@ $(document).ready(function() {
 					success:function(results){
 						//jAlert(results);
 						jHide();
-						if (results=="Success!") { window.location.href="dynamic_dns.php";}
+						if (results=="<?php echo _("Success!")?>") { window.location.href="dynamic_dns.php";}
 					},
 					error:function(){
 						jHide();
-						jAlert("Failure, please try again.");
+						jAlert("<?php echo _('Failure, please try again.')?>");
 					}
 				});
 			}
@@ -175,15 +175,15 @@ var label = document.createElement("label");
   element.type="text"
 var button=document.createElement('input');
 button.type="button";
-button.value="Remove";
+button.value="<?php echo _('Remove')?>";
 label.setAttribute("id",count);
-var labeltext = document.createTextNode("Host Name:");
+var labeltext = document.createTextNode("<?php echo _('Host Name:')?>");
 label.appendChild(labeltext);
 count=count+1;
 element.setAttribute("id",count);
 element.setAttribute("size","36");
 element.style.margin="0px 0px 20px 0px ";
-element.setAttribute("name", "Host_Name");
+element.setAttribute("name", "<?php echo _('Host_Name')?>");
 if(hostName!=null) 
 	element.value = hostName;
 count=count+1;
@@ -199,16 +199,16 @@ button.onclick=add1
 }
 </script>
 <div id="content">
-	<h1>Advanced > Dynamic DNS > Edit</h1>
+	<h1><?php echo _('Advanced > Dynamic DNS > Edit')?></h1>
 	<div id="educational-tip">
-		<p class="tip">You can edit this existing DDNS entry, by changing the service provider name/host name/user name/password combination.</p>
+		<p class="tip"><?php echo _('You can edit this existing DDNS entry, by changing the service provider name/host name/user name/password combination.')?></p>
 	</div>
 	<form id="pageForm">
 		<div class="module forms">
-			<h2>Dynamic DNS</h2>
+			<h2><?php echo _('Dynamic DNS')?></h2>
 			<div class="form-row " id="Service_Provider" >
 				<div class="form-row "  style="float:left">
-					<label for="Service_Provider">Service Provider:</label>
+					<label for="Service_Provider"><?php echo _('Service Provider:')?></label>
 					<!--input type="text" value="dyndns.org" id="Service_Provider1"  name="Service_Provider" /-->
 					<select name="Service_Provider1" id="Service_Provider1">
 					<?php
@@ -224,21 +224,21 @@ button.onclick=add1
 				</div>
 			</div>
 			<div class="form-row odd" >
-				<label for="User_name"> User Name:</label> <input type="text"  id="User_name" name="User_name" class="text" size="35"  value=""/>
+				<label for="User_name"> <?php echo _('User Name:')?></label> <input type="text"  id="User_name" name="User_name" class="text" size="35"  value=""/>
 			</div>
 			<div class="form-row">
-				<label for="Password">Password:</label> <input type="password"  id="Password" name="Password" class="text" size="32"  value=""/>
+				<label for="Password"><?php echo _('Password:')?></label> <input type="password"  id="Password" name="Password" class="text" size="32"  value=""/>
 			</div>
 			<div class="form-row odd" id="show1">
-				<label for="Host_Name">Host Name:</label> <input type="text"  id="Host_Name1" name="Host_Name" class="text" size="35"  value=""/>
+				<label for="Host_Name"><?php echo _('Host Name:')?></label> <input type="text"  id="Host_Name1" name="Host_Name" class="text" size="35"  value=""/>
 			</div>
 			<div class="form-row odd" ><div id="foo"></div></div>
 			<div class="form-btn">
-				<input type="button" value="ADD" id="add-Dynamic-DNS" class="btn" onclick="add()"/>
+				<input type="button" value="<?php echo _('ADD')?>" id="add-Dynamic-DNS" class="btn" onclick="add()"/>
 			</div>
 			<div class="form-btn">
-				<input type="button" id="btn-save" value="Save Settings" class="btn submit" />
-				<input type="button" id="btn-cancel" value="Cancel Settings" class="btn alt reset"/>
+				<input type="button" id="btn-save" value="<?php echo _('Save Settings')?>" class="btn submit" />
+				<input type="button" id="btn-cancel" value="<?php echo _('Cancel Settings')?>" class="btn alt reset"/>
 			</div>
 		</div> <!-- end .module -->
 	</form>

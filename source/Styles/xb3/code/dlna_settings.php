@@ -44,7 +44,7 @@ $(document).ready(function() {
     $('#save-dlna').click(function(event) {
         event.preventDefault();
         var dlna_enabled = $("#dlna_switch").radioswitch("getState").on ? "true" : "false";
-        jProgress("This may take several seconds.",60);
+        jProgress("<?php echo _('This may take several seconds.')?>",60);
         $.ajax({
             type:"POST",
             url:"actionHandler/ajaxSet_dlna_setting.php",
@@ -56,28 +56,28 @@ $(document).ready(function() {
             },
             error: function(){
                 jHide();
-                jAlert("Error! Please try later!");
+                jAlert("<?php echo _('Error! Please try later!')?>");
             }
         }); //end of ajax
     });
 });
 </script>
 <div id="content">
-	<h1>Advanced > Media Sharing > DLNA > DLNA Settings</h1>
+	<h1><?php echo _('Advanced > Media Sharing > DLNA > DLNA Settings')?></h1>
      <div id="educational-tip">
-	        <p class="tip">Manage DLNA settings.</p>
-	         <p class="hidden">DLNA allows the sharing of digital media between devices such as computers, laptops, printers, cameras, tablets, cell phones and other multimedia products.</p>
-	         <p class="hidden">DLNA can be enabled or disabled. When enabled, the Gateway will act as a Digital Media Server.</p>
+	        <p class="tip"><?php echo _('Manage DLNA settings.')?></p>
+	         <p class="hidden"><?php echo _('DLNA allows the sharing of digital media between devices such as computers, laptops, printers, cameras, tablets, cell phones and other multimedia products.')?></p>
+	         <p class="hidden"><?php echo _('DLNA can be enabled or disabled. When enabled, the Gateway will act as a Digital Media Server.')?></p>
     </div>
 	<form  id="pageForm">
         <div class="module">
-            <h2>DLNA Settings</h2>
+            <h2><?php echo _('DLNA Settings')?></h2>
             <div class="select-row odd">
-                <span class="readonlyLabel ">DLNA:</span>
+                <span class="readonlyLabel "><?php echo _('DLNA:')?></span>
                 <span id="dlna_switch"></span>
             </div>
 			<div class="btn-group">
-				<input type="button" id="save-dlna" name="save-dlna" value="Save" class="btn" />
+				<input type="button" id="save-dlna" name="save-dlna" value="<?php echo _('Save')?>" class="btn" />
 			</div>
 		</form>
 </div><!-- end #content -->

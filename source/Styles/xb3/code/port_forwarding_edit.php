@@ -183,19 +183,19 @@ function isIp4AddrRequired()
 }
 	jQuery.validator.addMethod("ip",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 255);
-	}, "Please enter a valid IP address.");
+	}, "<?php echo _("Please enter a valid IP address.")?>");
 	jQuery.validator.addMethod("ip4",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 1 && value <= 254);
-	}, "Please enter a valid IP address.");
+	}, "<?php echo _("Please enter a valid IP address.")?>");
 	jQuery.validator.addMethod("ip4_end",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 1 && value <= 253);
-	}, "Please enter a valid IP address.");
+	}, "<?php echo _("Please enter a valid IP address.")?>");
 	jQuery.validator.addMethod("port",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 65535);
-	}, "Please enter a port number less than 65536.");
+	}, "<?php echo _("Please enter a port number less than 65536.")?>");
 	jQuery.validator.addMethod("ltstart",function(value,element){
 		return this.optional(element) || value>=parseInt($("#start_port").val());
-	}, "Please enter a value more than or equal to Start Port.");
+	}, "<?php echo _("Please enter a value more than or equal to Start Port.")?>");
 var validator = $("#pageForm").validate({
     	onfocusout: false,
 		onkeyup: false,
@@ -281,11 +281,11 @@ var validator = $("#pageForm").validate({
         if($("#common_services").find("option:selected").val() == "other") {
         	var name = $('#service_name').val().replace(/^\s+|\s+$/g, '');
         	if (name.length == 0){
-        		jAlert("Please input a service name !");
+        		jAlert("<?php echo _("Please input a service name !")?>");
         		return;
         	}
-        	else if(name.match(/[<>&"'|]/)!=null){
-        		jAlert('Please input valid Service Name ! \n Less than (<), Greater than (>), Ampersand (&), Double quote ("), \n Single quote (\') and Pipe (|) characters are not allowed.');
+		else if(name.match(/[<>&"'|]/)!=null){
+			jAlert('<?php echo _("Please input valid Service Name ! \\n Less than (<), Greater than (>), Ampersand (&), Double quote (\"), \\n Single quote (\') and Pipe (|) characters are not allowed.")?>');
 				return;
         	}
         }
@@ -302,7 +302,7 @@ var validator = $("#pageForm").validate({
 	    	var host2 = parseInt($("#server_ip_address_3").val());
 	    	var host3 = parseInt($("#server_ip_address_4").val());
  		if (IsBlank("server_ip_address_") && IsBlank("ip6_address_r")) {
-	   	  	jAlert("Please input valid server address !");
+	   	  	jAlert("<?php echo _("Please input valid server address !")?>");
 	   	  	return;
 		}
 		if (!IsBlank("server_ip_address_")) {
@@ -310,10 +310,10 @@ var validator = $("#pageForm").validate({
 			var IPv4_valid = ValidIp4Addr(ip, jsGatewayIP, jsNetMask);
 			//IPv4 validation
 			if (ip == jsGatewayIP){
-				jAlert("Server IP can't be equal to the Gateway IP address !");
+				jAlert("<?php echo _("Server IP can't be equal to the Gateway IP address !")?>");
 				return;
 			} else if(!IPv4_valid){
-				jAlert("Server IP addr is not in valid range !");
+				jAlert("<?php echo _("Server IP addr is not in valid range !")?>");
 				return;
 			}
 		}
@@ -331,11 +331,11 @@ var validator = $("#pageForm").validate({
 			end_int 	= ipv6_in_int(end1);
 			//is valid "interface id" is converted to int for ipv6
 			if(!(isHex(ipv6res1[0]) && isHex(ipv6res1[1]) && isHex(ipv6res1[2]) && isHex(ipv6res1[3]))){
-				jAlert("Server IPv6 addr is not valid!");
+				jAlert("<?php echo _("Server IPv6 addr is not valid!")?>");
 				return;
 			}
 			if(!validate_v6addr_pool(start_int, ipv6res_int) || !validate_v6addr_pool(ipv6res_int, end_int)){
-				jAlert("Server IPv6 addr is not in valid range:\n <?php echo $prefix_arr[0].':'.$v6_begin_addr.' ~ '.$prefix_arr[0].':'.$v6_end_addr; ?>");
+				jAlert("<?php echo _("Server IPv6 addr is not in valid range:").'\n'.$prefix_arr[0].':'.$v6_begin_addr.' ~ '.$prefix_arr[0].':'.$v6_end_addr; ?>");
 				return;
 			}
 		}
@@ -353,7 +353,7 @@ var validator = $("#pageForm").validate({
 		}		
 	    var ID = "<?php echo $i ?>";
 		if($("#pageForm").valid()) {
-			jProgress('This may take several seconds.',60);
+			jProgress('<?php echo _("This may take several seconds.")?>',60);
 			$.ajax({
 				type:"POST",
 				url:"actionHandler/ajax_port_forwarding.php",
@@ -361,13 +361,13 @@ var validator = $("#pageForm").validate({
 				dataType: "json",
 				success:function(results){
 					jHide();
-					if (results=="Success!") { window.location.href="port_forwarding.php";}
-					else if (results=="") {jAlert('Failure! Please check your inputs.');}
+					if (results=="<?php echo _("Success!")?>") { window.location.href="port_forwarding.php";}
+					else if (results=="") {jAlert('<?php echo _("Failure! Please check your inputs.")?>');}
 					else jAlert(results);
 				},
 				error:function(){
 					jHide();
-					jAlert("Something wrong, please try later!");
+					jAlert("<?php echo _("Someting went wrong, please try later!")?>");
 				}
 			}); //end of ajax
 		}//end of valid 
@@ -434,29 +434,29 @@ update_service_field();
 </script>
 <?php if($CloudUIEnable == "true"){ ?>
 <div  id="content">
-	<h1>Advanced > Port Forwarding > Edit Service</h1>
+	<h1><?php echo _("Advanced > Port Forwarding > Edit Service")?></h1>
 	<div  class="module forms">
 		<div id="content" style="text-align: center;">
 			<br>
-			<h3>Managing your home network settings is now easier than ever.<br>Visit <a href="http://<?php echo $productLink;?>"><?php echo $productLink ?></a> to set up port forwards, among many other features and settings.</h3>
+			<h3><?php echo sprintf(_("Managing your home network settings is now easier than ever.<br>Visit <a href='http://%s'>%s</a> to set up port forwards, among many other features and settings."),$productLink, $productLink)?></h3>
 			<br>
 		</div>
 	</div> <!-- end .module -->
 </div><!-- end #content -->
 <?php } else { ?>
 <div  id="content">
-	<h1>Advanced > Port Forwarding > Edit Service</h1>
+	<h1><?php echo _("Advanced > Port Forwarding > Edit Service")?></h1>
     <div  id="educational-tip">
-        <p class="tip"> Edit a rule for port forwarding services by user.</p>
-        <p class="hidden">Port forwarding permits communications from external hosts by forwarding them to a particular port.</p>
-		<p class="hidden">Port forwarding settings can affect the Gateway's performance.</p>
+        <p class="tip"> <?php echo _("Edit a rule for port forwarding services by user.")?></p>
+        <p class="hidden"><?php echo _("Port forwarding permits communications from external hosts by forwarding them to a particular port.")?></p>
+		<p class="hidden"><?php echo _("Port forwarding settings can affect the Gateway's performance.")?></p>
     </div>
 	<form method="post" id="pageForm" action="">
 	<div  class="module forms">
-		<h2>Edit Port Forward</h2>
+		<h2><?php echo _("Edit Port Forward")?></h2>
 		<?php $serviceArr = array('FTP', 'AIM', 'HTTP', 'PPTP', 'HTTPs', 'Telnet', 'SSH'); ?>
 		<div  class="form-row odd">
-					<label for="common_services">Common Service:</label>
+					<label for="common_services"><?php echo _("Common Service:")?></label>
 					<select  id="common_services" name="common_services">
 					<option <?php if(!strcasecmp($service_name, 'FTP')) echo 'selected'; ?> value="21|21" >FTP</option>
 					<option <?php if(!strcasecmp($service_name, 'AIM')) echo 'selected'; ?> value="5190|5190">AIM</option>
@@ -465,16 +465,16 @@ update_service_field();
 					<option <?php if(!strcasecmp($service_name, 'HTTPs')) echo 'selected'; ?> value="443|443">HTTPs</option>
 					<option <?php if(!strcasecmp($service_name, 'Telnet')) echo 'selected'; ?> value="23|23">Telnet</option>
 					<option <?php if(!strcasecmp($service_name, 'SSH')) echo 'selected'; ?> value="22|22">SSH</option>
-					<option <?php if(!in_array($service_name, $serviceArr)) echo 'selected'; ?> value="other" class="other">Other</option>
+					<option <?php if(!in_array($service_name, $serviceArr)) echo 'selected'; ?> value="other" class="other"><?php echo _("Other")?></option>
 					</select>
 				</div>
 				<div class="form-row ">
-			<label for="service_name">Service Name:</label> 
+			<label for="service_name"><?php echo _("Service Name:")?></label> 
 			<input type="text" class="text" value="<?php echo $service_name; ?>" id="service_name" name="service_name" />
 		</div>
 		<?php $type = $portmapping_value["type"]; ?>
 		<div  class="form-row odd">
-			<label for="service_type">Service Type:</label>
+			<label for="service_type"><?php echo _("Service Type:")?></label>
 			<select id="service_type">
 				<option value="tcp_udp" <?php if($type === 'BOTH') echo 'selected'; ?>>TCP/UDP</option>
 				<option value="tcp" <?php if($type === 'TCP') echo 'selected'; ?>>TCP</option>
@@ -488,7 +488,7 @@ update_service_field();
 			$ip = array('', '', '', '');
 		}
 		?>
-			<label for="server_ip_address_1">Server IPv4 Address:</label>
+			<label for="server_ip_address_1"><?php echo _("Server IPv4 Address:")?></label>
 		    <input type="text" size="2" maxlength="3" id="server_ip_address_1" value="<?php echo $ip[0];?>" name="server_ip_address_1" class="ipv4-addr smallInput" />
 	        <label for="server_ip_address_2" class="acs-hide"></label>
 		   .<input type="text" size="2" maxlength="3" id="server_ip_address_2" value="<?php echo $ip[1];?>" name="server_ip_address_2" class="ipv4-addr smallInput" />
@@ -498,7 +498,7 @@ update_service_field();
 		   .<input type="text" size="2" maxlength="3" id="server_ip_address_4" value="<?php echo $ip[3];?>" name="server_ip_address_4" class="ipv4-addr smallInput" />
 		</div>
 		<div class="form-row odd">		
-			<label for="ip6_address_r1">Server IPv6 Address:</label>
+			<label for="ip6_address_r1"><?php echo _("Server IPv6 Address:")?></label>
 			<input type="text" size="1" maxlength="4" id="ip6_address_r1" name="ip_address_1" disabled="disabled" class="ipv6-addr ipv6-input"/>:
 	        <label for="ip6_address_r2" class="acs-hide"></label>
 			<input type="text" size="1" maxlength="4" id="ip6_address_r2" name="ip_address_2" disabled="disabled" class="ipv6-addr ipv6-input"/>:
@@ -516,16 +516,16 @@ update_service_field();
 			<input type="text" size="1" maxlength="4" id="ip6_address_r8" name="ip_address_8" class="ipv6-addr ipv6-input"/>
     	</div>
 		<div  class="form-row ">
-			<label for="start_port">Start Port:</label>  
+			<label for="start_port"><?php echo _("Start Port:")?></label>  
 			<input type="text" class="port" value="<?php echo $startport; ?>" id="start_port" name="start_port" />
 		</div>
 		<div  class="form-row odd">
-			<label for="end_port">End Port:</label>  
+			<label for="end_port"><?php echo _("End Port:")?></label>  
 			<input type="text" class="port" value="<?php echo $endport;?>" id="end_port" name="end_port" />
 		</div>
 		<div  class="form-btn">
-			<input type="button" id="btn-save" value="save" class="btn submit"/>
-			<input type="button" id="btn-cancel" value="Cancel" class="btn alt reset"/>
+			<input type="button" id="btn-save" value="<?php echo _("save")?>" class="btn submit"/>
+			<input type="button" id="btn-cancel" value="<?php echo _("Cancel")?>" class="btn alt reset"/>
 		</div>
 	</div> <!-- end .module -->
 	</form>

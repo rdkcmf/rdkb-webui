@@ -42,8 +42,8 @@ $(document).ready(function() {
 		radio_name: "triggering",
 		id_on: "triggering_enabled",
 		id_off: "triggering_disabled",
-		title_on: "Enable port triggering",
-		title_off: "Disable port triggering",
+		title_on: "<?php echo _("Enable port triggering")?>",
+		title_off: "<?php echo _("Disable port triggering")?>",
 		state: <?php echo ($PTEnable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});
 	$("a.confirm").unbind('click');
@@ -54,14 +54,14 @@ $(document).ready(function() {
         $("a.confirm").click(function(e) {
             e.preventDefault();            
             var href = $(this).attr("href");
-            var message = ($(this).attr("title").length > 0) ? "Are you sure you want to " + $(this).attr("title") + "?" : "Are you sure?";
+            var message = ($(this).attr("title").length > 0) ? "<?php echo _("Are you sure you want to")?> " + $(this).attr("title") + "?" : "<?php echo _("Are you sure?")?>";
             jConfirm(
                 message
-                ,"Are You Sure?"
+                ,"<?php echo _("Are You Sure?")?>"
                 ,function(ret) {
                     if(ret) {
 						delVal = href.substring(href.indexOf("=")+1);
-						jProgress('This may take several seconds.',60);
+						jProgress('<?php echo _("This may take several seconds.")?>',60);
 						$.ajax({
 							type:"POST",
 							url:"actionHandler/ajax_port_triggering.php",
@@ -72,7 +72,7 @@ $(document).ready(function() {
 							},
 							error:function(){
 								jHide();
-								jAlert("Error! Please try later!");
+								jAlert("<?php echo _("Error! Please try later!")?>");
 							}
 						});
                     }    
@@ -106,7 +106,7 @@ $(document).ready(function() {
 			$("input[name='PortActive']").prop("disabled",false);
 			setupDeleteConfirmDialogs();
 		}
-		jProgress('This may take several seconds.',60);
+		jProgress('<?php echo _("This may take several seconds.")?>',60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_port_triggering.php",
@@ -137,7 +137,7 @@ $(document).ready(function() {
 			},
 			error: function(){
 				jHide();
-				jAlert("Error! Please try later!");
+				jAlert("<?php echo _("Error! Please try later!")?>");
 			}
 		});
 	});
@@ -145,7 +145,7 @@ $(document).ready(function() {
 		var isChecked=$(this).is(":checked");
 		var id=$(this).attr("id").split("_");
 		id=id[1];
-		jProgress('This may take several seconds.',60);
+		jProgress('<?php echo _("This may take several seconds.")?>',60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_port_triggering.php",
@@ -155,25 +155,25 @@ $(document).ready(function() {
 			},
 			error:function(){
 				jHide();
-				jAlert("Error! Please try later!");
+				jAlert("<?php echo _("Error! Please try later!")?>");
 			}
 		});
 	});
 });
 </script>
 <div id="content">
-	<h1>Advanced > Port Triggering</h1>
+	<h1><?php echo _("Advanced > Port Triggering")?></h1>
 	<div id="educational-tip">
-		<p class="tip">Manage external access to specific ports on your network.</p>
-		<p class="hidden">Port triggering monitors outbound traffic on your network. When traffic is detected on a particular outbound port, the Gateway remembers that computer's IP address, triggers the inbound port to accept the incoming traffic, and directs the communications to the same computer.</p>
-		<p class="hidden">Select <strong>Enable</strong> to manage external access to specific ports on your network.</p>
-		<p class="hidden">Click <strong>+ADD PORT TRIGGER</strong> to add new port triggering rules.</p>
-		<p class="hidden">Port triggering settings can affect the Gateway's performance.</p>
+		<p class="tip"><?php echo _("Manage external access to specific ports on your network.")?></p>
+		<p class="hidden"><?php echo _("Port triggering monitors outbound traffic on your network. When traffic is detected on a particular outbound port, the Gateway remembers that computer's IP address, triggers the inbound port to accept the incoming traffic, and directs the communications to the same computer.")?></p>
+		<p class="hidden"><?php echo _("Select <strong>Enable</strong> to manage external access to specific ports on your network.")?></p>
+		<p class="hidden"><?php echo _("Click <strong>+ADD PORT TRIGGER</strong> to add new port triggering rules.")?></p>
+		<p class="hidden"><?php echo _("Port triggering settings can affect the Gateway's performance.")?></p>
 	</div>
 	<form action="port_triggering.php" method="post">
 	<div class="module">
 		<div class="select-row">
-    		<span class="readonlyLabel label">Port Triggering:</span>	
+    		<span class="readonlyLabel label"><?php echo _("Port Triggering:")?></span>	
 			<span id="pt_switch"></span>
     	</div>
 		<!--div class="select-row" style="color:red">Switch this button will make all service Active/Inactive</div-->
@@ -181,15 +181,15 @@ $(document).ready(function() {
 	</form>
 	<div id="port-triggering-items">
 	<div class="module data">
-		<h2>Port Triggering</h2>
-		<p class="button"><a tabindex='0' href="port_triggering_add.php" class="btn" id="add-port-trigger">+ Add Port Trigger</a></p>
-		<table class="data" summary="This table lists available port triggering entries">
+		<h2><?php echo _("Port Triggering")?></h2>
+		<p class="button"><a tabindex='0' href="port_triggering_add.php" class="btn" id="add-port-trigger"><?php echo _("+ Add Port Trigger")?></a></p>
+		<table class="data" summary="<?php echo _("This table lists available port triggering entries")?>">
 		    <tr>
-		        <th id="service-name">Service Name</td>
-				<th id="service-type">Service Type</td>
-				<th id="trigger-port">Trigger Port(s)</td>
-				<th id="target-port">Target port(s)</td>
-     			<th id="active">Active</td>
+		        <th id="service-name"><?php echo _("Service Name")?></td>
+				<th id="service-type"><?php echo _("Service Type")?></td>
+				<th id="trigger-port"><?php echo _("Trigger Port(s)")?></td>
+				<th id="target-port"><?php echo _("Target port(s)")?></td>
+     			<th id="active"><?php echo _("Active")?></td>
 				<!-- <th id="edit-or-delete" colspan="2">&nbsp;</th> -->
 				<th id="edit-button">&nbsp;</th>
 				<th id="delete-button">&nbsp;</th>
@@ -224,8 +224,8 @@ $(document).ready(function() {
 					echo "<td headers='active'><input tabindex='0' type=\"checkbox\" id=\"PortActive_$i\" name=\"PortActive\" /><label for=\"PortActive_$i\"  class='acs-hide'></label></td>";
 				}	
 				echo "
-	            <td headers='edit-button' class=\"edit\"><a tabindex='0' href=\"port_triggering_edit.php?id=$i\" class=\"btn\" id=\"edit_$i\">Edit</a></td>
-		        <td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_port_triggering.php?del=$i\" class=\"btn confirm\" title=\"delete port Triggering for ".$portTriggerValues["$i"]["Description"]." \" id=\"delete_$i\">x</a></td>
+	            <td headers='edit-button' class=\"edit\"><a tabindex='0' href=\"port_triggering_edit.php?id=$i\" class=\"btn\" id=\"edit_$i\">"._("Edit")."</a></td>
+		        <td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_port_triggering.php?del=$i\" class=\"btn confirm\" title=\"".sprintf(_("delete port Triggering for %s."),$portTriggerValues["$i"]["Description"])."\" id=\"delete_$i\">x</a></td>
 		    </tr>";
 			} }?>
 			<tfoot>

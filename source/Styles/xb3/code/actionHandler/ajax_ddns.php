@@ -18,7 +18,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] != 'mso') {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 function selectTable($sp) {
@@ -79,9 +79,9 @@ if (isset($_POST['add'])){
 			setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".Password",$password,false);
 			setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".Domain",$hostname,false);
 			setStr("Device.X_CISCO_COM_DDNS.Service.".$id.".Enable","true",true);
-			$result = "Success!";
+			$result = _("Success!");
 		} else {
-			$result = "Service Provider is not exist!";
+			$result = _("Service Provider is not exist!");
 		}
 		header("Content-Type: application/json");
 		echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
@@ -161,7 +161,7 @@ if (isset($_POST['edit'])){
 		setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Password",$password,false);
 		setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Domain",$hostname,false);
 		setStr("Device.X_CISCO_COM_DDNS.Service.".$i.".Enable","true",true);
-		$result="Success!";
+		$result=_("Success!");
 		header("Content-Type: application/json");
 		echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
 	}

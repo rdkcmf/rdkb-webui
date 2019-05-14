@@ -18,7 +18,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["loginuser"]) || $_SESSION['loginuser'] != 'mso') {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="../index.php";</script>';
+	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
 exec("/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_MTA.MTALog. > /tmp/log_mta.txt");

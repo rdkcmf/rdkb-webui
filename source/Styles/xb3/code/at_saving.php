@@ -20,9 +20,9 @@ include_once __DIR__ .'/CSRF-Protector-PHP/libs/csrf/csrfprotector_rdkb.php';
 csrfprotector_rdkb::init();
 session_start();
 if (!isset($_SESSION["loginuser"])) {
-	echo '<script type="text/javascript">alert("Please Login First!"); location.href="index.php";</script>';
+	echo '<script type="text/javascript">alert(\"'._("Please Login First!").'\"); location.href="index.php";</script>';
 	exit(0);
 }
 	echo '<meta http-equiv=REFRESH CONTENT="0.1; url=trigger_spectrum_download.php">';
-	echo "<h3>Wi-Fi spectrum analyzer results has been saved to your local machine.</h3>";
+	echo "<h3>"._('Wi-Fi spectrum analyzer results has been saved to your local machine.')."</h3>";
 ?>
