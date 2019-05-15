@@ -320,13 +320,19 @@ header('X-robots-tag: noindex,nofollow');
 	function innerIP($client_ip){		//for compatibility, $client_ip is not used
 		$out		= array();
 		$tmp		= array();
+		$lxc_check	= array();
 		$lan_ip		= array();
 		$server_ip	= $_SERVER["SERVER_ADDR"];
 		if (strpos($server_ip, ".")){		//ipv4, something like "::ffff:10.1.10.1"
 			$tmp		= explode(":", $server_ip);
 			$server_ip	= array_pop($tmp);
 		}
-		exec("ifconfig brlan0", $out);
+		exec('grep -a container=lxc /proc/1/environ', $lxc_check, $status);//use eth0 if webserver is running in lxc
+			if (0==$status && $_POST["username"] == "admin") {
+				exec("ifconfig eth0", $out);
+			} else {
+				exec("ifconfig brlan0", $out);
+			}
 		foreach ($out as $v){
 			if (strpos($v, 'inet addr')){
 				$tmp = explode('Bcast', $v);
@@ -359,8 +365,14 @@ header('X-robots-tag: noindex,nofollow');
 	}
 	function if_type($ip_addr){
 		$tmp	= array();
+		$lxc_check = array();
 		$lan_ip	= get_ips("brlan0");
-		$cm_ip	= get_ips("wan0");
+		exec('grep -a container=lxc /proc/1/environ', $lxc_check, $status);//use eth0 if webserver is running in lxc
+		if (0==$status) {
+			$cm_ip  = get_ips("eth0");
+		} else {
+			$cm_ip  = get_ips("wan0");
+		}
 		if (strstr($ip_addr, ".")){		//ipv4, something like "::ffff:10.1.10.1"
 			$tmp	 = explode(":", $ip_addr);
 			$ip_addr = array_pop($tmp);
