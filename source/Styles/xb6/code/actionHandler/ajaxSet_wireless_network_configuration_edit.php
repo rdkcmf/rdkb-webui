@@ -33,9 +33,6 @@ $Mesh_Enable 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.E
 $Mesh_State 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.State");
 $Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')? true : false;
 $network_pass = getStr("Device.WiFi.AccessPoint.$i.Security.X_COMCAST-COM_KeyPassphrase");
-$frequency_band = getStr("Device.WiFi.Radio.$r.OperatingFrequencyBand");
-$radio_band	= (strstr($frequency_band,"5G")) ? "5" : "2.4";
-
 if($i != 1 && $i != 2) $Mesh_Mode = false;
 // this method for only restart a certain SSID
 function MiniApplySSID($ssid) {
@@ -59,8 +56,8 @@ if ($i == 1 || $i == 2) {
 				$arConfig['network_password']=$network_pass;
 			}
 			if ("mso" != $thisUser){
-+				if($validation) $validation = isValInArray($arConfig['channel_bandwidth'], array('20MHz', '40MHz', '80MHz'));
-+				if($validation) $validation = (($radio_band=="2.4" && isValInArray($arConfig['wireless_mode'], array("n", "g,n", "b,g,n"))) || ($radio_band=="5" && isValInArray($arConfig['wireless_mode'], array("n", "a,n", "ac", "n,ac", "a,n,ac"))));
+				if($validation) $validation = isValInArray($arConfig['channel_bandwidth'], array('20MHz', '40MHz', '80MHz'));
+				if($validation) $validation = (($r==1 && isValInArray($arConfig['wireless_mode'], array("n", "g,n", "b,g,n"))) || ($r==2 && isValInArray($arConfig['wireless_mode'], array("n", "a,n", "ac", "n,ac", "a,n,ac"))));
 				if ("false"==$arConfig['channel_automatic']){
 					$PossibleChannels = getStr("Device.WiFi.Radio.$r.PossibleChannels");
 					if(strpos($PossibleChannels, '-') !== false){//1-11
