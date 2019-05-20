@@ -52,14 +52,8 @@
 		"network_password1"	=> "Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase",
 		"network_pass_64_1"	=> "Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_WEPKey64Bit.1.WEPKey",
 		"network_pass_128_1"	=> "Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_WEPKey128Bit.1.WEPKey",
-                "freq_band"             => "Device.WiFi.Radio.1.OperatingFrequencyBand",
-                "freq_band1"            => "Device.WiFi.Radio.2.OperatingFrequencyBand",
 		);
 	$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
-        $freq_band              = $wifi_value['freq_band'];
-        $freq_band1             = $wifi_value['freq_band1'];
-        $radioband1             = (strstr($freq_band,"5G")) ? "5" : "2.4";
-        $radioband2             = (strstr($freq_band1,"5G")) ? "5" : "2.4";
 	$ret = init_psmMode("Gateway > Home Network Wizard - Step 2", "nav-wizard");
 	if ("" != $ret){echo $ret;	return;}
 	//get DefaultSSID & DefaultKeyPassphrase
@@ -184,19 +178,19 @@ $(document).ready(function() {
     $.validator.addMethod("not_defaulSSID1", function(value, element, param) {
 		//prevent users to set defaul-SSID as ssid
 		return value.toLowerCase() != "<?php echo $defaultSSID1; ?>".toLowerCase();
-	}, 'Choose a different Network Name (SSID) (<?php echo $radioband1; ?>GHz) than the one provided on your gateway.');
+	}, 'Choose a different Network Name (SSID) (2.4GHz) than the one provided on your gateway.');
     $.validator.addMethod("not_defaulPassword1", function(value, element, param) {
 		//prevent users to set defaul-Password as Password
 		return value != "<?php echo $defaultKeyPassphrase1; ?>";
-	}, 'Choose a different Network Password (<?php echo $radioband1; ?>GHz) than the one provided on your gateway.');
+	}, 'Choose a different Network Password (2.4GHz) than the one provided on your gateway.');
     $.validator.addMethod("not_defaulSSID2", function(value, element, param) {
 		//prevent users to set defaul-SSID as ssid
 		return value.toLowerCase() != "<?php echo $defaultSSID2; ?>".toLowerCase();
-	}, 'Choose a different Network Name (SSID) (<?php echo $radioband2; ?> GHz) than the one provided on your gateway.');
+	}, 'Choose a different Network Name (SSID) (5 GHz) than the one provided on your gateway.');
     $.validator.addMethod("not_defaulPassword2", function(value, element, param) {
 		//prevent users to set defaul-Password as Password
 		return value != "<?php echo $defaultKeyPassphrase2; ?>";
-	}, 'Choose a different Network Password (<?php echo $radioband2; ?> GHz) than the one provided on your gateway.');
+	}, 'Choose a different Network Password (5 GHz) than the one provided on your gateway.');
     // XFSETUP HOME xfinitywifi cablewifi
     // a term starting with the following combination of text in uppercase or lowercase should not be allowed
    /* $.validator.addMethod("not_XFSETUP", function(value, element, param) {
@@ -483,11 +477,11 @@ if ("WEP-64" == $encrypt_mode1){
 		?>
 			<p class="summary">Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi B, G, N) and 5GHz(Wi-Fi A, N) compatible devices.</p>
 			<div class="form-row odd">
-				<label for="network_name">Wi-Fi Network Name (<?php echo $radioband1; ?>GHz):</label>
+				<label for="network_name">Wi-Fi Network Name (2.4GHz):</label>
 				<input type="text" size="23" value="<?php echo htmlspecialchars($network_name);?>" id="network_name" name="network_name" class="text" />
 			</div>
 			<div class="form-row">
-				<label for="security">Encryption Method (<?php echo $radioband1; ?>GHz):</label>
+				<label for="security">Encryption Method (2.4GHz):</label>
 				<select name="encryption_method" id="security">
 					<option value="None" 				title="Open networks do not have a password." 			<?php if ("None"==$security) echo "selected";?> >Open (risky)</option>
 					<!--option value="WEP_64" 				title="WEP  64 requires a  5 ASCII character or 10 hex character password.  Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_64"==$security)              echo "selected";?> >WEP 64 (risky)</option-->
@@ -502,7 +496,7 @@ if ("WEP-64" == $encrypt_mode1){
 			</div>
 			<div id="netPassword">
 				<div class="form-row odd">
-					<label for="network_password">Network Password (<?php echo $radioband1; ?>GHz):</label>
+					<label for="network_password">Network Password (2.4GHz):</label>
 					<input type="text" size="23" id="network_password" name="network_password" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password); ?>"/>
 				</div>
 				<p id="netPassword-footnote" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
@@ -512,11 +506,11 @@ if ("WEP-64" == $encrypt_mode1){
 				<span class="checkbox"><input type="checkbox" id="password_check" name="password_check" /></span>
 			</div>
 			<div class="form-row odd">
-				<label for="network_name1">Wi-Fi Network Name (<?php echo $radioband2; ?> GHz):</label>
+				<label for="network_name1">Wi-Fi Network Name (5 GHz):</label>
 				<input type="text" size="23" value="<?php echo htmlspecialchars($network_name1);?>" id="network_name1" name="network_name1" class="text" />
 			</div>	
 			<div class="form-row">
-				<label for="security1">Encryption Method (<?php echo $radioband2; ?> GHz):</label>
+				<label for="security1">Encryption Method (5 GHz):</label>
 				<select name="encryption_method1" id="security1">
 					<option value="None" 			title="Open networks do not have a password." 			<?php if ("None"==$security1) echo "selected";?> >Open (risky)</option>
 					<!--option value="WEP_64"               title="WEP  64 requires a  5 ASCII character or 10 hex character password.  Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_64"==$security1)              echo "selected";?> >WEP 64 (risky)</option-->
@@ -531,7 +525,7 @@ if ("WEP-64" == $encrypt_mode1){
 			</div>
 			<div id="netPassword1">
 				<div class="form-row odd">
-					<label for="network_password1">Network Password (<?php echo $radioband2; ?> GHz):</label>
+					<label for="network_password1">Network Password (5 GHz):</label>
 					<input type="text" size="23" id="network_password1" name="network_password1" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password1); ?>"/>
 				</div>
 				<p id="netPassword-footnote1" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>

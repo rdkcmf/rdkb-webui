@@ -197,35 +197,19 @@ function popUp(URL) {
 	//Only do WiFi SSID check if we are not in power saving mode
 	if ("Disabled"==$_SESSION["psmMode"]) {
 		//Assumes that private network is always SSID's 1 and 2
-		$frequency_band = getStr("Device.WiFi.Radio.1.OperatingFrequencyBand");
-		if (strstr($frequency_band,"2.4G")) {
-			$wifi_param = array(
-			        "wifi_24_enabled" 	=> "Device.WiFi.SSID.1.Enable",
-				"wifi_24_ssid" 		=> "Device.WiFi.SSID.1.SSID",
-				"wifi_24_passkey" 	=> "Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase",
-				"wifi_24_secmode" 	=> "Device.WiFi.AccessPoint.1.Security.ModeEnabled",
-				"wifi_50_enabled" 	=> "Device.WiFi.SSID.2.Enable",
-				"wifi_50_ssid" 		=> "Device.WiFi.SSID.2.SSID",
-				"wifi_50_passkey" 	=> "Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase",
-				"wifi_50_secmode" 	=> "Device.WiFi.AccessPoint.2.Security.ModeEnabled",
-			        "wifi_24_radio" 	=> "Device.WiFi.Radio.1.Enable",
-			        "wifi_50_radio" 	=> "Device.WiFi.Radio.2.Enable",
-			);
-		} else {
-			$wifi_param = array(
-			        "wifi_50_enabled" 	=> "Device.WiFi.SSID.1.Enable",
-				"wifi_50_ssid" 		=> "Device.WiFi.SSID.1.SSID",
-				"wifi_50_passkey" 	=> "Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase",
-				"wifi_50_secmode" 	=> "Device.WiFi.AccessPoint.1.Security.ModeEnabled",
-				"wifi_24_enabled" 	=> "Device.WiFi.SSID.2.Enable",
-				"wifi_24_ssid" 		=> "Device.WiFi.SSID.2.SSID",
-				"wifi_24_passkey" 	=> "Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase",
-				"wifi_24_secmode" 	=> "Device.WiFi.AccessPoint.2.Security.ModeEnabled",
-			        "wifi_50_radio" 	=> "Device.WiFi.Radio.1.Enable",
-			        "wifi_24_radio" 	=> "Device.WiFi.Radio.2.Enable",
-			);
-		}
-            $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
+		$wifi_param = array(
+	        "wifi_24_enabled" 	=> "Device.WiFi.SSID.1.Enable",
+			"wifi_24_ssid" 		=> "Device.WiFi.SSID.1.SSID",
+			"wifi_24_passkey" 	=> "Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_KeyPassphrase",
+			"wifi_24_secmode" 	=> "Device.WiFi.AccessPoint.1.Security.ModeEnabled",
+			"wifi_50_enabled" 	=> "Device.WiFi.SSID.2.Enable",
+			"wifi_50_ssid" 		=> "Device.WiFi.SSID.2.SSID",
+			"wifi_50_passkey" 	=> "Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_KeyPassphrase",
+			"wifi_50_secmode" 	=> "Device.WiFi.AccessPoint.2.Security.ModeEnabled",
+	        "wifi_24_radio" 	=> "Device.WiFi.Radio.1.Enable",
+	        "wifi_50_radio" 	=> "Device.WiFi.Radio.2.Enable",
+		);
+	    $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
 		$wifi_24_enabled = $wifi_value["wifi_24_enabled"];
 		$wifi_24_ssid = htmlspecialchars($wifi_value["wifi_24_ssid"], ENT_NOQUOTES, 'UTF-8');
 		$wifi_24_passkey = htmlspecialchars($wifi_value["wifi_24_passkey"], ENT_NOQUOTES, 'UTF-8');
