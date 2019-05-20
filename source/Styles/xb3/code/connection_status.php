@@ -104,14 +104,8 @@
       "EncryptionMethod6"   => "Device.WiFi.AccessPoint.6.Security.X_CISCO_COM_EncryptionMethod",
       "OperatingStandards1" => "Device.WiFi.Radio.1.OperatingStandards",
       "OperatingStandards2" => "Device.WiFi.Radio.2.OperatingStandards",
-      "OperatingFrequencyBand1" => "Device.WiFi.Radio.1.OperatingFrequencyBand",
-      "OperatingFrequencyBand2" => "Device.WiFi.Radio.2.OperatingFrequencyBand",
     );
     $wifi_value = php_KeyExtGet("Device.WiFi.", $wifi_param);
-    $OperatingFrequencyBand1  = $wifi_value['OperatingFrequencyBand1'];
-    $OperatingFrequencyBand2  = $wifi_value['OperatingFrequencyBand2'];
-    $radioband1               = (strstr($OperatingFrequencyBand1,"5G")) ? "5" : "2.4";
-    $radioband2               = (strstr($OperatingFrequencyBand2,"5G")) ? "5" : "2.4";
     $device_ctrl_param = array(
         "LanIPAddress"    => "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress",
         "LanSubnetMask"   => "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask" ,
@@ -479,7 +473,7 @@ if($allowEthWan=="true"){
         <h2 style="white-space: pre-wrap;">Private Wi-Fi Network-<?php echo htmlspecialchars($wifi_value["SSID1"], ENT_NOQUOTES, 'UTF-8'); ?></h2>
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.php?id=1" class="btn">Edit</a></p>
         <div class="form-row">
-          <span class="readonlyLabel">Wireless Network (Wi-Fi <?php echo $radioband1; ?> GHz):</span> <span class="value">
+          <span class="readonlyLabel">Wireless Network (Wi-Fi 2.4 GHz):</span> <span class="value">
           <?php 
               if("true" == $wifi_value["Enable1"]) 
                 echo "Active";
@@ -513,7 +507,7 @@ if($allowEthWan=="true"){
         <h2 style="white-space: pre-wrap;">Private Wi-Fi Network-<?php echo htmlspecialchars($wifi_value["SSID2"], ENT_NOQUOTES, 'UTF-8'); ?> </h2>
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.php?id=2" class="btn">Edit</a></p>
         <div class="form-row">
-          <span class="readonlyLabel">Wireless Network (Wi-Fi <?php echo $radioband2; ?> GHz):</span> <span class="value">
+          <span class="readonlyLabel">Wireless Network (Wi-Fi 5 GHz):</span> <span class="value">
           <?php 
               if("true" == $wifi_value["Enable2"]) 
                 echo "Active";

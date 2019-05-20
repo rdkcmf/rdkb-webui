@@ -341,15 +341,11 @@ $(document).ready(function() {
 		if (stristr($interface, "WiFi")){
 			if (stristr($interface, "WiFi.SSID.1")) {
 				$host['networkType'] = "Private";
-				$frequency_band = getStr("Device.WiFi.Radio.1.OperatingFrequencyBand");
-				$frequency_band = (strstr($frequency_band,"5G")) ? "5G" : "2.4G";
-				$host['connectionType'] = "Wi-Fi $frequency_band";
+				$host['connectionType'] = "Wi-Fi 2.4G";
 			}
 			elseif (stristr($interface, "WiFi.SSID.2")) {
 				$host['networkType'] = "Private";
-				$frequency_band = getStr("Device.WiFi.Radio.2.OperatingFrequencyBand");
-				$frequency_band = (strstr($frequency_band,"5G")) ? "5G" : "2.4G";
-				$host['connectionType'] = "Wi-Fi $frequency_band";
+				$host['connectionType'] = "Wi-Fi 5G";
 			}
 			else {
 				$host['networkType'] = "Public";
@@ -821,15 +817,11 @@ $(document).ready(function() {
 	      		$IPv6LocalAddr = $Hotspot_SSID_clients[$j]['IPv6LinkLocalAddress'];
 	      		if ($i == 0) {
 	      			$gre_ssid = 1;
-				$frequency_band = getStr("Device.WiFi.Radio.1.OperatingFrequencyBand");
-				$frequency_band = (strstr($frequency_band,"5G")) ? "5G" : "2.4G";
-				$WiFiType = "Wi-Fi $frequency_band";
+	      			$WiFiType = "Wi-Fi 2.4G";
 	      		}
 	      		else {
 	      			$gre_ssid = 2;
-                                $frequency_band = getStr("Device.WiFi.Radio.2.OperatingFrequencyBand");
-                                $frequency_band = (strstr($frequency_band,"5G")) ? "5G" : "2.4G";
-                                $WiFiType = "Wi-Fi $frequency_band";
+	      			$WiFiType = "Wi-Fi 5G";
 	      		}
 	         	if($i % 2) $odd = "";
 					else $odd = " class='odd'";
