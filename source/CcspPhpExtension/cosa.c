@@ -48,7 +48,10 @@
 #include "php_ini.h"
 #include "ext/standard/info.h"
 #include "php_cosa.h"
+
+#ifdef COMCAST_SSO
 #include "sso_api.h"
+#endif
 
 #if PHP_MAJOR_VERSION < 7
 #define _RETURN_STRING(str) RETURN_STRING(str, 1)
@@ -444,6 +447,7 @@ PHP_FUNCTION(getJWT)
     do
     {
 CosaPhpExtLog( "getJWT - Entry\n" );
+#ifdef COMCAST_SSO
         if( zend_parse_parameters( ZEND_NUM_ARGS() TSRMLS_CC, "ssss",
             &pURI, &lenURI, &pClientId, &lenClientId, &pParams, &lenParams, &pFileName, &lenFileName ) == FAILURE )
         {
@@ -513,8 +517,10 @@ CosaPhpExtLog( "getJWT - zend_parse_parameters success!\n" );
             break;
         }
         CosaPhpExtLog( "getJWT - calling SSOgetJWT\n" );
-                
         iRet = SSOgetJWT( pURI, pClientId, pParams, pFileName );
+#else
+        iRet = 10;    // return a unique error
+#endif
         CosaPhpExtLog( "getJWT - iRet = %ld\n", iRet );
     } while( 0 );
 
