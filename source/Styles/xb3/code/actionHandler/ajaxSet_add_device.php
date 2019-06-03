@@ -61,45 +61,77 @@ function isIPValid($IP, $MAC){
         } 
     } 
     if ($ret) {
-		//if DHCP ==> ReservedIP, then check if DHCP with same MAC is there
+		
 		$MDIDs=explode(",",getInstanceIDs("Device.Hosts.Host."));
-		$arrayDHCPMAC=array();
+        $arrayDHCPMAC=array();
+        $arrayDHCPIPs=array();
+        $arrayStaticMAC=array();
+        $arrayStaticIPs=array();
+        $MDStaticIDs = explode(",", getInstanceIds("Device.DHCPv4.Server.Pool.1.StaticAddress."));
+
+        foreach ($MDStaticIDs as $key=>$i) {
+                array_push($arrayStaticMAC, strtoupper(getStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$i.Chaddr")));
+                array_push($arrayStaticIPs, strtoupper(getStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$i.Yiaddr")));	
+        }
+        
 		foreach ($MDIDs as $key=>$i) {
 			$type = getStr("Device.Hosts.Host.".$i.".AddressSource");
 			if($type == "DHCP") {
-				array_push($arrayDHCPMAC, strtoupper(getStr("Device.Hosts.Host.".$i.".PhysAddress")));
+                array_push($arrayDHCPMAC, strtoupper(getStr("Device.Hosts.Host.".$i.".PhysAddress")));
+                array_push($arrayDHCPIPs, strtoupper(getStr("Device.Hosts.Host.".$i.".IPv4Address.1.IPAddress")));
 			}
-		}
+        }
+        //if DHCP ==> ReservedIP
 		if(in_array(strtoupper($MAC), $arrayDHCPMAC)){
-			//DHCP with same MAC is there, no need to change IP
-			return array(TRUE, $msg);
+            
+            //checking if IP is same as before
+             foreach ($MDIDs as $key => $value) {
+                if ( !strcasecmp(getStr("Device.Hosts.Host.$value.PhysAddress"), $MAC) ){   
+                    if ( !strcasecmp(getStr("Device.Hosts.Host.$value.IPv4Address.1.IPAddress"), $IP) ) {
+                        
+				        return array(TRUE, $msg);
+			            break;
+                    } 
+                    //if IP is not same, then checking whether it has been assigned to any DHCP or Static client
+                    elseif(in_array(strtoupper($IP), $arrayDHCPIPs) || in_array(strtoupper($IP), $arrayStaticIPs))
+                    {
+                        $msg = "IP has already been reserved for another device.\nPlease try using another IP address!";
+                        $ret = FALSE;
+                        break;
+                    }
+                }
+
+            }   
 		}
-		//if above check pass, then check whether the IP have been used or not in Online DHCP/ReservedIP     
-		$idArr = explode(",", getInstanceIds("Device.Hosts.Host."));
-		foreach ($idArr as $key => $value) {
-			if ( !strcasecmp(getStr("Device.Hosts.Host.$value.IPv4Address.1.IPAddress"), $IP) ) {
-				$msg = "IP has already been reserved for another device.\nPlease try using another IP address!";
-				$ret = FALSE;
-				break;
-			}
-		}
-		//for ReservedIP >> in "Server Pool-1"
-		//if above check pass, then check whether the IP have been used or not in "Server Pool-1"
-		$idArr = explode(",", getInstanceIds("Device.DHCPv4.Server.Pool.1.StaticAddress."));
-		foreach ($idArr as $key => $value) {
-		    	if ( !strcasecmp(getStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$value.Yiaddr"), $IP) ) {
-				if ( !strcasecmp(getStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$value.Chaddr"), $MAC) ) {
-					//if device is there with same mac and ip then its an EDIT of comments of ReservedIP
-					return array(TRUE, $msg);
-					break;
-				}
-				else {
-					$msg = "IP has already been reserved for another device.\nPlease try using another IP address!";
-					$ret = FALSE;
-					break;
-				}
+		//if ReservedIP => ReservedIP
+        elseif(in_array(strtoupper($MAC), $arrayStaticMAC)) {
+		    foreach ($MDStaticIDs as $key => $value) {
+                //checking if IP is same as before
+		    	if ( !strcasecmp(getStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$value.Chaddr"), $MAC) ) {
+				    if ( !strcasecmp(getStr("Device.DHCPv4.Server.Pool.1.StaticAddress.$value.Yiaddr"), $IP) ) {
+					    //if device is there with same mac and ip then its an EDIT of comments of ReservedIP
+					    return array(TRUE, $msg);
+					    break;
+                    }
+                    //if IP is not same, then checking whether it has been assigned to any DHCP or Static client
+                    elseif(in_array(strtoupper($IP), $arrayDHCPIPs) || in_array(strtoupper($IP), $arrayStaticIPs))
+                    {
+					    $msg = "IP has already been reserved for another device.\nPlease try using another IP address!";
+                        $ret = FALSE;
+					    break;
+				    }
 		    	}
-		}
+            }
+        } 
+        //adding new static device
+        else {
+             //checking whether it has been assigned to any DHCP or Static client
+            if(in_array(strtoupper($IP), $arrayDHCPIPs) || in_array(strtoupper($IP), $arrayStaticIPs)) 
+                {
+                    $msg = "IP has already been reserved for another device.\nPlease try using another IP address!";
+                    $ret = FALSE; 
+                }
+        }   
     }
     return array($ret, $msg);
 }
