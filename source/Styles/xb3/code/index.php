@@ -55,6 +55,11 @@ $DeviceControl_param = array(
 	"lanMode"	=> "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode",
 	"psmMode"	=> "Device.X_CISCO_COM_DeviceControl.PowerSavingModeStatus",
 	);
+$enableRFCpativePortal = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.CaptivePortalForNoCableRF.Enable");
+$cableRFSignalStatus = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CableRfSignalStatus");
+$modelName= getStr("Device.DeviceInfo.ModelName");
+$wan_enabled=getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
+$allowEthWanMode= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.AllowEthernetWAN");
 $DeviceControl_value = KeyExtGet("Device.X_CISCO_COM_DeviceControl.", $DeviceControl_param);
 $url = $_SERVER['HTTP_HOST'];
 $Wan_IPv4 = getStr("Device.X_CISCO_COM_CableModem.IPAddress");
@@ -94,9 +99,16 @@ if(!$isMSO) {
 		exit;
 	}*/
 	if(!strcmp($CaptivePortalEnable, "true")) {
+		
+		$SERVER_ADDR = $_SERVER['SERVER_ADDR'];
+		$ip_addr = strpos($SERVER_ADDR, ":") == false ? $LanGwIPv4 : $LanGwIPv6 ;
+		if(strcmp($url,$ip_addr)){
+			if(($enableRFCpativePortal=="true") && ($cableRFSignalStatus=="false") && !(($allowEthWanMode=="true") && ($wan_enabled=="true")) &&($modelName!="X5001")){
+				header('Location:http://'.$ip_addr.'/no_rf_signal.php');
+				exit;
+			}
+		}
 		if(!strcmp($CONFIGUREWIFI, "true")) {
-			$SERVER_ADDR = $_SERVER['SERVER_ADDR'];
-			$ip_addr = strpos($SERVER_ADDR, ":") == false ? $LanGwIPv4 : $LanGwIPv6 ;
 			header('Location:http://'.$ip_addr.'/captiveportal.php');
 			exit;
 		}
