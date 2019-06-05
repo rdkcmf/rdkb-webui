@@ -42,8 +42,14 @@ $wifi_param = array(
 	//getStr
 	"1_RadioUpTime"	=> "Device.WiFi.Radio.1.X_COMCAST_COM_RadioUpTime",
 	"2_RadioUpTime"	=> "Device.WiFi.Radio.2.X_COMCAST_COM_RadioUpTime",
+        "freq_band"     => "Device.WiFi.Radio.1.OperatingFrequencyBand",
+        "freq_band1"    => "Device.WiFi.Radio.2.OperatingFrequencyBand",
 	);
 $wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
+$freq_band      = $wifi_value['freq_band'];
+$freq_band1     = $wifi_value['freq_band1'];
+$radioband1     = (strstr($freq_band,"5G")) ? "5" : "2.4";
+$radioband2     = (strstr($freq_band1,"5G")) ? "5" : "2.4";
 //wrap for PSM mode
 if ("Enabled" == $_SESSION["psmMode"])
 {
@@ -78,7 +84,7 @@ function div_mod($n, $m)
 		<!--<p class="hidden"><strong>DECT:</strong> Provides details of the cordless phone base built into the Gateway.</p>-->
 	</div>
 	<div class="module forms block">
-		<h2>Wi-Fi LAN port (2.4 GHZ)</h2>
+		<h2>Wi-Fi LAN port (<?php echo $radioband1; ?> GHZ)</h2>
 		<div class="form-row">
 			<span class="readonlyLabel">Wi-Fi link status:</span>
 			<span class="value"><?php echo ($wifi_status1)?"Active":"Inactive";?></span>
@@ -103,7 +109,7 @@ function div_mod($n, $m)
 		</span>	</div>
 	</div> <!-- end .module -->
 	<div class="module forms block">
-		<h2>Wi-Fi LAN port (5 GHZ)</h2>
+		<h2>Wi-Fi LAN port (<?php echo $radioband2; ?> GHZ)</h2>
 		<div class="form-row">
 			<span class="readonlyLabel">Wi-Fi link status:</span>
 			<span class="value"><?php echo ($wifi_status2)?"Active":"Inactive";?></span>
