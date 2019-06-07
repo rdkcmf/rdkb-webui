@@ -323,8 +323,6 @@ $(document).ready(function(){
 	var connectionType	= "<?php echo $connectionType;?>"; //"Ethernet", "WiFi", "none"
 	var goNextName		= false;
 	var goNextPassword	= false;
-	var goNextName5		= false;
-	var goNextPassword5	= false;
 	function GWReachable(){
 		//location.href = "http://xfinity.com";
 		// Handle IE and more capable browsers
@@ -397,15 +395,11 @@ $(document).ready(function(){
 	function saveConfig(){
 		var network_name 	= addslashes($("#WiFi_Name").val());
 		var network_password 	= addslashes($("#WiFi_Password").val());
-		var network5_name 	= addslashes($("#WiFi5_Name").val());
-		var network5_password 	= addslashes($("#WiFi5_Password").val());
+		
 		var jsConfig;
-		if($("#dualSettings").css('display') == "block" && !$("#selectSettings" ).is(":checked")){
-			jsConfig = '{"dualband":"true", "network_name":"'+network_name+'", "network_password":"'+network_password+'", "network5_name":"'+network5_name+'", "network5_password":"'+network5_password+'", "phoneNumber":"'+EMS_mobileNumber()+'"}';
-		}
-		else {
-			jsConfig = '{"dualband":"false", "network_name":"'+network_name+'", "network_password":"'+network_password+'", "phoneNumber":"'+EMS_mobileNumber()+'"}';
-		}
+		
+		jsConfig = '{"network_name":"'+network_name+'", "network_password":"'+network_password+'", "phoneNumber":"'+EMS_mobileNumber()+'"}';
+		
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_wireless_network_configuration_redirection.php",
@@ -425,9 +419,10 @@ $(document).ready(function(){
 			setTimeout(function(){ goToReady(); }, 25000);
 		}
 	}
-	var NameTimeout, PasswordTimeout, Name5Timeout, Password5Timeout, phoneNumberTimeout, agreementTimeout;
+
+	var NameTimeout, PasswordTimeout,phoneNumberTimeout, agreementTimeout;
 	function messageHandler(target, topMessage, bottomMessage){
-		//target	- "name", "password", "name5", "password5", "phoneNumber"
+		//target	- "name", "password", "phoneNumber"
 		//topMessage	- top message to show
 		//bottomMessage	- bottom message to show
 		if(target == "name"){
@@ -443,20 +438,6 @@ $(document).ready(function(){
 			PasswordTimeout = setTimeout(function(){ $("#PasswordContainer").fadeOut("slow"); }, 5000);
 			$("#PasswordMessageTop").text(topMessage);
 			$("#PasswordMessageBottom").text(bottomMessage);
-		}
-		else if(target == "name5"){
-			$("#NameContainer5").fadeIn("slow");
-			clearTimeout(Name5Timeout);
-			Name5Timeout = setTimeout(function(){ $("#NameContainer5").fadeOut("slow"); }, 5000);
-			$("#NameMessageTop5").text(topMessage);
-			$("#NameMessageBottom5").text(bottomMessage);
-		}
-		else if(target == "password5"){
-			$("#PasswordContainer5").fadeIn("slow");
-			clearTimeout(Password5Timeout);
-			Password5Timeout = setTimeout(function(){ $("#PasswordContainer5").fadeOut("slow"); }, 5000);
-			$("#PasswordMessageTop5").text(topMessage);
-			$("#PasswordMessageBottom5").text(bottomMessage);
 		}
 		else if(target == "phoneNumber"){
 			$("#phoneNumberContainer").fadeIn("slow");
@@ -483,10 +464,8 @@ $(document).ready(function(){
 		return textVal;
 	}
 	function toShowNext(){
-		//is NOT Dual Band Network
-		var selectSettings	= $("#selectSettings").is(":checked");
-		var notDualSettings	= $("#dualSettings").css('display') == "block" ? selectSettings : true ;
-		if(goNextName && goNextPassword && notDualSettings){
+		
+		if(goNextName && goNextPassword ){
 			setTimeout(function(){
 				$("#NameContainer").hide();
 				$("#PasswordContainer").hide();
@@ -496,22 +475,7 @@ $(document).ready(function(){
 			$("#WiFi_Password_01").text($("#WiFi_Password").val());
 			$("#WiFi_Password_pass_01").text(passStars($("#WiFi_Password").val()));
 		}
-		else if(goNextName && goNextPassword && !notDualSettings && goNextName5 && goNextPassword5){
-			setTimeout(function(){
-				$("#NameContainer").hide();
-				$("#PasswordContainer").hide();
-				$("#NameContainer5").hide();
-				$("#PasswordContainer5").hide();
-			}, 2000);
-			$("#button_next").show();
-			$("#WiFi_Name_01").text($("#WiFi_Name").val());
-			$("#WiFi_Password_01").text($("#WiFi_Password").val());
-			$("#WiFi_Password_pass_01").text(passStars($("#WiFi_Password").val()));
-			//for Dual Band Network
-			$("#WiFi5_Name_01").text($("#WiFi5_Name").val());
-			$("#WiFi5_Password_01").text($("#WiFi5_Password").val());
-			$("#WiFi5_Password_pass_01").text(passStars($("#WiFi5_Password").val()));
-		}
+		
 		else {
 			$("#button_next").hide();
 		}
@@ -588,9 +552,7 @@ $(document).ready(function(){
 		$("[id^='WiFi_Name_0']").text($("#WiFi_Name").val());
 		$("[id^='WiFi_Password_0']").text($("#WiFi_Password").val());
 		$("[id^='WiFi_Password_pass_0']").text(passStars($("#WiFi_Password").val()));
-		$("[id^='WiFi5_Name_0']").text($("#WiFi5_Name").val());
-		$("[id^='WiFi5_Password_0']").text($("#WiFi5_Password").val());
-		$("[id^='WiFi5_Password_pass_0']").text(passStars($("#WiFi5_Password").val()));
+		
 		if(connectionType == "WiFi"){ //"Ethernet", "WiFi", "none"
 			$("#setup").show();
 			$("#confirm").hide();
@@ -684,11 +646,6 @@ $("#f_i_option1").click(function(){
 			$(this).addClass("error").removeClass("success");
 			messageHandler("name","<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["ascii_characters"]; ?>");
 		}
-		else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi5_Name").val()){
-			goNextName = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["name_already"]; ?>");
-		}
 		else {
 			goNextName = true;
 			$(this).addClass("success").removeClass("error");
@@ -732,115 +689,7 @@ $("#f_i_option1").click(function(){
 		toShowNext();
 		showPasswordStrength("", goNextPassword);
 	}));
-	//for Dual Band Network
-	$("#WiFi5_Name").bind("focusin keyup change input",(function() {
-		//VALIDATION for wifi_name
-		/*return !param || /^[ -~]{3,32}$/i.test(value);
-		"3-32 ASCII Printable Characters");
-		return value.toLowerCase().indexOf("xhs")==-1 && value.toLowerCase().indexOf("xfinitywifi")==-1;
-		'SSID containing "XHS" and "Xfinitywifi" are reserved !'
-		return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
-		'SSID containing "optimumwifi", "TWCWiFi" and "CableWiFi" are reserved !');*/
-		var val	= $(this).val();
-		isValid		= /^[ -~]{1,32}$/i.test(val);
-		valLowerCase	= val.toLowerCase();
-		isXHS		= valLowerCase.indexOf("xhs-") !=0 && valLowerCase.indexOf("xh-") != 0;
-		isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
-		isHOME 		= valLowerCase.indexOf("home") != 0;
-		isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
-		isOnlySpaces = /^\s+$/.test(valLowerCase);
-		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
-		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/g,'').toLowerCase();
-		isOther	= str.indexOf("cablewifi") == -1 && str.indexOf("twcwifi") == -1 && str.indexOf("optimumwifi") == -1 && str.indexOf("xfinitywifi") == -1 && str.indexOf("coxwifi") == -1 && str.indexOf("coxwifi") == -1 && str.indexOf("spectrumwifi") == -1 && str.indexOf("shawopen") == -1 && str.indexOf("shawpasspoint") == -1 && str.indexOf("shawguest") == -1 && str.indexOf("shawmobilehotspot") == -1 && str.indexOf("shawgo") == -1 && str.indexOf("xfinity") == -1;
-		if(val == ""){
-			goNextName5 = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "<?php echo $lang["wifi_name"]; ?>", "<?php echo $lang["please_enter"]; ?>");
-		}
-		else if(valLowerCase == Defaultssid1.toLowerCase()){
-			goNextName = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff1"]; ?>");
-		}
-		else if(isOnlySpaces)
-		{
-			goNextName = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["name_cannot_space"]; ?>");
-		}
-		else if("<?php echo $network_name1;?>".toLowerCase() == val.toLowerCase()){
-			goNextName5 = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff"]; ?>");
-		}
-		else if(!isXHS){
-			goNextName5 = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", '<?php echo $lang["ssid_invalid"]; ?>');
-		}
-		else if(!isXFINITY){
-			goNextName5 = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", '<?php echo $lang["ssid_invalid"]; ?>');
-		}
-		else if(!isOther){
-			goNextName5 = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", '<?php echo $lang["ssid_invalid"]; ?>');
-		}
-		else if(!isValid){
-			goNextName5 = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["ascii_characters"]; ?>");
-		}
-		else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi_Name").val()){
-			goNextName5 = false;
-			$(this).addClass("error").removeClass("success");
-			messageHandler("name5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["name_already"]; ?>");
-		}
-		else {
-			goNextName5 = true;
-			$(this).addClass("success").removeClass("error");
-			messageHandler("name5", "<?php echo $lang["wifi_name"]; ?>", "<?php echo $lang["this_identifies"]; ?>.");
-		}
-		toShowNext();
-	}));
-	$("#password5_field").bind("focusin keyup change input",(function() {
-		/*
-			return !param || /^[ -~]{8,63}$/i.test(value); "8-63 ASCII characters or a 64 hex character password"
-		*/
-		//VALIDATION for WiFi_Password
-		$WiFiPass = $("#WiFi5_Password");
-		var val = $WiFiPass.val();
-		isValid	= /^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i.test(val);
-		if(val == ""){
-			goNextPassword5	= false;
-			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password5", "<?php echo $lang["wifi_password"]; ?>", "<?php echo $lang["please_enter_p"]; ?>");
-		}
-		else if("<?php echo $network_pass1;?>" == val){
-			goNextPassword5	= false;
-			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff"]; ?>");
-		}
-		else if(!isValid){
-			goNextPassword5	= false;
-			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["pass_case_sensi"]; ?>");
-		}
-		/*else if($("#dualSettings").css('display') == "block" && !$("#selectSettings").is(":checked") && val == $("#WiFi_Password").val()){
-			goNextPassword5 = false;
-			$WiFiPass.addClass("error").removeClass("success");
-			messageHandler("password5", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["pass_case_sensi"]; ?>");
-		}*/
-		else {
-			goNextPassword5	= true;
-			$WiFiPass.addClass("success").removeClass("error");
-			messageHandler("password5", "<?php echo $lang["lets_try_again"];?>", "<?php echo $lang["pass_case_sensi"]; ?>");
-		}
-		toShowNext();
-		showPasswordStrength("5", goNextPassword5);
-	}));
+	
 	function goNextphoneNumber(value){
 		if(value){
 			$("#button_next_01").show();
@@ -900,65 +749,11 @@ $("#f_i_option1").click(function(){
 		}
 		$("#WiFi_Password").val(passwordVal).addClass(classVal);
 	});
-	//for Dual Band Network
-	$("#show5Pass").click(function() {
-		password5Val = $("#WiFi5_Password").val();
-		class5Val = $("#WiFi5_Password").attr('class');
-		if ($("#show5Pass").children().text() == "<?php echo $lang["hide"]; ?>") {
-			$("[id^='show5Pass']").children().text("<?php echo $lang["show"]; ?>");
-			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="password" placeholder=<?php echo $lang["passwordtext"]; ?> maxlength="64" class="">';
-			$("[id^='WiFi5_Password_0']").hide();
-			$("[id^='WiFi5_Password_pass_0']").show();
-		}
-		else {
-			$("[id^='show5Pass']").children().text("<?php echo $lang["hide"]; ?>");
-			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="text" placeholder=<?php echo $lang["passwordtext"]; ?> maxlength="64" class="">';
-			$("[id^='WiFi5_Password_0']").show();
-			$("[id^='WiFi5_Password_pass_0']").hide();
-		}
-		$("#WiFi5_Password").val(password5Val).addClass(class5Val);
-	});
+	
 	$("[id^='showPass0']").click(function() {
 		$("#showPass").trigger("click");
 	});
-	$("[id^='show5Pass0']").click(function() {
-		$("#show5Pass").trigger("click");
-	});
-	//check all the check boxes by default
-	$("#selectSettings").prop('checked', true);
-	$("#showDual").click(function(){
-		$("#dualSettings").toggle();
-		if($("#dualSettings").css('display') == "block"){
-			$("#selectSettings").prop('checked', true);
-			$("#selectSettings").siblings('label').addClass('checkLabel');
-		}
-		else {
-			$("#selectSettings").prop('checked', false);
-			$("[name=dualBand]").hide();
-			$("#WiFi5_Name, #WiFi5_Password").val("").keyup().removeClass();
-			$("#NameContainer5, #PasswordContainer5").hide();
-			$("#passwordIndicator5").hide();
-			$("#WiFi_Name, #password_field").change();
-			$("#selectSettings").siblings('label').removeClass('checkLabel');
-		}
-		$("#showDualText").text(($("#dualSettings").css('display') != "block")?"<?php echo $lang["show_more_settings"]; ?>":"<?php echo $lang["show_less_settings"]; ?>");
-		toShowNext();
-	});
-	$("#selectSettings").change(function() {
-		if ($(this).is(":checked")) {
-			$(this).siblings('label').addClass('checkLabel');
-			$("[name=dualBand]").hide();
-			$("#WiFi5_Name, #WiFi5_Password").val("").keyup().removeClass();
-			$("#NameContainer5, #PasswordContainer5").hide();
-			$("#passwordIndicator5").hide();
-			$("#WiFi_Name, #password_field").change();
-		}
-		else {
-			$("[name=dualBand]").show();
-			$(this).siblings('label').removeClass('checkLabel');
-		}
-		toShowNext();
-	});
+	
 	$("#concent_check").change(function(){
 		if ($("#concent").is(":checked")) {
 			$(this).find('label').addClass('checkLabel');
@@ -987,10 +782,9 @@ $("#f_i_option1").click(function(){
 		$("#topbar").width($(document).width());
 	});
 */
-	//for Dual Band Network
-	$("[name=dualBand]").hide();
+	
 	$("[id^='WiFi_Password_pass_0']").hide();
-	$("[id^='WiFi5_Password_pass_0']").hide();
+	
 });
 </script>
 	<body>
@@ -1046,7 +840,7 @@ $("#f_i_option1").click(function(){
 			 <?php echo $lang["this_step_2"]; ?>
 			</p>
 			<hr>
-				<p name="dualBand" style="margin: 1px 40px 0 0;"><?php echo $lang["24network"]; ?></p>
+				
 				<div id="NameContainer" class="container" style="display: none;">
 					<div class="requirements">
 						<div id="NameMessageTop" class="top"> <?php echo $lang["lets_try_that"]; ?></div>
@@ -1073,47 +867,11 @@ $("#f_i_option1").click(function(){
 					<div class="progress-bg"><div id="passwordStrength"></div></div>
 					<p id="passwordInfo" class="password-text"></p>
 				</div>
-				<div name="dualBand" id="showDualConfig">
-				<br>
-					<p style="margin: 10px 40px 0 -10px;"><?php echo $lang["5network"]; ?></p>
-					<div id="NameContainer5" class="container" style="display: none;">
-						<div class="requirements">
-							<div id="NameMessageTop5" class="top"><?php echo $lang["lets_try_that"]; ?></div>
-							<div id="NameMessageBottom5" class="bottom"><?php echo $lang["choose_a_different"]; ?></div>
-							<div class="arrow"></div>
-						</div>
-					</div>
-					<p style="display:inline; margin: 1px 40px 0 0; text-align: right;"><?php echo $lang["wifi_name"]; ?></p>
-					<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi5_Name" type="text" placeholder=<?php echo $lang["exampleaccounttext"]; ?> maxlength="32" class="">
-					<br>
-					<div id="PasswordContainer5" class="container" style="display: none;">
-						<div class="requirements">
-							<div id="PasswordMessageTop5" class="top"><?php echo $lang["lets_try_that"]; ?></div>
-							<div id="PasswordMessageBottom5" class="bottom"><?php echo $lang["choose_a_different"]; ?></div>
-							<div class="arrow"></div>
-						</div>
-					</div>
-					<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;"><?php echo $lang["wifi_password"]; ?></p>
-					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder=<?php echo $lang["passwordtext"]; ?> maxlength="64" class="" autocorrect="off" autocapitalize="off" ></span>
-					<div id="show5Pass" style="display:inline-table; margin: 4px 0 0 -90px;">
-						<a href="javascript:void(0)" style="white-space: pre;"><?php echo $lang["hide"]; ?> </a>
-				    </div>
-					<div id="passwordIndicator5" style="display: none;">
-						<div class="progress-bg"><div id="passwordStrength5"></div></div>
-						<p id="passwordInfo5" class="password-text"></p>
-					</div>
-				</div>
+				
 			<hr>
-			<div id="showDual" style="display:inline; margin:0 260px 0 0;">
-				<a id="showDualText" href="javascript:void(0)"><?php echo $lang["show_more_settings"]; ?></a>
-			</div>
+			
 			<br>
-			<div id="dualSettings" class="checkbox" style="margin:0 50px; display: none;">
-				<br><br>
-				<input id="selectSettings" type="checkbox" name="selectSettings">
-			    	<label for="selectSettings" class="insertBox checkLabel"></label> 
-			    	<div class="check-copy" style="color: #888;"><?php echo $lang["same_settings"]; ?></div>
-		    	</div>
+			
 			<br><br>
 			<div>
 				<button id="button_next" style="text-align: center; width: 215px; display: none;"><?php echo $lang["next"]; ?></button>
@@ -1124,10 +882,7 @@ $("#f_i_option1").click(function(){
 			<h1><?php echo $lang["confirm_settings"]; ?></h1>
 			<hr>
 			<table align="center" border="0">
-				<tr>
-					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" name="dualBand" ><?php echo $lang["24network"]; ?></td>
-				</tr>
+				
 				<tr>
 					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
 					<td class="final-settings" id="WiFi_Name_01" ></td>
@@ -1144,23 +899,7 @@ $("#f_i_option1").click(function(){
 				<tr>
 					<td><br></td>
 				</tr>
-				<tr name="dualBand">
-					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" ><?php echo $lang["5network"]; ?></td>
-				</tr>
-				<tr name="dualBand">
-					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
-					<td class="final-settings" id="WiFi5_Name_01" ></td>
-					<td></td>
-				</tr>
-				<tr name="dualBand">
-					<td class="left-settings" ><?php echo $lang["wifi_password"]; ?></td>
-					<td class="final-settings" id="WiFi5_Password_01" ></td>
-					<td class="final-settings" id="WiFi5_Password_pass_01" ></td>
-					<td id="show5Pass01">
-						<a href="javascript:void(0)" style="white-space: pre; display: none;"><?php echo $lang["hide"]; ?></a>
-				    </td>
-				</tr>
+				
 			</table>
 			<hr>
 			<?php $SMSsupport = ($personalization_value["SMSsupport"] == 'true') ? 'block' : 'none' ; ?>
@@ -1208,10 +947,7 @@ $("#f_i_option1").click(function(){
 			</p>
 			<hr>
 			<table align="center" border="0">
-				<tr>
-					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" name="dualBand" ><?php echo $radioband1; ?> GHz Network</td>
-				</tr>
+				
 				<tr>
 					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
 					<td class="final-settings" id="WiFi_Name_02" ></td>
@@ -1227,22 +963,7 @@ $("#f_i_option1").click(function(){
 				<tr>
 					<td><br></td>
 				</tr>
-				<tr name="dualBand">
-					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" ><?php echo $radioband2; ?> GHz Network</td>
-				</tr>
-				<tr name="dualBand">
-					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
-					<td class="final-settings" id="WiFi5_Name_02" ></td>
-				</tr>
-				<tr name="dualBand">
-					<td class="left-settings" ><?php echo $lang["wifi_password"]; ?></td>
-					<td class="final-settings" id="WiFi5_Password_02" ></td>
-					<td class="final-settings" id="WiFi5_Password_pass_02" ></td>
-					<td id="show5Pass02">
-						<a href="javascript:void(0)" style="white-space: pre; display: none;"><?php echo $lang["hide"]; ?></a>
-				    </td>
-				</tr>
+				
 			</table>
 			<hr>
 			<?php if($MyAccountAppSupport) echo $MyAccountAppBox; ?>
@@ -1257,10 +978,7 @@ $("#f_i_option1").click(function(){
 			</div>
 			<hr>
 			<table align="center" border="0">
-				<tr>
-					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" name="dualBand" ><?php echo $radioband1; ?> GHz Network</td>
-				</tr>
+				
 				<tr>
 					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
 					<td class="final-settings" id="WiFi_Name_04" ></td>
@@ -1276,22 +994,7 @@ $("#f_i_option1").click(function(){
 				<tr>
 					<td><br></td>
 				</tr>
-				<tr name="dualBand">
-					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" ><?php echo $radioband2; ?> GHz Network</td>
-				</tr>
-				<tr name="dualBand">
-					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
-					<td class="final-settings" id="WiFi5_Name_04" ></td>
-				</tr>
-				<tr name="dualBand">
-					<td class="left-settings" ><?php echo $lang["wifi_password"]; ?></td>
-					<td class="final-settings" id="WiFi5_Password_04" ></td>
-					<td class="final-settings" id="WiFi5_Password_pass_04" ></td>
-					<td id="show5Pass03">
-						<a href="javascript:void(0)" style="white-space: pre; display: none;"><?php echo $lang["hide"]; ?></a>
-				    </td>
-				</tr>
+				
 			</table>
 			<hr>
 			<?php if($MyAccountAppSupport) echo $MyAccountAppBox; ?>
@@ -1306,10 +1009,7 @@ $("#f_i_option1").click(function(){
 			</div>
 			<hr>
 			<table align="center" border="0">
-				<tr>
-					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" name="dualBand" ><?php echo $radioband1; ?> GHz Network</td>
-				</tr>
+				
 				<tr>
 					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
 					<td class="final-settings" id="WiFi_Name_05" ></td>
@@ -1325,22 +1025,7 @@ $("#f_i_option1").click(function(){
 				<tr>
 					<td><br></td>
 				</tr>
-				<tr name="dualBand">
-					<td name="dualBand" class="left-settings" ></td>
-					<td class="confirm-text" ><?php echo $radioband2; ?> GHz Network</td>
-				</tr>
-				<tr name="dualBand">
-					<td class="left-settings" ><?php echo $lang["wifi_name"]; ?></td>
-					<td class="final-settings" id="WiFi5_Name_05" ></td>
-				</tr>
-				<tr name="dualBand">
-					<td class="left-settings" ><?php echo $lang["wifi_password"]; ?></td>
-					<td class="final-settings" id="WiFi5_Password_05" ></td>
-					<td class="final-settings" id="WiFi5_Password_pass_05" ></td>
-					<td id="show5Pass04">
-						<a href="javascript:void(0)" style="white-space: pre; display: none;"><?php echo $lang["hide"]; ?></a>
-				    </td>
-				</tr>
+				
 			</table>
 			<hr>
 			<?php if($MyAccountAppSupport) echo $MyAccountAppBox; ?>
