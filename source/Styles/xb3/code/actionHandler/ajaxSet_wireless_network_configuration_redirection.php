@@ -37,20 +37,10 @@ if($isCaptiveMode)
 		$jsConfig = $_POST['rediection_Info'];
 		$arConfig = json_decode($jsConfig, true);
 		$validation = true;
-		if($validation) $validation = isValInArray($arConfig['dualband'], array('true', 'false'));
-		if($validation && $arConfig['dualband'] == 'true'){
-			if($validation) $validation = valid_ssid_name($arConfig['network_name']);
-			if($validation) $validation = ($DefaultSSID != $arConfig['network_name']);
-			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
-			if($validation) $validation = valid_ssid_name($arConfig['network5_name']);
-			if($validation) $validation = ($DefaultSSID5 != $arConfig['network5_name']);
-			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network5_password'])==1);
-		}
-		else {
-			if($validation) $validation = valid_ssid_name($arConfig['network_name']);
-			if($validation) $validation = ($DefaultSSID != $arConfig['network_name']);
-			if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
-		}
+
+		if($validation) $validation = valid_ssid_name($arConfig['network_name']);
+		if($validation) $validation = ($DefaultSSID != $arConfig['network_name']);
+		if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password'])==1);
 		if($validation) $validation = (preg_match("/^\d{10}$/", $arConfig['phoneNumber'])==1);
 	}
 	//CloudUIEnable -- to check if "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudPersonalizationURL" is reachable
@@ -68,26 +58,16 @@ if($isCaptiveMode)
 			//update EMS phoneNumber
 			setStr("Device.DeviceInfo.X_COMCAST-COM_EMS_MobileNumber", $arConfig['phoneNumber'], true);
 		}
-		if($arConfig['dualband'] == "true"){
-			$network_name_arr = array(
-				"1" => $arConfig['network_name'],//."-2.4",
-				"2" => $arConfig['network5_name'],//."-5",
-			);
-			$network_pass_arr = array(
-				"1" => $arConfig['network_password'],//."-2.4",
-				"2" => $arConfig['network5_password'],//."-5",
-			);
-		}
-		else {
-			$network_name_arr = array(
-				"1" => $arConfig['network_name'],//."-2.4",
-				"2" => $arConfig['network_name'],//."-5",
-			);
-			$network_pass_arr = array(
-				"1" => $arConfig['network_password'],//."-2.4",
-				"2" => $arConfig['network_password'],//."-5",
-			);
-		}
+		
+		$network_name_arr = array(
+			"1" => $arConfig['network_name'],//."-2.4",
+			"2" => $arConfig['network_name'],//."-5",
+		);
+		$network_pass_arr = array(
+			"1" => $arConfig['network_password'],//."-2.4",
+			"2" => $arConfig['network_password'],//."-5",
+		);
+		
 		// this method for only restart a certain SSID
 		function MiniApplySSID($ssid) {
 			$apply_id = (1 << intval($ssid)-1);
