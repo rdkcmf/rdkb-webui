@@ -426,8 +426,6 @@ function f()
 		$wifi_50_enabled 	= $wifi_value["wifi_50_enabled"];
 		$wifi_50_ssid 		= htmlspecialchars($wifi_value["wifi_50_ssid"], ENT_NOQUOTES, 'UTF-8');
 		$wifi_50_passkey 	= htmlspecialchars($wifi_value["wifi_50_passkey"], ENT_NOQUOTES, 'UTF-8');
-                $frequency_band         = $wifi_value["frequency_band"];
-                $frequency_band1        = $wifi_value["frequency_band1"];
 		//If at least one private SSID is enabled
 		if ( $lanMode == "router" && ("true" == $wifi_24_enabled || "true" == $wifi_50_enabled) ) {
 			echo '<div class="module block" id="wifi-config">';
@@ -470,13 +468,13 @@ function f()
 				if($isMSO) {
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (<?php echo $wifi_value["frequency_band"]; ?>):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID ('.$frequency_band.'):</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_24_ssid.'</span>';
 					echo '</div>';
 				echo '</div>';
 				echo '<div class="form-row odd">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (<?php echo $wifi_value["frequency_band1"]; ?>):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID ('.$frequency_band1.'):</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_50_ssid.'</span>';
 					echo '</div>';
 				echo '</div>';
@@ -484,21 +482,21 @@ function f()
 				else{
 				echo '<div class="form-row even">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (<?php echo $wifi_value["frequency_band"]; ?>):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID ('.$frequency_band.'):</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_24_ssid.'</span>';
 					echo '</div>';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi Passkey (<?php echo $wifi_value["frequency_band"]; ?>):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi Passkey ('.$frequency_band.'):</span>';
 						echo '<span class="value">Log in to view passkey</span>';
 					echo '</div>';
 				echo '</div>';
 				echo '<div class="form-row odd">';
 					echo '<div class="form-row even">';
-						echo '<span class="readonlyLabel">Wi-Fi SSID (<?php echo $wifi_value["frequency_band1"]; ?>):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi SSID ('.$frequency_band1.'):</span>';
 						echo '<span style="font-weight: bold; white-space: pre;" class="value">'.$wifi_50_ssid.'</span>';
 					echo '</div>';
 					echo '<div class="form-row odd">';
-						echo '<span class="readonlyLabel">Wi-Fi Passkey (<?php echo $wifi_value["frequency_band1"]; ?>):</span>';
+						echo '<span class="readonlyLabel">Wi-Fi Passkey ('.$frequency_band1.'):</span>';
 						echo '<span class="value">Log in to view passkey</span>';
 					echo '</div>';
 				echo '</div>';
