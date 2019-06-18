@@ -73,6 +73,9 @@ if(!array_key_exists('IPv6', $ip_config)){
 	$validation = true;
 	if($validation) $validation = isValidGW($ip_config['Ipaddr'], $ip_config['Subnet_mask'], $ip_config['Dhcp_begin_addr'], $ip_config['Dhcp_end_addr']);
 	if($validation) $validation = (isValInRange($ip_config['Dhcp_lease_time'], 120, 604195200) || $ip_config['Dhcp_lease_time'] == '-1');
+	if($ip_config['Dhcp_begin_addr'] == $ip_config['Dhcp_end_addr']){
+		$validation = false;
+	}
 	if($validation){
 		//set ipv4 part
 		setStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress", $ip_config['Ipaddr'], true);
