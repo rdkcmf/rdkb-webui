@@ -60,7 +60,10 @@ if($validation && (strtolower($DefaultSSID) == strtolower($arConfig['network_nam
 } 
 //Choose a different Network Password than the one provided on your gateway
 $DefaultKeyPassphrase = getStr("Device.WiFi.AccessPoint.1.Security.X_COMCAST-COM_DefaultKeyPassphrase");
-if($validation) $validation = ($DefaultKeyPassphrase != $arConfig['network_password']);
+if($validation && ($DefaultKeyPassphrase == $arConfig['network_password']) && ($arConfig['security']!="None")){
+	$validation = false;
+	$response_message = 'Please change Network Password !';
+}
 if($arConfig['security1']!="None"){
 	if($validation) $validation = (preg_match("/^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i", $arConfig['network_password1'])==1);
 }
@@ -77,7 +80,10 @@ if($validation && (strtolower($DefaultSSID5) == strtolower($arConfig['network_na
 } 
 //Choose a different Network Password than the one provided on your gateway
 $DefaultKeyPassphrase5 = getStr("Device.WiFi.AccessPoint.2.Security.X_COMCAST-COM_DefaultKeyPassphrase");
-if($validation) $validation = ($DefaultKeyPassphrase5 != $arConfig['network_password1']);
+if($validation && ($DefaultKeyPassphrase5 == $arConfig['network_password1']) && ($arConfig['security1']!="None")){
+	$validation = false;
+	$response_message = 'Please change Network Password !';
+}
 if($_SESSION["loginuser"]!="mso"){
 	if($validation) $validation = (preg_match("/^[a-z0-9]{8,20}$/i",$arConfig['newPassword']));
 }
