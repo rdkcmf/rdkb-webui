@@ -671,7 +671,11 @@ $('#submit_ipv4').click(function(e){
 		jAlert("This IP address is reserved for Virtual LAN IPv4 Address, please input again!");
     		return;
 	}
-    var IPv4Config = '{"Ipaddr":"' + ipaddr + '", "Subnet_mask":"' + subnet_mask + '", "Dhcp_begin_addr":"' + dhcp_begin_addr 
+	else if(dhcp_begin_addr == dhcp_end_addr){
+		jAlert("DHCP beginning and ending address cannot be same, Please input again!");
+    		return;
+	}
+	var IPv4Config = '{"Ipaddr":"' + ipaddr + '", "Subnet_mask":"' + subnet_mask + '", "Dhcp_begin_addr":"' + dhcp_begin_addr 
 			             + '", "manual_dns":"false", "Dhcp_end_addr":"' + dhcp_end_addr + '", "Dhcp_lease_time":"' + dhcp_lease_time + '"}';
     //alert(IPv4Config)
     if((login_user == "admin") && (jsGwIP != ipaddr)) {
