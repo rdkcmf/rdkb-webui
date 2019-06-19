@@ -195,3 +195,9 @@ $.validator.addMethod("allowed_char", function(value, element, param) {
 	//Invalid characters are Less than (<), Greater than (>), Ampersand (&), Double quote ("), Single quote ('), Pipe (|).
 	return !param || (value.match(/[<>&"'|]/)==null);
 }, 'Less than (<), Greater than (>), Ampersand (&), Double quote ("), Single quote (\') and Pipe (|) characters are not allowed.');
+
+$.validator.addMethod("noSpace", function(value, element, param) {
+	//prevent users to use space in password
+	var res = !(/\s/g.test(value));
+	return res;
+}, 'No space character is allowed.'); 

@@ -35,7 +35,7 @@ function printableCharacters($input){
 	else return (preg_match("/^[ -~]*$/", $input)==1);
 }
 function noSpace($input){
-	return (preg_match('/\S/',$input)==1);
+	return (preg_match('/\s/',$input)==1);
 }
 //check if the $IPAddr is a valid IP address[checks for both IPv4 & IPv6]
 function validIPAddr($IPAddr){
