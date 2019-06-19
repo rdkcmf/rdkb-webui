@@ -652,6 +652,7 @@ wpa2psk ==> 8 to 63 Ascii characters
     	rules: {
 			network_password: {
 			not_defaulPassword: true,
+			noSpace: true,
 			/*required: function() {
     				return ($("#security option:selected").val() != "None");
     			}
