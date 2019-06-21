@@ -648,6 +648,11 @@ $("#f_i_option1").click(function(){
 			$(this).addClass("error").removeClass("success");
 			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff1"]; ?>");
 		}
+		else if(valLowerCase == Defaultssid1.toLowerCase()){
+			goNextName = false;
+			$(this).addClass("error").removeClass("success");
+			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff"]; ?>");
+		}
 		else if(isOnlySpaces)
 		{
 			goNextName = false;
