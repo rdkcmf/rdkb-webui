@@ -3,6 +3,7 @@
 PARTNER_URL=`dmcli eRT getv Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.link | grep value | cut -f3 -d : | cut -f2 -d " "`
 PARTNER_LOGO_FILE=`dmcli eRT getv Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.MSOLogo | grep value | cut -f3 -d : | cut -f2 -d " "`
 PARTNER_BRANDNAME=`dmcli eRT getv Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.brandname | grep value | cut -f3 -d : | cut -f2 -d " "`
+DEFAULT_LANG=`dmcli eRT getv Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.DefaultLanguage | grep value | cut -f3 -d : | cut -f2 -d " "`
 PARTNER_PRODUCTNAME=`dmcli eRT getv Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.productname | grep value | cut -f3 -d : `
 PARTNER_ID=`dmcli eRT getv Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId | grep value | cut -f3 -d : | cut -f2 -d " "`
 
@@ -27,6 +28,13 @@ if [ "$PARTNER_ID" == "comcast" ];then
   </div>' 
 else
   LOGO="<img src='cmn/syndication/img/$PARTNER_LOGO_FILE' style='margin: 15px;' />"
+fi
+if [ "$DEFAULT_LANG" == "fre" ]; then
+STRING1='Cet appareil est en pause ou en mode Sommeil'
+STRING2="Pour réactiver l'accès à Internet sur votre réseau domestique, lancez l'application Helix Fi ou rendez-vous sur helixfi.videotron.com à l'aide d'une autre connexion ou d'un autre appareil."
+else
+STRING1='This device is paused or in Bedtime Mode.'
+STRING2="To resume access to the Internet on your home network, open the '"$PARTNER_BRANDNAME" "$PARTNER_PRODUCTNAME"' app or visit '"$PARTNER_URL"' using a different connection or device."
 fi
 
 touch /tmp/pcontrol/index.html
@@ -158,9 +166,9 @@ echo '<html>
         </g>
     </svg>
     <div class="dp-space-filler-30"></div>
-    <p class="dp-header dp-white-text">This device is paused or in Bedtime Mode.</p>
+    <p class="dp-header dp-white-text">'$STRING1'</p>
     <div class="dp-space-filler-30"></div>
-    <p class="dp-text dp-gray-text">To resume access to the Internet on your home network, open the '"$PARTNER_BRANDNAME" "$PARTNER_PRODUCTNAME" 'app or visit '"$PARTNER_URL" ' using a different connection or device.</p>
+    <p class="dp-text dp-gray-text">'$STRING2'</p>
   </div>
 </body>
 
