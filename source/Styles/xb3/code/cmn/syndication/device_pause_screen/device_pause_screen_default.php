@@ -26,8 +26,15 @@ $partner_url=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBrand
 $partner_logo_file=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.MSOLogo");
 $partner_brandname=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.brandname");
 $partner_productname=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.productname");
-
-
+$default_lang=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.DefaultLanguage");
+if ($default_lang == "fre") {
+$STRING1='Cet appareil est en pause ou en mode Sommeil';
+$STRING2="Pour réactiver l'accès à Internet sur votre réseau domestique, lancez l'application Helix Fi ou rendez-vous sur helixfi.videotron.com à l'aide d'une autre connexion ou d'un autre appareil.";
+}
+else {
+$STRING1='This device is paused or in Bedtime Mode.';
+$STRING2="To resume access to the Internet on your home network, open the ".$partner_brandname.$partner_productname." app or visit ".$partner_url." using a different connection or device.";
+}
 ?>
 <html>
 
@@ -157,9 +164,9 @@ $partner_productname=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB
 		    </g>
 		</svg>
 		<div class="dp-space-filler-30"></div>
-		<p class="dp-header dp-white-text"><?php echo _("This device is paused or in Bedtime Mode."); ?></p>
+		<p class="dp-header dp-white-text"><?php echo $STRING1 ?></p>
 		<div class="dp-space-filler-30"></div>
-		<p class="dp-text dp-gray-text"><?php echo sprintf(_("To resume access to the Internet on your home network, open the %s %s app or visit %s using a different connection or device."),$partner_brandname, $partner_productname, $partner_url); ?></p>
+		<p class="dp-text dp-gray-text"><?php echo $STRING2 ?></p>
 	</div>
 </body>
 
