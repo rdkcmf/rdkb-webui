@@ -61,7 +61,7 @@ $(window).load(function() {
 				length++;
 			});
 			if (length>10) {
-				$('#event_logs_today').simplePagination({
+				$('#event_logs_today').comcastPaginator({
 					items_per_page: 10
 				});
 			}
