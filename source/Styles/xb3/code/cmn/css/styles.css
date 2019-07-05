@@ -17,30 +17,6 @@
  * limitations under the License.
 */
 
-@font-face {
-    font-family: 'xfinSans';
-    src: url('../fonts/xfinsans.eot'); /* IE9 Compat Modes */
-    src: url('../fonts/xfinsans.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-         url('../fonts/xfinsans.woff') format('woff'), /* Modern Browsers */
-         url('../fonts/xfinsans.ttf')  format('truetype'), /* Safari, Android, iOS */
-         url('../fonts/xfinsans.svg') format('svg'); /* Legacy iOS */
-}
-@font-face {
-    font-family: 'xfinSansXtraLt';
-    src: url('../fonts/xfinsansxlt.eot');
-    src: url('../fonts/xfinsansxlt.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/xfinsansxlt.woff') format('woff'),
-         url('../fonts/xfinsansxlt.ttf')  format('truetype'),
-         url('../fonts/xfinsansxlt.svg') format('svg');
-}
-@font-face {
-    font-family: 'xfinSansLt';
-    src: url('../fonts/xfinsanslt.eot');
-    src: url('../fonts/xfinsanslt.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/xfinsanslt.woff') format('woff'),
-         url('../fonts/xfinsanslt.ttf')  format('truetype'),
-         url('../fonts/xfinsanslt.svg') format('svg');
-}
 body{
   background:url('../img/bg.jpg');
   text-align: center;
@@ -54,7 +30,6 @@ body{
   height: 100px;
 }
 h1{
-  font-family: 'xfinSansXtraLt';
   color:#fff;
   font-size: 36px;
   -webkit-font-smoothing: antialiased;
@@ -63,7 +38,6 @@ h1{
   margin-top:49px;
 }
 h2{
-  font-family: 'xfinSansXtraLt';
   color:#fff;
   font-size: 20px;
   -webkit-font-smoothing: antialiased;
@@ -74,7 +48,6 @@ img{
   margin-top:35px;
 }
 p{
-  font-family: 'xfinSansLt';
   font-size: 14px;
   line-height: 24px;
   color:#fff;
@@ -83,7 +56,6 @@ p{
   margin:12px auto 0 auto;
 }
 input[type='text']{
-  font-family: 'xfinSansLt';
   font-size:18px;
   -webkit-font-smoothing: antialiased;
   text-align: center;
@@ -106,7 +78,6 @@ input[type='text'].success{
   background-color: rgba(255,255,255,.15);
 }
 input[type='password']{
-  font-family: 'xfinSansLt';
   font-size:18px;
   -webkit-font-smoothing: antialiased;
   text-align: center;
@@ -129,28 +100,24 @@ input[type='password'].success{
   background-color: rgba(255,255,255,.15);
 }
 input::-webkit-input-placeholder {
-  font-family: 'xfinSansLt';
   color: #fff;
   opacity: .2;
   text-align: left;
   text-indent: 20px;
 }
 :-moz-placeholder { /* Firefox 18- */
-  font-family: 'xfinSansLt';
   color: #fff;
   opacity: .2;
   text-align: left;
   text-indent: 20px;
 }
 ::-moz-placeholder {  /* Firefox 19+ */
-  font-family: 'xfinSansLt';
   color: #fff;
   opacity: .2;
   text-align: left;
   text-indent: 20px;
 }
 :-ms-input-placeholder {
-  font-family: 'xfinSansLt';
   color: #fff;
   opacity: .2;
   text-align: left;
@@ -160,14 +127,12 @@ input::-webkit-input-placeholder {
   margin:50px 0;
 }
 a{
-  font-family: 'xfinSansLt';
   -webkit-font-smoothing: antialiased;
   color:#2ea0dd;
   font-size:14px;
   text-decoration: none;
 }
 button{
-  font-family: 'xfinSansLt';
   font-size: 18px;
   -webkit-font-smoothing: antialiased;
   width: 215px;
@@ -201,7 +166,6 @@ button{
   width:262px;
 }
 .requirements{
-  font-family: 'xfinSans';
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
   position:absolute;
@@ -257,7 +221,6 @@ input[type=checkbox] {
   margin-top: 30px;
 }
 .check-copy{
-  font-family: 'xfinSansLt';
   font-size: 14px;
   color:#fff;
   display:inline-block; 
@@ -281,7 +244,6 @@ hr{
     margin:36px 0;
 }
 .final-settings{
-  font-family: 'xfinSansLt';
   font-size: 24px;
   -webkit-font-smoothing: antialiased;
   color:#fff;
