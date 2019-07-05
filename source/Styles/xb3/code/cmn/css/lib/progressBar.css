@@ -186,9 +186,6 @@
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
 }
-.modal-open {
-  overflow: hidden;
-}
 .modal {
   position: fixed;
   top: 0;

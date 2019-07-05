@@ -28,7 +28,7 @@
 			$dialog.remove();
 		}
 		return $(
-			'<div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">' +
+			'<div class="modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">' +
 				'<div id="popUp_container">' +
 					'<div class="modal-content">' +
 						'<div class="modal-header" style="display: none;"></div>' +
@@ -142,7 +142,8 @@
 		 */
 		hide: function () {
 			if (typeof $dialog !== 'undefined') {
-				$dialog.modal('hide');
+				$dialog.remove();
+				$(".modal-backdrop").remove();
 			}
 		},
 		/**
