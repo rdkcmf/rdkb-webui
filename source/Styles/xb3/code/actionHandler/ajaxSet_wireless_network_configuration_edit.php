@@ -138,6 +138,7 @@ if ($i == 1 || $i == 2) {
 					  $encrypt_method = "AES";
 				}
 				// User "mso" have another page to configure this
+                                $channel = getStr("Device.WiFi.Radio.$i.AutoChannelEnable");
 				if ("mso" != $thisUser){
 					setStr("Device.WiFi.Radio.$i.OperatingChannelBandwidth", $arConfig['channel_bandwidth'], false);
 					setStr("Device.WiFi.Radio.$i.OperatingStandards", $arConfig['wireless_mode'], true);
@@ -145,6 +146,12 @@ if ($i == 1 || $i == 2) {
 						if ("false"==$arConfig['channel_automatic']){
 							setStr("Device.WiFi.Radio.$i.Channel", $arConfig['channel_number'], true);
 						}
+                                                if($arConfig['channel_automatic'] != $channel){
+                                                      $fh = fopen("/rdklogs/logs/Consolelog.txt.0","a");
+                                                      $data = ($arConfig['channel_automatic'] == 'true') ? "Channel is set to Auto from " .$thisUser. " for radio " .$i. "\n" : "Channel is set to Manual from ". $thisUser . " for radio " .$i. " and channel selected is " .$arConfig['channel_number']. "\n";
+                                                      fwrite($fh,$data);
+                                                      fclose($fh);
+                                                }
 				}
 				if ("None" == $arConfig['security']) {
 					setStr("Device.WiFi.AccessPoint.$i.Security.ModeEnabled", $encrypt_mode, true);
