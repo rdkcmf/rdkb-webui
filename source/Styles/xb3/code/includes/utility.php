@@ -471,9 +471,9 @@ function time_date_conflict($TD1, $TD2) {
 function resolve_IPV6_global_address($address1, $address3){
 	// IPV6 address can be "global address", "EMPTY" [from STACK] or NOT-SET [from STACK]
 	$IPV6_Addresses = '';
-	if(isset($address1)){
-		if($address1 != 'EMPTY') $IPV6_Addresses = $address1;
-		else if ($address3 != 'EMPTY') $IPV6_Addresses = $address3;
+	if(isset($address1) || isset($address3) ){
+		if(trim($address1) != '') $IPV6_Addresses = $address1;
+		else if (trim($address3) != '') $IPV6_Addresses = $address3;
 	}
 	return $IPV6_Addresses;
 }
