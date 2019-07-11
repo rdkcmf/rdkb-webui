@@ -21,26 +21,18 @@
 <!-- $Id: footer.php 2976 2009-09-02 21:42:51Z cporto $ -->
 		</div> <!-- end #main-content-->
 		<!--Footer-->
+		
 <?php
 	$footer_param = array(
 		"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Footer.PartnerLink",
-		"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Footer.CustomerCentralLink",
-		"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Footer.UserGuideLink",
 		"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Footer.PartnerText",
-		"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Footer.CustomerCentralText",
-		"Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Footer.UserGuideText",
 	);
 	$footer_value = DmExtGetStrsWithRootObj("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.", $footer_param);
 ?>
 		<div id="footer">
 			<ul id="footer-links">
-				<li class="first-child"><a href="<?php echo $footer_value[1][1]; ?>" target="_blank"><?php echo $footer_value[4][1]; ?></a></li>
-				<?php
-					if($footer_value[5][1]!=""){
-						echo '<li style="list-style:none outside none; margin-left:10px">&#8226;&nbsp;&nbsp;<a href="'.$footer_value[2][1].'" target="_blank">'.$footer_value[5][1].'</a></li>';
-					}
-				?>
-				<li style="list-style:none outside none; margin-left:10px">&#8226;&nbsp;&nbsp;<a href="<?php echo $footer_value[3][1]; ?>" target="_blank"><?php echo $footer_value[6][1]; ?></a></li>
+				<li class="first-child" style="width:405px;"><a href="<?php echo $footer_value[1][1]; ?>" target="_blank"><?php echo $footer_value[2][1]; ?></a></li>
+				
 			</ul>
 		</div> <!-- end #footer -->
 	</div> <!-- end #container -->
