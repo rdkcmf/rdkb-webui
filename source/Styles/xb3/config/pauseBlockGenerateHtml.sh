@@ -30,10 +30,10 @@ else
   LOGO="<img src='cmn/syndication/img/$PARTNER_LOGO_FILE' style='margin: 15px;' />"
 fi
 if [ "$DEFAULT_LANG" == "fre" ]; then
-STRING1='Cet appareil est en pause ou en mode Sommeil'
+STRING1='Cet appareil est en pause.'
 STRING2="Pour réactiver l'accès à Internet sur votre réseau domestique, lancez l'application Helix Fi ou rendez-vous sur helixfi.videotron.com à l'aide d'une autre connexion ou d'un autre appareil."
 else
-STRING1='This device is paused or in Bedtime Mode.'
+STRING1='This device is paused.'
 STRING2="To resume access to the Internet on your home network, open the '"$PARTNER_BRANDNAME" "$PARTNER_PRODUCTNAME"' app or visit '"$PARTNER_URL"' using a different connection or device."
 fi
 
