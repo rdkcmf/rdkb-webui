@@ -98,6 +98,7 @@ else
 		setStr("Device.WiFi.Radio.$apply_rf.X_CISCO_COM_ApplySettingSSID", $apply_id, false);
 		setStr("Device.WiFi.Radio.$apply_rf.X_CISCO_COM_ApplySetting", "true", true);
 	}
+        $channel = getStr("Device.WiFi.Radio.$i.AutoChannelEnable");
 	if ("save_config" == $arConfig['target'])
 	{
 		//save_basic & save_advance is only for mso
@@ -164,6 +165,12 @@ else
 				MiniApplySSID($i);
 			}
 		}
+                              if($arConfig['channel_automatic'] != $channel){
+                                  $fh = fopen("/rdklogs/logs/Consolelog.txt.0","a");
+                                  $data = ($arConfig['channel_automatic'] == 'true') ? "Channel is set to Auto from " .$_SESSION["loginuser"]. " for radio " .$i. "\n" : "channel is set to Manual from ". $_SESSION["loginuser"] . " for radio " .$i. " and Channel selected is " .$arConfig['channel_number']. "\n";
+                                   fwrite($fh,$data);
+                                   fclose($fh);
+                               }
 		echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
 	}
 	else if ("wps_ssid" == $arConfig['target'])
