@@ -57,7 +57,7 @@ $(document).ready(function() {
 		        ,function(ret) {
 		            if(ret) {
 						delVal = href.substring(href.indexOf("=")+1);
-						jProgress('<?php echo _('This may take several seconds.')?>',60);
+						jProgress("<?php echo _('This may take several seconds.')?>",60);
 						$.ajax({
 							type:"POST",
 							url:"actionHandler/ajax_hs_port_forwarding.php",
@@ -87,7 +87,7 @@ $(document).ready(function() {
 	$("#hspf_switch").change(function() {
 		var UHSPStatus = $("#hspf_switch").radioswitch("getState").on ? "Enabled" : "Disabled";
 		var isUHSPDisabled = $("#hspf_switch").radioswitch("getState").on === false;
-		jProgress('<?php echo _('This may take several seconds.')?>',60);
+		jProgress("<?php echo _('This may take several seconds.')?>",60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_hs_port_forwarding.php",
@@ -126,7 +126,7 @@ $(document).ready(function() {
 		var isChecked=$(this).is(":checked");
 		var id=$(this).prop("id").split("_");
 		id=id[1];
-		jProgress('<?php echo _('This may take several seconds')?>',60);
+		jProgress("<?php echo _('This may take several seconds')?>",60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_hs_port_forwarding.php",
@@ -224,7 +224,7 @@ $(document).ready(function() {
 							echo "<td headers='server-ip'>"    .$hspf_entry['InternalClient']. "</td>";
 							echo "<td headers='active'><input tabindex='0' type=\"checkbox\" id=\"PortActive_$id\" name=\"PortActive\" $checked/>
 							<label for=\"PortActive_$id\"></label></td>";	
-							echo "<td headers='edit-button'  class=\"edit\"><a tabindex='0' href=\"hs_port_forwarding_edit.php?id=$id\" class=\"btn\"  id=\"edit_$id\">"_("Edit")."</a></td>
+							echo "<td headers='edit-button'  class=\"edit\"><a tabindex='0' href=\"hs_port_forwarding_edit.php?id=$id\" class=\"btn\"  id=\"edit_$id\">"._("Edit")."</a></td>
 								<td headers='delete-button'  class=\"delete\"><a tabindex='0'  href=\"actionHandler/ajax_hs_port_forwarding.php?del=$id\" class=\"btn confirm\" 
 									title=\"".sprintf(_("delete this HS Port Forwarding service for %s"), $hspf_entry['Description'])." \" id=\"delete_$id\">x</a></td>
 								</tr>";

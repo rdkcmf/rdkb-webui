@@ -128,6 +128,8 @@ $(document).ready(function() {
 		if ("true" == $ethernetParam[$id]["Upstream"]){
 			continue;		
 		}
+		//WAN port details are not showing in lan page
+		if($ids[$id]!='4' || strpos($PartnerId, "sky-") === false ){
 		echo '<div class="module forms block">';
 		echo '<h2>'.sprintf(_("LAN Ethernet Port %s"),$ids[$id]).'</h2>';
 		$dm = array(
@@ -188,6 +190,7 @@ $(document).ready(function() {
 			//}
 		}
 		echo '</div>';
+             }
 	}
 	?>
 </div><!-- end #content -->
