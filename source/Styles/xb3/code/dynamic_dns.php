@@ -54,7 +54,7 @@ $(document).ready(function() {
 				,function(ret) {
 				    if(ret) {
 						delVal = href.substring(href.indexOf("=")+1);
-						jProgress('<?php echo _('This may take several seconds.')?>',60);
+						jProgress("<?php echo _('This may take several seconds.')?>",60);
 						$.ajax({
 							type:"POST",
 							url:"actionHandler/ajax_ddns.php",
@@ -98,7 +98,7 @@ $(document).ready(function() {
 			$("#DNS-items").prop("disabled",false).removeClass("disabled");
 			setupDeleteConfirmDialogs();
 		}
-		jProgress('<?php echo _('This may take several seconds')?>', 60);
+		jProgress("<?php echo _('This may take several seconds')?>", 60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_ddns.php",
@@ -183,6 +183,7 @@ $(document).ready(function() {
 							}
 							$hostname = getStr("Device.X_CISCO_COM_DDNS.Service."."$i".".Domain");
 							$hostname = htmlspecialchars($hostname, ENT_NOQUOTES, 'UTF-8');
+							$servicename = getStr("Device.X_CISCO_COM_DDNS.Service."."$i".".ServiceName");
 							echo "
 							<tr class=$iclass>
 								<td>".$name."</td>
@@ -190,7 +191,7 @@ $(document).ready(function() {
 								<td >".$passwordStr."</td>
 								<td>".$hostname."</td>
 								<td class=\"edit\"><a  tabindex='0' href=\"dynamic_dns_edit.php?id=$i\" class=\"btn\" id=\"edit_$i\">"._('Edit')."</a></td>
-								<td class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_ddns.php?del=$i\" class=\"btn confirm\" title=\".sprintf(_('delete this service for %s'),getStr("Device.X_CISCO_COM_DDNS.Service."."$i".".ServiceName"))." \"id=\"delete_$i\">x</a></td>
+								<td class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_ddns.php?del=$i\" class=\"btn confirm\" title=\"".sprintf(_('delete this service for %s'),$servicename)." \"id=\"delete_$i\">x</a></td>
 							</tr>"; 
 						}
 					} 

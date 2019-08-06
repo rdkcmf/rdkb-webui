@@ -36,6 +36,7 @@
 $Mesh_Enable 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.Enable");
 $Mesh_State 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.State");
 $Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')?'true':'false';
+$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 /*********************get WiFi parameters***************************/
 $wifi_param = array(
 	"feq_band" 			=> "Device.WiFi.Radio.1.OperatingFrequencyBand",
@@ -703,8 +704,10 @@ $(document).ready(function() {
 		$("#no_other_wifi").show();
 	}
 	// remove sections as per loginuser, content must be hidden before doc ready
+	var partner_id = '<?php echo $partnerId; ?>';
 	if ("mso" != "<?php echo $_SESSION["loginuser"]; ?>"){
-		$(".div_enable_radio").remove();
+		if(!partner_id.includes('sky-')){
+		$(".div_enable_radio").remove();}
 		$(".div_public_wifi").remove();
 		$(".div_other_wifi").remove();
 		$(".div_radio_setting").remove();

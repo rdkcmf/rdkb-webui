@@ -1009,7 +1009,9 @@ function setResetInfo(info) {
 			<input type="radio"  name="channel_bandwidth" value="40MHz" id="channel_bandwidth" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
 		<?php } else { ?>
 			<label for="channel_bandwidth201"><?php echo _("Channel Bandwidth:")?></label>
-			<input type="radio"  name="channel_bandwidth1" value="20MHz" id="channel_bandwidth201" checked="checked" /><b>20</b>
+                         <?php if(strpos($partnerId, "sky-") === false){
+				echo '<input type="radio"  name="channel_bandwidth1" value="20MHz" id="channel_bandwidth201" checked="checked" /><b>20</b>';
+					}?>
 			<?php if (strstr($supported_mode, "ac")){ ?>
 				<label for="channel_bandwidth1" class="acs-hide"></label>
 				<input type="radio"  name="channel_bandwidth1" value="40MHz"  id="channel_bandwidth1" <?php if ("40MHz"==$channel_bandwidth) echo 'checked="checked"';?> /><b>20/40</b>
