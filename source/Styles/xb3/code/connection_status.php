@@ -491,7 +491,7 @@ if($allowEthWan=="true"){
         <h2 style="white-space: pre-wrap;"><?php echo sprintf(_("Private Wi-Fi Network-%s"), htmlspecialchars($wifi_value["SSID1"], ENT_NOQUOTES, 'UTF-8')); ?></h2>
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.php?id=1" class="btn"><?php echo _("Edit")?></a></p>
         <div class="form-row">
-          <span class="readonlyLabel"><?php echo sprintf(_("Wireless Network (Wi-Fi %s GHz):"), $radioband); ?></span> <span class="value">
+          <span class="readonlyLabel"><?php echo sprintf(_("Wireless Network (Wi-Fi 2.4 GHz):"), $radioband); ?></span> <span class="value">
           <?php 
               if("true" == $wifi_value["Enable1"]) 
                 echo _("Active");
@@ -525,7 +525,7 @@ if($allowEthWan=="true"){
         <h2 style="white-space: pre-wrap;"><?php echo sprintf(_("Private Wi-Fi Network-%s"), htmlspecialchars($wifi_value["SSID2"], ENT_NOQUOTES, 'UTF-8')); ?> </h2>
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.php?id=2" class="btn"><?php echo _("Edit")?></a></p>
         <div class="form-row">
-          <span class="readonlyLabel"><?php echo sprintf(_("Wireless Network (Wi-Fi %s GHz):"), $radioband2); ?></span> <span class="value">
+          <span class="readonlyLabel"><?php echo sprintf(_("Wireless Network (Wi-Fi 5 GHz):"), $radioband2); ?></span> <span class="value">
           <?php 
               if("true" == $wifi_value["Enable2"]) 
                 echo _("Active");
