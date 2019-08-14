@@ -31,8 +31,8 @@ if($thisUser > 1){
 	setStr("Device.Services.VoiceService.1.VoiceProfile.1.X_RDK-Central_COM_SDigitTimer", $arConfig['SDigitTimer'], true);
 	setStr("Device.Services.VoiceService.1.VoiceProfile.1.X_RDK-Central_COM_ZDigitTimer", $arConfig['ZDigitTimer'], true);
 	setStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.Enable", $arConfig['Acc_Enabled'], true);
-	setStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.DirectoryNumber", $arConfig['Extension'], true);
-	setStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.SIP.URI", $arConfig['Extension'], true);
+	setStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.DirectoryNumber", $arConfig['Directory'], true);
+	setStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.SIP.URI", $arConfig['uri'], true);
 	setStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.SIP.AuthPassword", $arConfig['Auth_pwd'], true);
 	setStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.SIP.AuthUserName", $arConfig['Auth_usr'], true);
 	setStr("Device.Services.VoiceService.1.VoiceProfile.1.SIP.OutboundProxy", $arConfig['OutboundProxy'], true);

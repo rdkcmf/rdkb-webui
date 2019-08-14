@@ -44,7 +44,7 @@
 			'ZDigitTimer'=>getStr("Device.Services.VoiceService.1.VoiceProfile.1.X_RDK-Central_COM_ZDigitTimer"),
 			'Acc_Enabled'=>getStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.Enable"),
 			'Acc_Status'=> getStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.Status"),
-			'Extension' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.DirectoryNumber"),
+			'Directory' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.DirectoryNumber"),
 			'Auth_pwd' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.SIP.AuthPassword"),
 			'Auth_usr' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.SIP.AuthUserName"),
 			'OutboundProxy' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.SIP.OutboundProxy"),
@@ -57,6 +57,7 @@
 			'DigitMap' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.X_RDK-Central_COM_DigitMap"),
 			'EmergencyDigitMap' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.X_RDK-Central_COM_EmergencyDigitMap"),
 			'sip_status' => getStr("Device.Services.VoiceService.1.X_RDK-Central_COM_VoiceProcessStatus"),
+                        'uri' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.SIP.URI"),
 		);
 	}
 	$values_got = Dm_data_get();
@@ -137,22 +138,26 @@
 				<input type="text" id='SIP_acc_status' name="SIP_acc_status" class ='text' disabled/>
 			</div>
 			<div class="form-row odd ">
-				<label for="SIP_Extension">Extension :</label>
-				<input type="text" id='SIP_Extension' name="SIP_Extension" value='' class ='text'/>
+				<label for="SIP_Directory">Directory Number :</label>
+				<input type="text" id='SIP_Directory' name="SIP_Directory" value='' class ='text'/>
 			</div>
-			<div class="form-row">
+                        <div class="form-row">
+				<label for="SIP_URI">URI :</label>
+				<input type="text" id='SIP_URI' name="SIP_URI" value='' class ='text'/>
+			</div>
+			<div class="form-row odd">
 				<label for="SIP_auth_name">Authentication Name :</label>
 				<input type="text" id='SIP_auth_name' name="SIP_auth_name" value='' class ='text'/>
 			</div>
-			<div class="form-row odd">
+			<div class="form-row">
 				<label for="SIP_auth_pwd">Password :</label>
 				<input type="password" id='SIP_auth_pwd' name="SIP_auth_pwd" value='' class ='text'/>
 			</div>
-			<div class="form-row">
+			<div class="form-row odd">
 				<label for="password_show"><?php echo _("Show Password:")?></label>
 				<span class="checkbox"><input type="checkbox" id="password_show" name="password_show" /></span>
 			</div>
-			<div class="form-row odd">
+			<div class="form-row">
                                 <span><b>Note :</b>The fields 'SIP Outbound Proxy' and 'SIP Outbound Proxy Port' can be edited when 'Use SIP Outbound Proxy' box is checked.
 Similarly for 'Use SIP Registrar' and the two fields below.<br/><br/>The <b>Password:</b> must be re-entered everytime before pressing <b>APPLY</b></span>
                         </div>
@@ -172,7 +177,8 @@ Similarly for 'Use SIP Registrar' and the two fields below.<br/><br/>The <b>Pass
 		$('#S_digit_timer').val(php_value['SDigitTimer']);
 		$('#Z_digit_timer').val(php_value['ZDigitTimer']);
 		$('#SIP_acc_status').val(php_value['Acc_Status']);
-		$('#SIP_Extension').val(php_value['Extension']);
+		$('#SIP_Directory').val(php_value['Directory']);
+                $('#SIP_URI').val(php_value['uri']);
 		$('#SIP_auth_name').val(php_value['Auth_usr']);
 		$('#SIP_auth_pwd').val('<EMPTY>').css('color','red');
 		$('#SIP_outbound_proxy').val(php_value['OutboundProxy']);
@@ -288,7 +294,8 @@ Similarly for 'Use SIP Registrar' and the two fields below.<br/><br/>The <b>Pass
 			+'","SDigitTimer":"'+$('#S_digit_timer').val()
 			+'","ZDigitTimer":"'+$('#Z_digit_timer').val()
 			+'","Acc_Enabled":"'+($('#SIP_acc_enabled').is(':checked')? 'Enabled' :'Disabled')
-			+'","Extension":"'+$('#SIP_Extension').val()
+			+'","Directory":"'+$('#SIP_Directory').val()
+                        +'","uri":"'+$('#SIP_URI').val()
 			+'","EmergencyDigitMap":"'+$('#SIP_Emer_digitMap').val()+'"}';
          	var jsConfig = mod_values;
         	jProgress("<?php echo _('This may take several seconds...')?>", 60);
