@@ -350,6 +350,7 @@ var G_wps_method	= "<?php echo $wps_method; ?>";
 var isBridge		= "<?php echo $_SESSION["lanMode"]; ?>";
 var modeEnabled		= "<?php echo $encrypt_mode; ?>";
 var modeEnabled1	= "<?php echo $encrypt_mode1; ?>";
+var partner_id = '<?php echo $partnerId; ?>';
 function update_Wi_Fi_control_list(){
 	var ssid_number		= $("#mac_ssid").attr("value");
 	var jsConfig 	=	'{"ssid_number":"'+ssid_number+'", "target":"'+"mac_ssid"+'"}';
@@ -704,7 +705,6 @@ $(document).ready(function() {
 		$("#no_other_wifi").show();
 	}
 	// remove sections as per loginuser, content must be hidden before doc ready
-	var partner_id = '<?php echo $partnerId; ?>';
 	if ("mso" != "<?php echo $_SESSION["loginuser"]; ?>"){
 		if(!partner_id.includes('sky-')){
 		$(".div_enable_radio").remove();}
@@ -1045,8 +1045,16 @@ function save_enable(sub_target)
 		if (G_wps_method == wps_method || !wps_enabled) return;
 		G_wps_method = wps_method;
 	}
-	var jsConfig = '{"radio_enable":"'+radio_enable+'", "wps_enabled":"'+wps_enabled+'", "wps_method":"'+wps_method
-					+'", "target":"'+"save_enable"+'", "sub_target":"'+sub_target+'", "ssid_number":"'+ssid_number+'"}';	
+	
+	if(partner_id.includes('sky-')){
+		var jsConfig = '{"radio_enable":"'+radio_enable+'", "wps_method":"'+wps_method
+					+'", "target":"'+"save_enable"+'", "sub_target":"'+sub_target+'", "ssid_number":"'+ssid_number+'"}';
+	}
+	else{
+		var jsConfig = '{"radio_enable":"'+radio_enable+'", "wps_enabled":"'+wps_enabled+'", "wps_method":"'+wps_method
+					+'", "target":"'+"save_enable"+'", "sub_target":"'+sub_target+'", "ssid_number":"'+ssid_number+'"}';
+	}
+
 	set_config(jsConfig);	
 }
 function validChecksum(PIN)

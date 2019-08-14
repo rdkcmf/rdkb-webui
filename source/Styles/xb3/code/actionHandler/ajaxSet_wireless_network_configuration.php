@@ -27,6 +27,7 @@ $Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')? true : false;
 $Radio_1_Enable = getStr("Device.WiFi.Radio.1.Enable");
 $Radio_2_Enable = getStr("Device.WiFi.Radio.2.Enable");
 $Radio_Enable = ($Radio_1_Enable == 'true' || $Radio_2_Enable == 'true') ? true : false ;
+$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 function validChecksum($WPS_pin){
 	if (preg_match("/^\d{4}$|^\d{8}$/", $WPS_pin)!=1) return false;
 	if (preg_match("/^\d{4}$/", $WPS_pin)==1) return true;
@@ -210,6 +211,10 @@ else
 				setStr("Device.WiFi.Radio.$i.Enable", $arConfig['radio_enable'], false);
 				setStr("Device.WiFi.Radio.$i.X_CISCO_COM_ApplySetting", "true", true);		
 				// MiniApplySSID($i);	// if enable or disable this radio, no need to assign an SSID
+			}
+			else if($_SESSION["loginuser"] == "admin" && strpos($partnerId, "sky-") !== false){
+				setStr("Device.WiFi.Radio.$i.Enable", $arConfig['radio_enable'], false);
+				setStr("Device.WiFi.Radio.$i.X_CISCO_COM_ApplySetting", "true", true);
 			}
 		}
 		else if ("wps_enabled" == $arConfig['sub_target'] && $Radio_Enable) {
