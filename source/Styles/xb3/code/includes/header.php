@@ -97,6 +97,7 @@ csrfprotector_rdkb::init();
 	$title=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogoTitle");
 	$msoLogo= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogo");
 	$logo="cmn/syndication/img/".$msoLogo;
+	$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 ?>
 <head>
 	<title><?php echo $title; ?></title>
@@ -144,11 +145,13 @@ csrfprotector_rdkb::init();
 	</style>	
 </head>
 <script type="text/javascript">
+        var partner_id = '<?php echo $partnerId; ?>';
 	$(document).ready(function() {
 		$("table.data td").each(function() {
 			if($(this).text().split("\n")[0].length > 25)
 			{
-				$(this).closest('table').css("table-layout", "fixed");
+				if(!partner_id.includes('sky-'))
+				   $(this).closest('table').css("table-layout", "fixed");
 				$(this).css("word-wrap", "break-word");
 			}
 		});
