@@ -264,6 +264,7 @@ $(document).ready(function() {
     gateway.page.init("Gateway > Connection > Wireless > Edit <?php echo $radio_band; ?> GHz", "nav-wifi-config");
 	$Mesh_Mode = '<?php echo $Mesh_Mode; ?>';
 	var MeshEnable= '<?php echo $Mesh_Enable; ?>';
+	var partner_id = '<?php echo $partnerId; ?>';
 	$("#wireless_network_switch").radioswitch({
 		id: "wireless-network-switch",
 		radio_name: "wireless_network",
@@ -354,6 +355,7 @@ $(document).ready(function() {
 				else {
 					$("#network_password").prop("disabled", false);
 					$("#div_change_password").hide();
+					$("#div_password_show").show();
 				}
 			}
 			$("#netPassword-footnote").text($("option:selected", $(this)).attr("title"));
