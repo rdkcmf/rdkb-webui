@@ -317,6 +317,10 @@ $(document).ready(function() {
                                                         $("#network_password").val("");
                                                         $("#div_password_show").hide();
                                                        }
+                                                       if(!password_mso_user && "None" == $security_val){
+                                                       $("#div_change_password").hide();
+                                                      }
+
 						}
 					});
 				}
@@ -367,6 +371,10 @@ $(document).ready(function() {
         if("None" == $("#security").val()) {
           $("#network_password").val("");
         }
+        if(!password_mso_user && "None" == $("#security").val()){
+           $("#div_change_password").hide();
+         }
+
 	$("#password_show").change(function() {
 		var pass_val = $("#network_password").val();
 		if ($("#password_show").is(":checked")) {
