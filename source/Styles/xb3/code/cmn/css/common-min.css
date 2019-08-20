@@ -1644,7 +1644,7 @@ margin:0 0 0 -35px;
 
 .con_check img{
     width: 49px;
-    padding:25px 0;
+    padding:24.5px 0;
     overflow: hidden;
     background: transparent url(../img/sky_self_heal_ONT_led_sprite.gif) no-repeat;
     background-position: 0 0;
@@ -1714,4 +1714,7 @@ margin:0 0 0 -35px;
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+@media all and (-ms-high-contrast:none){
+	*::-ms-backdrop, .con_check img {width:43px; padding:0px } /* IE11 */
 }
