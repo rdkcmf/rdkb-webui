@@ -499,7 +499,7 @@ if($allowEthWan=="true"){
 				//echo php_getstr("Device.WiFi.AccessPoint.2.Security.ModeEnabled");
 				$encrypt_mode	= $wifi_value["ModeEnabled1"];
 				$encrypt_method	= $wifi_value["EncryptionMethod1"];
-				echo encrypt_map($encrypt_mode, $encrypt_method);
+				echo _(encrypt_map($encrypt_mode, $encrypt_method));
 			?>
 			</span>
 		</div>
@@ -533,7 +533,7 @@ if($allowEthWan=="true"){
 				//echo php_getstr("Device.WiFi.AccessPoint.2.Security.ModeEnabled");
 				$encrypt_mode	= $wifi_value["ModeEnabled2"];
 				$encrypt_method	= $wifi_value["EncryptionMethod2"];
-				echo encrypt_map($encrypt_mode, $encrypt_method);
+				echo _(encrypt_map($encrypt_mode, $encrypt_method));
 			?>
 			</span>
 		</div>
