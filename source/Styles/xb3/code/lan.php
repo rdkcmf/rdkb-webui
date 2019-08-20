@@ -134,7 +134,6 @@ $(document).ready(function() {
 		echo '<h2>'.sprintf(_("LAN Ethernet Port %s"),$ids[$id]).'</h2>';
 		$dm = array(
 			array(_("LAN Ethernet link status:"), null, $ethernetParam[$id]["Status"]),
-			array(_("MAC Address:"), null, $ethernetParam[$id]["MACAddress"])
 		);
 		/* link speed */
 		$lspeed = $ethernetParam[$id]["CurrentBitRate"];
@@ -152,7 +151,8 @@ $(document).ready(function() {
 			$lspeed = floor((int)$lspeed / 1000);
 			$lunit = " Gbps";
 		} 
-		*/
+		 */
+		array_push($dm, array(_("MAC Address:"), $ethernetParam[$id]["MACAddress"]));
 		array_push($dm, array(_("Connection Speed:"), $lspeed.$lunit));
 		for ($m=0, $i=0; $i<count($dm); $i++)
 		{
