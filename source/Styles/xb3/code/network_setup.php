@@ -617,6 +617,10 @@ if ($wanType == "DSL") {
     $modemType = _("Cable Modem");
 }
 ?>
+<!-- Updating the CoreVersion value as 'NA' for DSL details to SKY -->
+<?php if($wanType == "DSL" && strpos($partnerId, "sky-") !== false){
+  if(!$CM_value["CoreVersion"]){ $CM_value["CoreVersion"] = 'NA';}
+}?>
 <div class="module forms">
 	<h2><?php echo $modemType;?></h2>
 	<div class="form-row ">
