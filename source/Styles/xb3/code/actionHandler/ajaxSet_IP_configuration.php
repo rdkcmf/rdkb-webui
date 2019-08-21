@@ -21,6 +21,7 @@ if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }
+$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 $ip_config = json_decode($_POST['configInfo'], true);
 function isValidIP($ip, $ipRange){
 	$longIP = ip2long($ip);
@@ -109,7 +110,12 @@ else{
 	else{//stateless
 		setStr("Device.RouterAdvertisement.InterfaceSetting.1.AdvManagedFlag", "false", true);  
 		setStr("Device.DHCPv6.Server.X_CISCO_COM_Type", "Stateless", true);
+          if(strpos($partnerId, "sky-") !== false){
+		setStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6UlaEnable",$ip_config['ula_enable'], true);
+		setStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6Ula",$ip_config['ula_prefix'],true);
+          }
 	}
+        if(strpos($partnerId, "sky-") !== false){setStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6Enable",$ip_config['ipv6_enable'], true);}
 	if ($restore == 'true'){
 		$validation = true;
 		if($validation) $validation = (preg_match("/^([0-9a-f]{1,4}:){3}[0-9a-f]{1,4}$/i", $ip_config['dhcpv6_begin_addr'])==1);

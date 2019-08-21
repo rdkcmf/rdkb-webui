@@ -85,6 +85,7 @@ $tmp1 = explode('/', $tmp); //trim /64
 $local_ipv6 = $tmp1[0];
 $local_ipv6_arr = explode(':', $local_ipv6);
 $default_admin_ip= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.DefaultAdminIP");
+$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 ?>
 <style type="text/css">
 label{
@@ -108,6 +109,7 @@ $(document).ready(function() {
 	var old_beginning_ip4 = $("#ipv4_dhcp_beginning_address_4").val();
 	var old_ending_ip4 = $("#ipv4_dhcp_ending_address_4").val();
 	var default_admin_ip ="<?php echo $default_admin_ip; ?>";
+        var partner_id = '<?php echo $partnerId; ?>';
 	function updateIPv4() {
 		var ip1 = $("#ipv4_gateway_address_1").val();
 		var ip2 = $("#ipv4_gateway_address_2").val();
@@ -902,7 +904,21 @@ $('#Stateful').click(function(){
 	updateIPv6();
 	$("#pageFormV6").valid();
 	$("#ipv6_dhcp_lease_time_amount").removeClass("error");
-})
+	if(partner_id.includes('sky-')){
+		if($('#Stateful').is(':checked'))
+			$("#ula_dis").hide();
+		else
+			$("#ula_dis").show();
+	}
+});
+$('input[name="ULA"]').click(function(){
+	if($("input[name='ULA'][value='ula_auto']").prop("checked")){
+		$('#ULA_1_1 ,#ULA_2,#ULA_3,#ULA_4,#ULA_5,#ULA_6,#ULA_7,#ULA_8').attr('disabled',true);
+	}
+	else if($("input[name='ULA'][value='ula_manual']").prop("checked")){
+		$('#ULA_1_1 ,#ULA_2,#ULA_3,#ULA_4,#ULA_5,#ULA_6,#ULA_7,#ULA_8').attr('disabled',false);
+	}
+});
 /* This function checks ending address should be larger than begin address */
 function validate_v6addr_pool (DBArr, DEArr) {
 	var flag = true;
@@ -949,7 +965,13 @@ $('#submit_ipv6').click(function(e){
     var dhcp_lease_num = $('#ipv6_dhcp_lease_time_amount').val();
 	var dhcp_lease_unit = $('#ipv6_dhcp_lease_time_measure').val();
 	var dhcpv6_lease_time = calcuate_lease_time(dhcp_lease_num, dhcp_lease_unit);  
-    var IPv6Config = '{"IPv6": "Yes", "Stateful": "' + Stateful + '", "dhcpv6_begin_addr": "' + dhcpv6_begin_addr + '", "dhcpv6_end_addr": "' + dhcpv6_end_addr +'", "dhcpv6_lease_time": "' + dhcpv6_lease_time + '"}';
+	var IPv6Config = '{"IPv6": "Yes", "Stateful": "' + Stateful + '", "dhcpv6_begin_addr": "' + dhcpv6_begin_addr + '", "dhcpv6_end_addr": "' + dhcpv6_end_addr +'", "dhcpv6_lease_time": "' + dhcpv6_lease_time + '"}';
+	if(partner_id.includes('sky-')){
+    	var ipv6_enable = $('#ipv6_enable').is(':checked');
+    	var ula_enable = $('#ula_enable').is(':checked');
+    	var ula_prefix = $('#ULA_1').val()+$('#ULA_1_1').val() + ":" + $('#ULA_2').val()+":" +$('#ULA_3').val()+":" + $('#ULA_4').val()+":" +$('#ULA_5').val()+":" +$('#ULA_6').val()+":" + $('#ULA_7').val()+":" + $('#ULA_8').val();
+    	var IPv6Config = '{"IPv6": "Yes", "Stateful": "' + Stateful + '", "dhcpv6_begin_addr": "' + dhcpv6_begin_addr + '", "dhcpv6_end_addr": "' + dhcpv6_end_addr +'", "dhcpv6_lease_time": "' + dhcpv6_lease_time +'", "ipv6_enable": "' + ipv6_enable +'", "ula_enable": "' + ula_enable +'", "ula_prefix": "' + ula_prefix +'"}';
+    }
    	setIPv6configuration(IPv6Config);
 });
 $('#restore_ipv6').click(function(e) {
@@ -1200,7 +1222,68 @@ $('#restore_ipv6').click(function(e) {
     	            <option selected value="weeks"><?php echo _('Weeks')?></option>
     	            <option value="forever"><?php echo _('Forever')?></option>
     	        </select>
+		</div>
+    		<!-- IPv6 Enable / Disable Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIpv6Enable -->
+    		<?php
+    				if(strpos($partnerId, "sky-") !== false){
+    					$ipv6_enb = getStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6Enable");
+    		  			$ula_enb = getStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6UlaEnable");
+
+    		?>
+    		<div class="form-row" id='ipv6_enb_dis'>
+    			<label for="ipv6_enable"><?php echo _('IPv6 Enable:')?></label>
+    			<input type="checkbox" id='ipv6_enable' name="ipv6_enable" <?php if($ipv6_enb=='true') echo 'checked="checked"'; ?>  />
     		</div>
+    		<!-- ULA Prefix -->
+    		 <?php
+			      //2040::/64, 2040:1::/64, 2040:1:2::/64 and 2040:1:2:3::/64
+                  $ula_prefix_arr = explode('::/', getStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6Ula"));
+                  $ula_v6_prefix_arr = explode(':', $ula_prefix_arr[0]);
+                  $ula_size = count($ula_v6_prefix_arr);
+                  $ula_v6_fd_array = str_split($ula_v6_prefix_arr[0]);
+                  $ula_v6_fd = $ula_v6_fd_array[0].$ula_v6_fd_array[1];
+                  $ula_v6_d7 = $ula_v6_fd_array[2].$ula_v6_fd_array[3];
+			      // $v6_begin_addr = $dhcpv6_value["v6_begin_addr"];
+			      // $v6_beg_add_arr = explode(':', $v6_begin_addr);
+			    ?>
+	    	<div id='ula_dis'>
+	    		<div class="form-row odd" id='ula_enb_dis'>
+	    			<label for="ula_enable"><?php echo _('ULA Enable:')?></label>
+	    			<input type="checkbox" id='ula_enable' name="ula_enable"<?php if($ula_enb=='true') echo 'checked="checked"'; ?> />
+	    		</div>
+	    		<div class="form-row ">
+				<?php
+				    $state = $dhcpv6_value["state"];
+				?>
+					<input type="radio"  name="ULA" value="ula_auto" checked="checked" id="ula_auto" />
+					<label for="ula_auto" class="acs-hide"></label> <b><?php echo _('ULA Prefix(Automatic)')?></b>
+					<input type="radio"  name="ULA" value="ula_manual" id="ula_manual" />
+					<label for="ula_manual" class="acs-hide"></label> <b><?php echo _('ULA Prefix(Manual)')?></b>
+				</div>
+	    		<div class="form-row odd">
+	    			<label for="ULA"><?php echo _('ULA Prefix:')?></label>
+	    				<input type="text"  class="ipv6-input" size="2" maxlength="2"  id="ULA_1" name="ULA_1" disabled="disabled" value="<?php echo $ula_v6_fd; ?>" style='width:16px;margin-right:-4px' />
+	    				<input type="text"  class="ipv6-input" size="2" maxlength="2"  id="ULA_1_1" name="ULA_1_1" disabled="disabled" value="<?php echo $ula_v6_d7; ?>"  style='width:16px'/>
+		    	    <label for="ULA_2" class="acs-hide"></label>
+		    	        :<input type="text" class="ipv6-input" size="2" maxlength="4" id="ULA_2" name="ULA_2" disabled="disabled" value="<?php if($ula_size > 1) echo $ula_v6_prefix_arr[1]; else echo "0"; ?>" />
+		    	    <label for="ULA_3" class="acs-hide"></label>
+		    	        :<input type="text" class="ipv6-input" size="2" maxlength="4" id="ULA_3" name="ULA_3" disabled="disabled" value="<?php if($ula_size > 2) echo $ula_v6_prefix_arr[2]; else echo "0"; ?>" />
+		    	    <label for="ULA_4" class="acs-hide"></label>
+		    	        :<input type="text" class="ipv6-input" size="2" maxlength="4" id="ULA_4" name="ULA_4" disabled="disabled" value="<?php if($ula_size > 3) echo $ula_v6_prefix_arr[3]; else echo "0"; ?>" />
+		    	    <label for="ULA_5" class="acs-hide"></label>
+		    	        :<input type="text" class="ipv6-input" size="2" maxlength="4" id="ULA_5" name="ULA_5" disabled="disabled" value="<?php echo $ula_v6_prefix_arr[4]; ?>" />
+		    	    <label for="ULA_6" class="acs-hide"></label>
+		    	        :<input type="text" class="ipv6-input" size="2" maxlength="4" id="ULA_6" name="ULA_6" disabled="disabled" value="<?php echo $ula_v6_prefix_arr[5]; ?>" />
+		    	    <label for="ULA_7" class="acs-hide"></label>
+						:<input type="text" class="ipv6-input" size="2" maxlength="4" id="ULA_7" name="ULA_7" disabled="disabled" value="<?php echo $ula_v6_prefix_arr[6]; ?>" />
+		    	    <label for="ULA_8" class="acs-hide"></label>
+						:<input type="text" class="ipv6-input" size="2" maxlength="4" id="ULA_8" name="ULA_8" disabled="disabled" value="<?php echo $ula_v6_prefix_arr[7]; ?>" />
+		    	    <label for="ULA_9" class="acs-hide"></label>
+						/<input type="text" class="ipv6-input" size="2" maxlength="4" id="ULA_9" name="ULA_9" disabled="disabled" value="64"/>
+	    		</div>
+	    	</div>
+    	<?php } ?>
+
   	    		<div class="form-btn">
 					<input type="button" id="submit_ipv6" value="<?php echo _('Save Settings')?>" class="btn" />
 					<input id="restore_ipv6" type="button" value="<?php echo _('Restore Default Settings')?>" class="btn alt" />
