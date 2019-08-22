@@ -1045,17 +1045,29 @@ function save_enable(sub_target)
 		if (G_wps_method == wps_method || !wps_enabled) return;
 		G_wps_method = wps_method;
 	}
-	
 	if(partner_id.includes('sky-')){
-		var jsConfig = '{"radio_enable":"'+radio_enable+'", "wps_method":"'+wps_method
-					+'", "target":"'+"save_enable"+'", "sub_target":"'+sub_target+'", "ssid_number":"'+ssid_number+'"}';
-	}
-	else{
-		var jsConfig = '{"radio_enable":"'+radio_enable+'", "wps_enabled":"'+wps_enabled+'", "wps_method":"'+wps_method
-					+'", "target":"'+"save_enable"+'", "sub_target":"'+sub_target+'", "ssid_number":"'+ssid_number+'"}';
-	}
-
-	set_config(jsConfig);	
+              if(!radio_enable){
+		  var warningMsg='<?php echo _("Warning: Please note that disabling the radio(s) might interrupt with your data and video services. It is recommended to keep the Wi-Fi radios ON for uninterrupted access to your subscribed services. To cancel these changes, choose cancel below.");?>';
+                  jConfirm(warningMsg,"<?php echo _('Are You Sure?')?>",function(ret){
+                     if(ret){
+                        var jsConfig = '{"radio_enable":"'+radio_enable+'", "wps_method":"'+wps_method
+                                        +'", "target":"'+"save_enable"+'", "sub_target":"'+sub_target+'", "ssid_number":"'+ssid_number+'"}';
+                        set_config(jsConfig);
+                     }
+                     else location.reload();
+                  });
+              }
+              else{
+                 var jsConfig = '{"radio_enable":"'+radio_enable+'", "wps_method":"'+wps_method
+                                        +'", "target":"'+"save_enable"+'", "sub_target":"'+sub_target+'", "ssid_number":"'+ssid_number+'"}';
+                 set_config(jsConfig);
+              }
+        }
+        else{
+              var jsConfig = '{"radio_enable":"'+radio_enable+'", "wps_enabled":"'+wps_enabled+'", "wps_method":"'+wps_method
+                                                  +'", "target":"'+"save_enable"+'", "sub_target":"'+sub_target+'", "ssid_number":"'+ssid_number+'"}';
+               set_config(jsConfig);
+       }
 }
 function validChecksum(PIN)
 {
