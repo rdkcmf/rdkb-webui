@@ -546,10 +546,11 @@ $('#device').click(function(){
 					$val = getStr("Device.Hosts.Host.$hostsInstanceArr[$i].IPv6Address.$j.IPAddress");
 					if (stripos($val, "fe80:") === 0) continue;
 					if(strpos($partnersId, "sky-") !== false){
-						if (stripos($val, "fd") === 0) {
-							$IPv6Addr = $val;
-							break;
-						}
+                                            $val_arr = explode(':', $val);
+                                            if ($val_arr[0]==$ipv6_prefix_arr[0] && $val_arr[1]==$ipv6_prefix_arr[1] && $val_arr[2]==$ipv6_prefix_arr[2] && $val_arr[3]==$ipv6_prefix_arr[3]) {
+                                              $IPv6Addr = $val;
+                                              break;
+                                            }
 					}
 					else{
 					  if (stripos($val, "EMPTY") !== 0) {
