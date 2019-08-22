@@ -29,7 +29,7 @@
                 "this_step" => "Cette étape est requise pour connecter vos appareils à Internet.",
                 "your_connection" => "Votre connexion a été activée, mais nous devons maintenant créer<br>un nom et un mot de passe<b>
                                       de Wi-Fi qui vous seront propres</b>.",
-                "lets_get" => "Allons-y l’installation",
+                "lets_get" => "Allons-y",
                 "create_wifi" =>"Créer le nom et le mot de passe de votre Wi-Fi",
                 "this_step_2"=> "Cette étape est <b style=\"color: #DC4343;\">requise</b>. Choisissez des identifiants faciles à retenir.
                                  <br> Vos appareils devront être reconnectés avec le nouveau nom et mot de passe.",
