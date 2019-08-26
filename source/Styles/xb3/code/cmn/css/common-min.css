@@ -1536,7 +1536,6 @@ margin:0 0 0 -35px;
   width: 0;
 }
 
-/* Create a custom checkbox */
 .checkmark {
   position: absolute;
   top: 1.5em;
@@ -1547,29 +1546,18 @@ margin:0 0 0 -35px;
   border:5px solid #868686;
 }
 
-/* On mouse-over, add a grey background color */
+/* Adding Grey color to background on Mouse-over */
 #voip_container:hover input ~ .checkmark {
   background-color: #ccc;
 }
 
-/* When the checkbox is checked, add a blue background */
-#voip_container input:checked ~ .checkmark {
-  background-color: #14c764;
-}
-
-/* Create the checkmark/indicator (hidden when not checked) */
+/* Css to create the checkmark. Its hidden when not checked */
 .checkmark:after {
   content: "";
   position: absolute;
   display: none;
 }
 
-/* Show the checkmark when checked */
-#voip_container input:checked ~ .checkmark:after {
-  display: block;
-}
-
-/* Style the checkmark/indicator */
 #voip_container .checkmark:after {
   left: 11px;
   top: 6px;
@@ -1580,6 +1568,15 @@ margin:0 0 0 -35px;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+#voip_container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* To show Green background when checkbox is checked */
+#voip_container input:checked ~ .checkmark {
+  background-color: #14c764;
 }
 
 /*selfheal css start*/
