@@ -341,13 +341,23 @@ if($allowEthWan=="true"){
         <div class="form-row">
         <span class="readonlyLabel"><?php echo _("Internet:")?></span> <span class="value">
               <?php 
-               $status = php_getstr("Device.X_CISCO_COM_CableModem.CMStatus"); 
-               if ( !strcasecmp($status, "Operational") ){
+              if($allowEthWan=="true"){
+                $wanipv4_status = php_getstr("Device.DeviceInfo.X_COMCAST-COM_WAN_IP");
+                $wanipv6_status = php_getstr("Device.DeviceInfo.X_COMCAST-COM_WAN_IPv6");
+                if( ($wanipv4_status!="0.0.0.0") || ($wanipv6_status!="")){
+                    echo _("Active");
+                }else{
+                   echo _("Inactive"); 
+                }
+              }else{
+                $status = php_getstr("Device.X_CISCO_COM_CableModem.CMStatus"); 
+                if ( !strcasecmp($status, "Operational") ){
                   echo _("Active");
-               }
-               else{
+                }
+                else{
                   echo _("Inactive");                   
-               }
+                }
+              }
               ?>
         </span>
         </div>
