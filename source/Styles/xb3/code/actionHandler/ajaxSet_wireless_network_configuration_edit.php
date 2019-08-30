@@ -98,10 +98,11 @@ if ($i == 1 || $i == 2) {
     			}
 			}
 			//to prevent using of space character in network password
-			if($validation && noSpace($arConfig['network_password'])){
+			if($validation && allowNoSpace($arConfig['network_password'])){
 					$validation=false;
-					$response_message='No space character is allowed !';
-				}
+					$response_message='White Spaces are not allowed !';
+			}
+			
 			if($validation){
 				switch ($arConfig['security'])
 				{

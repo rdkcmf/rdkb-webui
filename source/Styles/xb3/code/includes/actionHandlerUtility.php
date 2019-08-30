@@ -34,8 +34,13 @@ function printableCharacters($input){
 	//if range is not set then match for *
 	else return (preg_match("/^[ -~]*$/", $input)==1);
 }
-function noSpace($input){
+//not allow spaces
+function allowNoSpace($input){
 	return (preg_match('/\s/',$input)==1);
+}
+//check for valid Input
+function noSpace($input){
+	return (preg_match('/\S/',$input)==1);
 }
 //check if the $IPAddr is a valid IP address[checks for both IPv4 & IPv6]
 function validIPAddr($IPAddr){
