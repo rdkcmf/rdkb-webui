@@ -549,7 +549,7 @@ PHP_FUNCTION(getStr)
     char*                   ppDestPath          = NULL;
     int                     size                = 0;
     parameterValStruct_t ** parameterVal        = NULL;
-    char                    retParamVal[512]    = {0};
+    char                    retParamVal[1024]   = {0};
     int                     iReturn             = 0;
     int                     loop                = 0;
     char                    subSystemPrefix[6]  = {0};
