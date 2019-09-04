@@ -930,7 +930,7 @@ $(document).ready(function() {
 	      		$IPv6Prefix    = $Hotspot_SSID_clients[$j]['IPv6Prefix'];
 	      		$DHCPv6Status  = $Hotspot_SSID_clients[$j]['DHCPv6Status'];
 	      		$IPv6LocalAddr = $Hotspot_SSID_clients[$j]['IPv6LinkLocalAddress'];
-	      		if ($i == 0) {
+	      		if ($i == 0 || $i == 2) {
 	      			$gre_ssid = 1;
 				$frequency_band = getStr("Device.WiFi.Radio.1.OperatingFrequencyBand");
 				$frequency_band = (strstr($frequency_band,"5G")) ? "5G" : "2.4G";
