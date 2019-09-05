@@ -652,6 +652,8 @@ for ($i=1, $j=1; $i<count($ds_ofdm_ids); $i++)
         $ds_ofdm_tab[$i]['PlcFreq']                      = $ds_ofdm_val[$j++][1];
         $ds_ofdm_tab[$i]['NumPilots']                    = $ds_ofdm_val[$j++][1];
         $ds_ofdm_tab[$i]['TimeInterleaverDepth']         = $ds_ofdm_val[$j++][1];
+	$ds_ofdm_tab[$i]['SNRLevel']         		 = $ds_ofdm_val[$j++][1];
+	$ds_ofdm_tab[$i]['PowerLevel']                   = $ds_ofdm_val[$j++][1];
         $ds_ofdm_tab[$i]['PlcTotalCodewords']            = $ds_ofdm_val[$j++][1];
         $ds_ofdm_tab[$i]['PlcUnreliableCodewords']       = $ds_ofdm_val[$j++][1];
         $ds_ofdm_tab[$i]['NcpTotalFields']               = $ds_ofdm_val[$j++][1];
@@ -715,12 +717,12 @@ for ($i=1; $i<count($ds_ids); $i++){
 		<tr class="odd">
 			<th class="row-label ">SNR</td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['SNRLevel'].'</div></td>';?>
-                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++) echo '<td><div style="width: 100px">NA</div></td>';?>
+                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++) echo '<td><div style="width: 100px">'.$ds_ofdm_tab[$j]['SNRLevel'].'</div></td>';?>
 		</tr>
 		<tr class="">
 			<th class="row-label ">Power Level</td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['PowerLevel'].'</div></td>';?>
-                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++) echo '<td><div style="width: 100px">NA</div></td>';?>
+                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++) echo '<td><div style="width: 100px">'.$ds_ofdm_tab[$j]['PowerLevel'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
 			<th class="row-label ">Modulation</td>
