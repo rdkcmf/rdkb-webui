@@ -37,10 +37,10 @@ $(document).ready(function() {
 	$("#all_report_week").hide();
 	$("#all_report_month").hide();
 	$("#all_report_last").hide();
-	$('input[value="Print"]').prop("disabled",true).addClass("disabled");
+	$('.print').prop("disabled",true).addClass("disabled");
 	$('input[value="Download"]').prop("disabled",true).addClass("disabled");
 	gateway.page.init("Parental Control > Reports", "nav-parental-reports");
-    $('input[value="Print"]').click(function() {
+    $('.print').click(function() {
     	window.print();
     });
     $("#generate-report").click(function() {
@@ -240,7 +240,7 @@ $(document).ready(function() {
 				$("#device_report_last").show();
 			}
 		}
-		$('input[value="Print"]:visible').prop("disabled",true).addClass("disabled");
+		$('.print:visible').prop("disabled",true).addClass("disabled");
 		$('input[value="Download"]:visible').prop("disabled",true).addClass("disabled");
 		ajaxDo(mode,timef);
 			}
@@ -303,7 +303,7 @@ function ajaxDo(mode,timef){
 				length++;
 			});
 			if(length>0){
-				$('input[value="Print"]:visible').prop("disabled",false).removeClass("disabled");
+				$('.print:visible').prop("disabled",false).removeClass("disabled");
 				$('input[value="Download"]:visible').prop("disabled",false).removeClass("disabled");
 			}
 			if(length>20){
@@ -402,7 +402,7 @@ function ajaxDo(mode,timef){
 			</tbody>
 		</table> <!-- or class-->
 		<div class="btn-group">
-			<input type="button" value="<?php echo _("Print")?>" class="btn alt"/>
+			<input type="button" value="<?php echo _("Print")?>" class="btn alt print"/>
 			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
@@ -454,7 +454,7 @@ function ajaxDo(mode,timef){
 			</tbody>
 		</table>
 		<div class="btn-group">
-			<input type="button" value="<?php echo _("Print")?>" class="btn alt"/>
+			<input type="button" value="<?php echo _("Print")?>" class="btn alt print"/>
 			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
@@ -506,7 +506,7 @@ function ajaxDo(mode,timef){
 			</tbody>
 		</table>
 		<div class="btn-group">
-			<input type="button" value="<?php echo _("Print")?>" class="btn alt"/>
+			<input type="button" value="<?php echo _("Print")?>" class="btn alt print"/>
 			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
@@ -558,7 +558,7 @@ function ajaxDo(mode,timef){
 			</tbody>
 		</table>
 		<div class="btn-group">
-			<input type="button" value="<?php echo _("Print")?>" class="btn alt"/>
+			<input type="button" value="<?php echo _("Print")?>" class="btn alt print"/>
 			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
 		</div>
 	</div> <!-- end .module -->
