@@ -25,6 +25,7 @@
  *  set initial value for all pages to true(display)
  */
 $partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
+$modelName = getStr("Device.DeviceInfo.ModelName");
 $local_ip_config  	= TRUE;
 $firewall         	= TRUE;
 $parental_control 	= TRUE;
@@ -120,7 +121,7 @@ echo '<li class="nav-gateway">';
 		if ($MoCA) {
 		  echo '<li class="nav-moca"><a role="menuitem"  href="moca.php">'._("MoCA").'</a></li>';
 		}
-		if($allowEthWan=="true"){
+		if(($allowEthWan=="true") && ($modelName=="CGM4140COM")){
 			if($wan_network) echo '<li class="nav-wan-network"><a role="menuitem"  href="wan_network.php">'._("WAN Network").'</a></li>';
 		}
 		echo '</ul>';
