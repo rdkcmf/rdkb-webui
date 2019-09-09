@@ -120,9 +120,9 @@
 			$('#msg_waiting').attr('checked',true);
 		if(php_value['SkyEuroFlashCallWaitingEnable']=='true')
 			$('#eur_sky_flsh_waitng_mode').attr('checked',true);
-		if(php_value['sip_status'] == 'Started')
+		if(php_value['sip_status'] == 'Started'|| php_value['sip_status']=='Starting')
 			$('#SIP_Start').prop('disabled', true);
-		else if(php_value['sip_status'] == 'Stopped')
+		else if(php_value['sip_status'] == 'Stopped'|| php_value['sip_status']=='Stopping')
 			$('#SIP_Stop').prop('disabled', true);
 		if(php_value['Sky_Network_Disconnect']=='true')
 			$('#sky_ntwrk_discnt').attr('checked',true);		

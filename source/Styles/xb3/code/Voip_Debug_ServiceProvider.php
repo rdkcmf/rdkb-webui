@@ -96,10 +96,10 @@
 			$('#SIP_log_svr_port').val(php_value['server_port']);
 			$('#ingress').val(php_value['Ingress']);
 			$('#egress').val(php_value['Egress']);
-			if(php_value['sip_status'] == 'Started'){
+			if(php_value['sip_status'] == 'Started'|| php_value['sip_status']=='Starting'){
 				$('#SIP_Start').prop('disabled', true);
 			}
-			else if(php_value['sip_status'] == 'Stopped'){
+			else if(php_value['sip_status'] == 'Stopped'|| php_value['sip_status']=='Stopping'){
 				$('#SIP_Stop').prop('disabled', true);
 			}
 	}

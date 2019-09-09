@@ -82,9 +82,9 @@
 	var php_value= <?php echo json_encode($values_got) ?>;
 	function page_load_values(){
 			$('#console_log').val(php_value['Console_log']);
-			if(php_value['sip_status'] == 'Started')
+			if(php_value['sip_status'] == 'Started'|| php_value['sip_status']=='Starting')
 			$('#SIP_Start').prop('disabled', true);
-		else if(php_value['sip_status'] == 'Stopped')
+	        	else if(php_value['sip_status'] == 'Stopped'|| php_value['sip_status']=='Stopping')
 			$('#SIP_Stop').prop('disabled', true);
 	}
 	$('#SIP_Apply').on('click', function(){
