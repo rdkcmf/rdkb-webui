@@ -60,33 +60,31 @@ else
 LIGHTTPD_CONF="/var/lighttpd.conf"
 fi
 LIGHTTPD_DEF_CONF="/etc/lighttpd.conf"
-FILE_LOCK="/tmp/webgui.lock"
-MAX_RETRY_COUNT=10
-webgui_count=0
 
-#Only one process should create conf file and start lighttpd at a time
+webgui_count=0
 while : ; do
-    if [ $webgui_count -lt $MAX_RETRY_COUNT ]; then
-        if [ -f $FILE_LOCK ]; then
+    WEBGUI_INST=`ps | grep webgui.sh | grep -v grep | grep -c webgui.sh`
+    WEBGUI_INST_PROCESS=`ps -l | grep webgui.sh | grep -v grep`
+
+    if [ $webgui_count -lt 3 ]; then
+        if [ $WEBGUI_INST -gt 2 ]; then
             echo "WEBGUI :Sleeping,Another instance running"
-            sleep 1;
+            echo "WEBGUI :WEBGUI_INST= $WEBGUI_INST"
+            echo "$WEBGUI_INST_PROCESS"
             webgui_count=$((webgui_count+1))
-            echo "Retry count = $webgui_count"
-            continue;
+            sleep 2;
         else
-            # Creating lock to allow one process at a time
-            touch $FILE_LOCK
             break;
         fi
     else
-        echo "WEBGUI: Exiting, another instance is running and max retry reached"
+        echo "WEBGUI :Exiting,Another instance running, Max retry reached"
         exit 1
     fi
 done
 
 LIGHTTPD_PID=`pidof lighttpd`
 if [ "$LIGHTTPD_PID" != "" ]; then
-	/bin/kill -9 $LIGHTTPD_PID
+	/bin/kill $LIGHTTPD_PID
 fi
 
 HTTP_ADMIN_PORT=`syscfg get http_admin_port`
@@ -269,5 +267,3 @@ fi
 echo "WEBGUI : Set event"
 sysevent set webserver started
 touch /tmp/webgui_initialized
-#Removing the lock
-rm -f $FILE_LOCK
