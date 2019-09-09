@@ -96,9 +96,9 @@
 		$('#global_IpAddressFamily').val(php_value['IpAddressFamily']);
 		if(php_value['line_register'] ==true || php_value['line_register'] == 'true')
 			$('#sky_line_registered').attr('checked', true);
-		if(php_value['sip_status'] == 'Started')
+		if(php_value['sip_status'] == 'Started'|| php_value['sip_status']=='Starting' )
 			$('#SIP_Start').prop('disabled', true);
-		else if(php_value['sip_status'] == 'Stopped')
+		else if(php_value['sip_status'] == 'Stopped'||  php_value['sip_status']=='Stopping')
 			$('#SIP_Stop').prop('disabled', true);
 	}
 	$('#SIP_Apply').on('click', function(){
