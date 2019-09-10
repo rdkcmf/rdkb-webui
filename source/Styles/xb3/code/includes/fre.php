@@ -75,7 +75,7 @@
                 "ascii_characters"=>"1 à 32 caractères ASCII.",
                 "ascii_password"=>"8-63 caractères ASCII ou un mot de passe de 64 caractères hexadécimaux",
                 "name_already"=>"Ce nom est déjà utilisé. Veuillez choisir un autre nom.",
-                "this_identifies"=>"Cela permet de distinguer votre réseau Wi-Fi parmi les autres réseaux à portée de votre Borne.",
+                "this_identifies"=>"Nommer votre réseau Wi-Fi permet de le distinguer parmi les autres réseaux à portée de votre Borne.",
                 "p_weak"=>"Le niveau de sécurité de votre mot de passe est actuellement : Faible",
                 "p_avg"=>"Le niveau de sécurité de votre mot de passe est actuellement : Moyen",
                 "p_strong"=>"Le niveau de sécurité de votre mot de passe est actuellement : Fort",
