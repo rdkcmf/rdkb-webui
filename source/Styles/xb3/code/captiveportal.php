@@ -90,7 +90,8 @@ csrfprotector_rdkb::init();
     display: block !important;   
     margin-right: auto !important;
     margin-left: auto !important;
-    text-align: center !important;
+    text-align: left !important;
+    padding: 15px !important;
     width: 80% !important;
     font-size: 12px !important;
        
