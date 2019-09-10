@@ -980,7 +980,7 @@ function setResetInfo(info) {
 		<div class="form-row odd" id="div_channel_switch">
 			<label for="channel_automatic"><?php echo _("Channel Selection:")?></label>
                         <?php
-				if('5'!=$radio_band && strpos($partnerId, "sky-") !== false){
+                if('5'!=$radio_band || (strpos($partnerId, "sky-")===false)) {
 					echo '<input type="radio"  name="channel" value="auto" 	id="channel_automatic" checked="checked" /><b>'._("Automatic").'</b>';
 				}
 			?>
