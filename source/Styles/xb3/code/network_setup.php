@@ -31,7 +31,8 @@
 </style>
 <?php
 	$NetworkName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.HelpTip.NetworkName");
-	$wanType = get_wan_type();
+        $wanType = get_wan_type();
+        $partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -843,6 +844,10 @@ if($Wan_Port_Status !="disconnected"){
                                                                         
 $modem_downstream = getStr("Device.X_RDK-Central_COM_WanAgent.WanOE.DownstreamCurrRate");
 $modem_upstream = getStr("Device.X_RDK-Central_COM_WanAgent.WanOE.UpstreamCurrRate");
+if(strpos($partnerId, "sky-") !== false){
+     if($modem_downstream == 0) $modem_downstream = '-NA-';
+     if($modem_upstream == 0) $modem_upstream = '-NA-';
+}
 ?>
 <div class="module forms div_dsl">
 	<h2><?php echo _("Modem Stats");?></h2>
