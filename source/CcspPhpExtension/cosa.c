@@ -59,6 +59,11 @@
 #define _RETURN_STRING(str) RETURN_STRING(str)
 #endif
 
+#define MAX_SUBSYSTEMPREFIX 6
+#define MAX_STRING_LEN_SIZE 256
+
+#define RDK_SAFECLIB_ERR(func)  CosaPhpExtLog("safeclib error at %s %s:%d %s", __FILE__, __FUNCTION__, __LINE__, func)
+
 #define  COSA_PHP_EXT_LOG_FILE_NAME "/var/log/cosa_php_ext.log"
 #define  COSA_PHP_EXT_DEBUG_FILE    "/tmp/cosa_php_debug"
 #define  COSA_PHP_EXT_PCSIM         "/tmp/cosa_php_pcsim"
@@ -94,6 +99,14 @@
              }                                                              \
          }
 
+#ifdef SAFEC_DUMMY_API
+//adding strcmp_s definition
+errno_t strcmp_s(const char * d,int max ,const char * src,int *r)
+{
+  *r= strcmp(d,src);
+  return EOK;
+}
+#endif
 
 ZEND_DECLARE_MODULE_GLOBALS(cosa);
 
@@ -148,6 +161,8 @@ path_message_func
     char *from = 0;
     char *req = 0;
     char * err_msg  = DBUS_ERROR_NOT_SUPPORTED;
+    errno_t rc1 = -1, rc2 = -1;
+    int ind1 = -1, ind2 = -1;
 
     reply = dbus_message_new_method_return (message);
     if (reply == NULL)
@@ -155,32 +170,45 @@ path_message_func
         return DBUS_HANDLER_RESULT_HANDLED;
     }
 
-    if(!strcmp("org.freedesktop.DBus.Introspectable", interface)  && !strcmp(method, "Introspect"))
+    if(!(rc1 = strcmp_s("org.freedesktop.DBus.Introspectable", strlen("org.freedesktop.DBus.Introspectable"), interface, &ind1)) &&
+       !(rc2 = strcmp_s("Introspect", strlen("Introspect"), method, &ind2)))
     {
-        if ( !dbus_message_append_args (reply, DBUS_TYPE_STRING, &Introspect_msg, DBUS_TYPE_INVALID))
-
-        if (!dbus_connection_send (conn, reply, NULL))
-
-        dbus_message_unref (reply);
-        return DBUS_HANDLER_RESULT_HANDLED;
+        if(!(ind1) && !(ind2))
+        {
+            if ( !dbus_message_append_args (reply, DBUS_TYPE_STRING, &Introspect_msg, DBUS_TYPE_INVALID))
+            {
+                if (!dbus_connection_send (conn, reply, NULL))
+                    dbus_message_unref (reply);
+            }
+            return DBUS_HANDLER_RESULT_HANDLED;
+	}
+    }
+    else
+    {
+         RDK_SAFECLIB_ERR("strcmp_s");
     }
 
-
-    if (!strcmp(msg_interface, interface) && !strcmp(method, msg_method))
-    {
-
-        if(dbus_message_get_args (message,
-                                NULL,
-                                DBUS_TYPE_STRING, &from,
-                                DBUS_TYPE_STRING, &req,
-                                DBUS_TYPE_INVALID))
-        {
-            dbus_message_append_args (reply, DBUS_TYPE_STRING, &resp, DBUS_TYPE_INVALID);
-            if (!dbus_connection_send (conn, reply, NULL))
-                dbus_message_unref (reply);
+    if(!(rc1 = strcmp_s(msg_interface, strlen(msg_interface), interface, &ind1)) &&  
+       !(rc2 = strcmp_s(msg_method, strlen(msg_method), method, &ind2)))
+    { 
+       if(!(ind1) && !(ind2))
+       {
+           if(dbus_message_get_args (message,
+                               NULL,
+                               DBUS_TYPE_STRING, &from,
+                               DBUS_TYPE_STRING, &req,
+                               DBUS_TYPE_INVALID))
+           {
+               dbus_message_append_args (reply, DBUS_TYPE_STRING, &resp, DBUS_TYPE_INVALID);
+               if (!dbus_connection_send (conn, reply, NULL))
+                   dbus_message_unref (reply);
+           }
+           return DBUS_HANDLER_RESULT_HANDLED;
         }
-
-        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+    else
+    {
+        RDK_SAFECLIB_ERR("strcmp_s");
     }
     dbus_message_set_error_name (reply, err_msg) ;
     dbus_connection_send (conn, reply, NULL);
@@ -250,14 +278,24 @@ int UiDbusClientGetDestComponent(char* pObjName,char** ppDestComponentName, char
 
 void CheckAndSetSubsystemPrefix (char** ppDotStr, char* pSubSystemPrefix)
 {
-    if (!strncmp(*ppDotStr,"eRT",3))   //check whether str has prex of eRT
+    errno_t rc = -1;
+
+    if (!strncmp(*ppDotStr, "eRT.", 4))   //check whether str has prex of eRT
     {
-        strncpy(pSubSystemPrefix,"eRT.",4);
+	rc = strncpy_s(pSubSystemPrefix,  MAX_SUBSYSTEMPREFIX, "eRT.", 4);
+        if(rc != EOK)
+        {
+            RDK_SAFECLIB_ERR("strncpy_s");
+        }
         *ppDotStr +=4;              //shift four bytes to get rid of eRT:
     }
-    else if (!strncmp(*ppDotStr,"eMG",3))  //check wither str has prex of eMG
+    else if (!strncmp(*ppDotStr, "eMG.", 4))  //check wither str has prex of eMG
     {
-        strncpy(pSubSystemPrefix,"eMG.",4);
+        rc = strncpy_s(pSubSystemPrefix, MAX_SUBSYSTEMPREFIX, "eMG.", 4);
+	if(rc != EOK)
+        {
+            RDK_SAFECLIB_ERR("strncpy_s");
+        }
         *ppDotStr +=4;  //shit four bytes to get rid of eMG;
     }
 }
@@ -307,7 +345,7 @@ ZEND_GET_MODULE(cosa)
 static void php_cosa_init_globals(zend_cosa_globals *cosa_globals)
 {
     FILE *fp = NULL;
-    
+
     /* If file exists, we'll open the debug flag */
     fp = fopen(COSA_PHP_EXT_DEBUG_FILE, "r");
     if (fp)
@@ -546,7 +584,8 @@ PHP_FUNCTION(getStr)
     char                    retParamVal[1024]   = {0};
     int                     iReturn             = 0;
     int                     loop                = 0;
-    char                    subSystemPrefix[6]  = {0};
+    char                    subSystemPrefix[MAX_SUBSYSTEMPREFIX]  = {0};
+    errno_t                 rc                  = -1;
 
     //Parse Input parameters first
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dotstr, &flen) == FAILURE)
@@ -602,7 +641,12 @@ PHP_FUNCTION(getStr)
 
     if ( size >= 1 )
     {
-        strncpy(retParamVal,parameterVal[0]->parameterValue, sizeof(retParamVal));
+        rc = strncpy_s(retParamVal, sizeof(retParamVal), parameterVal[0]->parameterValue, strnlen_s(parameterVal[0]->parameterValue, MAX_STRING_LEN_SIZE));
+        if(rc != EOK)
+        {
+            RDK_SAFECLIB_ERR("strncpy_s");
+            _RETURN_STRING("");
+        }
         free_parameterValStruct_t(bus_handle, size, parameterVal);
     }
 
@@ -638,8 +682,10 @@ PHP_FUNCTION(setStr)
     char                          *paramNames[1];
     int                           iReturn;
     char*                         pFaultParameterNames  = NULL;
-    char                          subSystemPrefix[6]    = {0};
+    char                          subSystemPrefix[MAX_SUBSYSTEMPREFIX]    = {0};
     dbus_bool                     bDbusCommit           = 1;
+    errno_t                       rc                    = -1;
+    int                           ind                   = -1;
 
     //Parse Parameters first
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ssb", &dotstr, &flen, &val, &vlen, &bCommit) == FAILURE)
@@ -649,7 +695,7 @@ PHP_FUNCTION(setStr)
         RETURN_FALSE;
     }
     //check for NULL string
-    if( !strlen(dotstr))
+    if(!dotstr[0])
     {
     #if _DEBUG_
         syslog(LOG_ERR, "%s: bad parameters", __FUNCTION__);
@@ -696,8 +742,14 @@ PHP_FUNCTION(setStr)
             iReturn,
             structGet[0]->parameterValue
         );
+    rc = strcmp_s(structGet[0]->parameterName, strlen(structGet[0]->parameterName), dotstr, &ind);
+    if(rc != EOK)
+    {
+        RDK_SAFECLIB_ERR("strcmp_s");
+        RETURN_FALSE;
+    }
 
-    if (size != 1 || strcmp(structGet[0]->parameterName, dotstr) != 0)
+    if (size != 1 || ind != 0)
     {
     #if _DEBUG_
         syslog(LOG_ERR, "%s: miss match", __FUNCTION__);
@@ -803,7 +855,7 @@ PHP_FUNCTION(getInstanceIds)
     parameterInfoStruct_t **        parameter;
     int                             inst_num = 0;
     char                            buf[CCSP_BASE_PARAM_LENGTH];
-    char                            subSystemPrefix[6] = {0};
+    char                            subSystemPrefix[MAX_SUBSYSTEMPREFIX] = {0};
 
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dotstr, &flen) == FAILURE) {
         //RETURN_STRING("ERROR: GetStr: ARGUMENT MISSING",1);
@@ -894,7 +946,7 @@ PHP_FUNCTION(addTblObj)
     int                             inst_num = 0;
     int                             iReturnInstNum = 0;
     char                            buf[CCSP_BASE_PARAM_LENGTH];
-    char                            subSystemPrefix[6] = {0};
+    char                            subSystemPrefix[MAX_SUBSYSTEMPREFIX] = {0};
 
     if ( zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dotstr, &flen) == FAILURE )
     {
@@ -975,7 +1027,7 @@ PHP_FUNCTION(delTblObj)
     parameterInfoStruct_t **        parameter;
     int                             inst_num = 0;
     char                            buf[CCSP_BASE_PARAM_LENGTH];
-    char                            subSystemPrefix[6] = {0};
+    char                            subSystemPrefix[MAX_SUBSYSTEMPREFIX] = {0};
 
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dotstr, &flen) == FAILURE)
     {
@@ -1042,7 +1094,7 @@ PHP_FUNCTION(DmExtGetStrsWithRootObj)
 {
     char*                           pRootObjName;
     int                             RootObjNameLen;
-    char                            subSystemPrefix[6]  = {0};
+    char                            subSystemPrefix[MAX_SUBSYSTEMPREFIX]  = {0};
     int                             iReturn             = 0;
     char*                           pDestComponentName  = NULL;
     char*                           pDestPath           = NULL;
@@ -1236,7 +1288,7 @@ PHP_FUNCTION(DmExtSetStrsWithRootObj)
 {
     char*                           pRootObjName;
     int                             RootObjNameLen;
-    char                            subSystemPrefix[6]  = {0};
+    char                            subSystemPrefix[MAX_SUBSYSTEMPREFIX]  = {0};
     int                             iReturn             = 0;
     char*                           pDestComponentName  = NULL;
     char*                           pDestPath           = NULL;
@@ -1254,9 +1306,10 @@ PHP_FUNCTION(DmExtSetStrsWithRootObj)
     zval**                          pParamValData;
     HashPosition                    pParamValPos;
     parameterValStruct_t *          pParameterValList   = NULL;
-    char                            BoolStrBuf[16]      = {0};
     int                             iIndex              = 0;
     char*                           pFaultParamName     = NULL;
+    errno_t                         rc                  = -1;
+    int                             ind                 = -1;
 
     /* Parse paremeters */
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sba", &pRootObjName, &RootObjNameLen, &bCommit, &pParamArray) == FAILURE)
@@ -1398,55 +1451,66 @@ PHP_FUNCTION(DmExtSetStrsWithRootObj)
                 {
                     char*           pTemp   = Z_STRVAL_P(zend_hash_get_current_data_ex(pParamValHash, &pParamValPos));
 #endif
+                    if(pTemp == NULL)
+                     {
+                         iReturn = CCSP_FAILURE;
+                         goto  EXIT0;
+                     }
 
-                    if ( !strcmp(pTemp, "void") )
+		    if ( !(rc = strcmp_s("void", strlen("void"), pTemp, &ind)) && !(ind) )
                     {
                         CosaPhpExtLog("  Parameter %s type is void!\n", pParameterValList[iIndex].parameterName);
                         pParameterValList[iIndex].type = ccsp_none;
-                    }
-                    else if ( !strcmp(pTemp, "string") )
+		    }
+		    else if ( !(rc = strcmp_s("string", strlen("string"), pTemp, &ind)) && !(ind) )
                     {
                         pParameterValList[iIndex].type = ccsp_string;
                     }
-                    else if ( !strcmp(pTemp, "int") )
+		    else if ( !(rc = strcmp_s("int", strlen("int"), pTemp, &ind)) && !(ind) )
                     {
                         pParameterValList[iIndex].type = ccsp_int;
                     }
-                    else if ( !strcmp(pTemp, "uint") )
+		    else if ( !(rc = strcmp_s("uint", strlen("uint"), pTemp, &ind)) && !(ind) )
                     {
                         pParameterValList[iIndex].type = ccsp_unsignedInt;
                     }
-                    else if ( !strcmp(pTemp, "bool") )
+		    else if ( !(rc = strcmp_s("bool", strlen("bool"), pTemp, &ind)) && !(ind) )
                     {
                         pParameterValList[iIndex].type = ccsp_boolean;
                     }
-                    else if ( !strcmp(pTemp, "datetime") )
+		    else if ( !(rc = strcmp_s("datetime", strlen("datetime"), pTemp, &ind)) && !(ind) )
                     {
                         pParameterValList[iIndex].type = ccsp_dateTime;
                     }
-                    else if ( !strcmp(pTemp, "base64") )
+		    else if ( !(rc = strcmp_s("base64", strlen("base64"), pTemp, &ind)) && !(ind) )
                     {
                         pParameterValList[iIndex].type = ccsp_base64;
                     }
-                    else if ( !strcmp(pTemp, "long") )
+		    else if ( !(rc = strcmp_s("long", strlen("long"), pTemp, &ind)) && !(ind) )
                     {
                         pParameterValList[iIndex].type = ccsp_long;
                     }
-                    else if ( !strcmp(pTemp, "unlong") )
+		    else if ( !(rc = strcmp_s("unlong", strlen("unlong"), pTemp, &ind)) && !(ind) )
                     {
                         pParameterValList[iIndex].type = ccsp_unsignedLong;
                     }
-                    else if ( !strcmp(pTemp, "float") )
+		    else if ( !(rc = strcmp_s("float", strlen("float"), pTemp, &ind)) && !(ind) )
                     {
                         pParameterValList[iIndex].type = ccsp_float;
                     }
-                    else if ( !strcmp(pTemp, "double") )
+		    else if ( !(rc = strcmp_s("double", strlen("double"), pTemp, &ind)) && !(ind) )
                     {
                         pParameterValList[iIndex].type = ccsp_double;
                     }
-                    else if ( !strcmp(pTemp, "byte") )
+		    else if ( !(rc = strcmp_s("byte", strlen("byte"), pTemp, &ind)) && !(ind) )
                     {
                         pParameterValList[iIndex].type = ccsp_byte;
+                    }
+		    else if (rc != EOK)
+                    {
+                        RDK_SAFECLIB_ERR("strcmp_s");
+                        iReturn = CCSP_FAILURE;
+                        goto  EXIT0;
                     }
 
                     CosaPhpExtLog("  Param type %d->%s\n", pParameterValList[iIndex].type, pTemp);
@@ -1467,15 +1531,29 @@ PHP_FUNCTION(DmExtSetStrsWithRootObj)
                     if ( pParameterValList[iIndex].type == ccsp_boolean )
                     {
                         /* support true/false or 1/0 for boolean value */
-                        if ( !strcmp(pParameterValList[iIndex].parameterValue, "1") )
+                        if(pParameterValList[iIndex].parameterValue == NULL)
                         {
-                            strcpy(BoolStrBuf, "true");
-                            pParameterValList[iIndex].parameterValue = BoolStrBuf;
+                            iReturn = CCSP_FAILURE;
+                            goto  EXIT0;
                         }
-                        else if ( !strcmp(pParameterValList[iIndex].parameterValue, "0"))
+
+			if ( !(rc = strcmp_s("1", strlen("1"), pParameterValList[iIndex].parameterValue, &ind)) )
                         {
-                            strcpy(BoolStrBuf, "false");
-                            pParameterValList[iIndex].parameterValue = BoolStrBuf;
+                            if(!(ind))
+                            {
+                                pParameterValList[iIndex].parameterValue = "true";
+                            }
+                        }
+			else if ( !(rc = strcmp_s("0", strlen("0"), pParameterValList[iIndex].parameterValue, &ind)) )
+                        {
+                            if(!ind)
+                            {
+                                pParameterValList[iIndex].parameterValue = "false";
+                            }
+                        }
+			else if(rc != EOK)
+                        {
+                            RDK_SAFECLIB_ERR("strcmp_s");
                         }
                     }
                     CosaPhpExtLog("  Param Value %s\n", pParameterValList[iIndex].parameterValue);
@@ -1555,7 +1633,7 @@ PHP_FUNCTION(DmExtGetInstanceIds)
 {
     int                             flen;
     char*                           dotstr              = NULL;
-    char                            subSystemPrefix[6]  = {0};
+    char                            subSystemPrefix[MAX_SUBSYSTEMPREFIX]  = {0};
     char*                           ppDestComponentName = NULL;
     char*                           ppDestPath          = NULL ;
     int                             iReturn             = 0;
