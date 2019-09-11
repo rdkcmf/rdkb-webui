@@ -85,6 +85,20 @@ PHP_FUNCTION(DmExtGetInstanceIds);
     #define  CCSP_COMPONENT_ID_WebUI                0x00000001
 #endif
 
+#ifndef SAFEC_DUMMY_API
+#include "safe_str_lib.h"
+#endif
+
+#ifdef SAFEC_DUMMY_API
+typedef int errno_t;
+#define EOK 0
+
+#define strncpy_s(dst,max,src,len)  EOK; \
+ strncpy(dst,src,len);
+
+errno_t strcmp_s(const char *,int,const char *,int *);
+#endif
+
 extern void _dbus_connection_lock (DBusConnection *connection);
 extern void _dbus_connection_unlock (DBusConnection *connection);
 
