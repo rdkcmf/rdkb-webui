@@ -192,9 +192,9 @@ Similarly for 'Use SIP Registrar' and the two fields below.<br/><br/>The <b>Pass
 		$('#SIP_Emer_digitMap').val(php_value['EmergencyDigitMap']);
 		if(php_value['Acc_Enabled']=='Enabled')
 			$('#SIP_acc_enabled').prop('checked', true);
-		if(php_value['sip_status'] == 'Started')
+		if(php_value['sip_status'] == 'Started'|| php_value['sip_status'] =='Starting' )
 			$('#SIP_Start').prop('disabled', true);
-		else if(php_value['sip_status'] == 'Stopped')
+		else if(php_value['sip_status'] == 'Stopped' || php_value['sip_status'] =='Stopping')
 			$('#SIP_Stop').prop('disabled', true);
 		checkboxes();
 	}
