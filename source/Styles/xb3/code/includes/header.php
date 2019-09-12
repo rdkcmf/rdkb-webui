@@ -54,7 +54,7 @@ csrfprotector_rdkb::init();
 	}
 	$not_admin_pages = array('email_notification.php', 'hs_port_forwarding', 'routing.php', 'dynamic_dns', 'mta', 'voice_quality_metrics' ,'qos');
 	$not_mso_pages = array('change_password.php');
-	$not_bridge_static_pages = array('local_ip', 'wizard', 'firewall', 'managed', 'parental', 'forwarding', 'triggering', 'dmz', 'routing', 'nat', 'dynamic_dns', 'device_discovery', 'radius_servers', 'dlna', 'digital_media', 'samba', 'local_users', 'wps', 'wifi_spectrum_analyzer');
+	$not_bridge_static_pages = array('local_ip', 'wizard', 'firewall', 'managed', 'parental', 'forwarding', 'triggering', 'dmz', 'routing', 'nat', 'dynamic_dns', 'device_discovery', 'radius_servers', 'local_users', 'wps', 'wifi_spectrum_analyzer');
 	if ($_SESSION['loginuser'] == 'admin') {
 		foreach ($not_admin_pages as $page) {
 			if (strstr($_SERVER['SCRIPT_FILENAME'], $page)) {
