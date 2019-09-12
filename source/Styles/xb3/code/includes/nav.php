@@ -33,12 +33,7 @@ $port_forwarding  	= TRUE;
 $port_triggering  	= TRUE;
 $MoCA             	= TRUE;
 $battery            	= TRUE;
-$cordless_handset 	= FALSE;
-$USB              	= FALSE;
-$network_storage  	= FALSE;
 $radius_servers   	= FALSE;
-$media_sharing    	= FALSE;
-$file_sharing     	= FALSE;
 $local_users      	= FALSE;
 $remote_management  	= TRUE;		//for xb3, all user will have this page, but different content
 $eMTA               	= TRUE;		//for mso
@@ -55,9 +50,6 @@ $wan_network        = TRUE;
 $voice_Dig = FALSE;
 $partnersId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 $voice_dev = getStr('Device.DeviceInfo.SoftwareVersion');
-/*if ($_DEBUG) {
-	$media_sharing = TRUE;
-}*/
 /*
  * The difference between  bridge mode and router mode
  * In bridge mode, local ip config page, firewall page, parental control pages, 
@@ -144,7 +136,6 @@ echo '<li class="nav-gateway">';
 		if($battery) echo '<li class="nav-battery"><a role="menuitem"  href="battery.php">'._("Battery").'</a></li>';
 		echo '<li class="nav-lan"><a role="menuitem"  href="lan.php">'._("LAN").'</a></li>';
 		echo '<li class="nav-wifi"><a role="menuitem"  href="wifi.php">'._("Wireless").'</a></li>';
-		if($USB) echo '<li class="nav-usb"><a role="menuitem"  href="usb.php">'._("USB").'</a></li>';
 		echo '</ul>';
 	echo '</li>';
 	if($wizard){
@@ -157,8 +148,6 @@ echo '<li class="nav-connected-devices">';
 	echo '<a role="menuitem"  title="'._("click to toggle sub menu").'"  class="top-level" href="connected_devices_computers.php">'._("Connected Devices").'</a>';
 	echo '<ul>';
 	echo '<li class="nav-cdevices"><a role="menuitem"  href="connected_devices_computers.php">'._("Devices").'</a></li>';
-	if($cordless_handset) echo '<li class="nav-cordless-handsets"><a role="menuitem"  href="cordless_handsets.php">'._("Cordless Handsets").'</a></li>';
-	if($network_storage)  echo '<li class="nav-network-storage"><a role="menuitem"  href="network_storage.php">'._("Network Storage").'</a></li>';
 	echo '</ul>';
 echo '</li>';
 if($parental_control){
@@ -193,21 +182,6 @@ if($advanced_tab) {
 		if($dynamic_dns) echo '<li class="nav-Dynamic-dns"><a role="menuitem"  href="dynamic_dns.php">'._("Dynamic DNS").'</a></li>';
 		echo '<li class="nav-device-discovery"><a role="menuitem"  href="device_discovery.php">'._("Device Discovery").'</a></li>';
 		if($radius_servers) echo '<li class="nav-radius-servers"><a role="menuitem"  href="radius_servers.php">'._("Radius Servers").'</a></li>';
-		if($media_sharing) {
-			echo '<li class="nav-media-sharing"><a role="menuitem"  title="'._("click to toggle sub menu").'"  href="javascript:;">'._("Media Sharing").'</a>';
-			echo '<ul>';
-				echo '<li class="nav-dlna"><a role="menuitem"  title="'._("click to toggle sub menu").'"  href="javascript:;">'._("DLNA").'</a>';
-					echo '<ul>';
-						echo '<li class="nav-dlna-settings"><a role="menuitem"  href="dlna_settings.php">'._("DLNA Settings").'</a></li>';
-						echo '<li class="nav-dlna-media-servers"><a role="menuitem"  href="digital_media_servers.php">'._("Digital Media Servers").'</a></li>';
-						echo '<li class="nav-dlna-media-players"><a role="menuitem"  href="digital_media_players.php">'._("Digital Media Players").'</a></li>';
-						echo '<li class="nav-dlna-media-index"><a role="menuitem"  href="digital_media_index.php">'._("Media Index").'</a></li>';
-					echo '</ul>';
-				echo '</li>';
-			echo '</ul>';
-			echo '</li>';
-		}
-		if($file_sharing) echo '<li class="nav-file-sharing"><a role="menuitem"  href="samba_server_config.php">'._("File Sharing").'</a></li>';
 		if($local_users)  echo '<li class="nav-local-users"><a role="menuitem"  href="local_users.php">'._("Local Users").'</a></li>';
 		echo '</ul>';
 	echo '</li>';
