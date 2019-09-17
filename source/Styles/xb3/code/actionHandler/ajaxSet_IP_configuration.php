@@ -112,7 +112,7 @@ else{
 		setStr("Device.DHCPv6.Server.X_CISCO_COM_Type", "Stateless", true);
           if(strpos($partnerId, "sky-") !== false){
 		setStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6UlaEnable",$ip_config['ula_enable'], true);
-		setStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6Ula",$ip_config['ula_prefix'],true);
+		setStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6UlaPrefix",$ip_config['ula_prefix'],true);
           }
 	}
         if(strpos($partnerId, "sky-") !== false){setStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6Enable",$ip_config['ipv6_enable'], true);}
