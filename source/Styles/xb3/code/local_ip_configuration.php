@@ -905,10 +905,14 @@ $('#Stateful').click(function(){
 	$("#pageFormV6").valid();
 	$("#ipv6_dhcp_lease_time_amount").removeClass("error");
 	if(partner_id.includes('sky-')){
-		if($('#Stateful').is(':checked'))
+		if($('#Stateful').is(':checked')){
 			$("#ula_dis").hide();
-		else
+                        $("#Stateless").removeAttr('checked');
+		}
+		else{
 			$("#ula_dis").show();
+                        $("#Stateless").attr('checked','checked');
+		}
 	}
 });
 $('input[name="ULA"]').click(function(){
