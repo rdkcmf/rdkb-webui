@@ -94,12 +94,7 @@ if ($i == 1 || $i == 2) {
 				$validation = false;
 				$response_message = 'Please change Network Password !';
 			}
-				//to prevent using of space character in network password
-			if($validation && allowNoSpace($arConfig['network_password'])){
-					$validation=false;
-					$response_message='White Spaces are not allowed !';
-			}
-
+			
 			if($validation){
 				switch ($arConfig['security'])
 				{
