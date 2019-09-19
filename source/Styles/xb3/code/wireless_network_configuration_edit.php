@@ -923,11 +923,11 @@ function setResetInfo(info) {
 				if(strpos($partnerId, "sky-") !== false){
 					if("5"==$radio_band){
 						if (strstr($supported_mode, "ac")){
-							echo '<option value="n,ac" ';   echo (  "n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 n/ac</option>';
+							echo '<option value="ac" ';   echo (  "ac"==$wireless_mode)? 'selected':''; echo'>802.11 ac</option>';
 						}
 					}
 					else{
-						echo '<option value="b,g,n" '; echo ("b,g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 b/g/n</option>';
+						echo '<option value="n" '; echo ("n"==$wireless_mode)? 'selected':'';  echo'>802.11 n</option>';
 					}
 				}
 				else{
