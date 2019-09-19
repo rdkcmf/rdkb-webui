@@ -34,10 +34,6 @@ function printableCharacters($input){
 	//if range is not set then match for *
 	else return (preg_match("/^[ -~]*$/", $input)==1);
 }
-//not allow spaces
-function allowNoSpace($input){
-	return (preg_match('/\s/',$input)==1);
-}
 //check for valid Input
 function noSpace($input){
 	return (preg_match('/\S/',$input)==1);
