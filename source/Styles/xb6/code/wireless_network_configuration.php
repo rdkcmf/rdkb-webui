@@ -90,6 +90,7 @@ $wifi_param = array(
 	"Radio_Enable1"			=> "Device.WiFi.Radio.1.Enable",
 	"Radio_Enable2"			=> "Device.WiFi.Radio.2.Enable",
 	//check if 5g support 802.11ac
+	"support_mode"			=> "Device.WiFi.Radio.1.SupportedStandards",
 	"support_mode_5g"		=> "Device.WiFi.Radio.2.SupportedStandards",
 	//AccessPoint
 	"AccessPoint_Enable4"		=> "Device.WiFi.AccessPoint.4.Enable",
@@ -206,7 +207,8 @@ $possible_channels1	= $wifi_value['possible_channels1'];
 $RDG_Supported1		= $wifi_value['RDG_Supported1'];
 $IEEE80211hSupport1	= $wifi_value['IEEE80211hSupported1'];
 //$DFS_Support1 = "false" ; //Remove/disable DFS channels, DFS_Support1 1-supported 0-not supported
-$support_mode_5g = $wifi_value['support_mode_5g'];
+$support_mode		= $wifi_value['support_mode'];
+$support_mode_5g 	= $wifi_value['support_mode_5g'];
 //BandSteering
 $BS_Capability			= $wifi_value['BS_Capability'];
 $BandSteeringEnable		= $wifi_value['BandSteeringEnable'];
@@ -1390,9 +1392,13 @@ function saveBandSteeringSettings()
 	<div class="form-row">
 		<label for="wireless_mode">Mode:</label>
 		<select name="wireless_mode" id="wireless_mode">
-		<option value="n"  		<?php if ("n" == $wireless_mode) echo 'selected="selected"';?> >802.11 n</option>
+		<option value="n"  	<?php if ("n" == $wireless_mode) echo 'selected="selected"';?> >802.11 n</option>
 		<option value="g,n" 	<?php if ("g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 g/n</option>
 		<!--option value="b,g,n" 	<?php //if ("b,g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 b/g/n</option-->
+		<?php if (strstr($support_mode, "ax")){ ?>
+			<option value="g,n,ax" 	<?php if ("g,n,ax" == $wireless_mode) echo 'selected="selected"';?> >802.11 g/n/ax</option>
+			<option value="ax" 	<?php if ("ax" == $wireless_mode) echo 'selected="selected"';?> >802.11 ax</option>
+		<?php } ?>
 		</select>
 	</div>
 	<div class="form-row odd">
@@ -1613,14 +1619,19 @@ function saveBandSteeringSettings()
 		<label for="wireless_mode1">Mode:</label>
 		<select name="wireless_mode1" id="wireless_mode1">
 		<?php if (strstr($support_mode_5g, "ac")){ ?>
-            <option value="n"       <?php if ("n"      == $wireless_mode1) echo 'selected="selected"';?> >802.11 n</option>
-			<option value="ac" 		<?php if ("ac"     == $wireless_mode1) echo 'selected="selected"';?> >802.11 ac</option>
+        	    	<option value="n"       <?php if ("n"      == $wireless_mode1) echo 'selected="selected"';?> >802.11 n</option>
+			<option value="ac" 	<?php if ("ac"     == $wireless_mode1) echo 'selected="selected"';?> >802.11 ac</option>
 			<option value="n,ac"	<?php if ("n,ac"   == $wireless_mode1) echo 'selected="selected"';?> >802.11 n/ac</option>
 			<option value="a,n,ac"	<?php if ("a,n,ac" == $wireless_mode1) echo 'selected="selected"';?> >802.11 a/n/ac</option>	
-		<?php } else{ ?>
+		<?php } 
+		if (strstr($support_mode_5g, "ax")){ ?>
+			<option value="a,n,ac,ax"	<?php if ("a,n,ac,ax" == $wireless_mode1) echo 'selected="selected"';?> >802.11 a/n/ac/ax</option>  
+			<option value="ax" 	<?php if ("ax"    == $wireless_mode1) echo 'selected="selected"';?> >802.11 ax</option>	
+		<?php } 
+		else{ ?>
 			<option value="n"   	<?php if ("n"      == $wireless_mode1) echo 'selected="selected"';?> >802.11 n</option>
-			<option value="a,n" 	<?php if ("a,n"    == $wireless_mode1) echo 'selected="selected"';?> >802.11 a/n</option>	
-		<?php }	?>
+			<option value="a,n" 	<?php if ("a,n"    == $wireless_mode1) echo 'selected="selected"';?> >802.11 a/n</option>
+		<?php } ?>
 		</select>
 	</div>
 	<div class="form-row odd">

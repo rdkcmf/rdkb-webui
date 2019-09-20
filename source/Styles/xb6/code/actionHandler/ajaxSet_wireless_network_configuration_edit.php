@@ -60,7 +60,8 @@ if ($i == 1 || $i == 2) {
 			}
 			if ("mso" != $thisUser){
 				if($validation) $validation = isValInArray($arConfig['channel_bandwidth'], array('20MHz', '40MHz', '80MHz'));
-				if($validation) $validation = (($radio_band=="2.4" && isValInArray($arConfig['wireless_mode'], array("n", "g,n", "b,g,n"))) || ($radio_band=="5" && isValInArray($arConfig['wireless_mode'], array("n", "a,n", "ac", "n,ac", "a,n,ac"))));
+				if($validation) $validation = (($radio_band=="2.4" && isValInArray($arConfig['wireless_mode'], array("n", "g,n", "b,g,n", "g,n,ax", "ax"))) || ($radio_band=="5" && isValInArray($arConfig['wireless_mode'], array("n", "a,n", "ac", "n,ac", "a,n,ac", "a,n,ac,ax", "ax"))));
+
 				if ("false"==$arConfig['channel_automatic']){
 					$PossibleChannels = getStr("Device.WiFi.Radio.$r.PossibleChannels");
 					if(strpos($PossibleChannels, '-') !== false){//1-11
