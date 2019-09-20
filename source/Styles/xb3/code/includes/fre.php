@@ -37,7 +37,7 @@
                 "choose_a_different"=>"Choisissez un nom différent de celui indiqué sur votre Borne.",
                 "please_enter"=>"Veuillez saisir un nom Wi-Fi.",
                 "please_enter_p"=>"Veuillez entrer le mot de passe de votre Wi-Fi.",
-                "wifi_name"=>"Nom du Wi-Fi",
+                "wifi_name"=>"Nom du Wi-Fi&nbsp;&nbsp;&nbsp;",
                 "wifi_password"=>"Mot de passe du Wi-Fi",
                 "same_settings"=>"Utiliser les mêmes paramètres pour les réseaux Wi-Fi 2,4 GHz et 5 GHz.",
                 "show_more_settings"=>"Afficher plus de paramètres",
