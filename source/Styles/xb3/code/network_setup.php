@@ -818,13 +818,13 @@ for ($i= 1; $i< count($wan_Interface_ids);$i++){
     if($wan_er_name[$id] == "erouter0"){
         $wan_ip = "Device.IP.Interface.".$i.".IPv4Address.1.IPAddress";
         $wan_ip_val = getStr($wan_ip);
-  		if (filter_var($wan_ip_val, FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)) {
+  		if (inet_pton($wan_ip_val)) {
   		    if($wan_ip_val != "0.0.0.0"){
                 $Wan_Port_Status ="Connected";
   		    } else {
             	$Wan_Port_Status ="disconnected";
             }
-        } else if (filter_var($WANIPv6, FILTER_VALIDATE_IP,FILTER_FLAG_IPV6)){
+        } else if (inet_pton($WANIPv6)){
    			if($WANIPv6){
 				$Wan_Port_Status ="Connected";
 			} else {
