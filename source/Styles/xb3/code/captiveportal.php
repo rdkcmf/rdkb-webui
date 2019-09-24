@@ -561,13 +561,19 @@ $(document).ready(function(){
 		//bottomMessage	- bottom message to show
 		if(target == "name"){
 			$("#NameContainer").fadeIn("slow");
+			if((document.getElementById('PasswordContainer').style.display) != "none"){
+				$("#PasswordContainer").fadeOut("fast");
+			}
 			clearTimeout(NameTimeout);
 			NameTimeout = setTimeout(function(){ $("#NameContainer").fadeOut("slow"); }, 5000);
-			$("#NameMessageTop").text(topMessage);
+			$("#NameMessageTop").html(topMessage);
 			$("#NameMessageBottom").text(bottomMessage);
 		}
 		else if(target == "password"){
 			$("#PasswordContainer").fadeIn("slow");
+                        if((document.getElementById('NameContainer').style.display) != "none"){
+                                $("#NameContainer").fadeOut("fast");
+                        }
 			clearTimeout(PasswordTimeout);
 			PasswordTimeout = setTimeout(function(){ $("#PasswordContainer").fadeOut("slow"); }, 5000);
 			$("#PasswordMessageTop").text(topMessage);
