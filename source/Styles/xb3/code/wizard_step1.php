@@ -24,6 +24,7 @@
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
+<?php $partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId"); ?>
 <script type="text/javascript">
 $(document).ready(function() {
     gateway.page.init("Gateway > Home Network Wizard - Step 1", "nav-wizard");
@@ -135,7 +136,8 @@ function next_step()
 	<h1><?php echo _("Gateway > Home Network Wizard - Step 1")?></h1>
 	<div id="educational-tip">
 		<p class="tip"><?php echo _("The Home Network Wizard walks you through settings you may want to change for better network security.")?></p>
-		<p class="hidden"><?php echo _("If you have never changed the default information, the <strong>Current Password </strong>is <i>password</i>. Step 1 changes the Admin Tool password (the password to log into this site in the future).")?></p>
+                <p class="hidden"><?php if(strpos($partnerId, "sky-") !== false){echo _("If you have never changed the default information, the <strong>Current Password </strong>is the <i>password</i> which is on the router rear side. Step 1 changes the Admin Tool password (the password to log into this site in the future)."); } else {echo "If you have never changed the default information, the <strong>Current Password </strong>is <i>password</i>. Step 1 changes the Admin Tool password (the password to log into this site in the future).";} ?> </p>
+
 	</div>
 	<div class="module forms">
 		<!--form action="wizard_step2.php" method="post" id="pageForm"-->
