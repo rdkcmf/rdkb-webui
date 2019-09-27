@@ -156,7 +156,7 @@ else{
 		//Check for time and day conflicts
 		$TD1=array($startTime, $endTime, $blockDays);
 		$TD2=array($start_Time, $end_Time, $block_Days);
-		if (($keyword == $value["Site"]) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
+		if ((strcasecmp($keyword,$value["Site"]) == 0) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
 			$result .= _("Conflict with other blocked Keyword rule. Please check your input!");
 			break;
 		}
