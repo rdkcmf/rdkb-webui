@@ -148,27 +148,25 @@ gateway.page = function() {
 		};
 	}
 	
-    function getCookie(name) {
+   /* function getCookie(name) {
         var value = "; " + document.cookie;
         var parts = value.split("; " + name + "=");
         if (parts.length == 2)
             return parts.pop().split(";").shift();
-    } 
+    }*/ 
     
     function setupEducationalTip() {
         if($("#educational-tip:has(.hidden)").length > 0) {
            var closed = true;
-           var label_obj = JSON.parse(decodeURIComponent(getCookie('more_less_label')));
-           
-           var $link = $("<a href=\"javascript:;\" class=\"tip-more\">" + label_obj.more + "</a>").click(function() {
+           var $link = $("<a href=\"javascript:;\" class=\"tip-more\">more</a>").click(function() {
                if(closed) {
         	       $("#educational-tip .hidden").fadeIn();
         	       closed = false;
-        	       $(this).html(label_obj.less);
+        	       $(this).html("less");
         	   } else {
         	       $("#educational-tip .hidden").fadeOut();
         	       closed = true;
-        	       $(this).html(label_obj.more);
+        	       $(this).html("more");
         	   
         	   }
            }).appendTo("#educational-tip");
