@@ -58,10 +58,20 @@ csrfprotector_rdkb::init();
     <script type="text/javascript" src="./cmn/js/lib/jquery.alerts.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.ciscoExt.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.highContrastDetect.js"></script>
-	<script type="text/javascript" src="./cmn/js/lib/jquery.radioswitch.js"></script>
+	<script type="text/javascript" src="<?php 
+	    if(isset($locale) && !strstr($locale, 'en')) { 
+	        echo './locales/'.$locale.'/cmn/js/lib/jquery.radioswitch.js';
+	    } else {
+	        echo './cmn/js/lib/jquery.radioswitch.js';
+	    }?>"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.virtualDialog.js"></script>
 	<script type="text/javascript" src="./cmn/js/utilityFunctions.js"></script>
-    <script type="text/javascript" src="./cmn/js/gateway.js"></script>
+    <script type="text/javascript" src="<?php 
+        if(isset($locale) && !strstr($locale, 'en')) {
+            echo './locales/'.$locale.'/cmn/js/gateway.js';
+        } else {
+            echo './cmn/js/gateway.js';
+        }?>"></script>	
     <script type="text/javascript" src="./cmn/js/lib/bootstrap.min.js"></script>
     <script type="text/javascript" src="./cmn/js/lib/bootstrap-waitingfor.js"></script>
 	<style>

@@ -48,7 +48,12 @@ $(window).load(function() {
 	//update user bar
 	$.ajax({
 		type: "POST",
-		url: "actionHandler/ajaxSet_userbar.php",
+		url: "<?php 
+		  if(isset($locale) && !strstr($locale, 'en')) {
+            echo 'locales/'.$locale.'/actionHandler/ajaxSet_userbar.php';
+          } else {
+              echo 'actionHandler/ajaxSet_userbar.php';
+          }?>",
 		data: { configInfo: "noData" },
 		dataType: "json",
 		success: function(msg) {
