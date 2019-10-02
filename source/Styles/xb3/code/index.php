@@ -358,12 +358,7 @@ $(document).ready(function() {
 	+', "user_type":"'+user_type+'"}';
 	$.ajax({
 		type: "POST",
-		url: "<?php 
-			  if(isset($locale) && !strstr($locale, 'en')) {
-	            echo 'locales/'.$locale.'/actionHandler/ajaxSet_index_userbar.php';
-	          } else {
-	              echo 'actionHandler/ajaxSet_index_userbar.php';
-	          }?>",		
+		url: "actionHandler/ajaxSet_index_userbar.php",		
 		data: { configInfo: jsConfig },
 		dataType: "json",
 		success: function(msg) {

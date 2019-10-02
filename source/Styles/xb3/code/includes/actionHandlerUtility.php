@@ -143,3 +143,26 @@ function remove_special_char($name){
 }
 
 ?>
+<?php
+/*
+ * Start the session
+ */
+session_start();
+/*
+ * Set the Locale for the Web UI based on the LANG setting or current linux locale
+ */
+$locale = getenv("LANG");
+if(isset($locale)) {
+    if(!isset($_SESSION['language']) || setlocale(LC_MESSAGES, 0) != $locale){
+        //putenv("LANG=" . $locale);
+        setlocale(LC_MESSAGES, $locale);
+        setlocale(LC_TIME, $locale);
+        
+        $domain = "rdkb";
+        bindtextdomain($domain, 'locales');
+        bind_textdomain_codeset($domain, 'UTF-8');
+        textdomain($domain);
+        $_SESSION['language'] = $locale; // set the default locale for future pages
+    }
+}
+?>

@@ -142,15 +142,15 @@ $(document).ready(function() {
             var blockInfo = '{"URL": "'+URL+'", "alwaysBlock": "'+alwaysBlock+'", "StartTime": "'+StartTime+'", "EndTime": "'+EndTime+'", "blockedDays": "'+blockedDays+'"}';
         //alert(blockInfo);
         if($("#pageForm").valid()){
-            jProgress('<?php echo _("This may take several seconds")?>', 60); 
+            jProgress('<?php echo _("This may take several seconds")?>', 60);
             $.ajax({
                 type: "POST",
                 url: "actionHandler/ajaxSet_add_blockedSite.php",
                 data: { BlockInfo: blockInfo },
                 success: function(data){            
                     jHide();
-                    if (data != "<?php echo _("Success!")?>") {
-                        jAlert(data);
+                    if ($.trim(data) != "<?php echo _('Success!');?>") {
+                        jAlert($.trim(data));
                     }else{
                         window.location.href = "managed_sites.php";
                     }
