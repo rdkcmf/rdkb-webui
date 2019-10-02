@@ -17,7 +17,7 @@
 <?php include('../includes/actionHandlerUtility.php') ?>
 <?php
 $modelName = getStr("Device.DeviceInfo.ModelName");
-session_start();
+
 if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);

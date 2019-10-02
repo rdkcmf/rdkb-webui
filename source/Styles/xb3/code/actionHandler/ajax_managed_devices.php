@@ -17,7 +17,7 @@
 <?php include('../includes/utility.php') ?>
 <?php include('../includes/actionHandlerUtility.php') ?>
 <?php
-session_start();
+
 if (!isset($_SESSION["loginuser"])) {
 	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
@@ -59,7 +59,7 @@ if (isset($_POST['add'])){
 		if($validation) $validation = validTime($_POST['startTime'], $_POST['endTime']);
 		if($validation) $validation = validDays($_POST['days']);
 	}
-	$result = ($validation)?'':'Invalid Inputs!';
+	$result = ($validation)?'':_('Invalid Inputs!');
 	if($validation) {
 		$type=$_POST['type'];
 		$name=$_POST['name'];

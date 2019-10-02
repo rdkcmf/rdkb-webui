@@ -140,8 +140,8 @@ $.validator.addMethod("no_space", function(value, element, param) {
                 data: { BlockInfo: blockInfo },
                 success: function(data){            
                     jHide();
-                    if (data != "<?php echo _("Success!")?>") {
-                        jAlert(data);
+                    if ($.trim(data) != "<?php echo _("Success!")?>") {
+                        jAlert($.trim(data));
                     }else{
                         window.location.href = "managed_sites.php";
                     }

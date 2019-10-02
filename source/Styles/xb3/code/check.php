@@ -32,6 +32,24 @@
 
 require('includes/jwt.php');
 
+/*
+ * Set the Locale for the Web UI based on the LANG setting or current linux locale
+ */
+$locale = getenv("LANG");
+if(isset($locale)) {
+    if(!isset($_SESSION['language']) || setlocale(LC_MESSAGES, 0) != $locale){
+        //putenv("LANG=" . $locale);
+        setlocale(LC_MESSAGES, $locale);
+        setlocale(LC_TIME, $locale);
+        
+        $domain = "rdkb";
+        bindtextdomain($domain, 'locales');
+        bind_textdomain_codeset($domain, 'UTF-8');
+        textdomain($domain);
+        $_SESSION['language'] = $locale; // set the default locale for future pages
+    }
+}
+
 $flag=0;
 $flag_mso=0;
 $passLockEnable = getStr("Device.UserInterface.PasswordLockoutEnable");
@@ -388,6 +406,24 @@ header('X-robots-tag: noindex,nofollow');
 	}
 	function create_session(){
 		session_start();
+		
+		/*
+		 * Set the Locale for the Web UI based on the LANG setting or current linux locale
+		 */
+		$locale = getenv("LANG");
+		if(isset($locale)) {
+		    if(!isset($_SESSION['language']) || setlocale(LC_MESSAGES, 0) != $locale){
+		        //putenv("LANG=" . $locale);
+		        setlocale(LC_MESSAGES, $locale);
+		        setlocale(LC_TIME, $locale);
+		        
+		        $domain = "rdkb";
+		        bindtextdomain($domain, 'locales');
+		        bind_textdomain_codeset($domain, 'UTF-8');
+		        textdomain($domain);
+		        $_SESSION['language'] = $locale; // set the default locale for future pages
+		    }
+		}
 		//echo("You are logging...");
 		$timeout_val 		= intval(getStr("Device.X_CISCO_COM_DeviceControl.WebUITimeout"));
 		("" == $timeout_val) && ($timeout_val = 900);
