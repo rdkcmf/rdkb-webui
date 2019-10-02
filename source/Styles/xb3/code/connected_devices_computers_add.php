@@ -126,31 +126,31 @@ $(document).ready(function() {
 });
 </script>
 <div id="content">
-    <h1>Connected Devices > Devices > Add Device</h1>
+    <h1><?php echo _("Connected Devices > Devices > Add Device");?></h1>
     <div id="educational-tip">
-		<p class="tip">Connect a Device using a Reserved IP address.</p>
-		<p class="hidden"><strong>Host Name:</strong> Name of the Device being added. </p>
-				<p class="hidden"><strong>MAC Address:</strong>  MAC address of the Device being added.</p>
-				<p class="hidden"><strong>Reserved IP address:</strong>  The IP address of the device being added must be within the Gateway's range of the DHCP IP address pool.To find your IP address range, go to <strong>Gateway > Connection > Local IP Network.</strong></p>
+		<p class="tip"><?php echo _("Connect a Device using a Reserved IP address.");?></p>
+		<p class="hidden"><?php echo _("<strong>Host Name:</strong> Name of the Device being added.");?> </p>
+				<p class="hidden"><?php echo _("<strong>MAC Address:</strong>  MAC address of the Device being added.");?></p>
+				<p class="hidden"><?php echo _("<strong>Reserved IP address:</strong>  The IP address of the device being added must be within the Gateway's range of the DHCP IP address pool.To find your IP address range, go to <strong>Gateway > Connection > Local IP Network.</strong>");?></p>
 	</div>
 	<div class="module forms" id="computers-edit">
-		<h2>Add Device with Reserved IP Address</h2>
+		<h2><?php echo _("Add Device with Reserved IP Address");?></h2>
         <form id="pageForm">
 			<div class="form-row">
-        		<span class="readonlyLabel">Host Name:</span>
+        		<span class="readonlyLabel"<?php echo _("Host Name:");?></span>
 				<label for="host_name" class="acs-hide"></label>
         		<input type="text" name="host_name" id="host_name" maxlength="64" />
 			</div>
 			<div id="static-mac" class="form-row odd">
-				<label for="mac_address">MAC Address:</label>
+				<label for="mac_address"><?php echo _("MAC Address:");?></label>
 				<input type="text" name="mac_address" id="mac_address"  />
 			</div>
       		<div id="static-ip" class="form-row">
-				<label for="staticIPAddress">Reserved IP Address:</label>
+				<label for="staticIPAddress"><?php echo _("Reserved IP Address:");?></label>
 				<input type="text" id="staticIPAddress" name="staticIPAddress" class="target" />
 			</div>
 			<div class="form-row odd">
-				<label for="comments">Comments:</label>
+				<label for="comments"><?php echo _("Comments:");?></label>
 		        <textarea id="comments" name="comments" ros="6" cols="18" maxlength="63"></textarea>
 			</div>
 			<div class="form-row form-btn">

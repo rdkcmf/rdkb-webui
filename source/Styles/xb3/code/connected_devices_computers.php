@@ -303,7 +303,7 @@ $(document).ready(function() {
 });
 </script>
 <div id="content"  class="cnt-device-main">
-	<h1>Connected Devices > Devices</h1>
+	<h1><?php echo _("Connected Devices > Devices");?></h1>
 <?php if($CloudUIEnable == "true"){ ?>
 	<div id="educational-tip">
 		<h3 style="text-align: justify;"><?php echo sprintf(_("Managing your home network settings is now easier than ever. Visit <a href='http://%s'>%s</a> to view and manage your list of connected/offline devices. You can block access to your home network for any device, among many other features and settings."), $productLink, $productLink)?></h3>
