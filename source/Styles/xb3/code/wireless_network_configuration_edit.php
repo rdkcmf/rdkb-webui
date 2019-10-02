@@ -275,6 +275,7 @@ $(document).ready(function() {
 		title_off: "<?php echo _("Disable radio")?>",
 		state: <?php echo ($radio_enable === "true" ? "true" : "false");?> ? "on" : "off"
 	});
+	$("#wireless_network_switch").radioswitch("doEnable", $Mesh_Mode == 'true' ? false : true);
 	init_form();
 	fromOther = false;
 	$(":radio[name='channel']").change(function() {		//alert("hahaha");
