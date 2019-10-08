@@ -109,7 +109,10 @@ $(document).ready(function() {
 	var old_beginning_ip4 = $("#ipv4_dhcp_beginning_address_4").val();
 	var old_ending_ip4 = $("#ipv4_dhcp_ending_address_4").val();
 	var default_admin_ip ="<?php echo $default_admin_ip; ?>";
-        var partner_id = '<?php echo $partnerId; ?>';
+	var partner_id = '<?php echo $partnerId; ?>';
+	if(partner_id.includes('sky-')){
+		stateful_check();
+	}
 	function updateIPv4() {
 		var ip1 = $("#ipv4_gateway_address_1").val();
 		var ip2 = $("#ipv4_gateway_address_2").val();
@@ -899,20 +902,21 @@ function updateIPv6(){
 	    $('#ipv6_dhcp_lease_time_measure').prop("disabled", true);
 	}
 }
+function stateful_check(){
+	if($('#Stateful').is(':checked')){
+		$("#ula_dis").hide();$("#Stateless").removeAttr('checked');
+	}
+	else{
+		$("#ula_dis").show();$("#Stateless").attr('checked','checked');
+	}
+}
 updateIPv6();
 $('#Stateful').click(function(){
 	updateIPv6();
 	$("#pageFormV6").valid();
 	$("#ipv6_dhcp_lease_time_amount").removeClass("error");
 	if(partner_id.includes('sky-')){
-		if($('#Stateful').is(':checked')){
-			$("#ula_dis").hide();
-                        $("#Stateless").removeAttr('checked');
-		}
-		else{
-			$("#ula_dis").show();
-                        $("#Stateless").attr('checked','checked');
-		}
+	    stateful_check();
 	}
 });
 /*$('input[name="ULA"]').click(function(){
@@ -1159,8 +1163,8 @@ $('#restore_ipv6').click(function(e) {
 			<div class="form-row ">
 			<?php 			    
 			    $state = $dhcpv6_value["state"];
-			?>	
-				<input type="checkbox"  name="State" value="Stateless" checked="checked" id="Stateless" disabled="disabled" />
+			?>
+				<input type="checkbox"  name="State" value="Stateless" <?php if(strpos($partnerId, "sky-") !== false && $state == 'Stateless') echo 'checked="checked"'; else if (strpos($partnerId, "sky-") === false) echo 'checked="checked"'; ?> id="Stateless" disabled="disabled" />
 				<label for="Stateless" class="acs-hide"></label> <b><?php echo _('Stateless(Auto-Config)')?></b>
 				<input type="checkbox"  name="State" value="Stateful" <?php if($state == 'Stateful') echo 'checked="checked"'; ?> id="Stateful" />
 				<label for="Stateful" class="acs-hide"></label> <b><?php echo _('Stateful(Use Dhcp Server)')?></b>
