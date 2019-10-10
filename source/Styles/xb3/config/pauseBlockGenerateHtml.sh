@@ -37,6 +37,11 @@ STRING1='This device is paused.'
 STRING2="To resume access to the Internet on your home network, open the '"$PARTNER_BRANDNAME" "$PARTNER_PRODUCTNAME"' app or visit '"$PARTNER_URL"' using a different connection or device."
 fi
 
+if [ "$PARTNER_ID" == "sky-italia" ];then
+STRING1='Questo dispositivo è in pausa.'
+STRING2="Per riprendere l'accesso a Internet sulla tua rete domestica, apri l'app '"$PARTNER_BRANDNAME" "$PARTNER_PRODUCTNAME"' o visita '"$PARTNER_URL"' utilizzando una connessione o un dispositivo diverso."
+fi
+
 touch /tmp/pcontrol/index.html
 chmod 777 /tmp/pcontrol/index.html
 echo '<html>

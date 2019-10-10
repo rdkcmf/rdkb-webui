@@ -157,9 +157,9 @@ $partner_productname=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB
 		    </g>
 		</svg>
 		<div class="dp-space-filler-30"></div>
-		<p class="dp-header dp-white-text">This device is paused or in Bedtime Mode.</p>
+		<p class="dp-header dp-white-text"><?php echo _("This device is paused or in Bedtime Mode."); ?></p>
 		<div class="dp-space-filler-30"></div>
-		<p class="dp-text dp-gray-text">To resume access to the Internet on your home network, open the <?php echo $partner_brandname; ?> <?php echo $partner_productname; ?> app or visit <?php echo $partner_url; ?> using a different connection or device.</p>
+		<p class="dp-text dp-gray-text"><?php echo sprintf(_("To resume access to the Internet on your home network, open the %s %s app or visit %s using a different connection or device."),$partner_brandname, $partner_productname, $partner_url); ?></p>
 	</div>
 </body>
 
