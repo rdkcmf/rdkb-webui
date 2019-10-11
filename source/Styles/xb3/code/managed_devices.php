@@ -200,7 +200,7 @@ $(document).ready(function() {
 	<div class="module forms enable">
 		<div id="content" style="text-align: center;">
 			<br>
-			<h3><?php echo sprintf(_("Managing your home network settings is now easier than ever.<br>Visit <a href='http://%s'>%s</a> to enable parental controls for devices connected<br>to your home network, among many other features and settings."),$productLink, $productLin)?></h3>
+			<h3><?php echo sprintf(_("Managing your home network settings is now easier than ever.<br>Visit <a href='http://%s'>%s</a> to enable parental controls for devices connected<br>to your home network, among many other features and settings."),$productLink, $productLink)?></h3>
 			<br>
 		</div>
 	</div> <!-- end .module -->
