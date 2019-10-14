@@ -31,5 +31,5 @@ fwrite($myfile, "td { border: 1px solid white; }");
 fwrite($myfile, "</style>");
 fwrite($myfile, $_POST['configInfo']);
 fclose($myfile);
-echo _("success");
+echo "success";
 ?>
