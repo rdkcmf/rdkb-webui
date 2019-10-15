@@ -137,7 +137,7 @@ $(document).ready(function() {
 		<h2><?php echo _("Add Device with Reserved IP Address");?></h2>
         <form id="pageForm">
 			<div class="form-row">
-        		<span class="readonlyLabel"<?php echo _("Host Name:");?></span>
+        		<span class="readonlyLabel"><?php echo _("Host Name:");?></span>
 				<label for="host_name" class="acs-hide"></label>
         		<input type="text" name="host_name" id="host_name" maxlength="64" />
 			</div>
