@@ -432,7 +432,8 @@ $(document).ready(function() {
 	$("#pageFormV6").validate({
 		groups:{
 			DBA: "DBA_5 DBA_6 DBA_7 DBA_8",
-			DEA: "DEA_5 DEA_6 DEA_7 DEA_8"
+			DEA: "DEA_5 DEA_6 DEA_7 DEA_8",
+                        ULA: "ULA_1 ULA_2 ULA_3 ULA_4"
 		},
 		rules: {
 	        DBA_5: {
@@ -482,6 +483,18 @@ $(document).ready(function() {
 	                return $('#Stateful').is(":checked");
 	            }
 	            ,hexadecimal: true
+		}
+		,ULA_1:{
+		    hexadecimal: true
+	        }
+	        ,ULA_2:{
+		    hexadecimal: true
+	        }
+	        ,ULA_3:{
+		    hexadecimal: true
+	        }
+	        ,ULA_4:{
+		    hexadecimal: true
 	        }
 		,ipv6_dhcp_lease_time_amount: {
 				required: function() {
@@ -975,12 +988,10 @@ $('#submit_ipv6').click(function(e){
 	var dhcpv6_lease_time = calcuate_lease_time(dhcp_lease_num, dhcp_lease_unit);  
 	var IPv6Config = '{"IPv6": "Yes", "Stateful": "' + Stateful + '", "dhcpv6_begin_addr": "' + dhcpv6_begin_addr + '", "dhcpv6_end_addr": "' + dhcpv6_end_addr +'", "dhcpv6_lease_time": "' + dhcpv6_lease_time + '"}';
 	if(partner_id.includes('sky-')){
-        var prefix_reg =/[a-f0-9:]+$/; 
     	var ipv6_enable = $('#ipv6_enable').is(':checked');
 	var ula_enable = $('#ula_enable').is(':checked');
 	if($('#ULA_1').val().startsWith('fc')|| $('#ULA_1').val().startsWith('fd')){
 		var ula_prefix = $('#ULA_1').val() + ":" + $('#ULA_2').val()+":" +$('#ULA_3').val()+":" + $('#ULA_4').val();
-		if(!prefix_reg.test(ula_prefix)){jAlert('<?php echo "Prefix value should contain only a-f,0-9 and :"; ?>');return false;}
 	}
     	else{jAlert('<?php echo "Prefix value should start with [fc] or [fd] "; ?>');return false;}
     	var IPv6Config = '{"IPv6": "Yes", "Stateful": "' + Stateful + '", "dhcpv6_begin_addr": "' + dhcpv6_begin_addr + '", "dhcpv6_end_addr": "' + dhcpv6_end_addr +'", "dhcpv6_lease_time": "' + dhcpv6_lease_time +'", "ipv6_enable": "' + ipv6_enable +'", "ula_enable": "' + ula_enable +'", "ula_prefix": "' + ula_prefix +'"}';
