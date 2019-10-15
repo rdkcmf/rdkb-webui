@@ -23,10 +23,8 @@
                 "captivePortal_Title" => $personalization_value["captivePortal_Title"],
                 "option1" => "English",
                 "option2" => "Fran&#231;ais",
-                "option3" => "Dutch",
                 "lang" => "eng",
-                "otherlang1" => "fre",
-                "otherlang2" => "dutch",
+                "otherlang" => "fre",
                 "captivePortal_WelcomeMessage" =>$personalization_value["captivePortal_WelcomeMessage"],
                 "this_step" => "This step is required to get your devices online",
                 "your_connection" => "Your connection has been activated, but now we need to create your <br>

@@ -23,10 +23,8 @@
                 "captivePortal_Title" =>  $personalization_value["captivePortal_Title"],
                 "option1" => "Fran&#231;ais",
                 "option2" => "English",
-                "option3" => "Dutch",
                 "lang" => "fre",
-                "otherlang1" => "eng",
-                "otherlang2" => "dutch",
+                "otherlang" => "eng",
                 "captivePortal_WelcomeMessage" => $personalization_value["captivePortal_WelcomeMessage"],
                 "this_step" => "Cette étape est requise pour connecter vos appareils à Internet.",
                 "your_connection" => "Votre connexion a été activée, mais nous devons maintenant créer<br>un nom et un mot de passe<b>

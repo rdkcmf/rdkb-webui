@@ -33,8 +33,6 @@ csrfprotector_rdkb::init();
 			$_SESSION['lang'] = "eng";
 		else if ($_GET['lang'] == "fre")
 			$_SESSION['lang'] = "fre";
-                else if ($_GET['lang'] == "dutch")
-                        $_SESSION['lang'] = "dutch";
 	}
 	//WiFiPersonalization.Support UI inclusion/exclusion (on/off)
 	$personalization_param = array(
@@ -254,7 +252,7 @@ svg.defs-only {
     border-radius: 0px;
     outline: none;
     width: 150px;
-    height:122px;
+    height:81px;
     color: white;
     font-family: inherit;
     margin: 0;
@@ -713,8 +711,6 @@ $("#f_i_option1").click(function(){
          $("#f_a_option2").click(function(){
 		
 });
-        $("#f_a_option3").click(function(){
-        });
 	$("#visit_xfinity").click(function(){
 		location.href = "http://XFINITY.net";
 	});
@@ -945,8 +941,7 @@ $("#f_i_option1").click(function(){
                                 </ul>
                                  <ul id="dropdown_active_state" style="display:none;">
                                 <a href = "captiveportal.php?lang='; echo  $lang['lang']; echo '">  <ele id="f_a_option1">'; echo  $lang["option1"]; echo '<ili class="up"></ili></ele></a>
-                                <a href = "captiveportal.php?lang='; echo  $lang['otherlang1']; echo '">  <ele id="f_a_option2">'; echo $lang["option2"]; echo '</ele></a>
-                                <a href = "captiveportal.php?lang='; echo  $lang['otherlang2']; echo '">  <ele id="f_a_option3">'; echo $lang["option3"]; echo '</ele></a>
+                                <a href = "captiveportal.php?lang='; echo  $lang['otherlang']; echo '">  <ele id="f_a_option2">'; echo $lang["option2"]; echo '</ele></a>
                                 </ul>
                 </div>';
 ?>
