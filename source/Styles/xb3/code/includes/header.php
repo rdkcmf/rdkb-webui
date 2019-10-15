@@ -148,15 +148,17 @@ csrfprotector_rdkb::init();
 	        echo './cmn/js/lib/jquery.radioswitch.js';
 	    }?>"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.virtualDialog.js"></script>
-	<script type="text/javascript" src="./cmn/js/utilityFunctions.js"></script>
+	<script type="text/javascript" src="./cmn/js/lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./cmn/js/lib/bootstrap-waitingfor.js"></script>
+    <!-- update the version of utilityFunctions.js if any changes is made to this js file otherwise browser will take the old js file from the cache memory -->
+	<script type="text/javascript" src="./cmn/js/utilityFunctions.js?v=1"></script>
     <script type="text/javascript" src="<?php 
         if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) {
             echo './locales/'.$locale.'/cmn/js/gateway.js';
         } else {
             echo './cmn/js/gateway.js';
         }?>"></script>
-    <script type="text/javascript" src="./cmn/js/lib/bootstrap.min.js"></script>
-    <script type="text/javascript" src="./cmn/js/lib/bootstrap-waitingfor.js"></script>
+    
 	<style>
 	#div-skip-to {
 		position:relative; 
