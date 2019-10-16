@@ -39,20 +39,18 @@ $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);
 function get_tips($target, $status, $user_type)
 {
-	// $tip = _("No Tips!");
-    $tip_labels = json_decode($_COOKIE['tip_labels'], true);
-    $tip = $tip_labels['none'];
-    
+	 $tip = _("No Tips!");
+            
 	switch($target)
 	{
 		case "sta_inet":{
 		    if ("true"==$status){
 		        // _('Status: Connected-%s devices connected')
-		        $tip = sprintf($tip_labels['devices'],getStr("Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber"));
+		        $tip = sprintf(_("Status: Connected-%s devices connected"),getStr("Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber"));
 		    }
 		    else{
 		        // _('Status: Unconnected-no devices');
-		        $tip = $tip_labels['no_devices'];
+		        $tip = _("Status: Unconnected-no devices");
 		    }
 		}break;
 		case "sta_wifi":{
@@ -64,21 +62,21 @@ function get_tips($target, $status, $user_type)
 					$sum += getStr("Device.WiFi.AccessPoint.$i.AssociatedDeviceNumberOfEntries");
 				}
 				// _('Status: Connected-%s devices connected')
-				$tip = sprintf($tip_labels['devices'],$sum);
+				$tip = sprintf(_("Status: Connected-%s devices connected"),$sum);
 			}
 			else{
 			    // _('Status: Unconnected-no devices')
-			    $tip = $tip_labels['no_devices'];
+			    $tip = _("Status: Unconnected-no devices");
 			}
 		}break;
 		case "sta_moca":{
 		    if ("true"==$status ){
 		        // _('Status: Connected-%s devices connected')
-		        $tip = sprintf($tip_labels['devices'],getStr("Device.MoCA.Interface.1.X_CISCO_COM_NumberOfConnectedClients"));
+		        $tip = sprintf(_("Status: Connected-%s devices connected"),getStr("Device.MoCA.Interface.1.X_CISCO_COM_NumberOfConnectedClients"));
 		    }
 		    else{
 		        // _('Status: Unconnected-no devices')
-		        $tip = $tip_labels['no_devices'];
+		        $tip = _("Status: Unconnected-no devices");
 		    }	
 		}break;
 		/*case "sta_dect":{
@@ -91,11 +89,11 @@ function get_tips($target, $status, $user_type)
 		}break;*/
 		case "sta_fire":{
 		    // _('Firewall is set to %s')
-		    $tip = sprintf($tip_labels['firewall'],_($status));
+		    $tip = sprintf(_("Firewall is set to %s"),_($status));
 		}break;
 		default:{
 		    // _("No Tips!")
-		    $tip = $tip_labels['none'];
+		    $tip = _("No Tips!");
 		}break;
 	}
 	return $tip;
