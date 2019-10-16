@@ -706,7 +706,7 @@ $(document).ready(function() {
 	}
 	// remove sections as per loginuser, content must be hidden before doc ready
 	if ("mso" != "<?php echo $_SESSION["loginuser"]; ?>"){
-		if(!partner_id.includes('sky-')){
+		if(partner_id.indexOf('sky-')===-1){
 		$(".div_enable_radio").remove();}
 		$(".div_public_wifi").remove();
 		$(".div_other_wifi").remove();
