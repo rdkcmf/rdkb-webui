@@ -990,7 +990,7 @@ function remote_access_block(){
 		</div>
 	</div>
 	<div class="form-btn">
-		<input type="button" value="Save" class="btn" />
+		<input type="button" value="<?php echo _("Save")?>" class="btn" />
 	</div>
 	</form>
 </div><!-- end #content -->

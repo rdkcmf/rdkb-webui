@@ -518,11 +518,11 @@ $(document).ready(function() {
 		        <td headers='host-name'><a href='javascript:void(0)' tabindex='0' class=\"label device-name private\"><u>" , $onlinePrivateNetworkHost["$x"]['HostName'] , "</u></a>
 					<div class=\"device-info\">
 						<dl><dd><br/></dd>";
-						if ($onlinePrivateNetworkHost["$x"]['IPv4Address'] != '') {echo "<dd><b>IPV4 Address</b><br/>", $onlinePrivateNetworkHost["$x"]['IPv4Address'] , "</dd>";}
-						if ($onlinePrivateNetworkHost["$x"]['IPv6Address2'] != '') {echo "<dd><b>IPV6 Address</b><br/>", $onlinePrivateNetworkHost["$x"]['IPv6Address2'] , "</dd>";}
-						if ($onlinePrivateNetworkHost["$x"]['IPv6Address1'] != '') {echo "<dd><b>Local Link IPV6 Address</b><br/>", $onlinePrivateNetworkHost["$x"]['IPv6Address1'] , "</dd>";}
-						echo    "<dd><b>MAC Address</b><br/>", $onlinePrivateNetworkHost["$x"]['PhysAddress'] , "</dd>
-							<dd><b>Comments</b><br/>", $onlinePrivateNetworkHost["$x"]['Comments'] , "</dd>
+						if ($onlinePrivateNetworkHost["$x"]['IPv4Address'] != '') {echo "<dd><b>"._("IPV4 Address")."</b><br/>", $onlinePrivateNetworkHost["$x"]['IPv4Address'] , "</dd>";}
+						if ($onlinePrivateNetworkHost["$x"]['IPv6Address2'] != '') {echo "<dd><b>"._("IPV6 Address")."</b><br/>", $onlinePrivateNetworkHost["$x"]['IPv6Address2'] , "</dd>";}
+						if ($onlinePrivateNetworkHost["$x"]['IPv6Address1'] != '') {echo "<dd><b>"._("Local Link IPV6 Address")."</b><br/>", $onlinePrivateNetworkHost["$x"]['IPv6Address1'] , "</dd>";}
+						echo    "<dd><b>"._("MAC Address")."</b><br/>", $onlinePrivateNetworkHost["$x"]['PhysAddress'] , "</dd>
+							<dd><b>"._("Comments")."</b><br/>", $onlinePrivateNetworkHost["$x"]['Comments'] , "</dd>
 						</dl>
 					</div>
                 </td>
@@ -574,11 +574,11 @@ $(document).ready(function() {
 	        <td headers='offline-device-host-name'><a href='javascript:void(0)' tabindex='0' class=\"label device-name private\"><u>" , $offlinePrivateNetworkHost["$x"]['HostName'] , "</u></a>
 				<div class=\"device-info\">
 					<dl><dd><br/></dd>";
-						if ($offlinePrivateNetworkHost["$x"]['IPv4Address'] != '') {echo "<dd><b>IPV4 Address</b><br/>", $offlinePrivateNetworkHost["$x"]['IPv4Address'] , "</dd>";}
-						if ($offlinePrivateNetworkHost["$x"]['IPv6Address2'] != '') {echo "<dd><b>IPV6 Address</b><br/>", $offlinePrivateNetworkHost["$x"]['IPv6Address2'] , "</dd>";}
-						if ($offlinePrivateNetworkHost["$x"]['IPv6Address1'] != '') {echo "<dd><b>Local Link IPV6 Address</b><br/>", $offlinePrivateNetworkHost["$x"]['IPv6Address1'] , "</dd>";}
-						echo    "<dd><b>MAC Address</b><br/>", $offlinePrivateNetworkHost["$x"]['PhysAddress'] , "</dd>
-						<dd><b>Comments</b><br/>", $offlinePrivateNetworkHost["$x"]['Comments'] , "</dd>
+						if ($offlinePrivateNetworkHost["$x"]['IPv4Address'] != '') {echo "<dd><b>"._("IPV4 Address")."</b><br/>", $offlinePrivateNetworkHost["$x"]['IPv4Address'] , "</dd>";}
+						if ($offlinePrivateNetworkHost["$x"]['IPv6Address2'] != '') {echo "<dd><b>"._("IPV6 Address")."</b><br/>", $offlinePrivateNetworkHost["$x"]['IPv6Address2'] , "</dd>";}
+						if ($offlinePrivateNetworkHost["$x"]['IPv6Address1'] != '') {echo "<dd><b>"._("Local Link IPV6 Address")."</b><br/>", $offlinePrivateNetworkHost["$x"]['IPv6Address1'] , "</dd>";}
+						echo    "<dd><b>"._("MAC Address")."</b><br/>", $offlinePrivateNetworkHost["$x"]['PhysAddress'] , "</dd>
+						<dd><b>"._("Comments")."</b><br/>", $offlinePrivateNetworkHost["$x"]['Comments'] , "</dd>
 					</dl>
 				</div>
             </td>
@@ -898,7 +898,7 @@ for ($i=0; $i < $onlinePrivateNetworkHost['hostNum']; $i++) {
 				<label  class=\"radio\" for=\"ip_dhcp-" .$ID. "\">DHCP</label>
 				<br/>
 				<input  class=\"trigger ip_static\" type=\"radio\"" .(($AddrSrc == "DHCP") ? '' : "checked='checked'"  ). " name=\"ip\" value=\"static\" id=\"ip_static-" .$ID. "\" />
-				<label  class=\"radio\" for=\"ip_static-" .$ID. "\">Reserved IP</label>
+				<label  class=\"radio\" for=\"ip_static-" .$ID. "\">"._("Reserved IP")."</label>
 			</div>
 			<div id=\"dhcp-mac" .$ID. "\"  class=\"dhcp-mac form-row odd\">
 			    	<span  class=\"readonlyLabel\">"._('MAC Address:')."</span>
@@ -913,8 +913,8 @@ for ($i=0; $i < $onlinePrivateNetworkHost['hostNum']; $i++) {
 		        <textarea id=\"comment-" .$ID. "\" name=\"comments\" ros=\"6\" cols=\"18\" maxlength=\"63\">". $onlinePrivateNetworkHost["$i"]['Comments'] ."</textarea>
 			</div>
 			<div  class=\"form-row form-btn\">
-				<input type=\"button\" id=\"submit_editDevice-" .$ID. "\"  class=\"btn\" value=\"Save\"/>
-			    <input type=\"reset\" id=\"btn-cancel-" .$ID. "\" class=\"btn-cancel btn alt reset\" value=\"Cancel\"/>
+				<input type=\"button\" id=\"submit_editDevice-" .$ID. "\"  class=\"btn\" value=\""._("Save")."\"/>
+			    <input type=\"reset\" id=\"btn-cancel-" .$ID. "\" class=\"btn-cancel btn alt reset\" value=\""._("Cancel")."\"/>
 			</div>
 		</form>
 	</div> <!-- end .module -->
