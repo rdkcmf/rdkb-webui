@@ -904,20 +904,20 @@ msgstr "La password deve essere di almeno 10 caratteri (solo alfanumerici). Nien
 
 #: admin_password_change.php:209 device_discovery.php:195 dlna_settings.php:80
 #: hs_port_forwarding_edit.php:198 lan.php:173 lan.php:184
-#: managed_devices_add_computer_allowed.php:378
-#: managed_devices_add_computer_blocked.php:378
+#: managed_devices_add_computer_allowed.php:378 remote_management.php:993
+#: managed_devices_add_computer_blocked.php:378 connected_devices_computers.php:916
 #: managed_devices_edit_allowed.php:402 managed_devices_edit_blocked.php:398
 #: managed_services_add.php:287 managed_services_edit.php:426
-#: managed_sites.php:765 managed_sites_add_keyword.php:248
+#: managed_sites.php:765 managed_sites_add_keyword.php:248 connected_devices_computers_add.php:157
 #: managed_sites_add_site.php:257 moca.php:489 network_storage_edit.php:60
-#: password_change.php:150 port_triggering_edit.php:164 routing.php:342
+#: password_change.php:150 port_triggering_edit.php:164 routing.php:342 dmz.php:377
 msgid "Save"
 msgstr "Salva"
 
 #: admin_password_change.php:210 cordless_handsets.php:272
 #: hs_port_forwarding_add.php:168 hs_port_forwarding_edit.php:199
-#: managed_devices_add_computer_allowed.php:379
-#: managed_devices_add_computer_blocked.php:379
+#: managed_devices_add_computer_allowed.php:379 connected_devices_computers.php:917
+#: managed_devices_add_computer_blocked.php:379 connected_devices_computers_add.php:158
 #: managed_devices_edit_allowed.php:403 managed_devices_edit_blocked.php:399
 #: managed_services_add.php:288 managed_services_edit.php:427
 #: managed_sites.php:766 managed_sites_add_keyword.php:249
@@ -1584,10 +1584,10 @@ msgstr "Gli indirizzi IP riservati possono essere assegnati a qualsiasi disposit
 msgid "Edit Device"
 msgstr "Modifica dispositivo"
 
-#: connected_devices_computers.php:880 dynamic_dns_add.php:139
+#: connected_devices_computers.php:880 dynamic_dns_add.php:139 connected_devices_computers_add.php:140
 #: dynamic_dns_add.php:191 dynamic_dns_edit.php:174 dynamic_dns_edit.php:227
 msgid "Host Name:"
-msgstr "Host Name:"
+msgstr "Nome Host:"
 
 #: connected_devices_computers.php:884
 msgid "Connection:"
@@ -1610,6 +1610,14 @@ msgstr "Indirizzo IP riservato:"
 #: connected_devices_computers.php:904
 msgid "Comments:"
 msgstr "Commenti:"
+
+#: connected_devices_computers.php:875
+msgid "Reserved IP"
+msgstr "IP riservato"
+
+#: connected_devices_computers.php:581 connected_devices_computers.php:526
+msgid "Comments"
+msgstr "Commenti"
 
 #: connected_devices_computers_add.php:46
 msgid "Special characters are not allowed, Only letters and Numbers are allowed."

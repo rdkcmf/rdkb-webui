@@ -154,8 +154,8 @@ $(document).ready(function() {
 		        <textarea id="comments" name="comments" ros="6" cols="18" maxlength="63"></textarea>
 			</div>
 			<div class="form-row form-btn">
-				<input type="button" id="saveBtn" class="btn submit" value="Save"/>
-				<input type="reset" id="btn-cancel" class="btn alt reset" value="Cancel"/>
+				<input type="button" id="saveBtn" class="btn submit" value="<?php echo _("Save")?>"/>
+				<input type="reset" id="btn-cancel" class="btn alt reset" value="<?php echo _("Cancel")?>"/>
 			</div>
 		</form>
 	</div> <!-- end .module -->

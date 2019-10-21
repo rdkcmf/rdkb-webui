@@ -374,7 +374,7 @@ populate_IPv6();
 	 }
           ?>
     		 <div class="form-btn">
-			<input id="save_setting" name="save_setting" type="button" value="Save" class="btn right" />
+			<input id="save_setting" name="save_setting" type="button" value="<?php echo _("Save")?>" class="btn right" />
 		</div>
 	</div><!-- end .module -->
 	</form>
