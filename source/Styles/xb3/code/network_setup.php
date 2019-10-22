@@ -808,7 +808,6 @@ for ($i=1, $j=1; $i<count($ec_ids); $i++)
 </div>
 <?php 
 //WAN details Fetching
-
 $wan_Interface_obj = "Device.IP.Interface.";
 $wan_Interface_ids =  DmExtGetInstanceIds($wan_Interface_obj);
 $wan_er_name = array();
@@ -836,17 +835,35 @@ for ($i= 1; $i< count($wan_Interface_ids);$i++){
 }
 $Wan_Port_Detail = getStr($port_detail);
 $wan_port_value = substr($Wan_Port_Detail, -1);
-if($Wan_Port_Status !="disconnected"){
-    $wan_port_value = sprintf(_("Port %d"), $wan_port_value + 1);
-} else{
-    $wan_port_value = _('WAN is not connected');
+if(strpos($partnerId, "sky-") !== false){
+	$ipv4_status =  getStr("Device.X_RDK-Central_COM_WanAgent.IPV4WanConnectionState");
+	$ipv6_status =  getStr("Device.X_RDK-Central_COM_WanAgent.IPV6WanConnectionState");
+	if($ipv6_status == 'up' || $ipv4_status == 'up'){
+	    $Wan_Port_Status ="Connected";
+    	    $wan_port_value = sprintf(_("Port %d"), $wan_port_value + 1);
+	}
+	else{
+    	$Wan_Port_Status ="disconnected";
+    	$wan_port_value = _('WAN is not connected');
+    }
 }
-                                                                        
+else{
+	if($Wan_Port_Status !="disconnected"){
+	    $wan_port_value = sprintf(_("Port %d"), $wan_port_value + 1);
+	} else{
+	    $wan_port_value = _('WAN is not connected');
+	}
+}   
 $modem_downstream = getStr("Device.X_RDK-Central_COM_WanAgent.WanOE.DownstreamCurrRate");
 $modem_upstream = getStr("Device.X_RDK-Central_COM_WanAgent.WanOE.UpstreamCurrRate");
 if(strpos($partnerId, "sky-") !== false){
-     if($modem_downstream == 0) $modem_downstream = '-NA-';
-     if($modem_upstream == 0) $modem_upstream = '-NA-';
+   if($Wan_Port_Status =="Connected"){
+	   if($modem_downstream == 0) $modem_downstream = '-NA-';
+	   if($modem_upstream == 0) $modem_upstream = '-NA-';
+   }
+   else if($Wan_Port_Status =="disconnected"){
+	   $modem_downstream = '-NA-';$modem_upstream = '-NA-';
+   }
 }
 ?>
 <div class="module forms div_dsl">
