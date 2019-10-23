@@ -1907,7 +1907,7 @@ function saveBandSteeringSettings()
 		</select>
 	</div>	
 	<div class="form-row">
-		<p><strong>Wi-Fi Control List(up to 16 items)</strong></p>
+		<p><strong>Wi-Fi Control List(up to 64 items)</strong></p>
 		<table class="data" id="filter_table" summary="Wi-Fi Control List">
 			<thead>
 		    <tr>
