@@ -218,6 +218,8 @@ $RSSIThreshold2			= $wifi_value['RSSIThreshold2'];
 $PhyRateThreshold2		= $wifi_value['PhyRateThreshold2'];
 $radioband1                     = (strstr($feq_band,"5G")) ? "5" : "2.4";
 $radioband2                     = (strstr($feq_band1,"5G")) ? "5" : "2.4";
+$feq_band                     = (strstr($feq_band,"5G")) ? "5 GHz" : "2.4 GHz";
+$feq_band1                     = (strstr($feq_band1,"5G")) ? "5 GHz" : "2.4 GHz";
 /**********************get WPS status, manual-disabled or auto-disabled?*******************************/
 // $ssidsWPS			= explode(",", getInstanceIds("Device.WiFi.SSID."));
 $ssidsWPS			= explode(",", "1,2");	//Currently, only SSID.1(2.4G) and SSID.2(5G) are involved with WPS
@@ -1384,7 +1386,7 @@ function saveBandSteeringSettings()
 	</div>
 </div>
 <div class="module data data div_radio_setting">
-	<h2>2.4GHz Wireless Basic Setting</h2>
+	<h2>2.4 GHz Wireless Basic Setting</h2>
 	<div class="form-row">
 		<label for="wireless_mode">Mode:</label>
 		<select name="wireless_mode" id="wireless_mode">
@@ -1432,7 +1434,7 @@ function saveBandSteeringSettings()
 	</div>
 </div>
 <div class="module data data div_radio_setting">
-	<h2>2.4GHz Wireless Advanced Setting</h2><br/>
+	<h2>2.4 GHz Wireless Advanced Setting</h2><br/>
 	<div class="form-row">
 		<label for="BG_protection_mode">BG Protection Mode:</label>
 		<select name="BG_protection_mode" id="BG_protection_mode">
@@ -1606,7 +1608,7 @@ function saveBandSteeringSettings()
 	</div>
 </div>
 <div class="module data data div_radio_setting">
-	<h2>5GHz Wireless Basic Setting</h2>
+	<h2>5 GHz Wireless Basic Setting</h2>
 	<div class="form-row">
 		<label for="wireless_mode1">Mode:</label>
 		<select name="wireless_mode1" id="wireless_mode1">
@@ -1660,7 +1662,7 @@ function saveBandSteeringSettings()
 	</div>
 </div>
 <div class="module data data div_radio_setting">
-	<h2>5GHz Wireless Advanced Setting</h2><br/>
+	<h2>5 GHz Wireless Advanced Setting</h2><br/>
 	<div class="form-row odd" style="display:none;">
 		<label for="BG_protection_mode1">BG Protection Mode:</label>
 		<select name="BG_protection_mode1" id="BG_protection_mode1">
@@ -1786,27 +1788,27 @@ function saveBandSteeringSettings()
 		<input type="button" id="BS_Logging" value="Steering History" class="btn" onclick="steering_history()"/>
 	</div>
 	<div class="form-row ">
-		<label for="BS_Logging">Utilzation Threshold(<?php echo $radioband1; ?>GHz):</label>
+		<label for="BS_Logging">Utilzation Threshold(<?php echo $radioband1; ?> GHz):</label>
 		<input type="text" id="UtilzThreshold1" value="<?php echo $UtilzThreshold1; ?>"/>
 	</div>
 	<div class="form-row odd">
-		<label for="BS_Logging">Signal Threshold(<?php echo $radioband1; ?>GHz):</label>
+		<label for="BS_Logging">Signal Threshold(<?php echo $radioband1; ?> GHz):</label>
 		<input type="text" id="RSSIThreshold1" value="<?php echo $RSSIThreshold1; ?>"/>
 	</div>
 	<div class="form-row ">
-		<label for="BS_Logging">Physical Rate Threshold(<?php echo $radioband1; ?>GHz):</label>
+		<label for="BS_Logging">Physical Rate Threshold(<?php echo $radioband1; ?> GHz):</label>
 		<input type="text" id="PhyRateThreshold1" value="<?php echo $PhyRateThreshold1; ?>"/>
 	</div>
 	<div class="form-row odd">
-		<label for="BS_Logging">Utilzation Threshold(<?php echo $radioband2; ?>GHz):</label>
+		<label for="BS_Logging">Utilzation Threshold(<?php echo $radioband2; ?> GHz):</label>
 		<input type="text" id="UtilzThreshold2" value="<?php echo $UtilzThreshold2; ?>"/>
 	</div>
 	<div class="form-row ">
-		<label for="BS_Logging">Signal Threshold(<?php echo $radioband2; ?>GHz):</label>
+		<label for="BS_Logging">Signal Threshold(<?php echo $radioband2; ?> GHz):</label>
 		<input type="text" id="RSSIThreshold2" value="<?php echo $RSSIThreshold2; ?>"/>
 	</div>
 	<div class="form-row odd">
-		<label for="BS_Logging">Physical Rate Threshold(<?php echo $radioband2; ?>GHz):</label>
+		<label for="BS_Logging">Physical Rate Threshold(<?php echo $radioband2; ?> GHz):</label>
 		<input type="text" id="PhyRateThreshold2" value="<?php echo $PhyRateThreshold2; ?>"/>
 	</div>
 	<div class="form-row " id="band_steering_history_content" class="content_message" style="display: none;">
