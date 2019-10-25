@@ -166,8 +166,7 @@ function changeMode(jsConfig){
 		<?php
 			echo $WANIPv6;
 		?>
-		</span>
-	</div>	
+		</span>	
 		</div>
 	</div> <!-- end .module -->
 	</fieldset>
