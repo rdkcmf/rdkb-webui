@@ -47,6 +47,7 @@ $wizard        		= TRUE;
 $wifi_spec_analyzer	= TRUE;
 $advanced_tab		= TRUE;
 $wan_network        = TRUE;
+$moca_diagnostics   = TRUE;
 $voice_Dig = FALSE;
 $partnersId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 $voice_dev = getStr('Device.DeviceInfo.SoftwareVersion');
@@ -66,7 +67,8 @@ if (isset($_SESSION['lanMode']) && $_SESSION["lanMode"] == "bridge-static") {
 	$port_triggering  	= FALSE;
 	$hs_port_forwarding = FALSE;
 	$wizard		 		= FALSE;
-	$MoCA				= FALSE;
+	$MoCA				= TRUE;
+	$moca_diagnostics   = FALSE;
 	$wifi_spec_analyzer	= FALSE;
 }
 if (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'admin') {
@@ -80,6 +82,7 @@ if (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'admin') {
 
 /* Turn off Battery and MoCA based on Partner devices */
 if (strpos($partnerId, "sky-") !== false) {
+	$moca_diagnostics   = FALSE;
     $MoCA = FALSE;
     $battery = FALSE;
     if(strpos($voice_dev, "_DEV_") !== false){ $voice_Dig = TRUE;}
@@ -192,7 +195,7 @@ echo '<li class="nav-troubleshooting">';
 		echo '<li class="nav-logs"><a role="menuitem"  href="troubleshooting_logs.php">'._("Logs").'</a></li>';
 		echo '<li class="nav-diagnostic-tools"><a role="menuitem"  href="network_diagnostic_tools.php">'._("Diagnostic Tools").'</a></li>';
 		if($wifi_spec_analyzer) echo '<li class="nav-wifi-spectrum-analyzer"><a role="menuitem"  href="wifi_spectrum_analyzer.php">'._("Wi-Fi Spectrum Analyzer").'</a></li>';
-		if($MoCA) echo '<li class="nav-moca-diagnostics"><a role="menuitem"  href="moca_diagnostics.php">'._("MoCA Diagnostics").'</a></li>';
+		if($moca_diagnostics) echo '<li class="nav-moca-diagnostics"><a role="menuitem"  href="moca_diagnostics.php">'._("MoCA Diagnostics").'</a></li>';
 		echo '<li class="nav-restore-reboot"><a role="menuitem"  href="restore_reboot.php">'._("Reset/Restore Gateway").'</a></li>';
 		if($password_change) echo '<li class="nav-password"><a role="menuitem"  href="password_change.php">'._("Change Password").'</a></li>';
 	echo '</ul>';
