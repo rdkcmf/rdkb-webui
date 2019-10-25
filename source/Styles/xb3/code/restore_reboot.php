@@ -50,7 +50,8 @@ $('#btn1').click(function(e) {
 		jProgress('<?php echo _("Check telephony line status, please wait...")?>', 60);
 		$.post(
 			"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
-			{"get_statusx":"true"},
+			{"get_statusx":"true",
+			"restore_reboot":"true"},
 			function(msg)
 			{
 				jHide();
@@ -131,7 +132,8 @@ $('#btn5').click(function(e) {
 		jProgress('<?php echo _("Check telephony line status, please wait...")?>', 60);
 		$.post(
 			"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
-			{"get_statusx":"true"},
+			{"get_statusx":"true",
+			"restore_reboot":"true"},
 			function(msg)
 			{
 				jHide();

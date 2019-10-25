@@ -17,7 +17,7 @@
 <?php include('../includes/actionHandlerUtility.php') ?>
 <?php
 
-if (!isset($_SESSION["loginuser"])) {
+if (!isset($_SESSION["loginuser"]) || (!isset($_POST['restore_reboot']) && $_SESSION['loginuser'] != 'mso')) {
 	echo '<script type="text/javascript">alert("'._("Please Login First!").'"); location.href="../index.php";</script>';
 	exit(0);
 }

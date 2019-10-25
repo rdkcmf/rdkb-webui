@@ -237,7 +237,7 @@ header('X-robots-tag: noindex,nofollow');
 						exec("/usr/bin/logger -t GUI -p local5.notice 'User:admin login'");
 						setStr("Device.DeviceInfo.X_RDKCENTRAL-COM_UI_ACCESS","ui_success",true);
 						if($passVal=="Default_PWD"){
-							session_start();
+							create_session();
 							$_SESSION["password_change"] = "default_pwd";
 							echo '<script type="text/javascript">
                                 jAlert("'._("You are using default password. Please change the password.").'", "Alert",

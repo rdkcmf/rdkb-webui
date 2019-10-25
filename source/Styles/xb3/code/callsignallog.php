@@ -40,7 +40,7 @@ $(document).ready(function() {
 $(window).load(function() {
 	$.ajax({
 		type:"POST",
-		url:"actionHandler/ajaxSet_callsignallog.php",
+		url:"actionHandler/ajaxSet_mta_sip_packet_log.php",
 		data:{callsignallog:"callsignallog"},
 		dataType:"json",
 		success:function(results){
