@@ -1047,7 +1047,7 @@ function save_enable(sub_target)
 		if (G_wps_method == wps_method || !wps_enabled) return;
 		G_wps_method = wps_method;
 	}
-	if(partner_id.includes('sky-')){
+	if(partner_id.indexOf('sky-')===0){
               if(!radio_enable){
 		  var warningMsg='<?php echo _("Warning: Please note that disabling the radio(s) might interrupt with your data and video services. It is recommended to keep the Wi-Fi radios ON for uninterrupted access to your subscribed services. To cancel these changes, choose cancel below.");?>';
                   jConfirm(warningMsg,"<?php echo _('Are You Sure?')?>",function(ret){
