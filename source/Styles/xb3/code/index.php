@@ -346,6 +346,7 @@ $(document).ready(function() {
 	var sta_moca = "<?php echo $sta_moca; ?>";
 	var sta_fire = "<?php echo $sta_fire; ?>";
 	var user_type = "<?php echo ($isMSO)?'mso':'admin'; ?>";
+        var partner_id = '<?php echo getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId"); ?>';
 	/*
 	* get status when hover or tab focused one by one
 	* but for screen reader we have to load all status once
@@ -359,6 +360,14 @@ $(document).ready(function() {
 	var jsConfig = '{"target":"'+"sta_inet,sta_wifi,sta_moca,sta_fire"
 	+'", "status":"'+sta_inet+','+sta_wifi+','+sta_moca+','+sta_fire+'"'
 	+', "user_type":"'+user_type+'"}';
+	if(partner_id.indexOf('sky-')===0){
+		 var ipv4_status = '<?php echo getStr("Device.X_RDK-Central_COM_WanAgent.IPV4WanConnectionState"); ?>';
+                 var ipv6_status = '<?php echo getStr("Device.X_RDK-Central_COM_WanAgent.IPV6WanConnectionState"); ?>';
+                 var map_mode = '<?php echo getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapTransportMode"); ?>';
+                 if((ipv6_status == 'up' || ipv4_status == 'up')&& map_mode =='MAPT'){
+                       $('#sta_inet').removeClass('off');
+                 }
+        }
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_index_userbar.php",		

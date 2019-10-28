@@ -46,6 +46,7 @@ $(window).load(function() {
 	* below code can easily rollback
 	*/
 	//update user bar
+	var partner_id = '<?php echo $partnerId; ?>';
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_userbar.php",
@@ -69,6 +70,14 @@ $(window).load(function() {
 			//$sta_batt,$battery_class
 			$("#sta_batt a").text(msg.mainStatus[4]+"%");
 			$("#sta_batt > div > span").removeClass().addClass(msg.mainStatus[5]);
+			if(partner_id.indexOf('sky-')===0){
+				var ipv4_status = '<?php echo getStr("Device.X_RDK-Central_COM_WanAgent.IPV4WanConnectionState"); ?>';
+				var ipv6_status = '<?php echo getStr("Device.X_RDK-Central_COM_WanAgent.IPV6WanConnectionState"); ?>';
+				var map_mode = '<?php echo getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapTransportMode"); ?>';
+				if((ipv6_status == 'up' || ipv4_status == 'up')&& map_mode =='MAPT'){
+					$('#sta_inet').removeClass('off');
+				}
+			}
 		},
 		error: function(){
 			// does something
