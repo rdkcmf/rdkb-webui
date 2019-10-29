@@ -196,14 +196,24 @@ function isIp4AddrRequired()
 	jQuery.validator.addMethod("ltstart",function(value,element){
 		return this.optional(element) || value>=parseInt($("#start_port").val());
 	}, "<?php echo _("Please enter a value more than or equal to Start Port.")?>");
-var validator = $("#pageForm").validate({
-    	onfocusout: false,
-		onkeyup: false,
+	jQuery.validator.addMethod("serviceNameRequired",function(value,element){
+		var options = ['ssh', 'ftp','aim','http','pptp','https','telnet'];
+		if(options.indexOf(value.toLowerCase()) !== -1) {
+		  return false;
+		}else{
+			return true;
+		}
+	}, "<?php echo _('Please provide a service name other than the ones mentioned in Common Service.')?>");
+	var validator = $("#pageForm").validate({
+		onfocusout: false,
 		groups:{
 			server_ipv4: "server_ip_address_1 server_ip_address_2 server_ip_address_3 server_ip_address_4",
 			server_ipv6: "ip6_address_r1 ip6_address_r2 ip6_address_r3 ip6_address_r4 ip6_address_r5 ip6_address_r6 ip6_address_r7 ip6_address_r8"
 		},
-        rules: {           
+        rules: {      
+        	service_name: {
+        		serviceNameRequired: true
+        	},        
 			start_port: {
                 required: true,
 				port: true,
