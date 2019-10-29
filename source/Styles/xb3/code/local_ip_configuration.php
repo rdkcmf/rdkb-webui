@@ -990,7 +990,7 @@ $('#submit_ipv6').click(function(e){
 	if(partner_id.includes('sky-')){
     	var ipv6_enable = $('#ipv6_enable').is(':checked');
 	var ula_enable = $('#ula_enable').is(':checked');
-	if($('#ULA_1').val().startsWith('fc')|| $('#ULA_1').val().startsWith('fd')){
+	if($('#ULA_1').val().indexOf('fc')===0|| $('#ULA_1').val().indexOf('fd')===0){
 		var ula_prefix = $('#ULA_1').val() + ":" + $('#ULA_2').val()+":" +$('#ULA_3').val()+":" + $('#ULA_4').val();
 	}
     	else{jAlert('<?php echo "Prefix value should start with [fc] or [fd] "; ?>');return false;}
