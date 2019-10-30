@@ -133,6 +133,15 @@ function sec2dhms($sec)
 	$sta_inet = ($WANIPv4 != "0.0.0.0" || strlen($WANIPv6) > 0) ? "true" : "false";
 	//in Bridge mode > Internet connectivity status is always active
 	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
+
+	$WANIPv4Gateway = getStr("Device.DHCPv4.Client.1.IPRouters");
+	if(strpos($partnerId, "sky-") !== false){
+		$isMapT = getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapTransportMode");
+		if($isMapT == 'MAPT'){
+			$WANIPv4 = getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapRuleIPv4Prefix").' (Shared using MAP-T)';
+			$WANIPv4Gateway = '-NA-';
+		}
+	}
 ?>
 <div id="content">
 <h1><?php echo sprintf(_("Gateway > Connection > %s"),$Connection_values[0]['StatusTitle']); ?></h1>
@@ -174,7 +183,7 @@ function sec2dhms($sec)
 		<?php
 			//echo getStr("Device.Routing.Router.1.IPv4Forwarding.1.GatewayIPAddress");
 			/* For BWG, we just use the DHCP GW received from upstream as the wan side GW */
-			echo getStr("Device.DHCPv4.Client.1.IPRouters");
+			echo $WANIPv4Gateway;
 		?>
 		</span>
 	</div>		
@@ -224,12 +233,13 @@ function sec2dhms($sec)
 				array_push($dns_v6, $val);
 			}
 		}
-		if (isset($dns_v4[0])) echo $dns_v4[0];
+		if(strpos($partnerId, "sky-") !== false && $isMapT == 'MAPT'){echo $dns_v4[0] = '-NA-';}
+		else {if (isset($dns_v4[0])) echo $dns_v4[0];}
 		?>
 		</span>
 	</div>	
 	<div class="form-row odd">
-		<span class="readonlyLabel"><?php echo _("Secondary DNS Server (IPv4):")?></span> <span class="value"><?php if (isset($dns_v4[1])) echo $dns_v4[1];?></span>
+		<span class="readonlyLabel"><?php echo _("Secondary DNS Server (IPv4):")?></span> <span class="value"><?php if(strpos($partnerId, "sky-") !== false && $isMapT == 'MAPT'){echo $dns_v4[1] = '-NA-';} else {if (isset($dns_v4[1])) echo $dns_v4[1];} ?></span>
 	</div>
 	<div class="form-row ">
 		<span class="readonlyLabel"><?php echo _("Primary DNS Server (IPv6):")?></span> <span class="value"><?php if (isset($dns_v6[0])) echo $dns_v6[0];?></span>
