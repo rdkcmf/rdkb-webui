@@ -180,7 +180,7 @@ $(document).ready(function() {
 						endHour = 0;
 					}
 					if ((startHour>endHour) || ((startHour==endHour) && (sminute>=eminute))) {
-						jAlert("Start time should be smaller than End time !");
+						jAlert("<?php echo _('Start time should be smaller than End time !');?>");
 						return;
 					} 	
 					(0 === startHour) && (startHour = '00');
