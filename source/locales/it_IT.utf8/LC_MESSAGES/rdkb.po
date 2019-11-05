@@ -1511,8 +1511,12 @@ msgstr "in questa tabella sono visualizzati i dispositivi online collegati al SS
 
 #: connected_devices_computers.php:618 connected_devices_computers.php:744
 #: connected_devices_computers.php:800
-msgid "IPV4 Address"
-msgstr "Indirizzo IPV4"
+#: network_diagnostic_tools.php:397 network_diagnostic_tools.php:460
+#: remote_management.php:782 remote_management.php:864
+#: remote_management.php:929
+#: port_forwarding_add.php:520
+msgid "IPv4 Address"
+msgstr "Indirizzo IPv4"
 
 #: connected_devices_computers.php:716 connected_devices_computers.php:758
 #: connected_devices_computers.php:833 port_forwarding_add.php:521
@@ -1520,8 +1524,8 @@ msgid "IPv6 Address"
 msgstr "Indirizzo IPv6"
 
 #: connected_devices_computers.php:717 connected_devices_computers.php:759
-msgid "Local Link IPV6 Address"
-msgstr "Indirizzo IPV6 Local Link"
+msgid "Local Link IPv6 Address"
+msgstr "Indirizzo IPv6 Local Link"
 
 #: connected_devices_computers.php:740
 #, php-format
@@ -4269,12 +4273,6 @@ msgstr "Testa connettività"
 msgid "Check for IPv4 Address Results"
 msgstr "Controlla risultati indirizzo IPv4"
 
-#: network_diagnostic_tools.php:397 network_diagnostic_tools.php:460
-#: remote_management.php:782 remote_management.php:864
-#: remote_management.php:929
-msgid "IPv4 Address:"
-msgstr "Indirizzo IPv4:"
-
 #: network_diagnostic_tools.php:410 network_diagnostic_tools.php:448
 msgid "Connectivity:"
 msgstr "Connettività:"
@@ -4857,10 +4855,6 @@ msgstr "Questa tabella elenca i dispositivi connessi"
 #: wireless_network_configuration.php:1879
 msgid "Device Name"
 msgstr "Nome dispositivo"
-
-#: port_forwarding_add.php:520
-msgid "IPv4 Address"
-msgstr "Indirizzo IPv4"
 
 #: port_forwarding_edit.php:288
 msgid "Please input valid Service Name ! \\n Less than (<), Greater than (>), Ampersand (&), Double quote (\"), \\n Single quote (') and Pipe (|) characters are not allowed."

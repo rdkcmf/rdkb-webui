@@ -518,9 +518,9 @@ $(document).ready(function() {
 		        <td headers='host-name'><a href='javascript:void(0)' tabindex='0' class=\"label device-name private\"><u>" , $onlinePrivateNetworkHost["$x"]['HostName'] , "</u></a>
 					<div class=\"device-info\">
 						<dl><dd><br/></dd>";
-						if ($onlinePrivateNetworkHost["$x"]['IPv4Address'] != '') {echo "<dd><b>"._("IPV4 Address")."</b><br/>", $onlinePrivateNetworkHost["$x"]['IPv4Address'] , "</dd>";}
-						if ($onlinePrivateNetworkHost["$x"]['IPv6Address2'] != '') {echo "<dd><b>"._("IPV6 Address")."</b><br/>", $onlinePrivateNetworkHost["$x"]['IPv6Address2'] , "</dd>";}
-						if ($onlinePrivateNetworkHost["$x"]['IPv6Address1'] != '') {echo "<dd><b>"._("Local Link IPV6 Address")."</b><br/>", $onlinePrivateNetworkHost["$x"]['IPv6Address1'] , "</dd>";}
+						if ($onlinePrivateNetworkHost["$x"]['IPv4Address'] != '') {echo "<dd><b>"._("IPv4 Address")."</b><br/>", $onlinePrivateNetworkHost["$x"]['IPv4Address'] , "</dd>";}
+						if ($onlinePrivateNetworkHost["$x"]['IPv6Address2'] != '') {echo "<dd><b>"._("IPv6 Address")."</b><br/>", $onlinePrivateNetworkHost["$x"]['IPv6Address2'] , "</dd>";}
+						if ($onlinePrivateNetworkHost["$x"]['IPv6Address1'] != '') {echo "<dd><b>"._("Local Link IPv6 Address")."</b><br/>", $onlinePrivateNetworkHost["$x"]['IPv6Address1'] , "</dd>";}
 						echo    "<dd><b>"._("MAC Address")."</b><br/>", $onlinePrivateNetworkHost["$x"]['PhysAddress'] , "</dd>
 							<dd><b>"._("Comments")."</b><br/>", $onlinePrivateNetworkHost["$x"]['Comments'] , "</dd>
 						</dl>
@@ -574,9 +574,9 @@ $(document).ready(function() {
 	        <td headers='offline-device-host-name'><a href='javascript:void(0)' tabindex='0' class=\"label device-name private\"><u>" , $offlinePrivateNetworkHost["$x"]['HostName'] , "</u></a>
 				<div class=\"device-info\">
 					<dl><dd><br/></dd>";
-						if ($offlinePrivateNetworkHost["$x"]['IPv4Address'] != '') {echo "<dd><b>"._("IPV4 Address")."</b><br/>", $offlinePrivateNetworkHost["$x"]['IPv4Address'] , "</dd>";}
-						if ($offlinePrivateNetworkHost["$x"]['IPv6Address2'] != '') {echo "<dd><b>"._("IPV6 Address")."</b><br/>", $offlinePrivateNetworkHost["$x"]['IPv6Address2'] , "</dd>";}
-						if ($offlinePrivateNetworkHost["$x"]['IPv6Address1'] != '') {echo "<dd><b>"._("Local Link IPV6 Address")."</b><br/>", $offlinePrivateNetworkHost["$x"]['IPv6Address1'] , "</dd>";}
+						if ($offlinePrivateNetworkHost["$x"]['IPv4Address'] != '') {echo "<dd><b>"._("IPv4 Address")."</b><br/>", $offlinePrivateNetworkHost["$x"]['IPv4Address'] , "</dd>";}
+						if ($offlinePrivateNetworkHost["$x"]['IPv6Address2'] != '') {echo "<dd><b>"._("IPv6 Address")."</b><br/>", $offlinePrivateNetworkHost["$x"]['IPv6Address2'] , "</dd>";}
+						if ($offlinePrivateNetworkHost["$x"]['IPv6Address1'] != '') {echo "<dd><b>"._("Local Link IPv6 Address")."</b><br/>", $offlinePrivateNetworkHost["$x"]['IPv6Address1'] , "</dd>";}
 						echo    "<dd><b>"._("MAC Address")."</b><br/>", $offlinePrivateNetworkHost["$x"]['PhysAddress'] , "</dd>
 						<dd><b>"._("Comments")."</b><br/>", $offlinePrivateNetworkHost["$x"]['Comments'] , "</dd>
 					</dl>
