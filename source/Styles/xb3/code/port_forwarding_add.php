@@ -405,7 +405,7 @@ $('#device').click(function(){
 		$("#server_ip_address_2").val(ipv4_arr[1]);
 		$("#server_ip_address_3").val(ipv4_arr[2]);
 		$("#server_ip_address_4").val(ipv4_arr[3]);
-		if(partner_Id.includes('sky-')){
+		if(partner_Id.indexOf('sky-')===0){
 		$("#ip6_address_r1").val(ipv6_arr[0]);
 		$("#ip6_address_r2").val(ipv6_arr[1]);
 		$("#ip6_address_r3").val(ipv6_arr[2]);
