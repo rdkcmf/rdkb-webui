@@ -182,7 +182,7 @@ csrfprotector_rdkb::init();
 		$("table.data td").each(function() {
 			if($(this).text().split("\n")[0].length > 25)
 			{
-				if(!partner_id.includes('sky-')|| $(this).attr('headers') == 'server-ipv6')
+				if(partner_id.indexOf('sky-')===-1|| $(this).attr('headers') == 'server-ipv6')
 				   $(this).closest('table').css("table-layout", "fixed");
 				$(this).css("word-wrap", "break-word");
 			}
