@@ -39,6 +39,12 @@ if(isset($locale)) {
 ?>
 <?php include('includes/utility.php'); ?>
 <?php
+    $apipath = "fwd=api/v1/configurator-initiate-dpp";
+    if( ($_SERVER["QUERY_STRING"] == $apipath) || ($_SERVER["QUERY_STRING"] == $apipath.'/') ) {
+        header("Location: http://".$_SERVER['HTTP_HOST']."/api.php?REQUEST_METHOD=".$_SERVER["REQUEST_METHOD"]."&REQUEST_BODY=".urlencode(file_get_contents('php://input')));
+    }
+?>
+<?php
         header('X-robots-tag: noindex,nofollow');
 	$CONFIGUREWIFI			= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi");
 	//$CloudUIEnable		= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
