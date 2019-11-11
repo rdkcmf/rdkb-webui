@@ -110,7 +110,7 @@ $(document).ready(function() {
 	var old_ending_ip4 = $("#ipv4_dhcp_ending_address_4").val();
 	var default_admin_ip ="<?php echo $default_admin_ip; ?>";
 	var partner_id = '<?php echo $partnerId; ?>';
-	if(partner_id.includes('sky-')){
+	if(partner_id.indexOf('sky-')===0){
 		stateful_check();
 	}
 	function updateIPv4() {
@@ -928,7 +928,7 @@ $('#Stateful').click(function(){
 	updateIPv6();
 	$("#pageFormV6").valid();
 	$("#ipv6_dhcp_lease_time_amount").removeClass("error");
-	if(partner_id.includes('sky-')){
+	if(partner_id.indexOf('sky-')===0){
 	    stateful_check();
 	}
 });
@@ -987,7 +987,7 @@ $('#submit_ipv6').click(function(e){
 	var dhcp_lease_unit = $('#ipv6_dhcp_lease_time_measure').val();
 	var dhcpv6_lease_time = calcuate_lease_time(dhcp_lease_num, dhcp_lease_unit);  
 	var IPv6Config = '{"IPv6": "Yes", "Stateful": "' + Stateful + '", "dhcpv6_begin_addr": "' + dhcpv6_begin_addr + '", "dhcpv6_end_addr": "' + dhcpv6_end_addr +'", "dhcpv6_lease_time": "' + dhcpv6_lease_time + '"}';
-	if(partner_id.includes('sky-')){
+	if(partner_id.indexOf('sky-')===0){
     	var ipv6_enable = $('#ipv6_enable').is(':checked');
 	var ula_enable = $('#ula_enable').is(':checked');
 	if($('#ULA_1').val().indexOf('fc')===0|| $('#ULA_1').val().indexOf('fd')===0){
