@@ -465,7 +465,7 @@ function showTracerouteDialog() {
 					<input type="text" maxlength="3" id="trace_ipv4_address_3" name="ipv4_address_3" class="gateway_address" value="" />.
 				<label for="trace_ipv4_address_4"  class="acs-hide"></label>
 					<input type="text" maxlength="3" id="trace_ipv4_address_4" name="ipv4_address_4" class="gateway_address" value="" />
-				<input id="trace_ipv4" name="trace_ipv4" type="button" value="Start Traceroute" class="btn" style="float: right;" />
+				<input id="trace_ipv4" name="trace_ipv4" type="button" value="<?php echo _("Start Traceroute")?>" class="btn" style="float: right;" />
 			</div>	
 			<div class="form-row odd">
 				<label for="trace_ipv6_address_1"><?php echo _("IPv6 Address:")?></label>

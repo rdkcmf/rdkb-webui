@@ -80,7 +80,7 @@ if (isset($_POST['add'])){
 					array("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".Enable",           "bool",   "true"),
 				);
 			$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);
-			if (!$retStatus){$result="Success!";}
+			if (!$retStatus){$result=_("Success!");}
 			// echo json_encode("Success!");
 		} else {
 			// $result="";
@@ -97,7 +97,7 @@ if (isset($_POST['add'])){
 				$arrayTsp = $key["ForwardPortStart"];
 				$arratTep = $key["ForwardPortEnd"];
 				if(!strcmp($name, $arrayName)) {
-					$result.="Service name has been used!\n";
+					$result.=_("Service name has been used!\n");
 					break;
 				} else if($type=="BOTH"||$arrayType=="BOTH"||$type==$arrayType){
 					$fptest=PORTTEST($fsp,$fep,$arrayFsp,$arrayFep);

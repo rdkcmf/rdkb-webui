@@ -38,7 +38,7 @@ $(document).ready(function() {
 	$("#all_report_month").hide();
 	$("#all_report_last").hide();
 	$('.print').prop("disabled",true).addClass("disabled");
-	$('input[value="Download"]').prop("disabled",true).addClass("disabled");
+	$('.downloadbtn').prop("disabled",true).addClass("disabled");
 	gateway.page.init("Parental Control > Reports", "nav-parental-reports");
     $('.print').click(function() {
     	window.print();
@@ -241,7 +241,7 @@ $(document).ready(function() {
 			}
 		}
 		$('.print:visible').prop("disabled",true).addClass("disabled");
-		$('input[value="Download"]:visible').prop("disabled",true).addClass("disabled");
+		$('.downloadbtn:visible').prop("disabled",true).addClass("disabled");
 		ajaxDo(mode,timef);
 			}
 		});
@@ -304,7 +304,7 @@ function ajaxDo(mode,timef){
 			});
 			if(length>0){
 				$('.print:visible').prop("disabled",false).removeClass("disabled");
-				$('input[value="Download"]:visible').prop("disabled",false).removeClass("disabled");
+				$('.downloadbtn:visible').prop("disabled",false).removeClass("disabled");
 			}
 			if(length>20){
 				$('#'+mode+'_report_'+timef2).comcastPaginator();
@@ -403,7 +403,7 @@ function ajaxDo(mode,timef){
 		</table> <!-- or class-->
 		<div class="btn-group">
 			<input type="button" value="<?php echo _("Print")?>" class="btn alt print"/>
-			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt downloadbtn"/>
 		</div>
 	</div> <!-- end .module -->
 	<div class="module forms data" id="service" style="display:none">
@@ -455,7 +455,7 @@ function ajaxDo(mode,timef){
 		</table>
 		<div class="btn-group">
 			<input type="button" value="<?php echo _("Print")?>" class="btn alt print"/>
-			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt downloadbtn"/>
 		</div>
 	</div> <!-- end .module -->
 	<div class="module forms data" id="all" style="display:none">
@@ -507,7 +507,7 @@ function ajaxDo(mode,timef){
 		</table>
 		<div class="btn-group">
 			<input type="button" value="<?php echo _("Print")?>" class="btn alt print"/>
-			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt downloadbtn"/>
 		</div>
 	</div> <!-- end .module -->
 	<div class="module forms data" id="device" style="display:none">
@@ -559,7 +559,7 @@ function ajaxDo(mode,timef){
 		</table>
 		<div class="btn-group">
 			<input type="button" value="<?php echo _("Print")?>" class="btn alt print"/>
-			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt downloadbtn"/>
 		</div>
 	</div> <!-- end .module -->
 </form>

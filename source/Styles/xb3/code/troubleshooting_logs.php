@@ -38,7 +38,7 @@ $(document).ready(function() {
 	$("#system_logs_last").hide();
 	gateway.page.init("Troubleshooting > Logs", "nav-logs");
 	$('.print').prop("disabled",true).addClass("disabled");
-	$('input[value="Download"]').prop("disabled",true).addClass("disabled");
+	$('.downloadbtn').prop("disabled",true).addClass("disabled");
 	$('.print').click(function() {
     		window.print();
 	});
@@ -176,7 +176,7 @@ $(document).ready(function() {
 			}
 	    }
 		$('.print:visible').prop("disabled",true).addClass("disabled");
-		$('input[value="Download"]:visible').prop("disabled",true).addClass("disabled");		
+		$('.downloadbtn:visible').prop("disabled",true).addClass("disabled");		
 		ajaxDo(mode,timef);
 			}
 		});
@@ -245,7 +245,7 @@ function ajaxDo(mode,timef){
 			});
 			if(length>0){
 				$('.print:visible').prop("disabled",false).removeClass("disabled");
-				$('input[value="Download"]:visible').prop("disabled",false).removeClass("disabled");
+				$('.downloadbtn:visible').prop("disabled",false).removeClass("disabled");
 			}
 			// alert(length+mode+'_logs_'+timef2);
 			if(length>20){
@@ -335,7 +335,7 @@ function ajaxDo(mode,timef){
 		</table>
 		<div class="btn-group">
 			<input type="button" value="<?php echo _("Print")?>" class="btn alt print"/>
-			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt downloadbtn"/>
 		</div>
 	</div> <!-- end .module -->
 	<div class="module forms data" id="event" style="display:none">
@@ -387,7 +387,7 @@ function ajaxDo(mode,timef){
 		</table>
 		<div class="btn-group">
 			<input type="button" value="<?php echo _("Print")?>" class="btn alt print"/>
-			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt downloadbtn"/>
 			<!--a  id="download_event_logs" href="#" class="btn alt">Download</a-->
 		</div>
 	</div> <!-- end .module -->
@@ -440,7 +440,7 @@ function ajaxDo(mode,timef){
 		</table>
 		<div class="btn-group">
 			<input type="button" value="<?php echo _("Print")?>" class="btn alt print"/>
-			<input type="submit" value="<?php echo _("Download")?>" class="btn alt"/>
+			<input type="submit" value="<?php echo _("Download")?>" class="btn alt downloadbtn"/>
 		</div>
 	</div> <!-- end .module -->
 </form>
