@@ -217,10 +217,10 @@ $PhyRateThreshold1		= $wifi_value['PhyRateThreshold1'];
 $UtilzThreshold2		= $wifi_value['UtilzThreshold2'];
 $RSSIThreshold2			= $wifi_value['RSSIThreshold2'];
 $PhyRateThreshold2		= $wifi_value['PhyRateThreshold2'];
-$radioband1                     = (strstr($feq_band,"5G")) ? "5" : "2.4";
-$radioband2                     = (strstr($feq_band1,"5G")) ? "5" : "2.4";
-$feq_band                     = (strstr($feq_band,"5G")) ? "5 GHz" : "2.4 GHz";
-$feq_band1                     = (strstr($feq_band1,"5G")) ? "5 GHz" : "2.4 GHz";
+$radioband1                     = (strstr($feq_band,"2.4G")) ? "2.4" : "2.4";
+$radioband2                     = (strstr($feq_band1,"5G")) ? "5" : "5";
+$feq_band                     = (strstr($feq_band,"2.4G")) ? "2.4 GHz" : "2.4 GHz";
+$feq_band1                     = (strstr($feq_band1,"5G")) ? "5 GHz" : "5 GHz";
 /**********************get WPS status, manual-disabled or auto-disabled?*******************************/
 // $ssidsWPS			= explode(",", getInstanceIds("Device.WiFi.SSID."));
 $ssidsWPS			= explode(",", "1,2");	//Currently, only SSID.1(2.4G) and SSID.2(5G) are involved with WPS
