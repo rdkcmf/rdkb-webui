@@ -236,7 +236,7 @@ if (isset($_POST['edit'])){
 					array("Device.NAT.PortMapping.".$i.".Description", "string", $name),
 				);
 			$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);	
-			if (!$retStatus){$result="Success!";}
+			if (!$retStatus){$result=_("Success!");}
 		}
 	}
 }

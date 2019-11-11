@@ -100,7 +100,7 @@ if (isset($_POST['add'])){
 				}
 				setStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i.".AlwaysBlock",$block,true);
 			}
-			$result = "Success!";
+			$result = _("Success!");
 		} 
 		else {
 			$result="";

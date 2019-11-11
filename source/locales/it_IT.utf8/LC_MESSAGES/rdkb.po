@@ -184,7 +184,7 @@ msgstr "Tempo rimanente IP MTA"
 #: DPoE.php:308 local_ip_configuration.php:1063 network_setup.php:438
 #: network_setup.php:525
 msgid "DHCP Lease Time:"
-msgstr "Lease time DHCP:"
+msgstr "Tempo di leasing DHCP:"
 
 #: DPoE.php:312 network_setup.php:442 network_setup.php:529
 msgid "DHCP Rebind Time:"
@@ -913,20 +913,6 @@ msgstr "La password deve essere di almeno 10 caratteri (solo alfanumerici). Nien
 #: password_change.php:150 port_triggering_edit.php:164 routing.php:342 dmz.php:377
 msgid "Save"
 msgstr "Salva"
-
-#: admin_password_change.php:210 cordless_handsets.php:272
-#: hs_port_forwarding_add.php:168 hs_port_forwarding_edit.php:199
-#: managed_devices_add_computer_allowed.php:379 connected_devices_computers.php:917
-#: managed_devices_add_computer_blocked.php:379 connected_devices_computers_add.php:158
-#: managed_devices_edit_allowed.php:403 managed_devices_edit_blocked.php:399
-#: managed_services_add.php:288 managed_services_edit.php:427
-#: managed_sites.php:766 managed_sites_add_keyword.php:249
-#: managed_sites_add_site.php:258 network_storage_edit.php:61
-#: password_change.php:151 port_forwarding_add.php:510
-#: port_forwarding_edit.php:528 port_triggering_add.php:149
-#: port_triggering_edit.php:165 wireless_network_configuration_edit.php:212
-msgid "Cancel"
-msgstr "Annulla"
 
 #: at_a_glance.php:133
 msgid "Bridge Mode changes will be fully applied in"
@@ -1699,7 +1685,7 @@ msgstr "Server DHCPv4:"
 
 #: connection_status.php:217
 msgid "DHCPv4 Lease Time:"
-msgstr "Lease time DHCPv4:"
+msgstr "Tempo di leasing DHCPv4:"
 
 #: connection_status.php:234 local_ip_configuration.php:1072
 #: local_ip_configuration.php:1197
@@ -1724,7 +1710,7 @@ msgstr "Prefisso delegato:"
 
 #: connection_status.php:272 local_ip_configuration.php:1188
 msgid "DHCPv6 Lease Time:"
-msgstr "Lease Time DHCPv6:"
+msgstr "Tempo di leasing DHCPv6:"
 
 #: connection_status.php:280
 msgid "IPV6 DNS:"
@@ -3169,7 +3155,7 @@ msgstr "<strong>Indirizzo iniziale e finale DHCP:</strong> il server DHCP nel Ga
 
 #: local_ip_configuration.php:1000
 msgid "<strong>DHCP Lease time:</strong> The lease time is the length of time the Gateway offers an IP address to a connected device. The lease is renewed while it is connected to the network. After the time expires, the IP address is freed and may be assigned to any new device that connects to the Gateway."
-msgstr "<strong>Lease time DHCP:</strong> il lease time è la durata del tempo in cui il Gateway offre un indirizzo IP ad un dispositivo collegato. Il lease viene rinnovato mentre è collegato alla rete. Allo scadere del tempo, l'indirizzo IP viene liberato e può essere assegnato a qualsiasi nuovo dispositivo che si connette al Gateway."
+msgstr "<strong>Tempo di leasing DHCP:</strong> il lease time è la durata del tempo in cui il Gateway offre un indirizzo IP ad un dispositivo collegato. Il lease viene rinnovato mentre è collegato alla rete. Allo scadere del tempo, l'indirizzo IP viene liberato e può essere assegnato a qualsiasi nuovo dispositivo che si connette al Gateway."
 
 #: local_ip_configuration.php:1007
 msgid "Gateway Address:"
@@ -4650,7 +4636,7 @@ msgstr "Stampa"
 #: parental_reports.php:562 troubleshooting_logs.php:338
 #: troubleshooting_logs.php:390 troubleshooting_logs.php:443
 msgid "Download"
-msgstr "Download"
+msgstr "Scaricare"
 
 #: parental_reports.php:410
 msgid "Managed Services Reports"
@@ -6214,11 +6200,6 @@ msgstr "Se il client wireless supporta WPS (tipo PIN), inserire qui il numero PI
 msgid "PAIR WITH MY Wi-Fi CLIENT"
 msgstr "ABBINA AL MIO CLIENT Wi-Fi"
 
-#: wireless_network_configuration.php:1983
-#: wireless_network_configuration_wps.php:295
-msgid "CANCEL"
-msgstr "ANNULLA"
-
 #: wireless_network_configuration_edit.php:210
 msgid "Wi-Fi Security Modes"
 msgstr "Modalità di sicurezza Wi-Fi"
@@ -6723,3 +6704,173 @@ msgstr "Questo dispositivo è in pausa o in modalità ora di andare a letto."
 msgid "To resume access to the Internet on your home network, open the %s %s app or visit %s using a different connection or device."
 msgstr "Per riprendere l'accesso a Internet sulla tua rete domestica, apri l'app %s %s o visita %s utilizzando una connessione o un dispositivo diverso."
 
+
+#: local_ip_configuration.php:1258
+msgid "IPv6 Enable:"
+msgstr "Attiva IPv6:"
+
+#: local_ip_configuration.php:1275
+msgid "ULA Enable:"
+msgstr "Attiva ULA:"
+
+#: local_ip_configuration.php:1288
+msgid "ULA Prefix:"
+msgstr "Prefisso ULA:"
+
+#: admin_password_change.php:157 at_a_glance.php:140 at_a_glance.php:183 callsignallog.php:35
+#: connected_devices_computers.php:208 connected_devices_computers.php:255 connected_devices_computers.php:289
+#: connected_devices_computers_add.php:107 device_discovery.php:135 dmz.php:283 dynamic_dns.php:57
+#: dynamic_dns.php:101 dynamic_dns_add.php:101 dynamic_dns_edit.php:136 firewall_settings_ipv4.php:173
+#: firewall_settings_ipv6.php:141 hs_port_forwarding.php:60 hs_port_forwarding.php:90 hs_port_forwarding.php:129
+#: hs_port_forwarding_add.php:101 hs_port_forwarding_edit.php:129 lan.php:55 local_ip_configuration.php:559
+#: local_ip_configuration.php:705 local_ip_configuration.php:735 local_ip_configuration.php:753
+#: managed_devices.php:88 managed_devices.php:133 managed_devices.php:172 
+#: managed_devices_add_computer_allowed.php:130  managed_devices_add_computer_blocked.php:200
+#: managed_devices_add_computer_allowed.php:184 managed_devices_add_computer_blocked.php:146
+#: managed_devices_edit_allowed.php:217 managed_devices_edit_allowed.php:270
+#: managed_devices_edit_blocked.php:212 managed_devices_edit_blocked.php:266
+#: managed_services.php:73 managed_services.php:138 managed_services_add.php:104 
+#: managed_services_add.php:158 managed_services_edit.php:243  managed_sites.php:196 managed_sites.php:385
+#: managed_services_edit.php:297 managed_sites.php:81 managed_sites.php:151 managed_sites.php:216
+#: managed_sites_add_keyword.php:136 managed_sites_add_site.php:145 mta_Line_Diagnostics.php:37 
+#: mta_Line_Diagnostics.php:50 mta_Line_Diagnostics.php:69 mta_sip_packet_log.php:201 mta_sip_packet_log.php:224
+#: mta_Line_Diagnostics.php:95 mta_Line_Diagnostics.php:108 mta_Line_Diagnostics.php:127 
+#: mta_sip_packet_log.php:252 mta_sip_packet_log.php:275 mta_sip_packet_log.php:315
+#: parental_reports.php:289 password_change.php:87 port_forwarding_edit.php:366 port_triggering.php:64
+#: port_forwarding.php:62 port_forwarding.php:109 port_forwarding.php:150 port_forwarding_add.php:345 
+#: port_triggering.php:109 port_triggering.php:148 port_triggering_add.php:93 port_triggering_edit.php:94
+#: qos.php:100 remote_management.php:628 restore_reboot.php:190 restore_reboot.php:194 routing.php:222
+#: restore_reboot.php:50 restore_reboot.php:131 restore_reboot.php:182 Voip_Debug_ServiceProvider.php:118
+#: troubleshooting_logs.php:224 Voip_Debug_GlobalParameter.php:93 Voip_Debug_GlobalParameter.php:124
+#: Voip_Debug_ServiceProvider.php:149 Voip_hidden.php:73 Voip_SipAdvanced_ServiceProvider.php:155
+#: Voip_SipAdvanced_ServiceProvider.php:187 Voip_SipBasic_ServiceProvider.php:301
+#: Voip_SipBasic_GlobalParamaters.php:110 Voip_SipBasic_GlobalParamaters.php:141
+#: Voip_SipBasic_ServiceProvider.php:332 wireless_network_configuration.php:818
+#: wan_network.php:93 wifi_spectrum_analyzer.php:124 wireless_network_configuration.php:1103 
+#: wireless_network_configuration.php:1140 wireless_network_configuration.php:1170 
+#: wireless_network_configuration.php:1202 wireless_network_configuration_edit.php:864
+#: wireless_network_configuration_edit.php:841 wireless_network_configuration_edit.php:871
+#: wireless_network_configuration_wps.php:132 wizard_step1.php:95 wizard_step2.php:299
+msgid "Operation in Progress"
+msgstr "Operazione in corso"
+
+#: admin_password_change.php:157 at_a_glance.php:140 at_a_glance.php:183 callsignallog.php:35
+#: connected_devices_computers.php:208 connected_devices_computers.php:255 connected_devices_computers.php:289
+#: connected_devices_computers_add.php:107 device_discovery.php:135 dmz.php:283 dynamic_dns.php:57
+#: dynamic_dns.php:101 dynamic_dns_add.php:101 dynamic_dns_edit.php:136 firewall_settings_ipv4.php:173
+#: firewall_settings_ipv6.php:141 hs_port_forwarding.php:60 hs_port_forwarding.php:90 hs_port_forwarding.php:129
+#: hs_port_forwarding_add.php:101 hs_port_forwarding_edit.php:129 lan.php:55 local_ip_configuration.php:559
+#: local_ip_configuration.php:705 local_ip_configuration.php:735 local_ip_configuration.php:753
+#: managed_devices.php:88 managed_devices.php:133 managed_devices.php:172 
+#: managed_devices_add_computer_allowed.php:130  managed_devices_add_computer_blocked.php:200
+#: managed_devices_add_computer_allowed.php:184 managed_devices_add_computer_blocked.php:146
+#: managed_devices_edit_allowed.php:217 managed_devices_edit_allowed.php:270
+#: managed_devices_edit_blocked.php:212 managed_devices_edit_blocked.php:266
+#: managed_services.php:73 managed_services.php:138 managed_services_add.php:104 
+#: managed_services_add.php:158 managed_services_edit.php:243  managed_sites.php:196 managed_sites.php:385
+#: managed_services_edit.php:297 managed_sites.php:81 managed_sites.php:151 managed_sites.php:216
+#: managed_sites_add_keyword.php:136 managed_sites_add_site.php:145 mta_Line_Diagnostics.php:37 
+#: mta_Line_Diagnostics.php:50 mta_Line_Diagnostics.php:69 mta_sip_packet_log.php:201 mta_sip_packet_log.php:224
+#: mta_Line_Diagnostics.php:95 mta_Line_Diagnostics.php:108 mta_Line_Diagnostics.php:127 
+#: mta_sip_packet_log.php:252 mta_sip_packet_log.php:275 mta_sip_packet_log.php:315
+#: parental_reports.php:289 password_change.php:87 port_forwarding_edit.php:366 port_triggering.php:64
+#: port_forwarding.php:62 port_forwarding.php:109 port_forwarding.php:150 port_forwarding_add.php:345 
+#: port_triggering.php:109 port_triggering.php:148 port_triggering_add.php:93 port_triggering_edit.php:94
+#: qos.php:100 remote_management.php:628 restore_reboot.php:190 restore_reboot.php:194 routing.php:222
+#: restore_reboot.php:50 restore_reboot.php:131 restore_reboot.php:182 Voip_Debug_ServiceProvider.php:118
+#: troubleshooting_logs.php:224 Voip_Debug_GlobalParameter.php:93 Voip_Debug_GlobalParameter.php:124
+#: Voip_Debug_ServiceProvider.php:149 Voip_hidden.php:73 Voip_SipAdvanced_ServiceProvider.php:155
+#: Voip_SipAdvanced_ServiceProvider.php:187 Voip_SipBasic_ServiceProvider.php:301
+#: Voip_SipBasic_GlobalParamaters.php:110 Voip_SipBasic_GlobalParamaters.php:141
+#: Voip_SipBasic_ServiceProvider.php:332 wireless_network_configuration.php:818
+#: wan_network.php:93 wifi_spectrum_analyzer.php:124 wireless_network_configuration.php:1103 
+#: wireless_network_configuration.php:1140 wireless_network_configuration.php:1170 
+#: wireless_network_configuration.php:1202 wireless_network_configuration_edit.php:864
+#: wireless_network_configuration_edit.php:841 wireless_network_configuration_edit.php:871
+#: wireless_network_configuration_wps.php:132 wizard_step1.php:95 wizard_step2.php:299
+#: admin_password_change.php:210 cordless_handsets.php:272
+#: hs_port_forwarding_add.php:168 hs_port_forwarding_edit.php:199
+#: managed_devices_add_computer_allowed.php:379 connected_devices_computers.php:917
+#: managed_devices_add_computer_blocked.php:379 connected_devices_computers_add.php:158
+#: managed_devices_edit_allowed.php:403 managed_devices_edit_blocked.php:399
+#: managed_services_add.php:288 managed_services_edit.php:427
+#: managed_sites.php:766 managed_sites_add_keyword.php:249
+#: managed_sites_add_site.php:258 network_storage_edit.php:61
+#: password_change.php:151 port_forwarding_add.php:510
+#: port_forwarding_edit.php:528 port_triggering_add.php:149
+#: port_triggering_edit.php:165 wireless_network_configuration_edit.php:212
+#: wireless_network_configuration.php:1983
+#: wireless_network_configuration_wps.php:295
+msgid "CANCEL"
+msgstr "ANNULLA"
+
+#: admin_password_change.php:168 admin_password_change.php:174 
+#: at_a_glance.php:191 check.php:238 admin_password_change.php:187
+#: connected_devices_computers.php:177 connected_devices_computers.php:193
+#: connected_devices_computers.php:199 connected_devices_computers.php:218
+#: connected_devices_computers.php:219 connected_devices_computers.php:224
+#: connected_devices_computers.php:266 connected_devices_computers.php:299
+#: connected_devices_computers_add.php:83 connected_devices_computers_add.php:94
+#: connected_devices_computers_add.php:104 connected_devices_computers_add.php:121
+#: connected_devices_computers_add.php:116 connected_devices_computers_add.php:117
+#: device_discovery.php:146 dmz.php:244 dmz.php:250 dmz.php:256 dmz.php:262 dmz.php:270
+#: dmz.php:294 dynamic_dns.php:68 dynamic_dns.php:107 dynamic_dns.php:110
+#: dynamic_dns.php:118 dynamic_dns.php:130 dynamic_dns_add.php:113 dynamic_dns_edit.php:148
+#: firewall_settings_ipv4.php:184 firewall_settings_ipv6.php:152
+#: hs_port_forwarding.php:71 hs_port_forwarding.php:99 hs_port_forwarding.php:121
+#: hs_port_forwarding.php:139 hs_port_forwarding_add.php:109 hs_port_forwarding_edit.php:138
+#: hs_port_forwarding_add.php:110 hs_port_forwarding_add.php:114 hs_port_forwarding_edit.php:137
+#: hs_port_forwarding_edit.php:142 local_ip_configuration.php:658 local_ip_configuration.php:662
+#: userbar.php:109 userbar.php:114 lan.php:68 lan.php:78 local_ip_configuration.php:651
+#: local_ip_configuration.php:667 local_ip_configuration.php:681 local_ip_configuration.php:685
+#: local_ip_configuration.php:689 local_ip_configuration.php:693
+#: local_ip_configuration.php:980 local_ip_configuration.php:996 managed_devices.php:99
+#: managed_devices.php:142 managed_devices.php:161 managed_devices.php:182 
+#: managed_devices.php:191 managed_devices_add_computer_allowed.php:139 managed_devices_add_computer_allowed.php:167
+#: managed_devices_add_computer_allowed.php:143 managed_devices_add_computer_allowed.php:197
+#: managed_devices_add_computer_allowed.php:193 managed_devices_add_computer_allowed.php:202 
+#: managed_devices_add_computer_allowed.php:205 managed_devices_add_computer_allowed.php:214
+#: managed_devices_add_computer_blocked.php:108 managed_devices_add_computer_blocked.php:155
+#: managed_devices_add_computer_blocked.php:159 managed_devices_add_computer_blocked.php:183
+#: managed_devices_add_computer_blocked.php:209 managed_devices_add_computer_blocked.php:213
+#: managed_devices_add_computer_blocked.php:218 managed_devices_add_computer_blocked.php:221
+#: managed_devices_edit_allowed.php:226 managed_devices_edit_allowed.php:230
+#: managed_devices_edit_allowed.php:253 managed_devices_edit_allowed.php:279
+#: managed_devices_edit_allowed.php:283 managed_devices_edit_allowed.php:288
+#: managed_devices_edit_allowed.php:291 managed_devices_edit_blocked.php:221
+#: managed_devices_edit_blocked.php:225 managed_devices_edit_blocked.php:249 
+#: managed_devices_edit_blocked.php:275 managed_devices_edit_blocked.php:279
+#: managed_devices_edit_blocked.php:284 managed_devices_edit_blocked.php:287
+#: managed_services.php:84 managed_services.php:116 managed_services.php:147 managed_services.php:163
+#: managed_services.php:182 managed_services_add.php:113 managed_services_add.php:117 managed_services_add.php:141 
+#: managed_services_add.php:167 managed_services_add.php:171 managed_services_edit.php:224 managed_services_edit.php:256
+#: managed_services_edit.php:280 managed_services_edit.php:306 managed_services_edit.php:310
+#: managed_sites.php:92 managed_sites.php:162 managed_sites.php:207 managed_sites.php:227 managed_sites.php:317
+#: managed_sites.php:363 managed_sites.php:393 managed_sites.php:400 managed_sites_add_keyword.php:115 managed_sites_add_keyword.php:144
+#: managed_sites_add_keyword.php:151 managed_sites_add_site.php:124 managed_sites_add_site.php:153 managed_sites_add_site.php:160
+#: mta_sip_packet_log.php:83 network_diagnostic_tools.php:215 network_diagnostic_tools.php:236 network_diagnostic_tools.php:264
+#: network_diagnostic_tools.php:300 network_diagnostic_tools.php:340 parental_reports.php:318 password_change.php:98 
+#: password_change.php:104 password_change.php:118 port_forwarding.php:73 port_forwarding.php:118 port_forwarding.php:142
+#: port_forwarding.php:160 port_forwarding_add.php:275 port_forwarding_add.php:279 port_forwarding_add.php:296 
+#: port_forwarding_add.php:304 port_forwarding_add.php:307 port_forwarding_add.php:324 port_forwarding_add.php:328
+#: port_forwarding_add.php:356 port_forwarding_add.php:357 port_forwarding_add.php:361 port_forwarding_edit.php:294
+#: port_forwarding_edit.php:298 port_forwarding_edit.php:315 port_forwarding_edit.php:323 port_forwarding_edit.php:326
+#: port_forwarding_edit.php:344 port_forwarding_edit.php:348 port_forwarding_edit.php:375 port_forwarding_edit.php:376
+#: port_forwarding_edit.php:380 port_triggering.php:75 port_triggering.php:118 port_triggering.php:140 port_triggering.php:158
+#: port_triggering_add.php:102 port_triggering_add.php:103 port_triggering_add.php:107 port_triggering_edit.php:103
+#: port_triggering_edit.php:104 port_triggering_edit.php:108 qos.php:111 remote_management.php:489 remote_management.php:514 
+#: remote_management.php:613 remote_management.php:618 remote_management.php:622 remote_management.php:651
+#: restore_reboot.php:176 routing.php:233 troubleshooting_logs.php:259 Voip_Debug_GlobalParameter.php:102 Voip_Debug_GlobalParameter.php:133
+#: Voip_Debug_ServiceProvider.php:127 Voip_Debug_ServiceProvider.php:158 Voip_hidden.php:83 Voip_hidden.php:89
+#: Voip_SipAdvanced_ServiceProvider.php:165 Voip_SipAdvanced_ServiceProvider.php:196 
+#: Voip_SipBasic_GlobalParamaters.php:119 Voip_SipBasic_GlobalParamaters.php:150 Voip_SipBasic_ServiceProvider.php:310
+#: Voip_SipBasic_ServiceProvider.php:341 wan_network.php:106 wireless_network_configuration.php:387 wireless_network_configuration.php:628
+#: wireless_network_configuration.php:829 wireless_network_configuration.php:913 wireless_network_configuration.php:919
+#: wireless_network_configuration.php:929 wireless_network_configuration.php:963 wireless_network_configuration.php:1100 
+#: wireless_network_configuration.php:1110 wireless_network_configuration.php:1122 wireless_network_configuration.php:1132
+#: wireless_network_configuration.php:1147 wireless_network_configuration.php:1151 wireless_network_configuration.php:1195 
+#: wireless_network_configuration.php:1225 wireless_network_configuration_edit.php:851 wireless_network_configuration_edit.php:857
+#: wireless_network_configuration_wps.php:140 wireless_network_configuration_wps.php:151 wireless_network_configuration_wps.php:219
+#: wizard_step1.php:112 wizard_step1.php:127 wizard_step2.php:311 wizard_step2.php:319 wizard_step2.php:321 
+msgid "Alert"
+msgstr "Mettere in guardia"
