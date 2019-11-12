@@ -50,8 +50,10 @@
 
 # start lighttpd
 source /etc/utopia/service.d/log_capture_path.sh
-source /fss/gw/etc/utopia/service.d/log_env_var.sh
 source /etc/device.properties
+if [ "x$BOX_TYPE" != "xHUB4" ]; then
+    source /fss/gw/etc/utopia/service.d/log_env_var.sh
+fi
 REVERT_FLAG="/nvram/reverted"
 if [ "$MODEL_NUM" = "TG3482G" ] ; then
 # RDKB-15633 from Arris XB6
@@ -89,6 +91,27 @@ if [ "$LIGHTTPD_PID" != "" ]; then
 	/bin/kill -9 $LIGHTTPD_PID
 fi
 
+if [ "$BOX_TYPE" = "HUB4" ]; then
+    # Grab the locale based on the region code if we don't have the override flag
+    LOCALE_OVERRIDE_FILE=/nvram/locale-override
+    LOCALE_CONF=/tmp/locale.conf
+    if [ -f "$LOCALE_OVERRIDE_FILE" ]; then
+       LOCALE=`cat $LOCALE_OVERRIDE_FILE`
+    else
+       # set the locale from the region code
+       COUNTRY=`grep "REGION" /tmp/serial.txt | cut -d"=" -f2 | xargs`
+       if [ "$COUNTRY" == "IT" ]; then
+               LOCALE="it_IT.utf8"
+       else
+               LOCALE="en_GB.utf8"
+       fi
+    fi
+    # Now set the system locale before starting the UI
+    localectl set-locale LANG=$LOCALE
+    sed -i'' "s/LANG=en_GB.utf8/LANG=$LOCALE/g" $LOCALE_CONF
+    export LANG=$LOCALE
+fi
+
 HTTP_ADMIN_PORT=`syscfg get http_admin_port`
 HTTP_PORT=`syscfg get mgmt_wan_httpport`
 HTTP_PORT_ERT=`syscfg get mgmt_wan_httpport_ert`
@@ -120,7 +143,12 @@ fi
 
 echo "server.port = $HTTP_ADMIN_PORT" >> $LIGHTTPD_CONF
 echo "server.bind = \"$INTERFACE\"" >> $LIGHTTPD_CONF
-echo "\$SERVER[\"socket\"] == \"wan0:80\" { server.use-ipv6 = \"enable\" }" >> $LIGHTTPD_CONF
+if [ "$BOX_TYPE" == "HUB4" ]
+then
+    echo "\$SERVER[\"socket\"] == \"erouter0:80\" { server.use-ipv6 = \"enable\" }" >> $LIGHTTPD_CONF
+else
+    echo "\$SERVER[\"socket\"] == \"wan0:80\" { server.use-ipv6 = \"enable\" }" >> $LIGHTTPD_CONF
+fi
 
 if [ "x$HTTP_PORT_ERT" != "x" ] && [ $HTTP_PORT_ERT -ne 0 ] && [ "$HTTP_PORT_ERT" -ge 1025 ] && [ "$HTTP_PORT_ERT" -le 65535 ];then
     echo "\$SERVER[\"socket\"] == \"erouter0:$HTTP_PORT_ERT\" { server.use-ipv6 = \"enable\" }" >> $LIGHTTPD_CONF
@@ -136,7 +164,12 @@ then
    echo "\$SERVER[\"socket\"] == \"$INTERFACE:28081\" { server.use-ipv6 = \"enable\" server.document-root = \"/usr/video_analytics\" ssl.engine = \"enable\" ssl.pemfile = \"/tmp/.webui/rdkb-video.pem\" }" >> $LIGHTTPD_CONF
 fi
 
-echo "\$SERVER[\"socket\"] == \"wan0:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
+if [ "$BOX_TYPE" == "HUB4" ]; then
+   echo "\$SERVER[\"socket\"] == \"erouter0:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
+else
+   echo "\$SERVER[\"socket\"] == \"wan0:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
+fi
+
 if [ $HTTPS_PORT -ne 0 ] && [ "$HTTPS_PORT" -ge 1025 ] && [ "$HTTPS_PORT" -le 65535 ]
 then
   echo "\$SERVER[\"socket\"] == \"erouter0:$HTTPS_PORT\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF

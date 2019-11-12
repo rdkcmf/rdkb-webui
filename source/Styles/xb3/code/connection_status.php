@@ -350,12 +350,25 @@ if($allowEthWan=="true"){
                    echo _("Inactive"); 
                 }
               }else{
-                $status = php_getstr("Device.X_CISCO_COM_CableModem.CMStatus"); 
-                if ( !strcasecmp($status, "Operational") ){
-                  echo _("Active");
+                $partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
+                if (strpos($partnerId, "sky-") !== false) {
+                   $fistUSif = php_getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
+                   $WANIPv4 = php_getStr($fistUSif."IPv4Address.1.IPAddress");
+                   if ( strcasecmp($WANIPv4, "0.0.0.0") || (strlen($ipv6_global_addr) > 0) ){
+                      echo _("Active");
+                   }
+                   else{
+                      echo _("Inactive");
+                   }
                 }
                 else{
-                  echo _("Inactive");                   
+                   $status = php_getstr("Device.X_CISCO_COM_CableModem.CMStatus"); 
+                   if ( !strcasecmp($status, "Operational") ){
+                      echo _("Active");
+                   }
+                   else{
+                      echo _("Inactive");                   
+                   }
                 }
               }
               ?>
