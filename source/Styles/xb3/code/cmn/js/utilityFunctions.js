@@ -191,6 +191,19 @@ function ValidIp4Addr(ip4Dec, subnetIpDec, subnetMaskDec){
 
 }
 
+function ValidIp4AddrInDhcpPool(ip4Dec, dhcp4MinDec, dhcp4MaxDec) {
+	//to check if "Server IPv4 Address" is in "DHCP Pool range"
+	ip4Bin			= ip4StrToBin(ip4Dec);
+	dhcp4MinBin		= ip4StrToBin(dhcp4MinDec);
+	dhcp4MaxBin		= ip4StrToBin(dhcp4MaxDec);
+
+	if (ip4Bin >= dhcp4MinBin && ip4Bin <= dhcp4MaxBin) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 $.validator.addMethod("allowed_char", function(value, element, param) {
 	//Invalid characters are Less than (<), Greater than (>), Ampersand (&), Double quote ("), Single quote ('), Pipe (|).
 	return !param || (value.match(/[<>&"'|]/)==null);

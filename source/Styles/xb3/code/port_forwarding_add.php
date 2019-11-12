@@ -297,8 +297,12 @@ function isIp4AddrRequired()
 	   	  	return;
 		}
 		if (!IsBlank("server_ip_address_")) {
-			//to check if "Server IPv4 Address" is in "DHCP Pool range"
+			//to check if "Server IPv4 Address" is in "DHCP Mask range"
 			var IPv4_valid = ValidIp4Addr(ip, jsGatewayIP, jsNetMask);
+			
+			//to check if "Server IPv4 Address" is in "DHCP Pool range"
+			IPv4_valid = ValidIp4AddrInDhcpPool(ip, beginAddr, endAddr);
+			
 			//IPv4 validation
 			if (ip == jsGatewayIP){
 				jAlert("<?php echo _('Server IP can\'t be equal to the Gateway IP address !')?>");
