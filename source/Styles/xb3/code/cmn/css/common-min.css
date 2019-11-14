@@ -1640,12 +1640,16 @@ margin:0 0 0 -35px;
 }
 
 .con_check img{
-    width: 49px;
-    padding:24.5px 0;
+    width: 35px;
+    padding:23.5px 5px;
     overflow: hidden;
-    background: transparent url(../img/sky_self_heal_ONT_led_sprite.gif) no-repeat;
+    background: transparent url(../img/sky_self_heal_ONT_led_sprite_Green.gif) no-repeat;
     background-position: 0 0;
     margin: 0 auto;
+}
+
+.con_check img#alarm{
+    background: transparent url(../img/sky_self_heal_ONT_led_sprite_Red.gif) no-repeat;
 }
 
 .clear_fix {
