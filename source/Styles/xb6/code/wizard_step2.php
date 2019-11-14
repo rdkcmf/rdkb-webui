@@ -120,7 +120,9 @@ $(document).ready(function() {
     }).trigger("change");
 	if(!password_mso_user){
 		$('#password_check').click(function() {
-			$("#network_password").prop("disabled", !(this.checked));
+			document.getElementById("password_field").innerHTML = 
+		 	'<input type="text"     size="23" id="network_password" name="network_password" class="text" value="" />';
+		 	$("#network_password").prop("disabled", !(this.checked));
 		});
 	}
 	$("#security1").change(function() {
@@ -147,6 +149,8 @@ $(document).ready(function() {
 		$("#netPassword-footnote1").text($selected_option1.attr("title"));
 	if(!password_mso_user){
 		$('#password_check1').click(function() {
+			document.getElementById("password_field1").innerHTML = 
+		 	'<input type="text"     size="23" id="network_password1" name="network_password1" class="text" value="" />';
 			$("#network_password1").prop("disabled", !(this.checked));
 		});
 	}
@@ -290,6 +294,33 @@ wpa2psk ==> 8 to 63 Ascii characters
 			$("#security1").val("None");
 		}
 	}
+	$("#password_show").change(function() {
+		var pass_val = $("#network_password").val();
+		if ($("#password_show").is(":checked")) {
+		 	document.getElementById("password_field").innerHTML = 
+		 	'<input type="text"     size="23" id="network_password" name="network_password" class="text" value="" />';
+		 	$("#network_password").val(pass_val);
+		 }
+		else {
+			document.getElementById("password_field").innerHTML = 
+			'<input type="password" size="23" id="network_password" name="network_password" class="text" value="" />';
+			$("#network_password").val(pass_val);
+		}
+	});
+	$("#password_show1").change(function() {
+		var pass_val = $("#network_password1").val();
+		if ($("#password_show1").is(":checked")) {
+		 	document.getElementById("password_field1").innerHTML = 
+		 	'<input type="text"     size="23" id="network_password1" name="network_password1" class="text" value="" />';
+		 	$("#network_password1").val(pass_val);
+		 }
+		else {
+			document.getElementById("password_field1").innerHTML = 
+			'<input type="password" size="23" id="network_password1" name="network_password1" class="text" value="" />';
+			$("#network_password1").val(pass_val);
+		}
+		
+	});
 });
 function set_config(jsConfig)
 {
@@ -470,10 +501,20 @@ if ("WPA2-Personal" == $encrypt_mode1){
 			<div id="netPassword">
 				<div class="form-row odd">
 					<label for="network_password">Network Password (<?php echo $radioband1; ?>GHz):</label>
-					<input type="text" size="23" id="network_password" name="network_password" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password); ?>"/>
+					<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password); ?>"/></span>
 				</div>
 				<p id="netPassword-footnote" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
 			</div>
+			<?php
+			if($_SESSION['loginuser']=="admin"){
+			?>
+				<div class="form-row" id="div_show_password">
+				<label for="show_network_password"><?php echo _("Show Password:")?></label>
+				<span class="checkbox"><input type="checkbox" id="password_show" name="password_show" /></span>
+			</div>
+			<?php
+			}
+			?>
 			<div class="form-row" id="div_change_password">
 				<label for="network_password">Change Password:</label>
 				<span class="checkbox"><input type="checkbox" id="password_check" name="password_check" /></span>
@@ -498,10 +539,20 @@ if ("WPA2-Personal" == $encrypt_mode1){
 			<div id="netPassword1">
 				<div class="form-row odd">
 					<label for="network_password1">Network Password (<?php echo $radioband2; ?> GHz):</label>
-					<input type="text" size="23" id="network_password1" name="network_password1" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password1); ?>"/>
+					<span id="password_field1"><input type="password" size="23" id="network_password1" name="network_password1" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password1); ?>"/></span>
 				</div>
 				<p id="netPassword-footnote1" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
 			</div>
+			<?php
+			if($_SESSION['loginuser']=="admin"){
+			?>
+			<div class="form-row" id="div_show_password1">
+				<label for="show_network_password1"><?php echo _("Show Password:")?></label>
+				<span class="checkbox"><input type="checkbox" id="password_show1" name="password_show1" /></span>
+			</div>
+			<?php
+			}
+			?>
 			<div class="form-row" id="div_change_password1">
 				<label for="network_password1">Change Password:</label>
 				<span class="checkbox"><input type="checkbox" id="password_check1" name="password_check1" /></span>
