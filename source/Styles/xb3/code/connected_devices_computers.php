@@ -529,7 +529,7 @@ $(document).ready(function() {
 		        <td headers='dhcp-or-reserved'>", (($AddrSrc == "DHCP") ? "DHCP" : "Reserved IP") ,"</td>
 		        <td headers='rssi-level'>", $onlinePrivateNetworkHost["$x"]['RSSI'] ,"</td>
 		        <td headers='connection-type'>", $onlinePrivateNetworkHost["$x"]['Connection'] , "</td>
-                <td headers='edit-button'><input type='button' value='Edit' tabindex='0' id=" , "'btn-" ,$onlinePrivateNetworkHost["$x"]['instanceID'] , "'", "  class=\"btn private\"></input></td>
+                <td headers='edit-button'><input type='button' value='"._('edit')."' tabindex='0' id=" , "'btn-" ,$onlinePrivateNetworkHost["$x"]['instanceID'] , "'", "  class=\"btn private\"></input></td>
                 <td headers='disconnect-button'>$style</td>
 		    </tr>    
 		    ";

@@ -154,7 +154,12 @@ if (strpos($partnersId, "sky-") !== false) {
 	<script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery-migrate-1.2.1.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.validate.js"></script>
-	<script type="text/javascript" src="./cmn/js/lib/jquery.alerts.js"></script>
+	<script type="text/javascript" src="<?php 
+	    if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) { 
+	        echo './locales/'.$locale.'/cmn/js/lib/jquery.alerts.js';
+	    } else {
+	        echo './cmn/js/lib/jquery.alerts.js';
+	    }?>"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.ciscoExt.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.highContrastDetect.js"></script>
 	<script type="text/javascript" src="<?php 
@@ -164,7 +169,12 @@ if (strpos($partnersId, "sky-") !== false) {
 	        echo './cmn/js/lib/jquery.radioswitch.js';
 	    }?>"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.virtualDialog.js"></script>
-	<script type="text/javascript" src="./cmn/js/utilityFunctions.js"></script>
+	<script type="text/javascript" src="<?php 
+	    if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) { 
+	        echo './locales/'.$locale.'/cmn/js/utilityFunctions.js';
+	    } else {
+	        echo './cmn/js/utilityFunctions.js';
+	    }?>"></script>
     <script type="text/javascript" src="<?php 
         if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) {
             echo './locales/'.$locale.'/cmn/js/gateway.js';
@@ -172,7 +182,12 @@ if (strpos($partnersId, "sky-") !== false) {
             echo './cmn/js/gateway.js';
         }?>"></script>	
 	<script type="text/javascript" src="./cmn/js/lib/bootstrap.min.js"></script>
-    <script type="text/javascript" src="./cmn/js/lib/bootstrap-waitingfor.js"></script>
+    <script type="text/javascript" src="<?php 
+    if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) { 
+        echo './locales/'.$locale.'/cmn/js/lib/bootstrap-waitingfor.js';
+    } else {
+        echo './cmn/js/lib/bootstrap-waitingfor.js';
+    }?>"></script>
 	<style>
 		#div-skip-to {
 			position:relative;

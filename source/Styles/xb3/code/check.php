@@ -18,21 +18,8 @@
  limitations under the License.
 */
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-    <link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/common-min.css" />
-    <!--Character Encoding-->
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="./cmn/js/lib/jquery-migrate-1.2.1.js"></script>
-    <script type="text/javascript" src="./cmn/js/lib/jquery.alerts.js"></script>
-</head>
 <?php
-
-require('includes/jwt.php');
-
-/*
+    /*
  * Set the Locale for the Web UI based on the LANG setting or current linux locale
  */
 $locale = getenv("LANG");
@@ -41,7 +28,7 @@ if(isset($locale)) {
         //putenv("LANG=" . $locale);
         setlocale(LC_MESSAGES, $locale);
         setlocale(LC_TIME, $locale);
-        
+
         $domain = "rdkb";
         bindtextdomain($domain, 'locales');
         bind_textdomain_codeset($domain, 'UTF-8');
@@ -49,7 +36,25 @@ if(isset($locale)) {
         $_SESSION['language'] = $locale; // set the default locale for future pages
     }
 }
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/common-min.css" />
+    <!--Character Encoding-->
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="./cmn/js/lib/jquery-migrate-1.2.1.js"></script>
+    <script type="text/javascript" src="<?php 
+        if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) { 
+            echo './locales/'.$locale.'/cmn/js/lib/jquery.alerts.js';
+        } else {
+            echo './cmn/js/lib/jquery.alerts.js';
+        }?>"></script>
+</head>
+<?php
 
+require('includes/jwt.php');
 $flag=0;
 $flag_mso=0;
 $passLockEnable = getStr("Device.UserInterface.PasswordLockoutEnable");

@@ -340,7 +340,7 @@ populate_IPv6();
 			<span id="dmz_switch"></span>
 		</div>
 		<div class="form-row">
-                <label for="dmz_host_address_1">DMZ v4 Host:</label>
+                <label for="dmz_host_address_1"><?php echo _('DMZ v4 Host:')?></label>
 				<input type="text" size="3" maxlength="3" id="dmz_host_address_1"  value="" name="dmz_host_address_1" class="gateway_address smallInput" />.
 				<label for="dmz_host_address_2" class="acs-hide"></label>
     	        <input type="text" size="3" maxlength="3" id="dmz_host_address_2"  value="" name="dmz_host_address_2" class="gateway_address smallInput" />.

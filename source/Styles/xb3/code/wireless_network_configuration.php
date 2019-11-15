@@ -2037,7 +2037,7 @@ function saveBandSteeringSettings()
 	<label for="wps_pair" class="acs-hide"></label>
 		<input id="wps_pair"   name="wps_pair"   type="submit" style="text-transform : none;" value="<?php echo _("PAIR WITH MY Wi-Fi CLIENT")?>" class="btn" size="3" />
 		<label for="wps_cancel" class="acs-hide"></label>
-		<input id="wps_cancel" name="wps_cancel" type="button" value="<?php echo _("CANCEL")?> " class="btn" onclick="pair_cancel()"/>
+		<input id="wps_cancel" name="wps_cancel" type="button" value="<?php echo _("Cancel")?> " class="btn" onclick="pair_cancel()"/>
 	</div>
 </div>
 </form>

@@ -335,7 +335,7 @@ $(document).ready(function() {
 						<td headers='blocked-number' class=\"row-label alt number\">$j</td>
 						<td headers='blocked-device-name'>".$arrayBlockName[$i]."</td>
 						<td headers='blocked-mac-address'>".$arrayBlockMAC[$i]."</td>
-						<td headers='blocked-time'>".$arrayBlockStatus[$i]."</td>
+						<td headers='blocked-time'>"._($arrayBlockStatus[$i])."</td>
 						<td headers='blocked-edit-button' class=\"edit\"><a tabindex='0' href=\"managed_devices_edit_blocked.php?id=$arrayBlockID[$i]\" class=\"btn\"  id=\"edit_$arrayBlockID[$i]\">"._("Edit")."</a></td>
 						<td headers='blocked-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.php?del=$arrayBlockID[$i]\" class=\"btn confirm\" title=\""._("Delete this device")."\" id=\"delete_$arrayBlockID[$i]\">x</a></td>
 					</tr>"; 
