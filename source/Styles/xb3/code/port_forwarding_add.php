@@ -583,7 +583,7 @@ $('#device').click(function(){
 				echo '<tr>';
 				echo '<td headers="devcie-name">'. $HostName . '</td>';
 				echo '<td headers="ipv4-addr">'. $IPAddress . '</td>';
-				echo '<td headers="ipv6-addr">'. $IPv6Addr. '</td>';
+				echo '<td headers="ipv6-addr">'. _($IPv6Addr). '</td>';
 				echo '<td headers="add-radio"><input type="radio" value="add" id="add-' .$i. '" name="select-device"><label for="add-' .$i. '" class="acs-hide"></label></td>';
 				echo '</tr>';
 			} 

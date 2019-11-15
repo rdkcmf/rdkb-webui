@@ -394,7 +394,7 @@ function showTracerouteDialog() {
 	<div class="module forms">
 		<h2><?php echo _("Check for IPv4 Address Results")?></h2>
 		<div class="form-row">
-			<label for="ipv4_address_1"><?php echo _("IPv4 Address:")?></label>
+			<label for="ipv4_address_1"><?php echo _("IPv4 Address")?>:</label>
 			<input type="text" maxlength="3" id="ipv4_address_1" name="ipv4_address_1" class="gateway_address"  value="" />.
 			<label for="ipv4_address_2"  class="acs-hide"></label>
 			<input type="text" maxlength="3" id="ipv4_address_2" name="ipv4_address_2" class="gateway_address"  value="" />.
@@ -457,7 +457,7 @@ function showTracerouteDialog() {
 	<div class="module forms">
 			<h2><?php echo _("Traceroute Results")?></h2>	
 			<div class="form-row" id="ipv4">
-				<label for="trace_ipv4_address_1"><?php echo _("IPv4 Address:")?></label>
+				<label for="trace_ipv4_address_1"><?php echo _("IPv4 Address")?>:</label>
 					<input type="text" maxlength="3" id="trace_ipv4_address_1" name="ipv4_address_1" class="gateway_address" value="" />.
 				<label for="trace_ipv4_address_2"  class="acs-hide"></label>
 					<input type="text" maxlength="3" id="trace_ipv4_address_2" name="ipv4_address_2" class="gateway_address" value="" />.

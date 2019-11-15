@@ -267,7 +267,7 @@ $(document).ready(function() {
 						<td headers='protocol-type'>".$protocol."</td>
 						<td headers='start-port'>".$value["StartPort"]."</td>
 						<td headers='end-port'>".$value["EndPort"]."</td>
-						<td headers='effect-time'>".$blockStatus."</td>
+						<td headers='effect-time'>"._($blockStatus)."</td>
 						<td headers='edit-button' class=\"edit\"><a tabindex='0' href=\"managed_services_edit.php?id=$i\" class=\"btn\"  id=\"edit_$i\">"._("Edit")."</a></td>
 						<td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_services.php?del=$i\" class=\"btn confirm\" title=\"".sprintf(_("delete this service for %s"),$value["Description"])." \" id=\"delete_$i\">x</a></td>
 					</tr>"; 

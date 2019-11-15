@@ -880,7 +880,7 @@ if(strpos($partnerId, "sky-") !== false){
 	<h2><?php echo _("Modem Stats");?></h2>
  	<div class="form-row ">
 		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("Modem Status:");?></span>
-		<span class="value"><?php echo $Wan_Port_Status;?></span>
+		<span class="value"><?php echo _($Wan_Port_Status);?></span>
  	</div>
  	<div class="form-row odd">
 		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("DownStream Connection Speed:");?></span>

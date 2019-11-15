@@ -292,7 +292,7 @@ $(document).ready(function() {
 			</div>
 			<div class="form-row form-btn">
 				<input id="wps_pair"   name="wps_pair"   type="button" value="<?php echo _('Pair')?>" class="btn" size="3" />
-				<input id="wps_cancel" name="wps_cancel" type="button" value="<?php echo _('CANCEL')?> " class="btn" />
+				<input id="wps_cancel" name="wps_cancel" type="button" value="<?php echo _('Cancel')?> " class="btn" />
 			</div>
 		</div>
 	</form>
