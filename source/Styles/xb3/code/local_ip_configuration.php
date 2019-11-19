@@ -697,6 +697,7 @@ $('#submit_ipv4').click(function(e){
 			             + '", "manual_dns":"false", "Dhcp_end_addr":"' + dhcp_end_addr + '", "Dhcp_lease_time":"' + dhcp_lease_time + '"}';
     //alert(IPv4Config)
     if((login_user == "admin") && (jsGwIP != ipaddr)) {
+      if($("#pageForm").valid()){
     	jConfirm(	        
 	        "<?php echo _('This may need you to relogin with new Gateway IP address')?>"
 	        , "<?php echo _('Are you sure?')?>"
@@ -725,6 +726,7 @@ $('#submit_ipv4').click(function(e){
 					}, 90000);
             	} //end of if ret
 	    }); //end of jConfirm
+          } //end of pageForm
 	} //end of login user
 	else{
 		setIPconfiguration(IPv4Config);
