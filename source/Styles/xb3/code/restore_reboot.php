@@ -193,13 +193,15 @@ function setResetInfo(info) {
 				setTimeout(checkForRebooting, 4 * 60 * 1000);
 			}
 			else if(data.wifi) {
-                                var cnt = 90;
-				jProgress("<?php echo _('Restarting Wi-Fi radios. This may take up to <b id="cnt">' + cnt + '</b> seconds...')?>", 120);
-				//we don't know if Wi-Fi is ready (eth client can restart wifi also), so just delay 90 seconds
-                               var hCnt = setInterval(function(){
-                                       $("#cnt").text(cnt--);
-                                       if (cnt < 0) {clearInterval(hCnt); location.reload();}
-                                       }, 1000);     
+				var cnt = 90;
+				jProgress("<?php echo _('Restarting Wi-Fi radios. This may take up to ')?>" +"<span id=\"count_down\" style=\"font-weight:bold\">"+ cnt +"</span>"+" <?php echo _("seconds...")?>",120);
+				var h_cntd  = setInterval(function(){
+					$("#count_down").text(--cnt);
+					if (cnt<=0) {
+						clearInterval(h_cntd);
+						location.reload();
+					}
+				}, 1000);
 			}
 		},
 		error: function(){            
