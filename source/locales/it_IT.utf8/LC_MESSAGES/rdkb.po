@@ -5242,8 +5242,12 @@ msgid "Please wait for rebooting ..."
 msgstr "Attendere il riavvio..."
 
 #: restore_reboot.php:194
-msgid "Restarting Wi-Fi radios. This may take up to 90 seconds..."
-msgstr "Riavvio delle radio Wi-Fi entro un massimo di 90 secondi..."
+msgid "Restarting Wi-Fi radios. This may take up to "
+msgstr "Riavvio delle radio Wi-Fi entro un massimo di "
+
+#: restore_reboot.php:194
+msgid "seconds..."
+msgstr "secondi..."
 
 #: restore_reboot.php:224
 msgid "Troubleshooting > Reset / Restore Gateway"
