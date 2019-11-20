@@ -327,7 +327,7 @@ if($allowEthWan=="true"){
                     </span>
                 </div>
                 <div class="form-row ">
-                    <span class="readonlyLabel"><?php echo _("WAN IP Address (IPv6):")?></span> <span class="value">
+                    <span class="readonlyLabel"><?php echo _("WAN IP Address (IPv6):")?></span> <span class="ipv6-style">
                         <?php echo $WANIPv6; ?>
                     </span>
                 </div>
