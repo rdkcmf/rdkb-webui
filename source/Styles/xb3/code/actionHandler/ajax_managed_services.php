@@ -144,7 +144,7 @@ if (isset($_POST['add'])){
 				$start_Time = $key["StartTime"];
 				$end_Time = $key["EndTime"];
 				$block_Days = $key["BlockDays"];
-				if ($service == $serviceName) {
+				if (strcasecmp($service,$serviceName) == 0) {
 					$result .= _("Service Name has been used!\n");
 					break;
 				}			
@@ -250,7 +250,7 @@ if (isset($_POST['edit'])){
 			$start_Time = $key["StartTime"];
 			$end_Time = $key["EndTime"];
 			$block_Days = $key["BlockDays"];
-			if ($service == $serviceName) {
+			if (strcasecmp($service,$serviceName) == 0) {
 				$result .= _("Service Name has been used!\n");
 				break;
 			}			
