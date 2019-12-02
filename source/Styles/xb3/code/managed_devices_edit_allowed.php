@@ -124,7 +124,7 @@ $(document).ready(function() {
 				(tmpHour === 0) && (tmpHour = 12);
 				$('#time_start_hour').val(tmpHour.toString());
 				$('#time_start_minute').val(jsStartTime[1]);
-				$('#time_start_ampm').val("<?php _echo _("PM")?>");
+				$('#time_start_ampm').val("<?php echo _("PM")?>");
 			} else {
 				(parseInt(jsStartTime[0])===0) && (jsStartTime[0] = 12);
 				$('#time_start_hour').val(jsStartTime[0]);
