@@ -97,7 +97,7 @@ if (isset($_POST['add'])){
 					$arraySPort = $key["ExternalPort"];
 					$arrayEPort = $key["ExternalPortEndRange"];
 					$InternalPort = $key["InternalPort"];
-					if($name==$arrayName) { 
+					if(strcasecmp($name,$arrayName) == 0) { 
 						if($InternalPort !=0){
 							$result.=_("Service name has been used in HS Port Forwarding service!\n");
 							break;
@@ -177,7 +177,7 @@ if (isset($_POST['edit'])){
 				$arraySPort = $key["ExternalPort"];
 				$arrayEPort = $key["ExternalPortEndRange"];
 				$InternalPort = $key["InternalPort"];
-				if($name==$arrayName) { 
+				if(strcasecmp($name,$arrayName) == 0) { 
 					if($InternalPort !=0){
 						$result.=_("Service name has been used in HS Port Forwarding service!\n");
 						break;
