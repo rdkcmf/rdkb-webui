@@ -97,7 +97,7 @@ if (isset($_POST['add'])){
 				$arrayFep = $key["TriggerPortEnd"];
 				$arrayTsp = $key["ForwardPortStart"];
 				$arratTep = $key["ForwardPortEnd"];
-				if(!strcmp($name, $arrayName)) {
+				if(!strcasecmp($name, $arrayName)) {
 					$result.=_("Service name has been used!\n");
 					break;
 				} else if($type=="BOTH"||$arrayType=="BOTH"||$type==$arrayType){
@@ -177,7 +177,7 @@ if (isset($_POST['edit'])){
 				$arrayFep = $key["TriggerPortEnd"];
 				$arrayTsp = $key["ForwardPortStart"];
 				$arratTep = $key["ForwardPortEnd"];
-			if(!strcmp($name, $arrayName)) {
+			if(!strcasecmp($name, $arrayName)) {
 				$result.=_("Service name has been used!\n");
 				break;
 			} else if($type=="BOTH"||$arrayType=="BOTH"||$type==$arrayType){
