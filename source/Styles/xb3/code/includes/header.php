@@ -138,7 +138,12 @@ csrfprotector_rdkb::init();
     <script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="./cmn/js/lib/jquery-migrate-1.2.1.js"></script>
     <script type="text/javascript" src="./cmn/js/lib/jquery.validate.js"></script>
-    <script type="text/javascript" src="./cmn/js/lib/jquery.alerts.js"></script>
+    <script type="text/javascript" src="<?php 
+	    if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) { 
+	        echo './locales/'.$locale.'/cmn/js/lib/jquery.alerts.js';
+	    } else {
+	        echo './cmn/js/lib/jquery.alerts.js';
+	    }?>"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.ciscoExt.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.highContrastDetect.js"></script>
 	<script type="text/javascript" src="<?php 
@@ -149,9 +154,19 @@ csrfprotector_rdkb::init();
 	    }?>"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.virtualDialog.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/bootstrap.min.js"></script>
-    <script type="text/javascript" src="./cmn/js/lib/bootstrap-waitingfor.js"></script>
+    <script type="text/javascript" src="<?php 
+    if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) { 
+        echo './locales/'.$locale.'/cmn/js/lib/bootstrap-waitingfor.js';
+    } else {
+        echo './cmn/js/lib/bootstrap-waitingfor.js';
+    }?>"></script>
     <!-- update the version of utilityFunctions.js if any changes is made to this js file otherwise browser will take the old js file from the cache memory -->
-	<script type="text/javascript" src="./cmn/js/utilityFunctions.js?v=1"></script>
+	<script type="text/javascript" src="<?php 
+    if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) { 
+        echo './locales/'.$locale.'/cmn/js/utilityFunctions.js?v=1';
+    } else {
+        echo './cmn/js/utilityFunctions.js?v=1';
+    }?>"></script>
     <script type="text/javascript" src="<?php 
         if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) {
             echo './locales/'.$locale.'/cmn/js/gateway.js';
