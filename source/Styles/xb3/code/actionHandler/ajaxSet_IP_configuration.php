@@ -131,7 +131,11 @@ else{
 		if($validation) $validation = (isValInRange($ip_config['dhcpv6_lease_time'], 120, 604195200) || $ip_config['dhcpv6_lease_time'] == '-1');
 		if($validation){
 			setStr("Device.RouterAdvertisement.InterfaceSetting.1.AdvManagedFlag", "false", true);
-			setStr("Device.DHCPv6.Server.X_CISCO_COM_Type", "Stateful", true);
+			if(strpos($partnerId, "sky-") !== false){
+				setStr("Device.DHCPv6.Server.X_CISCO_COM_Type", "Stateless", true);
+			}else{
+				setStr("Device.DHCPv6.Server.X_CISCO_COM_Type", "Stateful", true);		
+			}
 			setStr("Device.DHCPv6.Server.Pool.1.PrefixRangeBegin", $ip_config['dhcpv6_begin_addr'], false);
 			setStr("Device.DHCPv6.Server.Pool.1.PrefixRangeEnd", $ip_config['dhcpv6_end_addr'], false);
 			setStr("Device.DHCPv6.Server.Pool.1.LeaseTime", $ip_config['dhcpv6_lease_time'], true);
