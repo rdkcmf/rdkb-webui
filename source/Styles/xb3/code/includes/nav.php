@@ -52,6 +52,7 @@ $moca_diagnostics   = TRUE;
 $voice_Dig = FALSE;
 $partnersId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 $voice_dev = getStr('Device.DeviceInfo.SoftwareVersion');
+$modelName= getStr("Device.DeviceInfo.ModelName");
 /*
  * The difference between  bridge mode and router mode
  * In bridge mode, local ip config page, firewall page, parental control pages, 
@@ -106,6 +107,7 @@ else {
  * generate menu and submenu accroding to above configuration
  */
 $allowEthWan= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.AllowEthernetWAN");
+$autoWanEnable= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_AutowanFeatureSupport");
 echo '<div id="nav">';
 echo '<ul>';
 echo '<li class="nav-gateway">';
@@ -133,7 +135,7 @@ echo '<li class="nav-gateway">';
 		if ($MoCA) {
 		  echo '<li class="nav-moca"><a role="menuitem"  href="moca.php">'._("MoCA").'</a></li>';
 		}
-		if(($allowEthWan=="true") && ( ($modelName=="CGM4140COM") || ($modelName=="CGM4331COM") || ($modelName=="TG4482A"))) {
+		if(((($autoWanEnable=="true") || ($allowEthWan=="true")) && (($modelName=="CGM4140COM") || ($modelName=="CGM4331COM"))) || (($allowEthWan=="true") && ($modelName=="TG4482A"))){
 			if($wan_network) echo '<li class="nav-wan-network"><a role="menuitem"  href="wan_network.php">'._("WAN Network").'</a></li>';
 		}
 		echo '</ul>';

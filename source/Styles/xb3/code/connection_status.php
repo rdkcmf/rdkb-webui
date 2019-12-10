@@ -28,6 +28,7 @@
 <?php $ForceDisable = getStr("Device.WiFi.X_RDK-CENTRAL_COM_ForceDisable"); ?>
 <?php  
     $interface = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstDownstreamIpInterface");
+    $autoWanEnable= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_AutowanFeatureSupport");
     // $interface = "Device.IP.Interface.2.";
 	// initial some variable to suppress some error
     $ipv6_local_addr = "";
@@ -322,7 +323,9 @@ $(document).ready(function() {
               </div>
     </div><!-- end .module local ip network-->
 <?php
-if($allowEthWan=="true"){
+
+$selectedOperationalMode = getStr("Device.X_RDKCENTRAL-COM_EthernetWAN.SelectedOperationalMode");
+if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
 ?>
     <div class="module forms block" style="margin-bottom:0px"><!--- WAN Network -->
       <h2><?php echo _("WAN Network")?></h2>
@@ -330,10 +333,24 @@ if($allowEthWan=="true"){
                 <div class="form-row ">
                     <span class="readonlyLabel"><?php echo _("WAN Network Status:")?></span> <span class="value">
                          <?php
-                          if($wan_enable=="true")
+                          if($autoWanEnable=="true"){
+                            if(strtolower($selectedOperationalMode)=="ethernet"){
                               echo _("Active Ethernet WAN");
-                          else
+                            }else if(strtolower($selectedOperationalMode)=="docsis"){
                               echo _("Active Docsis WAN");
+                            }else{
+                              echo _("Active Auto WAN");
+                            }
+                          }else{
+                            $wan_enable= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
+                            if($wan_enable=="true"){
+                              echo _("Active Ethernet WAN");
+                            }else{
+                              echo _("Active Docsis WAN");
+                            }
+                          }                             
+                           
+                          
                          ?>
                     </span>
                 </div>
