@@ -26,15 +26,26 @@
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
 <?php
+	$modelName= getStr("Device.DeviceInfo.ModelName");
+	$autoWanEnable= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_AutowanFeatureSupport");
 	$allowEthWan= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.AllowEthernetWAN");
-	if($allowEthWan != "true") die();
+	$wanPort= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Port");
+	if(!(((($autoWanEnable=="true") || ($allowEthWan=="true")) && (($modelName=="CGM4140COM") || ($modelName=="CGM4331COM"))) || (($allowEthWan=="true") && ($modelName=="TG4482A"))) ){
+		die();
+	}
 	$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
 	$WANIPv4 = getStr($fistUSif."IPv4Address.1.IPAddress");
 	$WANIPv6= getStr("Device.DeviceInfo.X_COMCAST-COM_WAN_IPv6");
-	$wan_enable= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
-	$wan_status= getStr("Device.Ethernet.Interface.1.Status");
-	$wnStatus= ($wan_enable=="true" && $wan_status=="Down") ? "true" : "false";
+	if($autoWanEnable!="true"){
+		$wan_enable= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
+          	$wan_status= getStr("Device.Ethernet.Interface.".($wanPort+1).".Status");
+		$wnStatus= ($wan_enable=="true" && $wan_status=="Down") ? "true" : "false";
+	}
+	$autowan_status= getStr("Device.Ethernet.Interface.".($wanPort+1).".Status");
+	$selectedOperationalMode =getStr("Device.X_RDKCENTRAL-COM_EthernetWAN.SelectedOperationalMode");
 	$bridge_mode = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode");
+	$currentOpMode = getStr("Device.X_RDKCENTRAL-COM_EthernetWAN.CurrentOperationalMode");
+	$autownStatus = (strtolower($currentOpMode)=="ethernet" && $autowan_status=="Down") ? "true" : "false";
 ?>
 <style type="text/css">
 label{
@@ -62,9 +73,11 @@ $(document).ready(function() {
 		state: <?php echo ($wan_enable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});
 	 <?php
-		if ($bridge_mode == "bridge-static") {
+		if ($bridge_mode == "bridge-static" ) {
 			echo '$("#wan_switch").children(".rs_radiolist").addClass("disabled_state");';
 			echo '$("#wan_switch").data("radioswitchstates", "false");';
+			echo '$("#autowan").prop("disabled", true);';
+			echo '$("#save").prop("disabled", true);';
 		}
 	?>	
 	$("#wan_switch").change(function()
@@ -88,6 +101,47 @@ $(document).ready(function() {
 		}
 	});
 });
+function changeAutoWanMode(){
+	var optionNAame = $('#autowan').find(":selected").text();
+	var selectedOptionName = "<?php echo strtolower($selectedOperationalMode) ?>";
+    	
+	if(optionNAame=="Ethernet"){
+		jConfirm("<?php echo _("Please note that changing the configuration to Ethernet WAN requires connection of an Ethernet cable to a service provider gateway.")?>","<?php echo _("WARNING:")?>"
+				,function(ret) {
+					if(ret) {
+						
+						saveConfig(optionNAame);
+						
+					} //end of if ret
+					else {
+						
+						$("#autowan").val(selectedOptionName);
+						
+					}
+				});//end of jConfirm
+	}else{
+		saveConfig(optionNAame);
+	}
+}
+function saveConfig(jsConfigVal){
+	var jsConfig='{"wan_network": "' + jsConfigVal + '"} ';
+	 jProgress('<?php echo _("Waiting for backend to be fully executed, please be patient...")?>', 100);
+						$.ajax({
+							type: "POST",
+							url: "actionHandler/ajaxSet_wan_network.php",
+							data: { configInfo: jsConfig },
+							success: function() {   
+								setTimeout(function(){
+									jHide();
+									window.location.reload(true);
+								}, 60000);
+							},
+							error: function(){
+								jHide();
+								jAlert("<?php echo _("Failure, please try again.")?>");
+							}
+						});	
+}
 function changeMode(jsConfig){
 	jProgress('<?php echo _("Waiting for backend to be fully executed, please be patient...")?>', 100);
 	$.ajax({
@@ -118,32 +172,84 @@ function changeMode(jsConfig){
     <div class="module forms enable">
         <h2>WAN Network</h2>
         <?php
-        	if ("admin" == $_SESSION["loginuser"]){       	 
+        	if ("admin" == $_SESSION["loginuser"]){
+        		if($autoWanEnable=="true"){
         ?>
-		<div class="select-row">
-			<label><?php echo _("WAN Network:")?></label>
-			<span id="wan_switch"></span>
-			<?php
-				if($wnStatus=="true"){
-					echo "<br><br>";
-			?>
-				<div class="select-row" id="noEth"><p class="error"><?php echo _("No Ethernet WAN Connection is detected on Port 1.")?></p></div>
-			<?php
-			}
-			?>			
-		</div>
+        		<div class="select-row">
+				<label><?php echo _("WAN Network:")?></label>
+				<span id=""><select name="autowan" id="autowan">
+				<?php
+				if(strtolower($selectedOperationalMode)=="ethernet"){
+					echo "<option value='auto' >Auto</option>
+					<option value='docsis'>DOCSIS</option>
+					<option value='ethernet' selected>Ethernet</option>";
+				}else if(strtolower($selectedOperationalMode)=="docsis"){
+					echo "<option value='auto' >Auto</option>
+					<option value='docsis' selected>DOCSIS</option>
+					<option value='ethernet'>Ethernet</option>";
+				}else{
+					echo "<option value='auto' selected>Auto</option>
+					<option value='docsis' >DOCSIS</option>
+					<option value='ethernet' >Ethernet</option>";
+				}
+				?>
+			
+			</select></span>
+				<?php
+					if($autownStatus=="true"){
+						
+				?>
+					<div class="select-row" id="noEth"><p class="error"><?php echo _("No Ethernet WAN Connection is detected on Port 4.")?></p></div>
+				<?php
+				}
+				?>				
+			</div>
+        <?php
+        		}else{
+        ?>
+			<div class="select-row">
+				<label><?php echo _("WAN Network:")?></label>
+				<span id="wan_switch"></span>
+				<?php
+					if($wnStatus=="true"){
+						echo "<br><br>";
+				?>
+					<div class="select-row" id="noEth"><p class="error"><?php echo _("No Ethernet WAN Connection is detected on Port 1.")?></p></div>
+				<?php
+				}
+				?>			
+			</div>
 		<?php
+			}
 		}else{
 		?>
 		<div class="form-row">
 		<span class="readonlyLabel"><?php echo _("WAN Network:")?></span>
-		<span class="value"><?php 
-		if($wan_enable=="true"){
-			echo _("Active Ethernet WAN");
+		<?php
+		if($autoWanEnable=="true"){
+			?>
+			<span class="value"><?php 
+			if(strtolower($selectedOperationalMode)=="ethernet"){
+				echo _("Active Ethernet WAN");
+			}else if(strtolower($selectedOperationalMode)=="docsis"){
+				echo _("Active Docsis WAN");
+			}else{
+				echo _("Active Auto WAN");
+			}
+			?></span>
+		<?php
 		}else{
-			echo _("Active Docsis WAN");
+		?>
+			<span class="value"><?php 
+			if($wan_enable=="true"){
+				echo _("Active Ethernet WAN");
+			}else{
+				echo _("Active Docsis WAN");
+			}
+			?></span>
+		<?php
 		}
-		?></span>
+		?>
 		</div>
 		<?php
 		}
@@ -156,17 +262,48 @@ function changeMode(jsConfig){
         <?php
            }
            ?> 
-		<div class="form-row odd">
+           <?php
+		if($autoWanEnable=="true"){
+			?>
+        <div class="form-row odd">
+		<span class="readonlyLabel"><?php echo _("Current Operational Mode:")?></span>
+		<span class="value"><?php echo $currentOpMode;?></span>
+	</div>
+		<div class="form-row ">
+		<?php
+		}else{
+			echo '<div class="form-row odd">';
+		}
+		?>
+		
 		<span class="readonlyLabel"><?php echo _("WAN IP Address (IPv4):")?></span>
 		<span class="value"><?php echo $WANIPv4;?></span>
 	</div>
-		<div class="form-row">
+	 <?php
+		if($autoWanEnable=="true"){
+			echo '<div class="form-row odd">';
+		}else{
+			echo '<div class="form-row ">';
+		}
+			?>
 		<span class="readonlyLabel"><?php echo _("WAN IP Address (IPv6):")?></span> <span class="value">
 		<?php
 			echo $WANIPv6;
 		?>
-		</span>	
+		</span>
+	</div>	
+		<?php
+		if (("admin" == $_SESSION["loginuser"]) && ($autoWanEnable=="true")){ 
+		?>
+		<div class="form-row ">
+		<div class="form-btn">
+		<label for="save" class="acs-hide"></label>
+			<input type="button" id="save" value="<?php echo _("Save")?>" class="btn" onclick="changeAutoWanMode();"/>
 		</div>
+	</div>
+	<?php
+	}
+	?>
 	</div> <!-- end .module -->
 	</fieldset>
     </form>

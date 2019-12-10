@@ -106,15 +106,26 @@ $(document).ready(function() {
 	{
 		//true for Ethernet, False for Docsis
 		$wan_enable = getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
-          	$allowEthWan= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.AllowEthernetWAN");
-		switch ($str)
+		$selectedOperationalMode = getStr("Device.X_RDKCENTRAL-COM_EthernetWAN.SelectedOperationalMode");
+        $autoWanEnable= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_AutowanFeatureSupport");  
+        $allowEthWan= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.AllowEthernetWAN");
+        $wanPort= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Port");  
+        switch ($str)
 		{
 			case "Up":
-				if($allowEthWan=="true" && $i==1){
+				if($allowEthWan=="true" && $i==($wanPort+1) && $autoWanEnable=="false"){
 					if($wan_enable=="true")
 						return "Active Ethernet WAN";
 					else
 						return "Active Docsis WAN";
+				} else if(($autoWanEnable=="true") && ($i==($wanPort+1))){
+					if(strtolower($selectedOperationalMode)=="ethernet"){
+						return "Active Ethernet WAN";
+					}else if(strtolower($selectedOperationalMode)=="docsis"){
+						return "Active Docsis WAN";
+					}else{
+						return  "Active Auto WAN";
+					}
 				} else {
 					return "Active";
 				}

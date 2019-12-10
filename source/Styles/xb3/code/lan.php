@@ -95,20 +95,31 @@ $(document).ready(function() {
 		<p class="hidden"><?php echo _('The Gateway has 4 Gigabit (GbE) Ethernet Ports. When a device is connected to the Gateway with an Ethernet cable, you\'ll see an <i>Active</i> status for that port.')?></p>
 	</div>
 	<?php
-	function NameMap($str)
+	function NameMap($str,$i)
 	{
 		//true for Ethernet, False for Docsis
 		$wan_enable = getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
+		$selectedOperationalMode = getStr("Device.X_RDKCENTRAL-COM_EthernetWAN.SelectedOperationalMode");
 		$allowEthWan= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.AllowEthernetWAN");
+  		$autoWanEnable= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_AutowanFeatureSupport");
+		$wanPort= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Port");
 		switch ($str)
 		{
 			case "Up":
-				if($allowEthWan=="true"){
+				if($allowEthWan=="true" && $autoWanEnable=="false"){
 					if($wan_enable=="true")
 						return _("Active Ethernet WAN");
 					else
 						return _("Active Docsis WAN");
-				} else {
+				}else if(($autoWanEnable=="true") && ($i==($wanPort+1))){
+					if(strtolower($selectedOperationalMode)=="ethernet"){
+						return "Active Ethernet WAN";
+					}else if(strtolower($selectedOperationalMode)=="docsis"){
+						return "Active Docsis WAN";
+					}else{
+						return  "Active Auto WAN";
+					} 
+				}else {
 					return _("Active");
 				}
 				break;
@@ -158,7 +169,7 @@ $(document).ready(function() {
 		{
 			echo '<div class="form-row '.(($m++ % 2)?'odd':'').'" >';
 			echo '<span class="readonlyLabel">'.$dm[$i][0].'</span>';
-			echo '<span class="value">'.($dm[$i][1] === null ? NameMap($dm[$i][2]) : $dm[$i][1]).'</span>';
+			echo '<span class="value">'.($dm[$i][1] === null ? NameMap($dm[$i][2],$ids[$id]) : $dm[$i][1]).'</span>';
 			echo '</div>';
 		}
 		if ($ids[$id] === "4") {

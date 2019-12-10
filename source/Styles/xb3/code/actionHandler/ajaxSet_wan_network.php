@@ -22,13 +22,22 @@ if (!isset($_SESSION["loginuser"])) {
 	exit(0);
 }
 $allowEthWan= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.AllowEthernetWAN");
-if($allowEthWan != "true") die();
+$autoWanEnable= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_AutowanFeatureSupport");
+$modelName= getStr("Device.DeviceInfo.ModelName");
+if(!(((($autoWanEnable=="true") || ($allowEthWan=="true")) && (($modelName=="CGM4140COM") || ($modelName=="CGM4331COM"))) || (($allowEthWan=="true") && ($modelName=="TG4482A"))) ){
+		die();
+}
 $jsConfig = $_POST['configInfo'];
 $arConfig = json_decode($jsConfig, true);
 //print_r($arConfig);
 $thisUser = $_SESSION["loginuser"];
 if($thisUser=="admin"){
-	setStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled", $arConfig['wan_network'], true);
+	if($autoWanEnable=="true"){
+		setStr("Device.X_RDKCENTRAL-COM_EthernetWAN.SelectedOperationalMode", $arConfig['wan_network'], true);
+	}else{
+		setStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled", $arConfig['wan_network'], true);
+	}
+	
 }
 
 echo htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8');
