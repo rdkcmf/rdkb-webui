@@ -1125,7 +1125,16 @@ $('#restore_ipv6').click(function(e) {
 <!--     			<span id="ipv4_dhcp_beginning_address" class="readonlyValue"></span> -->
                 <?php  
     			   $beginAddr = $dhcpv4_value["beginAddr"];
-    			   $beginArr = explode(".", $beginAddr);    			   
+                           $SecWebUI = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.SecureWebUI.Enable");
+                           if (!strcmp($SecWebUI, "true")) {
+                                 $dhcp_startout = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
+                                 $beginArr = explode(".", $dhcp_startout);
+                                 $beginArr['3'] = "2";
+                           }
+                           else
+                           {
+                                 $beginArr = explode(".", $beginAddr);
+                           } 
     			?>  
     			<input type="text" size="3" maxlength="3" value="<?php echo $beginArr['0']; ?>" id="ipv4_dhcp_beginning_address_1" name="ipv4_dhcp_beginning_address_1" class="smallInput" />
     	        <label for="ipv4_dhcp_beginning_address_2" class="acs-hide"></label>
@@ -1139,7 +1148,15 @@ $('#restore_ipv6').click(function(e) {
                 <label for="ipv4_dhcp_ending_address_1"><?php echo _('DHCP Ending Address:')?></label>
                 <?php  
     			   $endAddr = $dhcpv4_value["endAddr"];
-    			   $endArr = explode(".", $endAddr);    
+                           if (!strcmp($SecWebUI, "true")) {
+                                 $dhcp_endout = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
+                                 $endArr = explode(".", $dhcp_endout);
+                                 $endArr['3'] = "253";
+                           }
+                           else
+                           {
+                                 $endArr = explode(".", $endAddr);
+                           }
     			?> 
 				<input type="text" size="3" maxlength="3" value="<?php echo $endArr['0']; ?>" id="ipv4_dhcp_ending_address_1" name="ipv4_dhcp_ending_address_1" class="smallInput" />
     	        <label for="ipv4_dhcp_ending_address_2" class="acs-hide"></label>
