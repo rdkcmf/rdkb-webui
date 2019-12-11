@@ -257,11 +257,7 @@ function checkRFSignalStatus(val){
         else{
          if(val=="button"){
              jHide();
-            setTimeout(function(){
-               jAlert("Please try again later");
-             }, 2000);
-           
-          }
+         }
         }
       }
     });
@@ -310,11 +306,7 @@ $defaultLanguage= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UI
       $tryAgain="Réessayer";
   }else{
       $header="We can't detect a cable signal.";
-      $content ="Please check that your coax cables are tightly secured. If the cables are secured, and you're trying to activate your Gateway, try another cable outlet in your house. If the problem persists, give us a call";
-       if($partnerId=="comcast")
-          $content = $content." at <font color='#3BB9FF'> 1-800-xfinity </font></p>";
-        else
-          $content = $content.".";
+      $content ="Please check that your coax cables are tightly secured. If the cables are secured, and you're trying to activate your Gateway, try another cable outlet in your house. If the problem persists, give us a call.";
       $tryAgain="Try Again";  
   }
   
