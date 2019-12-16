@@ -193,7 +193,7 @@ function showDialog() {
 		width: "600px"
 	});
 	//disable wep if 11n
-	if ("n"==$("#wireless_mode").val() || "n,ac"==$("#wireless_mode").val() || "a,n,ac"==$("#wireless_mode").val() || "g,n"==$("#wireless_mode").val() || "b,g,n"==$("#wireless_mode").val()) {
+	if ("n"==$("#wireless_mode").val() || "n,ac"==$("#wireless_mode").val() || "a,n"==$("#wireless_mode").val() || "a,n,ac"==$("#wireless_mode").val() || "a,n,ac,ax"==$("#wireless_mode").val() || "g,n"==$("#wireless_mode").val() || "b,g,n"==$("#wireless_mode").val() || "g,n,ax"==$("#wireless_mode").val()) {
 		$("#pop_dialog").find("[value='WEP_64'],[value='WEP_128']").prop("disabled", true);
 	}
 	else {
@@ -396,7 +396,7 @@ $(document).ready(function() {
 	});
 	$("#wireless_mode").change(function() {
 		// ONLY deal WEP for UI-4.0
-		if ("n"==$("#wireless_mode").val() || "n,ac"==$("#wireless_mode").val() || "a,n,ac"==$("#wireless_mode").val() || "g,n"==$("#wireless_mode").val() || "b,g,n"==$("#wireless_mode").val()) {
+		if ("n"==$("#wireless_mode").val() || "n,ac"==$("#wireless_mode").val() || "a,n"==$("#wireless_mode").val() || "a,n,ac"==$("#wireless_mode").val() || "a,n,ac,ax"==$("#wireless_mode").val() || "g,n"==$("#wireless_mode").val() || "g,n,ax"==$("#wireless_mode").val()) {
 			if ($("#security").val()=="WEP_64" || $("#security").val()=="WEP_128"){
 				$("#security").val("WPA2_PSK_AES")
 			}
@@ -912,21 +912,29 @@ function setResetInfo(info) {
 			<?php
 				//zqiu: add "selected"
 				if ("5"==$radio_band){
+					echo '<option value="n" ';     echo (    "n"==$wireless_mode)? 'selected':''; echo'>802.11 n</option>';
 					if (strstr($supported_mode, "ac")){
-						echo '<option value="ac" ';     echo (    "ac"==$wireless_mode)? 'selected':''; echo'>802.11 ac</option>';
-						echo '<option value="n,ac" ';   echo (  "n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 n/ac</option>';
+						echo '<option value="ac" '; echo ("ac"==$wireless_mode)? 'selected':''; echo'>802.11 ac</option>';
+						echo '<option value="n,ac" '; echo ("n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 n/ac</option>';
 						echo '<option value="a,n,ac" '; echo ("a,n,ac"==$wireless_mode)? 'selected':''; echo'>802.11 a/n/ac</option>';
-						echo '<option value="n" ';      echo (     "n"==$wireless_mode)? 'selected':''; echo'>802.11 n</option>';
 					}
-					else {
-						echo '<option value="n" '   ; echo (     "n"==$wireless_mode)? 'selected':''; echo'>802.11 n</option>';
-						echo '<option value="a,n" ' ; echo (     "a,n"==$wireless_mode)? 'selected':''; echo'>802.11 a/n</option>';
+					else { 
+						echo '<option value="a,n" ';   echo (  "a,n"==$wireless_mode)? 'selected':''; echo'>802.11 a/n</option>';
 					}
+					if (strstr($supported_mode, "ax")){
+						echo '<option value="a,n,ac,ax" '; echo ("a,n,ac,ax"==$wireless_mode)? 'selected':''; echo'>802.11 a/n/ac/ax</option>';
+                                                echo '<option value="ax" '; echo ("ax"==$wireless_mode)? 'selected':''; echo'>802.11 ax</option>';
+					}				
 				}
 				else {
 					echo '<option value="n" ';     echo (    "n"==$wireless_mode)? 'selected':'';  echo '>802.11 n</option>';
 					echo '<option value="g,n" ';   echo (  "g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 g/n</option>';
 					//echo '<option value="b,g,n" '; echo ("b,g,n"==$wireless_mode)? 'selected':'';  echo'>802.11 b/g/n</option>';
+                                        if (strstr($supported_mode, "ax")){
+                                                echo '<option value="g,n,ax" '; echo ("g,n,ax"==$wireless_mode)? 'selected':''; echo'>802.11 g/n/ax</option>';
+                                                echo '<option value="ax" '; echo ("ax"==$wireless_mode)? 'selected':''; echo'>802.11 ax</option>';
+                                        }                               
+ 
 				}
 			?>
 			</select>

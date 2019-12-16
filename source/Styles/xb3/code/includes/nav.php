@@ -90,6 +90,10 @@ if (strpos($partnerId, "sky-") !== false) {
     else{$voice_Dig = FALSE;}
 }
 
+if (strpos($modelName, "CGM4331COM") !== false) {
+    $battery = FALSE;
+}
+
 /*
  * generate menu and submenu accroding to above configuration
  */
