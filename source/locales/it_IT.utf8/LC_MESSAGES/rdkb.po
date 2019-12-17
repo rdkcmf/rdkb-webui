@@ -555,7 +555,8 @@ msgstr "Accesso bloccato, contattare l’amministratore!"
 #: parental_reports_download.php:29 trigger_download.php:27
 #: trigger_spectrum_download.php:27
 msgid "Please Login First!"
-msgstr "Per prima cosa, accedere!"
+msgstr "Per procedere, effettua l\\'accesso"
+
 
 #: actionHandler/ajaxSet_Battery.php:39
 #: actionHandler/ajaxSet_add_blockedSite.php:80
@@ -638,14 +639,14 @@ msgstr "Questo IP è riservato a Home Security!"
 #: actionHandler/ajaxSet_add_device.php:47
 #: actionHandler/ajaxSet_add_device.php:53
 msgid "Input IP is not in valid range:\n"
-msgstr "L'IP non è in un intervallo valido\n"
+msgstr "L\\'IP non è in un intervallo valido\n"
 
 #: actionHandler/ajaxSet_add_device.php:59
 msgid ""
 "Input IP is not in valid range:\n"
 " [10.0.0.2 ~ 10.255.255.254]!"
 msgstr ""
-"L'IP non è in un intervallo valido:\n"
+"L\\'IP non è in un intervallo valido:\n"
 " [10.0.0.2 ~ 10.255.255.254]!"
 
 #: actionHandler/ajaxSet_add_device.php:81
@@ -654,8 +655,8 @@ msgid ""
 "IP has already been reserved for another device.\n"
 "Please try using another IP address!"
 msgstr ""
-"L'IP è già stato riservato a un altro dispositivo.\n"
-"Prova a utilizzare un altro indirizzo IP!"
+"L\\'IP è già stato riservato per un altro dispositivo.\n"
+"Prova a utilizzare un altro indirizzo IP"
 
 #: actionHandler/ajaxSet_add_device.php:139
 #: actionHandler/ajaxSet_add_device.php:168
@@ -856,7 +857,8 @@ msgstr "Il nome del servizio è stato utilizzato!\n"
 #: wireless_network_configuration_wps.php:132 wizard_step1.php:94
 #: wizard_step2.php:293
 msgid "This may take several seconds..."
-msgstr "Questo potrebbe richiedere alcuni secondi..."
+msgstr "L\\'operazione potrebbe richiedere alcuni secondi..."
+
 
 #: admin_password_change.php:158 password_change.php:98
 msgid "Changes saved successfully . <br/> Please login with the new password."
@@ -925,11 +927,12 @@ msgstr " secondi, attendi..."
 #: at_a_glance.php:152
 #, php-format
 msgid "Enabling Bridge Mode will disable the Wi-Fi router functionality of your %s Gateway and turn off your existing private Wi-Fi network. If you have %s Pods, the Gateway cannot be in bridge mode since the Pods require using the %s Gateway as your WiFi router. In addition, you will not be able to access the %s experience to manage your Pods or any other %s settings. Are you sure you want to continue?"
-msgstr "Abilitando la Bridge Mode si disabiliterà la funzionalità Wi-Fi del Gateway %s e si spegnerà la rete Wi-Fi privata esistente. Se si dispone di Pod %s, il Gateway non può essere in modalità bridge poiché i Pod richiedono l'utilizzo del Gateway %s come router WiFi. Inoltre, non sarà possibile accedere all'esperienza %s per gestire i Pod o altre impostazioni %s. Continuare?"
+msgstr "Abilitando la Bridge Mode si disabiliterà la funzionalità wifi del tuo Sky Wifi Hub %s e si spegnerà la rete wifi privata esistente. Se si dispone di Pod %s, il tuo Sky Wifi Hub non può essere in modalità bridge poiché i Pod richiedono l\\'utilizzo del tuo Sky Wifi Hub %s come router wifi. Inoltre, non sarà possibile accedere all\\'esperienza %s per gestire i Pod o altre impostazioni %s. Continuare?"
 
 #: at_a_glance.php:154
 msgid "Enabling Bridge Mode will disable the Wi-Fi router functionality of your Gateway and turn off your existing private Wi-Fi network. If you have Pods, the Gateway cannot be in bridge mode since the Pods require using the Gateway as your WiFi router. In addition, you will not be able to access the experience to manage your Pods or any other settings. Are you sure you want to continue?"
-msgstr "Abilitando la Bridge Mode si disabiliterà la funzionalità Wi-Fi del Gateway e si spegnerà la rete Wi-Fi privata esistente. Se si dispone di Pod, il Gateway non può essere in modalità bridge poiché i Pod richiedono l'utilizzo del Gateway come router WiFi. Inoltre, non sarà possibile accedere all'esperienza per gestire i Pod o altre impostazioni. Continuare?"
+msgstr "Abilitando la Bridge Mode si disabiliterà la funzionalità wifi del tuo Sky Wifi Hub e si spegnerà la rete wifi privata esistente. Se si dispone di Pod, il tuo Sky Wifi Hub non può essere in modalità bridge poiché i Pod richiedono l\\'utilizzo del tuo Sky Wifi Hub come router wifi. Inoltre, non sarà possibile accedere all\\'esperienza per gestire i Pod o altre impostazioni. Continuare?"
+
 
 #: at_a_glance.php:159 wan_network.php:69
 msgid "WARNING:"
@@ -1133,7 +1136,8 @@ msgstr "Visualizzare le informazioni sullo stato della batteria del Gateway."
 
 #: battery.php:70
 msgid "Battery power is for voice service only."
-msgstr "L'alimentazione a batteria è solo per il servizio vocale."
+msgstr "L\\'alimentazione a batteria è disponibile solo per il servizio vocale."
+
 
 #: battery.php:71
 msgid "<strong>Number of Cycles to date:</strong> Indicates how many discharge and charge cycles the battery has gone through from the day it was inserted."
@@ -1268,7 +1272,8 @@ msgstr "Password errata per mso!"
 
 #: check.php:203
 msgid "Incorrect password for admin!"
-msgstr "Password errata per l'amministratore!"
+msgstr "Password errata per l\\'amministratore"
+
 
 #: check.php:220
 msgid "You are using default password. Please change the password."
@@ -1308,7 +1313,7 @@ msgstr "Inserisci un indirizzo IP riservato!"
 
 #: connected_devices_computers.php:199
 msgid "Reserved IP Address is not in valid range:"
-msgstr "L'indirizzo IP riservato non è in un intervallo valido:"
+msgstr "L\\'indirizzo IP riservato non è in un intervallo valido:"
 
 #: connected_devices_computers.php:218 connected_devices_computers_add.php:116
 #: hs_port_forwarding_add.php:109 hs_port_forwarding_edit.php:137
@@ -1394,7 +1399,8 @@ msgstr "Errore, riprova."
 #: port_triggering_add.php:93 port_triggering_edit.php:94
 #: troubleshooting_logs.php:224
 msgid "This may take several seconds."
-msgstr "Questo potrebbe richiedere alcuni secondi."
+msgstr "L\\'operazione potrebbe richiedere alcuni secondi."
+
 
 #: connected_devices_computers.php:299 dlna_settings.php:59 dynamic_dns.php:68
 #: hs_port_forwarding.php:71 hs_port_forwarding.php:121
@@ -1411,7 +1417,8 @@ msgstr "Dispositivi collegati> Dispositivi"
 #: connected_devices_computers.php:309
 #, php-format
 msgid "Managing your home network settings is now easier than ever. Visit <a href='http://%s'>%s</a> to view and manage your list of connected/offline devices. You can block access to your home network for any device, among many other features and settings."
-msgstr "La gestione delle impostazioni della rete domestica è ora più facile che mai. Visita <a href='http://%s'>%s</a> per visualizzare e gestire l'elenco dei dispositivi collegati/non in linea. È possibile bloccare l'accesso alla rete domestica per qualsiasi dispositivo, tra le molte altre funzioni e impostazioni."
+msgstr "Gestire le impostazioni della tua rete domestica è semplicissimo. Visita <a href='http://%s'>%s</a> per visualizzare e gestire l\\'elenco dei dispositivi. Potrai anche bloccare l\\'accesso alla rete domestica per qualsiasi dispositivo."
+
 
 #: connected_devices_computers.php:313
 msgid "View information about devices currently connected to your network, as well as connection history."
@@ -1431,7 +1438,8 @@ msgstr "I <strong>dispositivi offline</strong>  erano connessi alla tua rete, ma
 
 #: connected_devices_computers.php:317
 msgid "To block Internet access to a device connected to your Gateway, click the <strong>X</strong> button."
-msgstr "Per bloccare l'accesso a Internet a un dispositivo collegato al proprio Gateway, fare clic sul pulsante <strong>X</strong>."
+msgstr "Per bloccare l\\'accesso a Internet su un dispositivo collegato al tuo Sky Wifi Hub, clicca sul pulsante <strong>X</strong>."
+
 
 #: connected_devices_computers.php:324
 msgid "Prefer Private Connection"
@@ -1468,7 +1476,7 @@ msgstr "Connessione"
 
 #: connected_devices_computers.php:509
 msgid "add this device to Blocked Devices List"
-msgstr "aggiungere questo dispositivo all'elenco dei dispositivi bloccati"
+msgstr "aggiungere questo dispositivo all\\'elenco dei dispositivi bloccati"
 
 #: connected_devices_computers.php:546
 msgid "Add Device with Reserved IP"
@@ -1524,7 +1532,8 @@ msgstr "in questa tabella sono visualizzati i dispositivi offline collegati al S
 
 #: connected_devices_computers.php:766 connected_devices_computers.php:844
 msgid "disconnect and deny Wi-Fi access to this device"
-msgstr "disconnettere e negare l'accesso Wi-Fi a questo dispositivo"
+msgstr "disconnetti e nega l\\'accesso al wifi da questo dispositivo"
+
 
 #: connected_devices_computers.php:796
 msgid "Online Devices - Public Wi-Fi SSID"
@@ -1560,11 +1569,12 @@ msgstr "Modificare il metodo di assegnazione degli indirizzi IP per i dispositiv
 
 #: connected_devices_computers.php:872
 msgid "If DHCP is selected, the Gateway's DHCP server will automatically assign the IP address."
-msgstr "Se si seleziona DHCP, il server DHCP del Gateway assegnerà automaticamente l'indirizzo IP."
+msgstr "Se selezioni DHCP, il server DHCP del tuo Sky Wifi Hub assegnerà automaticamente l\\'indirizzo IP."
 
 #: connected_devices_computers.php:873
 msgid "If Reserved IP is selected, the IP address will be fixed without DHCP operation and you'll need to manually enter the IP address. The IP address must be within the DHCP IP address pool. To find your IP address range, go to <strong>Gateway > Connection > Local IP Network.</strong>"
-msgstr "Se si seleziona IP riservato, l'indirizzo IP sarà fisso senza il funzionamento DHCP e sarà necessario inserire manualmente l'indirizzo IP. L'indirizzo IP deve essere all'interno del pool di indirizzi IP DHCP. Per trovare il tuo intervallo di indirizzi IP, vai a <strong>Gateway > Connessione > Rete IP locale.</strong>"
+msgstr "Se selezioni IP riservato, l\\'indirizzo IP sarà fisso senza il funzionamento DHCP e sarà necessario inserirlo manualmente. L\\'indirizzo IP deve essere all\\'interno del pool di indirizzi IP. Per trovare il tuo intervallo di indirizzi IP, vai su <strong>Sky Wifi Hub > Connessione > Rete IP locale.</strong>"
+
 
 #: connected_devices_computers.php:874
 msgid "Reserved IP addresses can be assigned to any device that acts as a server or that requires a fixed IP address."
@@ -1615,11 +1625,11 @@ msgstr "Non sono ammessi caratteri speciali, sono ammessi solo lettere e numeri.
 
 #: connected_devices_computers_add.php:94
 msgid "Reserved IP Address is not in valid range:\\n"
-msgstr "L'indirizzo IP riservato non è in un intervallo valido:\\n"
+msgstr "L\\'indirizzo IP riservato non è in un intervallo valido:\\n"
 
 #: connected_devices_computers_add.php:104
 msgid "The MAC address is invalid, please input again."
-msgstr "L'indirizzo MAC non è valido, immettere nuovamente."
+msgstr "L\\'indirizzo MAC non è valido, immettere nuovamente."
 
 #: connected_devices_computers_add.php:129
 msgid "Connected Devices > Devices > Add Device"
@@ -1639,7 +1649,8 @@ msgstr "<strong>Indirizzo MAC:</strong> Indirizzo MAC del dispositivo da aggiung
 
 #: connected_devices_computers_add.php:134
 msgid "<strong>Reserved IP address:</strong>  The IP address of the device being added must be within the Gateway's range of the DHCP IP address pool.To find your IP address range, go to <strong>Gateway > Connection > Local IP Network.</strong>"
-msgstr "<strong>Indirizzo IP riservato:</strong> L'indirizzo IP del dispositivo da aggiungere deve essere compreso nell'intervallo del gateway del pool di indirizzi IP DHCP. Per trovare il tuo intervallo di indirizzi IP, vai su <strong>Gateway> Connessione> Rete IP locale.</strong>"
+msgstr "<strong>Indirizzo IP riservato:</strong> L\\'indirizzo IP del dispositivo da aggiungere deve essere compreso nell\\'intervallo degli indirizzi IP del tuo Sky Wifi Hub. Per trovare il tuo intervallo di indirizzi IP, vai su <strong>Sky Wifi Hub> Connessione> Rete IP locale.</strong>"
+
 
 #: connected_devices_computers_add.php:137
 msgid "Add Device with Reserved IP Address"
@@ -1865,7 +1876,8 @@ msgstr "Spiacenti, riprovare."
 
 #: cordless_handsets.php:198
 msgid "CAT-iq function is disabled internally, please contact administrator!"
-msgstr "La funzione CAT-iq è disattivata internamente, contattare l'amministratore!"
+msgstr "La funzione CAT-iq è disattivata internamente, contatta l\\'amministratore"
+
 
 #: cordless_handsets.php:204
 msgid "Connected Devices > Cordless Handsets"
@@ -1881,7 +1893,8 @@ msgstr "<strong>REGISTRA NUOVO DISPOSITIVO:</strong> clicca per collegare un nuo
 
 #: cordless_handsets.php:208
 msgid "<strong>DEREGISTER:</strong> Click to disassociate the handset from the Gateway."
-msgstr "<strong>ANNULLA LA REGISTRAZIONE:</strong> clicca per annullare l'associazione del dispositivo dal Gateway."
+msgstr "<strong>ANNULLA LA REGISTRAZIONE:</strong> clicca per annullare l\\'associazione del dispositivo al tuo Sky Wifi Hub."
+
 
 #: cordless_handsets.php:220 includes/nav.php:155
 msgid "Cordless Handsets"
@@ -2041,7 +2054,8 @@ msgstr "Sono validi solo i caratteri esadecimali. I caratteri accettabili sono A
 
 #: dmz.php:150 dmz.php:152
 msgid "DMZ v4 Host address is beyond the valid range."
-msgstr "L'indirizzo host DMZ v4 è oltre l'intervallo valido."
+msgstr "L\\'indirizzo host DMZ v4 è al di fuori dell\\'intervallo valido."
+
 
 #: dmz.php:185
 msgid "Enable DMZ"
@@ -2053,7 +2067,8 @@ msgstr "Disattiva DMZ"
 
 #: dmz.php:238
 msgid "DMZ v4 Host IP can't be equal to the Gateway IP address !"
-msgstr "IP host DMZ v4 non può essere uguale all'indirizzo IP del Gateway!"
+msgstr "IP host DMZ v4 non può essere uguale all\\'indirizzo IP del tuo Sky Wifi Hub"
+
 
 #: dmz.php:244 dmz.php:250 dmz.php:256
 msgid "DMZ v4 Host IP is not in valid range:"
@@ -2185,7 +2200,7 @@ msgstr "È possibile configurare una nuova voce DDNS inserendo i seguenti dettag
 
 #: dynamic_dns_add.php:162
 msgid "<strong>Service Provider:</strong>provide the registered FQDN of the Dynamic DNS Service Provider."
-msgstr "<strong>Provider di servizi:</strong>fornire l'FQDN registrato del provider di servizi DNS dinamico."
+msgstr "<strong>Provider di servizi:</strong>fornire l\\'FQDN registrato del provider di servizi DNS dinamico."
 
 #: dynamic_dns_add.php:163
 msgid "<strong>User Name:</strong> Enter the User Name you registered on the Service Provider."
@@ -2506,7 +2521,7 @@ msgid ""
 msgstr ""
 "Gli utenti possono configurare il RG per fornire i servizi di port forwarding che permettono agli utenti Internet di\n"
 "\t\taccedere ai servizi locali, come il server Web o il server FTP sul sito locale. Questo avviene mediante il\n"
-"\t\treindirizzamento della combinazione dell'indirizzo IP WAN e della porta di servizio verso l'IP privato locale e la sua\n"
+"\t\treindirizzamento della combinazione dell\\'indirizzo IP WAN e della porta di servizio verso l\\'IP privato locale e la sua\n"
 "        porta di servizio."
 
 #: hs_port_forwarding.php:156
@@ -2561,7 +2576,7 @@ msgstr "Inserire un indirizzo IP valido."
 
 #: hs_port_forwarding_add.php:39 hs_port_forwarding_edit.php:66
 msgid "Please enter a port number in range 1~65535."
-msgstr "Inserire un numero di porta nell'intervallo 1~65535."
+msgstr "Inserire un numero di porta nell\\'intervallo 1~65535."
 
 #: hs_port_forwarding_add.php:42 hs_port_forwarding_edit.php:69
 msgid "Please enter a value more than or equal to Start Public Port."
@@ -3063,7 +3078,7 @@ msgstr "Associa porta Ethernet 4 a rete XFINITY HOME:"
 
 #: lan.php:170
 msgid "Note: Associating Ethernet Port 4 to XFINITY HOME network will remove the port from your home network."
-msgstr "Nota: l'associazione della porta Ethernet 4 alla rete XFINITY HOME rimuoverà la porta dalla rete domestica."
+msgstr "Nota: l\\'associazione della porta Ethernet 4 alla rete XFINITY HOME rimuoverà la porta dalla rete domestica."
 
 #: lan.php:179
 msgid "Associate Ethernet Port 4 to HOME SECURITY Network:"
@@ -3071,15 +3086,16 @@ msgstr "Associa porta Ethernet 4 a rete HOME SECURITY:"
 
 #: lan.php:181
 msgid "Note: Associating Ethernet Port 4 to HOME SECURITY network will remove the port from your home network."
-msgstr "Nota: l'associazione della porta Ethernet 4 alla rete HOME SECURITY rimuoverà la porta dalla rete domestica."
+msgstr "Nota: l\\'associazione della porta Ethernet 4 alla rete domestica rimuoverà la porta dalla rete domestica."
+
 
 #: local_ip_configuration.php:327 local_ip_configuration.php:329
 msgid "DHCP Beginning address is beyond the valid range."
-msgstr "L'indirizzo di inizio DHCP è oltre l'intervallo valido."
+msgstr "L\\'indirizzo di inizio DHCP è oltre l\\'intervallo valido."
 
 #: local_ip_configuration.php:335 local_ip_configuration.php:337
 msgid "DHCP Ending address is beyond the valid range."
-msgstr "L'indirizzo di fine DHCP è oltre l'intervallo valido."
+msgstr "L\\'indirizzo di fine DHCP è oltre l\\'intervallo valido."
 
 #: local_ip_configuration.php:509
 msgid "Are you sure you want to change LAN IPv4 to default settings?"
@@ -3099,31 +3115,33 @@ msgstr "Un attimo di pazienza..."
 
 #: local_ip_configuration.php:640
 msgid "Gateway IP is not in valid private IP range"
-msgstr "L'IP Gateway non è in un intervallo IP privato valido"
+msgstr "L\\'IP del tuo Sky Wifi Hub non è in un intervallo IP privato valido"
+
 
 #: local_ip_configuration.php:644
 msgid "This IP address is reserved for Home Security, please input again"
-msgstr "Questo IP è riservato a Home Security, ripetere l’immissione"
+msgstr "Questo IP è riservato a Home Security, ripetere l\\’immissione"
 
 #: local_ip_configuration.php:649
 msgid "This IP address is reserved for XFi Pods, please input again"
-msgstr "Questo IP è riservato ai Pod XFi, ripetere l’immissione"
+msgstr "Questo IP è riservato agli Sky Wifi Pod, ripetere l\\’immissione"
 
 #: local_ip_configuration.php:663
 msgid "This IP address is reserved for CM Gateway IP Address, please input again!"
-msgstr "Questo IP è riservato all’indirizzo IP Gateway CM, ripetere l’immissione!"
+msgstr "Questo IP è riservato all\\’indirizzo IP del tuo Sky Wifi Hub CM, ripetere l\\’immissione"
 
 #: local_ip_configuration.php:667
 msgid "This IP address is reserved for WAN Gateway IPv4 Address, please input again!"
-msgstr "Questo IP è riservato all’indirizzo IPv4 Gateway WAN, ripetere l’immissione!"
+msgstr "Questo IP è riservato all\\’indirizzo IPv4 della WAN del gateway, ripetere l\\’immissione"
 
 #: local_ip_configuration.php:671
 msgid "This IP address is reserved for Virtual LAN IPv4 Address, please input again!"
-msgstr "Questo IP è riservato all’indirizzo IPv4 LAN virtuale, ripetere l’immissione!"
+msgstr "Questo IP è riservato all\\’indirizzo IPv4 LAN virtuale, ripetere l\\’immissione"
 
 #: local_ip_configuration.php:939
 msgid "DHCPv6 beginning address can't be larger than ending address!"
-msgstr "L’indirizzo iniziale DHCPv6 non può essere più grande dell’indirizzo finale!"
+msgstr "L\\’indirizzo iniziale DHCPv6 non può essere più grande dell\\’indirizzo finale"
+
 
 #: local_ip_configuration.php:954
 msgid "Are you sure you want to change LAN IPv6 to default settings?"
@@ -3147,15 +3165,16 @@ msgstr "<strong>Indirizzo Gateway:</strong> inserire l’indirizzo IP del Gatewa
 
 #: local_ip_configuration.php:998
 msgid "<strong>Subnet Mask:</strong> The subnet mask is associated with the IP address. Select the appropriate subnet mask based on the number of devices that will be connected to your network."
-msgstr "<strong>Maschera di sottorete:</strong> la maschera di sottorete è associata all'indirizzo IP. Selezionare la maschera di sottorete appropriata in base al numero di dispositivi che saranno collegati alla rete."
+msgstr "<strong>Subnet Mask:</strong> la subnet mask è associata all\\'indirizzo IP. Seleziona la subnet mask appropriata in base al numero di dispositivi che saranno collegati alla rete."
 
 #: local_ip_configuration.php:999
 msgid "<strong>DHCP Beginning and Ending Addresses:</strong> The DHCP server in the Gateway allows the router to manage IP address assignment for the connected devices."
-msgstr "<strong>Indirizzo iniziale e finale DHCP:</strong> il server DHCP nel Gateway consente al router di gestire l'assegnazione di indirizzi IP per i dispositivi collegati."
+msgstr "<strong>Indirizzo iniziale e finale DHCP:</strong> il server DHCP nel tuo Sky Wifi Hub consente al router di gestire l\\'assegnazione di indirizzi IP per i dispositivi collegati."
 
 #: local_ip_configuration.php:1000
 msgid "<strong>DHCP Lease time:</strong> The lease time is the length of time the Gateway offers an IP address to a connected device. The lease is renewed while it is connected to the network. After the time expires, the IP address is freed and may be assigned to any new device that connects to the Gateway."
-msgstr "<strong>Tempo di leasing DHCP:</strong> il lease time è la durata del tempo in cui il Gateway offre un indirizzo IP ad un dispositivo collegato. Il lease viene rinnovato mentre è collegato alla rete. Allo scadere del tempo, l'indirizzo IP viene liberato e può essere assegnato a qualsiasi nuovo dispositivo che si connette al Gateway."
+msgstr "<strong>Lease time DHCP:</strong> il lease time è l\\'intervallo di tempo in cui il tuo Sky Wifi Hub assegna un indirizzo IP ad un dispositivo collegato. Il lease viene rinnovato mentre è collegato alla rete. Allo scadere del tempo, l\\'indirizzo IP viene liberato e può essere assegnato a qualsiasi nuovo dispositivo che si connette al tuo Sky Wifi Hub."
+
 
 #: local_ip_configuration.php:1007
 msgid "Gateway Address:"
@@ -3261,7 +3280,8 @@ msgstr "La gestione delle impostazioni di rete domestica è ora più facile che 
 
 #: managed_devices.php:212
 msgid "Manage access by specific devices on your network."
-msgstr "Gestire l'accesso da dispositivi specifici sulla rete."
+msgstr "Gestisci l\\'accesso alla rete su dispositivi specifici."
+
 
 #: managed_devices.php:213
 msgid "Select <strong>Enable</strong> to manage network devices, or <strong>Disable</strong> to turn off."
@@ -3640,7 +3660,8 @@ msgstr "Sei sicuro di voler cancellare questo servizio?"
 
 #: managed_services.php:198
 msgid "Manage access to specific services and applications by network devices."
-msgstr "Gestire l'accesso a servizi e applicazioni specifiche da parte dei dispositivi di rete."
+msgstr "Gestisci l\\'accesso a servizi e applicazioni specifiche sui dispositivi di rete."
+
 
 #: managed_services.php:199
 msgid "Select <strong>Enable</strong> to manage services and applications, or <strong> Disable</strong>  to turn off."
@@ -3788,7 +3809,8 @@ msgstr "Parental Control > Siti gestiti"
 
 #: managed_sites.php:412
 msgid "Manage access to specific websites by network devices."
-msgstr "Gestire l'accesso a siti web specifici tramite dispositivi di rete."
+msgstr "Gestisci l\\'accesso a specifici siti web sui dispositivi di rete."
+
 
 #: managed_sites.php:413
 msgid "Select <strong>Enable</strong> to manage sites, or <strong>Disable</strong> to turn off."
@@ -3800,11 +3822,12 @@ msgstr "<strong>+AGGIUNGI:</strong> aggiungere un nuovo sito web o parola chiave
 
 #: managed_sites.php:415
 msgid "<strong>Blocked Sites:</strong> Deny access to specific websites (URLs)."
-msgstr "<strong>Siti bloccati:</strong> negare l'accesso a siti web specifici (URL)."
+msgstr "<strong>Siti bloccati:</strong> negare l\\'accesso a siti web specifici (URL)."
 
 #: managed_sites.php:416
 msgid "<strong>Blocked Keywords:</strong> Deny access to websites containing specific words."
-msgstr "<strong>Parole chiave bloccate:</strong> negare l'accesso a siti web che contengono parole specifiche."
+msgstr "<strong>Parole chiave bloccate:</strong> nega l\\'accesso a siti web che contengono parole specifiche."
+
 
 #: managed_sites.php:417
 msgid "The Gateway will block connections to websites on all untrusted computers, based on the specified rules. If you don't want restrictions for a particular computer, select <strong>Yes</strong> under <strong>Trusted Computers</strong>."
@@ -4486,7 +4509,7 @@ msgstr "Dispositivi connessi > Archiviazione di rete"
 
 #: network_storage.php:35
 msgid "TIP: This page displays the space available on the attached drive."
-msgstr "SUGGGERIMENTO: questa pagina mostra lo spazio disponibile sull'unità collegata."
+msgstr "SUGGGERIMENTO: questa pagina mostra lo spazio disponibile sull\\'unità collegata."
 
 #: network_storage.php:36
 msgid "To EDIT the Device Name Settings hover the mouse over the respective row and Click on the edit button to  change Device Name."
@@ -4776,11 +4799,12 @@ msgstr "Inserire un indirizzo server valido!"
 
 #: port_forwarding_add.php:294 port_forwarding_edit.php:313
 msgid "Server IP can't be equal to the Gateway IP address !"
-msgstr "L’IP server non può essere uguale all'indirizzo IP del Gateway!"
+msgstr "L’IP del server non può essere uguale all\\'indirizzo IP del tuo Sky Wifi Hub"
 
 #: port_forwarding_add.php:297 port_forwarding_edit.php:316
 msgid "Server IP addr is not in valid range !"
-msgstr "L'indir. server IP non è in un intervallo valido!"
+msgstr "L\\'indir. server IP non è in un intervallo valido"
+
 
 #: port_forwarding_add.php:314 port_forwarding_edit.php:334
 msgid "Server IPv6 addr is not valid!"
@@ -4824,7 +4848,8 @@ msgstr "Indirizzo IPv6 server:"
 
 #: port_forwarding_add.php:505
 msgid "Select a device to add IPv4 and IPv6 address"
-msgstr "Selezionare un dispositivo per aggiungere l'indirizzo IPv4 e IPv6"
+msgstr "Selezionare un dispositivo per aggiungere l\\'indirizzo IP"
+
 
 #: port_forwarding_add.php:506
 msgid "Connected Device"
@@ -4879,7 +4904,8 @@ msgstr "Avanzate > Triggering porta"
 #: port_triggering.php:168 port_triggering_add.php:118
 #: port_triggering_edit.php:133
 msgid "Port triggering monitors outbound traffic on your network. When traffic is detected on a particular outbound port, the Gateway remembers that computer's IP address, triggers the inbound port to accept the incoming traffic, and directs the communications to the same computer."
-msgstr "Il triggering porta monitora il traffico in uscita sulla rete. Quando viene rilevato traffico su una particolare porta in uscita, il Gateway ricorda l'indirizzo IP del computer, attiva la porta in entrata per accettare il traffico in entrata e indirizza le comunicazioni allo stesso computer."
+msgstr "Il port triggering monitora il traffico in uscita dalla tua rete. Quando viene rilevato traffico in uscita su una particolare porta, il tuo Sky Wifi Hub memorizza l\\'indirizzo IP del dispositivo, attiva una porta per accettare il traffico in entrata e indirizza le comunicazioni allo stesso dispositivo."
+
 
 #: port_triggering.php:170
 msgid "Click <strong>+ADD PORT TRIGGER</strong> to add new port triggering rules."
@@ -5081,7 +5107,8 @@ msgstr "Disabilita HTTP"
 
 #: remote_management.php:93
 msgid "WARNING: Enabling Remote Management will expose your Gateway GUI to the Internet. Your Gateway will only be protected by your logon password. Are you sure you want to continue?"
-msgstr "ATTENZIONE: l'abilitazione della gestione remota esporrà la GUI Gateway a Internet. Il tuo Gateway sarà protetto solo dalla password di accesso. Continuare?"
+msgstr "L\\'attivazione della gestione remota renderà accessibile la GUI del tuo Sky Wifi Hub da Internet. Il tuo Sky Wifi Hub sarà protetto solo dalla password di accesso. Vuoi continuare?"
+
 
 #: remote_management.php:94 remote_management.php:127
 #: wireless_network_configuration.php:1110
@@ -5099,11 +5126,12 @@ msgstr "Disabilita HTTPS"
 
 #: remote_management.php:126
 msgid "WARNING: Enabling Remote Management will expose your Gateway GUI to Internet. Your Gateway will only be protected by your logon password. Are you sure you want to continue?"
-msgstr "ATTENZIONE: l'abilitazione della gestione remota esporrà la GUI Gateway a Internet. Il tuo Gateway sarà protetto solo dalla password di accesso. Continuare?"
+msgstr "L\\'attivazione della gestione remota renderà accessibile la GUI del tuo Sky Wifi Hub da Internet. Il tuo Sky Wifi Hub sarà protetto solo dalla password di accesso. Vuoi continuare?"
 
 #: remote_management.php:229
 msgid "Please enter valid IP address (Note: Start IP must be less than end IP !)"
-msgstr "Inserire un indirizzo IP valido (Nota: l'IP iniziale deve essere inferiore all'IP finale!)"
+msgstr "Inserire un indirizzo IP valido (Nota: l\\'IP iniziale deve essere inferiore all\\'IP finale)"
+
 
 #: remote_management.php:232
 msgid "Please enter a port number 1025 ~ 65535."
@@ -5135,7 +5163,8 @@ msgstr "Indirizzo di fine IPv4."
 
 #: remote_management.php:628
 msgid "This will take several seconds!"
-msgstr "Questo richiederà alcuni secondi."
+msgstr "L\\'operazione richiederà alcuni secondi."
+
 
 #: remote_management.php:715
 msgid "Advanced >Remote Management"
@@ -5143,7 +5172,8 @@ msgstr "Avanzate > Gestione remota"
 
 #: remote_management.php:717
 msgid "Remote Management allows the gateway to be remotely accessed by a customer account representative to perform troubleshooting or maintenance."
-msgstr "La gestione remota consente l'accesso remoto al gateway da parte di un rappresentante dell'account cliente per eseguire la risoluzione dei problemi o la manutenzione."
+msgstr "La gestione remota consente l\\'accesso remoto al tuo Sky Wifi Hub per risolvere dei problemi o effettuare interventi di manutenzione."
+
 
 #: remote_management.php:718
 msgid "Remote Management can be used via HTTP and HTTPS."
@@ -5151,7 +5181,8 @@ msgstr "La gestione remota può essere utilizzata tramite HTTP e HTTPS."
 
 #: remote_management.php:719
 msgid "Enable the HTTP option and enter the value for HTTP Port, then you can access your device from HTTP. For example,if the WAN IP address is 11.22.11.22 and the HTTP port number is 8080, then you would use http://11.22.11.22:8080"
-msgstr "Attivare l'opzione HTTP e inserire il valore per la porta HTTP, quindi è possibile accedere al dispositivo da HTTP. Ad esempio, se l'indirizzo IP WAN è 11.22.11.11.22 e il numero di porta HTTP è 8080, si può utilizzare http://11.22.11.22:8080"
+msgstr "Attivando l\\'opzione HTTP e inserendo il numero di porta HTTP, è possibile accedere al dispositivo da HTTP. Ad esempio, se l\\'indirizzo IP WAN è 11.22.11.11.22 e il numero di porta HTTP è 8080, si può utilizzare http://11.22.11.22:8080"
+
 
 #: remote_management.php:720
 msgid "It's the same way to configure HTTPS."
@@ -5171,7 +5202,8 @@ msgstr "Indirizzo della Gestione remota (IPv6):"
 
 #: remote_management.php:772
 msgid "Please enable HTTP or HTTPS to configure Remote Access Allowed From."
-msgstr "Attivare HTTP o HTTPS per configurare l'accesso remoto consentito da."
+msgstr "Attivare HTTP o HTTPS per configurare l\\'accesso remoto nella sezione sottostante."
+
 
 #: remote_management.php:775
 msgid "Remote Access Allowed From"
@@ -5295,15 +5327,15 @@ msgstr "Premere \"Resetta modulo Wi-Fi\" per riavviare solo il modulo Wi-Fi."
 
 #: restore_reboot.php:242
 msgid "Reset the Wi-Fi Gateway"
-msgstr "Riavvia il Gateway Wi-Fi"
+msgstr "Resetta Sky Wifi Hub"
 
 #: restore_reboot.php:242
 msgid "RESET Wi-Fi ROUTER"
-msgstr "RESETTA IL ROUTER Wi-Fi"
+msgstr "RESET SKY WIFI HUB"
 
 #: restore_reboot.php:243
 msgid "Press \"Reset Wi-Fi Router\" to restart Wi-Fi and Router modules."
-msgstr "Premere \"Resetta router Wi-Fi\" per riavviare i moduli Wi-Fi e router."
+msgstr "Premere \"Reset Sky Wifi Hub\" per resettare i moduli wifi e router."
 
 #: restore_reboot.php:246
 msgid "Restore manufacturer defaults for Wi-Fi Only"
@@ -5359,11 +5391,12 @@ msgstr "Avanzate > Routing"
 
 #: routing.php:243
 msgid "The RIP protocol is used to exchange the routing information between the gateway and headend."
-msgstr "Il protocollo RIP viene utilizzato per scambiare le informazioni di routing tra il gateway e l'headend."
+msgstr "Il protocollo RIP viene utilizzato per scambiare le informazioni di routing tra il tuo Sky Wifi Hub e l\\'headend."
+
 
 #: routing.php:244
 msgid "<strong>Interface Name:</strong>Select the interface that the rip information will send from."
-msgstr "<strong>Nome interfaccia:</strong>Selezionare l'interfaccia da cui verranno inviate le informazioni sul rip."
+msgstr "<strong>Nome interfaccia:</strong>Selezionare l\\'interfaccia da cui verranno inviate le informazioni sul rip."
 
 #: routing.php:245
 msgid "<strong>RIP Send Version:</strong> Select the rip Send Version."
@@ -5375,7 +5408,7 @@ msgstr "<strong>Versione ricezione RIP:</strong> Selezionare la versione ricezio
 
 #: routing.php:247
 msgid "<strong>Update Interval:</strong> Enter the time that the rip information will resend."
-msgstr "<strong>Intervallo di aggiornamento:</strong> Inserire l'ora in cui le informazioni rip verranno inviate nuovamente."
+msgstr "<strong>Intervallo di aggiornamento:</strong> Inserire l\\'ora in cui le informazioni rip verranno inviate nuovamente."
 
 #: routing.php:248
 msgid "<strong>Default Metric:</strong> Select the Default Metric."
@@ -5387,11 +5420,12 @@ msgstr "<strong>Tipo di autenticazione:</strong> Selezionare il tipo di autentic
 
 #: routing.php:250
 msgid "<strong>Authentication Key & ID:</strong> Enter the Authentication Key & ID."
-msgstr "<strong>Chiave e ID di autenticazione:</strong> Inserire la chiave e l’ID di autenticazione."
+msgstr "<strong>Chiave e ID di autenticazione:</strong> Inserire la chiave e l\\’ID di autenticazione."
 
 #: routing.php:251
 msgid "<strong>Neighbour:</strong> Enter the IP address of the router that you wish to unicast to."
-msgstr "<strong>Vicino:</strong> Inserire l'indirizzo IP del router a cui si desidera effettuare l'unicast."
+msgstr "<strong>Vicino di casa:</strong> Inserire l\\'indirizzo IP del router su cui si desidera effettuare l\\'unicast."
+
 
 #: routing.php:254
 msgid "RIP(Routing information Protocol)"
@@ -5702,7 +5736,8 @@ msgstr "Abilitare prima WPS!"
 #: wireless_network_configuration.php:739
 #: wireless_network_configuration_edit.php:459
 msgid "WARNING:<br/> You are selecting a Dynamic Frequency Selection (DFS) Channel (52-140). Some Wi-Fi devices do not support DFS channels in the 5 GHz band. For those devices that do not support DFS channels, the 5 GHz Wi-Fi Network Name (SSID) will not be displayed on the list of available networks. Do you wish to continue?"
-msgstr "ATTENZIONE:<br/> si sta selezionando un canale di selezione dinamica della frequenza (DFS) (52-140). Alcuni dispositivi Wi-Fi non supportano i canali DFS nella banda 5 GHz. Per i dispositivi che non supportano i canali DFS, il nome della rete Wi-Fi a 5 GHz (SSID) non verrà visualizzato nell'elenco delle reti disponibili. Continuare?"
+msgstr "ATTENZIONE:<br/> si sta selezionando un canale di selezione dinamica della frequenza (DFS) (52-140). Alcuni dispositivi wifi non supportano i canali DFS nella banda 5 GHz. Per i dispositivi che non supportano i canali DFS, il nome della rete wifi a 5 GHz (SSID) non verrà visualizzato nell\\'elenco delle reti disponibili. Continuare?"
+
 
 #: wireless_network_configuration.php:844
 msgid "Please enter valid Device Name! \\n Less than (<), Greater than (>), Ampersand (&), Double quote (\\\"), \\n Single quote (') and Pipe (|) characters are not allowed."
@@ -5723,11 +5758,12 @@ msgstr "Non si possono aggiungere più di 64 dispositivi!"
 #: wireless_network_configuration.php:912
 #: wireless_network_configuration.php:922
 msgid "MAC address already exist!"
-msgstr "L’indirizzo MAC esiste già!"
+msgstr "L\\’indirizzo MAC risulta già esistente"
 
 #: wireless_network_configuration.php:934
 msgid "Are you sure you want to delete this entry from Wi-Fi Control List?"
-msgstr "Sei sicuro di voler cancellare questa voce dall'elenco di controllo Wi-Fi?"
+msgstr "Sei sicuro di voler eliminare questa voce dall\\'elenco di controllo wifi?"
+
 
 #: wireless_network_configuration.php:1073
 msgid "Invalid PIN!"
@@ -5768,7 +5804,8 @@ msgstr "Fare clic su <strong>MODIFICA</strong> accanto al Nome di rete che si de
 
 #: wireless_network_configuration.php:1208
 msgid "<strong>MAC Filter Setting</strong> is specific to each Network Name (SSID). Select a MAC Filtering Mode."
-msgstr "<strong>Impostazione filtro MAC</strong> è specifico per ogni nome di rete (SSID). Selezionare una modalità di filtraggio MAC."
+msgstr "<strong>L\\' impostazione del filtro MAC</strong> è specifico per ogni nome di rete Wi-Fi (SSID). Selezionare una modalità di filtraggio MAC."
+
 
 #: wireless_network_configuration.php:1209
 msgid "Allow- All (Default): All wireless client stations can connect to the Gateway; no MAC filtering rules."
@@ -6129,7 +6166,8 @@ msgstr "Impostazione filtro MAC"
 
 #: wireless_network_configuration.php:1798
 msgid "You can control the Wi-Fi access to the USG using the below Mac-Filter settings."
-msgstr "È possibile controllare l'accesso Wi-Fi all'USG utilizzando le seguenti impostazioni del filtro Mac."
+msgstr "È possibile controllare l\\'accesso wifi al tuo Sky Wifi Hub utilizzando le seguenti impostazioni del filtro Mac."
+
 
 #: wireless_network_configuration.php:1815
 msgid "MAC Filtering Mode:"
@@ -6341,7 +6379,8 @@ msgstr "<strong>Modalità:</strong>  %s I GHz funzionano in modalità b/g/g/n. A
 
 #: wireless_network_configuration_edit.php:859
 msgid "<strong>Security Mode:</strong> Secures data between your Wi-Fi devices and the Gateway. The default WPAWPA2-PSK (TKIP/AES) setting is compatible with most devices and provides the best security and performance."
-msgstr "<strong>Modalità di sicurezza:</strong> Protegge i dati tra i dispositivi Wi-Fi e il Gateway. L'impostazione predefinita WPAWPA2-PSK (TKIP/AES) è compatibile con la maggior parte dei dispositivi e fornisce le migliori prestazioni e sicurezza."
+msgstr "<strong>Modalità di sicurezza:</strong> Protegge i dati tra i dispositivi wifi e il tuo Sky Wifi Hub. L\\'impostazione predefinita WPAWPA2-PSK (TKIP/AES) è compatibile con la maggior parte dei dispositivi e fornisce le migliori prestazioni e sicurezza."
+
 
 #: wireless_network_configuration_edit.php:860
 msgid "<strong>Channel Selection:</strong>  Channel to be used for your home Wi-Fi network. In Automatic mode (default), the Gateway will select the channel with the least amount of Wi-Fi interference. In Manual mode, you can choose the channel to be used."
@@ -6353,7 +6392,8 @@ msgstr "<strong>Password di rete (chiave):</strong> Richiesto dai prodotti Wi-Fi
 
 #: wireless_network_configuration_edit.php:862
 msgid "<strong>Broadcast Network Name (SSID):</strong>  If enabled, the Network Name (SSID) will be shown in the list of available networks. (If unchecked, you'll need to enter the exact Network Name (SSID) to connect.)"
-msgstr "<strong>Nome della rete di trasmissione (SSID):</strong>  Se abilitato, il Nome rete (SSID) sarà mostrato nell'elenco delle reti disponibili. (In caso contrario, è necessario inserire l'esatto nome di rete (SSID) per connettersi)."
+msgstr "<strong>Rendi visibile il nome della rete Wi-Fi (SSID):</strong> Se abilitato, il nome della rete (SSID) sarà mostrato nell\\'elenco delle reti disponibili. (In caso contrario, è necessario inserire l\\'esatto nome di rete (SSID) per connettersi)."
+
 
 #: wireless_network_configuration_edit.php:866
 #, php-format
@@ -6368,7 +6408,8 @@ msgstr "Configurazione rete Wi-Fi privata (%s GHz)"
 #: wireless_network_configuration_edit.php:873
 #, php-format
 msgid "Wi-Fi Mode, Security Mode, Channel Selection, Channel Mode, and Channel Bandwidth are being managed automatically to help optimize your home Wi-Fi network and improve Wi-Fi coverage. To edit your Wi-Fi Network Name & Network password, please download the %s %s app or visit <a href='http://%s'>%s"
-msgstr "La modalità Wi-Fi, la modalità di sicurezza, la selezione dei canali, la modalità canale e la larghezza di banda dei canali vengono gestite automaticamente per ottimizzare la rete Wi-Fi domestica e migliorare la copertura Wi-Fi. Per modificare il nome della rete Wi-Fi e la password di rete, scaricare l'app %s %s o visitare <a href='http://%s'>%s"
+msgstr "La modalità wifi, la modalità di sicurezza, la selezione dei canali, il canale e la larghezza di banda dei canali vengono gestiti automaticamente per ottimizzare la rete wifi domestica e migliorare la copertura wifi. Per modificare il nome della rete wifi e la password di rete, scarica l\\'app %s %s o visita <a href='http://%s'>%s"
+
 
 #: wireless_network_configuration_edit.php:882
 msgid "Wireless Network:"
@@ -6452,6 +6493,9 @@ msgid ""
 "\n"
 "You will be redirected to WiFi status page..."
 msgstr ""
+"Il Wi-Fi risulta disabilitato internamente. É necessario contattare l\\'amministratore \n"
+"\n"
+"Stai per essere reindirizzato alla pagina di stato del Wi-Fi…"
 
 #: wireless_network_configuration_wps.php:239
 msgid "WPS function is disabled and can not be enabled now!"
@@ -6499,7 +6543,8 @@ msgstr "<strong>Pulsante:</strong> Premere il pulsante WPS sul pannello superior
 
 #: wireless_network_configuration_wps.php:258
 msgid "<strong>PIN Connectivity:</strong> For WPS capable devices supporting PIN, select <i>PIN Number</i> for <strong>Connection Options.</strong> Enter the PIN number generated by the wireless device in the <strong>Wireless Client's PIN</strong> field and click PAIR. If prompted for a PIN, enter the PIN from the label on the Gateway's bottom panel."
-msgstr "<strong>Connettività PIN:</strong> Per i dispositivi con WPS che supportano il PIN, selezionare <i>Numero PIN</i> per <strong>Opzioni di connessione.</strong> Immettere il numero PIN generato dal dispositivo wireless nel campo <strong>PIN client wireless</strong> e fare clic su ABBINA. Se viene richiesto un PIN, immettere il PIN dall'etichetta sul pannello inferiore del Gateway."
+msgstr "<strong>PIN:</strong> Per i dispositivi con WPS che supportano il PIN, seleziona <i>PIN</i> dal menù <strong>Opzioni di connessione.</strong> Immetti il numero PIN generato dal dispositivo wifi nel campo <strong>PIN dispositivo wifi</strong> e clicca su ABBINA. Se viene richiesto un PIN, immettere il PIN dall\\'etichetta sul pannello laterale del tuo Sky Wifi Hub."
+
 
 #: wireless_network_configuration_wps.php:262
 msgid "Add Wi-Fi Client (WPS)"
@@ -6624,7 +6669,8 @@ msgstr "Home Network Wizard"
 #: wizard_step2.php:470
 #, php-format
 msgid "Wi-Fi Mode, Security Mode, Channel Selection, Channel Mode, and Channel Bandwidth are being managed automatically to help optimize your home Wi-Fi network and improve Wi-Fi coverage. To edit your Wi-Fi Network Name & Network password, please download the %s %s app or visit <a href=\"http://%s\">%s"
-msgstr "La modalità Wi-Fi, la modalità di sicurezza, la selezione dei canali, la modalità canale e la larghezza di banda dei canali vengono gestite automaticamente per ottimizzare la rete Wi-Fi domestica e migliorare la copertura Wi-Fi. Per modificare il nome della rete Wi-Fi e la password di rete, scaricare l'app %s %s o visitare <a href=\"http://%s\">%s"
+msgstr "La modalità wifi, la modalità di sicurezza, il canale e la larghezza di banda dei canali vengono gestiti automaticamente per ottimizzare la rete wifi domestica e migliorare la copertura wifi. Per modificare il nome della rete wifi e la password di rete, scarica l\\'app %s %s o visita <a href="http://%s">%s"
+
 
 #: wizard_step2.php:478
 msgid "Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi B, G, N) and 5GHz(Wi-Fi A, N) compatible devices."
@@ -6709,7 +6755,7 @@ msgstr "Questo dispositivo è in pausa o in modalità ora di andare a letto."
 
 #: cmn/syndication/device_pause_screen/device_pause_screen_default.php:162
 msgid "To resume access to the Internet on your home network, open the %s %s app or visit %s using a different connection or device."
-msgstr "Per riprendere l'accesso a Internet sulla tua rete domestica, apri l'app %s %s o visita %s utilizzando una connessione o un dispositivo diverso."
+msgstr "Per riprendere l\\'accesso a Internet sulla tua rete domestica, apri l\\'app %s %s o visita %s utilizzando una connessione o un dispositivo diverso."
 
 
 #: local_ip_configuration.php:1258
