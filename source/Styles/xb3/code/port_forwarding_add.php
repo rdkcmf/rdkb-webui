@@ -567,7 +567,7 @@ $('#device').click(function(){
                                             }
 					}
 					else{
-					  if (stripos($val, "EMPTY") !== 0) {
+					  if (trim($val)!="") {
 	 					$IPv6Addr = $val;
 	 					break;
 					  }  
