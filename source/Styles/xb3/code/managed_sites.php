@@ -680,8 +680,11 @@ $.validator.addMethod("no_space", function(value, element, param) {
     $block_days = $blockedInfo['BlockedDays'];
     if((int)$rel_st_hour == 0) 
     	$rel_st_hour = 12;
-    if((int)$rel_end_hour == 0) 
-    	$rel_end_hour = 12;
+    if((int)$rel_end_hour == 0){
+    	$rel_end_hour = 11;
+    	$end_min = 59;
+    	$end_hour = 13;
+    } 
         $str_edit = "<div class=\"form-row\">
 				<label for=\"on\">"._("Always Block?")."</label>
 				<span id=\"blockRadio_".$ID."\" switch-val=\"".($blockedInfo['AlwaysBlock'] == 'true' ? "on" : "off")."\"></span>
