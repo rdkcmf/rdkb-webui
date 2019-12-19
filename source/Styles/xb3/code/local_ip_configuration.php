@@ -112,6 +112,24 @@ $(document).ready(function() {
 	var partner_id = '<?php echo $partnerId; ?>';
 	if(partner_id.indexOf('sky-')===0){
 		stateful_check();
+		ipv6_ula_check();
+	}
+        function ipv6_ula_check(){
+		var ipv6_enable_check = '<?php echo getStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6Enable");?>';
+		var ula_enable_check = '<?php echo getStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6UlaEnable");?>';
+		if(ipv6_enable_check == 'true'){
+			if(ula_enable_check == 'true'){
+				$("#ula_enable").attr('checked','checked');
+	            $('#ula_enable,#ULA_1,#ULA_2,#ULA_3,#ULA_4').attr('disabled',false);
+	        }
+	        else{
+			$('#ULA_1,#ULA_2,#ULA_3,#ULA_4').attr('disabled',true);
+	        }
+
+		}else{
+			$("#ula_enable").removeAttr('checked');
+			$('#ula_enable,#ULA_1,#ULA_2,#ULA_3,#ULA_4').attr('disabled',true);
+		}
 	}
 	function updateIPv4() {
 		var ip1 = $("#ipv4_gateway_address_1").val();
@@ -934,6 +952,26 @@ $('#Stateful').click(function(){
 	    stateful_check();
 	}
 });
+if(partner_id.indexOf('sky-')===0){
+	$('input[name="ipv6_enable"]').click(function(){
+            if($("#ipv6_enable").prop("checked")){
+                $("#ula_enable").attr('checked','checked');
+                $('#ula_enable,#ULA_1,#ULA_2,#ULA_3,#ULA_4').attr('disabled',false);
+	    }
+	    else{
+		$("#ula_enable").removeAttr('checked');
+		$('#ula_enable,#ULA_1,#ULA_2,#ULA_3,#ULA_4').attr('disabled',true);
+	    }
+        });
+       $('input[name="ula_enable"]').click(function(){
+           if($("#ula_enable").prop("checked")){
+		$('#ULA_1,#ULA_2,#ULA_3,#ULA_4').attr('disabled',false);
+	    }
+	    else{
+		$('#ULA_1,#ULA_2,#ULA_3,#ULA_4').attr('disabled',true);
+	     }
+       });
+}
 /*$('input[name="ULA"]').click(function(){
 	if($("input[name='ULA'][value='ula_auto']").prop("checked")){
 		$('#ULA_1_1 ,#ULA_2,#ULA_3,#ULA_4').attr('disabled',true);
