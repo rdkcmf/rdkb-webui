@@ -111,18 +111,12 @@ else{
 		setStr("Device.RouterAdvertisement.InterfaceSetting.1.AdvManagedFlag", "false", true);  
 		setStr("Device.DHCPv6.Server.X_CISCO_COM_Type", "Stateless", true);
 		if(strpos($partnerId, "sky-") !== false){
-		    if(getStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6UlaEnable")!= $ip_config['ula_enable']){
-          		setStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6UlaEnable",$ip_config['ula_enable'], true);
-          	    }
-          	   if(getStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6UlaPrefix")!= $ip_config['ula_prefix']){
-          		setStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6UlaPrefix",$ip_config['ula_prefix'],true);
-          	   } 
+          		setStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6UlaEnable",$ip_config['ula_enable'], false);
+          		setStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6UlaPrefix",$ip_config['ula_prefix'],false);
           }
 	}
 	if(strpos($partnerId, "sky-") !== false){
-	    if(getStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6Enable")!= $ip_config['ipv6_enable']){
     		setStr("Device.X_RDKCENTRAL-COM_DeviceControl.LanManagementEntry.LanIpv6Enable",$ip_config['ipv6_enable'], true);
-	    }
 	}
 	if ($restore == 'true'){
 		$validation = true;
