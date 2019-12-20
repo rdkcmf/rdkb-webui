@@ -376,6 +376,10 @@ if($_SESSION["loginuser"] == "mso"){
 		$cm_value['RebindTimeRemaining'] = $cm_value['IPv6RebindTimeRemaining'];
 		$cm_value['RenewTimeRemaining']	 = $cm_value['IPv6RenewTimeRemaining'];
 	}
+	elseif($cm_value['LearnedIPMode'] == 'Dual Stack' && $cm_value['TFTPServer'] == '0.0.0.0')
+	{
+                $cm_value['TFTPServer']                  = $cm_value['IPv6TFTPServer'];
+	}
 } else {
 	$cm_value = NULL;
 }
