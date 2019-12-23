@@ -109,6 +109,7 @@ $(document).ready(function() {
     	var $selected_option = $("option:selected", $select);
     	if($selected_option.val() == "None") {
     		$("#netPassword").find("*").addClass("disabled").filter("input").attr("disabled", "disabled").val("");
+                $("#div_change_password").hide();
     	} else {
 			$("#netPassword").find("*").removeClass("disabled").filter("input").attr("disabled", false);
 			if(!password_mso_user){
@@ -139,6 +140,7 @@ $(document).ready(function() {
 		var $selected_option1 = $("option:selected", $select1);
 		if($selected_option1.val() == "None") {
 			$("#netPassword1").find("*").addClass("disabled").filter("input").attr("disabled", "disabled").val("");
+                        $("#div_change_password1").hide();
 		} else {
 			$("#netPassword1").find("*").removeClass("disabled").filter("input").attr("disabled", false);
 			if(!password_mso_user){
