@@ -1030,8 +1030,14 @@ $('#submit_ipv6').click(function(e){
 	if(partner_id.indexOf('sky-')===0){
     	var ipv6_enable = $('#ipv6_enable').is(':checked');
 	var ula_enable = $('#ula_enable').is(':checked');
+        var ula_prefix='';
 	if($('#ULA_1').val().indexOf('fc')===0|| $('#ULA_1').val().indexOf('fd')===0){
-		var ula_prefix = $('#ULA_1').val() + ":" + $('#ULA_2').val()+":" +$('#ULA_3').val()+":" + $('#ULA_4').val();
+             for(i=1; i<=4;i++){
+                if($('#ULA_'+i).val()!==''){
+                     ula_prefix += $('#ULA_'+i).val()+':';
+		}
+	      }
+	    ula_prefix = ula_prefix.slice(0,-1);
 	}
     	else{jAlert('<?php echo "Prefix value should start with [fc] or [fd] "; ?>');return false;}
     	var IPv6Config = '{"IPv6": "Yes", "Stateful": "' + Stateful + '", "dhcpv6_begin_addr": "' + dhcpv6_begin_addr + '", "dhcpv6_end_addr": "' + dhcpv6_end_addr +'", "dhcpv6_lease_time": "' + dhcpv6_lease_time +'", "ipv6_enable": "' + ipv6_enable +'", "ula_enable": "' + ula_enable +'", "ula_prefix": "' + ula_prefix +'"}';
