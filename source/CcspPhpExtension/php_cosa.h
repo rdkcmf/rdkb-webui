@@ -92,6 +92,7 @@ PHP_FUNCTION(DmExtGetInstanceIds);
 #ifdef SAFEC_DUMMY_API
 typedef int errno_t;
 #define EOK 0
+#define strnlen_s(str, smax) strnlen(str, smax)
 
 #define strncpy_s(dst,max,src,len)  EOK; \
  strncpy(dst,src,len);
