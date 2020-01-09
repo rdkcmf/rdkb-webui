@@ -169,7 +169,7 @@ $(document).ready(function() {
 	});
 });
 function cancel_save(){
-	window.location = "at_a_glance.php";
+	window.location = "index.php";
 }
 function set_config(jsConfig)
 {
