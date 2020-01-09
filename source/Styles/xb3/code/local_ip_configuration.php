@@ -673,7 +673,7 @@ $('#submit_ipv4').click(function(e){
     var gw_ip2 = parseInt($('#ipv4_gateway_address_2').val());
     var gw_ip3 = parseInt($('#ipv4_gateway_address_3').val());
     if( ((gw_ip1 != 10) && (gw_ip1 != 172) && (gw_ip1 != 192)) || ((gw_ip1 == 172) && ((gw_ip2<16) || (gw_ip2>31)))  || ((gw_ip1== 192) && ((gw_ip2 != 168) || (gw_ip3== 147)) ) ){
-		jAlert("<?php echo _('Gateway IP is not in valid private IP range')?>\n [10.0.0.1 ~ 10.255.255.253,\n172.16.0.1 ~ 172.31.255.254,\n192.168.0.1 ~ 192.168.146.254,\n192.168.148.1 ~ 192.168.255.254]");
+		jAlert("<?php echo _('Gateway IP is not in valid private IP range')?>\n [10.0.0.1 ~ 10.255.255.253,\n172.16.0.1 ~ 172.31.255.253,\n192.168.0.1 ~ 192.168.146.253,\n192.168.148.1 ~ 192.168.255.253]");
     	return;
     }
     if ((gw_ip1==172) && (gw_ip2==16) && (gw_ip3==12)) {
