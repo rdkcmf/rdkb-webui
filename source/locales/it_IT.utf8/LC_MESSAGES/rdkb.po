@@ -4767,8 +4767,8 @@ msgid "Please input a service name !"
 msgstr "Inserire un nome di servizio"
 
 #: port_forwarding_add.php:269
-msgid "Please input valid Service Name ! \n Less than (<), Greater than (>), Ampersand (&), Double quote (\"), \n Single quote (\') and Pipe (|) characters are not allowed."
-msgstr "Inserire un nome di servizio valido \n Non sono consentiti caratteri come: Minore di (<), maggiore di (>), E commerciale (&), Virgolette doppie ("), \n Virgolette singole (\\') e Barra dritta (|) ."
+msgid "Please input valid Service Name ! \n Less than (<), Greater than (>), Ampersand (&), Double quote (\"), \n Single quote (\\') and Pipe (|) characters are not allowed."
+msgstr "Inserire un nome di servizio valido \n Non sono consentiti caratteri come: Minore di (<), maggiore di (>), E commerciale (&), Virgolette doppie (\"), \n Virgolette singole (\\') e Barra dritta (|) ."
 
 #: port_forwarding_add.php:286 port_forwarding_edit.php:305
 msgid "Please input valid server address !"
@@ -5773,7 +5773,7 @@ msgstr "<strong>L\\' impostazione del filtro MAC</strong> è specifico per ogni 
 
 #: wireless_network_configuration.php:1209
 msgid "Allow- All (Default): All wireless client stations can connect to the Gateway; no MAC filtering rules."
-msgstr "Consenti: solo i dispositivi presenti nella "Lista di controllo wifi" sono autorizzati a connettersi al tuo Sky Wifi Hub."
+msgstr "Consenti: solo i dispositivi presenti nella \"Lista di controllo wifi\" sono autorizzati a connettersi al tuo Sky Wifi Hub."
 
 #: wireless_network_configuration.php:1210
 msgid "Allow: Only the devices in the \"Wireless Control List\" are allowed to connect to the Gateway."
@@ -5781,7 +5781,7 @@ msgstr "Consenti: solo i dispositivi presenti nella \"Lista di controllo wireles
 
 #: wireless_network_configuration.php:1211
 msgid "Deny: Wireless devices in the \"Wireless Control List\" are not allowed to connect to the Gateway."
-msgstr "Nega: i dispositivi wifi presenti nella "Lista di controllo wifi" non sono autorizzati a connettersi al tuo Sky Wifi Hub."
+msgstr "Nega: i dispositivi wifi presenti nella \"Lista di controllo wifi\" non sono autorizzati a connettersi al tuo Sky Wifi Hub."
 
 #: wireless_network_configuration.php:1212
 msgid "<strong>Wireless Control List:</strong> Displays the wireless devices (by Network Name and MAC Address) that were manually added or auto-learned."
@@ -6193,7 +6193,7 @@ msgstr "Pulsante (consigliato)"
 
 #: wireless_network_configuration.php:1969
 msgid "Push the WPS button on the Gateway or click \"PAIR WITH MY Wi-Fi CLIENT\" below to connect your<br/>  &nbsp; &nbsp; Wireless client to your network."
-msgstr "Premi il pulsante WPS sul tuo Sky Wifi Hub o clicca su "ABBINA AL MIO DISPOSITIVO wifi" qui sotto per connettere il <br/> &nbsp&nbsp; dispositivo wifi alla tua rete."
+msgstr "Premi il pulsante WPS sul tuo Sky Wifi Hub o clicca su \"ABBINA AL MIO DISPOSITIVO wifi\" qui sotto per connettere il <br/> &nbsp&nbsp; dispositivo wifi alla tua rete."
 
 #: wireless_network_configuration.php:1974
 msgid "PIN Number"
@@ -6338,7 +6338,7 @@ msgstr "<strong>Nome rete Wi-Fi (SSID):</strong> Identifica la tua rete domestic
 #: wireless_network_configuration_edit.php:858
 #, php-format
 msgid "<strong>Mode:</strong>  %s GHz operates in b/g/n modes. Unless you have older Wi-Fi devices that use only 'b' mode, use the default 802.11 g/n for faster performance."
-msgstr "<strong>Modalità:</strong> %s I GHz funzionano in modalità b/g/g/n. A meno che non si disponga di vecchi dispositivi wifi che utilizzano solo la modalità "b", utilizzare il valore predefinito 802.11 g/n per prestazioni più rapide."
+msgstr "<strong>Modalità:</strong> %s I GHz funzionano in modalità b/g/g/n. A meno che non si disponga di vecchi dispositivi wifi che utilizzano solo la modalità \"b\", utilizzare il valore predefinito 802.11 g/n per prestazioni più rapide."
 
 #: wireless_network_configuration_edit.php:859
 msgid "<strong>Security Mode:</strong> Secures data between your Wi-Fi devices and the Gateway. The default WPAWPA2-PSK (TKIP/AES) setting is compatible with most devices and provides the best security and performance."
@@ -6425,7 +6425,7 @@ msgstr "Abilita WMM:"
 
 #: wireless_network_configuration_edit.php:1009
 msgid "The recommended security mode is \"WPA2-PSK (AES)\" as this mode gives best Wi-Fi performance and optimum security."
-msgstr "La modalità di sicurezza consigliata è "WPA2-PSK (AES)" perché offre le migliori prestazioni wifi e una sicurezza ottimale."
+msgstr "La modalità di sicurezza consigliata è \"WPA2-PSK (AES)\" perché offre le migliori prestazioni wifi e una sicurezza ottimale."
 
 #: wireless_network_configuration_edit.php:1012
 msgid "This mixed mode option will allow Wi-Fi devices to connect with WPA (with TKIP or AES encryption) or WPA2 (with TKIP or AES encryption). To achieve best Wi-Fi performance in this mode, the Wi-Fi devices must connect using WPA2 with AES encryption."
@@ -6628,7 +6628,7 @@ msgstr "Procedura guidata per la rete domestica"
 #: wizard_step2.php:470
 #, php-format
 msgid "Wi-Fi Mode, Security Mode, Channel Selection, Channel Mode, and Channel Bandwidth are being managed automatically to help optimize your home Wi-Fi network and improve Wi-Fi coverage. To edit your Wi-Fi Network Name & Network password, please download the %s %s app or visit <a href=\"http://%s\">%s"
-msgstr "La modalità wifi, la modalità di sicurezza, il canale e la larghezza di banda dei canali vengono gestiti automaticamente per ottimizzare la rete wifi domestica e migliorare la copertura wifi. Per modificare il nome della rete wifi e la password di rete, scarica l\\'app %s %s o visita <a href="http://%s">%s"
+msgstr "La modalità wifi, la modalità di sicurezza, il canale e la larghezza di banda dei canali vengono gestiti automaticamente per ottimizzare la rete wifi domestica e migliorare la copertura wifi. Per modificare il nome della rete wifi e la password di rete, scarica l\\'app %s %s o visita <a href=\"http://%s\">%s"
 
 #: wizard_step2.php:478
 msgid "Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi B, G, N) and 5GHz(Wi-Fi A, N) compatible devices."
