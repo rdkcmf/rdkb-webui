@@ -28,6 +28,10 @@ csrfprotector_rdkb::init();
 <?php
         header('X-robots-tag: noindex,nofollow');
 	session_start();
+	if ($_SESSION['loginuser'] == 'mso') {
+                                echo '<script type="text/javascript"> alert("'._("Access Denied!").'"); window.history.back(); </script>';
+                                exit(0);
+                     }
 	if (!isset($_SESSION["password_change"])) {
 		echo '<script type="text/javascript">alert(\"'._("Please Login First!").'\"); location.href="home_loggedout.php";</script>';
 		exit(0);
