@@ -526,9 +526,9 @@ $(document).ready(function() {
 						</dl>
 					</div>
                 </td>
-		        <td headers='dhcp-or-reserved'>", (($AddrSrc == "DHCP") ? "DHCP" : "Reserved IP") ,"</td>
+		        <td headers='dhcp-or-reserved'>"._(($AddrSrc == "DHCP") ? "DHCP" : "Reserved IP")."</td>
 		        <td headers='rssi-level'>", $onlinePrivateNetworkHost["$x"]['RSSI'] ,"</td>
-		        <td headers='connection-type'>", $onlinePrivateNetworkHost["$x"]['Connection'] , "</td>
+		        <td headers='connection-type'>"._($onlinePrivateNetworkHost["$x"]['Connection'])."</td>
                 <td headers='edit-button'><input type='button' value='"._('edit')."' tabindex='0' id=" , "'btn-" ,$onlinePrivateNetworkHost["$x"]['instanceID'] , "'", "  class=\"btn private\"></input></td>
                 <td headers='disconnect-button'>$style</td>
 		    </tr>    
@@ -582,8 +582,8 @@ $(document).ready(function() {
 					</dl>
 				</div>
             </td>
-	        <td headers='offline-device-dhcp-reserve'>", (($AddrSrc == "DHCP") ? "DHCP" : "Reserved IP") ,"</td>
-	        <td headers='offline-device-conncection'>",  $offlinePrivateNetworkHost["$x"]['Connection'] , "</td>
+	        <td headers='offline-device-dhcp-reserve'>"._(($AddrSrc == "DHCP") ? "DHCP" : "Reserved IP")."</td>
+	        <td headers='offline-device-conncection'>"._($offlinePrivateNetworkHost["$x"]['Connection'])."</td>
             <td headers='offline-device-disconnect-button'>$style</td>
 		    </tr>    
 		";
