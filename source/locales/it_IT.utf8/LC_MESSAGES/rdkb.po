@@ -6763,3 +6763,19 @@ msgstr "VUOTO"
 #:dmz.php:343
 msgid "DMZ v4 Host:"
 msgstr "Host DMZ v4:"
+
+#:network_setup.php:141
+msgid " (Shared using MAP-T)"
+msgstr " (Condiviso utilizzando MAP-T)"
+
+#: connected_devices_computers.php:586 connected_devices_computers.php:531
+msgid "Unknown"
+msgstr "sconosciuta"
+
+#: wireless_network_configuration_edit.php:783
+msgid "Show More Security Mode Options"
+msgstr "Mostra più opzioni della modalità di sicurezza"
+
+#: wizard_step2.php:584 wizard_step2.php:545
+msgid "Show Password:"
+msgstr "Mostra password:"

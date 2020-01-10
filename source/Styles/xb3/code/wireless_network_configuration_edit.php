@@ -779,7 +779,7 @@ function init_form()
 	// for UI-4.0, add show-more
 	if ("1"==ssid_number || "2"==ssid_number) {
 		$("#security").find("[value^='WEP'],[value='None']").not(":selected").remove();
-		$("#security").append('<option title="More Security Mode Options." value="more">Show More Security Mode Options</option>');
+		$("#security").append('<option title="More Security Mode Options." value="more"><?php echo _("Show More Security Mode Options")?></option>');
 	}
 	// for UI-4.0, remove WEP on show-more
 	if ("1"==ssid_number) {
