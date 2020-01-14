@@ -35,7 +35,6 @@
 	$wan_status= getStr("Device.Ethernet.Interface.1.Status");
 	$wnStatus= ($wan_enable=="true" && $wan_status=="Down") ? "true" : "false";
 	$bridge_mode = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode");
-	$modelName= getStr("Device.DeviceInfo.ModelName");
 ?>
 <style type="text/css">
 label{
@@ -63,7 +62,7 @@ $(document).ready(function() {
 		state: <?php echo ($wan_enable === "true" ? "true" : "false"); ?> ? "on" : "off"
 	});
 	 <?php
-		if (($bridge_mode == "bridge-static") || ($modelName!="CGM4140COM") ) {
+		if ($bridge_mode == "bridge-static") {
 			echo '$("#wan_switch").children(".rs_radiolist").addClass("disabled_state");';
 			echo '$("#wan_switch").data("radioswitchstates", "false");';
 		}

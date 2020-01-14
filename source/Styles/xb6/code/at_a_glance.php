@@ -80,7 +80,6 @@ session_start();
 	$brandName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.brandname");
 	$productName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.productname");
 	$wan_enable= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");	
-	$allowWan= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.AllowEthernetWAN");
 	?>
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
@@ -111,7 +110,7 @@ $(document).ready(function() {
 		state: "<?php echo ($bridge_mode != 'router' ? "on" : "off"); ?>"
 	});
 	<?php
-		if (($videoServiceEnable == "true") || ( ($wan_enable=="true") && ($allowWan == "true") ) ) {
+		if (($videoServiceEnable == "true") || ($wan_enable=="true")) {
 			echo '$("#bridge_switch").children(".rs_radiolist").addClass("disabled_state");';
 			echo '$("#bridge_switch").data("radioswitchstates", "false");';
 		}
@@ -315,7 +314,7 @@ function popUp(URL) {
 					if($videoServiceEnable=="true") {
 						echo '<p class="error"> Video Service only works in this setting. </p>';
 					}
-					if(($wan_enable=="true") && ($allowWan == "true")){
+					if($wan_enable=="true"){
 						echo '<p class="error"> Bridge Mode not supported in Ethernet WAN mode. </p>';
 					}
 				?>
