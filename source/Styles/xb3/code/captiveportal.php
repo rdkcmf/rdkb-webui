@@ -587,7 +587,7 @@ $(document).ready(function(){
                                 $("#NameContainer").fadeOut("fast");
                         }
 			clearTimeout(PasswordTimeout);
-			PasswordTimeout = setTimeout(function(){ $("#PasswordContainer").fadeOut("slow"); }, 5000);
+			PasswordTimeout = setTimeout(function(){ $("#PasswordContainer").fadeOut("slow"); }, 9000);
 			$("#PasswordMessageTop").text(topMessage);
 			$("#PasswordMessageBottom").text(bottomMessage);
 		}
@@ -621,7 +621,7 @@ $(document).ready(function(){
 			setTimeout(function(){
 				$("#NameContainer").hide();
 				$("#PasswordContainer").hide();
-			}, 2000);
+			}, 9000);
 			$("#button_next").show();
 			$("#WiFi_Name_01").text($("#WiFi_Name").val());
 			$("#WiFi_Password_01").text($("#WiFi_Password").val());
