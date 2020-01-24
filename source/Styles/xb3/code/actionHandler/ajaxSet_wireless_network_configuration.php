@@ -349,10 +349,6 @@ else
 	else if ("save_filter" == $arConfig['target'])
 	{
 		$ssids = array($i);
-		//xfinitywifi[HotSpot] filter rule apply to both 5 & 6 SSID
-		if ("5"==$i || "6"==$i){
-			$ssids = array("5","6");
-		}
 		//ssid 1,2 are for all users
 		//ssid 3,4 & 5,6 are for mso only
 		if(($i == 1 || $i == 2) || ($i > 2 && $_SESSION["loginuser"] == "mso")){
