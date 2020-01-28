@@ -55,9 +55,19 @@ if($validation) {
 	//if ($_POST['mso_mgmt']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.EnableMsoRemoteMgmt",$_POST['mso_mgmt'],true);
 	// put change port at the end of this script
 	if ($_POST['https']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpsEnable",$_POST['https'],true);
-	if ($_POST['httpsport']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.HTTPSPort",$_POST['httpsport'],true);
+	//if ($_POST['httpsport']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.HTTPSPort",$_POST['httpsport'],true);
 	if ($_POST['http']!="notset")		setStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpEnable",$_POST['http'],true);
-	if ($_POST['httpport']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.HTTPPort",$_POST['httpport'],true);
+	//if ($_POST['httpport']!="notset")	setStr("Device.X_CISCO_COM_DeviceControl.HTTPPort",$_POST['httpport'],true);
+        if($_POST['httpsport']!="notset" && $_POST['httpport']!="notset") {
+          setStr("Device.X_CISCO_COM_DeviceControl.HTTPPort",$_POST['httpport'],false);
+          setStr("Device.X_CISCO_COM_DeviceControl.HTTPSPort",$_POST['httpsport'],true);
+        }  
+       if($_POST['httpport']!="notset" && $_POST['httpsport']=="notset"){
+         setStr("Device.X_CISCO_COM_DeviceControl.HTTPPort",$_POST['httpport'],true);
+       }
+       if($_POST['httpsport']!="notset" && $_POST['httpport']=="notset"){
+         setStr("Device.X_CISCO_COM_DeviceControl.HTTPSPort",$_POST['httpsport'],true);
+       }
 }
 // sleep(10);
 /*
