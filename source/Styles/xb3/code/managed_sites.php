@@ -677,6 +677,12 @@ $.validator.addMethod("no_space", function(value, element, param) {
     $end_min  = isset($end_time['1']) ? $end_time['1'] : "";
     $rel_st_hour =  ((int)$st_hour)>12 ? $st_hour-12 : $st_hour;
     $rel_end_hour =  ((int)$end_hour)>12 ? $end_hour-12 : $end_hour;
+    if($blockedInfo['AlwaysBlock']=="true"){
+    	$rel_st_hour = 12;
+    	$st_min ="00";
+    	$rel_end_hour = 11;
+    	$end_min ="59";
+    }
     $block_days = $blockedInfo['BlockedDays'];
     if((int)$rel_st_hour == 0) 
     	$rel_st_hour = 12;
