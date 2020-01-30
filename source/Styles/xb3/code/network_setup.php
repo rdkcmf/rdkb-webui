@@ -882,6 +882,7 @@ if(strpos($partnerId, "sky-") !== false){
 		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("Modem Status:");?></span>
 		<span class="value"><?php echo _($Wan_Port_Status);?></span>
  	</div>
+     <?php if(strpos($partnerId, "sky-") === false){ ?>
  	<div class="form-row odd">
 		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("DownStream Connection Speed:");?></span>
 		<span class="value"><?php echo $modem_downstream;?></span>
@@ -890,6 +891,7 @@ if(strpos($partnerId, "sky-") !== false){
  		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("UpStream Connection Speed:");?></span>
 		<span class="value"><?php echo $modem_upstream;?></span>
 	</div>
+     <?php } ?>
 </div>
 <div class="module forms div_dsl">
 	<h2><?php echo _("WAN Port");?></h2>
