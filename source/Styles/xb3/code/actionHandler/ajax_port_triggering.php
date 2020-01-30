@@ -56,6 +56,7 @@ if (isset($_POST['add'])){
 		$tsp=$_POST['tsp'];
 		$tep=$_POST['tep'];
 		if (getStr("Device.NAT.X_CISCO_COM_PortTriggers.TriggerNumberOfEntries")==0) {
+                  
 			addTblObj("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
 			$IDs=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."));
 			$i=$IDs[count($IDs)-1];
@@ -108,26 +109,7 @@ if (isset($_POST['add'])){
 					}
 				}
 			}
-			if ($result=="") {
-				/*
-				* this piece of code is going to check forward start port and end port not overlapped with port forwarding entry
-				*/
-				$ids=explode(",",getInstanceIDs("Device.NAT.PortMapping."));
-				foreach ($ids as $key=>$j) {
-					if (getStr("Device.NAT.PortMapping.".$j.".LeaseDuration")==0 && getStr("Device.NAT.PortMapping.".$j.".InternalPort")==0){
-						$portMappingType=getStr("Device.NAT.PortMapping.".$j.".Protocol");
-						$arraySPort=getStr("Device.NAT.PortMapping.".$j.".ExternalPort");
-						$arrayEPort=getStr("Device.NAT.PortMapping.".$j.".ExternalPortEndRange");
-						if($type=="BOTH" || $portMappingType=="BOTH" || $type==$portMappingType){
-							$porttest=PORTTEST($tsp,$tep,$arraySPort,$arrayEPort);
-							if ($porttest==1) {
-								$result.=_("Conflict with other service. Please check port and IP!");
-								break;
-							}
-						}
-					}
-				} //end of foreach		
-			}
+                  
 			if ($result=="") {
 				addTblObj("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
 				$IDs=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."));
@@ -158,6 +140,7 @@ if (isset($_POST['add'])){
 			}
 			// echo json_encode($result);
 		}
+
 	}
 }
 if (isset($_POST['edit'])){
@@ -206,6 +189,7 @@ if (isset($_POST['edit'])){
 				}
 			}
 		}
+
 	    if ($result=="") {
 			/*
 			* this piece of code is going to check forward start port and end port not overlapped with port forwarding entry
@@ -213,19 +197,21 @@ if (isset($_POST['edit'])){
 			$ids=explode(",",getInstanceIDs("Device.NAT.PortMapping."));
 			foreach ($ids as $key=>$j) {
 				if (getStr("Device.NAT.PortMapping.".$j.".LeaseDuration")==0 && getStr("Device.NAT.PortMapping.".$j.".InternalPort")==0){
-					$portMappingType=getStr("Device.NAT.PortMapping.".$j.".Protocol");
+				$portMappingType=getStr("Device.NAT.PortMapping.".$j.".Protocol");
 					$arraySPort=getStr("Device.NAT.PortMapping.".$j.".ExternalPort");
 					$arrayEPort=getStr("Device.NAT.PortMapping.".$j.".ExternalPortEndRange");
 					if($type=="BOTH" || $portMappingType=="BOTH" || $type==$portMappingType){
 						$porttest=PORTTEST($tsp,$tep,$arraySPort,$arrayEPort);
 						if ($porttest==1) {
-							$result.=_("Conflict with other service. Please check port and IP!");
+							$result.=_("Failure! As Port Triggering/Port Forwarding rule exists for the same port.");
 							break;
 						}
 					}
 				}
 			} //end of foreach		
 		}
+
+
 		if ($result=="") {
 			// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortStart",$fsp,false);//from start port
 			// setStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.".$i.".TriggerPortEnd",$fep,false);
@@ -251,6 +237,7 @@ if (isset($_POST['edit'])){
 			$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);	
 			if (!$retStatus){$result=_("Success!");}
 		}
+
 		// echo json_encode($result);
 	}
 }
