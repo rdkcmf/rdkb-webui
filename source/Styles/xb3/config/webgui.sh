@@ -175,7 +175,7 @@ then
   echo "\$SERVER[\"socket\"] == \"erouter0:$HTTPS_PORT\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
 else
     # When the httpsport is set to NULL. Always put default value into database.
-    syscfg set mgmt_wan_httpsport 8081
+    syscfg set mgmt_wan_httpsport 8181
     syscfg commit
     HTTPS_PORT=`syscfg get mgmt_wan_httpsport`
     echo "\$SERVER[\"socket\"] == \"erouter0:$HTTPS_PORT\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
