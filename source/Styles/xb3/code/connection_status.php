@@ -201,6 +201,7 @@ $(document).ready(function() {
 <?php
   $NetworkName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.HelpTip.NetworkName");
   $allowEthWan= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.AllowEthernetWAN");
+  $wan_enable= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
 ?>
 <div id="content" style="margin-bottom:100px;">
 	<h1><?php echo _("Gateway > Connection > Status")?></h1>
@@ -329,7 +330,6 @@ if($allowEthWan=="true"){
                 <div class="form-row ">
                     <span class="readonlyLabel"><?php echo _("WAN Network Status:")?></span> <span class="value">
                          <?php
-                          $wan_enable= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
                           if($wan_enable=="true")
                               echo _("Active Ethernet WAN");
                           else
@@ -362,7 +362,7 @@ if($allowEthWan=="true"){
         <div class="form-row">
         <span class="readonlyLabel"><?php echo _("Internet:")?></span> <span class="value">
               <?php 
-              if($allowEthWan=="true"){
+              if($wan_enable=="true"){
                 $wanipv4_status = php_getstr("Device.DeviceInfo.X_COMCAST-COM_WAN_IP");
                 $wanipv6_status = php_getstr("Device.DeviceInfo.X_COMCAST-COM_WAN_IPv6");
                 if( ($wanipv4_status!="0.0.0.0") || ($wanipv6_status!="")){
@@ -403,6 +403,19 @@ if($allowEthWan=="true"){
               ?>
              </span>
         </div>
+        <?php
+        	if($ipv6_global_addr!=""){
+        ?>
+        <div class="form-row odd">
+              <span class="readonlyLabel"><?php echo _("WAN IPv6 Address:")?></span> <span class="value">
+              <?php
+                  echo _($ipv6_global_addr);
+              ?>
+             </span>
+        </div>
+        <?php
+    		}
+    	?>
         <div class="form-row">
         <span class="readonlyLabel"><?php echo _("DHCP Client:")?></span> <span class="value"> 
         <?php 
