@@ -385,14 +385,30 @@ function cmp($a, $b) {
 }
 function merge_days($data){
 	usort($data, "cmp");
-	for ($i=0; $i < sizeof($data); $i++) {
+// this code is removed. because blocked devices and allowed device is not properly set for different times on same days.
+/*	for ($i=0; $i < sizeof($data); $i++) {
 		if((isset($data[$i]['EndTime']) && time_in_min($data[$i]['EndTime'])+1) == (isset($data[$i+1]['StartTime']) && time_in_min($data[$i+1]['StartTime']) )) {
 			$data[$i]['__id'] = $data[$i]['__id'].'_'.$data[$i+1]['__id'];
 			$data[$i]['EndTime'] = $data[$i+1]['EndTime'];
 			unset($data[$i+1]);
 			$i++;
 		}
-	}
+	}*/
+	
+	$k=sizeof($data);
+        for($i=0; $i < $k; $i++){
+            if(isset($data[$i]['StartTime']) && isset($data[$i]['EndTime'])){
+                for ($j=$i+1; $j < $k; $j++){ 
+                  if((time_in_min($data[$i]['EndTime'])) == (time_in_min($data[$j]['StartTime'])))
+                    {
+                        $data[$i]['__id'] = $data[$i]['__id'].'_'.$data[$j]['__id'];
+                        $data[$i]['EndTime'] = $data[$j]['EndTime'];
+                        unset($data[$j]);
+                    }
+                }
+            }
+        }
+  
 	return $data;
 }
 function days_time_conversion_get($data, $type){

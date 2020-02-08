@@ -249,7 +249,11 @@ if (isset($_POST['edit'])){
 				setStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index.".AlwaysBlock",$block,true);
 			}
 			else {
-				if(array_key_exists(1, $i)) delTblObj("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i[1].".");
+                        	$j=1;
+				while(array_key_exists($j, $i)){ 
+					delTblObj("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$i[$j].".");
+					$j=$j+1;  
+                                }
 			}
 			$result=_("Success!");
 		}
