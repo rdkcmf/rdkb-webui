@@ -99,7 +99,12 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 					);
 				$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);
 				//remove the extra index if rule is going from 2-indexs to 1-index
-				if(array_key_exists(1, $index)) delTblObj("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$index[1]. ".");
+				$j=1;
+				while(array_key_exists($j, $index)){
+					delTblObj("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$index[$j]. ".");
+					$j=$j+1;  
+				}
+
 				if (!$retStatus){
 					$result=_("Success!");
 				}	
@@ -219,7 +224,11 @@ else{
 					);
 				$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);
 				//remove the extra index if rule is going from 2-indexs to 1-index
-				if(array_key_exists(1, $index)) delTblObj("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$index[1]. ".");
+                                $j=1;
+				while(array_key_exists($j, $index)){
+                                        delTblObj("Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite." .$index[$j]. ".");
+                                	$j=$j+1;  
+                                }
 				if (!$retStatus){
 					$result=_("Success!");
 				}	

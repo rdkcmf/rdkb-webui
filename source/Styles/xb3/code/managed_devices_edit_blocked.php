@@ -42,7 +42,8 @@ $CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
 		"BlockDays"		=> "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[0].".BlockDays",
 	);
 	$managed_devices_value = KeyExtGet("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.", $managed_devices_param);
-	if($UTC_local_Time_conversion){
+	/*this code is removed because start time and end time is not properly showing whenever three time slot merge in GUI.*/
+	/*if($UTC_local_Time_conversion){
 		$i = $index[0];
 		$managed_devices_get = array();
 		$managed_devices_value1 = $managed_devices_value;
@@ -69,7 +70,41 @@ $CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
 			unset($val);
 		}
 		unset($value);
+	}*/
+	
+	$managed_devices_get = array();
+        $managed_devices_value1 = $managed_devices_value;
+        array_push($managed_devices_get, $managed_devices_value1);
+
+        $i = $index[0];
+        $j = 1;
+        if($UTC_local_Time_conversion){ 
+          while(array_key_exists($j, $index)){
+                $managed_devices_param = array(
+                                "name"                  => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[$j].".Description",
+                                "MACAddress"    => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[$j].".MACAddress",
+                                "blockStatus"   => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[$j].".AlwaysBlock",
+                                "StartTime"             => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[$j].".StartTime",
+                                "EndTime"               => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[$j].".EndTime",
+                                "BlockDays"             => "Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.".$index[$j].".BlockDays",
+                                );
+                        $managed_devices_value2 = KeyExtGet("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.", $managed_devices_param);
+                        $i = $i.'_'.$index[$j];
+                        array_push($managed_devices_get, $managed_devices_value2);
+                        $j=$j+1;
+                }
+        }
+	
+	$managed_devices_value = array();
+	$managed_devices_get = days_time_conversion_get($managed_devices_get, 'MACAddress');
+	foreach ($managed_devices_get as $key => $value){
+		foreach ($value as $k => $val){
+			$managed_devices_value[$k] = $val;
+		}
+		unset($val);
 	}
+	unset($value);
+	
 	$name = $managed_devices_value["name"]; 
 	$mac = $managed_devices_value["MACAddress"]; 
 	$blockStatus = $managed_devices_value["blockStatus"]; 
