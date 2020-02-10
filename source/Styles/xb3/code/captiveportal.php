@@ -60,6 +60,15 @@ csrfprotector_rdkb::init();
 	</head>
 <!-- for Dual Band Network -->
 <style>
+
+
+#WiFi_Password_01,#WiFi_Name_01,#WiFi_Name_02
+,#WiFi_Password_02,#WiFi_Name_04,#WiFi_Password_04,#WiFi_Password_05,
+#WiFi_Name_05{
+	white-space: pre;
+}
+
+
 @media only screen 
  and (max-device-width: 600px){
 #topbar,#set_up > p,#set_up{
