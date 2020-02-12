@@ -75,6 +75,8 @@ if (!isset($_SESSION["loginuser"])) {
 	$_SESSION['sta_fire'] = $sta_fire;
 	$_SESSION['sta_batt'] = $sta_batt;
 	$_SESSION['battery_class'] = $battery_class;
+	/* Grab XBB or other MTA Legacy Battery Install Status */
+	$_SESSION['batteryInstalled'] = getStr("Device.X_CISCO_COM_MTA.Battery.Installed");
 function get_tips($target, $status)
 {
 	$tip = "No Tips!";

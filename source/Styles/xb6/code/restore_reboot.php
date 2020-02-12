@@ -36,6 +36,9 @@ $(document).ready(function() {
 		$("#div6").remove();
 		$("#div5").addClass("odd");
 	}
+        if (("false" == "<?php echo $_SESSION["batteryInstalled"]; ?>")) {
+                $("#div7").remove();
+        }
 //start by licha
 $('#btn1').click(function(e) {
 	e.preventDefault();

@@ -81,17 +81,25 @@ if (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'admin') {
 	$password_change	= TRUE;
 }
 
+if (strpos($partnerId, "sky-") === false) {
+	/* Grab XBB or other MTA Legacy Battery Install Status */
+	$batteryInstalled = getStr("Device.X_CISCO_COM_MTA.Battery.Installed");
+
+	/* Show Battery Icon based on XBB or other MTA Legacy Battery Install Status */
+	if (strstr($batteryInstalled, "true"))  {
+	  $battery = TRUE;
+	}
+	else {
+	  $battery = FALSE;  
+	}
+}
+else {
 /* Turn off Battery and MoCA based on Partner devices */
-if (strpos($partnerId, "sky-") !== false) {
 	$moca_diagnostics   = FALSE;
     $MoCA = FALSE;
     $battery = FALSE;
     if(strpos($voice_dev, "_DEV_") !== false){ $voice_Dig = TRUE;}
     else{$voice_Dig = FALSE;}
-}
-
-if (strpos($modelName, "CGM4331COM") !== false) {
-    $battery = FALSE;
 }
 
 /*
@@ -125,7 +133,7 @@ echo '<li class="nav-gateway">';
 		if ($MoCA) {
 		  echo '<li class="nav-moca"><a role="menuitem"  href="moca.php">'._("MoCA").'</a></li>';
 		}
-		if(($allowEthWan=="true") && ($modelName=="CGM4140COM")){
+		if(($allowEthWan=="true") && ( ($modelName=="CGM4140COM") || ($modelName=="CGM4331COM") || ($modelName=="TG4482A"))) {
 			if($wan_network) echo '<li class="nav-wan-network"><a role="menuitem"  href="wan_network.php">'._("WAN Network").'</a></li>';
 		}
 		echo '</ul>';
