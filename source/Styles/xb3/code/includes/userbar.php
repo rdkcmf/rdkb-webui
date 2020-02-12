@@ -28,14 +28,24 @@
 	$sta_moca = $_SESSION['sta_moca'];
 	$sta_fire = $_SESSION['sta_fire'];
 	$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
-	
-	/* Turn off Battery and MoCA based on Partner devices */
-	if (strpos($partnerId, "sky-") !== false) {
+
+	if (strpos($partnerId, "sky-") === false) {
+		/* Grab XBB or other MTA Legacy Battery Install Status */
+		$batteryInstalled = getStr("Device.X_CISCO_COM_MTA.Battery.Installed");
+
+		if (strstr($batteryInstalled, "true"))  {
+			$battery = TRUE;
+		}
+		else {
+			$battery = FALSE;  
+		}
+		
+		$MoCA = TRUE;
+	}
+	else {
+		/* Turn off Battery and MoCA based on Partner devices */
 	    $MoCA = FALSE;
 	    $battery = FALSE;
-	} else {
-	    $MoCA = TRUE;
-	    $battery = TRUE;
 	}
 ?>
 <script type="text/javascript">
