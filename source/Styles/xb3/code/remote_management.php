@@ -234,6 +234,9 @@ jQuery.validator.addMethod("port",function(value,element){
 jQuery.validator.addMethod("notEqual",function(value,element){
 	return this.optional(element) || (value != $('#http').val());
 }, "<?php echo _("Please enter a different port.")?>");
+jQuery.validator.addMethod("notEqualHttps",function(value,element){
+	return this.optional(element) || (value != $('#https').val());
+}, "<?php echo _("Please enter a different port.")?>");
 var validator = $("#pageForm").validate({
 	groups:{
 		ip_address_x:		"ip_address_1 ip_address_2 ip_address_3 ip_address_4",
@@ -246,7 +249,8 @@ var validator = $("#pageForm").validate({
 	rules: {
 		http:{
 			required: function(element){return !$(element).prop("disabled")},
-			port: true
+			port: true,
+			notEqualHttps: true
 		},
 		https:{
 			required: function(element){return !$(element).prop("disabled")},
