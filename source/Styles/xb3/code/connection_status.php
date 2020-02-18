@@ -25,6 +25,7 @@
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
+<?php $ForceDisable = getStr("Device.WiFi.X_RDK-CENTRAL_COM_ForceDisable"); ?>
 <?php  
     $interface = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstDownstreamIpInterface");
     // $interface = "Device.IP.Interface.2.";
@@ -134,6 +135,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
     gateway.page.init('Gateway > Connection > Status', "nav-connection-status");
+    $ForceDisable = '<?php echo $ForceDisable; ?>';
     var isBridge = "<?php echo $_SESSION["lanMode"]; ?>";
     if(isBridge == 'bridge-static'){
         $('.localIPNetwork *').addClass('disabled');
@@ -150,6 +152,15 @@ $(document).ready(function() {
             e.preventDefault();
         });
     };
+      if($ForceDisable == "true") {
+     $('.private-wifi *').addClass('disabled');
+        $('.private-wifi .btn').click(function(e) {
+            e.preventDefault();
+        });
+     $('.tr_hotspot *').addClass('disabled');
+     $('.home_network *').addClass('disabled');
+     };
+
 	if("Enabled"=="<?php echo $_SESSION["psmMode"]; ?>") {
 		$(".wifi_section").remove();
 		$(".moca_section").remove();
@@ -197,6 +208,16 @@ $(document).ready(function() {
 			<p class="tip"><?php echo _("View information about your network connections.")?></p>
 			<p class="hidden"><?php echo sprintf(_("View and manage the settings for your local IP, Wi-Fi, MoCA and %ss."), $NetworkName)?></p>
 	</div>
+        <?php
+            if($ForceDisable == "true") {
+         ?>
+                      <div class= "error" style="text-align: right;" >
+                             <h3 style="width:92%"><?php echo _("WiFi is configured to be disabled");?></h3>
+                          </div>
+              <?php
+             }
+           ?>
+
   <div style="width:360px;float:left;"><!-- contain local ip, gateway network, Moca -->
     <div class="module forms block localIPNetwork">
         <h2><?php echo _("Local IP Network")?></h2>
@@ -611,7 +632,7 @@ if($allowEthWan=="true"){
 		        $wifi_enable = _("Active");
 		else
 		        $wifi_enable = _("Inactive");
-		echo '<div class="module forms block" style="position:relative;top:0px;right:0px;">';
+		echo '<div class="module forms block home_network" style="position:relative;top:0px;right:0px;">';
 		echo '<h2 style="white-space: pre-wrap;">'.sprintf(_("HomeSecurityNetwork-%s"),$public_v[$j]['ssid_name']).'</h2>';
 		// !!!dont goto edit_public page!!! thant page just for hotspot tunnel configuration
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">'.sprintf(_("Wireless Network (Wi-Fi %s GHz):"),$public_v[$j]['radio_freq']).'</span> <span class="value">'.$wifi_enable.'</span></div>';

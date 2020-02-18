@@ -25,6 +25,7 @@
 	<?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
+<?php $ForceDisable = getStr("Device.WiFi.X_RDK-CENTRAL_COM_ForceDisable"); ?>
 <?php
 	if("admin" == $_SESSION["loginuser"] && !$_POST["userPassword"]){
 		echo '<script type="text/javascript"> alert("'._("Please finish Wizard - Step 1 first.").'"); window.location = "wizard_step1.php";</script>';
@@ -86,12 +87,16 @@ $(document).ready(function() {
 			echo 'gateway.page.init("Gateway > Home Network Wizard", "nav-wizard");';
 		}
 	?>
+         $ForceDisable = '<?php echo $ForceDisable; ?>';
 	var mesh_mode = '<?php echo $Mesh_Mode; ?>';
-	if(mesh_mode){
+	if(mesh_mode || $ForceDisable == "true"){
 		//disable >>  Network Name:, Password: , Security:
-		 $('#network_name,#security, #network_password, #password_check, #network_name1 , #security1 ,#network_password1,#password_check1').prop("disabled", true);
+		 $('#network_name,#security, #network_password, #password_check, #network_name1 , #security1 ,#network_password1,#password_check1,#password_show,#password_show1').prop("disabled", true);
 	}
 	var password_mso_user = '<?php echo $password_mso_user; ?>';
+        if(($ForceDisable == "true") && (!password_mso_user)){
+           $("input[type=submit]").attr("disabled", "disabled");
+        }
     /*
      *  Manage password field: open wep networks don't use passwords
      */
@@ -108,7 +113,7 @@ $(document).ready(function() {
 				$("#div_change_password").show();
 			}
 			else {
-				if(mesh_mode)
+				if(mesh_mode || $ForceDisable == "true")
 					$("#network_password").prop("disabled", true);
 				else
 					$("#network_password").prop("disabled", false);
@@ -138,7 +143,7 @@ $(document).ready(function() {
 				$("#div_change_password1").show();
 			}
 			else {
-				if(mesh_mode)
+				if(mesh_mode || $ForceDisable == "true")
 					$("#network_password1").prop("disabled", true);
 				else
 					$("#network_password1").prop("disabled", false);
@@ -498,6 +503,16 @@ if ("WEP-64" == $encrypt_mode1){
 					echo '<h2>'._("Home Network Wizard").'</h2>';
 				}
 			?>
+     <?php
+            if($ForceDisable == "true") {
+         ?>
+                      <div class= "error" style="text-align: center;" >
+                             <h3 style="width:92%"><?php echo _("WiFi is configured to be disabled");?></h3>
+                          </div>
+              <?php
+             }
+           ?>
+
 			<?php
 			if($Mesh_Mode){
 		?>
