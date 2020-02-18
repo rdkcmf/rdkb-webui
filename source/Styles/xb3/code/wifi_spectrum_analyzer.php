@@ -23,6 +23,7 @@
     <?php include('includes/userbar.php'); ?>
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
+<?php $ForceDisable = getStr("Device.WiFi.X_RDK-CENTRAL_COM_ForceDisable"); ?>
 <style>
  td {
     border: 1px solid white;
@@ -110,6 +111,14 @@ function spanTable($rows, startIdx, endIdx){
 	}
 $(document).ready(function(){
 	gateway.page.init("Troubleshooting > Wi-Fi Spectrum Analyzer", "nav-wifi-spectrum-analyzer");
+         $ForceDisable = '<?php echo $ForceDisable; ?>';
+         if($ForceDisable == "true"){
+      $("#save_result").addClass('disabled').prop('disabled',true);
+      $("#start_scan").addClass('disabled').prop('disabled',true);
+      $('.spectrum_analyzer *').addClass('disabled');
+
+}
+
 	$("#save_result").hide();
 	function popUp(URL) {
 	day = new Date();
@@ -136,12 +145,25 @@ $(document).ready(function(){
 		});
 	});
 });
+$ForceDisable = '<?php echo $ForceDisable; ?>';
+  if($ForceDisable == "false"){
 $(window).load(function() {
 	ajax_spec_analyzer();
 });
+ }
 </script>
 <div id="content" class="main_content">
 <h1><?php echo _("Troubleshooting > Wi-Fi Spectrum Analyzer")?></h1>
+       <?php
+            if($ForceDisable == "true") {
+         ?>
+                      <div class= "error" style="text-align: center;" >
+                             <h3 style="width:92%"><?php echo _("WiFi is configured to be disabled");?></h3>
+                          </div>
+              <?php
+             }
+           ?>
+
 	<div class="module">
 		<div>
 			<input type="button" class="btn" value="<?php echo _("Start Scan")?>" id = "start_scan"/>
@@ -149,7 +171,7 @@ $(window).load(function() {
 			<input type="button" class="btn button" value="<?php echo _("Save Result")?>" id = "save_result" style="top: 8px;"/>
 		</div>
 	</div>
-	<div id="table_WSA" class="module data">
+	<div id="table_WSA" class="module data spectrum_analyzer">
 		<h2><?php echo _("Wi-Fi Spectrum Analyzer Data")?></h2>
 		<div style="overflow: auto;">
 			<table class="data" summary="<?php echo _("Wi-Fi Spectrum Analyzer")?>" id="spec_capture_table">

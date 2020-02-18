@@ -36,6 +36,7 @@
 $Mesh_Enable 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.Enable");
 $Mesh_State 	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.Mesh.State");
 $Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')?'true':'false';
+$ForceDisable = getStr("Device.WiFi.X_RDK-CENTRAL_COM_ForceDisable");
 /*********************get WiFi parameters***************************/
 $wifi_param = array(
 	"feq_band" 			=> "Device.WiFi.Radio.1.OperatingFrequencyBand",
@@ -390,6 +391,7 @@ function update_Wi_Fi_control_list(){
 }
 $(document).ready(function() {
     gateway.page.init("Gateway > Connection > WiFi", "nav-wifi-config");
+    $ForceDisable = '<?php echo $ForceDisable; ?>';
     $Mesh_Mode = '<?php echo $Mesh_Mode; ?>';
     var MeshEnable='<?php echo $Mesh_Enable; ?>';
     if(MeshEnable=="true"){
@@ -398,12 +400,12 @@ $(document).ready(function() {
 	$('[name="channel_bandwidth"]').prop("disabled", false);
     }
     //Disable all the MAC filter options in user admin mode if bridge mode is enabled
-    if (isBridge == 'bridge-static') {       
+    if (isBridge == 'bridge-static' || $ForceDisable == 'true') {       
         $('.div_private_wifi *').addClass('disabled');
         $('.div_private_wifi .btn').click(function(e) {
             e.preventDefault();
         });
-	if ("mso" != "<?php echo $_SESSION["loginuser"]; ?>"){
+	if ("mso" != "<?php echo $_SESSION["loginuser"]; ?>" || $ForceDisable == 'true'){
 		$("#mac_admin").addClass('disabled');
 		$("#mac_ssid").addClass('disabled').prop('disabled',true);
 		$("#filtering_mode").addClass('disabled').prop('disabled',true);
@@ -413,6 +415,22 @@ $(document).ready(function() {
 		$("#save_filter").addClass('disabled').prop("disabled", true);
 	}
     };
+      if($ForceDisable == 'true') {
+         $('.div_enable_radio *').addClass('disabled');
+         $('.div_other_wifi *').addClass('disabled');
+         $('.div_public_wifi *').addClass('disabled');
+         $('.div_radio_setting *').addClass('disabled');
+         $('.div_radio_setting input ').prop('disabled',true);
+         $('.div_radio_setting .btn ').prop('disabled',true);
+         $('.div_radio_setting .btn').click(function(e) {
+             e.preventDefault();
+          });
+         $("#wireless_mode").addClass('disabled').prop('disabled',true);
+         $("#transmit_power").addClass('disabled').prop('disabled',true);
+         $("#wireless_mode1").addClass('disabled').prop('disabled',true);
+         $("#transmit_power1").addClass('disabled').prop('disabled',true);
+         $("#BG_protection_mode").addClass('disabled').prop('disabled',true);      
+       };
 	$("#radio24_switch").radioswitch({
 		id: "radio24-switch",
 		radio_name: "at_a_glance",
@@ -424,6 +442,7 @@ $(document).ready(function() {
 	}).change(function(){
 		save_enable("radio_enable");
 	});
+        $("#radio24_switch").radioswitch("doEnable", $ForceDisable == 'true' ? false : true);
 	$("#radio5_switch").radioswitch({
 		id: "radio5-switch",
 		radio_name: "at_a_glance2",
@@ -435,6 +454,7 @@ $(document).ready(function() {
 	}).change(function(){
 		save_enable("radio_enable1");
 	});
+        $("#radio5_switch").radioswitch("doEnable", $ForceDisable == 'true' ? false : true);
 	$("#wps_switch").radioswitch({
 		id: "wps-switch",
 		radio_name: "wps",
@@ -498,12 +518,12 @@ $(document).ready(function() {
 	}
 	if("<?php echo $DCS_Supported;?>" == "true"){
 		$('[name="DCS_Channel_Selection"]').prop("disabled", false);		
-	} else {
+	} if($ForceDisable == "true" || "<?php echo $DCS_Supported;?>" == "false") {
 		$('[name="DCS_Channel_Selection"]').prop("disabled", true);
 	}
 	if("<?php echo $DCS_Supported1;?>" == "true"){
 		$('[name="DCS_Channel_Selection1"]').prop("disabled", false);		
-	} else {
+	} if($ForceDisable == "true" || "<?php echo $DCS_Supported1;?>" == "false") {
 		$('[name="DCS_Channel_Selection1"]').prop("disabled", true);
 	}
 	//ReverseDirectionGrantSupported => X_CISCO_COM_ReverseDirectionGrant
@@ -785,7 +805,7 @@ $(document).ready(function() {
 	}
 	// now we can show target content
 	$("#content").show();
-	if (isBridge == 'bridge-static') { 
+	if (isBridge == 'bridge-static' || $ForceDisable == 'true') { 
    		if ("mso" == "<?php echo $_SESSION["loginuser"]; ?>"){
 	        $(".div_wps_setting input, .div_wps_setting select").addClass('disabled').attr('disabled',true);
 	        $("#wps_switch, #pin_switch").radioswitch("doEnable", false);
@@ -798,7 +818,7 @@ $(document).ready(function() {
 		}
 	}
 	//BS_Capability to grey out
-	if("true" != "<?php echo $BS_Capability; ?>")
+	if("true" != "<?php echo $BS_Capability; ?>" || $ForceDisable == 'true')
 	{
 		$('.band_steering *').addClass('disabled');
 	        $('.band_steering input ').prop('disabled',true);
@@ -808,7 +828,7 @@ $(document).ready(function() {
 	        });
 	}
 	//for Mesh WiFi integration
-	if($Mesh_Mode == 'true'){
+	if($Mesh_Mode == 'true' || $ForceDisable == 'true'){
 		//disable >> Channel Selection:, Channel:, Channel Bandwidth:
 		$('#channel_automatic, #channel_manual, #channel_automatic1, #channel_manual1, #channel_number, #channel_number1, #auto_channel_number, #auto_channel_number1, input[name=channel_bandwidth], input[name=channel_bandwidth1]').prop("disabled", true);
 	}
@@ -1228,6 +1248,15 @@ function saveBandSteeringSettings()
 	<p class="hidden" style="position:relative; top:-20px ; left: 2px;"><strong>Auto-Learned Wireless Devices</strong> are currently connected to the Gateway. </p>
 	<p class="hidden" style="position:relative; top:-20px ; left: 2px;"><strong>Manually-Added Wireless Devices:</strong> Enter a unique name and MAC address for the wireless device you want to manually add, then click <strong>ADD.</strong> </p>
 </div>
+     <?php
+            if($ForceDisable == "true") {
+         ?>
+                      <div class= "error" style="text-align: center;" >
+                             <h3 style="width:92%"><?php echo _("WiFi is configured to be disabled");?></h3>
+                          </div>
+              <?php
+             }
+           ?>
 <div class="module div_enable_radio">
 	<div class="select-row">
 	<span class="readonlyLabel label">Wi-Fi Radio(<?php echo $radioband1; ?> GHz)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>
