@@ -26,6 +26,7 @@
 </div><!-- end #sub-header -->
 <?php include('includes/nav.php'); ?>
 <?php
+$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 $RemoteAccess_param = array(
 	"http_mode"	=> "Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpEnable",
 	"https_mode"	=> "Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpsEnable",
@@ -746,10 +747,20 @@ function remote_access_block(){
 					echo $_SERVER["REMOTE_ADDR"];
 				}*/
 			?>
-			<?php echo _("Remote Management Address (IPv4):")?> 
 			<?php 
-				$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
-				echo getStr($fistUSif."IPv4Address.1.IPAddress");
+                                if(strpos($partnerId, "sky-") !== false){
+					$isMapT = getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapTransportMode");
+					if($isMapT != 'MAPT' && $isMapT !== NULL ){
+						echo _("Remote Management Address (IPv4):");
+						$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
+						echo getStr($fistUSif."IPv4Address.1.IPAddress");
+					}
+				}
+				else{
+					echo _("Remote Management Address (IPv4):");
+					$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
+					echo getStr($fistUSif."IPv4Address.1.IPAddress");
+				}
 			?>
 			<br/>
 			<?php echo _("Remote Management Address (IPv6):")?> 		
