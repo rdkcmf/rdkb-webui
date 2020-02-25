@@ -717,7 +717,7 @@ $(document).ready(function() {
 	// }
 	// ONLY deal WEP for UI-4.0
 	if (sec_mod.indexOf("WEP")!=-1){
-		$("#wireless_mode option[value='n']").prop("disabled", true);
+		$("#wireless_mode").find('[value="n"],[value="g,n"],[value="g,n,ax"]').prop("disabled", true);
 	}
 	var sec_mod1 = document.getElementById("private_wifi").rows[2].cells[3].innerHTML;
 	// if (sec_mod1.indexOf("WEP")!=-1 || sec_mod1.indexOf("TKIP")!=-1){
@@ -725,7 +725,7 @@ $(document).ready(function() {
 	// }
 	// ONLY deal WEP for UI-4.0
 	if (sec_mod1.indexOf("WEP")!=-1){
-		$("#wireless_mode1").find('[value="n"],[value="ac"],[value="n,ac"]').prop("disabled", true);
+		$("#wireless_mode1").find('[value="n"],[value="ac"],[value="n,ac"],[value="a,n,ac"],[value="a,n,ac,ax"]').prop("disabled", true);
 	}
 	if ($("#public_wifi").find("tr").length <= 1)
 	{
@@ -1421,12 +1421,14 @@ function saveBandSteeringSettings()
 	<div class="form-row">
 		<label for="wireless_mode">Mode:</label>
 		<select name="wireless_mode" id="wireless_mode">
-		<option value="n"  	<?php if ("n" == $wireless_mode) echo 'selected="selected"';?> >802.11 n</option>
-		<option value="g,n" 	<?php if ("g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 g/n</option>
-		<!--option value="b,g,n" 	<?php //if ("b,g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 b/g/n</option-->
 		<?php if (strstr($support_mode, "ax")){ ?>
+			<option value="g,n" 	<?php if ("g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 g/n</option>
 			<option value="g,n,ax" 	<?php if ("g,n,ax" == $wireless_mode) echo 'selected="selected"';?> >802.11 g/n/ax</option>
-			<option value="ax" 	<?php if ("ax" == $wireless_mode) echo 'selected="selected"';?> >802.11 ax</option>
+		<?php }
+		else{ ?>
+			<option value="n"  	<?php if ("n" == $wireless_mode) echo 'selected="selected"';?> >802.11 n</option>
+			<option value="g,n" 	<?php if ("g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 g/n</option>
+			<!--option value="b,g,n" 	<?php //if ("b,g,n" == $wireless_mode) echo 'selected="selected"';?> >802.11 b/g/n</option-->
 		<?php } ?>
 		</select>
 	</div>
@@ -1647,15 +1649,15 @@ function saveBandSteeringSettings()
 	<div class="form-row">
 		<label for="wireless_mode1">Mode:</label>
 		<select name="wireless_mode1" id="wireless_mode1">
-		<?php if (strstr($support_mode_5g, "ac")){ ?>
-        	    	<option value="n"       <?php if ("n"      == $wireless_mode1) echo 'selected="selected"';?> >802.11 n</option>
+		<?php if (strstr($support_mode_5g, "ax")){ ?>
+			<option value="a,n,ac"	<?php if ("a,n,ac" == $wireless_mode1) echo 'selected="selected"';?> >802.11 a/n/ac</option>
+			<option value="a,n,ac,ax"	<?php if ("a,n,ac,ax" == $wireless_mode1) echo 'selected="selected"';?> >802.11 a/n/ac/ax</option>
+		<?php } 
+		elseif (strstr($support_mode_5g, "ac")){ ?>
+        	<option value="n"       <?php if ("n"      == $wireless_mode1) echo 'selected="selected"';?> >802.11 n</option>
 			<option value="ac" 	<?php if ("ac"     == $wireless_mode1) echo 'selected="selected"';?> >802.11 ac</option>
 			<option value="n,ac"	<?php if ("n,ac"   == $wireless_mode1) echo 'selected="selected"';?> >802.11 n/ac</option>
-			<option value="a,n,ac"	<?php if ("a,n,ac" == $wireless_mode1) echo 'selected="selected"';?> >802.11 a/n/ac</option>	
-		<?php } 
-		if (strstr($support_mode_5g, "ax")){ ?>
-			<option value="a,n,ac,ax"	<?php if ("a,n,ac,ax" == $wireless_mode1) echo 'selected="selected"';?> >802.11 a/n/ac/ax</option>  
-			<option value="ax" 	<?php if ("ax"    == $wireless_mode1) echo 'selected="selected"';?> >802.11 ax</option>	
+			<option value="a,n,ac"	<?php if ("a,n,ac" == $wireless_mode1) echo 'selected="selected"';?> >802.11 a/n/ac</option>
 		<?php } 
 		else{ ?>
 			<option value="n"   	<?php if ("n"      == $wireless_mode1) echo 'selected="selected"';?> >802.11 n</option>
