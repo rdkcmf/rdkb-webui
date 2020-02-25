@@ -28,6 +28,8 @@ $Mesh_Mode = ($Mesh_Enable == 'true' && $Mesh_State == 'Full')? true : false;
 $Radio_1_Enable = getStr("Device.WiFi.Radio.1.Enable");
 $Radio_2_Enable = getStr("Device.WiFi.Radio.2.Enable");
 $Radio_Enable = ($Radio_1_Enable == 'true' || $Radio_2_Enable == 'true') ? true : false ;
+$Radio_1_Support_Modes = getStr("Device.WiFi.Radio.1.SupportedStandards");
+$Radio_2_Support_Modes = getStr("Device.WiFi.Radio.2.SupportedStandards");
 function validChecksum($WPS_pin){
 	if (preg_match("/^\d{4}$|^\d{8}$/", $WPS_pin)!=1) return false;
 	if (preg_match("/^\d{4}$/", $WPS_pin)==1) return true;
@@ -146,8 +148,14 @@ else
 			else {//36,40,44,48,149,153,157,161,165 or 1,2,3,4,5,6,7,8,9,10,11
 				$PossibleChannelsArr = explode(',', $PossibleChannels);
 			}
-			if($validation) $validation = (($i==1 && isValInArray($arConfig['wireless_mode'], array("n", "g,n", "b,g,n", "g,n,ax", "ax"))) || ($i==2 && isValInArray($arConfig['wireless_mode'], array("n", "a,n", "ac", "n,ac", "a,n,ac", "a,n,ac,ax", "ax"))));
-
+			if (strstr($Radio_1_Support_Modes, "ax") && strstr($Radio_2_Support_Modes, "ax"))
+			{
+				if($validation) $validation = (($i==1 && isValInArray($arConfig['wireless_mode'], array("g,n", "g,n,ax"))) || ($i==2 && isValInArray($arConfig['wireless_mode'], array("a,n,ac", "a,n,ac,ax"))));
+			}
+			else
+			{
+				if($validation) $validation = (($i==1 && isValInArray($arConfig['wireless_mode'], array("n", "g,n", "b,g,n"))) || ($i==2 && isValInArray($arConfig['wireless_mode'], array("n", "a,n", "ac", "n,ac", "a,n,ac"))));
+			}
 			if ($validation && "false"==$arConfig['channel_automatic']) $validation = isValInArray($arConfig['channel_number'], $PossibleChannelsArr);
 			if ($validation && ("2" != $i) && ("20MHz" != $arConfig['channel_bandwidth'])) $validation = isValInArray($arConfig['ext_channel'], array('AboveControlChannel', 'BelowControlChannel', 'Auto'));
 			if($validation){

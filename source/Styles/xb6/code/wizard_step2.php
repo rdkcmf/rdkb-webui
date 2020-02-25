@@ -55,6 +55,8 @@
 		"network_pass_128_1"	=> "Device.WiFi.AccessPoint.2.Security.X_CISCO_COM_WEPKey128Bit.1.WEPKey",
 		"freq_band"             => "Device.WiFi.Radio.1.OperatingFrequencyBand",
                 "freq_band1"            => "Device.WiFi.Radio.2.OperatingFrequencyBand",
+		"SupportedStandards"	=> "Device.WiFi.Radio.1.SupportedStandards",
+		"SupportedStandards1"	=> "Device.WiFi.Radio.2.SupportedStandards",
                 );
 	$wifi_value = KeyExtGet("Device.WiFi.", $wifi_param);
         $freq_band              = $wifi_value['freq_band'];
@@ -76,6 +78,8 @@
 	$brandName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.brandname");
 	$productName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.productname");
 	$productLink = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.link");
+	$supportedStandards1 = $wifi_value['SupportedStandards'];
+	$supportedStandards2 = $wifi_value['SupportedStandards1'];
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -495,7 +499,13 @@ if ("WPA2-Personal" == $encrypt_mode1){
               <?php
              }
            ?>
-			<p class="summary">Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi B, G, N) and 5GHz(Wi-Fi A, N) compatible devices.</p>
+			<?php if (strstr($supportedStandards1, "ax")){ ?>
+				<p class="summary">Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi G, N, AX) and 5GHz(Wi-Fi A, N, AC, AX) compatible devices.</p>
+			<?php }
+			else{ ?>
+				<p class="summary">Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi G, N) and 5GHz(Wi-Fi A, N, AC) compatible devices.</p>
+			<?php } ?>
+            
 			<div class="form-row odd">
 				<label for="network_name">Wi-Fi Network Name (<?php echo $radioband1; ?>GHz):</label>
 				<input type="text" size="23" value="<?php echo htmlspecialchars($network_name);?>" id="network_name" name="network_name" class="text" />

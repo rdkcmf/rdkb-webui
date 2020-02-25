@@ -45,6 +45,8 @@ $rootObjName = "Device.Ethernet.Interface.";
 $paramNameArray = array("Device.Ethernet.Interface.");
 $mapping_array  = array("Upstream", "Status", "MACAddress", "MaxBitRate");
 $ethernetParam = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
+$ethernetPort3Name = getStr("Device.Ethernet.Interface.3.Name");
+$ethernetPort5Name = getStr("Device.Ethernet.Interface.5.Name");
 ?>
 <script type="text/javascript">
 var o_isPort4XHSEnabled = <?php echo $isPort4XHSEnabled ? 'true' : 'false'; ?>;
@@ -92,7 +94,12 @@ $(document).ready(function() {
 	<h1>Gateway > Hardware > LAN Ethernet</h1>
 	<div id="educational-tip">
 		<p class="tip"> View information about the Gateway's Ethernet Ports. </p>
-		<p class="hidden">The Gateway has 2 Gigabit (GbE) Ethernet Ports. When a device is connected to the Gateway with an Ethernet cable, you'll see an <i>Active</i> status for that port.</p>
+		<?php if (strstr($ethernetPort3Name, "erouter0")){ ?>
+			<p class="hidden">The Gateway has 2 Gigabit (GbE) Ethernet Ports. When a device is connected to the Gateway with an Ethernet cable, you'll see an <i>Active</i> status for that port.</p>
+		<?php }
+		elseif (strstr($ethernetPort5Name, "erouter0")){ ?>
+			<p class="hidden">The Gateway has 3 Gigabit (GbE) Ethernet Ports and one 2.5 (mGig) Ethernet Port. When a device is connected to the Gateway with an Ethernet cable, you'll see an <i>Active</i> status for that port.</p>
+		<?php } ?>
 	</div>
 	<?php
 	function NameMap($str,$i)
