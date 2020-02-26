@@ -643,11 +643,18 @@ $(".btn").click(function(){
 					cus_mgmt:$("#cus_mgmt").prop("checked")
 					*/
 					},
-			success:function(){
-				setTimeout(function(){
+			dataType: "json",
+			success:function(results){
+				if(results!=""){
+					jHide();
+					jAlert(results);
+				}else{
+					setTimeout(function(){
 					jHide();
 				    window.location.href="remote_management.php";
-				}, 15000);			
+					}, 15000);
+				}
+							
 			},
 			error:function(){
 				setTimeout(function(){
