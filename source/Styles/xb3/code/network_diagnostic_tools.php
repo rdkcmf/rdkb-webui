@@ -34,6 +34,19 @@ label{
 #pageForm3 span, #pageForm3 label, #pageForm4 label{
 	width: 100px;
 }
+
+.traceError{
+	width: 350px;
+}
+
+.noError{
+	width: 554px;
+	height:250px;
+}
+
+#vpop_container{ 
+  	top: 126px !important;
+  }  
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -283,8 +296,8 @@ $(document).ready(function() {
 					var trace_ipv4_status = results.trace_ipv4_status;
 					var trace_ipv4_result = results.trace_ipv4_result;
 					$("#pop_trace").text("<?php echo _("Status:")?> "+trace_ipv4_status+" !\n");
-					jHide();				
-					showTracerouteDialog();
+					jHide();
+					checkTraceError(trace_ipv4_status);
 					if ("Complete" == trace_ipv4_status){
 						var i = 0;
 						var hInt = setInterval(function(){
@@ -324,7 +337,7 @@ $(document).ready(function() {
 					var trace_ipv6_result = results.trace_ipv6_result;
 					$("#pop_trace").text("<?php echo _("Status:")?> "+trace_ipv6_status+" !\n");
 					jHide();				
-					showTracerouteDialog();
+					checkTraceError(trace_ipv6_status);
 					if ("Complete" == trace_ipv6_status){
 						var i = 0;
 						var hInt = setInterval(function(){
@@ -343,17 +356,38 @@ $(document).ready(function() {
 		}
 	});	
 });
-function showTracerouteDialog() {
+function showTracerouteDialog(width) {
 	$.virtualDialog({
 		title: "Traceroute Tool",
 		content: $("#traceroute_dialog"),
 		footer: '<input id="pop_button" type="button" value="<?php echo _("Close")?>" style="float: right;" />',
-		width: "600px"
+		width: width
 	});
 	$("#pop_button").off("click").on("click", function(){
 		$.virtualDialog("hide");
 	});
 }
+
+function checkTraceError(traceResults){
+	var states_trace=["Error_CannotResolveHostName","Error_MaxHopCountExceeded","Error! Traceroute Failed","Error_Internal","Error_Other","Error"];
+	//var errorPresent=false;
+	if(states_trace.includes(traceResults)){
+		showTracerouteDialog("400px");
+          	if($("#pop_trace").hasClass("noError")){
+		     $("#pop_trace").removeClass( "noError" );
+		}
+		$("#pop_trace").addClass("traceError");
+		return;
+	} 
+	if($("#pop_trace").hasClass("traceError")){ 
+          	$("#pop_trace").removeClass( "traceError" );
+        }
+	showTracerouteDialog("600px");
+	$("#pop_trace").addClass("noError");
+
+	return;
+}
+
 </script>
 <?php
 	$ConnectivityTestURL = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.NetworkDiagnosticTools.ConnectivityTestURL");
@@ -492,7 +526,7 @@ function showTracerouteDialog() {
 <div id="traceroute_dialog" class="content_message" style="display: none;">
 	<p><?php echo _("Traceroute Results:")?></p>
 	<label for="pop_trace" class="acs-hide"></label>
-	<textarea id="pop_trace" name="pop_trace" readonly="readonly" cols="69" rows="16" style="resize: none;"><?php echo _("Loading...")?>
+	<textarea id="pop_trace" name="pop_trace" readonly="readonly" style="resize: none;"><?php echo _("Loading...")?>
 	</textarea>
 </div>
 <?php include('includes/footer.php'); ?>
