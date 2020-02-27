@@ -828,7 +828,12 @@ $("#f_i_option1").click(function(){
 			var val = $phoneNumber.val();
 			isValid	= checkValidPhoneNumber(val);
 			if(val == ""){
-				goNextphoneNumber(true);
+				if ($("#concent").is(":checked"))
+				{
+					goNextphoneNumber(false);
+				}else{
+					goNextphoneNumber(true);
+				}
 				$phoneNumber.removeClass("success").removeClass("error");
 				//messageHandler("phoneNumber", "Text (SMS)", "Passwords are case sensitive and should include 8-63 alphanumeric characters with no spaces.");
 				$("#phoneNumberContainer").fadeOut("slow");
