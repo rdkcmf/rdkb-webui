@@ -46,6 +46,8 @@ $(document).ready(function() {
 	if (wanType == "DSL"){
 		$(".div_cm").remove();
 		$(".div_mta").remove();
+		$(".div_cm_mac").remove();
+		$(".div_mta_mac").remove();
 		$(".div_init").remove();
 		$(".div_up").remove();
 		$(".div_down").remove();
@@ -298,7 +300,7 @@ function sec2dhms($sec)
 			<?php echo strtoupper(getStr(getStr(getStr($fistUSif."LowerLayers").".LowerLayers").".MACAddress")); ?>
 		</span>
 	</div>
-	<div class="form-row div_mta">
+	<div class="form-row div_mta_mac">
 		<span class="readonlyLabel"><?php echo _("eMTA MAC:")?></span>
 		<span class="value"><?php echo strtoupper(getStr("Device.X_CISCO_COM_MTA.MACAddress"));?></span>
 	</div>
@@ -310,7 +312,7 @@ function sec2dhms($sec)
 		);
 		$CM_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $CM_param);
 	?>
-	<div class="form-row odd div_cm">
+	<div class="form-row odd div_cm_mac">
 		<span class="readonlyLabel"><?php echo _("CM MAC:")?></span>
 		<span class="value"><?php echo strtoupper($CM_value["MACAddress"]);?></span>
 	</div>
