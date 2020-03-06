@@ -2237,7 +2237,7 @@ msgid "You can edit this existing DDNS entry, by changing the service provider n
 msgstr "È possibile modificare questa voce DDNS esistente, cambiando il nome del fornitore di servizio/nome host/nome utente/password."
 
 #: firewall_settings_ipv4.php:58 firewall_settings_ipv6.php:48
-msgid "You are trying to disable the firewall. It is a security risk. \nAre you sure you want to continue?"
+msgid "You are trying to disable the firewall. It is a security risk. Are you sure you want to continue?"
 msgstr "Stai cercando di disattivare il firewall. Questo rappresenta un rischio per la tua sicurezza. Continuare?"
 
 #: firewall_settings_ipv4.php:105 firewall_settings_ipv6.php:109
