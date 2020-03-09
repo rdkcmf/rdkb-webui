@@ -802,7 +802,7 @@ function addslashes( str ) {
 }
 function click_save()
 {
-	var network_name_1= "<?php echo htmlspecialchars($network_name); ?>";
+	var network_name_1= "<?php echo htmlspecialchars(addslashes($network_name)); ?>";
 	var password_mso_user = '<?php echo $password_mso_user; ?>';
 	var network_password = "";
 	var rf = "<?php echo $radio_band == "2.4"? "": 1; ?>";
