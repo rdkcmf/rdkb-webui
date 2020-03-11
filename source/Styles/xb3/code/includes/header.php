@@ -118,6 +118,8 @@ csrfprotector_rdkb::init();
 	$msoLogo= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.LocalUI.MSOLogo");
 	$logo="cmn/syndication/img/".$msoLogo;
 	$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
+	$modelName = getStr("Device.DeviceInfo.ModelName");
+	($modelName == "TG1682P")?define("PREPAID",true):define("PREPAID",false);
 ?>
 <head>
 	<title><?php echo $title; ?></title>

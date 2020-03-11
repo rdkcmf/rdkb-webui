@@ -25,6 +25,9 @@ require_once("../includes/utility.php");
 $opType = $_POST['op'];
 $r_enable = $_POST['enable'];
 try {
+	if(PREPAID == true){
+		throw new Exception(_('Home Security not supported'));
+	}
 	if ($opType !== 'savePort4XHS' || !($r_enable == 'true' || $r_enable == 'false')) {
 		throw new Exception(_('Parameters are invalid'));
 	}
