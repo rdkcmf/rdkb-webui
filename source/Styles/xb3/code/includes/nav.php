@@ -82,6 +82,10 @@ if (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'admin') {
 	$password_change	= TRUE;
 }
 
+if (PREPAID == true){
+	$eMTA = FALSE;
+}
+
 if (strpos($partnerId, "sky-") === false) {
 	/* Grab XBB or other MTA Legacy Battery Install Status */
 	$batteryInstalled = getStr("Device.X_CISCO_COM_MTA.Battery.Installed");

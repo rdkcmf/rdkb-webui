@@ -98,7 +98,7 @@ if(!$isMSO) {
 		header("Location: $Cloud_WebURL");
 		exit;
 	}*/
-	if(!strcmp($CaptivePortalEnable, "true")) {
+	if(!strcmp($CaptivePortalEnable, "true") && (PREPAID == false) ) {
 		
 		$SERVER_ADDR = $_SERVER['SERVER_ADDR'];
 		$ip_addr = strpos($SERVER_ADDR, ":") == false ? $LanGwIPv4 : $LanGwIPv6 ;

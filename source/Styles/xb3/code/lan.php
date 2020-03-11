@@ -175,29 +175,28 @@ $(document).ready(function() {
 		if ($ids[$id] === "4") {
 			/* port 4 as home security port */
 			//if($HomeNetworkControl == 'true'){
-				if($PartnerId == 'comcast'){
-
-                                echo '<div class="form-row odd ">'.
-                                        '<label for="channel_selection">'._("Associate Ethernet Port 4 to XFINITY HOME Network:").'</label>'.
-                                        '<span class="checkbox"><input type="checkbox" id="port4" name="port4" /></span></br></br></br></br>'.
-                                        _('Note: Associating Ethernet Port 4 to XFINITY HOME network will remove the port from your home network.').'</br></br>'.
-                                '</div>'.
-                                '<div class="form-row odd" >'.
-                                        '<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="'._("Save").'" class="btn submit" /></div>'.
-                                '</div>';
-                                }
-                                else if($PartnerId == 'cox'){
-
-                                echo '<div class="form-row odd ">'.
-                                        '<label for="channel_selection">'._("Associate Ethernet Port 4 to HOME SECURITY Network:").'</label>'.
-                                        '<span class="checkbox"><input type="checkbox" id="port4" name="port4" /></span></br></br></br></br>'.
-                                        _('Note: Associating Ethernet Port 4 to HOME SECURITY network will remove the port from your home network.').'</br></br>'.
-                                '</div>'.
-                                '<div class="form-row odd" >'.
-                                        '<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="'._("Save").'" class="btn submit" /></div>'.
-                                '</div>';
-                                }
-
+			if(PREPAID == false){		//XHS port configuration not required for prepaid devices
+				if($PartnerId == 'comcast') {
+					echo '<div class="form-row odd ">'.
+						'<label for="channel_selection">'._("Associate Ethernet Port 4 to XFINITY HOME Network:").'</label>'.
+						'<span class="checkbox"><input type="checkbox" id="port4" name="port4" /></span></br></br></br></br>'.
+						_('Note: Associating Ethernet Port 4 to XFINITY HOME network will remove the port from your home network.').'</br></br>'.
+					'</div>'.
+					'<div class="form-row odd" >'.
+						'<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="'._("Save").'" class="btn submit" /></div>'.
+					'</div>';
+				}
+				else if($PartnerId == 'cox') {
+					echo '<div class="form-row odd ">'.
+						'<label for="channel_selection">'._("Associate Ethernet Port 4 to HOME SECURITY Network:").'</label>'.
+						'<span class="checkbox"><input type="checkbox" id="port4" name="port4" /></span></br></br></br></br>'.
+						_('Note: Associating Ethernet Port 4 to HOME SECURITY network will remove the port from your home network.').'</br></br>'.
+					'</div>'.
+					'<div class="form-row odd" >'.
+						'<div style="position:relative;right:-120px;"><input id="saveXHSBtn" type="button" value="'._("Save").'" class="btn submit" /></div>'.
+					'</div>';
+				}
+			}
 			//}
 		}
 		echo '</div>';

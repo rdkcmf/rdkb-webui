@@ -18,7 +18,12 @@
  limitations under the License.
 */
 ?>
-<?php include('includes/header.php'); ?>
+<?php include('includes/header.php'); 
+if(PREPAID == TRUE){
+	echo '<script type="text/javascript">alert("'._("No MTA support for this device").'"); window.history.back(); </script>';
+	exit(0);
+}
+?>
 <!-- $Id: firewall_settings.php 3158 2010-01-08 23:32:05Z slemoine $ -->
 <div id="sub-header">
 	<?php include('includes/userbar.php'); ?>
