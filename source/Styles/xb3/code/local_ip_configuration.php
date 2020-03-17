@@ -666,7 +666,7 @@ $('#submit_ipv4').click(function(e){
 	var DBArr = Array(dhcp4B2, dhcp4B3, dhcp4B4);
 	var DEArr = Array(dhcp4E2, dhcp4E3, dhcp4E4);
     if (! validate_v4addr_pool(DBArr, DEArr)) {
-        jAlert("Beginning Address can't be larger than ending address!");
+        jAlert('<?php echo _("Beginning Address can\'t be larger than ending address!")?>');
         return;
     }
     var gw_ip1 = parseInt($('#ipv4_gateway_address_1').val());
@@ -1039,8 +1039,8 @@ $('#submit_ipv6').click(function(e){
 	      }
 	    ula_prefix = ula_prefix.slice(0,-1);
 	}
-    	else{jAlert('<?php echo "Prefix value should start with [fc] or [fd] "; ?>');return false;}
-    	var IPv6Config = '{"IPv6": "Yes", "Stateful": "' + Stateful + '", "dhcpv6_begin_addr": "' + dhcpv6_begin_addr + '", "dhcpv6_end_addr": "' + dhcpv6_end_addr +'", "dhcpv6_lease_time": "' + dhcpv6_lease_time +'", "ipv6_enable": "' + ipv6_enable +'", "ula_enable": "' + ula_enable +'", "ula_prefix": "' + ula_prefix +'"}';
+        else{jAlert("<?php echo _('Prefix value should start with [fc] or [fd]')?>");return false;}
+        var IPv6Config = '{"IPv6": "Yes", "Stateful": "' + Stateful + '", "dhcpv6_begin_addr": "' + dhcpv6_begin_addr + '", "dhcpv6_end_addr": "' + dhcpv6_end_addr +'", "dhcpv6_lease_time": "' + dhcpv6_lease_time +'", "ipv6_enable": "' + ipv6_enable +'", "ula_enable": "' + ula_enable +'", "ula_prefix": "' + ula_prefix +'"}';
     }
    	setIPv6configuration(IPv6Config);
 });
