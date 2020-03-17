@@ -121,7 +121,7 @@ function valid_ssid_name($ssid_name){
 	//1 to 32 ASCII characters
 	$ssid_name_check = (preg_match('/^[ -~]{1,32}$/', $ssid_name) == 1);
 	//fail on invalid characters
-	$ssid_name_check = (preg_match('/^[!#;]|[+\]\/"\t]/', $ssid_name) != 1);
+	$ssid_name_check_WFA = (preg_match('/^[!#;]|[+\]\/"\t]/', $ssid_name) != 1);
 
 	//SSID name cannot contain only spaces
 	$not_only_spaces_check = (preg_match('/^\s+$/', $ssid_name) != 1);
@@ -130,7 +130,7 @@ function valid_ssid_name($ssid_name){
 	//SSID containing "optimumwifi", "TWCWiFi", "cablewifi" and "xfinitywifi" are reserved
 	$ssid_name = preg_replace('/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"\'\\|<>\[\]\s]/', '', $ssid_name);
 	$not_hhs2_check = !((strpos($ssid_name, 'cablewifi') !== false) || (strpos($ssid_name, 'twcwifi') !== false) || (strpos($ssid_name, 'optimumwifi') !== false) || (strpos($ssid_name, 'xfinitywifi') !== false) || (strpos($ssid_name, 'xfinity') !== false) || (strpos($ssid_name, 'coxwifi') !== false) || (strpos($ssid_name, 'spectrumwifi') !== false)  || (strpos($ssid_name, 'shawopen') !== false)  || (strpos($ssid_name, 'shawpasspoint') !== false) || (strpos($ssid_name, 'shawguest') !== false) || (strpos($ssid_name, 'shawmobilehotspot') !== false) || (strpos($ssid_name, 'shawgo') !== false) );
-	return $ssid_name_check && $not_only_spaces_check && $not_hhs_check && $not_hhs2_check;
+	return $ssid_name_check && $not_only_spaces_check && $not_hhs_check && $not_hhs2_check && $ssid_name_check_WFA;
 }
 //check if $name has any Invalid characters
 //Invalid characters are Less than (<), Greater than (>), Ampersand (&), Double quote ("), Single quote ('), Pipe (|).
