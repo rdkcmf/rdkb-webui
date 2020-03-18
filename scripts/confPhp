@@ -32,20 +32,18 @@ usage()
 get ()
 {   echo "$db_version" > /nvram/db_version;
 	cd /tmp;
-	tar -cvf "$1" /nvram/db_version /nvram/syscfg.db /nvram/bbhm_cur_cfg.xml /nvram/bbhm_bak_cfg.xml   
+	tar -cvf "$1" /nvram/db_version /nvram/syscfg.db /nvram/bbhm_bak_cfg.xml   
 	rm /nvram/db_version
 }  
 
 restore ()
 {	
 	mv /nvram/syscfg.db /nvram/syscfg.db.prev
-	mv /nvram/bbhm_cur_cfg.xml /nvram/bbhm_cur_cfg.xml.prev
 	mv /nvram/bbhm_bak_cfg.xml /nvram/bbhm_bak_cfg.xml.prev
 	cd /
 	tar -xvf "$1"
 	if [ "$?" != "0" ] ; then
 		mv /nvram/syscfg.db.prev /nvram/syscfg.db
-		mv /nvram/bbhm_cur_cfg.xml.prev /nvram/bbhm_cur_cfg.xml
 		mv /nvram/bbhm_bak_cfg.xml.prev /nvram/bbhm_bak_cfg.xml
 		echo "CONF_RECOVER_STATUS_FAILURE" > /tmp/confPhp.status
 		#my_log(LOG_ERR, "Failed writing back config file");
