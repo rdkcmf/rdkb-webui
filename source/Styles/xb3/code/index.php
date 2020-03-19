@@ -232,12 +232,12 @@ if (strpos($partnersId, "sky-") !== false) {
 
 
 
-<h1>Gateway > Login</h1>
+<h1><?php echo _('Gateway > Login')?></h1>
 <div style="float: left; margin: 0 20px 20px 0; width: 60%; height:290px;background:white;">
 
 	<form action="check.php" method="post" id="pageForm"  onsubmit="return f();">
 	<div class="form-row">
-		<p>Please login to view and manage your Gateway settings.</p>
+		<p><?php echo _('Please login to view and manage your Gateway settings.')?></p>
 	</div>
 	<div>
 		<table style="background:white; text-align:center;">
@@ -252,7 +252,7 @@ if (strpos($partnersId, "sky-") !== false) {
 		</table>
 	</div>
 	<div class="form-btn" style="margin-top: 25px;text-align:center;">
-		<input type="submit" class="btn" value="Login" />
+		<input type="submit" class="btn" value="<?php echo _('Login')?>" />
 	</div>
 </form>
 </div>

@@ -6791,3 +6791,7 @@ msgstr "L\\'indirizzo iniziale non può essere più grande dell\\'indirizzo fina
 #: local_ip_configuration.php:1042
 msgid "Prefix value should start with [fc] or [fd]"
 msgstr "Il valore del prefisso dovrebbe iniziare con [fc] o [fd]"
+
+#: index.php:228
+msgid "Please login to view and manage your Gateway settings."
+msgstr "Effettua il login per visualizzare e gestire le impostazioni del tuo Sky Wifi Hub."
