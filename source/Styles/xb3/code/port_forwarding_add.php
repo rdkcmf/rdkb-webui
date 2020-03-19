@@ -560,6 +560,7 @@ $('#device').click(function(){
 					if (stripos($val, "fe80:") === 0) continue;
 					if(strpos($partnersId, "sky-") !== false){
                                             $val_arr = explode(':', $val);
+                                            if(is_null($ipv6_prefix_arr[3]) && $val_arr[3]==0){$ipv6_prefix_arr[3]=0;}
                                             if ($val_arr[0]==$ipv6_prefix_arr[0] && $val_arr[1]==$ipv6_prefix_arr[1] && $val_arr[2]==$ipv6_prefix_arr[2] && $val_arr[3]==$ipv6_prefix_arr[3]) {
                                               $IPv6Addr = $val;
                                               break;
