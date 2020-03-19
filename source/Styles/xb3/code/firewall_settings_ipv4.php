@@ -55,7 +55,7 @@ $(document).ready(function() {
     }).trigger("change");
 	$("#disable_firewall").change(function(){
 		if($("#disable_firewall").prop("checked")) {
-			var message = "<?php echo _('You are trying to disable the firewall. It is a security risk. \nAre you sure you want to continue?')?>";
+			var message = "<?php echo _('You are trying to disable the firewall. It is a security risk. Are you sure you want to continue?')?>";
             jConfirm(
                 message
                 ,"<?php echo _('Are you sure?')?>"
