@@ -5734,7 +5734,7 @@ msgstr "Sei sicuro di voler eliminare questa voce dall\\'elenco di controllo wif
 msgid "Invalid PIN!"
 msgstr "PIN non valido"
 
-#: wireless_network_configuration.php:1083
+#: wireless_network_configuration.php:1083 wireless_network_configuration_wps.php:140
 msgid "WPS in Progress!"
 msgstr "WPS in corso"
 
@@ -6783,3 +6783,11 @@ msgstr "Mostra più opzioni della modalità di sicurezza"
 #: wizard_step2.php:584 wizard_step2.php:545
 msgid "Show Password:"
 msgstr "Mostra password:"
+
+#: local_ip_configuration.php:669
+msgid "Beginning Address can\\'t be larger than ending address!"
+msgstr "L\\'indirizzo iniziale non può essere più grande dell\\'indirizzo finale!"
+
+#: local_ip_configuration.php:1042
+msgid "Prefix value should start with [fc] or [fd]"
+msgstr "Il valore del prefisso dovrebbe iniziare con [fc] o [fd]"

@@ -137,7 +137,7 @@ function set_config(target)
 		success: function(msg) {
 			jHide();
 			if ("pair_client"==target){
-				jAlert("WPS in Progress!");
+                                jAlert("<?php echo _('WPS in Progress!')?>");
 			}
 			if ("wps_enabled"==target || "wps_method"==target){
 				location.reload();
