@@ -1720,6 +1720,6 @@ margin:0 0 0 -35px;
 	*::-ms-backdrop, .con_check img {width:43px; padding:0px } /* IE11 */
 }
 /*Reset&Restore pade button width*/
-.forms .readonlyLabel  {
+.forms .btn_reset  {
 	width: 240px;
 }
