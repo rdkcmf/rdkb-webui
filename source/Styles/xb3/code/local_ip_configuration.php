@@ -1033,9 +1033,10 @@ $('#submit_ipv6').click(function(e){
         var ula_prefix='';
 	if($('#ULA_1').val().indexOf('fc')===0|| $('#ULA_1').val().indexOf('fd')===0){
              for(i=1; i<=4;i++){
-                if($('#ULA_'+i).val()!==''){
+                if($('#ULA_'+i).val()!=='' ){
                      ula_prefix += $('#ULA_'+i).val()+':';
 		}
+                else{jAlert("<?php echo _('Incorrect Prefix ULA address..!')?>");return false; }
 	      }
 	    ula_prefix = ula_prefix.slice(0,-1);
 	}
