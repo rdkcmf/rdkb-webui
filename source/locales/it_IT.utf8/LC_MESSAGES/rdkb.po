@@ -6795,3 +6795,8 @@ msgstr "Il valore del prefisso dovrebbe iniziare con [fc] o [fd]"
 #: index.php:228
 msgid "Please login to view and manage your Gateway settings."
 msgstr "Effettua il login per visualizzare e gestire le impostazioni del tuo Sky Wifi Hub."
+
+#: local_ip_configuration.php:1039
+msgid "Incorrect Prefix ULA address..!"
+msgstr "Prefisso indirizzo ULA errato ..!"
+
