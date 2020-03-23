@@ -620,7 +620,7 @@ $(document).ready(function() {
 	    var mask4Option = $('<option id="mask4" value="255.0.0.0">255.0.0.0</option>');
 	    if (gw_ip1 == 10){
 			if( ! $('#mask2').length>0 ) mask2Option.insertAfter('#mask1');
-			if( ! $('#mask4').length>0 ) mask4Option.insertAfter('#mask3');
+			if( ! $('#mask4').length>0 ) mask4Option.insertAfter('#mask2');
 	    }
 	    else if (gw_ip1 == 172){
 			//gw ip is B class ip address
