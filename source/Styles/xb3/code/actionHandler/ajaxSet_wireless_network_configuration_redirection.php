@@ -44,13 +44,13 @@ if($isCaptiveMode)
 		if($validation) $validation = (preg_match("/^\d{10}$/", $arConfig['phoneNumber'])==1);
 	}
 	//CloudUIEnable -- to check if "Device.DeviceInfo.X_RDKCENTRAL-COM_CloudPersonalizationURL" is reachable
-	if(isset($_POST['CloudUIEnable'])){
+	/*if(isset($_POST['CloudUIEnable'])){
 		$IsCloudReachable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_IsCloudReachable");
 		$response = array();
 		array_push($response, $IsCloudReachable);
 		echo htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8');
-	}
-	else if($validation){
+	}*/
+	if($validation){
 		// jsConfig = '{"dualband":"true", "network_name":"'+network_name+'", "network_password":"'+network_password+'", "network5_name":"'+network5_name+'", "network5_password":"'+network5_password+', "phoneNumber":"'+EMS_mobileNumber()+'"}';
 		// jsConfig = '{"dualband":"false", "network_name":"'+network_name+'", "network_password":"'+network_password+', "phoneNumber":"'+EMS_mobileNumber()+'"}';
 		//print_r($arConfig);

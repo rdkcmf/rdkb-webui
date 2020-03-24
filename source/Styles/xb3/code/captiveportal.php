@@ -416,6 +416,7 @@ ili{
 	$MyAccountAppBox .=	'</div>';
 	$defaultssid = getStr("Device.WiFi.SSID.1.X_COMCAST-COM_DefaultSSID");
 	$defaultssid1 = getStr("Device.WiFi.SSID.2.X_COMCAST-COM_DefaultSSID");
+        $IsCloudReachable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_IsCloudReachable");
 ?>
 <script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>
 <script>
@@ -424,6 +425,7 @@ $(document).ready(function(){
 	var Defaultssid1 = "<?php echo $defaultssid1;?>";
 	$CloudPersonalizationURL = "<?php echo $CloudPersonalizationURL;?>";
 	$CloudUIEnable = <?php echo $CloudUIEnable;?>;
+        var IsCloudReachable = "<?php echo $IsCloudReachable;?>";
 	function cloudRedirection(cloudReachable){
 		if(cloudReachable){
 			location.href = $CloudPersonalizationURL;
@@ -434,7 +436,17 @@ $(document).ready(function(){
 		}
 	}
 	if($CloudUIEnable){
-		$.ajax({
+           if(IsCloudReachable) {
+              cloudRedirection(true);
+            }
+           else {
+              cloudRedirection(false);
+            }
+        }
+        else {
+           cloudRedirection(false);
+         }
+		/*$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_wireless_network_configuration_redirection.php",
 			data: { CloudUIEnable: true },
@@ -452,7 +464,7 @@ $(document).ready(function(){
 	}
 	else {
 		cloudRedirection(false);
-	}
+	}*/
 	// logic t0 figure out LAN or WiFi from Connected Devices List
 	var connectionType	= "<?php echo $connectionType;?>"; //"Ethernet", "WiFi", "none"
 	var goNextName		= false;
