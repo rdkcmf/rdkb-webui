@@ -1031,7 +1031,7 @@ $('#submit_ipv6').click(function(e){
     	var ipv6_enable = $('#ipv6_enable').is(':checked');
 	var ula_enable = $('#ula_enable').is(':checked');
         var ula_prefix='';
-	if($('#ULA_1').val().indexOf('fc')===0|| $('#ULA_1').val().indexOf('fd')===0){
+	if($('#ULA_1').val().indexOf('fc')===0|| $('#ULA_1').val().indexOf('fd')===0  || $('#ULA_1').val().indexOf('fC')===0|| $('#ULA_1').val().indexOf('fD')===0 ||$('#ULA_1').val().indexOf('Fc')===0|| $('#ULA_1').val().indexOf('Fd')===0 ||$('#ULA_1').val().indexOf('FC')===0|| $('#ULA_1').val().indexOf('FD')===0){
              for(i=1; i<=4;i++){
                 if($('#ULA_'+i).val()!=='' ){
                      ula_prefix += $('#ULA_'+i).val()+':';
