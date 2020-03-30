@@ -1350,7 +1350,7 @@ $('#restore_ipv6').click(function(e) {
 				</div>
 	    		<div class="form-row odd">
 	    			<label for="ULA"><?php echo _('ULA Prefix:')?></label>
-	    				<input type="text"  class="ipv6-input" size="2" maxlength="4"  id="ULA_1" name="ULA_1"  value="<?php if($ula_size > 1) echo $ula_v6_prefix_arr[0]; else echo "0"; ?>" />
+	    				<input type="text"  class="ipv6-input" size="2" minlength="4"  maxlength="4"  id="ULA_1" name="ULA_1"  value="<?php if($ula_size > 1) echo $ula_v6_prefix_arr[0]; else echo "0"; ?>" />
 		    	    <label for="ULA_2" class="acs-hide"></label>
 		    	        :<input type="text" class="ipv6-input" size="2" maxlength="4" id="ULA_2" name="ULA_2"  value="<?php if($ula_size > 1) echo $ula_v6_prefix_arr[1]; else echo "0"; ?>" />
 		    	    <label for="ULA_3" class="acs-hide"></label>
