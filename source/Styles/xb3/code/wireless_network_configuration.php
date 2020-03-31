@@ -1417,7 +1417,7 @@ function saveBandSteeringSettings()
 		for ($j=0; $j<count($public_v); $j++)
 		{
 			echo '<tr class="'.(($odd=!$odd)?"odd":"even").'">';
-			echo 	'<td headers="public-Name"><b><font color="black" style="white-space: pre-wrap;">'.$public_v[$j]['ssid'].'</font></b> </td>';
+			echo 	'<td headers="public-Name" style="overflow-wrap: break-word;"><b><font color="black" style="white-space: pre-wrap;">'.$public_v[$j]['ssid'].'</font></b> </td>';
 			echo 	'<td headers="public-Frequency">'.$public_v[$j]['freq'].'</td>';
 			echo 	'<td headers="public-MAC">'.$public_v[$j]['bssid'].'</td>';
 			echo 	'<td headers="public-Security">'.$public_v[$j]['secur'].'</td>';
