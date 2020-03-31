@@ -98,16 +98,9 @@ $(window).load(function() {
 	//if ("<?php /*echo $_DEBUG;*/ ?>") jsInactTimeout = 5000;	// 5 seconds debug
 	// var h_timer = setTimeout('alert("You are being logged out due to inactivity."); location.href="home_loggedout.php";', jsInactTimeout);
 	var h_timer = null;
-	$(document).click(function() {
-		// do not handle click if no-login for GA
-		// if ("" == "<?php echo (isset($_SESSION["loginid"])?$_SESSION["loginid"]:""); ?>") {
-			// return;
-		// }
-		// do not handle click event when count-down show up
-		if ($("#count_down").length > 0) {
-			return;
-		}
-		// console.log(h_timer);
+
+	function timeOutFunction(){
+	
 		clearTimeout(h_timer);
 		h_timer = setTimeout(function(){
 			var cnt		= 60;
@@ -128,7 +121,42 @@ $(window).load(function() {
 			});
 		}
 		, jsInactTimeout);
+	}
+
+	$(document).click(function() {
+		// do not handle click if no-login for GA
+		// if ("" == "<?php echo (isset($_SESSION["loginid"])?$_SESSION["loginid"]:""); ?>") {
+			// return;
+		// }
+		// do not handle click event when count-down show up
+		if ($("#count_down").length > 0) {
+			return;
+		}
+
+		timeOutFunction();
+		
 	}).trigger("click");
+
+	const targetNode = document.querySelector('body');
+	const config = { attributes: true, childList: true, subtree: true };
+
+// Callback function to execute when mutations are observed
+	const callback = function(mutationsList, observer) {
+	if ($("#count_down").length > 0) {
+		return; 
+	}
+	
+	timeOutFunction();
+	
+	
+	};
+
+// Create an observer instance linked to the callback function
+const observer = new MutationObserver(callback);
+
+// Start observing the target node for configured mutations
+observer.observe(targetNode, config);	
+
 	// show pop-up info when focus
 	$("#status a").focus(function() {
 		$(this).mouseenter();
