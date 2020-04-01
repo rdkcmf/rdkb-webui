@@ -354,6 +354,10 @@ div.sprite_cont, span.sprite_cont {
 	border-bottom: 0;
 }
 
+#nav ul li ul li:not(:last-child) a {
+ border-bottom: dashed 1px #dadad8;
+}
+
 #nav li a {
 	border-bottom: dashed 1px #dadad8;
 	color: #575f5f;
