@@ -44,7 +44,6 @@ $dynamic_dns        	= TRUE;		//for mso
 $nat		        = FALSE;	//for mso
 $wifi_spectrum_analyzer = TRUE;
 $password_change	= FALSE;	//for admin only
-$wizard        		= TRUE;
 $wifi_spec_analyzer	= TRUE;
 $advanced_tab		= TRUE;
 $wan_network        = TRUE;
@@ -68,7 +67,6 @@ if (isset($_SESSION['lanMode']) && $_SESSION["lanMode"] == "bridge-static") {
 	$port_forwarding  	= FALSE;
 	$port_triggering  	= FALSE;
 	$hs_port_forwarding = FALSE;
-	$wizard		 		= FALSE;
 	$MoCA				= TRUE;
 	$moca_diagnostics   = FALSE;
 	$wifi_spec_analyzer	= FALSE;
@@ -160,10 +158,6 @@ echo '<li class="nav-gateway">';
 		echo '<li class="nav-wifi"><a role="menuitem"  href="wifi.php">'._("Wireless").'</a></li>';
 		echo '</ul>';
 	echo '</li>';
-	if($wizard){
-		if($password_change) echo '<li class="nav-wizard"><a role="menuitem"  href="wizard_step1.php">'._("Wizard").'</a></li>';
-		else echo '<li class="nav-wizard"><a role="menuitem"  href="wizard_step2.php">'._("Wizard").'</a></li>';
-	}
 	echo '</ul>';
 echo '</li>';
 echo '<li class="nav-connected-devices">';
