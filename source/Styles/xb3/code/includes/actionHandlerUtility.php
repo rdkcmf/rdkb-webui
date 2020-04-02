@@ -120,9 +120,6 @@ function valid_ssid_name($ssid_name){
 	$ssid_name = strtolower($ssid_name);
 	//1 to 32 ASCII characters
 	$ssid_name_check = (preg_match('/^[ -~]{1,32}$/', $ssid_name) == 1);
-	//fail on invalid characters
-	$ssid_name_check = (preg_match('/^[!#;]|[+\]\/"\t]/', $ssid_name) != 1);
-
 	//SSID name cannot contain only spaces
 	$not_only_spaces_check = (preg_match('/^\s+$/', $ssid_name) != 1);
 	//SSID Starting with "XHS-" and "XH-" are reserved
