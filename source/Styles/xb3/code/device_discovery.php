@@ -53,8 +53,8 @@ jsAdPeriod = jsAdPeriod/60; //unit is seconds in backend implementation.
 		radio_name: "upnp",
 		id_on: "upnp_enabled",
 		id_off: "upnp_disabled",
-		title_on: "Enable UPnP",
-		title_off: "Disable UPnP",
+		title_on: "<?php echo _('Enable').' UPnP'?>",
+		title_off: "<?php echo _('Disable').' UPnP'?>",
 		state: jsEnableUPnP ? "on" : "off"
 	});
 	// If Enable UPnP is not checked, disable the next two form fields
@@ -71,8 +71,8 @@ jsAdPeriod = jsAdPeriod/60; //unit is seconds in backend implementation.
 		radio_name: "zeroconfig",
 		id_on: "zeroconfig_enabled",
 		id_off: "zeroconfig_disabled",
-		title_on: "Enable Zero Config",
-		title_off: "Disable Zero Config",
+		title_on: "<?php echo _('Enable').' Zero Config'?>",
+		title_off: "<?php echo _('Disable').' Zero Config'?>",
 		state: jsEnableZero ? "on" : "off"
 	});
 function enableHandle() {
