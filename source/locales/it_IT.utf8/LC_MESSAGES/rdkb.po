@@ -1088,6 +1088,8 @@ msgstr "Visualizza dispositivi connessi"
 #: wireless_network_configuration.php:1718
 #: wireless_network_configuration.php:1724
 #: wireless_network_configuration.php:1739
+#: device_discovery.php:56
+#: device_discovery.php:74
 msgid "Enable"
 msgstr "Attiva"
 
@@ -1108,6 +1110,8 @@ msgstr "Attiva"
 #: wireless_network_configuration.php:1716
 #: wireless_network_configuration.php:1722
 #: wireless_network_configuration.php:1737
+#: device_discovery.php:57
+#: device_discovery.php:75
 msgid "Disable"
 msgstr "Disattiva"
 
