@@ -415,9 +415,13 @@ PHP_RINIT_FUNCTION(cosa)
         {
             CosaPhpExtLog("Message bus init failed, error code = %d!\n", iReturnStatus);
         }
-        
+       
         CCSP_Msg_SleepInMilliSeconds(1000);
-        CCSP_Message_Bus_Register_Path(bus_handle, msg_path, path_message_func, 0);
+        iReturnStatus = CCSP_Message_Bus_Register_Path(bus_handle, msg_path, path_message_func, 0);
+         /* Coverity  Fix CID: 61715 CHEKED_RETURNS */ 
+        if ( iReturnStatus != 0 ) {
+            CosaPhpExtLog("CCSP_Message_Bus_Register_Path failed, error code = %d!\n", iReturnStatus);
+        }
     }
     
     return SUCCESS;
@@ -911,9 +915,21 @@ PHP_FUNCTION(getInstanceIds)
     }
 
     //Place NULL char at the end of string
-    format_s[loop2-1]=0;
-    _RETURN_STRING(format_s);
+   /* Coverity Fix CID  : 73341 OVERRUN*/ 
+    if((loop2-1) >= 0)
+    {
+        format_s[loop2-1]=0;
+        _RETURN_STRING(format_s);
+    }
+    else
+    {
+        CosaPhpExtLog("loop2-1 is less than zero in format_s[]\n");
+
+    }
+	
+
 }
+
 /* }}} */
 /* {{{ proto string addTblObj(string arg)
    add object to table resource string */
