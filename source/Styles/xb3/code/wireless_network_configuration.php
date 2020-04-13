@@ -1294,14 +1294,14 @@ function saveBandSteeringSettings()
 		<th id="private-Blank" class="edit" width="10%">&nbsp;</th>
 	</tr>
 	<tr class="form-row odd">
-		<td headers="private-Name"><b><font color="black" style="white-space: pre-wrap;"><?php echo $network_name; ?></font></b></td>
+		<td headers="private-Name"><b><font color="black" style="white-space: pre-wrap;overflow-wrap: break-word;"><?php echo $network_name; ?></font></b></td>
 		<td headers="private-Frequency"><?php echo $feq_band; ?></td>
 		<td headers="private-MAC"><?php echo $mac_address; ?>   </td>
 		<td headers="private-Security"><?php echo _(encrypt_map($encrypt_mode, $encrypt_method));?></td>
 		<td headers="private-Blank"><a href="wireless_network_configuration_edit.php?id=1" class="btn"><?php echo _("Edit")?></a></td>
 	</tr>
 	<tr class="form-row">
-		<td headers="private-Name"><b><font color="black" style="white-space: pre-wrap;"><?php echo $network_name1; ?></font></b></td>
+		<td headers="private-Name"><b><font color="black" style="white-space: pre-wrap;overflow-wrap: break-word;"><?php echo $network_name1; ?></font></b></td>
 		<td headers="private-Frequency"><?php echo $feq_band1; ?></td>
 		<td headers="private-MAC"><?php echo $mac_address1; ?>   </td>
 		<td headers="private-Security"><?php echo _(encrypt_map($encrypt_mode1, $encrypt_method1)); ?></td>
