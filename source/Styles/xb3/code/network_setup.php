@@ -930,12 +930,23 @@ for ($i=1, $j=1; $i<count($ec_ids); $i++)
 	</div>
      <?php } ?>
 </div>
+<?php
+        if (strpos($partnerId, "sky-") !== false) {
+	   $ids = getInstanceIds("Device.X_RDK-Central_COM_WanAgent.Interface.");
+	   for ($i=1;$i<=$ids; $i++){
+	        if("true" ==getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'.$i.'.Wan.ActiveLink')){
+	            $wan_port_value=getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'.$i.'.DisplayName');
+	        }
+	        else{$wan_port_value='-NA-';}
+	    }
+        }
+?>    
 <div class="module forms div_dsl">
 	<h2><?php echo _("WAN Port");?></h2>
  	<div class="form-row">
 		<span class="readonlyLabel" style="text-align:left; color:#333333"><?php echo _("Port Detail:");?></span>
 		<span class="value"><?php echo $wan_port_value ?></span>
-	</div>		
+	</div>
 </div>
 </div> <!-- end #container -->
 <?php include('includes/footer.php'); ?>
