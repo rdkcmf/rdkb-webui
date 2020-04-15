@@ -399,7 +399,8 @@ function merge_days($data){
         for($i=0; $i < $k; $i++){
             if(isset($data[$i]['StartTime']) && isset($data[$i]['EndTime'])){
                 for ($j=$i+1; $j < $k; $j++){ 
-                  if((time_in_min($data[$i]['EndTime'])) == (time_in_min($data[$j]['StartTime'])))
+				  if(((time_in_min($data[$i]['EndTime'])) == (time_in_min($data[$j]['StartTime']))) || 
+				  ((time_in_min($data[$i]['EndTime'])+1) == (time_in_min($data[$j]['StartTime']))))
                     {
                         $data[$i]['__id'] = $data[$i]['__id'].'_'.$data[$j]['__id'];
                         $data[$i]['EndTime'] = $data[$j]['EndTime'];
