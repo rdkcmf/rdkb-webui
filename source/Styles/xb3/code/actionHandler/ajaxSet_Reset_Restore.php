@@ -79,6 +79,7 @@ switch ($infoArray[0]) {
 		//when restore, radio can be restart, but also need to force it when no change
 		//setStr("Device.WiFi.X_CISCO_COM_ResetRadios", "true", true);
 		setStr("Device.WiFi.X_CISCO_COM_FactoryResetRadioAndAp", "1,2;1,2",true);	//radio 1, radio 2; Ap 1, Ap 2
+                setStr("Device.WiFi.X_CISCO_COM_FactoryResetRadioAndAp", "1,2;3,4",true);       //radio 1, radio 2; Ap 3, Ap 4
 		exit(0);
 	case "FactoryResetRadioAndAp" :
 		$ret["wifi"] = true;
