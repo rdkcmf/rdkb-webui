@@ -1949,7 +1949,7 @@ msgstr "IsEnabledUPnP"
 
 #: device_discovery.php:119
 msgid "Period"
-msgstr "Periodo"
+msgstr "Period"
 
 #: device_discovery.php:119
 msgid "Live"
