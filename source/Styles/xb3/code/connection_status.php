@@ -198,6 +198,10 @@ $(document).ready(function() {
   font-weight: bold;
   margin-left: 45px;
 }
+.ssid-style{
+white-space: pre-line;
+overflow-wrap: break-word;
+}
 </style>
 <?php
   $NetworkName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.HelpTip.NetworkName");
@@ -562,7 +566,13 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
   </div>
   <div style="width:355px;float:left;position:relative;left:5px;" class="wifi_section"><!-- contain private and public Wi-Fi -->
     <div class="module forms block private-wifi">
-        <h2 style="white-space: pre-wrap;"><?php echo sprintf(_("Private Wi-Fi Network-%s"), htmlspecialchars($wifi_value["SSID1"], ENT_NOQUOTES, 'UTF-8')); ?></h2>
+         <h2 class="noTrimSpace"><span class="ssid-style">
+              <?php
+                  echo sprintf(_("Private Wi-Fi Network-%s"), htmlspecialchars($wifi_value["SSID1"], ENT_NOQUOTES, 'UTF-8'));
+                ?>
+                </span>
+          </h2>
+
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.php?id=1" class="btn"><?php echo _("Edit")?></a></p>
         <div class="form-row">
           <span class="readonlyLabel"><?php echo sprintf(_("Wireless Network (Wi-Fi 2.4 GHz):"), $radioband); ?></span> <span class="value">
@@ -596,7 +606,12 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
         </div>
     </div><!-- end .module private wifi 2.4-->  
     <div class="module forms block private-wifi" style="position:relative;top:0px;right:0px;">
-        <h2 style="white-space: pre-wrap;"><?php echo sprintf(_("Private Wi-Fi Network-%s"), htmlspecialchars($wifi_value["SSID2"], ENT_NOQUOTES, 'UTF-8')); ?> </h2>
+        <h2 class="noTrimSpace"><span class="ssid-style">
+              <?php
+                  echo sprintf(_("Private Wi-Fi Network-%s"), htmlspecialchars($wifi_value["SSID2"], ENT_NOQUOTES, 'UTF-8'));
+                ?>
+                </span>
+         </h2>
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.php?id=2" class="btn"><?php echo _("Edit")?></a></p>
         <div class="form-row">
           <span class="readonlyLabel"><?php echo sprintf(_("Wireless Network (Wi-Fi 5 GHz):"), $radioband2); ?></span> <span class="value">
