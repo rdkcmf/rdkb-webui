@@ -37,6 +37,7 @@ msgstr "Internet:"
 #: connection_status.php:583 connection_status.php:641
 #: hs_port_forwarding.php:171 lan.php:112 network_setup.php:120
 #: port_forwarding.php:207 port_triggering.php:192 wifi.php:84 wifi.php:109
+#: ajax_network_diagnostic_tools.php:47
 msgid "Active"
 msgstr "Attivo"
 
@@ -6695,15 +6696,15 @@ msgstr "Connessione in corso"
 msgid "Voice:"
 msgstr "Voce:"
 
-#: index.php:605
+#: index.php:605 at_a_glance.php:411
 msgid "High"
 msgstr "Massima"
 
-#: index.php:605
+#: index.php:605 at_a_glance.php:411
 msgid "Medium"
 msgstr "Tipica"
 
-#: index.php:605
+#: index.php:605 at_a_glance.php:411
 msgid "Low"
 msgstr "Minima"
 

@@ -408,7 +408,7 @@ function popUp(URL) {
 			}
 			?>
 			<div class="form-row odd">
-				<span class="readonlyLabel"><?php echo _("Firewall Security Level:")?></span> <span class="value"><?php echo getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel")?></span>
+				<span class="readonlyLabel"><?php echo _("Firewall Security Level:")?></span> <span class="value"><?php echo _(getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel"))?></span>
 			</div>
 		</div>
 	</div> <!-- end .module -->
