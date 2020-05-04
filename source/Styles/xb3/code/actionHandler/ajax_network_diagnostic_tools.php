@@ -40,8 +40,8 @@ if (isset($_POST['test_connectivity'])){
 		}while(!in_array($pingState,$states));
 		$success_received=getStr("Device.IP.Diagnostics.IPPing.SuccessCount");
 		// $failure_received=getStr("Device.IP.Diagnostics.IPPing.FailureCount");
-		if ($success_received==0) {$connectivity_internet="Inactive: ".$pingState;}
-		else {$connectivity_internet="Active";}
+		if ($success_received==0) {$connectivity_internet=_("Inactive: ").$pingState;}
+		else {$connectivity_internet=_("Active");}
 		$result=array('connectivity_internet'=>$connectivity_internet,'success_received'=>$success_received);
 	}
 	else{
