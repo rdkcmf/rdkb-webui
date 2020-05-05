@@ -6804,3 +6804,10 @@ msgstr "Effettua il login per visualizzare e gestire le impostazioni del tuo Sky
 msgid "Incorrect Prefix ULA address..!"
 msgstr "Prefisso indirizzo ULA errato ..!"
 
+#: ajax_network_diagnostic_tools.php:46
+msgid "Inactive: "
+msgstr "Non attivo: "
+
+#: local_ip_configuration.php:711
+msgid "DHCP beginning and ending address cannot be same, Please input again!"
+msgstr "L\\'indirizzo di inizio e fine DHCP non può essere lo stesso, inserire di nuovo!"
