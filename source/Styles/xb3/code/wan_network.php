@@ -46,6 +46,7 @@
 	$bridge_mode = getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode");
 	$currentOpMode = getStr("Device.X_RDKCENTRAL-COM_EthernetWAN.CurrentOperationalMode");
 	$autownStatus = (strtolower($currentOpMode)=="ethernet" && $autowan_status=="Down") ? "true" : "false";
+	$portNo= $wanPort+1;
 ?>
 <style type="text/css">
 label{
@@ -194,33 +195,23 @@ function changeMode(jsConfig){
 				}
 				?>
 			
-			</select></span>
-				<?php
-					if($autownStatus=="true"){
-						
-				?>
-					<div class="select-row" id="noEth"><p class="error"><?php echo _("No Ethernet WAN Connection is detected on Port 4.")?></p></div>
-				<?php
-				}
-				?>				
+			</select></span>				
 			</div>
         <?php
         		}else{
         ?>
 			<div class="select-row">
 				<label><?php echo _("WAN Network:")?></label>
-				<span id="wan_switch"></span>
-				<?php
-					if($wnStatus=="true"){
-						echo "<br><br>";
-				?>
-					<div class="select-row" id="noEth"><p class="error"><?php echo _("No Ethernet WAN Connection is detected on Port 1.")?></p></div>
-				<?php
-				}
-				?>			
+				<span id="wan_switch"></span>			
 			</div>
 		<?php
-			}
+			} 
+					if($wnStatus=="true" || $autownStatus=="true"){
+						
+				?>
+					<div class="select-row" id="noEth"><p class="error"><?php echo _("No Ethernet WAN Connection is detected on Port $portNo.")?></p></div>
+				<?php
+				}
 		}else{
 		?>
 		<div class="form-row">
