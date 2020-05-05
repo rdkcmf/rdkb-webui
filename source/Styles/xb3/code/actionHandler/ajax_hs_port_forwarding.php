@@ -204,7 +204,7 @@ if (isset($_POST['edit'])){
 							$result.=_("Conflict with other HS Port Forwarding service. Please check Private Port(s) and IP!");
 							break;
 						} else {
-							$result.="_(Conflict with other Port Forwarding service. Please check port and IP!");
+							$result.=_("Conflict with other Port Forwarding service. Please check port and IP!");
 							break;
 						}
 					}
