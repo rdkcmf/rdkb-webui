@@ -591,7 +591,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 			$IPv4Address = $IPAddress;
 			//In IPv6 only mode, IPv4=NA
 			if( strpos($IPv4Address, '.') === false ) $IPv4Address = 'NA';
-			if (substr($IPv6Address, 0, 5) == "2001:") {
+			if ($IPv6Address!="") {
 				$Host["$i"]['IPShow'] = $IPv4Address.'/'.$IPv6Address;
 			}
 			else {
@@ -599,7 +599,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
 				$Host["$i"]['IPShow'] = $IPv4Address.'/NA';
 			}
 			array_push($HostNameArr, $Host["$i"]['HostName']);
-			array_push($ipAddrArr, $Host["$i"]['IPAddress']);
+			array_push($ipAddrArr, $Host["$i"]['IPShow']);
 			$Host["$i"]['Trusted'] = false;
 			foreach( $TrustedUser as $key => $value ){
 				$value['HostDescription'] = htmlspecialchars($value['HostDescription'], ENT_NOQUOTES, 'UTF-8');
