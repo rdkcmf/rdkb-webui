@@ -135,7 +135,7 @@ function is_allowed_string($name){
 	return (preg_match('/[<>&"\'|]/', $name)!=1);
 }
 function remove_special_char($name){
-        return (preg_match('/[!@#$%^&*().,?":{}|<>]/', $name)!=1);
+        return (preg_match('/[!@#$%^&*(),?":{}|<>]/', $name)!=1);
 }
 
 ?>
