@@ -185,7 +185,7 @@ msgstr "Tempo rimanente IP MTA"
 #: DPoE.php:308 local_ip_configuration.php:1063 network_setup.php:438
 #: network_setup.php:525
 msgid "DHCP Lease Time:"
-msgstr "Tempo di leasing DHCP:"
+msgstr "Lease time DHCP:"
 
 #: DPoE.php:312 network_setup.php:442 network_setup.php:529
 msgid "DHCP Rebind Time:"
@@ -1690,7 +1690,7 @@ msgstr "Server DHCPv4:"
 
 #: connection_status.php:217
 msgid "DHCPv4 Lease Time:"
-msgstr "Tempo di leasing DHCPv4:"
+msgstr "Lease time DHCPv4:"
 
 #: connection_status.php:234 local_ip_configuration.php:1072
 #: local_ip_configuration.php:1197
@@ -6812,3 +6812,7 @@ msgstr "Non attivo: "
 #: local_ip_configuration.php:711
 msgid "DHCP beginning and ending address cannot be same, Please input again!"
 msgstr "L\\'indirizzo di inizio e fine DHCP non può essere lo stesso, inserire di nuovo!"
+
+#: admin_password_change.php:158 password_change.php:98
+msgid "Alert"
+msgstr "Mettere in guardia"
