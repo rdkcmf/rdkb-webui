@@ -32,7 +32,7 @@ $(document).ready(function() {
 	}, "<?php echo _('Spaces are not allowed')?>");
 	$.validator.addMethod("allowed_char_new", function(value, element, param) {
 	//Invalid characters are Less than (<), Greater than (>), Ampersand (&), Double quote ("), Single quote ('), Pipe (|).
-	return !param || (value.match(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/)==null);
+	return !param || (value.match(/[\(<>&"'$`;|\)]/)==null);
 	}, '<?php echo _('Special characters are not allowed.')?>');
 
 	$("#pageForm").validate({
