@@ -89,14 +89,26 @@ if(!$isMSO) {
 	if(!strcmp($CaptivePortalEnable, "true")) {
 		$SERVER_ADDR = $_SERVER['SERVER_ADDR'];
 		$ip_addr = strpos($SERVER_ADDR, ":") == false ? $LanGwIPv4 : $LanGwIPv6 ;
+		$SecWebUI = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.SecureWebUI.Enable");
+                $LocFqdn = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.SecureWebUI.LocalFqdn");
 		if(strcmp($url,$ip_addr)){
-			if(($enableRFCpativePortal=="true") && ($cableRFSignalStatus=="false") && !(($allowEthWanMode=="true") && ($wan_enabled=="true")) &&($modelName!="X5001")){
-				header('Location:http://'.$ip_addr.'/no_rf_signal.php');
+			if(($enableRFCpativePortal=="true") && ($cableRFSignalStatus=="false") && !($wan_enabled=="true") &&($modelName!="X5001")){
+				if (!strcmp($SecWebUI, "true")) {
+                                        header('Location:https://'.$LocFqdn.'/no_rf_signal.php');
+                                }
+                                else {
+                                        header('Location:http://'.$ip_addr.'/no_rf_signal.php');
+                                }
 				exit;
 			}
 		}
 		if(!strcmp($CONFIGUREWIFI, "true")) {
-			header('Location:http://'.$ip_addr.'/captiveportal.php');
+			if (!strcmp($SecWebUI, "true")) {
+                                header('Location:https://'.$LocFqdn.'/captiveportal.php');
+                        }
+                        else {
+                               header('Location:http://'.$ip_addr.'/captiveportal.php');
+                        }
 			exit;
 		}
 	}
