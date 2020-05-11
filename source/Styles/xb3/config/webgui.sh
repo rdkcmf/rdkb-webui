@@ -147,7 +147,14 @@ if [ "$BOX_TYPE" == "HUB4" ]
 then
     echo "\$SERVER[\"socket\"] == \"erouter0:80\" { server.use-ipv6 = \"enable\" }" >> $LIGHTTPD_CONF
 else
-    echo "\$SERVER[\"socket\"] == \"wan0:80\" { server.use-ipv6 = \"enable\" }" >> $LIGHTTPD_CONF
+    if ([ "$BOX_TYPE" = "XB6" -a "$MANUFACTURE" = "Arris" ] || [ "$MODEL_NUM" = "INTEL_PUMA" ]) ; then
+    	# Intel Proposed Bug Fix to not add in ETH WAN Mode
+    	if [ ! -f /nvram/ETHWAN_ENABLE ] ; then
+    		echo "\$SERVER[\"socket\"] == \"wan0:80\" { server.use-ipv6 = \"enable\" }" >> $LIGHTTPD_CONF
+    	fi
+    else
+    	echo "\$SERVER[\"socket\"] == \"wan0:80\" { server.use-ipv6 = \"enable\" }" >> $LIGHTTPD_CONF
+    fi
 fi
 
 if [ "x$HTTP_PORT_ERT" != "x" ] && [ $HTTP_PORT_ERT -ne 0 ] && [ "$HTTP_PORT_ERT" -ge 1025 ] && [ "$HTTP_PORT_ERT" -le 65535 ];then
@@ -167,7 +174,14 @@ fi
 if [ "$BOX_TYPE" == "HUB4" ]; then
    echo "\$SERVER[\"socket\"] == \"erouter0:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
 else
-   echo "\$SERVER[\"socket\"] == \"wan0:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
+    if ([ "$BOX_TYPE" = "XB6" -a "$MANUFACTURE" = "Arris" ] || [ "$MODEL_NUM" = "INTEL_PUMA" ]) ; then
+    	# Intel Proposed Bug Fix to not add in ETH WAN Mode
+    	if [ ! -f /nvram/ETHWAN_ENABLE ] ; then
+    		echo "\$SERVER[\"socket\"] == \"wan0:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
+    	fi
+    else
+    	echo "\$SERVER[\"socket\"] == \"wan0:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
+    fi
 fi
 
 if [ $HTTPS_PORT -ne 0 ] && [ "$HTTPS_PORT" -ge 1025 ] && [ "$HTTPS_PORT" -le 65535 ]
