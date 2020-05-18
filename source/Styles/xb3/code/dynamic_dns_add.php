@@ -85,6 +85,18 @@ $(document).ready(function() {
 	        })
 
 	        for (var prop in object) {
+                   if(prop.charAt(0) == '.'){
+                        alert("<?php echo _('Host Name starting with period(.) is not allowed')?>");
+                        return false;
+                     }
+                   if(prop.charAt(prop.length-1) == '.') {
+                       alert("<?php echo _('Host Name ending with period(.) is not allowed')?>");
+                       return false;
+                    }
+                   if(prop.match((/([.])\1/ig))) {
+                      alert("<?php echo _('Host Name having consecutive period(.) is not allowed')?>");
+                         return false;
+                     }
 	           if(object[prop] >= 2) {
 	               alert("<?php echo _('Host Name having Duplicate Values')?>");
 	               return false;
