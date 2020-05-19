@@ -168,7 +168,7 @@ $(document).ready(function() {
 	<h1><?php echo _("Advanced > Port Forwarding")?></h1>
 	<div  id=forwarding-items>
 		<div class="module data">
-			<div id="content" style="text-align: center;">
+			<div id="content" style="text-align: center;width: auto;">
 				<br>
 				<h3><?php echo sprintf(_("Managing your home network settings is now easier than ever.<br>Visit <a href='http://%s'>%s</a> to set up port forwards, among many other features and settings."),$productLink, $productLink)?></h3>
 				<br>

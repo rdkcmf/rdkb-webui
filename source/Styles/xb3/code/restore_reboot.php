@@ -252,15 +252,15 @@ function checkForRebooting() {
 		</div>
 		<div id="div4" class="form-row">
 			<span class="readonlyLabel"><a href="#" class="btn" id="btn4" title="<?php echo _("Restore manufacturer defaults for Wi-Fi Only")?>" style="text-transform : none;"><?php echo _("RESTORE Wi-Fi SETTINGS")?></a></span> 
-			<span class="value"><?php echo _('Press "Restore Wi-Fi Settings" to activate your Gateway')?> <span style="padding-left:231px"><?php echo _("Default Settings for Wi-Fi only. Only your Wi-Fi settings will be lost.")?></span></span>
+			<span class="value"><?php echo _('Press "Restore Wi-Fi Settings" to activate your Gateway')?> <span><?php echo _("Default Settings for Wi-Fi only. Only your Wi-Fi settings will be lost.")?></span></span>
 		</div>
 		<div id="div6" class="form-row odd">
 			<span class="readonlyLabel"><a href="#" class="btn" id="btn6" title="<?php echo _("Reset Password")?>" style="text-transform : none;"><?php echo _("RESET PASSWORD")?></a></span> 
-			<span class="value"><?php echo _('Press "Reset Password" to reset User Admin tool password to factory')?> <span style="padding-left:231px"><?php echo _("default")?></span></span>
+			<span class="value"><?php echo _('Press "Reset Password" to reset User Admin tool password to factory')?> <span><?php echo _("default")?></span></span>
 		</div>
 		<div id="div5" class="form-row">
-			<span class="readonlyLabel"><a href="#" class="btn" id="btn5" title="<?php echo _("Restore Factory settings")?>" style="text-transform : none;"><?php echo _("RESTORE FACTORY SETTINGS")?></a></span> 
-			<span class="value"><?php echo _('Press "Restore Factory Settings" to activate your Gateway')?> <span style="padding-left:231px"><?php echo _("Default Settings. All your previous settings will be lost.")?></span></span>
+			<span class="readonlyLabel btn_reset"><a href="#" class="btn" id="btn5" title="<?php echo _("Restore Factory settings")?>" style="text-transform : none;"><?php echo _("RESTORE FACTORY SETTINGS")?></a></span> 
+			<span class="value"><?php echo _('Press "Restore Factory Settings" to activate your Gateway')?> <span><?php echo _("Default Settings. All your previous settings will be lost.")?></span></span>
 		</div>
 	</div> <!-- end .module -->
 	</form>
