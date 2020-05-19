@@ -222,7 +222,7 @@ echo '<li class="nav-troubleshooting">';
 
 		if($voice_Dig){
 		echo '<li class="nav-voice">';
-		echo '<a role="menuitem"  title="click to toggle sub menu" class="top-level" href="Voip_SipBasic_GlobalParamaters.php">Voice Diagnostics</a>';
+		echo '<a role="menuitem"  title="click to toggle sub menu" class="top-level" href="Voip_SipBasic_GlobalParamaters.php">'._("Voice Diagnostics").'</a>';
 		echo '<ul>';
 			echo '<li class="nav-voice-sip"><a role="menuitem"  title="click to toggle sub menu"  href="javascript:;">SIP Basic Setup</a>';
 			    echo '<ul>';

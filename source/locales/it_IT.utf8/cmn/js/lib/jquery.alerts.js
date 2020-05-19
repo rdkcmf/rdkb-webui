@@ -53,7 +53,7 @@
 		// Public methods
 		
 		alert: function(message, title, callback) {
-			if( title == null ) title = 'Mettere in guardia';
+			if( title == null ) title = 'Attenzione';
 			$.alerts._show(title, message, null, 'alert', function(result) {
 				if( callback ) callback(result);
 			});
