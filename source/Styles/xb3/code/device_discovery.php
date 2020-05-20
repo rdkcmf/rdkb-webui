@@ -124,7 +124,7 @@ $('#save_setting').click(function() {
 			saveQoS(upnpInfo);
 		} else {
 			//alert("Not valid! Can not be saved.");
-			alert("<?php echo _('Please enter a value greater than or equal to 1.\nFor Advertisement Period & Time To Live.')?>");
+			jAlert("<?php echo _('Please enter a value greater than or equal to 1. For Advertisement Period & Time To Live.')?>");
 		}
 	} else {
 		saveQoS(upnpInfo);

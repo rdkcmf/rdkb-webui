@@ -1961,8 +1961,8 @@ msgid "IsEnabledZero"
 msgstr "IsEnabledZero"
 
 #: device_discovery.php:127
-msgid "Please enter a value greater than or equal to 1.\nFor Advertisement Period & Time To Live."
-msgstr "Inserisci un valore maggiore o uguale a 1.\nPer tempo di annuncio e Time to Live."
+msgid "Please enter a value greater than or equal to 1. For Advertisement Period & Time To Live."
+msgstr "Inserisci un valore maggiore o uguale a 1. Per tempo di annuncio e Time to Live."
 
 #: device_discovery.php:154
 msgid "Advanced > Device Discovery"
