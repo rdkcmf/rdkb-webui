@@ -189,8 +189,8 @@ then
 fi
 
 cp -rf /usr/www/cmn/ /tmp/pcontrol
-#Dynamically create pause screen file
-chmod 777 /etc/pauseBlockGenerateHtml.sh
+#Dynamically create pause screen file 
+#removed chmod as part of CISCOXB3-6294 since etc is read-only FileSystem
 sh /etc/pauseBlockGenerateHtml.sh
 
 echo "\$SERVER[\"socket\"] == \"$INTERFACE:21515\" { server.use-ipv6 = \"enable\" server.document-root = \"/tmp/pcontrol/\" url.rewrite-if-not-file = \"('^/(.*)$' => '/index.html?fwd=$1')\" url.access-deny =(\".inc\" )  }" >> $LIGHTTPD_CONF
