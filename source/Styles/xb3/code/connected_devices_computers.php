@@ -214,7 +214,7 @@ $(document).ready(function() {
     				success: function(results){
     					setTimeout(function(){
     						jHide();
-    						if (results=="success") { window.location.href="connected_devices_computers.php";}
+    						if (results=="<?php echo _('success'); ?>") { window.location.href="connected_devices_computers.php";}
     						else if (results=="") {jAlert('<?php echo _("Failure! Please check your inputs.")?>');}
     						else jAlert(results);
     					}, 15000);
@@ -308,7 +308,7 @@ $(document).ready(function() {
                                 success: function(results){
                                         setTimeout(function(){
                                                 jHide();
-                                                if (results=="success") { window.location.href="connected_devices_computers.php";}
+                                                if (results=="<?php echo _('success'); ?>") { window.location.href="connected_devices_computers.php";}
                                                 else if (results=="") {jAlert('<?php echo _("Failure! Please check your inputs.")?>');}
                                                 else jAlert(results);
                                         }, 15000);
