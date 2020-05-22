@@ -839,13 +839,13 @@ for ($i= 1; $i< count($wan_Interface_ids);$i++){
   		    if($wan_ip_val != "0.0.0.0"){
                 $Wan_Port_Status ="Connected";
   		    } else {
-            	$Wan_Port_Status ="disconnected";
+            	$Wan_Port_Status ="Disconnected";
             }
         } else if (inet_pton($WANIPv6)){
    			if($WANIPv6){
 				$Wan_Port_Status ="Connected";
 			} else {
-    				$Wan_Port_Status ="disconnected";
+    				$Wan_Port_Status ="Disconnected";
     		}
     	}
         $port_detail= "Device.IP.Interface.".$i.".LowerLayers";
@@ -861,12 +861,12 @@ if(strpos($partnerId, "sky-") !== false){
     	    $wan_port_value = sprintf(_("Port %d"), $wan_port_value + 1);
 	}
 	else{
-    	$Wan_Port_Status ="disconnected";
+    	$Wan_Port_Status ="Disconnected";
     	$wan_port_value = _('WAN is not connected');
     }
 }
 else{
-	if($Wan_Port_Status !="disconnected"){
+	if($Wan_Port_Status !="Disconnected"){
 	    $wan_port_value = sprintf(_("Port %d"), $wan_port_value + 1);
 	} else{
 	    $wan_port_value = _('WAN is not connected');
@@ -879,7 +879,7 @@ if(strpos($partnerId, "sky-") !== false){
 	   if($modem_downstream == 0) $modem_downstream = '-NA-';
 	   if($modem_upstream == 0) $modem_upstream = '-NA-';
    }
-   else if($Wan_Port_Status =="disconnected"){
+   else if($Wan_Port_Status =="Disconnected"){
 	   $modem_downstream = '-NA-';$modem_upstream = '-NA-';
    }
 }
