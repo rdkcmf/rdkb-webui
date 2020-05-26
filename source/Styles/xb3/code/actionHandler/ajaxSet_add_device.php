@@ -217,6 +217,7 @@ if( !array_key_exists('delFlag', $deviceInfo) ) {
                 }
                 if( isSet($index) ){
                    setStr("Device.Hosts.Host.$index.Comments", $deviceInfo['Comments'], true);
+		setStr("Device.Hosts.Host.$index.AddressSource", "Static", true);
                 }
             }//end of else
         } //end of exist
