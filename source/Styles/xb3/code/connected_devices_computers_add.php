@@ -42,8 +42,8 @@ $(document).ready(function() {
 	}, "This MAC is reserved for multicast, please input again.");
 	*/
         $.validator.addMethod("allowed_char_HostName", function(value, element) {      
-          return this.optional(element) || /^[a-z0-9]+$/i.test(value);         
-}, "<?php echo _("Special characters are not allowed, Only letters and Numbers are allowed.")?>");
+          return this.optional(element) || /^[a-z0-9-]+$/i.test(value);         
+}, "<?php echo _("Special characters are not allowed, Only hyphen(-),letters and Numbers are allowed.")?>");
 	$("#pageForm").validate({
 	    rules : {
 	    	staticIPAddress: {
