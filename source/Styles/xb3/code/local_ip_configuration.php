@@ -92,7 +92,7 @@ label{
 	margin-right: 10px !important;
 }
 .form-row input.ipv6-input {
-	width: 35px;
+	width: 34px;
 }
 </style>
 <script type="text/javascript">
