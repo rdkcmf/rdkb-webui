@@ -165,10 +165,11 @@ fi
 
 echo "\$SERVER[\"socket\"] == \"$INTERFACE:443\" { server.use-ipv6 = \"enable\" ssl.engine = \"enable\" ssl.pemfile = \"/etc/server.pem\" }" >> $LIGHTTPD_CONF
 
-#If video analytics test is enabled in device.properties file, open 28081 securely.
+#If video analytics test is enabled in device.properties file, open 58081 securely.
 if [ "$VIDEO_ANALYTICS" = "enabled" ]
 then
-   echo "\$SERVER[\"socket\"] == \"$INTERFACE:28081\" { server.use-ipv6 = \"enable\" server.document-root = \"/usr/video_analytics\" ssl.engine = \"enable\" ssl.pemfile = \"/tmp/.webui/rdkb-video.pem\" }" >> $LIGHTTPD_CONF
+#Opening port 58081 for MTLS connection
+	echo "\$SERVER[\"socket\"] == \"$INTERFACE:58081\" { server.use-ipv6 = \"enable\" server.document-root = \"/usr/video_analytics\" ssl.engine = \"enable\" ssl.verifyclient.activate = \"enable\" ssl.ca-file = \"/etc/webui/certs/comcast-rdk-ca-chain.cert.pem\" ssl.pemfile = \"/tmp/.webui/rdkb-video.pem\" }" >> $LIGHTTPD_CONF
 fi
 
 if [ "$BOX_TYPE" == "HUB4" ]; then
