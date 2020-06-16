@@ -5733,6 +5733,7 @@ msgid "Are you sure you want to delete this entry from Wi-Fi Control List?"
 msgstr "Sei sicuro di voler eliminare questa voce dall&#39;elenco di controllo wifi?"
 
 #: wireless_network_configuration.php:1073
+#: wireless_network_configuration_wps.php:219
 msgid "Invalid PIN!"
 msgstr "PIN non valido"
 
