@@ -216,7 +216,7 @@ $(document).ready(function() {
 	});	
 	$("#wps_pair").click(function(){
 		if (("PushButton" != $("#connection_options").val()) && !validChecksum($("#pin_number").attr("value")) ){
-			jAlert("Invalid PIN!");
+			jAlert("<?php echo _('Invalid PIN!')?>");
 			return;
 		}
 		set_config("pair_client");
