@@ -114,9 +114,9 @@ $(document).ready(function() {
 
     /* Bridge mode not supported for Sky */
     var partnersId = "<?php echo $partnersId; ?>";
-    if (partnersId.indexOf("sky-") !== -1) {
+    /*if (partnersId.indexOf("sky-") !== -1) {
         $('.div-bridge').remove();
-    }
+    }*/
 
     var partnerId= "<?php echo $partnersId; ?>";
     var brandName = "<?php echo $brandName; ?>";
@@ -331,6 +331,7 @@ function popUp(URL) {
 		echo '</div>';
 	}
 	?>
+               <?php if(strpos($partnersId, "sky-") === false){ ?>
 		<div class="module div-bridge">
 			<div class="select-row">
 				<span class="readonlyLabel label"><?php echo _("Bridge Mode:");?></span>
@@ -343,6 +344,7 @@ function popUp(URL) {
 				?>
 			</div>
 		</div>
+                <?php } ?>
 	<!--div class="module forms">
 		<input type="button" onClick="javascript:popUp('at_downloading.php')" class="btn" value="Save Current Configuration"/>
 		<input type="button" onClick="javascript:popUp('at_mycomputer.php')" class="btn" value="Restore Saved Configuration"/>
