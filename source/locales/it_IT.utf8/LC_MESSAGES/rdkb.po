@@ -6823,3 +6823,36 @@ msgstr "Diagnostica Voce"
 #: wireless_network_configuration.php:1911
 msgid "Wi-Fi Control List(up to 64 items)"
 msgstr "Lista di controllo wifi (fino a 64 voci)"
+
+#: wireless_network_configuration.php:221 wireless_network_configuration_edit.php:265
+#:wireless_network_configuration_edit.php:881 wireless_network_configuration_edit.php:883 
+#:wireless_network_configuration_edit.php:885 wireless_network_configuration_edit.php:893
+#: wizard_step2.php:553 wizard_step2.php:538 wizard_step2.php:534
+#: wifi.php:112
+msgid "2.4"
+msgstr "2,4"
+
+#: wireless_network_configuration.php:223
+msgid "2.4 GHz"
+msgstr "2,4 GHz"
+
+#: connected_devices_computers.php:956
+#: connected_devices_computers.php:695
+#: connected_devices_computers.php:1057
+#: connected_devices_computers.php:1004
+#: connected_devices_computers.php:639
+msgid "Wi-Fi 2.4G"
+msgstr "Wi-Fi 2,4G"
+
+#: ajax_network_diagnostic_tools.php:48 ajax_network_diagnostic_tools.php:68
+#: ajax_network_diagnostic_tools.php:72 ajax_network_diagnostic_tools.php:92
+#: ajax_network_diagnostic_tools.php:96 ajax_network_diagnostic_tools.php:137
+#: ajax_network_diagnostic_tools.php:167
+msgid "Error"
+msgstr "Errore"
+
+#: ajax_network_diagnostic_tools.php:39 ajax_network_diagnostic_tools.php:64
+#: ajax_network_diagnostic_tools.php:88 ajax_network_diagnostic_tools.php:122
+#: ajax_network_diagnostic_tools.php:152
+msgid "Error_Internal"
+msgstr "Errore Interno"
