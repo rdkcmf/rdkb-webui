@@ -36,7 +36,7 @@ if (isset($_POST['test_connectivity'])){
 		do{
 			sleep(1);
 			$pingState=getStr("Device.IP.Diagnostics.IPPing.DiagnosticsState");
-			if($pingState == "") $trace_ipv4_status = "Error_Internal";
+			if($pingState == "") $trace_ipv4_status = _("Error_Internal");
 		}while(!in_array($pingState,$states));
 		$success_received=getStr("Device.IP.Diagnostics.IPPing.SuccessCount");
 		// $failure_received=getStr("Device.IP.Diagnostics.IPPing.FailureCount");
@@ -45,7 +45,7 @@ if (isset($_POST['test_connectivity'])){
 		$result=array('connectivity_internet'=>$connectivity_internet,'success_received'=>$success_received);
 	}
 	else{
-		$result=array('connectivity_internet'=>"Error",'success_received'=>"0");
+		$result=array('connectivity_internet'=>_("Error"),'success_received'=>"0");
 	}
 	header("Content-Type: application/json");
 	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
@@ -61,15 +61,15 @@ else if (isset($_POST['destination_ipv4'])){
 		do{
 			sleep(1);
 			$pingState=getStr("Device.IP.Diagnostics.IPPing.DiagnosticsState");
-			if($pingState == "") $trace_ipv4_status = "Error_Internal";
+			if($pingState == "") $trace_ipv4_status = _("Error_Internal");
 		}while(!in_array($pingState,$states));
 		$success_received=getStr("Device.IP.Diagnostics.IPPing.SuccessCount");
 		if($success_received>0) {$connectivity_ipv4="OK";}
-		else {$connectivity_ipv4="Error";}
+		else {$connectivity_ipv4=_("Error");}
 		$result=array('connectivity_ipv4'=>$connectivity_ipv4);
 	}
 	else{
-		$result=array('connectivity_ipv4'=>"Error");
+		$result=array('connectivity_ipv4'=>_("Error"));
 	}
 	header("Content-Type: application/json");
 	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
@@ -85,15 +85,15 @@ else if (isset($_POST['destination_ipv6'])){
 		do{
 			sleep(1);
 			$pingState=getStr("Device.IP.Diagnostics.IPPing.DiagnosticsState");
-			if($pingState == "") $trace_ipv4_status = "Error_Internal";
+			if($pingState == "") $trace_ipv4_status = _("Error_Internal");
 		}while(!in_array($pingState,$states));
 		$success_received=getStr("Device.IP.Diagnostics.IPPing.SuccessCount");
 		if($success_received>0) {$connectivity_ipv6="OK";}
-		else {$connectivity_ipv6="Error";}
+		else {$connectivity_ipv6=_("Error");}
 		$result=array('connectivity_ipv6'=>$connectivity_ipv6);
 	}
 	else{
-		$result=array('connectivity_ipv6'=>"Error");
+		$result=array('connectivity_ipv6'=>_("Error"));
 	}
 	header("Content-Type: application/json");
 	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
@@ -119,7 +119,7 @@ else if (isset($_POST['trace_ipv4_dst'])){
 		do{
 			sleep(3);
 			$trace_ipv4_status = getStr("Device.IP.Diagnostics.TraceRoute.DiagnosticsState");
-			if($trace_ipv4_status == "") $trace_ipv4_status = "Error_Internal";
+			if($trace_ipv4_status == "") $trace_ipv4_status = _("Error_Internal");
 			// $trace_ipv4_status = "Complete";
 		}while(!in_array($trace_ipv4_status, $states_trace));
 		if ("Complete" == $trace_ipv4_status){
@@ -134,7 +134,7 @@ else if (isset($_POST['trace_ipv4_dst'])){
 		$result=array('trace_ipv4_status'=>$trace_ipv4_status, 'trace_ipv4_result'=>$trace_ipv4_result);
 	}
 	else{
-		$result=array('trace_ipv4_status'=>"Error", 'trace_ipv4_result'=>"Error");
+		$result=array('trace_ipv4_status'=>_("Error"), 'trace_ipv4_result'=>_("Error"));
 	}
 	header("Content-Type: application/json");
 	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
@@ -149,7 +149,7 @@ else if (isset($_POST['trace_ipv6_dst'])){
 		do{
 			sleep(3);
 			$trace_ipv6_status = getStr("Device.IP.Diagnostics.TraceRoute.DiagnosticsState");
-			if($trace_ipv6_status == "") $trace_ipv4_status = "Error_Internal";
+			if($trace_ipv6_status == "") $trace_ipv4_status = _("Error_Internal");
 			// $trace_ipv6_status = "Error_CannotResolveHostName";
 		}while(!in_array($trace_ipv6_status, $states_trace));
 		if ("Complete" == $trace_ipv6_status){
@@ -164,7 +164,7 @@ else if (isset($_POST['trace_ipv6_dst'])){
 		$result=array('trace_ipv6_status'=>$trace_ipv6_status, 'trace_ipv6_result'=>$trace_ipv6_result);
 	}
 	else{
-		$result=array('trace_ipv6_status'=>"Error", 'trace_ipv6_result'=>"Error");
+		$result=array('trace_ipv6_status'=>_("Error"), 'trace_ipv6_result'=>_("Error"));
 	}
 	header("Content-Type: application/json");
 	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8');
