@@ -1,0 +1,416 @@
+<?%
+/*
+ If not stated otherwise in this file or this component's Licenses.txt file the
+ following copyright and licenses apply:
+
+ Copyright 2018 RDK Management
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+?>
+<?% include('includes/header.jst'); ?>
+<!-- $Id: network_diagnostic_tools.jst 3158 2010-01-08 23:32:05Z slemoine $ -->
+<div id="sub-header">
+        <?% include('includes/userbar.jst'); ?>
+</div><!-- end #sub-header -->
+<?% include('includes/nav.jst'); ?>
+
+<script type="text/javascript" src="hwselftest/scripts/ds-errcodes.js"></script>
+<script type="text/javascript" src="hwselftest/scripts/ds-main.js"></script>
+
+<?%
+if(getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.hwHealthTest.Enable") != "true") {
+        echo( '<script type="text/javascript">alert("Hardware Health Test Feature Disabled!"); location.href="troubleshooting_logs.jst";</script>');
+        die();
+}
+$box_param = {
+        'box_manufacturer'   : "Device.DeviceInfo.Manufacturer",
+        'box_model'          : "Device.DeviceInfo.ModelName",
+        'box_software'       : "Device.DeviceInfo.SoftwareVersion"
+        };
+    $box_value = KeyExtGet("Device.DeviceInfo.", $box_param);
+?>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    gateway.page.init("Hardware Health Test", "nav-hwselftest");
+	
+    $("#run_diag_tests").click(function(){
+        jProgress($.i18n('Running Diagnostic Tests...'),210);
+        $.ajax({
+            type:"POST",
+            url:"actionHandler/ajax_hwselftest.jst",
+            data:{run_diag_tests:"true"},
+            dataType:"json",
+            success:function(result){
+                jHide();
+                if(result === "No_File"){
+                    var store = document.getElementById("test_results");
+                    store.innerHTML = "";
+                    var title = document.createElement('h2');
+                    title.appendChild(document.createTextNode("Results Not Available. Please Re-Run Tests."));
+                    store.appendChild(title);
+                }
+                else {
+                    formatResults(result);
+                }
+                $("#show_prev_results").hide();
+                $("#run_diag_tests").val("Re-Run Diagnostic Tests");
+            },
+            error:function(){
+                jHide();
+                alertLocale("Request Failed, Please Try Again.");
+            }
+        });
+    });
+    $("#show_prev_results").click(function(){
+        jProgress($.i18n('Loading Previous Test Run Results...'),10);
+        $.ajax({
+            type:"POST",
+            url:"actionHandler/ajax_hwselftest.jst",
+            data:{show_prev_results:"true"},
+            dataType:"json",
+            success:function(result){
+                jHide();
+                if(result === "No_File"){
+                    var store = document.getElementById("test_results");
+                    store.innerHTML = "";
+                    var title = document.createElement('h2');
+                    title.appendChild(document.createTextNode("No Previous Results Available"));
+                    store.appendChild(title);
+                }
+                else {
+                    formatResults(result);
+                }
+                $("#show_prev_results").hide();
+            },
+            error:function(){
+                jHide();
+                alertLocale("Request Failed, Please Try Again.");
+            }
+        });
+    });
+});
+
+var diagList = {
+    'MoCA': 'moca_status',
+    'Bluetooth': 'bluetooth_status',
+    'DOCSIS': 'docsis_status',
+    'Flash Memory': 'emmc_status',
+    'Dynamic RAM': 'dram_status',
+    'WiFi': 'wifi_status',
+    'MTA': 'mta_status',
+    'XHS': 'xhs_status',
+    'LAN': 'lan_status'
+};
+
+function processKeyDummy(keyCode) {
+}
+
+function DisplayStatus(count,store,diagName,status)
+{
+    count++;
+    var row = document.createElement('div');
+    if (count%2 === 0) {
+        row.className = 'form-row';
+    } else {
+        row.className = 'form-row odd';
+    }
+
+    var col = document.createElement('span');
+    col.className = 'readonlyLabel';
+    col.style.width = '20%';
+    var name = diagName;
+
+    col.appendChild(document.createTextNode(name));
+    row.appendChild(col);
+
+    col = document.createElement('span');
+    col.className = 'readonlyLabel';
+    col.style.width = '1%';
+    var img = document.createElement("img");
+    if (status === 0) {
+         img.src = "hwselftest/resources/icon-success-18.png";
+    }
+    else if (status === 1) {
+        img.src = "hwselftest/resources/icon-fail-18.png";
+        overall_result = "Fail. Replace device";
+    }
+    else {
+        img.src = "hwselftest/resources/icon-warning-18.png";
+    }
+    img.style.visibility = "visible";
+    col.appendChild(img);
+    row.appendChild(col);
+
+    col = document.createElement('span');
+    col.className = 'readonlyLabel';
+    var warnInfo = getInfo(name, status, "");
+    col.appendChild(document.createTextNode(warnInfo));
+    row.appendChild(col);
+    store.appendChild(row);
+}
+
+var processKey = processKeyDummy;
+
+function formatResults(result) {
+    var obj = JSON.parse(result);
+    var res = obj['results'];
+    var time_stamp = obj['local_time'];
+    var overall_result = "Pass.";
+    var i = 0;
+    var count = 0;
+
+    var store = document.getElementById("test_results");
+    store.innerHTML = "";
+    var title = document.createElement('h2');
+    title.appendChild(document.createTextNode("Diagnostic Test Results"));
+    store.appendChild(title);
+
+    for (j = 0; j < Object.values(diagList).length; j++) {
+        // LAN TEST
+        if( ("lan_status" === Object.values(diagList)[j]))
+        {
+            var totalPortCount = 0;
+            var LANOverallStatus = -1;
+            
+            for (i = 0; i < Object.keys(res).length; i++) {
+                if( "lan_status" ===  Object.keys(res)[i])
+                {
+                    var out = res[Object.keys(res)[i]];
+                    totalPortCount = out["LANPortCount"];
+                    LANOverallStatus = out["LANOverallStatus"];
+                    break;
+                }
+            }
+
+            //Check if the LAN port count is 0. If so just display the overall
+              // status of LAN test.
+              
+            if( 0 === totalPortCount)
+            {
+                DisplayStatus(count, store, "LAN", LANOverallStatus);
+            } // End - if total LAN port count is 0
+            
+            else // Display status of each port separately
+            {
+                var index  = 0;
+                for( index = 1; index <= totalPortCount; index++)
+                {
+                    var str = "LANPort_" + index;
+                    for (i = 0; i < Object.keys(res).length; i++) {
+                        if(str === Object.keys(res)[i])
+                        {
+                            var out = res[Object.keys(res)[i]];
+                            if (out["result"] === DIAG_ERRCODE.IGNORE_TEST) {
+                                continue;
+                            }
+                            DisplayStatus(count, store, Object.keys(res)[i], out["result"]);
+                            break;
+                        }//END - if
+                    }//END- for
+
+                }//END -for
+            }
+        }//END- if
+
+        // MTA TEST
+        if( ("mta_status" === Object.values(diagList)[j]))
+        {
+            var totalLineCount = 0;
+            var MTAOverallStatus = -1;
+
+            for (i = 0; i < Object.keys(res).length; i++) {
+                if( "mta_status" ===  Object.keys(res)[i])
+                {
+                    var out = res[Object.keys(res)[i]];
+                    totalLineCount = out["MTALineCount"];
+                    MTAOverallStatus = out["MTAOverallStatus"];
+                    break;
+                }
+            }
+
+            //Check if the LAN port count is 0. If so just display the overall
+              // status of LAN test.
+
+            if( 0 === totalLineCount)
+            {
+                if( MTAOverallStatus !== DIAG_ERRCODE.IGNORE_TEST)
+                {
+                    DisplayStatus(count, store, "MTA", MTAOverallStatus);
+                }
+            } // End - if total MTA line count is 0
+
+            else // Display status of each line separately
+            {
+                var index  = 0;
+                for( index = 1; index <= totalLineCount; index++)
+                {
+                    var str = "MTALine_" + index;
+                    for (i = 0; i < Object.keys(res).length; i++) {
+                        if(str === Object.keys(res)[i])
+                        {
+                            var out = res[Object.keys(res)[i]];
+                            if (out["result"] === DIAG_ERRCODE.IGNORE_TEST) {
+                                continue;
+                            }
+                            DisplayStatus(count, store, Object.keys(res)[i], out["result"]);
+                            break;
+                        }//END - if
+                    }//END- for
+
+                }//END -for
+            }
+
+        }//END- if
+
+        if( ("wifi_status" === Object.values(diagList)[j]))
+        {
+            for (i = 0; i < Object.keys(res).length; i++) {
+                if( "wifi_status" ===  Object.keys(res)[i])
+                {
+                    var out = res[Object.keys(res)[i]];
+                    DisplayStatus(count, store, "WiFi_2.4Ghz", out["WiFi_2.4Ghz"]);
+                    DisplayStatus(count, store, "WiFi_5Ghz", out["WiFi_5Ghz"]);
+                    break;
+                }
+            }
+        }//END- if
+
+
+        for (i = 0; i < Object.keys(res).length; i++) {
+            if((Object.keys(res)[i] === Object.values(diagList)[j]) &&
+                ("lan_status" !== Object.values(diagList)[j]) &&
+                ("mta_status" !== Object.values(diagList)[j]) &&
+                ("wifi_status" !== Object.values(diagList)[j])) {
+                var out = res[Object.keys(res)[i]];
+
+                if (Object.keys(res)[i] === "xhs_status" && !out.hasOwnProperty('result')) {
+                    DisplayStatus(count, store, "XHS_2.4Ghz", out["XHS_2.4Ghz"]);
+                    DisplayStatus(count, store, "XHS_5.0Ghz", out["XHS_5.0Ghz"]);
+                    continue;
+                }
+
+                if (out["result"] === DIAG_ERRCODE.IGNORE_TEST) {
+                    continue;
+                }
+                count++;
+                var row = document.createElement('div');
+                if (count%2 === 0) {
+                    row.className = 'form-row';
+                } else {
+                    row.className = 'form-row odd';
+                }
+
+                var col = document.createElement('span');
+                col.className = 'readonlyLabel';
+                col.style.width = '20%';
+                var name = Object.keys(diagList).find(key => diagList[key] === Object.keys(res)[i]);
+                col.appendChild(document.createTextNode(name));
+                row.appendChild(col);
+
+                col = document.createElement('span');
+                col.className = 'readonlyLabel';
+                col.style.width = '1%';
+                var img = document.createElement("img");
+                if (out["result"] === 0) {
+                    img.src = "hwselftest/resources/icon-success-18.png";
+                }
+                else if (out["result"] === 1) {
+                    img.src = "hwselftest/resources/icon-fail-18.png";
+                    overall_result = "Fail. Replace device";
+                }
+                else {
+                    img.src = "hwselftest/resources/icon-warning-18.png";
+                }
+                img.style.visibility = "visible";
+                col.appendChild(img);
+                row.appendChild(col);
+
+                col = document.createElement('span');
+                col.className = 'readonlyLabel';
+                var warnInfo = getInfo(name, out["result"], "");
+                col.appendChild(document.createTextNode(warnInfo));
+                row.appendChild(col);
+
+                store.appendChild(row);
+            }
+        }
+    }
+    var row = document.createElement('div');
+    if (i%2 === 0) {
+    row.className = 'form-row';
+    } else {
+        row.className = 'form-row odd';
+    }
+    var col = document.createElement('span');
+    col.className = 'readonlyLabel';
+    col.style.width = '40%';
+    col.style.textAlign = 'center';
+    col.style.color = (overall_result === "Pass." ? '#19A926' : '#C90318');
+    col.appendChild(document.createTextNode("Overall Result: " + overall_result));
+
+    row.appendChild(col);
+
+    var col = document.createElement('span');
+    col.className = 'readonlyLabel';
+    col.style.width = '40%';
+    col.appendChild(document.createTextNode(time_stamp));
+    row.appendChild(col);
+
+    store.appendChild(row);
+}
+</script>
+
+<div id="content">
+        <h1 id="hwsthead">Troubleshooting > Hardware Health Test</h1>
+        <div id="educational-tip" class="noprint">
+            <p class="tip" id="hwsttip1">View information about the Gateway's hardware health status.</p>
+            <p class="hidden" id="hwsttip2">Hardware health test is for all the hardware components inside the device.</p>
+            <div class="hidden">
+                <table cellspacing="0" cellpadding="0" class="data" summary="This table shows device information" >
+                <tr>
+                        <th id="battery_metric" style="width:30%">Device Information</th>
+                        <th id="version" style="text-align:right;"></th>
+                </tr>
+                <tr>
+                        <td headers="battery_metric" class="row-label">Manufacturer</td>
+                        <td headers="battery_status" id="bat_capacity"><?% echo ($box_value["box_manufacturer"]); ?></td>
+                </tr>
+                <tr class="odd">
+                        <td headers="battery_metric" class="row-label">Model</td>
+                        <td headers="battery_status" id="bat_health"><?% echo ($box_value["box_model"]); ?></td>
+                </tr>
+                <tr>
+                        <td headers="battery_metric" class="row-label">Software</td>
+                        <td headers="battery_status" id="bat_status"><?% echo ($box_value["box_software"]); ?></td>
+                </tr>
+                </table>
+            </div>
+        </div>
+        <form method="post" id="hwstForm1">
+            <div class="module forms">
+                <section id="test_results">
+                </section>
+                <div class="form-row">
+                    <input type="button" class="btn" id="run_diag_tests" value="Run Diagnostic Tests" />
+                </div>
+                <div class="form-row">
+                    <input type="button" class="btn" id="show_prev_results" value="Show Previous Results" />
+                </div>
+            </div> <!-- end .module -->
+        </form>
+
+</div><!-- end #content -->
+
+<?% include('includes/footer.jst'); ?>
