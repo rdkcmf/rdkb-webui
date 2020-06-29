@@ -239,14 +239,8 @@ header('X-robots-tag: noindex,nofollow');
 						if($passVal=="Default_PWD"){
 							create_session();
 							$_SESSION["password_change"] = "default_pwd";
-							echo '<script type="text/javascript">
-                                jAlert("'._("You are using default password. Please change the password.").'", "Alert",
-                                function (ret) {
-                                    if(ret)
-                                        {
-                                            window.location = "admin_password_change.php";
-                                        }
-                                });
+								echo '<script type="text/javascript">
+								location.href = "admin_password_change.php";
                             </script>' ;
 						}else{
 							create_session();
