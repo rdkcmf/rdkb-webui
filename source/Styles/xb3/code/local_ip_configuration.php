@@ -1066,7 +1066,10 @@ $('#restore_ipv6').click(function(e) {
 		var dhcpv6_end_addr = "0:0:0:fffe";
 		var dhcpv6_lease_time = 604800;    // 1 week	
         var IPv6Config = '{"IPv6": "Yes", "restore": "true", "dhcpv6_begin_addr": "' + dhcpv6_begin_addr + '", "dhcpv6_end_addr": "' + dhcpv6_end_addr +'", "dhcpv6_lease_time": "' + dhcpv6_lease_time + '"}';
-    	setIPv6configuration(IPv6Config);
+    	if(partner_id.indexOf('sky-')===0){
+            var IPv6Config = '{"IPv6": "Yes", "restore": "true", "dhcpv6_begin_addr": "' + dhcpv6_begin_addr + '", "dhcpv6_end_addr": "' + dhcpv6_end_addr +'", "dhcpv6_lease_time": "' + dhcpv6_lease_time+'", "ipv6_enable": "' + true +'", "ula_enable": "' + true + '"}';
+        }
+        setIPv6configuration(IPv6Config);
 	} //end of if ret
 	}); //end of jconfirm
 });//end of click restore ipv6
