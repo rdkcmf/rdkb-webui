@@ -62,7 +62,7 @@ try {
 	echo( htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8'));
 }
 catch ($err) {
-	$response = {"status" : _("Failed"), "msg" : $err}/*p2j-array*/;
+	$response = {"status" : "Failed", "msg" : $err}/*p2j-array*/;
 	header("Content-Type: application/json");
 	echo( htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8'));
 }

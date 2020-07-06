@@ -2,15 +2,11 @@
 /*
  If not stated otherwise in this file or this component's Licenses.txt file the
  following copyright and licenses apply:
-
  Copyright 2018 RDK Management
-
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
-
  http://www.apache.org/licenses/LICENSE-2.0
-
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,7 +38,6 @@ session_start();
 	$WANIPv4 = getStr($fistUSif+"IPv4Address.1.IPAddress");
 	$WANIPv6 = "" ;
 	$ids = explode(",", getInstanceIds($fistUSif+"IPv6Address."));
-
 	for ($k in $ids) {
             $i = $ids[$k];
 			$val = "";
@@ -52,7 +47,6 @@ session_start();
                 break;
             }
 	}
-
 	$sta_inet = ($WANIPv4 != "0.0.0.0" || strlen($WANIPv6) > 0) ? "true" : "false";
 	//in Bridge mode > Internet connectivity status is always active
 	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
@@ -155,7 +149,8 @@ $(document).ready(function() {
 	?>
 	function changeBridge(isBridgeModelEnable) {
 		var cnt = 90;
-		jProgress("<?% echo( _('Bridge Mode changes will be fully applied in'));?> <b id=\"cnt\">" + cnt +"</b><?% echo( _(" seconds, please be patient..."));?>", 600);
+		var jpMsg=$.i18n("Bridge Mode changes will be fully applied in")+' <b id="cnt">' + cnt + '</b> '+$.i18n(" seconds, please be patient...");
+		jProgress(jpMsg, 600);
 		$.ajax({
 		type:"POST",
 		url:"actionHandler/ajax_at_a_glance.jst",
@@ -174,14 +169,14 @@ $(document).ready(function() {
 		//the 200ms timer is only used to fix confirm dialogue not shown issue on IE
 		var warningMsg="";
 		if(partnerId=="comcast"){
-			warningMsg="<?% echo( _("Enabling Bridge Mode will disable the Wi-Fi router functionality of your ")+$brandName+_(" Gateway and turn off your existing private Wi-Fi network. If you have ")+$productName+_(" Pods, the Gateway cannot be in bridge mode since the Pods require using the ")+$brandName+_(" Gateway as your WiFi router. In addition, you will not be able to access the ")+$productName+_(" experience to manage your Pods or any other ")+$productName+_(" settings. Are you sure you want to continue?"));?>"
+			 warningMsg=$.i18n("Enabling Bridge Mode will disable the Wi-Fi router functionality of your ")+brandName+$.i18n(" Gateway and turn off your existing private Wi-Fi network. If you have ")+productName+$.i18n(" Pods, the Gateway cannot be in bridge mode since the Pods require using the ")+brandName+$.i18n(" Gateway as your WiFi router. In addition, you will not be able to access the ")+productName+$.i18n(" experience to manage your Pods or any other ")+productName+$.i18n(" settings. Are you sure you want to continue?");
 		}else{
-			warningMsg="<?% echo( _("Enabling Bridge Mode will disable the Wi-Fi router functionality of your Gateway and turn off your existing private Wi-Fi network. If you have Pods, the Gateway cannot be in bridge mode since the Pods require using the Gateway as your WiFi router. In addition, you will not be able to access the experience to manage your Pods or any other settings. Are you sure you want to continue?"));?>"
+			warningMsg=$.i18n("Enabling Bridge Mode will disable the Wi-Fi router functionality of your Gateway and turn off your existing private Wi-Fi network. If you have Pods, the Gateway cannot be in bridge mode since the Pods require using the Gateway as your WiFi router. In addition, you will not be able to access the experience to manage your Pods or any other settings. Are you sure you want to continue?");
 		}
 		if ('Enabled' == isBridgeModelEnable) {
 			setTimeout(function(){
 				jConfirm(
-				warningMsg,"<?% echo( _("WARNING:"));?>"
+				warningMsg,$.i18n("WARNING:")
 				,function(ret) {
 					if(ret) {
 						changeBridge(isBridgeModelEnable);
@@ -198,7 +193,7 @@ $(document).ready(function() {
 	});
 	$("#IGMP_snooping_switch").change(function(){
 		var IGMPEnable=$("input[name='IGMP_snooping']:radio:checked").val();
-		jProgress("<?% echo( _('This may take several seconds'));?>", 60);
+		jProgress($.i18n('This may take several seconds'), 60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_at_a_glance.jst",
@@ -206,7 +201,7 @@ $(document).ready(function() {
 			success:function(results){
 				jHide();
 				if(IGMPEnable!=results){
-					jAlert("<?% echo( _("Could not do it!"));?>");
+					alertLocale("Could not do it!");
 					$("input[name='IGMP_snooping']").each(function(){
 						//alert($(this).val());alert(result);
 						if($(this).val()==results){$(this).parent().addClass("selected");$(this).prop("checked",true);}
@@ -224,10 +219,10 @@ function popUp(URL) {
 }
 </script>
 <div id="content">
-	<h1><?% echo( _("Gateway > At a Glance")); ?></h1>
+	<h1 id="ataglanhead">Gateway > At a Glance</h1>
 	<div id="educational-tip">
-		<p class="tip"><?% echo( _("Summary of your network and connected devices.") );?></p>
-		<p class="hidden"><?% echo( _("Select <strong>VIEW CONNECTED DEVICES </strong>to manage devices connected to your network."));?></p>
+		<p class="tip" id="at_summ">Summary of your network and connected devices.</p>
+		<p class="hidden" id="at_edu2">Select <strong>VIEW CONNECTED DEVICES </strong>to manage devices connected to your network.</p>
 	</div>
 	<?%
 	//Home Network WiFi Settings
@@ -278,7 +273,7 @@ function popUp(URL) {
 		if ( $bridge_mode == "router" && ("true" == $wifi_24_enabled || "true" == $wifi_50_enabled) && ("true" == $wifi_24_radio || "true" == $wifi_50_radio)) {
 			echo( '<div class="module forms" id="wifi-config">');
 				echo( '<div>');
-					echo( '<h2>'+_("Wi-Fi Configuration")+'</h2>');
+					echo( "<h2 id='wificonf'>Wi-Fi Configuration</h2>");
 				echo( '</div>');
 				//If both 2.4ghz and 5ghz ssid's and passkeys are the same, or only one is active, then just show one row
                 // Added for Radio Enable also.
@@ -296,12 +291,12 @@ function popUp(URL) {
 					$width_pass = strlen($wifi_passkey)>50?' style="width: 145px;"':'';
 					echo( '<div class="form-row even">');
 						echo( '<div class="form-row even">');
-							echo( '<span class="readonlyLabel" style="white-space: pre;"'); echo( $width_pass); echo( '>'+_("Wi-Fi SSID:")+'</span>');
+							echo( '<span class="readonlyLabel" id="wifissid" style="white-space: pre;"'); echo( $width_pass); echo( '>Wi-Fi SSID:</span>');
 							echo( '<span class="value" style="white-space: pre;">');echo( $wifi_ssid);echo( '</span>');
 						echo( '</div>');
 						if ("admin" == $_SESSION["loginuser"] && "None" != $wifi_sec_mode ) {
 							echo( '<div class="form-row even">');
-								echo( '<span class="readonlyLabel" style="white-space: pre;"'); echo( $width_pass); echo( '>'+_("Wi-Fi Passkey:")+'</span>');
+								echo( '<span class="readonlyLabel" id="wifipass" style="white-space: pre;"'); echo( $width_pass); echo( '>Wi-Fi Passkey:</span>');
 								echo( '<span class="value" style="white-space: pre;">');echo( $wifi_passkey);echo( '</span>');
 							echo( '</div>');
 						}
@@ -311,12 +306,12 @@ function popUp(URL) {
 					$width_pass = strlen($wifi_24_passkey)>50 || strlen($wifi_50_passkey)>50 ?' style="width: 145px;"':'';
 					echo( '<div class="form-row even">');
 						echo( '<div class="form-row even">');
-							echo( '<span class="readonlyLabel" style="white-space: pre;"'); echo( $width_pass); echo( '>'+_("Wi-Fi SSID (2.4 GHz):")+'</span>');
+							echo( '<span class="readonlyLabel" id="wifissid24" style="white-space: pre;"'); echo( $width_pass); echo( '>Wi-Fi SSID (2.4 GHz):</span>');
 							echo( '<span class="value" style="white-space: pre;">');echo( $wifi_24_ssid);echo( '</span>');
 						echo( '</div>');
 						if ("admin" == $_SESSION["loginuser"] && "None" != $wifi_24_secmode) {
 							echo( '<div class="form-row even">');
-								echo( '<span class="readonlyLabel" style="white-space: pre;"'); echo( $width_pass); echo( '>'+_("Wi-Fi Passkey (2.4 GHz):")+'</span>');
+								echo( '<span class="readonlyLabel" id="wifipasskey24" style="white-space: pre;"'); echo( $width_pass); echo( '>Wi-Fi Passkey (2.4 GHz):</span>');
 								echo( '<span class="value" style="white-space: pre;">');echo( $wifi_24_passkey);echo( '</span>');
 							echo( '</div>');
 						}
@@ -325,12 +320,12 @@ function popUp(URL) {
                     if ("true" == $wifi_50_enabled && "true" == $wifi_50_radio){
 					echo( '<div class="form-row odd">');
 						echo( '<div class="form-row odd">');
-							echo( '<span class="readonlyLabel" style="white-space: pre;"'); echo( $width_pass); echo( '>'+_("Wi-Fi SSID (5 GHz):")+'</span>');
+							echo( '<span class="readonlyLabel" id="wifissid5" style="white-space: pre;"'); echo( $width_pass); echo( '>Wi-Fi SSID (5 GHz):</span>');
 							echo( '<span class="value" style="white-space: pre;">');echo( $wifi_50_ssid);echo( '</span>');
 						echo( '</div>');
 						if ("admin" == $_SESSION["loginuser"] && "None" != $wifi_50_secmode) { 
 							echo( '<div class="form-row odd">');
-								echo( '<span class="readonlyLabel" style="white-space: pre;"'); echo( $width_pass); echo( '>'+_("Wi-Fi Passkey (5 GHz):")+'</span>');
+								echo( '<span class="readonlyLabel" id="wifipasskey5" style="white-space: pre;"'); echo( $width_pass); echo( '>Wi-Fi Passkey (5 GHz):</span>');
 								echo( '<span class="value" style="white-space: pre;">');echo( $wifi_50_passkey);echo( '</span>');
 							echo( '</div>');
 						}
@@ -343,19 +338,19 @@ function popUp(URL) {
 	//Power Saving Mode is Enabled
 		echo( '<div class="module psm">');
 			echo( '<div class="select-row">');
-				echo( '<span class="readonlyLabel label">'+_("Power Saving Mode is enabled!")+'</span>');
+				echo( '<span class="readonlyLabel label" id="powsav">Power Saving Mode is enabled!</span>');
 			echo( '</div>');
 		echo( '</div>');
 	}
 	?>
 		<div class="module div-bridge">
 			<div class="select-row">
-				<span class="readonlyLabel label"><?% echo( _("Bridge Mode:"));?></span>
+				<span class="readonlyLabel label">Bridge Mode:</span>
 				<span id="bridge_switch"></span>
 				<?%
 					if($videoServiceEnable=="true") {
 						echo( '<br><br>');
-						echo( '<p class="error">'+_(" Video Service only works in this setting.")+' </p>');
+						echo( '<p class="error" id="vidser">Video Service only works in this setting.</p>');
 					}
 				?>
 			</div>
@@ -366,7 +361,7 @@ function popUp(URL) {
 	</div-->
 	<div class="module block" id="home-network">
 		<div>
-			<h2><?% echo( _("Home Network"));?></h2>
+			<h2 id="homnet">Home Network</h2>
 			<?%
 			if ("Disabled"==$_SESSION["psmMode"]) {
 				/*
@@ -390,47 +385,70 @@ function popUp(URL) {
 					}
 				}
 				if ($ethEnable) {
-					echo( "<div class=\"form-row\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"+_('Ethernet On')+"' /></span> <span class=\"readonlyLabel\">"+_('Ethernet')+"</span></div>");
+					echo( "<div class=\"form-row\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Ethernet On' /></span> <span class=\"readonlyLabel\">Ethernet</span></div>");
 				} else {
-					echo( "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"+_('Ethernet Off')+"' /></span> <span class=\"readonlyLabel\">"+_('Ethernet')+"</span></div>");
+					echo( "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Ethernet Off' /></span> <span class=\"readonlyLabel\">Ethernet</span></div>");
 				}
 				// if (getStr("Device.WiFi.SSID.1.Enable")=="true" || getStr("Device.WiFi.SSID.2.Enable")=="true") {
 				if ("true" == $sta_wifi) {		// define in userhar, should have defined every componet status in userbar
-					echo( "<div class=\"form-row odd\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"+_("WiFi On")+"' /></span> <span class=\"readonlyLabel\">"+_("Wi-Fi")+"</span></div>");
+					echo( "<div class=\"form-row odd\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt=\"WiFi On\" /></span> <span class=\"readonlyLabel\" id=\"wifiloc\">Wi-Fi</span></div>");
 				} else {
-					echo( "<div class=\"form-row odd off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"+_("WiFi Off")+"' /></span> <span class=\"readonlyLabel\">"+_("Wi-Fi")+"</span></div>");
+					echo( "<div class=\"form-row odd off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='WiFi Off' /></span> <span class=\"readonlyLabel\" id=\"wifiloc\">Wi-Fi</span></div>");
 				}
 				if ($MoCA) {
 				if (getStr("Device.MoCA.Interface.1.Status")=="Up") {
-    					echo( "<div class=\"form-row\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"+_("MoCA On")+"' /></span> <span class=\"readonlyLabel\">"+_("MoCA")+"</span></div>");
+    					echo( "<div class=\"form-row\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='MoCA On' /></span> <span class=\"readonlyLabel\">MoCA</span></div>");
 				} else {
-    					echo( "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"+_("MoCA Off")+"' /></span> <span class=\"readonlyLabel\">"+_("MoCA")+"</span></div>");
+    					echo( "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='MoCA Off' /></span> <span class=\"readonlyLabel\">MoCA</span></div>");
 				}
 				}
 			}
 			else {
-				echo( "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"+_("Ethernet Off")+"' /></span> <span class=\"readonlyLabel\">"+_("Ethernet")+"</span></div>");
-				echo( "<div class=\"form-row odd off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"+_("WiFi Off")+"' /></span> <span class=\"readonlyLabel\">"+_("Wi-Fi")+"</span></div>");
+				echo( "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='Ethernet Off' /></span> <span class=\"readonlyLabel\">Ethernet</span></div>");
+				echo( "<div class=\"form-row odd off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='WiFi Off' /></span> <span class=\"readonlyLabel\">Wi-Fi</span></div>");
 				if ($MoCA) {
-    				echo( "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"+_("MoCA Off")+"' /></span> <span class=\"readonlyLabel\">"+_("MoCA")+"</span></div>");
+    				echo( "<div class=\"form-row off\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='MoCA Off' /></span> <span class=\"readonlyLabel\">MoCA</span></div>");
 				}
 			}
 			if($voice_lbl){
 				$voice_status = getStr('Device.Services.VoiceService.1.VoiceProfile.1.Line.1.Status');
-				if($voice_status == 'Up'){$voice_state ='Connected';}
-				else if($voice_status == 'Initializing'|| $voice_status=='Registering'){$voice_state ='Connecting';}
-				else{$voice_state ='Disconnected';}
+				$idVoice="";
+				if($voice_status == 'Up'){
+					$idVoice="connected";
+					$voice_state ='Connected';
+				}
+				else if($voice_status == 'Initializing'|| $voice_status=='Registering'){
+					$idVoice="conninprog";
+					$voice_state ='Connecting';
+				}
+				else{
+					$idVoice="disconnected";
+					$voice_state ='Disconnected';
+				}
 				echo ("<div class='form-row '>");
-				echo("<span class='readonlyLabel' style='white-space: pre;'>");echo(""+_('Voice:')+" </span> <span class='value' style='white-space: pre;'>");echo(_($voice_state));echo("</span></div>");
+				echo("<span class='readonlyLabel' style='white-space: pre;' id='ataglanmess2'>Voice: </span> <span class='value' id="+$idVoice+" style='white-space: pre;'>");echo($voice_state);echo("</span></div>");
 			}
 			?>
 			<div class="form-row odd">
-				<span class="readonlyLabel"><?% echo( _("Firewall Security Level:"));?></span> <span class="value"><?% echo( getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel"));?></span>
-			</div>
+			 <?%
+                         if(getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel") == "Low"){
+    				$idsec = "lowsec";
+			}else if(getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel") == "Medium"){
+			        $idsec = "medsec";
+			}else if(getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel") == "Custom"){
+			        $idsec = "custsec";
+			}else if(getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel") == "None"){
+				$idsec = "nonesec";
+			}else{
+        			$idsec = "highsec";
+			}
+                     ?>
+                                <span class="readonlyLabel" id="firsec">Firewall Security Level:</span> <span class="value" id="<?% echo($idsec); ?>"><?% echo( getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel"));?></span>
+                        </div>
 		</div>
 	</div> <!-- end .module -->
 	<div id="internet-usage" class="module block">
-		<h2><?% echo( _("Connected Devices") );?></h2>
+		<h2 id="conndev">Connected Devices</h2>
 		<?%
 		if ("Disabled"==$_SESSION["psmMode"]) {
 			$rootObjName    = "Device.Hosts.Host.";
@@ -468,12 +486,12 @@ function popUp(URL) {
 							$HostName = strtoupper($HostInfo[$i]['PhysAddress']);
 						}
 						echo( "\
-						   <div class=\""+ $divClass +"\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt='"+_("Host On")+"' /></span> <span class=\"readonlyLabel\">"+$HostName+"</span></div>\
+						   <div class=\""+ $divClass +"\"><span class=\"on-off sprite_cont\"><img src=\"./cmn/img/icn_on_off.png\" alt=\"Host On\" /></span> <span class=\"readonlyLabel\">"+$HostName+"</span></div>\
 						");
 					}//end of for
 				}//end of empty $host
 			}//end of if empty $hostnum
-			echo( '<div class="btn-group"><a href="connected_devices_computers.jst" class="btn">'+_("View Connected Devices")+'</a></div>');
+			echo( '<div class="btn-group"><a href="connected_devices_computers.jst" class="btn" id="viewconndev">View Connected Devices</a></div>');
 		}//end of psmMode condition
 		?>
 	</div> <!-- end .module -->
@@ -488,22 +506,22 @@ function popUp(URL) {
 			<ul id="IGMP_snooping_switch" class="radio-btns enable">
 				<li>
 					<input id="IGMP_snooping_enabled" name="IGMP_snooping" type="radio"  value="Enabled" checked="checked" />
-					<label for="IGMP_snooping_enabled" ><?% echo( _("Enable") );?> </label>
+					<label for="IGMP_snooping_enabled" id="enaloc" >Enable </label>
 				</li>
 				<li class="radio-off">
 					<input id="IGMP_snooping_disabled" name="IGMP_snooping" type="radio"  value="Disabled" />
-					<label for="IGMP_snooping_disabled" ><?% echo( _("Disable"));?> </label>
+					<label for="IGMP_snooping_disabled" id="disloc" >Disable</label>
 				</li>
 			</ul>
 			<?% }else{?>
 			<ul id="IGMP_snooping_switch" class="radio-btns enable">
 				<li>
 					<input id="IGMP_snooping_enabled" name="IGMP_snooping" type="radio"  value="Enabled"/>
-					<label for="IGMP_snooping_enabled" ><?% echo( _("Enable") );?> </label>
+					<label for="IGMP_snooping_enabled" id="enaloc" >Enable </label>
 				</li>
 				<li class="radio-off">
 					<input id="IGMP_snooping_disabled" name="IGMP_snooping" type="radio"  value="Disabled" checked="checked"/>
-					<label for="IGMP_snooping_disabled" ><?% echo( _("Disable"));?> </label>
+					<label for="IGMP_snooping_disabled" id="disloc">Disable</label>
 				</li>
 			</ul>
 			<?% } ?>

@@ -160,23 +160,23 @@ function isIp4AddrRequired()
 	return !IsBlank('server_ip_address_');
 }
 	jQuery.validator.addMethod("blank",function(value,element){
-		return this.optional(element) || (value!='<?% echo( _("Choose or input a service name"));?>');
-	}, "<?% echo( _('Please enter a service name.'));?>");
+		return this.optional(element) || (value!=$.i18n("Choose or input a service name"));
+	}, $.i18n('Please enter a service name.'));
 	jQuery.validator.addMethod("ip",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 255);
-	}, "<?% echo( _('Please enter a valid IP address.'));?>");
+	}, $.i18n('Please enter a valid IP address.'));
 	jQuery.validator.addMethod("ip4",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 1 && value <= 254);
-	}, "<?% echo( _('Please enter a valid IP address.'));?>");
+	}, $.i18n('Please enter a valid IP address.'));
 	jQuery.validator.addMethod("ip4_end",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 1 && value <= 253);
-	}, "<?% echo( _('Please enter a valid IP address.'));?>");
+	}, $.i18n('Please enter a valid IP address.'));
 	jQuery.validator.addMethod("port",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 65535);
-	}, "<?% echo( _('Please enter a port number less than 65536.'));?>");
+	}, $.i18n('Please enter a port number less than 65536.'));
 	jQuery.validator.addMethod("ltstart",function(value,element){
 		return this.optional(element) || value>=parseInt($("#start_port").val());
-	}, "<?% echo( _('Please enter a value more than or equal to Start Port.'));?>");
+	}, $.i18n('Please enter a value more than or equal to Start Port.'));
 	jQuery.validator.addMethod("serviceNameRequired",function(value,element){
 		var options = ['ssh', 'ftp','aim','http','pptp','https','telnet'];
 		if(options.indexOf(value.toLowerCase()) !== -1) {
@@ -184,7 +184,7 @@ function isIp4AddrRequired()
 		}else{
 			return true;
 		}
-	}, "<?% echo( _('Please provide a service name other than the ones mentioned in Common Service.'));?>");
+	}, $.i18n('Please provide a service name other than the ones mentioned in Common Service.'));
 	var validator = $("#pageForm").validate({
     	onfocusout: false,
     	onkeyup: false,
@@ -274,7 +274,7 @@ function isIp4AddrRequired()
         if($("#common_services").find("option:selected").val() == "other") {
         	var name = $('#service_name').val().replace(/^\s+|\s+$/g, '');
         	if (name.length == 0){
-        		jAlert("<?% echo( _('Please input a service name !'));?>");
+        		alertLocale("Please input a service name !");
         		return;
         	}
                 else if(name.length > 63){
@@ -282,7 +282,7 @@ function isIp4AddrRequired()
                         return;
                 }
         	else if(name.match(/[<>&"'|]/)!=null){
-        		jAlert( _('Please input valid Service Name ! \n Less than (<), Greater than (>), Ampersand (&), Double quote ("), \n Single quote (\') and Pipe (|) characters are not allowed.'));
+        		jAlert($.i18n("Please input valid Service Name ! \n Less than (<), Greater than (>), Ampersand (&), Double quote (\"), \n Single quote (') and Pipe (|) characters are not allowed."));
 				return;
         	}
         }
@@ -299,7 +299,7 @@ function isIp4AddrRequired()
 		var host2 = parseInt($("#server_ip_address_3").val());
 		var host3 = parseInt($("#server_ip_address_4").val());
 	    if (IsBlank("server_ip_address_") && IsBlank("ip6_address_r")) {
-	   	  	jAlert("<?% echo( _('Please input valid server address !'));?>");
+	   	  	alertLocale("Please input valid server address !");
 	   	  	return;
 		}
 		if (!IsBlank("server_ip_address_")) {
@@ -311,10 +311,10 @@ function isIp4AddrRequired()
 
 			//IPv4 validation
 			if (ip == jsGatewayIP){
-				jAlert("<?% echo( _('Server IP can\'t be equal to the Gateway IP address !'));?>");
+				alertLocale("Server IP can\'t be equal to the Gateway IP address !");
 				return;
 			} else if(!IPv4_valid){
-				jAlert("<?% echo( _('Server IP addr is not in valid range !'));?>");
+				alertLocale("Server IP addr is not in valid range !");
 				return;
 			}
 		}
@@ -332,11 +332,11 @@ function isIp4AddrRequired()
 			end_int 	= ipv6_in_int(end1);
 			//is valid "interface id" is converted to int for ipv6
 			if(!(isHex(ipv6res1[0]) && isHex(ipv6res1[1]) && isHex(ipv6res1[2]) && isHex(ipv6res1[3]))){
-				jAlert("<?% echo( _('Server IPv6 addr is not valid!'));?>");
+				alertLocale("Server IPv6 addr is not valid!");
 				return;
 			}
 			if(!validate_v6addr_pool(start_int, ipv6res_int) || !validate_v6addr_pool(ipv6res_int, end_int)){
-				jAlert("<?% echo( _('Server IPv6 addr is not in valid range:'));?> \n <?% echo( $prefix_arr[0]+':'+$v6_begin_addr+' ~ '+$prefix_arr[0]+':'+$v6_end_addr); ?>");
+				jAlert($.i18n("Server IPv6 addr is not in valid range")+"\n"+"<?% echo( $prefix_arr[0]+':'+$v6_begin_addr+' ~ '+$prefix_arr[0]+':'+$v6_end_addr); ?>");
 				return;
 			}
 		}
@@ -353,7 +353,7 @@ function isIp4AddrRequired()
 		    	ipv6addr = "x"; 
 		}
 		if($("#pageForm").valid()) {
-			jProgress('<?% echo( _("This may take several seconds."));?>',60);
+			jProgress($.i18n('This may take several seconds.'),60);
 			$.ajax({
 				type:"POST",
 				url:"actionHandler/ajax_port_forwarding.jst",
@@ -361,15 +361,15 @@ function isIp4AddrRequired()
 				dataType: "json",
 				success:function(results){
 					jHide();
-					if (results=="<?% echo( _('Success!'));?>") { 
+					if (results=="Success!") { 
 						window.location.href="port_forwarding.jst";
 					}
-					else if (results=="") {jAlert('<?% echo( _("Failure! Please check your inputs."));?>');}
-					else jAlert(results);
+					else if (results=="") {alertLocale('Failure! Please check your inputs.');}
+					else alertLocale(results);
 				},
 				error:function(){
 					jHide();
-					jAlert("<?% echo( _('Something went wrong, please try later!'));?>");
+					alertLocale("Something went wrong, please try later!");
 				}
 			});
 		} //end of pageform valid
@@ -394,14 +394,14 @@ function isIp4AddrRequired()
     }).trigger("change");
 $('#device').click(function(){
 	$.virtualDialog({
-		title: "<?% echo( _('Select from below Connected Devices:'));?>",
+		title: $.i18n('Select from below Connected Devices:'),
 		content: $("#device_list"),
 		footer: '<div id="pop-btn-group">' +
 					'<div style="float:left; position:relative; left:140px">' +
-					'<input id="add_btn" type="button" value="<?% echo( _("Add"));?>"/>' +
+					'<input id="add_btn" type="button" value='+$.i18n("Add")+'/>' +
 					'</div>' +
 					'<div style="position:relative; left:200px">' +
-					'<input id="close_btn" type="button" value="<?% echo( _("Close"));?>" />' +
+					'<input id="close_btn" type="button" value='+$.i18n("Close")+' />' +
 					'</div>' +
 				'</div>',
 		width: "550px",
@@ -442,28 +442,28 @@ $('#device').click(function(){
 </script>
 <?% if($CloudUIEnable == "true"){ ?>
 <div id="content">
-	<h1><?% echo( _("Advanced > Port Forwarding > Add Service"));?></h1>
+	<h1 id="portfwdmess3">Advanced > Port Forwarding > Add Service</h1>
 	<div class="module forms">
 		<div id="content" style="text-align: center;">
 			<br>
-			<h3><?% echo( _("Managing your home network settings is now easier than ever.<br>Visit <a href=\"http://")+ $productLink+'">'+ $productLink+_("</a> to set up port forwards, among many other features and settings."));?></h3>
+			<h3><span id="connhom1">Managing your home network settings is now easier than ever.</span><br><span id="visithead">Visit </span><?% echo('<a href="http://'+$productLink+'">'+$productLink +'</a>');?><span id="portfwdmess1"> to set up port forwards, among many other features and settings.</span></h3>
 			<br>
 		</div>
 	</div> <!-- end .module -->
 </div><!-- end #content -->
 <?% } else { ?>
 <div id="content">
-	<h1><?% echo( _("Advanced > Port Forwarding > Add Service"));?></h1>
+	<h1 id="portfwdmess3">Advanced > Port Forwarding > Add Service</h1>
     <div id="educational-tip">
-        <p class="tip"> <?% echo( _("Add a rule for port forwarding services by user."));?></p>
-        <p class="hidden"><?% echo( _("Port forwarding permits communications from external hosts by forwarding them to a particular port."));?></p>
-		<p class="hidden"><?% echo( _("Port forwarding settings can affect the Gateway's performance."));?></p>
+        <p class="tip" id="portfwdaddtip1"> Add a rule for port forwarding services by user.</p>
+        <p class="hidden" id="portfwdtip2">Port forwarding permits communications from external hosts by forwarding them to a particular port.</p>
+		<p class="hidden" id="portfwdtip5">Port forwarding settings can affect the Gateway's performance.</p>
     </div>
 	<form method="post" id="pageForm" action="">
 	<div class="module forms">
-		<h2><?% echo( _("Add Port Forward"));?></h2>
+		<h2 id="portfwdaddmess1">Add Port Forward</h2>
 		<div  class="form-row odd">
-					<label for="common_services"><?% echo( _("Common Service:"));?></label>
+					<label for="common_services" id="portfwdaddmess2">Common Service:</label>
 					<select  id="common_services" name="common_services">
 					<option  value="21|21" >FTP</option>
 					<option  value="5190|5190">AIM</option>
@@ -472,15 +472,15 @@ $('#device').click(function(){
 					<option  value="443|443">HTTPs</option>
 					<option  value="23|23">Telnet</option>
 					<option  value="22|22">SSH</option>
-					<option  value="other" class="other" selected="selected"><?% echo( _("Other"));?></option>
+					<option  value="other" class="other" selected="selected" id="other">Other</option>
 					</select>
 				</div>
 				<div class="form-row ">
-			<label  for="service_name"><?% echo( _("Service Name:"));?></label> 
+			<label  for="service_name" id="servname">Service Name:</label> 
 			<input type="text"  class="text" value="" id="service_name" name="service_name" />
 		</div>
 		<div  class="form-row odd">
-			<label for="service_type"><?% echo( _("Service Type:"));?></label>
+			<label for="service_type" id="servtyp">Service Type:</label>
 			<select id="service_type">
 				<option value="tcp_udp" selected="selected">TCP/UDP</option>
 				<option value="tcp">TCP</option>
@@ -488,7 +488,7 @@ $('#device').click(function(){
 			</select>
 		</div>
 		<div class="form-row ">
-			<label for="server_ip_address_1"><?% echo( _("Server IPv4 Address:"));?></label>
+			<label for="server_ip_address_1" id="portfwdaddmess3">Server IPv4 Address:</label>
 	        <input type="text" size="2"  maxlength="3"  id="server_ip_address_1" name="server_ip_address_1" class="ipv4-addr smallInput" />
 	        <label for="server_ip_address_2" class="acs-hide"></label>
 			.<input type="text" size="2" maxlength="3"  id="server_ip_address_2" name="server_ip_address_2" class="ipv4-addr smallInput" />
@@ -502,7 +502,7 @@ $('#device').click(function(){
 			$ipa_size = count($ipv6_prefix_arr);
 		?>
 		<div class="form-row odd">		
-			<label for="ip6_address_r1"><?% echo( _("Server IPv6 Address:"));?></label>
+			<label for="ip6_address_r1" id="portfwdaddmess4">Server IPv6 Address:</label>
 			<input type="text" size="1" maxlength="4" id="ip6_address_r1" name="ip_address_1" disabled="disabled" class="ipv6-addr ipv6-input" value="<?% if($DeviceMode!='Ipv4') {echo( $ipv6_prefix_arr[0]);} ?>"/>:
 	        <label for="ip6_address_r2" class="acs-hide"></label>
 			<input type="text" size="1" maxlength="4" id="ip6_address_r2" name="ip_address_2" disabled="disabled" class="ipv6-addr ipv6-input" value="<?% if($DeviceMode!='Ipv4') {if($ipa_size > 1) echo( $ipv6_prefix_arr[1]); else echo( '0');} ?>"/>:
@@ -520,30 +520,30 @@ $('#device').click(function(){
 			<input type="text" size="1" maxlength="4" id="ip6_address_r8" name="ip_address_8" class="ipv6-addr ipv6-input"/>
     	</div>
 		<div class="form-row ">
-			<label for="start_port"><?% echo( _("Start Port:"));?></label>  <input type="text" class="port" value="" id="start_port" name="start_port" />
+			<label for="start_port" id="manservaddblmess4">Start Port:</label>  <input type="text" class="port" value="" id="start_port" name="start_port" />
 		</div>
 		<div class="form-row odd">
-			<label for="end_port"><?% echo( _("End Port:"));?></label>  <input type="text" class="port" value="" id="end_port" name="end_port" />
+			<label for="end_port" id="manservaddblmess5">End Port:</label>  <input type="text" class="port" value="" id="end_port" name="end_port" />
 		</div>
 		<div class="form-row">
-			<strong><p><?% echo( _("Select a device to add IPv4 and IPv6 address"));?></p></strong>
-			<input  id="device" type="button" value="<?% echo( _('Connected Device'));?>" class="btn"  style="position:relative;top:0px;right: 0px;"/>
+			<strong><p id="portfwdaddmess5">Select a device to add IPv4 and IPv6 address</p></strong>
+			<input  id="device" type="button" value="Connected Device" class="btn"  style="position:relative;top:0px;right: 0px;"/>
 		</div>
 		<div class="form-btn">
-			<input type="button" id="btn-save" value="<?% echo( _('save'));?>" class="btn submit"/>
-			<input type="button" id="btn-cancel" value="<?% echo( _('Cancel'));?>" class="btn alt reset"/>
+			<input type="button" id="btn-save" value="Save" class="btn submit"/>
+			<input type="button" id="btn-cancel" value="Cancel" class="btn alt reset"/>
 		</div>
 	</div> <!-- end .module -->
 	</form>
 </div><!-- end #content -->
 <?% } ?>
 <div id="device_list" style="display: none;">
-	<table summary="<?% echo( _("This table lists connected devices"));?>">
+	<table summary="This table lists connected devices">
 	<tr>
-		<th id="device-nmae"><?% echo( _("Device Name"));?></th>
-		<th id="ipv4-addr"><?% echo( _("IPv4 Address"));?></th>
-		<th id="ipv6-addr"><?% echo( _("IPv6 Address"));?></th>
-		<th id="add-radio"><?% echo( _("Add"));?></th>					
+		<th id="device-nmae">Device Name</th>
+		<th id="ipv4-addr">IPv4 Address</th>
+		<th id="ipv6-addr">IPv6 Address</th>
+		<th id="add-radio">Add</th>					
 		<th colspan="2">&nbsp;</th>
 	</tr>
 	<?% 
@@ -567,7 +567,7 @@ $('#device').click(function(){
 					if (stripos($val, "fe80:") === 0) continue;
 					if(strpos($partnersId, "sky-") !== false){
                                             $val_arr = explode(':', $val);
-					    if(is_null($ipv6_prefix_arr[3]) && $val_arr[3]==0){$ipv6_prefix_arr[3]=0;}
+					    if($ipv6_prefix_arr[3] !='' && $val_arr[3]==0){$ipv6_prefix_arr[3]=0;}
                                             if ($val_arr[0]==$ipv6_prefix_arr[0] && $val_arr[1]==$ipv6_prefix_arr[1] && $val_arr[2]==$ipv6_prefix_arr[2] && $val_arr[3]==$ipv6_prefix_arr[3]) {
                                               $IPv6Addr = $val;
                                               break;
@@ -591,7 +591,7 @@ $('#device').click(function(){
 				echo( '<tr>');
 				echo( '<td headers="devcie-name">'+ $HostName + '</td>');
 				echo( '<td headers="ipv4-addr">'+ $IPAddress + '</td>');
-				echo( '<td headers="ipv6-addr">'+ _($IPv6Addr)+ '</td>');
+				echo( '<td headers="ipv6-addr">'+ $IPv6Addr + '</td>');
 				echo( '<td headers="add-radio"><input type="radio" value="add" id="add-' +$i+ '" name="select-device"><label for="add-' +$i+ '" class="acs-hide"></label></td>');
 				echo( '</tr>');
 			} 

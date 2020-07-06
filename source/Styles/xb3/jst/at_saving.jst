@@ -39,9 +39,9 @@ if(isset($locale)) {
     }
 }
 if ($_SESSION["loginuser"] == "" || $_SESSION["loginuser"] == false) {
-	echo( '<script type="text/javascript">alert("'+_("Please Login First!")+'"); location.href="index.jst";</script>');
+	echo( '<script type="text/javascript">alert("Please Login First!"); location.href="index.jst";</script>');
 	exit(0);
 }
 	echo( '<meta http-equiv=REFRESH CONTENT="0.1; url=trigger_spectrum_download.jst">');
-	echo( "<h3>"+_('Wi-Fi spectrum analyzer results has been saved to your local machine.')+"</h3>");
+	echo( "<h3 id='atsavloc'>Wi-Fi spectrum analyzer results has been saved to your local machine.</h3>");
 ?>

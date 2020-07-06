@@ -36,11 +36,11 @@ $(document).ready(function() {
 		radio_name: "block",
 		id_on: "yes",
 		id_off: "no",
-		title_on: "<?% echo( _("Select always block"));?>",
-		title_off: "<?% echo( _("Unselect always block"));?>",
+		title_on: $.i18n("Select always block"),
+		title_off: $.i18n("Unselect always block"),
 		size: "small",
-		label_on: "<?% echo( _("Yes"));?>",
-		label_off: "<?% echo( _("No"));?>",
+		label_on: $.i18n("Yes"),
+		label_off: "No",
 		revertOrder: true,
 		state: "on"
 	}).change(function(event, data) {
@@ -67,7 +67,7 @@ $(document).ready(function() {
 	 $(function() {
 $.validator.addMethod("no_space", function(value, element, param) {
 		return !param || /^[a-zA-Z0-9]*$/i.test(value);
-	}, "<?% echo( _("Letters and Numbers only. Case sensitive."));?>");
+	}, $.i18n("Letters and Numbers only. Case sensitive."));
     $("#pageForm").validate({
         rules: {
             keyword: {
@@ -98,21 +98,21 @@ $.validator.addMethod("no_space", function(value, element, param) {
         var endHour   = parseInt($('#time_end_hour').val());
         var sminute   = parseInt($('#time_start_minute').val());
         var eminute   = parseInt($('#time_end_minute').val());
-        if (startTime_unit === "<?% echo( _("PM"));?>" && startHour !== 12) {      
+        if (startTime_unit === "PM" && startHour !== 12) {      
             startHour += 12;
         }
-        else if (startTime_unit === "<?% echo( _("AM"));?>" && startHour === 12) {
+        else if (startTime_unit === "AM" && startHour === 12) {
             startHour = 0;
         }
-        if (endTime_unit === "<?% echo( _("PM"));?>" && endHour !== 12) {      
+        if (endTime_unit === "PM" && endHour !== 12) {      
             endHour += 12;
         }
-        else if (endTime_unit === "<?% echo( _("AM"));?>" && endHour === 12) {
+        else if (endTime_unit === "AM" && endHour === 12) {
             endHour = 0;
         }
         if(! alwaysBlock){
             if ((startHour>endHour) || ((startHour==endHour) && (sminute>=eminute))) {
-               jAlert("<?% echo( _("Start time should be smaller than End time !"));?>");
+               alertLocale("Start time should be smaller than End time !");
                return;
            } 
         }
@@ -133,7 +133,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
             var blockInfo = '{"Keyword": "'+Keyword+'", "alwaysBlock": "'+alwaysBlock+'", "StartTime": "'+StartTime+'", "EndTime": "'+EndTime+'", "blockedDays": "'+blockedDays+'"}';
         //alert(blockInfo);
         if($("#pageForm").valid()){
-            jProgress('<?% echo( _("This may take several seconds"));?>', 60); 
+            jProgress($.i18n("This may take several seconds"), 60); 
             $.ajax({
                 type: "POST",
                 url: "actionHandler/ajaxSet_add_blockedSite.jst",
@@ -141,15 +141,15 @@ $.validator.addMethod("no_space", function(value, element, param) {
                 success: function(result){            
                   jHide();
                   var status = JSON.parse(result).status;
-                  if(status == "<?% echo( _("Success!"));?>"){
+                  if(status == "Success!"){
                     window.location.href = "managed_sites.jst";
                   }else{
-                    jAlert(status);                        
+                    alertLocale(status);                        
                   }
                 },
                 error: function(){
                     jHide();
-                    jAlert("<?% echo( _("Failure, please try again."));?>");
+                    alertLocale("Failure, please try again.");
                 }
             });
         }
@@ -157,23 +157,23 @@ $.validator.addMethod("no_space", function(value, element, param) {
 });
 </script>
 <div id="content">
-	<h1><?% echo( _("Parental Control > Managed Sites > Add Blocked Keyword"));?></h1>
+	<h1 id="addblkywdhead">Parental Control > Managed Sites > Add Blocked Keyword</h1>
     <form id="pageForm">
 	<div class="module">
 		<div class="forms">
-			<h2><?% echo( _("Add Keyword to be Blocked"));?></h2>
+			<h2 id="addblkywdmess1">Add Keyword to be Blocked</h2>
 			<div class="form-row">
-				<label for="keyword"><?% echo( _("Keyword:"));?></label>
+				<label for="keyword"><span id="keywordSpan">Keyword</span>:</label>
 				<input type="text" id="keyword" value="" name="keyword" class="text" maxlength='64' />
 			</div>
 			<div class="form-row">
-			<label for="on"><?% echo( _("Always Block?"));?></label>
+			<label for="on" id="addblcmpmess3">Always Block?</label>
 			<span id="always_switch"></span>
 			</div>
         	<div id="block-time">
-        		<h3><?% echo( _("Set Block Time"));?></h3>
+        		<h3 id="addblcmpmess4">Set Block Time</h3>
         		<div class="form-row">
-        			<label for="time_start_hour"><?% echo( _("Start from:"));?></label> 
+        			<label for="time_start_hour" id="adddevallmess7">Start from:</label> 
         			<select id="time_start_hour" name="time_start_hour">
                         <option value"12">12</option>
                         <option value"1">1</option>
@@ -197,12 +197,12 @@ $.validator.addMethod("no_space", function(value, element, param) {
         			</select>
               <label for="time_start_ampm" class="acs-hide"></label>
         			<select id="time_start_ampm" name="time_start_ampm">
-                        <option value"AM"><?% echo( _("AM"));?></option>
-                        <option value"PM"><?% echo( _("PM"));?></option>
+                        <option value"AM">AM</option>
+                        <option value"PM">PM</option>
         			</select>
                 </div>
         		<div class="form-row">
-        			<label for="time_end_hour"><?% echo( _("End on:"));?></label>
+        			<label for="time_end_hour" id="addblcmpmess5">End on:</label>
                     <select id="time_end_hour" name="time_end_hour">
                         <option value"12">12</option>
                         <option value"1">1</option>
@@ -227,27 +227,27 @@ $.validator.addMethod("no_space", function(value, element, param) {
         			</select>
               <label for="time_end_ampm" class="acs-hide"></label>
         			<select id="time_end_ampm" name="time_end_ampm">
-                        <option value"AM"><?% echo( _("AM"));?></option>
-                        <option value"PM" selected="selected"><?% echo( _("PM"));?></option>
+                        <option value"AM">AM</option>
+                        <option value"PM" selected="selected">PM</option>
         			</select>
         		</div>
-        		<h3><?% echo( _("Set Blocked Days"));?></h3>
+        		<h3  id="manservaddblmess6">Set Blocked Days</h3>
         		<div class="select_all_none">
-        			<a rel="weekday" href="#select_all" id="weekday_select_all" class=""><?% echo( _("Select All"));?></a> | <a rel="weekday" id="weekday_select_none" href="#select_none" class=""><?% echo( _("Select None"));?></a>
+        			<a rel="weekday" href="#select_all" id="weekday_select_all" class="">Select All</a> | <a rel="weekday" id="weekday_select_none" href="#select_none" class="">Select None</a>
                 </div>
         		<div class="form-row" id="weekday">
-        			<input class="blockedDay" type="checkbox" name="day" id="monday" value="Mon" checked="checked" /><label class="checkbox" for="monday"><?% echo( _("Monday"));?></label><br />
-        			<input class="blockedDay" type="checkbox" name="day" id="tuesday" value="Tue" checked="checked" /><label class="checkbox" for="tuesday"><?% echo( _("Tuesday"));?></label><br />
-        			<input class="blockedDay" type="checkbox" name="day" id="wednesday" value="Wed" checked="checked" /><label class="checkbox" for="wednesday"><?% echo( _("Wednesday"));?></label><br />
-        			<input class="blockedDay" type="checkbox" name="day" id="thursday" value="Thu" checked="checked" /><label class="checkbox" for="thursday"><?% echo( _("Thursday"));?></label><br />
-        			<input class="blockedDay" type="checkbox" name="day" id="friday" value="Fri" checked="checked" /><label class="checkbox" for="friday"><?% echo( _("Friday"));?></label><br />
-        			<input class="blockedDay" type="checkbox" name="day" id="saturday" value="Sat" checked="checked" /><label class="checkbox" for="saturday"><?% echo( _("Saturday"));?></label><br />
-        			<input class="blockedDay" type="checkbox" name="day" id="sunday" value="Sun" checked="checked" /><label class="checkbox" for="sunday"><?% echo( _("Sunday"));?></label>
+        			<input class="blockedDay" type="checkbox" name="day" id="monday" value="Mon" checked="checked" /><label class="checkbox" for="monday" id="mon-">Monday</label><br />
+        			<input class="blockedDay" type="checkbox" name="day" id="tuesday" value="Tue" checked="checked" /><label class="checkbox" for="tuesday" id="tue-">Tuesday</label><br />
+        			<input class="blockedDay" type="checkbox" name="day" id="wednesday" value="Wed" checked="checked" /><label class="checkbox" for="wednesday" id="wed-">Wednesday</label><br />
+        			<input class="blockedDay" type="checkbox" name="day" id="thursday" value="Thu" checked="checked" /><label class="checkbox" for="thursday" id="thurs-">Thursday</label><br />
+        			<input class="blockedDay" type="checkbox" name="day" id="friday" value="Fri" checked="checked" /><label class="checkbox" for="friday" id="fri-">Friday</label><br />
+        			<input class="blockedDay" type="checkbox" name="day" id="saturday" value="Sat" checked="checked" /><label class="checkbox" for="saturday" id="satur-">Saturday</label><br />
+        			<input class="blockedDay" type="checkbox" name="day" id="sunday" value="Sun" checked="checked" /><label class="checkbox" for="sunday" id="sun-">Sunday</label>
         		</div>
         	</div> <!-- end #block-time -->
             <div class="form-row form-btn">
-            	<input type="submit" class="btn submit" value="<?% echo( _("Save"));?>"/>
-            	<input type="button" id="btn-cancel" class="btn alt reset" value="<?% echo( _("Cancel"));?>"/>
+            	<input type="submit" class="btn submit" id="btn-save" value="Save"/>
+            	<input type="button" id="btn-cancel" class="btn alt reset" value="Cancel"/>
             </div>
 	</div> <!-- end .form -->
 	</div> <!-- end .module -->

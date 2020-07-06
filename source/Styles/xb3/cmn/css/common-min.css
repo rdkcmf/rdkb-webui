@@ -671,6 +671,7 @@ div.sprite_cont, span.sprite_cont {
 
 #restore .value {
 	width: 435px;
+        float: right;
 }
 
 .form-row label.radio,.form-row label.checkbox {

@@ -183,19 +183,19 @@ function isIp4AddrRequired()
 }
 	jQuery.validator.addMethod("ip",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 255);
-	}, "<?% echo( _("Please enter a valid IP address."));?>");
+	}, $.i18n("Please enter a valid IP address."));
 	jQuery.validator.addMethod("ip4",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 1 && value <= 254);
-	}, "<?% echo( _("Please enter a valid IP address."));?>");
+	}, $.i18n("Please enter a valid IP address."));
 	jQuery.validator.addMethod("ip4_end",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 1 && value <= 253);
-	}, "<?% echo( _("Please enter a valid IP address."));?>");
+	}, $.i18n("Please enter a valid IP address."));
 	jQuery.validator.addMethod("port",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 65535);
-	}, "<?% echo( _("Please enter a port number less than 65536."));?>");
+	}, $.i18n("Please enter a port number less than 65536."));
 	jQuery.validator.addMethod("ltstart",function(value,element){
 		return this.optional(element) || value>=parseInt($("#start_port").val());
-	}, "<?% echo( _("Please enter a value more than or equal to Start Port."));?>");
+	}, $.i18n("Please enter a value more than or equal to Start Port."));
 	jQuery.validator.addMethod("serviceNameRequired",function(value,element){
 		var options = ['ssh', 'ftp','aim','http','pptp','https','telnet'];
 		if(options.indexOf(value.toLowerCase()) !== -1) {
@@ -203,7 +203,7 @@ function isIp4AddrRequired()
 		}else{
 			return true;
 		}
-	}, "<?% echo( _('Please provide a service name other than the ones mentioned in Common Service.'));?>");
+	}, $.i18n("Please provide a service name other than the ones mentioned in Common Service."));
 var validator = $("#pageForm").validate({
     	onfocusout: false,
 		onkeyup: false,
@@ -292,7 +292,7 @@ var validator = $("#pageForm").validate({
         if($("#common_services").find("option:selected").val() == "other") {
         	var name = $('#service_name').val().replace(/^\s+|\s+$/g, '');
         	if (name.length == 0){
-        		jAlert("<?% echo( _("Please input a service name !"));?>");
+        		alertLocale("Please input a service name !");
         		return;
         	}
                 else if(name.length > 63){
@@ -300,7 +300,7 @@ var validator = $("#pageForm").validate({
                         return;
                 }
         	else if(name.match(/[<>&"'|]/)!=null){
-				jAlert( _('Please input valid Service Name ! \n Less than (<), Greater than (>), Ampersand (&), Double quote ("), \n Single quote (\') and Pipe (|) characters are not allowed.'));
+				jAlert($.i18n("Please input valid Service Name ! \n Less than (<), Greater than (>), Ampersand (&), Double quote (\"), \n Single quote (') and Pipe (|) characters are not allowed."));
 				return;
         	}
         }
@@ -317,7 +317,7 @@ var validator = $("#pageForm").validate({
 	    	var host2 = parseInt($("#server_ip_address_3").val());
 	    	var host3 = parseInt($("#server_ip_address_4").val());
  		if (IsBlank("server_ip_address_") && IsBlank("ip6_address_r")) {
-	   	  	jAlert("<?% echo( _("Please input valid server address !"));?>");
+	   	  	alertLocale("Please input valid server address !");
 	   	  	return;
 		}
 		if (!IsBlank("server_ip_address_")) {
@@ -329,10 +329,10 @@ var validator = $("#pageForm").validate({
 
 			//IPv4 validation
 			if (ip == jsGatewayIP){
-				jAlert("<?% echo( _("Server IP can't be equal to the Gateway IP address !"));?>");
+				alertLocale("Server IP can't be equal to the Gateway IP address !");
 				return;
 			} else if(!IPv4_valid){
-				jAlert("<?% echo( _("Server IP addr is not in valid range !"));?>");
+				alertLocale("Server IP addr is not in valid range !");
 				return;
 			}
 		}
@@ -350,11 +350,11 @@ var validator = $("#pageForm").validate({
 			end_int 	= ipv6_in_int(end1);
 			//is valid "interface id" is converted to int for ipv6
 			if(!(isHex(ipv6res1[0]) && isHex(ipv6res1[1]) && isHex(ipv6res1[2]) && isHex(ipv6res1[3]))){
-				jAlert("<?% echo( _("Server IPv6 addr is not valid!"));?>");
+				alertLocale("Server IPv6 addr is not valid!");
 				return;
 			}
 			if(!validate_v6addr_pool(start_int, ipv6res_int) || !validate_v6addr_pool(ipv6res_int, end_int)){
-				jAlert("<?% echo( _('Server IPv6 addr is not in valid range'));?>\n"+$prefix_arr[0]+':'+$v6_begin_addr+' ~ '+$prefix_arr[0]+':'+$v6_end_addr);
+				jAlert($.i18n("Server IPv6 addr is not in valid range")+'\n'+$prefix_arr[0]+':'+$v6_begin_addr+' ~ '+$prefix_arr[0]+':'+$v6_end_addr);
 				return;
 			}
 		}
@@ -372,7 +372,7 @@ var validator = $("#pageForm").validate({
 		}		
 	    var ID = "<?% echo( $i );?>";
 		if($("#pageForm").valid()) {
-			jProgress('<?% echo( _("This may take several seconds."));?>',60);
+			jProgress($.i18n('This may take several seconds.'),60);
 			$.ajax({
 				type:"POST",
 				url:"actionHandler/ajax_port_forwarding.jst",
@@ -380,13 +380,13 @@ var validator = $("#pageForm").validate({
 				dataType: "json",
 				success:function(results){
 					jHide();
-					if (results=="<?% echo( _("Success!"));?>") { window.location.href="port_forwarding.jst";}
-					else if (results=="") {jAlert('<?% echo( _("Failure! Please check your inputs."));?>');}
-					else jAlert(results);
+					if (results=="Success!") { window.location.href="port_forwarding.jst";}
+					else if (results=="") {alertLocale('Failure! Please check your inputs.');}
+					else alertLocale(results);
 				},
 				error:function(){
 					jHide();
-					jAlert("<?% echo( _("Someting went wrong, please try later!"));?>");
+					alertLocale("Someting went wrong, please try later!");
 				}
 			}); //end of ajax
 		}//end of valid 
@@ -453,29 +453,29 @@ update_service_field();
 </script>
 <?% if($CloudUIEnable == "true"){ ?>
 <div  id="content">
-	<h1><?% echo( _("Advanced > Port Forwarding > Edit Service"));?></h1>
+	<h1 id="portfwdedthead">Advanced > Port Forwarding > Edit Service</h1>
 	<div  class="module forms">
 		<div id="content" style="text-align: center;">
 			<br>
-			<h3><?% echo( _("Managing your home network settings is now easier than ever.<br>Visit <a href=\"http://")+$productLink+'">'+$productLink+_("</a> to set up port forwards, among many other features and settings."));?></h3>
+			<h3><span id="connhom1">Managing your home network settings is now easier than ever.</span><br><span id="visithead">Visit </span><?% echo('<a href="http://'+$productLink+'">'+$productLink +'</a>');?><span id="portfwdmess1"> to set up port forwards, among many other features and settings.</span></h3>
 			<br>
 		</div>
 	</div> <!-- end .module -->
 </div><!-- end #content -->
 <?% } else { ?>
 <div  id="content">
-	<h1><?% echo(  _("Advanced > Port Forwarding > Edit Service"));?></h1>
+	<h1 id="portfwdedthead">Advanced > Port Forwarding > Edit Service</h1>
     <div  id="educational-tip">
-        <p class="tip"> <?% echo(  _("Edit a rule for port forwarding services by user."));?></p>
-        <p class="hidden"><?% echo(  _("Port forwarding permits communications from external hosts by forwarding them to a particular port."));?></p>
-		<p class="hidden"><?% echo(  _("Port forwarding settings can affect the Gateway's performance."));?></p>
+        <p class="tip" id="portfwdedttip1"> Edit a rule for port forwarding services by user.</p>
+        <p class="hidden" id="portfwdtip2">Port forwarding permits communications from external hosts by forwarding them to a particular port.</p>
+		<p class="hidden" id="portfwdtip5">Port forwarding settings can affect the Gateway's performance.</p>
     </div>
 	<form method="post" id="pageForm" action="">
 	<div  class="module forms">
-		<h2><?% echo(  _("Edit Port Forward"));?></h2>
+		<h2 id="portfwdedtmess1">Edit Port Forward</h2>
 		<?% $serviceArr = ['FTP', 'AIM', 'HTTP', 'PPTP', 'HTTPs', 'Telnet', 'SSH']/*p2j-array*/; ?>
 		<div  class="form-row odd">
-					<label for="common_services"><?% echo(  _("Common Service:"));?></label>
+					<label for="common_services" id="portfwdaddmess2">Common Service:</label>
 					<select  id="common_services" name="common_services">
 					<option <?% if(!strcasecmp($service_name, 'FTP')) echo( 'selected'); ?> value="21|21" >FTP</option>
 					<option <?% if(!strcasecmp($service_name, 'AIM')) echo( 'selected'); ?> value="5190|5190">AIM</option>
@@ -484,16 +484,16 @@ update_service_field();
 					<option <?% if(!strcasecmp($service_name, 'HTTPs')) echo( 'selected'); ?> value="443|443">HTTPs</option>
 					<option <?% if(!strcasecmp($service_name, 'Telnet')) echo( 'selected'); ?> value="23|23">Telnet</option>
 					<option <?% if(!strcasecmp($service_name, 'SSH')) echo( 'selected'); ?> value="22|22">SSH</option>
-					<option <?% if(!in_array($service_name, $serviceArr)) echo( 'selected'); ?> value="other" class="other"><?% echo(  _("Other"));?></option>
+					<option <?% if(!in_array($service_name, $serviceArr)) echo( 'selected'); ?> value="other" class="other" id="other">Other</option>
 					</select>
 				</div>
 				<div class="form-row ">
-			<label for="service_name"><?% echo(  _("Service Name:"));?></label> 
+			<label for="service_name" id="servname">Service Name:</label> 
 			<input type="text" class="text" value="<?% echo( $service_name); ?>" id="service_name" name="service_name" />
 		</div>
 		<?% $type = $portmapping_value["type"]; ?>
 		<div  class="form-row odd">
-			<label for="service_type"><?% echo(  _("Service Type:"));?></label>
+			<label for="service_type" id="servtyp">Service Type:</label>
 			<select id="service_type">
 				<option value="tcp_udp" <?% if($type === 'BOTH') echo( 'selected'); ?>>TCP/UDP</option>
 				<option value="tcp" <?% if($type === 'TCP') echo( 'selected'); ?>>TCP</option>
@@ -507,7 +507,7 @@ update_service_field();
 			$ip = ['', '', '', '']/*p2j-array*/;
 		}
 		?>
-			<label for="server_ip_address_1"><?% echo( _("Server IPv4 Address:"));?></label>
+			<label for="server_ip_address_1" id="portfwdaddmess3">Server IPv4 Address:</label>
 		    <input type="text" size="2" maxlength="3" id="server_ip_address_1" value="<?% echo( $ip[0]);?>" name="server_ip_address_1" class="ipv4-addr smallInput" />
 	        <label for="server_ip_address_2" class="acs-hide"></label>
 		   .<input type="text" size="2" maxlength="3" id="server_ip_address_2" value="<?% echo( $ip[1]);?>" name="server_ip_address_2" class="ipv4-addr smallInput" />
@@ -517,7 +517,7 @@ update_service_field();
 		   .<input type="text" size="2" maxlength="3" id="server_ip_address_4" value="<?% echo( $ip[3]);?>" name="server_ip_address_4" class="ipv4-addr smallInput" />
 		</div>
 		<div class="form-row odd">		
-			<label for="ip6_address_r1"><?% echo( _("Server IPv6 Address:"));?></label>
+			<label for="ip6_address_r1" id="portfwdaddmess4">Server IPv6 Address:</label>
 			<input type="text" size="1" maxlength="4" id="ip6_address_r1" name="ip_address_1" disabled="disabled" class="ipv6-addr ipv6-input"/>:
 	        <label for="ip6_address_r2" class="acs-hide"></label>
 			<input type="text" size="1" maxlength="4" id="ip6_address_r2" name="ip_address_2" disabled="disabled" class="ipv6-addr ipv6-input"/>:
@@ -535,16 +535,16 @@ update_service_field();
 			<input type="text" size="1" maxlength="4" id="ip6_address_r8" name="ip_address_8" class="ipv6-addr ipv6-input"/>
     	</div>
 		<div  class="form-row ">
-			<label for="start_port"><?% echo( _("Start Port:"));?></label>  
+			<label for="start_port" id="manservaddblmess4">Start Port:</label>  
 			<input type="text" class="port" value="<?% echo( $startport); ?>" id="start_port" name="start_port" />
 		</div>
 		<div  class="form-row odd">
-			<label for="end_port"><?% echo( _("End Port:"));?></label>  
+			<label for="end_port" id="manservaddblmess5">End Port:</label>  
 			<input type="text" class="port" value="<?% echo( $endport);?>" id="end_port" name="end_port" />
 		</div>
 		<div  class="form-btn">
-			<input type="button" id="btn-save" value="<?% echo( _("save"));?>" class="btn submit"/>
-			<input type="button" id="btn-cancel" value="<?% echo( _("Cancel"));?>" class="btn alt reset"/>
+			<input type="button" id="btn-save" value="Save" class="btn submit"/>
+			<input type="button" id="btn-cancel" value="Cancel" class="btn alt reset"/>
 		</div>
 	</div> <!-- end .module -->
 	</form>

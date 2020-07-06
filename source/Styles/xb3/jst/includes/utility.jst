@@ -225,8 +225,8 @@ function init_psmMode($title, $navElementId)
 		$msg += '<div id="content" class="main_content">';
 		$msg += '	<h1>'+$title+'</h1>';
 		$msg += '	<div class="module data">';
-		$msg += '		<h2>'+_("No information available")+'</h2><br/>';
-		$msg += '		<strong>'+_("Gateway operating in battery mode.")+'</strong>';
+		$msg += '		<h2 id="noinfoavail">No information available</h2><br/>';
+		$msg += '		<strong id="gatbat">Gateway operating in battery mode.</strong>';
 		$msg += '	</div>';
 		$msg += '</div>';
 		$msg += file_get_contents("./includes/footer.jst");
@@ -339,7 +339,8 @@ function shift_blockedDays($blockedDays, $shift){
 		}
 	}
 	if($blockedDays[0]=='Sun') {
-		array_pop($blockedDays);
+		//array_pop($blockedDays);
+                $blockedDays.shift();
 		$blockedDays.push('Sun');
 	}
 	if($blockedDays[sizeof($blockedDays)-1]=='Mon') {
@@ -636,12 +637,16 @@ function get_wan_type()
 {
   if (typeof get_wan_type.wan_type == 'undefined')
   {
-    if (getStr("Device.DPoE.Mac_address"))
-      get_wan_type.wan_type = "EPON";
-    else
-      get_wan_type.wan_type = "DOCSIS";
-  }
-
+	 // DSL Should be based on interface rather than model name.
+	$modelName = getStr("Device.DeviceInfo.ModelName");
+	if (getStr("Device.DPoE.Mac_address")){
+      		get_wan_type.wan_type = "EPON";
+    	} else if (strpos($modelName, "SR20") !== false) {
+        	get_wan_type.wan_type = "DSL";
+    	} else {
+      		get_wan_type.wan_type = "DOCSIS";
+        }
+   }
   return get_wan_type.wan_type;
 }
 

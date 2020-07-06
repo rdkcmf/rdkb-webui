@@ -60,7 +60,7 @@ if (isset($_POST['add'])){
 		if($validation) $validation = validTime($_POST['startTime'], $_POST['endTime']);
 		if($validation) $validation = validDays($_POST['days']);
 	}
-	$result = ($validation)?'':_('Invalid Inputs!');
+	$result = ($validation)?'':'Invalid Inputs!';
 	if($validation) {
 		$newtype=$_POST['type'];
 		$name=$_POST['name'];
@@ -101,7 +101,7 @@ if (isset($_POST['add'])){
 				}
 				setStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device."+$i+".AlwaysBlock",$block,true);
 			}
-			$result = _("Success!");
+			$result = "Success!";
 		} 
 		else {
 			$result="";
@@ -123,7 +123,7 @@ if (isset($_POST['add'])){
 					$TD1=[$startTime, $endTime, $blockDays]/*p2j-array*/;
 					$TD2=[$start_Time, $end_Time, $block_Days]/*p2j-array*/;
 					if(($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)){
-						$result += _("Conflict with other device. Please check your input!");
+						$result += "Conflict with other device. Please check your input!";
 						break;
 					}
 				}
@@ -163,7 +163,7 @@ if (isset($_POST['add'])){
 					}
 					setStr("Device.X_Comcast_com_ParentalControl.ManagedDevices.Device."+$i+".AlwaysBlock",$block,true);
 				}
-				$result=_("Success!");
+				$result="Success!";
 			}
 		}
 	}
@@ -181,7 +181,7 @@ if (isset($_POST['edit'])){
 		if($validation) $validation = validTime($_POST['startTime'], $_POST['endTime']);
 		if($validation) $validation = validDays($_POST['days']);
 	}
-	$result = ($validation)?'':_('Invalid Inputs!');
+	$result = ($validation)?'':'Invalid Inputs!';
 	if($validation) {
 		$i=$_POST['ID'];
 		$name=$_POST['name'];
@@ -213,7 +213,7 @@ if (isset($_POST['edit'])){
 				$TD1=[$startTime, $endTime, $blockDays]/*p2j-array*/;
 				$TD2=[$start_Time, $end_Time, $block_Days]/*p2j-array*/;
 				if(($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)){
-					$result += _("Conflict with other device. Please check your input!");
+					$result += "Conflict with other device. Please check your input!";
 					break;
 				}
 			}
@@ -265,7 +265,7 @@ if (isset($_POST['edit'])){
 					$j=$j+1;  
                                 }
 			}
-			$result=_("Success!");
+			$result="Success!";
 		}
 	}
 	header("Content-Type: application/json");

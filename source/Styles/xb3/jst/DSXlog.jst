@@ -34,25 +34,25 @@ $(document).ready(function() {
 });
 </script>
 <div id="content">
-	<h1><?% echo( _('Gateway > Connection > QoS > DSX logs'));?></h1>
+	<h1 id="dsxloghead">Gateway > Connection > QoS > DSX logs</h1>
 	<div class="module forms data" id="event">
 	<?%
 		function del_blank($v){return (""==$v?false:true);}
 		$ids = array_filter(explode(",", getInstanceIds("Device.X_CISCO_COM_MTA.DSXLog.")));
 		if (1 == count($ids))
 		{
-			echo( '<h3 id="log_summary">'+_("There are currently no DSX Logs")+'</h3>');
+			echo( '<h3 id="log_summary">There are currently no DSX Logs</h3>');
 		}
 		else
 		{
-			echo( '<h2>MTA SIP Packet Log</h2><table class="data" summary="'+_("This table shows DSX logs")+'"><thead><tr><th id="dsx_metrics">'+_("Metrics")+'</th><th id="dsx_ds">'+_("Downstream")+'</th><th id="dsx_us">'+_("Upstream")+'</th></tr></thead>');
+			echo( '<h2>MTA SIP Packet Log</h2><table class="data" summary="This table shows DSX logs"><thead><tr><th id="dsx_metrics">Metrics</th><th id="dsx_ds">Downstream</th><th id="dsx_us">Upstream</th></tr></thead>');
 			$rootObjName    = "Device.X_CISCO_COM_MTA.DSXLog.";
 			$paramNameArray = ["Device.X_CISCO_COM_MTA.DSXLog."]/*p2j-array*/;
-			$mapping_array  = [_("Description")]/*p2j-array*/;
+			$mapping_array  = ["Description"]/*p2j-array*/;
 			$dsxLogsInstance = getParaValues($rootObjName, $paramNameArray, $mapping_array);
 			for ($i=1; $i<count($ids); $i++)
 			{
-				$value=explode(" ", $dsxLogsInstance[$i][_("Description")]);
+				$value=explode(" ", $dsxLogsInstance[$i]["Description"]);
 				var $item = [];
 				for(var j = 0; j < $value.length; ++j){
 					var v = $value[j];

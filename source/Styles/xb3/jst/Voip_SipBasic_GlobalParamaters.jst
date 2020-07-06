@@ -107,7 +107,7 @@
 			+'","line_register":"'+$('#sky_line_registered').is(':checked')
 			+'"}';
                 var jsConfig = mod_values;
-    	        jProgress('<?% echo( _('This may take several seconds...'));?>', 60);
+    	        jProgress($.i18n('This may take several seconds...'), 60);
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_SIPBasic_GlobalParameter.jst",
@@ -138,7 +138,7 @@
 	function sipclient(val){
 		var SIP_val = val;
 		var jsConfig ='{"SIP_val":"'+SIP_val+'"}';
-		jProgress("<?% echo( _('This may take several seconds...'));?>", 60);
+		jProgress($.i18n('This may take several seconds...'), 60);
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_SIPBasic_GlobalParameter.jst",

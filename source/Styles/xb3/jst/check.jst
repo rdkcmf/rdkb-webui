@@ -27,18 +27,12 @@ include('includes/jwt.jst');
  * Set the Locale for the Web UI based on the LANG setting or current linux locale
  */
 $locale = getenv("LANG");
-if($locale != false) {
-    if(!isset($_SESSION['language']) || exec("export LC_MESSAGES=0") != $locale){
-        //putenv("LANG=" . $locale);
-        exec("export LC_MESSAGES="+$locale);
-        exec("export LC_TIME="+$locale);
-
-        $domain = "rdkb";
-        bindtextdomain($domain, 'locales');
-        bind_textdomain_codeset($domain, 'UTF-8');
-        textdomain($domain);
-        $_SESSION['language'] = $locale; // set the default locale for future pages
-    }
+$locale = $locale ? $locale : "false";
+if($locale != "false"){
+        if(strstr($locale, 'it')){
+                $locale="it";
+                $_SESSION['language'] = $locale;
+        }
 }
 function sendError($code)
 {
@@ -46,12 +40,40 @@ function sendError($code)
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\
   <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\
   <head>\
+  <input type="hidden" name="loc" id="loc" value='+$locale+'>\
       <link rel="stylesheet" type="text/css" media="screen" href="./cmn/css/common-min.css" />\
       <!--Character Encoding-->\
       <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />\
       <script type="text/javascript" src="./cmn/js/lib/jquery-1.9.1.js"></script>\
       <script type="text/javascript" src="./cmn/js/lib/jquery-migrate-1.2.1.js"></script>\
       <script type="text/javascript" src="./cmn/js/lib/jquery.alerts.js"></script>\
+      <script src="./locale/CLDRPluralRuleParser.js"></script>\
+	<script src="./locale/jquery.i18n.js"></script>\
+	<script src="./locale/jquery.i18n.messagestore.js"></script>\
+	<script src="./locale/jquery.i18n.fallbacks.js"></script>\
+	<script src="./locale/jquery.i18n.language.js"></script>\
+	<script src="./locale/jquery.i18n.parser.js"></script>\
+	<script src="./locale/jquery.i18n.emitter.js"></script>\
+	<script src="./locale/jquery.i18n.emitter.bidi.js"></script>\
+	<script src="./locale/global.js"></script>\
+	<script type="text/javascript">\
+	var locale=document.getElementById("loc").value;\
+	$.i18n().locale = locale;\
+ 	$.i18n().load( {\
+                        it: {\
+				"Access denied!":"Accesso negato",\
+				"You have ":"Sono stati effettuati ",\
+				" failed login attempts and your account will be locked for ":" tentativi di accesso non riusciti: il tuo account sarà bloccato per ",\
+				" minutes":" minuti",\
+				"Can not get password for mso from backend!":"Non è possibile ottenere la password per MSO da backend",\
+				"Incorrect password for mso!":"Password errata per MSO",\
+				"Incorrect password for admin!":"Password errata per l\'amministratore",\
+				"You are using default password. Please change the password.":"Si sta utilizzando la password predefinita. Modificare la password.",\
+				"Incorrect user name!":"Nome utente errato",\
+				"Access level is none!":"Il livello di accesso è nessuno"\
+                        }\
+                });\
+	</script>\
   </head>\
   ');
   echo($code);
@@ -123,20 +145,20 @@ PHP_SESSION_ACTIVE = 2;
 
                      if($failedAttempt_mso==$passLockoutAttempt){
                          $flag_mso=1;
-                         sendError( '<script type="text/javascript"> alert("'+_('You have ')+$passLockoutAttempt+_(' failed login attempts and your account will be locked for ')+$passLockoutTimeMins+_(' minutes')+'");history.back();</script>');
+			 sendError('<script type="text/javascript"> alert($.i18n("You have ")+"'+$passLockoutAttempt+'"+$.i18n(" failed login attempts and your account will be locked for ")+"'+$passLockoutTimeMins+'"+$.i18n(" minutes"));history.back();</script>');	
 
                      }
                 }
                 if($flag_mso==0){
                     session_destroy();
-                    sendError('<script type="text/javascript"> alert("'+_("Access denied!")+'"); history.back(); </script>');
+                    sendError('<script type="text/javascript"> alert($.i18n("Access denied!")); history.back(); </script>');
                 }
             }
             else if ($curPwd1 == "Good_PWD" && $return_status)
             {
                 if(($passLockEnable == "true") && ($failedAttempt_mso==$passLockoutAttempt)){
                     $flag_mso=1;
-                    sendError( '<script type="text/javascript"> alert("'+_("You have ")+$passLockoutAttempt+_(' failed login attempts and your account will be locked for ')+$passLockoutTimeMins+_(' minutes')+'");history.back();</script>');
+		    sendError('<script type="text/javascript"> alert($.i18n("You have ")+"'+$passLockoutAttempt+'"+$.i18n(" failed login attempts and your account will be locked for ")+"'+$passLockoutTimeMins+'"+$.i18n(" minutes"));history.back();</script>');	
 
                 }
                 else{
@@ -150,7 +172,7 @@ PHP_SESSION_ACTIVE = 2;
             else if ("" == $curPwd1)
             {
                 session_destroy();
-                sendError('<script type="text/javascript"> alert("'+_("Can not get password for mso from backend!")+'"); history.back(); </script>');
+                sendError('<script type="text/javascript"> alert($.i18n("Can not get password for mso from backend!")); history.back(); </script>');
             }
             else
             {
@@ -163,7 +185,7 @@ PHP_SESSION_ACTIVE = 2;
                         create_session();
                         $auth_url = getAuthenticationUrl( $clientid, $authendpoint, $redirect_page );
                         sendError("<script type='text/javascript'>document.location.href='"+$auth_url+"';</script>");
-                        die('_("Please wait ...")');
+                        die("Please wait ...");
                     }
                 }
                 else
@@ -177,14 +199,14 @@ PHP_SESSION_ACTIVE = 2;
 
                         if($failedAttempt_mso==$passLockoutAttempt){
                             $flag_mso=1;
-                            sendError('<script type="text/javascript"> alert("'+_("You have ")+$passLockoutAttempt+_(' failed login attempts and your account will be locked for ')+$passLockoutTimeMins+_(' minutes')+'");history.back();</script>');
+			    sendError('<script type="text/javascript"> alert($.i18n("You have ")+"'+$passLockoutAttempt+'"+$.i18n(" failed login attempts and your account will be locked for ")+"'+$passLockoutTimeMins+'"+$.i18n(" minutes"));history.back();</script>');	
 
                         }
                     }
 
                     if($flag_mso==0){
                         session_destroy();
-                        sendError('<script type="text/javascript"> alert("'+_("Incorrect password for mso!")+'"); history.back(); </script>');
+                        sendError('<script type="text/javascript"> alert($.i18n("Incorrect password for mso!")); history.back(); </script>');
                     }
                 }
             }
@@ -204,12 +226,12 @@ PHP_SESSION_ACTIVE = 2;
 							}
 							if($failedAttempt==$passLockoutAttempt){
 								$flag=1;
-								sendError( '<script type="text/javascript"> alert("'+_('You have ')+$passLockoutAttempt+_(' failed login attempts and your account will be locked for ')+$passLockoutTimeMins+_(' minutes')+'");history.back();</script>');
+								sendError('<script type="text/javascript"> alert($.i18n("You have ")+"'+$passLockoutAttempt+'"+$.i18n(" failed login attempts and your account will be locked for ")+"'+$passLockoutTimeMins+'"+$.i18n(" minutes"));history.back();</script>');	
 							}
 					}
 					if($flag==0){
 						session_destroy();
-						sendError( '<script type="text/javascript"> alert("'+_("Access denied!")+'"); history.back(); </script>');
+						sendError( '<script type="text/javascript"> alert($.i18n("Access denied!")); history.back(); </script>');
 					}
 				}
 				else if($passVal=="Invalid_PWD"){
@@ -223,19 +245,19 @@ PHP_SESSION_ACTIVE = 2;
 						}
 						if($failedAttempt==$passLockoutAttempt){
 							$flag=1;
-							sendError( '<script type="text/javascript"> alert("'+_('You have ')+$passLockoutAttempt+_(' failed login attempts and your account will be locked for ')+$passLockoutTimeMins+(' minutes')+'");history.back();</script>');
+							sendError('<script type="text/javascript"> alert($.i18n("You have ")+"'+$passLockoutAttempt+'"+$.i18n(" failed login attempts and your account will be locked for ")+"'+$passLockoutTimeMins+'"+$.i18n(" minutes"));history.back();</script>');	
 						}
 					}
 					if($flag==0){
 						session_destroy();
-						sendError( '<script type="text/javascript"> alert("Incorrect password for admin!");history.back(); </script>');
+						sendError( '<script type="text/javascript"> alert($.i18n("Incorrect password for admin!"));history.back(); </script>');
 					}
 				}
 				else
 				{
 					if(($passLockEnable == "true") && ($failedAttempt==$passLockoutAttempt)){
 							$flag=1;
-							sendError( '<script type="text/javascript"> alert("'+_('You have ')+$passLockoutAttempt+_(' failed login attempts and your account will be locked for ')+$passLockoutTimeMins+_(' minutes')+'");history.back();</script>');
+							sendError('<script type="text/javascript"> alert($.i18n("You have ")+"'+$passLockoutAttempt+'"+$.i18n(" failed login attempts and your account will be locked for ")+"'+$passLockoutTimeMins+'"+$.i18n(" minutes"));history.back();</script>');	
 					}else{
 						$failedAttempt=0;
 						setStr("Device.Users.User.3.NumOfFailedAttempts",$failedAttempt.toString(),true);
@@ -245,7 +267,7 @@ PHP_SESSION_ACTIVE = 2;
 							create_session();
 							$_SESSION["password_change"] = "default_pwd";
 							sendError( '<script type="text/javascript"> \
-                                jAlert("'+_('You are using default password. Please change the password.')+'", "Alert", \
+                                jAlert($.i18n("You are using default password. Please change the password."), "Alert", \
                                 function (ret) { \
                                     if(ret) \
                                         { \
@@ -267,7 +289,7 @@ PHP_SESSION_ACTIVE = 2;
             {
                 session_destroy();
             }
-            sendError( '<script type="text/javascript"> alert("'+_("Incorrect user name!")+'"); history.back(); </script>');
+            sendError( '<script type="text/javascript"> alert($.i18n("Incorrect user name!")); history.back(); </script>');
         }
     }
     else
@@ -327,7 +349,7 @@ PHP_SESSION_ACTIVE = 2;
                     {
                         session_destroy();
                     }
-                    sendError( '<script type="text/javascript"> alert("'+_("Access level is none!")+'"); history.back(); </script>');
+                    sendError( '<script type="text/javascript"> alert($.i18n("Access level is none!")); history.back(); </script>');
                 }
             }
             else
@@ -344,7 +366,7 @@ PHP_SESSION_ACTIVE = 2;
                 }
                 else
                 {
-		    sendError('<script type="text/javascript"> alert("'+_("Access Denied, Unknown Error")+'"); history.back(); </script>');
+		    sendError('<script type="text/javascript"> alert($.i18n("Access Denied, Unknown Error")); history.back(); </script>');
                 }
             }
         }

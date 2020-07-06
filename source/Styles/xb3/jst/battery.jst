@@ -64,64 +64,67 @@ $(document).ready(function() {
 });
 </script>
 <div id="content">
-	<h1><?% echo( _("Hardware > Battery"));?></h1>
+	<h1 id="bathead">Hardware > Battery</h1>
 	<div id="educational-tip">
-		<p class="tip"><?% echo( _("View information about the Gateway's battery status."));?> </p>
-		<p class="hidden"><?% echo( _("Battery power is for voice service only."));?></p>
-		<p class="hidden"><?% echo( _("<strong>Number of Cycles to date:</strong> Indicates how many discharge and charge cycles the battery has gone through from the day it was inserted."));?></p>
+		<p class="tip" id="battip">View information about the Gateway's battery status. </p>
+		<p class="hidden" id="batpow">Battery power is for voice service only.</p>
+		<p class="hidden" id="batcyc"><strong>Number of Cycles to date:</strong> Indicates how many discharge and charge cycles the battery has gone through from the day it was inserted.</p>
 	</div>
 	<div class="module forms data div_battery">
-		<table cellspacing="0" cellpadding="0" class="data" summary="<?% echo( _('This table shows battery status'));?>" >
+		<table cellspacing="0" cellpadding="0" class="data" summary="This table shows battery status" >
 		<tr>
-			<th id="battery_metric"><?% echo( _("Battery Status"));?></th>
+			<th id="battery_metric">Battery Status</th>
 			<th id="battery_status">&nbsp;</th>
 		</tr>
 		<tr class="odd">
-			<td headers="battery_metric" class="row-label"><?% echo( _("Power Status:"));?></td>
+			<td headers="battery_metric" class="row-label" id="powstatloc">Power Status:</td>
 			<td headers="battery_status" id="bat_power"><?% echo( $battery_value["bat_power"]); ?></td>
 		</tr>
 		<tr>
-			<td headers="battery_metric" class="row-label"><?% echo( _("Battery Installed:"));?></td>
-			<td headers="battery_status" id="bat_instal"><?% echo( ("true"== $battery_value["bat_instal"] ? _("Yes") : _("No"))); ?></td>
+			<td headers="battery_metric" class="row-label" id="batinsloc">Battery Installed:</td>
+			<?%
+				var bat_instal = ("true"== $battery_value["bat_instal"] ? "idyes": "idno");
+			?>
+			<td headers="battery_status" id="<?% echo(bat_instal); ?>"><?% echo( ("true"== $battery_value["bat_instal"] ? "Yes" : "No"));?></td>
 		</tr>
 		<tr class="odd">
-			<td headers="battery_metric" class="row-label"><?% echo( _("Battery Condition:"));?></td>
+			<td headers="battery_metric" class="row-label" id="batcon">Battery Condition:</td>
 			<td headers="battery_status" id="bat_condition"><?% echo( $battery_value["bat_condition"]); ?></td>
 		</tr>
 		<tr>
-			<td headers="battery_metric" class="row-label"><?% echo( _("Battery Status:"));?></td>
+			<td headers="battery_metric" class="row-label" id="batstat">Battery Status:</td>
 			<td headers="battery_status" id="bat_status"><?% echo( $battery_value["bat_status"]); ?></td>
 		</tr>
 		<tr class="odd">
-			<td headers="battery_metric" class="row-label"><?% echo( _("Battery Life:"));?></td>
+			<td headers="battery_metric" class="row-label" id="batlif">Battery Life:</td>
 			<td headers="battery_status" id="bat_life"><?% echo( $battery_value["bat_life"]); ?></td>
 		</tr>
 		<tr>
-			<td headers="battery_metric" class="row-label"><?% echo( _("Total Capacity:"));?></td>
+			<td headers="battery_metric" class="row-label" id="battot">Total Capacity:</td>
 			<td headers="battery_status" id="bat_total"><?% echo( $battery_value["bat_total"]); ?> mAh</td>
 		</tr>
 		<tr class="odd">
-			<td headers="battery_metric" class="row-label"><?% echo( _("Actual Capacity:"));?></td>
+			<td headers="battery_metric" class="row-label" id="batactcap">Actual Capacity:</td>
 			<td headers="battery_status" id="bat_actual"><?% echo( $battery_value["bat_actual"]); ?> mAh</td>
 		</tr>
 		<tr>
-			<td headers="battery_metric" class="row-label"><?% echo( _("Remaining Charge:"));?></td>
-			<td headers="battery_status" id="bat_remain"><?% echo( _("Loading..."));?></td>
+			<td headers="battery_metric" class="row-label" id="batremchar">Remaining Charge:</td>
+			<td headers="battery_status" id="bat_remain">Loading...</td>
 		</tr>
 		<tr class="odd">
-			<td headers="battery_metric" class="row-label"><?% echo( _("Remaining Time:"));?></td>
-			<td headers="battery_status" id="bat_hours" ><?% echo( _("Loading..."));?></td>
+			<td headers="battery_metric" class="row-label" id="remtim">Remaining Time:</td>
+			<td headers="battery_status" id="bat_hours" >Loading...</td>
 		</tr>
 		<tr>
-			<td headers="battery_metric" class="row-label"><?% echo( _("Number of Cycles to date:"));?></td>
+			<td headers="battery_metric" class="row-label" id="nocyc">Number of Cycles to date:</td>
 			<td headers="battery_status" id="bat_cycles"><?% echo( $battery_value["bat_cycles"]); ?></td>
 		</tr>
 		<tr class="odd">
-			<td headers="battery_metric" class="row-label"><?% echo( _("Battery Model Number:"));?></td>
+			<td headers="battery_metric" class="row-label" id="batmodno">Battery Model Number:</td>
 			<td headers="battery_status" id="bat_model"><?% echo( $battery_value["bat_model"]); ?></td>
 		</tr>
 		<tr>
-			<td headers="battery_metric" class="row-label"><?% echo( _("Battery Serial Number:"));?></td>
+			<td headers="battery_metric" class="row-label" id="batserno">Battery Serial Number:</td>
 			<td headers="battery_status" id="bat_serial"><?% echo( $battery_value["bat_serial"]); ?></td>
 		</tr>
 		</table>

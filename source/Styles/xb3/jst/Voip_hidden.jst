@@ -50,7 +50,7 @@
 	<form >
 		<div class="module forms">
 			<div class=" ">
-			<label for="sky_line_registered" id='voip_container'> <?% echo( _('Sky Disconnect Line Current Until Registered')); ?>
+			<label for="sky_line_registered" id='voip_container'> Sky Disconnect Line Current Until Registered
 				<input type="checkbox" id='sky_line_registered' name="sky_line_registered" />
 				<span class="checkmark"></span></label>
 			</div>
@@ -70,7 +70,7 @@
     $('#btn_apply').on('click', function(){
     	var set_value  = $('#sky_line_registered').is(':checked');
 	var jsConfig = '{"current_line":"'+set_value+'"}';
-	jProgress('<?% echo( _("This may take several seconds..."));?>', 60);
+	jProgress($.i18n("This may take several seconds..."), 60);
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_voip_hidden.jst",

@@ -44,15 +44,15 @@ $(document).ready(function() {
 	}
 ?>
 <div id="content">
-	<h1><?% echo( _("Gateway > Software"));?></h1>
+	<h1 id="softhead">Gateway > Software</h1>
 	<div id="educational-tip">
-		<p class="tip"><?% echo( _("View details about the Gateway's software."));?></p>
-		<p class="hidden"><?% echo( _("You may need this information for troubleshooting assistance."));?></p>
+		<p class="tip" id="softtip1">View details about the Gateway's software.</p>
+		<p class="hidden" id="softtip12">You may need this information for troubleshooting assistance.</p>
 	</div>
 	<div class="module forms">
-		<h2><?% echo( _("System Software Version"));?></h2>
+		<h2 id="softmess1">System Software Version</h2>
 		<div class="form-row">
-			<span class="readonlyLabel"><?% echo( $BackendSoftwareVersion+" "+_("Software Version:"));?></span> <span class="value">
+			<span class="readonlyLabel"><?% echo( $BackendSoftwareVersion+" "); ?><span id="softmess2">Software Version:</span></span> <span class="value">
 			<?% echo( $version); ?></span>
 		</div>
 		<!--div class="form-row odd">
@@ -60,17 +60,17 @@ $(document).ready(function() {
 			<?% /*echo getStr("Device.X_CISCO_COM_MTA.Dect.SoftwareVersion");*/ ?></span>
 		</div-->
 		<div class="form-row odd">
-			<span class="readonlyLabel"><?% echo( _("Software Image Name:"));?></span> <span class="value">
+			<span class="readonlyLabel" id="softmess3">Software Image Name:</span> <span class="value">
 			<?% echo( $FirmwareName); ?></span>
 		</div>
 		<div class="form-row ">
-			<span class="readonlyLabel"><?% echo( _("Advanced Services:"));?></span> <span class="value">
+			<span class="readonlyLabel" id="softmess4">Advanced Services:</span> <span class="value">
 			<?% echo($ModelName); ?></span>
 		</div>
 		<?%
 		if ($wanType !== "DSL") {
 			echo('<div class="form-row odd">\
-                  <span class="readonlyLabel">'+_("Packet Cable:")+'</span> <span class="value">\
+                  <span class="readonlyLabel" id="softmess5">Packet Cable:</span> <span class="value">\
 				'+getStr("Device.X_CISCO_COM_MTA.PCVersion")+'</span>\
 			</div>');
 		}

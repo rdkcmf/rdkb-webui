@@ -154,7 +154,7 @@
 				<input type="password" id='SIP_auth_pwd' name="SIP_auth_pwd" value='' class ='text'/>
 			</div>
 			<div class="form-row odd">
-				<label for="password_show"><?% echo( _("Show Password:"));?></label>
+				<label for="password_show" id="shpwdvoipbasic">Show Password:</label>
 				<span class="checkbox"><input type="checkbox" id="password_show" name="password_show" /></span>
 			</div>
 			<div class="form-row">
@@ -298,7 +298,7 @@ Similarly for 'Use SIP Registrar' and the two fields below.<br/><br/>The <b>Pass
                         +'","uri":"'+$('#SIP_URI').val()
 			+'","EmergencyDigitMap":"'+$('#SIP_Emer_digitMap').val()+'"}';
          	var jsConfig = mod_values;
-        	jProgress("<?% echo( _('This may take several seconds...'));?>", 60);
+        	jProgress($.i18n('This may take several seconds...'), 60);
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_SIPBasic_ServiceProvider.jst",
@@ -329,7 +329,7 @@ Similarly for 'Use SIP Registrar' and the two fields below.<br/><br/>The <b>Pass
 	function sipclient(val){
 		var SIP_val = val;
 		var jsConfig ='{"SIP_val":"'+SIP_val+'"}';
-		jProgress("<?% echo( _('This may take several seconds...'));?>", 60);
+		jProgress($.i18n('This may take several seconds...'), 60);
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_SIPBasic_ServiceProvider.jst",

@@ -219,7 +219,7 @@ $('#save_btn').click(function() {
 });
 function saveRIP(information) {
 	if($("#pageForm").valid()){
-		jProgress('<?% echo( _("This may take several seconds"));?>', 60);
+		jProgress($.i18n("This may take several seconds"), 60);
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_RIP_configuration.jst",
@@ -230,7 +230,7 @@ function saveRIP(information) {
 			},
 			error: function(){            
 				jHide();
-				jAlert("<?% echo( _("Failure, please try again."));?>");
+				alertLocale("Failure, please try again.");
 			}
 		});
 	} //end of pageForm valid
@@ -238,20 +238,20 @@ function saveRIP(information) {
 });
 </script>
 <div id="content">
-	<h1><?% echo( _("Advanced > Routing"));?></h1>
+	<h1 id="routhead">Advanced > Routing</h1>
 	<div id="educational-tip">
-		<p class="tip"><?% echo( _("The RIP protocol is used to exchange the routing information between the gateway and headend."));?></p>
-		<p class="hidden"><?% echo( _("<strong>Interface Name:</strong>Select the interface that the rip information will send from."));?></p>
-		<p class="hidden"><?% echo( _("<strong>RIP Send Version:</strong> Select the rip Send Version."));?></p>
-		<p class="hidden"> <?% echo( _("<strong>RIP Receive Version:</strong> Select the rip Receive Version."));?></p>
-		<p class="hidden"><?% echo( _("<strong>Update Interval:</strong> Enter the time that the rip information will resend."));?></p>
-		<p class="hidden"><?% echo( _("<strong>Default Metric:</strong> Select the Default Metric."));?></p>
-		<p class="hidden"><?% echo( _("<strong>Authentication Type:</strong> Select the Authentication Type."));?></p>
-		<p class="hidden"><?% echo( _("<strong>Authentication Key & ID:</strong> Enter the Authentication Key & ID."));?></p>
-		<p class="hidden"><?% echo( _("<strong>Neighbour:</strong> Enter the IP address of the router that you wish to unicast to."));?></p>
+		<p class="tip" id="routtip1">The RIP protocol is used to exchange the routing information between the gateway and headend.</p>
+		<p class="hidden" id="routtip2"><strong>Interface Name:</strong>Select the interface that the rip information will send from.</p>
+		<p class="hidden" id="routtip3"><strong>RIP Send Version:</strong> Select the rip Send Version.</p>
+		<p class="hidden" id="routtip4"> <strong>RIP Receive Version:</strong> Select the rip Receive Version.</p>
+		<p class="hidden" id="routtip5"><strong>Update Interval:</strong> Enter the time that the rip information will resend.</p>
+		<p class="hidden" id="routtip6"><strong>Default Metric:</strong> Select the Default Metric.</p>
+		<p class="hidden" id="routtip7"><strong>Authentication Type:</strong> Select the Authentication Type.</p>
+		<p class="hidden" id="routtip8"><strong>Authentication Key & ID:</strong> Enter the Authentication Key & ID.</p>
+		<p class="hidden" id="routtip9"><strong>Neighbour:</strong> Enter the IP address of the router that you wish to unicast to.</p>
 	</div>
 	<div class="module forms">
-		<h2><?% echo( _("RIP(Routing information Protocol)"));?></h2>
+		<h2>RIP(Routing information Protocol)</h2>
 	<form id="pageForm" action="routing.jst" method="post">
 	<!-- <div class="form-row">
 		<span class="readonlyLabel label">Status:</span>
@@ -272,32 +272,32 @@ function saveRIP(information) {
 	</div> -->
 	<div id="Routing-items">
 		<div class="form-row">
-			<label for="interface_name" class="readonlyLabel"><?% echo( _("Interface Name:"));?></label>
+			<label for="interface_name" class="readonlyLabel" id="routmess1">Interface Name:</label>
 			<select id="interface_name">
-				<option value="Cable"><?% echo( _("Cable"));?></option>
-				<option value="Ethernet"><?% echo( _("Ethernet"));?></option>
+				<option value="Cable" id="routmess2">Cable</option>
+				<option value="Ethernet">Ethernet</option>
 			</select>
 		</div>
 		<div class="form-row odd">
-			<label for="send_version" class="readonlyLabel"><?% echo( _("RIP Send Version:"));?></label>
+			<label for="send_version" class="readonlyLabel" id="routmess3">RIP Send Version:</label>
 			<select id="send_version">
-				<option value="NA"><?% echo( _("Do Not Send"));?></option>
+				<option value="NA" id="routmess4">Do Not Send</option>
 				<option value="RIP1">RIP1</option>
 			</select>
 		</div>
 		<div class="form-row">
-			<label for="receive_version" class="readonlyLabel"><?% echo( _("RIP Receive Version:"));?></label>
+			<label for="receive_version" class="readonlyLabel" id="routmess5">RIP Receive Version:</label>
 			<select id="receive_version">
-				<option value="NA"><?% echo( _("Do Not Receive"));?></option>
+				<option value="NA" id="routmess6">Do Not Receive</option>
 				<option value="RIP1">RIP1</option>
 			</select>
 		</div>
 		<div class="form-row odd">
-			<label for="update_interval"><?% echo( _("Update Interval:"));?></label> 
-			<input type="text" class="text smallInput" maxlength="10" name="update_interval" id="update_interval" /> <?% echo( _("sec"));?>
+			<label for="update_interval" id="routmess7">Update Interval:</label> 
+			<input type="text" class="text smallInput" maxlength="10" name="update_interval" id="update_interval" /> sec
 		</div>
 		<div class="form-row">
-			<label for="default_metric" class="readonlyLabel"><?% echo( _("Default Metric:"));?></label>
+			<label for="default_metric" class="readonlyLabel" id="routmess8">Default Metric:</label>
 			<select id="default_metric">
 				<option value=1>1</option>
 				<option value=2>2</option>
@@ -317,21 +317,21 @@ function saveRIP(information) {
 			</select>
 		</div>
 		<div class="form-row odd">
-			<label for="authentication_type" class="readonlyLabel"><?% echo( _("Authentication Type:"));?></label>
+			<label for="authentication_type" class="readonlyLabel"  id="routmess9">Authentication Type:</label>
 			<select id="authentication_type">
-				<option value="NoAuth"><?% echo( _("No Authentication"));?></option>
-				<option value="SimplePassword"><?% echo( _("Simple Password"));?></option>
+				<option value="NoAuth"  id="routmess10">No Authentication</option>
+				<option value="SimplePassword"  id="routmess11">Simple Password</option>
 				<option value="MD5">MD5</option>
 			</select>
 		</div>
 		<div class="form-row">
-			<label for="authentication_key"><?% echo( _("Authentication Key & ID:"));?></label>
-			<input type="Password" maxlength="32" id="authentication_key" name="authentication_key" class="authentication_key"  disabled="disabled"/><?% echo( _("<strong> ID:</strong>"));?>
+			<label for="authentication_key" id="routmess12">Authentication Key & ID:</label>
+			<input type="Password" maxlength="32" id="authentication_key" name="authentication_key" class="authentication_key"  disabled="disabled"/><span id="routmess13"><strong> ID:</strong></span>
 			<label for="authentication_id" class="acs-hide"></label>			
 			<input type="text" size="5" maxlength="3" id="authentication_id" name="authentication_id" class="authentication_id smallInput" disabled="disabled"/>
 		</div>
 		<div id="Neighbor" class="form-row odd">
-			<label for="Neighbor"><?% echo( _("Neighbor:"));?></label>
+			<label for="Neighbor" id="routmess14">Neighbor:</label>
 			<input type="text" size="3" maxlength="3" id="Neighbor1"  name="Neighbor1" class="smallInput" />
 			.<input type="text" size="3" maxlength="3" id="Neighbor2"  name="Neighbor2" class="smallInput" />
 			.<input type="text" size="3" maxlength="3" id="Neighbor3"  name="Neighbor3" class="smallInput" />
@@ -339,7 +339,7 @@ function saveRIP(information) {
 		</div>
 	</div> <!-- end .module -->
 	<div class="form-btn">
-		<input id="save_btn" type="button" value="<?% echo( _("Save"));?>" class="btn" /> 
+		<input id="save_btn" type="button" value="Save" class="btn" /> 
 	</div>
 </form>
 </div>

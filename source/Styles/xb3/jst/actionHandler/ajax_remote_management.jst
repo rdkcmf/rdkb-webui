@@ -68,7 +68,7 @@ if($validation) {
                                         $httpsportvalidation = PORTTEST($httpsport,$arraySPort,$arrayEPort);
                                         $httpportvalidation = PORTTEST($httpport,$arraySPort,$arrayEPort);
                                         if( ($httpportvalidation == 1) || ($httpsportvalidation == 1)){
-                                                $result =_("Conflict with other port. Please use a different port!");
+                                                $result ="Conflict with other port. Please use a different port!";
                                                 break;
                                         }
 
@@ -91,7 +91,7 @@ if($validation) {
                 $tphttpstest=PORTTEST($httpsport,$arrayTsp,$arratTep);
                 //echo $fptest;
                 if ($fphttptest==1 || $tphttptest==1 || $fphttpstest==1 ||  $tphttpstest==1) {
-                        $result = _("Conflict with other port123. Please use a different port!");
+                        $result = "Conflict with other port123. Please use a different port!";
                         break;
                 }
         }

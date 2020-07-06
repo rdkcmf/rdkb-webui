@@ -18,7 +18,7 @@
 <?%
 session_start();
 if ($_SESSION["loginuser"] == "" || $_SESSION["loginuser"] == false) {
-	echo( '<script type="text/javascript">alert("'+_("Please Login First!")+'"); location.href="../index.jst";</script>');
+	echo( '<script type="text/javascript">alert("Please Login First!"); location.href="../index.jst";</script>');
 	exit(0);
 }
 	$a = getStr("Device.X_CISCO_COM_MTA.Battery.RemainingCharge");
@@ -85,7 +85,7 @@ function get_tips($target, $status)
 	{
 		case "sta_inet":{
 			if ("true"==$status){
-				$tip = _('Status: Connected-')+getStr("Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber")+_(' devices connected');
+				$tip = 'Status: Connected-'+getStr("Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber")+' devices connected';
 			}
 			else{
 				$tip = 'Status: Unconnected-no devices';
@@ -99,33 +99,33 @@ function get_tips($target, $status)
 				for(var $keytmp in $ids) { var $i=$ids[$keytmp];/*p2j-foreach*/
 					$sum += Number(getStr("Device.WiFi.AccessPoint."+$i+".AssociatedDeviceNumberOfEntries"));
 				}
-				$tip = _('Status: Connected-')+$sum+_(' devices connected');
+				$tip = 'Status: Connected-'+$sum+' devices connected';
 			}
 			else{
-				$tip = _("Status: Unconnected-no devices");
+				$tip = "Status: Unconnected-no devices";
 			}
 		}break;
 		case "sta_moca":{
 			if ("true"==$status ){
-				$tip = _('Status: Connected-')+getStr("Device.MoCA.Interface.1.X_CISCO_COM_NumberOfConnectedClients")+(' devices connected');
+				$tip = 'Status: Connected-'+getStr("Device.MoCA.Interface.1.X_CISCO_COM_NumberOfConnectedClients")+(' devices connected');
 			}
 			else{
-				$tip =  _("Status: Unconnected-no devices");
+				$tip =  "Status: Unconnected-no devices";
 			}	
 		}break;
 		/*case "sta_dect":{
 			if ("true"==$status){
-				$tip = getStr("Device.X_CISCO_COM_MTA.Dect.HandsetsNumberOfEntries")+_(' Handsets connected');
+				$tip = getStr("Device.X_CISCO_COM_MTA.Dect.HandsetsNumberOfEntries")+' Handsets connected';
 			}
 			else{
 				$tip = 'no Handsets';
 			}
 		}break;*/
 		case "sta_fire":{
-			$tip = _('Firewall is set to ')+$status;
+			$tip = 'Firewall is set to '+$status;
 		}break;
 		default:{
-			$tip = _("No Tips!");
+			$tip = "No Tips!";
 		}break;
 	}
 	return $tip;

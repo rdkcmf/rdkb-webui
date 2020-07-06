@@ -89,14 +89,41 @@ function file_download($file_path, $file_name)
 	} else die('Error - can not open file.');
 	die();
 }
+$timeFrame=$_POST["time_frame"];
+if($locale=="it"){
+        if($timeFrame == "Today")
+                $timeFrame = "Oggi";
+        else if($timeFrame == "Yesterday")
+                $timeFrame = "Ieri";
+        else if($timeFrame == "Last week")
+                $timeFrame = "Ultima settimana";
+        else if($timeFrame == "Last month")
+                 $timeFrame = "Ultimo mese";
+        else if($timeFrame == "Last 90 days")
+                $timeFrame = "Ultimi 90 giorni";
+}
+
 //MROLLINS FIXME set_time_limit(0) not implemented
 //set_time_limit(0);
-$report=$_POST['report_type']+"_"+$_POST['time_frame'];
+$locale = getenv("LANG");
+$locale = $locale ? $locale : "false";
+if($locale != "false"){
+        if(strstr($locale, 'it')){
+                $locale="it";
+                $_SESSION['language'] = $locale;
+        }
+}
+$report=$_POST['report_type']+"_"+$timeFrame;
+$report1=$_POST['report_type']+"_"+$_POST["time_frame"];
 $report_type_array = ["all", "site", "service", "device"]/*p2j-array*/;
-$time_frame_array = [_("Today"), _("Yesterday"), _("Last week"), _("Last month"), _("Last 90 days")]/*p2j-array*/;
+if($locale=="it"){
+	$time_frame_array = ["Oggi", "Ieri", "Ultima settimana", "Ultimo mese", "Ultimi 90 giorni"]/*p2j-array*/;
+}else{
+	$time_frame_array = ["Today", "Yesterday", "Last week", "Last month", "Last 90 days"]/*p2j-array*/;
+}
 if (!in_array($_POST["report_type"], $report_type_array))	die('Not allowed!');
-if (!in_array($_POST["time_frame"], $time_frame_array))	die('Not allowed!');
-$file_path="/tmp/parental_reports_"+$report+".txt";
+if (!in_array($timeFrame, $time_frame_array))	die('Not allowed!');
+$file_path="/tmp/parental_reports_"+$report1+".txt";
 $file_name="parental_reports_"+$report+".txt";
 file_download($file_path, $file_name);
 //output_file("parental_reports_sample.txt","parental_reports_sample.txt");

@@ -206,10 +206,10 @@ overflow-wrap: break-word;
  $wan_enable= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
 ?>
 <div id="content" style="margin-bottom:100px;">
-	<h1><?% echo( _("Gateway > Connection > Status"));?></h1>
+	<h1 id="connstathead">Gateway > Connection > Status</h1>
 	<div id="educational-tip">
-			<p class="tip"><?% echo( _("View information about your network connections."));?></p>
-			<p class="hidden"><?% echo( _("View and manage the settings for your local IP, Wi-Fi, MoCA and ")+$NetworkName+"s.");?></p>
+			<p class="tip" id="connstat1">View information about your network connections.</p>
+			<p class="hidden"><label id="connstat2">View and manage the settings for your local IP, Wi-Fi, MoCA and </label><?% echo($NetworkName); ?>s.</p>
 	</div>
 <?%
 	if($ForceDisable == "true") {
@@ -222,28 +222,32 @@ overflow-wrap: break-word;
 ?>
   <div style="width:360px;float:left;"><!-- contain local ip, gateway network, Moca -->
     <div class="module forms block localIPNetwork">
-        <h2><?% echo( _("Local IP Network"));?></h2>
-        <p class="button"><a tabindex='0' href="local_ip_configuration.jst" class="btn localBtn"><?% echo( _("Edit"));?></a></p>
+        <h2 id="locip">Local IP Network</h2>
+        <p class="button"><a tabindex='0' href="local_ip_configuration.jst" class="btn localBtn" id="editloc">Edit</a></p>
                 <div class="form-row ">
-                    <span class="readonlyLabel"><?% echo( _("IP Address (IPv4):"));?></span> <span class="value"> 
+                    <span class="readonlyLabel" id="ipaddloc">IP Address (IPv4):</span> <span class="value"> 
                          <?% echo( $device_ctrl_value["LanIPAddress"]); ?>
                     </span>
                 </div>
                 <div class="form-row odd" >
-                    <span class="readonlyLabel"><?% echo( _("Subnet mask:"));?></span> <span class="value">
+                    <span class="readonlyLabel" id="subnetloc">Subnet mask:</span> <span class="value">
                      <?% echo( $device_ctrl_value["LanSubnetMask"]); ?>
                     </span>
                 </div>
                 <div class="form-row ">
-                        <span class="readonlyLabel"><?% echo( _("DHCPv4 Server:"));?></span> <span class="value"> 
-                  <?% if ( !strcasecmp("true", $dhcpv4_value["Enable"])) 
-                          echo( _("Enabled"));
-                          else  echo( _("Disabled"));
+                        <span class="readonlyLabel" id="dhcpserverloc">DHCPv4 Server:</span>  
+                  <?% if ( !strcasecmp("true", $dhcpv4_value["Enable"])) {
+				var isEnableId= "enablespanid";
+        	                var enabledVal ="Enabled";
+			}else{
+				var isEnableId= "disablespanid";
+                                var enabledVal ="Disabled";
+			}
                   ?> 
-                        </span>
+                        <span class="value" id="<?% echo(isEnableId); ?>"><?% echo(enabledVal); ?></span>
                 </div>
                 <div class="form-row odd">
-                    <span class="readonlyLabel"><?% echo( _("DHCPv4 Lease Time:"));?></span> 
+                    <span class="readonlyLabel" id="dhcplease">DHCPv4 Lease Time:</span> 
                     <span class="value" >
                       <?% 
                       function div_mod($n, $m)
@@ -260,9 +264,15 @@ overflow-wrap: break-word;
                       }
                       function sec2dhms($sec)
                       {
-			if($sec == "-1") return _("Forever");
+			$forever= "Forever";
+			$week ="Week";
+			if($locale=="it"){
+				$forever="Sempre";
+				$week="Settimana";
+			}
+			if($sec == "-1") return $forever;
 			(!is_numeric($sec)) && ($sec = 0);
-                        if($sec >= 604800 && $sec % 604800 == 0) return $sec/(604800)+_(" Week");
+                        if($sec >= 604800 && $sec % 604800 == 0) return $sec/(604800)+" "+$week;
 			$tmp = div_mod($sec, 24*60*60);
                         $day = $tmp[0];
                         $tmp = div_mod($tmp[1], 60*60);
@@ -277,13 +287,13 @@ overflow-wrap: break-word;
                     </span>
                 </div>                
                 <div class="form-row ">
-                  <span class="readonlyLabel"><?% echo( _("Link Local Gateway Address (IPv6):"));?></span> 
+                  <span class="readonlyLabel" id="linklocalloc">Link Local Gateway Address (IPv6):</span> 
                   <span id="local-v6-addr" class="value"> 
                    <?%  echo( $ipv6_local_addr); ?>
                   </span>
               </div>
               <div class="form-row odd">
-                  <span class="readonlyLabel"><?% echo( _("Global Gateway Address (IPv6):"));?></span> 
+                  <span class="readonlyLabel" id="globalgateway">Global Gateway Address (IPv6):</span> 
                   <span id="global-v6-addr" class="value">
                   <?% 
                       echo( $ipv6_global_addr);
@@ -291,14 +301,14 @@ overflow-wrap: break-word;
                 </span>
               </div>    
               <div class="form-row ">
-                  <span class="readonlyLabel"><?% echo( _("Delegated prefix:"));?></span> <span class="value">
+                  <span class="readonlyLabel">Delegated prefix:</span> <span class="value">
                    <?% 
                     echo( php_getstr("Device.IP.Interface.1.IPv6Prefix.1.Prefix"));
                    ?> 
                   </span>
               </div>
               <div class="form-row odd">
-                  <span class="readonlyLabel"><?% echo( _("DHCPv6 Lease Time:"));?></span> <span class="value">
+                  <span class="readonlyLabel" id="dhcp6leasetime">DHCPv6 Lease Time:</span> <span class="value">
                     <?% 
                        $dhcpV6_lease_time = php_getstr("Device.DHCPv6.Server.Pool.1.LeaseTime");      
                        echo( sec2dhms($dhcpV6_lease_time));
@@ -306,7 +316,7 @@ overflow-wrap: break-word;
                   </span>
               </div>
               <div class="form-row ">
-                  <span class="readonlyLabel"><?% echo( _("IPV6 DNS:"));?></span> 
+                  <span class="readonlyLabel" id="ipv6dns">IPV6 DNS:</span> 
                   <span id="v6-dns" class="value" >
                     <?% 
                        echo( $ipv6_DNS);
@@ -314,7 +324,7 @@ overflow-wrap: break-word;
                   </span>
               </div>            
               <div class="form-row odd">
-                  <span class="readonlyLabel"><?% echo( _("No of Clients connected:"));?></span> 
+                  <span class="readonlyLabel" id="noclients">No of Clients connected:</span> 
                   <span class="value">
                       <?%
                          echo( php_getstr("Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber")); 
@@ -332,32 +342,32 @@ if ("admin" != $_SESSION["loginuser"]) {
 if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
 ?>
     <div class="module forms block" style="margin-bottom:0px"><!--- WAN Network -->
-      <h2><?% echo( _("WAN Network"));?></h2>
+      <h2 id="wannet">WAN Network</h2>
         <p class="button"><a tabindex='0' href="wan_network.jst" class="btn localBtn"><?% echo($view);?></a></p>
                 <div class="form-row ">
-                    <span class="readonlyLabel"><?% echo( _("WAN Network Status:"));?></span> <span class="value">
+                    <span class="readonlyLabel" id="wannetstat">WAN Network Status:</span>
                          <?%
 			if($autoWanEnable=="true"){
                             if(strtolower($selectedOperationalMode)=="ethernet"){
-                              echo( _("Active Ethernet WAN"));
+                            	 echo('<span class="value" id="actethwan">Active Ethernet WAN');
                             }else if(strtolower($selectedOperationalMode)=="docsis"){
-                              echo( _("Active Docsis WAN"));
+				echo('<span class="value" id="actdocwan">Active Docsis WAN');
                             }else{
-                              echo( _("Active Auto WAN"));
+				echo('<span class="value" id="actautwan">Active Auto WAN');
                             }
                           }else{
                             $wan_enable= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
                             if($wan_enable=="true"){
-                              echo( _("Active Ethernet WAN"));
+				echo('<span class="value" id="actdocwan">Active Docsis WAN');
                             }else{
-                              echo( _("Active Docsis WAN"));
+                            	echo('<span class="value" id="actautwan">Active Auto WAN');
                             }
                           }          
                          ?>
                     </span>
                 </div>
                 <div class="form-row ">
-                    <span class="readonlyLabel"><?% echo( _("WAN IP Address (IPv4):"));?></span> <span class="value">
+                    <span class="readonlyLabel" id="wanip4">WAN IP Address (IPv4):</span> <span class="value">
                          <?%
                           $fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
                           $WANIPv4 = getStr($fistUSif+"IPv4Address.1.IPAddress");
@@ -367,7 +377,7 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
                     </span>
                 </div>
                 <div class="form-row ">
-                    <span class="readonlyLabel"><?% echo( _("WAN IP Address (IPv6):"));?></span> <span class="ipv6-style">
+                    <span class="readonlyLabel"  id="wanip6">WAN IP Address (IPv6):</span> <span class="ipv6-style">
                         <?% echo( $WANIPv6); ?>
                     </span>
                 </div>
@@ -377,17 +387,17 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
 ?>
     <div class="module forms block" style="margin-bottom:0px">
         <h2><?% echo( $NetworkName); ?></h2>
-        <p class="button"><a tabindex='0' href="network_setup.jst" class="btn"><?% echo( _("View"));?></a></p>
+        <p class="button"><a tabindex='0' href="network_setup.jst" class="btn" id="viewloc">View</a></p>
         <div class="form-row">
-        <span class="readonlyLabel"><?% echo( _("Internet:"));?></span> <span class="value">
+        <span class="readonlyLabel"><?% echo("Internet:");?></span>
               <?% 
               if($allowEthWan=="true"){
                 $wanipv4_status = php_getstr("Device.DeviceInfo.X_COMCAST-COM_WAN_IP");
                 $wanipv6_status = php_getstr("Device.DeviceInfo.X_COMCAST-COM_WAN_IPv6");
                 if( ($wanipv4_status!="0.0.0.0") || ($wanipv6_status!="")){
-                    echo( _("Active"));
+                    echo("<span class='value' id='act'>Active</span>");
                 }else{
-                   echo( _("Inactive")); 
+                   echo("<span class='value' id='inact'>Inactive</span>"); 
                 }
               }else{
                 $partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
@@ -395,27 +405,26 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
                    $fistUSif = php_getstr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
                    $WANIPv4 = php_getstr($fistUSif+"IPv4Address.1.IPAddress");
                    if ( strcasecmp($WANIPv4, "0.0.0.0") || (strlen($ipv6_global_addr) > 0) ){
-                      echo( _("Active"));
+                      echo("<span class='value' id='act'>Active</span>");
                    }
                    else{
-                      echo( _("Inactive"));
+                      echo("<span class='value' id='inact'>Inactive</span>"); 
                    }
                 }
                 else{
                    $status = php_getstr("Device.X_CISCO_COM_CableModem.CMStatus"); 
                    if ( !strcasecmp($status, "Operational") ){
-                      echo( _("Active"));
+                      echo("<span class='value' id='act'>Active</span>");
                    }
                    else{
-                      echo( _("Inactive"));                   
+                      echo("<span class='value' id='inact'>Inactive</span>"); 
                    }
               }
             }
               ?>
-        </span>
         </div>
         <div class="form-row odd">
-              <span class="readonlyLabel"><?% echo( _("WAN IP Address:"));?></span> <span class="value">
+              <span class="readonlyLabel" id="waniploc">WAN IP Address:</span> <span class="value">
               <?%
                   $interface = php_getstr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
                   echo( php_getstr( $interface + "IPv4Address.1.IPAddress" ));
@@ -426,9 +435,9 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
         	if($ipv6_global_addr!=""){
         ?>
         <div class="form-row odd">
-              <span class="readonlyLabel"><?% echo( _("WAN IPv6 Address:"));?></span> <span class="ipv6-style">
+              <span class="readonlyLabel">WAN IPv6 Address:</span> <span class="ipv6-style">
               <?%
-                  echo( _($ipv6_global_addr));
+                  echo($ipv6_global_addr);
               ?>
              </span>
         </div>
@@ -436,17 +445,19 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
     		}
     	?>
         <div class="form-row">
-        <span class="readonlyLabel"><?% echo( _("DHCP Client:"));?></span> <span class="value"> 
-        <?% 
-         if("DHCP" == $device_ctrl_value["WanAddressMode"]) 
-             echo( _("Enabled"));
-         else
-             echo( _("Disabled"));
-        ?>
-        </span>
+        <span class="readonlyLabel" id="dhcpcliloc">DHCP Client:</span> 
+	<?%  if("DHCP" == $device_ctrl_value["WanAddressMode"]){
+                                var isEnableId1= "enablespanid";
+                                var enabledVal1 ="Enabled";
+                        }else{
+                                var isEnableId1= "disablespanid";
+                                var enabledVal1 ="Disabled";
+                        }
+                  ?>
+                        <span class="value" id="<?% echo(isEnableId1); ?>"><?% echo(enabledVal1); ?></span> 
         </div>
         <div class="form-row odd">
-          <span class="readonlyLabel"><?% echo( _("DHCP Expire Time:"));?></span> <span class="value">
+          <span class="readonlyLabel" id="dhcpexploc">DHCP Expire Time:</span> <span class="value">
                     <?%
                     $expire_time = $dhcpv4_value["LeaseTimeRemaining"];
                     echo( sec2dhms($expire_time));
@@ -455,19 +466,18 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
         </div>
     </div><!-- end .module gateway network-->
     <div class="module forms block moca_section" style="position:relative;top:7px;right:0px;">
-            <h2><?% echo( _("MoCA"));?></h2>
-            <p class="button"><a tabindex='0' href="moca.jst" class="btn"><?% echo( _("Edit"));?></a></p>
+            <h2>MoCA</h2>
+            <p class="button"><a tabindex='0' href="moca.jst" class="btn" id="editloc">Edit</a></p>
             <div class="form-row odd">
-              <span class="readonlyLabel">MoCA Network:</span> <span class="value">
+              <span class="readonlyLabel" id="mocnet">MoCA Network:</span>
                    <?%
                         if("true" == php_getstr("Device.MoCA.Interface.1.Enable"))
-                           echo( _("Active"));
-                        else echo( _("Inactive"));
+                           echo("<span class='value' id='act'>Active</span>");
+                        else echo("<span class='value' id='inact'>Inactive</span>");
                     ?>
-              </span>
             </div>
             <div class="form-row">
-              <span class="readonlyLabel">MoCA Privacy:</span> 
+              <span class="readonlyLabel" id="mocpriv">MoCA Privacy:</span> 
               <span class="value">
                 <?%
                         if("true" == php_getstr("Device.MoCA.Interface.1.PrivacyEnabledSetting"))
@@ -477,7 +487,7 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
               </span>
             </div>
             <div class="form-row odd ">
-              <span class="readonlyLabel"><?% echo( _("MoCA Channel:"));?></span> <span class="value">
+              <span class="readonlyLabel" id="mocchan">MoCA Channel:</span> <span class="value">
 			<?%
 			$channel		= php_getstr("Device.MoCA.Interface.1.CurrentOperFreq");			
 			switch ($channel)
@@ -552,14 +562,14 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
             </span>
             </div>
             <div class="form-row ">
-              <span class="readonlyLabel"><?% echo( _("No of Nodes:"));?></span> <span class="value">
+              <span class="readonlyLabel" id="nonod">No of Nodes:</span> <span class="value">
                <?%
                        echo( intval(php_getstr("Device.MoCA.Interface.1.AssociatedDeviceNumberOfEntries"))+1);
                ?>
              </span>
             </div>
             <div class="form-row odd">
-              <span class="readonlyLabel"><?% echo( _("No of Clients Connected:"));?></span> <span class="value">
+              <span class="readonlyLabel" id="noclients2">No of Clients Connected:</span> <span class="value">
                <?%
                        echo( php_getstr("Device.MoCA.Interface.1.X_CISCO_COM_NumberOfConnectedClients"));
                 ?>
@@ -570,72 +580,95 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
   <div style="width:355px;float:left;position:relative;left:5px;" class="wifi_section"><!-- contain private and public Wi-Fi -->
     <div class="module forms block private-wifi">
         <h2 class="noTrimSpace"><span class="ssid-style">
-		<?% echo( _("Private Wi-Fi Network-")+ htmlspecialchars($wifi_value["SSID1"], ENT_NOQUOTES, 'UTF-8')); ?></span>
+		<span id="priwifinet">Private Wi-Fi Network-</span><?% echo(htmlspecialchars($wifi_value["SSID1"], ENT_NOQUOTES, 'UTF-8')); ?></span>
 	</h2>
-        <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.jst?id=1" class="btn"><?% echo( _("Edit"));?></a></p>
+        <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.jst?id=1" class="btn" id="editloc">Edit</a></p>
         <div class="form-row">
-          <span class="readonlyLabel"><?% echo( _("Wireless Network (Wi-Fi 2.4 GHz):")+ $radioband1); ?></span> <span class="value">
+          <span class="readonlyLabel"><span id="wifinet24">Wireless Network (Wi-Fi 2.4 GHz):</span></span>
           <?% 
               if("up" == strtolower($wifi_value["Enable1"])) 
-                echo( _("Active"));
+                echo("<span class='value' id='act'>Active</span>");
               else
-                echo( _("Inactive"));
+                echo("<span class='value' id='inact'>Inactive</span>");
           ?>
-          </span>
         </div>
         <div class="form-row odd">
-          <span class="readonlyLabel"><?% echo( _("Supported Protocols:"));?></span> <span class="value">
+          <span class="readonlyLabel" id="supprot">Supported Protocols:</span> <span class="value">
           <?% echo( strtoupper($wifi_value["OperatingStandards1"])); ?>
           </span>
         </div>
 		<div class="form-row">
-			<span class="readonlyLabel"><?% echo( _("Security:"));?></span> <span class="value">
-			<?% 
+			<?%
 				//echo php_getstr("Device.WiFi.AccessPoint.2.Security.ModeEnabled");
 				$encrypt_mode	= $wifi_value["ModeEnabled1"];
 				$encrypt_method	= $wifi_value["EncryptionMethod1"];
-				echo( _(encrypt_map($encrypt_mode, $encrypt_method)));
+                        $idSecVal = "";
+                        if(encrypt_map($encrypt_mode, $encrypt_method)=="Open (risky)"){
+                                $idSecVal="secopenmode";
+                        }else if(encrypt_map($encrypt_mode, $encrypt_method)=="WEP 64 (risky)"){
+                                $idSecVal="secwep64";
+                        }else if(encrypt_map($encrypt_mode, $encrypt_method)=="WEP 128 (risky)"){
+                                $idSecVal="secwep128";
+                        }else if(encrypt_map($encrypt_mode, $encrypt_method)=="WPA2-PSK (AES)(Recommended)"){
+                                $idSecVal="secmode3";
+                        }
+	                ?>
+
+			<span class="readonlyLabel" id="secloc">Security:</span> <span class="value" id="<?% echo($idSecVal); ?>">
+			<?% 
+				echo(encrypt_map($encrypt_mode, $encrypt_method));
 			?>
 			</span>
 		</div>
         <div class="form-row odd">
-          <span class="readonlyLabel"><?% echo( _("No of Clients connected:"));?></span> <span class="value">
+          <span class="readonlyLabel" id="noclients">No of Clients connected:</span> <span class="value">
           <?% echo( php_getstr("Device.WiFi.AccessPoint.1.AssociatedDeviceNumberOfEntries")); ?>
           </span>
         </div>
     </div><!-- end .module private wifi 2.4-->  
     <div class="module forms block private-wifi" style="position:relative;top:0px;right:0px;">
        <h2 class="noTrimSpace"><span class="ssid-style">
-		<?% echo( _("Private Wi-Fi Network-")+ htmlspecialchars($wifi_value["SSID2"], ENT_NOQUOTES, 'UTF-8')); ?></span> 
+		<span id="priwifinet">Private Wi-Fi Network-</span><?% echo(htmlspecialchars($wifi_value["SSID2"], ENT_NOQUOTES, 'UTF-8')); ?></span>
 	</h2>
-        <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.jst?id=2" class="btn"><?% echo( _("Edit"));?></a></p>
+        <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.jst?id=2" class="btn" id="editloc">Edit</a></p>
         <div class="form-row">
-          <span class="readonlyLabel"><?% echo( _("Wireless Network (Wi-Fi 5 GHz):")+ $radioband2); ?></span> <span class="value">
+          <span class="readonlyLabel"><span id="wifinet5ghz">Wireless Network (Wi-Fi 5 GHz):</span></span>
           <?% 
               if("up" == strtolower($wifi_value["Enable2"])) 
-                echo( _("Active"));
+                echo("<span class='value' id='act'>Active</span>");
               else
-                echo( _("Inactive"));
+                echo("<span class='value' id='inact'>Inactive</span>");
           ?>
-          </span>
         </div>
         <div class="form-row odd">
-          <span class="readonlyLabel"><?% echo( _("Supported Protocols:"));?></span> <span class="value">
+          <span class="readonlyLabel" id="supprot">Supported Protocols:</span> <span class="value">
           <?% echo( strtoupper($wifi_value["OperatingStandards2"])); ?>
           </span>
         </div>
 		<div class="form-row">
-			<span class="readonlyLabel"><?% echo( _("Security:"));?></span> <span class="value">
-			<?% 
+			<?%
 				//echo php_getstr("Device.WiFi.AccessPoint.2.Security.ModeEnabled");
 				$encrypt_mode	= $wifi_value["ModeEnabled2"];
 				$encrypt_method	= $wifi_value["EncryptionMethod2"];
-				echo( _(encrypt_map($encrypt_mode, $encrypt_method)));
+                        $idSecVal = "";
+                        if(encrypt_map($encrypt_mode, $encrypt_method)=="Open (risky)"){
+                                $idSecVal="secopenmode";
+                        }else if(encrypt_map($encrypt_mode, $encrypt_method)=="WEP 64 (risky)"){
+                                $idSecVal="secwep64";
+                        }else if(encrypt_map($encrypt_mode, $encrypt_method)=="WEP 128 (risky)"){
+                                $idSecVal="secwep128";
+                        }else if(encrypt_map($encrypt_mode, $encrypt_method)=="WPA2-PSK (AES)(Recommended)"){
+                                $idSecVal="secmode3";
+                        }
+                ?>
+			<span class="readonlyLabel" id="secloc">Security:</span> <span class="value" id="<?% echo($idSecVal);?>">
+			<?% 
+				echo(encrypt_map($encrypt_mode, $encrypt_method));
 			?>
 			</span>
 		</div>
         <div class="form-row odd">
-          <span class="readonlyLabel">No of Clients connected:</span> <span class="value">
+          <span class="readonlyLabel" id="noclients">No of Clients connected:</span> <span class="value">
           <?% echo( $wifi_value["NumberOfEntries2"]); ?>
           </span>
         </div>
@@ -673,12 +706,12 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
 		else
 		        $wifi_enable = "Inactive";
 		echo( '<div class="module forms block home_network" style="position:relative;top:0px;right:0px;">');
-		echo( '<h2 style="white-space: pre-wrap;">'+_("HomeSecurityNetwork-")+$public_v[$j]['ssid_name']+'</h2>');
+		echo( '<h2 style="white-space: pre-wrap;">HomeSecurityNetwork-'+$public_v[$j]['ssid_name']+'</h2>');
 		// !!!dont goto edit_public page!!! thant page just for hotspot tunnel configuration
-		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel">'+_("Wireless Network (Wi-Fi ")+$public_v[$j]['radio_freq']+' GHz):</span> <span class="value">'+$wifi_enable+'</span></div>');
-		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel">'+_("Supported Protocols:")+'</span> <span class="value">'+$public_v[$j]['radio_mode']+'</span></div>');
-		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel">'+_("Security:")+'</span> <span class="value">'+$public_v[$j]['security']+'</span></div>');
-		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel">'+_("No of Clients connected:")+'</span> <span class="value">'+$public_v[$j]['client_cnt']+'</span></div>');
+		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel"><span id="wifinewloc">Wireless Network (Wi-Fi </span>'+$public_v[$j]['radio_freq']+' GHz):</span> <span class="value">'+$wifi_enable+'</span></div>');
+		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel" id="supprot">Supported Protocols:</span> <span class="value">'+$public_v[$j]['radio_mode']+'</span></div>');
+		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel" id="secloc">Security:</span> <span class="value">'+$public_v[$j]['security']+'</span></div>');
+		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel" id="noclients">No of Clients connected:</span> <span class="value">'+$public_v[$j]['client_cnt']+'</span></div>');
 		echo( '</div>');
 	}
 	?>  
@@ -723,27 +756,29 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
         }
 	for ($j=0; $j<count($public_v); $j++)
 	{
+		var id= ("true"==$public_v[$j]['xf_capable']?"idyes":"idno");
+		var idAct= ("true"==$public_v[$j]['ssid_enable']?"act":"inact");
 		echo( '<div class="module forms block tr_hotspot" style="position:relative;top:0px;right:0px;">');
-		echo( '<h2 style="white-space: pre-wrap;">'+_("Public Wi-Fi Network-")+$public_v[$j]['ssid_name']+'</h2>');
-		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel">'+_("Public Wi-Fi Capable:")+'</span> <span class="value">'+("true"==$public_v[$j]['xf_capable']?"Yes":"No")+'</span></div>');
-		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel">'+_("Wireless Network (Wi-Fi ")+$public_v[$j]['radio_freq']+' GHz):</span> <span class="value">'+("true"==$public_v[$j]['ssid_enable']?_("Active"):_("Inactive"))+'</span></div>');
-		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel">'+_("Time Since Last Status:")+'</span> <span class="value">'+$public_v[$j]['time_last']+'</span></div>');
-		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel">'+_("WLAN Gateway:")+'</span> <span class="value">'+$public_v[$j]['wlan_gw']+'</span></div>');
-		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel">'+_("Supported Protocols:")+'</span> <span class="value">'+$public_v[$j]['radio_mode']+'</span></div>');
-		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel">'+_("Security:")+'</span> <span class="value">'+$public_v[$j]['security']+'</span></div>');
-		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel">'+_("No of Clients connected:")+'</span> <span class="value">'+$public_v[$j]['client_cnt']+'</span></div>');
+		echo( '<h2 style="white-space: pre-wrap;"><span id="pubwifiloc">Public Wi-Fi Network-</span>'+$public_v[$j]['ssid_name']+'</h2>');
+		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel" id="pubwificap">Public Wi-Fi Capable:</span> <span id='+id+' class="value">'+("true"==$public_v[$j]['xf_capable']?"Yes":"No")+'</span></div>');
+		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel"><span id="wifinewloc">Wireless Network (Wi-Fi </span>'+$public_v[$j]['radio_freq']+' GHz):</span> <span class="value" id='+idAct+' >'+("true"==$public_v[$j]['ssid_enable']?"Active":"Inactive")+'</span></div>');
+		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel" id="timestat">Time Since Last Status:</span> <span class="value">'+$public_v[$j]['time_last']+'</span></div>');
+		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel" id="wlangate">WLAN Gateway:</span> <span class="value">'+$public_v[$j]['wlan_gw']+'</span></div>');
+		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel" id="supprot">Supported Protocols:</span> <span class="value">'+$public_v[$j]['radio_mode']+'</span></div>');
+		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel" id="secloc">Security:</span> <span class="value">'+$public_v[$j]['security']+'</span></div>');
+		echo( '<div class="form-row '+(($odd=!$odd)?'odd':'')+'"><span class="readonlyLabel" id="noclients">No of Clients connected:</span> <span class="value">'+$public_v[$j]['client_cnt']+'</span></div>');
 		echo( '</div>');
 	}
 	?>  
 <!--HotSpot wifi end-->
 	</div>
 	<div class="module forms block wifi_text" style="display: none;">
-		<h2><?% echo( _("No Wi-Fi information available"));?></h2>
-		<strong><?% echo( _("Gateway operating in battery mode."));?></strong>
+		<h2 id="nowifiinfo">No Wi-Fi information available</h2>
+		<strong id="gatbat">Gateway operating in battery mode.</strong>
 	</div> <!-- end .module -->	
 	<div class="module forms block moca_text" style="display: none;">
-		<h2><?% echo( _("No MoCA information available"));?></h2>
-		<strong><?% echo( _("Gateway operating in battery mode."));?></strong>
+		<h2 id="nomocinfo">No MoCA information available</h2>
+		<strong id="gatbat">Gateway operating in battery mode.</strong>
 	</div> <!-- end .module -->	  
 </div><!-- end #content -->
 <?% include('includes/footer.jst'); ?>

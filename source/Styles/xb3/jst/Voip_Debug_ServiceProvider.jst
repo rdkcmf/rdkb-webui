@@ -115,7 +115,7 @@
 		+'","server_IP_addr" :"'+$('#SIP_log_svr_ip_addr').val()
 		+'","server_port" :"'+$('#SIP_log_svr_port').val()+'"}';
 		var jsConfig = mod_values;
-		jProgress("<?% echo( _('This may take several seconds...'));?>", 60);
+		jProgress($.i18n('This may take several seconds...'),60);
                	$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_voip_debug.jst",
@@ -146,7 +146,7 @@
 	function sipclient(val){
 		var SIP_val = val;
 		var jsConfig ='{"SIP_val":"'+SIP_val+'"}';
-		jProgress("<?% echo( _('This may take several seconds...'));?>", 60);
+		jProgress($.i18n('This may take several seconds...'), 60);
 		$.ajax({
 			type: "POST",
 			url: "actionHandler/ajaxSet_voip_debug.jst",

@@ -18,7 +18,7 @@
 <?%
 session_start();
 if ($_SESSION["loginuser"] == "" || $_SESSION["loginuser"] == false) {
-	echo( '<script type="text/javascript">alert("'+_("Please Login First!")+'"); location.href="../index.jst";</script>');
+	echo( '<script type="text/javascript">alert("Please Login First!"); location.href="../index.jst";</script>');
 	exit(0);
 }
 $jsConfig = $_POST['configInfo'];
@@ -80,20 +80,20 @@ if ($i == 1 || $i == 2) {
 			if($validation && !valid_ssid_name($arConfig['network_name']))
 			{
 				$validation = false;
-				$response_message = _('WiFi name is not valid. Please enter a new name !');
+				$response_message = 'WiFi name is not valid. Please enter a new name !';
 			}
 			if (strpos($partnerId, "sky-") === false) {
 				//Choose a different Network Name (SSID) than the one provided on your gateway
 			$DefaultSSID = getStr("Device.WiFi.SSID."+$i+".X_COMCAST-COM_DefaultSSID");
 			if($validation && (strtolower($DefaultSSID) == strtolower($arConfig['network_name']))){
 				$validation = false;
-    				$response_message = _('WiFi name is not valid. Please enter a new name !');
+    				$response_message = 'WiFi name is not valid. Please enter a new name !';
 			} 
 				//Choose a different Network Password than the one provided on your gateway
 			$DefaultKeyPassphrase = getStr("Device.WiFi.AccessPoint."+$i+".Security.X_COMCAST-COM_DefaultKeyPassphrase");
 			if($validation && ($DefaultKeyPassphrase == $arConfig['network_password']) && ($arConfig['security']!="None")) {
 				$validation = false;
-    				$response_message = _('Please change Network Password !');
+    				$response_message = 'Please change Network Password !';
 			}
 			}
 			if($validation){
@@ -203,7 +203,7 @@ if ($i == 1 || $i == 2) {
 	}
 }
 if($response_message=='') {
-	$response_message = _('success');
+	$response_message = 'success';
 }
 echo( htmlspecialchars(json_encode($response_message), ENT_NOQUOTES, 'UTF-8'));
 ?>
