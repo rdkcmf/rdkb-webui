@@ -52,8 +52,8 @@ jsAdPeriod = jsAdPeriod/60; /*unit is seconds in backend implementation.*/
 		radio_name: "upnp",
 		id_on: "upnp_enabled",
 		id_off: "upnp_disabled",
-		title_on: "<?% echo( _('Enable')+' UPnP');?>",
-		title_off: "<?% echo( _('Disable')+' UPnP');?>",
+		title_on: $.i18n('Enable UPnP'),
+		title_off: $.i18n('Disable UPnP'),
 		state: jsEnableUPnP ? "on" : "off"
 	});
 	/* If Enable UPnP is not checked, disable the next two form fields*/
@@ -70,8 +70,8 @@ jsAdPeriod = jsAdPeriod/60; /*unit is seconds in backend implementation.*/
 		radio_name: "zeroconfig",
 		id_on: "zeroconfig_enabled",
 		id_off: "zeroconfig_disabled",
-		title_on: "<?% echo( _('Enable')+' Zero Config');?>",
-		title_off: "<?% echo( _('Disable')+' Zero Config');?>",
+		title_on: $.i18n('Enable')+" Zero Config",
+		title_off: $.i18n('Disable')+" Zero Config",
 		state: jsEnableZero ? "on" : "off"
 	});
 function enableHandle() {
@@ -115,7 +115,7 @@ $('#save_setting').click(function() {
 	var isEnabledZero = $("#zeroconfig_switch").radioswitch("getState").on;
 //	var isEnabledQosUPnP = $("#upnp1_enabled").is(":checked"); //R3
 	var upnpInfo;
-	upnpInfo = '{"<?% echo( _('IsEnabledUPnP'));?>":"'+isEnabledUPnP+'", "<?% echo( _('Period'));?>":"'+period+'", "<?% echo( _('Live'));?>":"'+live+'", "<?% echo( _('IsEnabledZero'));?>":"'+isEnabledZero+'"}';
+	upnpInfo = '{"IsEnabledUPnP":"'+isEnabledUPnP+'", "Period":"'+period+'", "Live":"'+live+'", "IsEnabledZero":"'+isEnabledZero+'"}';
 //	upnpInfo = '{"IsEnabledUPnP":"'+isEnabledUPnP+'", "Period":"'+period+'", "Live":"'+live+'", "IsEnabledZero":"'+isEnabledZero+'", "IsEnabledQosUPnP":"'+isEnabledQosUPnP+'"}';
 //	alert(upnpInfo);
 	if(isEnabledUPnP == true){
@@ -123,7 +123,7 @@ $('#save_setting').click(function() {
 			saveQoS(upnpInfo);
 		} else {
 			//alert("Not valid! Can not be saved.");
-			jAlert("<?% echo( _('Please enter a value greater than or equal to 1.For Advertisement Period & Time To Live.'));?>");
+			alertLocale("Please enter a value greater than or equal to 1.For Advertisement Period & Time To Live.");
 		}
 	} else {
 		saveQoS(upnpInfo);
@@ -131,7 +131,7 @@ $('#save_setting').click(function() {
 });
 function saveQoS(information) {
 //alert(information);
-	jProgress('<?% echo( _("This may take several seconds"));?>', 60);
+	jProgress($.i18n("This may take several seconds"), 60);
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_UPnP_configuration.jst",
@@ -142,7 +142,7 @@ function saveQoS(information) {
 		},
 		error: function(){            
 			jHide();
-			jAlert("<?% echo( _('Failure, please try again.'));?>");
+			alertLocale('Failure, please try again.');
 		}
 	});
 }
@@ -150,31 +150,31 @@ function saveQoS(information) {
 });
 </script>
 <div id="content">
-   	<h1><?% echo( _('Advanced > Device Discovery'));?></h1>
+   	<h1 id="devdis">Advanced > Device Discovery</h1>
     <div id="educational-tip">
-		        <p class="tip"><?% echo( _('Manage UPnP network.'));?></p>
-		        <p class="hidden"><?% echo( _('The UPnP enabled Gateway discovers all UPnP enabled client devices, such as network printers and laptops. Using UPnP, the ports are opened automatically for the appropriate services and applications. The UPnP devices will be auto configured in the network.'));?></p>
-				<p class="hidden"><?% echo( _('<strong>Advertisement Period:</strong> The Advertisement Period is how often the gateway will advertise (broadcast) its UPnP information.'));?> </p>
-				<p class="hidden"><?% echo( _('<strong>Time to Live:</strong> Measured in hops for each UPnP packet sent. A hop is the number of steps an UPnP advertisement is allowed to propagate before disappearing.'));?></p>
-				<p class="hidden"><?% echo( _('<strong>Zero Config:</strong> Discovery protocol which allows devices, such as printers and computers, to connect to a network automatically.'));?> </p>
+		        <p class="tip" id="devdistip">Manage UPnP network.</p>
+		        <p class="hidden" id="devdistip2">The UPnP enabled Gateway discovers all UPnP enabled client devices, such as network printers and laptops. Using UPnP, the ports are opened automatically for the appropriate services and applications. The UPnP devices will be auto configured in the network.</p>
+				<p class="hidden" id="devdistip3"><strong>Advertisement Period:</strong> The Advertisement Period is how often the gateway will advertise (broadcast) its UPnP information. </p>
+				<p class="hidden" id="devdistip4"><strong>Time to Live:</strong> Measured in hops for each UPnP packet sent. A hop is the number of steps an UPnP advertisement is allowed to propagate before disappearing.</p>
+				<p class="hidden" id="devdistip5"><strong>Zero Config:</strong> Discovery protocol which allows devices, such as printers and computers, to connect to a network automatically.'));?> </p>
     </div>
 	<form action="#TBD" method="post" id="pageForm">
     <div class="module forms">
-    	<h2><?% echo( _('Device Discovery'));?></h2>
+    	<h2 id="devdishead">Device Discovery</h2>
 		<div class="form-row odd">
-			<label for="upnp_enabled"><?% echo( _('UPnP:'));?></label>
+			<label for="upnp_enabled">UPnP:</label>
 			<span id="upnp_switch"></span>
 		</div>
 		<div id="upnp-items">
 		<div class="form-row">
-			<label for="period"><?% echo( _('Advertisement Period:'));?></label> <input type="text" class="text smallInput" value="30" size="2" maxlength="3" name="period" id="period" /> <?% echo( _('minutes'));?>
+			<label for="period" id="advper">Advertisement Period:</label> <input type="text" class="text smallInput" value="30" size="2" maxlength="3" name="period" id="period" /> <span id="min">minutes</span>
 		</div>
 		<div class="form-row odd">
-			<label for="live"><?% echo( _('Time To Live:'));?></label> <input type="text" class="text smallInput" value="5" size="2" maxlength="2" name="live" id="live" /> <?% echo( _('hops'));?>
+			<label for="live" id="timtoliv">Time To Live:</label> <input type="text" class="text smallInput" value="5" size="2" maxlength="2" name="live" id="live" /> <span id="hops">hops</span>
 		</div>
 		</div>
 		<div class="form-row">
-            <label for="zeroconfig_enabled"><?% echo( _('Zero Config:'));?></label>
+            <label for="zeroconfig_enabled" id="zeroconfig">Zero Config:</label>
 			<span id="zeroconfig_switch"></span>
 		</div>
 	<!--	            <div class="form-row odd">
@@ -191,7 +191,7 @@ function saveQoS(information) {
 					            </ul>
 		</div>-->
 		<div class="form-btn">
-			<input id="save_setting" type="button" value="<?% echo( _('Save'));?>" class="btn right" /> <!--//licha if type="submit", then an error occured in POST-->
+			<input id="save_setting" type="button" value="Save" class="btn right" /> <!--//licha if type="submit", then an error occured in POST-->
 		</div>
 	</div> <!-- End Module -->
 	</form>

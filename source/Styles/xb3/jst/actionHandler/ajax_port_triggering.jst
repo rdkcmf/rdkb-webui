@@ -97,13 +97,13 @@ if (isset($_POST['add'])){
 				$arrayTsp = $key["ForwardPortStart"];
 				$arratTep = $key["ForwardPortEnd"];
 				if(!strcasecmp($name, $arrayName)) {
-					$result+=_("Service name has been used!\n");
+					$result+="Service name has been used!\n";
 					break;
 				} else if($type=="BOTH"||$arrayType=="BOTH"||$type==$arrayType){
-					$fptest=PORTTEST(parseInt($fsp),parseInt($fep),parseInt($arrayFsp),parseInt($arrayFep));
-					$tptest=PORTTEST(parseInt($tsp),parseInt($tep),parseInt($arrayTsp),parseInt($arratTep));
+					$fptest=PORTTEST($fsp,$fep,$arrayFsp,$arrayFep);
+					$tptest=PORTTEST($tsp,$tep,$arrayTsp,$arratTep);
 					if ($fptest==1 || $tptest==1) {
-						$result+=_("Conflict with other service. Please check Trigger and Target Ports!");
+						$result+="Conflict with other service. Please check Trigger and Target Ports!";
 						break;
 					}
 				}
@@ -175,13 +175,13 @@ if (isset($_POST['edit'])){
 				$arrayTsp = $key["ForwardPortStart"];
 				$arratTep = $key["ForwardPortEnd"];
 			if(!strcmp($name, $arrayName)) {
-				$result+=_("Service name has been used!\n");
+				$result+="Service name has been used!\n";
 				break;
 			} else if($type=="BOTH"||$arrayType=="BOTH"||$type==$arrayType){
-				$fptest=PORTTEST(parseInt($fsp),parseInt($fep),parseInt($arrayFsp),parseInt($arrayFep));
-				$tptest=PORTTEST(parseInt($tsp),parseInt($tep),parseInt($arrayTsp),parseInt($arratTep));
+				$fptest=PORTTEST($fsp,$fep,$arrayFsp,$arrayFep);
+				$tptest=PORTTEST($tsp,$tep,$arrayTsp,$arratTep);
 				if ($fptest==1 || $tptest==1) {
-					$result+=_("Conflict with other service. Please check Trigger and Target Ports!");
+					$result+="Conflict with other service. Please check Trigger and Target Ports!";
 					break;
 				}
 			}
@@ -199,7 +199,7 @@ if (isset($_POST['edit'])){
 					if($type=="BOTH" || $portMappingType=="BOTH" || $type==$portMappingType){
 						$porttest=PORTTEST(parseInt($tsp),parseInt($tep),parseInt($arraySPort),parseInt($arrayEPort));
 						if ($porttest==1) {
-							$result+=_("Failure! As Port Triggering/Port Forwarding rule exists for the same port.");
+							$result+="Failure! As Port Triggering/Port Forwarding rule exists for the same port.";
 							break;
 						}
 					}
@@ -229,7 +229,7 @@ if (isset($_POST['edit'])){
 					["Device.NAT.X_CISCO_COM_PortTriggers.Trigger."+$i+".Enable",           "bool",   "true"]
 				];
 			$retStatus = DmExtSetStrsWithRootObj($rootObjName, true, $paramArray);	
-			if (!$retStatus){$result=_("Success!");}
+			if (!$retStatus){$result="Success!";}
 		}
 		// echo json_encode($result);
 	}

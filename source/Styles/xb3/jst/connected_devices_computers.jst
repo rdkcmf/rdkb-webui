@@ -44,25 +44,25 @@ table a:link, table a:visited {
 </style>
 
 <div id="content"  class="cnt-device-main">
-	<h1>Connected Devices > Devices</h1>
+	<h1 id="connhead">Connected Devices > Devices</h1>
 <?% if($CloudUIEnable == "true"){ ?>
 	<div id="educational-tip">
-		<h3 style="text-align: justify;"><?% echo( _("Managing your home network settings is now easier than ever. Visit <a href=\"http://")+ $productLink+'">'+ $productLink +_("</a> to view and manage your list of connected/offline devices. You can block access to your home network for any device, among many other features and settings."));?></h3>
+		<h3 style="text-align: justify;"><span id="connhom1">Managing your home network settings is now easier than ever.</span><span id="visithead">Visit </span><?% echo('<a href="http://'+$productLink+'">'+$productLink +'</a>');?><span id="connhom2"> to view and manage your list of connected/offline devices. You can block access to your home network for any device, among many other features and settings.</span></h3>
 	</div>		
 <?% } else { ?>
 	<div id="educational-tip">
-		<p class="tip">View information about devices currently connected to your network, as well as connection history.</p>
-		<p class="hidden">Every device listed below was auto discovered via DHCP.</p>
-		<p class="hidden"><strong>Online Devices</strong> are currently connected to your Gateway.</p>
-		<p class="hidden"><strong>Offline Devices</strong>  were once connected to your network, but not currently.</p>
-		<p class="hidden">To block Internet access to a device connected to your Gateway, click the <strong>X</strong> button. </p>
+		<p class="tip" id="contip">View information about devices currently connected to your network, as well as connection history.</p>
+		<p class="hidden" id="contip2">Every device listed below was auto discovered via DHCP.</p>
+		<p class="hidden" id="contip3"><strong>Online Devices</strong> are currently connected to your Gateway.</p>
+		<p class="hidden" id="contip4"><strong>Offline Devices</strong>  were once connected to your network, but not currently.</p>
+		<p class="hidden" id="contip5">To block Internet access to a device connected to your Gateway, click the <strong>X</strong> button. </p>
 	</div>
 <?% } ?>
 <?%
 	$checked = ($PreferPrivate == "true")?"checked":"";
 	echo( '<div class="module" id="prefer_private_connection">\
 		<div class="select-row">\
-			<label class="readonlyLabel label" for="prefer_private">Prefer Private Connection</label><input style="margin-top: 8px" type="checkbox" id="prefer_private" name="prefer_private" '+$checked+' >\
+			<label class="readonlyLabel label" for="prefer_private" id="prefpriv">Prefer Private Connection</label><input style="margin-top: 8px" type="checkbox" id="prefer_private" name="prefer_private" '+$checked+' >\
 		</div>\
 	</div>');
 ?>
@@ -275,21 +275,21 @@ $(document).ready(function() {
     if(login_user != "mso") {
     	$('.div-pub-network').remove();
     	$('.div-xhs-network').remove();
-    	$('#online-table-cap').html('<?% echo( _("Online Devices"));?>');
-    	$('#offline-table-cap').html('<?% echo( _("Offline Devices"));?>');
+    	$('#online-table-cap').html($.i18n("Online Devices"));
+    	$('#offline-table-cap').html($.i18n("Offline Devices"));
     }
     function setEducationalTip() {
         if($(".educational-tip-edit:has(.hidden)").length > 0) {
             var closed = true;
-            var $link = $("<a href=\"javascript:;\"  class=\"tip-more\"><?% echo( _('more'));?></a>").click(function() {
+            var $link = $("<a href=\"javascript:;\"  class=\"tip-more\">$.i18n('more')</a>").click(function() {
                 if(closed) {
                     $(".educational-tip-edit .hidden").fadeIn();
                     closed = false;
-                    $(this).html("<?% echo( _("less"));?>");
+                    $(this).html($.i18n("less"));
                 } else {
                     $(".educational-tip-edit .hidden").fadeOut();
                     closed = true;
-                    $(this).html("<?% echo( _("more"));?>");
+                    $(this).html($.i18n("more"));
                 }
             }).appendTo(".educational-tip-edit");
         }
@@ -394,7 +394,7 @@ $(document).ready(function() {
             var isDHCP = $(ipDHCP).is(":checked");
             var Comments = $(comment).val();
             if (Comments.length > 63) {
-                jAlert("<?% echo( _('The comments should be no more than 63 characters !'));?>");
+                alertLocale("The comments should be no more than 63 characters !");
                 return;
             }
             if (isDHCP){
@@ -410,13 +410,13 @@ $(document).ready(function() {
             else{
 				//to check if "Reserved IP Address" is in "DHCP Pool range"
 				if(reseverd_ipAddr==""){
-					jAlert("<?% echo( _('Please enter Reserved IP Address !'));?>");
+					alertLocale("Please enter Reserved IP Address !");
 					return;
 				}
 				var reseverd_ipArr	= reseverd_ipAddr.split(".");
 				for(i=0;i<4;i++){
 					if(parseInt(beginArr[i]) > parseInt(reseverd_ipArr[i]) || parseInt(reseverd_ipArr[i]) > parseInt(endArr[i])){
-						jAlert("<?% echo( _('Reserved IP Address is not in valid range:'));?>\n"+beginAddr+" ~ "+endAddr);
+						jAlert($.i18n('Reserved IP Address is not in valid range:')+"\n"+beginAddr+" ~ "+endAddr);
 						return;
 					}
 				}
@@ -425,7 +425,7 @@ $(document).ready(function() {
             } 
             //alert(editDevInfo);
             if($(".pageForm").valid()){
-                jProgress('<?% echo( _("This may take several seconds"));?>', 60); 
+                jProgress($.i18n('This may take several seconds'), 60); 
     			$.ajax({           	
     				type: "POST",
     				url: "actionHandler/ajaxSet_add_device.jst",
@@ -434,14 +434,14 @@ $(document).ready(function() {
     				success: function(results){
     					setTimeout(function(){
     						jHide();
-    						if (results=="<?% echo( _('success'));?>") { window.location.href="connected_devices_computers.jst";}
-    						else if (results=="") {jAlert('<?% echo( _("Failure! Please check your inputs."));?>');}
-    						else jAlert(results);
+    						if (results=='success') { window.location.href="connected_devices_computers.jst";}
+    						else if (results=="") {alertLocale("Failure! Please check your inputs.");}
+    						else alertLocale(results);
     					}, 15000);
     				},
     				error: function(){
     					jHide();
-    					jAlert("<?% echo( _('Failure, Please check your inputs and try again.'));?>");
+    					alertLocale("Failure, Please check your inputs and try again.");
     				}
     			});
             } //end of page form valid
@@ -504,13 +504,13 @@ $(document).ready(function() {
             else{
                                 //to check if "Reserved IP Address" is in "DHCP Pool range"
                                 if(reseverd_ipAddr==""){
-                                        jAlert("<?% echo( _('Please enter Reserved IP Address !'));?>");
+                                        alertLocale("Please enter Reserved IP Address !");
                                         return;
                                 }
                                 var reseverd_ipArr      = reseverd_ipAddr.split(".");
                                 for(i=0;i<4;i++){
                                         if(parseInt(beginArr[i]) > parseInt(reseverd_ipArr[i]) || parseInt(reseverd_ipArr[i]) > parseInt(endArr[i])){
-                                                jAlert("<?% echo( _('Reserved IP Address is not in valid range:'));?>\n"+beginAddr+" ~ "+endAddr);
+						jAlert($.i18n('Reserved IP Address is not in valid range:')+"\n"+beginAddr+" ~ "+endAddr);
                                                 return;
                                         }
                                 }
@@ -519,7 +519,7 @@ $(document).ready(function() {
             }
             //alert(editDevInfo);
             if($(".pageForm").valid()){
-                jProgress('<?% echo( _("This may take several seconds"));?>', 60);
+                jProgress($.i18n('This may take several seconds'), 60);
                         $.ajax({
                                 type: "POST",
                                 url: "actionHandler/ajaxSet_add_device.jst",
@@ -529,13 +529,13 @@ $(document).ready(function() {
                                         setTimeout(function(){
                                                 jHide();
                                                 if (results=="success") { window.location.href="connected_devices_computers.jst";}
-                                                else if (results=="") {jAlert('<?% echo( _("Failure! Please check your inputs."));?>');}
-                                                else jAlert(results);
+                                                else if (results=="") {alertLocale("Failure! Please check your inputs.");}
+                                                else alertLocale(results);
                                         }, 15000);
                                 },
                                 error: function(){
                                         jHide();
-                                        jAlert("<?% echo( _('Failure, Please check your inputs and try again.'));?>");
+                                        alertLocale("Failure, Please check your inputs and try again.");
                                 }
                         });
             } //end of page form valid
@@ -546,7 +546,7 @@ $(document).ready(function() {
     $('.confirm').unbind('click').click(function(e){
 	    if(!(privateDisabled && $(this).hasClass("private"))){
 		    e.preventDefault();
-		    var message = ($(this).attr("title").length > 0) ? "<?% echo( _('Are you sure you want to '));?>" + $(this).attr("title") + "?" : "<?% echo( _('Are you sure?'));?>";
+		    var message = ($(this).attr("title").length > 0) ? $.i18n('Are you sure you want to ') + $(this).attr("title") + "?" : $.i18n('Are you sure?');
 		    var name = $(this).attr('name');
 		    var devInfo = eval("("+name+")");
 		    //alert(devInfo.mac_addr);
@@ -564,10 +564,10 @@ $(document).ready(function() {
 		    }//end of else
 		    jConfirm(
 			message
-			,"<?% echo( _('Are You Sure?'));?>"
+			,$.i18n('Are You Sure?')
 			,function(ret) {
 			    if(ret) {
-			       jProgress('<?% echo( _("This may take several seconds"));?>', 60); 
+			       jProgress($.i18n('This may take several seconds'), 60); 
 			       $.ajax({                   
 				   type: "POST",
 				   url: "actionHandler/ajaxSet_addDevice_blockedList.jst",
@@ -578,7 +578,7 @@ $(document).ready(function() {
 				   },
 				   error: function(){
 						jHide();
-						jAlert("<?% echo( _('Failure, please try again.'));?>");
+						alertLocale('Failure, please try again.');
 				   }
 			    	});
 			    } //end of if ret    
@@ -601,7 +601,7 @@ $(document).ready(function() {
 	});
 	$("#prefer_private").change(function(){
 		var isChecked=$(this).is(":checked");
-		jProgress('<?% echo( _("This may take several seconds."));?>',60);
+		jProgress($.i18n("This may take several seconds"),60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajaxSet_wireless_network_configuration.jst",
@@ -611,7 +611,7 @@ $(document).ready(function() {
 			},
 			error:function(){
 				jHide();
-				jAlert("<?% echo( _('Error! Please try later!'));?>");
+				alertLocale("Error! Please try later!");
 			}
 		});
 	});
@@ -624,8 +624,18 @@ $(document).ready(function() {
          	$dev_name = $onlinePrivateNetworkHost[$x.toString()]['HostName'];
          	$mac_addr = $onlinePrivateNetworkHost[$x.toString()]['PhysAddress'];
          	$AddrSrc  = $onlinePrivateNetworkHost[$x.toString()]['AddressSource'];
+		var addsrcid="";
+        	if($AddrSrc == "DHCP"){
+                	addsrcid= "dhcpid";
+       	 	}else{
+                	addsrcid= "reserveip";
+        	}
+		var privconnnetid="";
+        	if($onlinePrivateNetworkHost[$x.toString()]['Connection']=="Unknown")
+                	privconnnetid ="unknown";
+
 		if(($CloudUIEnable == "true" ) || $onlinePrivateNetworkHost[$x.toString()]['Blocked']) $style = "&nbsp;";
-         	else $style = "<input type='button' id=" + "'online-X-" +$k+ "'" + " value='X' tabindex='0' title=\""+_('add this device to Blocked Devices List')+" \" name=" + "'{\"dev_name\":\""+$dev_name+"\", \"mac_addr\":\""+$mac_addr+"\"}'" + " class=\"btn confirm private\"></input>";
+         	else $style = "<input type='button' id=" + "'online-X-" +$k+ "'" + " value='X' tabindex='0' title='add this device to Blocked Devices List' name=" + "'{\"dev_name\":\""+$dev_name+"\", \"mac_addr\":\""+$mac_addr+"\"}'" + " class=\"btn confirm private\"></input>";
 		if($k % 2)  $odd = "";
 				else $odd = " class='odd'";
          	echo( "\
@@ -637,16 +647,16 @@ $(document).ready(function() {
 					</u></a>\
 					<div class=\"device-info\">\
 						<dl><dd><br/></dd>");
-						if ($onlinePrivateNetworkHost[$x.toString()]['IPv4Address'] != '') {echo( "<dd><b>IPv4 Address</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['IPv4Address']);}
-						if ($onlinePrivateNetworkHost[$x.toString()]['IPv6Address2'] != '') {echo( "<dd><b>IPv6 Address</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['IPv6Address2']);}
-						if ( typeof $onlinePrivateNetworkHost[$x.toString()]['IPv6Address1'] !== 'undefined' && $onlinePrivateNetworkHost[$x.toString()]['IPv6Address1'] != '') {echo( "<dd><b>Local Link IPv6 Address</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['IPv6Address1']);}
-						echo(    "<dd><b>"+_("MAC Address")+"</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['PhysAddress']);
-							echo("<dd><b>"+_("Comments")+"</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['Comments']);
+						if ($onlinePrivateNetworkHost[$x.toString()]['IPv4Address'] != '') {echo( "<dd><b id='ipvaddloc'>IPv4 Address</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['IPv4Address']);}
+						if ($onlinePrivateNetworkHost[$x.toString()]['IPv6Address2'] != '') {echo( "<dd><b id='ipv6addloc'>IPv6 Address</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['IPv6Address2']);}
+						if ( typeof $onlinePrivateNetworkHost[$x.toString()]['IPv6Address1'] !== 'undefined' && $onlinePrivateNetworkHost[$x.toString()]['IPv6Address1'] != '') {echo( "<dd><b id='loclinkadd'>Local Link IPv6 Address</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['IPv6Address1']);}
+						echo(    "<dd><b id='macaddloc'>MAC Address</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['PhysAddress']);
+							echo("<dd><b id='commentnew'>Comments</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['Comments']);
 						echo("\
 						</dl>\
 					</div>\
                 </td>\
-		        <td headers='dhcp-or-reserved'>\
+		        <td headers='dhcp-or-reserved' id="+addsrcid+">\
 			");
 			echo(($AddrSrc == "DHCP") ? "DHCP" : "Reserved IP");
 			echo("\
@@ -656,12 +666,12 @@ $(document).ready(function() {
 			echo($onlinePrivateNetworkHost[$x.toString()]['RSSI']);
 			echo("\
 			</td>\
-		        <td headers='connection-type'>\
+		        <td headers='connection-type' id="+privconnnetid+">\
 			");
 			echo($onlinePrivateNetworkHost[$x.toString()]['Connection']);
 			echo("\
 			</td>\
-                <td headers='edit-button'><input type='button' value='Edit' tabindex='0' id=" + "'btn-" +$onlinePrivateNetworkHost[$x.toString()]['instanceID'] + "'"+ "  class=\"btn private\"></input></td>\
+                <td headers='edit-button'><input type='button' value='Edit' tabindex='0' id=" + "'btn-" +$onlinePrivateNetworkHost[$x.toString()]['instanceID'] + "'"+ "  class=\"btn private edbutton\"></input></td>\
                 <td headers='disconnect-button'>\
 		");
 		echo($style);
@@ -683,16 +693,16 @@ $(document).ready(function() {
 		</tfoot>
 		</table>
 		<div  class="btn-group">
-			<a href="javascript:void(0)" class="btn add-Client lan"><?% echo( _("Add Device with Reserved IP"));?></a>
+			<a href="javascript:void(0)" class="btn add-Client lan" id="adddevres">Add Device with Reserved IP</a>
 		</div>
 	</div> <!-- end .module -->
 	<div id='offline-private' class="module forms data">
-    <h2 id='offline-table-cap'><?% echo( _("Offline Devices-Private Network"));?></h2>
-		<table   class="data" summary="<?% echo( _('this table display off line devices for private network'));?>">
+    <h2 id='offline-table-cap'>Offline Devices-Private Network</h2>
+		<table   class="data" summary="this table display off line devices for private network">
 		    <tr>
-		        <th id="offline-device-host-name" style="width:30%"><?% echo( _('Host Name'));?></th>
-		        <th id="offline-device-dhcp-reserve"><?% echo( _('DHCP/Reserved IP'));?></th>
-		        <th id="offline-device-conncection"><?% echo( _('Connection'));?></th>
+		        <th id="offline-device-host-name" style="width:30%">Host Name</th>
+		        <th id="offline-device-dhcp-reserve">DHCP/Reserved IP</th>
+		        <th id="offline-device-conncection">Connection</th>
 			<th id="offline-edit-button">&nbsp;</th>
 		        <th id="offline-device-disconnect-button">&nbsp;</th>
 		    </tr>
@@ -702,8 +712,18 @@ $(document).ready(function() {
     	$dev_name = $offlinePrivateNetworkHost[$x.toString()]['HostName'];
     	$mac_addr = $offlinePrivateNetworkHost[$x.toString()]['PhysAddress'];
     	$AddrSrc  = $offlinePrivateNetworkHost[$x.toString()]['AddressSource'];
+	 var addsrcid="";
+        if($AddrSrc == "DHCP"){
+                addsrcid= "dhcpid";
+        }else{
+                addsrcid= "reserveip";
+        }
+	var privconnnetid="";
+        if($offlinePrivateNetworkHost[$x.toString()]['Connection']=="Unknown")
+                privconnnetid ="unknown";
+
 		if(($CloudUIEnable == "true" ) || $offlinePrivateNetworkHost[$x.toString()]['Blocked']) $style = "&nbsp;";
-		else $style = "<input type='button' id=" + "'offline-X-" +$k+ "'" + " value='X' tabindex='0' title=\""+_("remove computer named ") +$dev_name+ " \" name=" + "'{\"dev_name\":\""+$dev_name+"\", \"mac_addr\":\""+$mac_addr+"\"}'" + "  class=\"btn confirm private\"></input>";
+		else $style = "<input type='button' id=" + "'offline-X-" +$k+ "'" + " value='X' tabindex='0' title='remove computer named ' +$dev_name+'  name=" + "'{\"dev_name\":\""+$dev_name+"\", \"mac_addr\":\""+$mac_addr+"\"}'" + "  class=\"btn confirm private\"></input>";
     	if($k % 2) $odd = "";
     	else $odd = " class='odd'";
     	echo( "\
@@ -715,24 +735,24 @@ $(document).ready(function() {
 		</u></a>\
 				<div class=\"device-info\">\
 					<dl><dd><br/></dd>");
-						if ($offlinePrivateNetworkHost[$x.toString()]['IPv4Address'] != '') {echo( "<dd><b>IPv4 Address</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['IPv4Address']);}
-						if ($offlinePrivateNetworkHost[$x.toString()]['IPv6Address2'] != ''  ) {echo( "<dd><b>IPv6 Address</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['IPv6Address2']);}
-						if ( typeof $offlinePrivateNetworkHost[$x.toString()]['IPv6Address1'] !== 'undefined' && $offlinePrivateNetworkHost[$x.toString()]['IPv6Address1'] !== '' ) {echo( "<dd><b>Local Link IPv6 Address</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['IPv6Address1']);}
-						echo(    "<dd><b>"+_("MAC Address")+"</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['PhysAddress']);
-						echo( "<dd><b>"+_("Comments")+"</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['Comments']);
+						if ($offlinePrivateNetworkHost[$x.toString()]['IPv4Address'] != '') {echo( "<dd><b id='ipvaddloc'>IPv4 Address</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['IPv4Address']);}
+						if ($offlinePrivateNetworkHost[$x.toString()]['IPv6Address2'] != ''  ) {echo( "<dd><b id='ipv6addloc'>IPv6 Address</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['IPv6Address2']);}
+						if ( typeof $offlinePrivateNetworkHost[$x.toString()]['IPv6Address1'] !== 'undefined' && $offlinePrivateNetworkHost[$x.toString()]['IPv6Address1'] !== '' ) {echo( "<dd><b id='loclinkadd'>Local Link IPv6 Address</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['IPv6Address1']);}
+						echo(    "<dd><b id='macaddloc'>MAC Address</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['PhysAddress']);
+						echo( "<dd><b id='commentnew'>Comments</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['Comments']);
 					echo( "\
 					</dl>\
 				</div>\
             </td>\
-	        <td headers='offline-device-dhcp-reserve'>\
+	        <td headers='offline-device-dhcp-reserve' id="+addsrcid+">\
 		");
 		echo(($AddrSrc == "DHCP") ? "DHCP" : "Reserved IP");
 		echo("\
 		</td>\
-	        <td headers='offline-device-conncection'>\
+	        <td headers='offline-device-conncection' id="+privconnnetid+">\
 			");
 		echo($offlinePrivateNetworkHost[$x.toString()]['Connection']);
-	echo("</td><td headers='edit-button'><input type='button' value='Edit' tabindex='0' id=" + "'btn-" +$offlinePrivateNetworkHost[$x.toString()]['instanceID'] + "'"+ "  class=\"btn private\"></input>");
+	echo("</td><td headers='edit-button'><input type='button' value='Edit' tabindex='0' id=" + "'btn-" +$offlinePrivateNetworkHost[$x.toString()]['instanceID'] + "'"+ "  class=\"btn private edbutton\"></input>");
                 echo("</td><td headers='offline-device-disconnect-button'>");echo($style);echo("</td>");
                         echo("</tr>");	
 	}
@@ -751,7 +771,7 @@ $(document).ready(function() {
 		if($encrypt_mode!="None" && $encrypt_mode1!="None" ){
 	?>
 		<div  class="form-btn">
-			<a tabindex='0' href="javascript:void(0)"  class="btn add-Client wifi" ><?% echo( _('Add Wi-Fi Protected Setup (WPS) Client'));?></a>
+			<a tabindex='0' href="javascript:void(0)"  class="btn add-Client wifi" id="addwifiwps" >Add Wi-Fi Protected Setup (WPS) Client</a>
 		</div>
 		<!--Home Security part-->
 	<?%
@@ -764,12 +784,12 @@ $(document).ready(function() {
 		if($loginuser=="mso"){
 			echo( '<div  class="module forms data div-xhs-network" style="position:relative; top:10px; ">');
 		      	echo( '<h2  style="white-space: pre;">Online Devices-XHS '+$xhsSSIDName+' SSID</h2>');
-		      	echo( '<table   class="data" summary="'+_("this table displays online devices connected to Home security SSID")+'">');
+		      	echo( '<table   class="data" summary="this table displays online devices connected to Home security SSID">');
 		      		echo( '<tr>');
-		      			echo( '<th id="XHS-host-name" width="30%">'+_("Host Name")+'</th>');
-		      			echo( '<th id="XHS-ipv4-address" width="25%">'+_("IPV4 Address")+'</th>');
-		      			echo( '<th id="XHS-rssi-level" width="20%">'+_("RSSI Level")+'</th>');
-		      			echo( '<th id="XHS-mac-address" width="25%">'+_("MAC Address")+'</th>');
+		      			echo( '<th id="XHS-host-name" width="30%">Host Name</th>');
+		      			echo( '<th id="XHS-ipv4-address" width="25%">IPv4 Address</th>');
+		      			echo( '<th id="XHS-rssi-level" width="20%">RSSI Level</th>');
+		      			echo( '<th id="XHS-mac-address" width="25%">MAC Address</th>');
 		      			echo( '<th id="XHS-disconnect-button" width="20%"></th>');
 		      		echo( '</tr>');
       		/**
@@ -866,9 +886,9 @@ $(document).ready(function() {
          		echo( '<td headers="XHS-host-name"><a href="javascript:void(0)" tabindex="0" class="label device-name"><u>'+ $Hostname +'</u></a>');
 				echo( '<div class="device-info">');
 					echo( '<dl><dd><br/></dd>');
-					echo( '<dd><b>'+_("IPv6 Address")+'</b><br/>'+ '</dd>');
-					echo( '<dd><b>'+_("Local Link IPV6 Address")+'</b><br/>'+ '</dd>');
-					echo( '<dd><b>'+_("Connection")+'</b><br/>'+ _('Wi-Fi') + '</dd>');
+					echo( '<dd><b id="ipv6addloc">IPv6 Address</b><br/>'+ '</dd>');
+					echo( '<dd><b id="loclinkadd">Local Link IPv6 Address</b><br/>'+ '</dd>');
+					echo( '<dd><b id="connection-type">Connection</b><br/>Wi-Fi</dd>');
 					echo( '</dl>');
 				echo( '</div>');
                 echo( '</td>');
@@ -890,8 +910,8 @@ $(document).ready(function() {
    		echo( '</table>');
    	echo( '</div> <!-- end .module -->');
 	echo( '<div  class="module forms data div-xhs-network" style="position:relative; top:10px; ">');
-      	echo( '<h2 style="white-space: pre;">'+_("Offline Devices-XHS ")+$xhsSSIDName+_(" SSID")+'</h2>');
-      	echo( '<table   class="data" summary="'+_("this table displays offline devices connected to Home security SSID")+'">');
+      	echo( '<h2 style="white-space: pre;"><span id="offdevxhs">Offline Devices-XHS</span>'+$xhsSSIDName+'<span id="offlinessid"> SSID</span></h2>');
+      	echo( '<table   class="data" summary="this table displays offline devices connected to Home security SSID">');
       		echo( '<tr>');
       			echo( '<th id="offXHS-host-name" width="">Host Name</th>');
       			echo( '<th id="offXHS-ipv4-address" width="">IPV4 Address</th>');
@@ -908,9 +928,9 @@ $(document).ready(function() {
          		echo( '<td headers="offXHS-host-name"><a href="javascript:void(0)" tabindex="0" class="label device-name"><u>'+ $Hostname +'</u></a>');
 				echo( '<div class="device-info">');
 					echo( '<dl><dd><br/></dd>');
-					echo( '<dd><b>'+_("IPv6 Address")+'</b><br/>'+ '</dd>');
-					echo( '<dd><b>'+_("Local Link IPV6 Address")+'</b><br/>'+ '</dd>');
-					echo( '<dd><b>'+_("Connection")+'</b><br/>'+ 'Wi-Fi' + '</dd>');
+					echo( '<dd><b id="ipv6addloc">IPv6 Address</b><br/>'+ '</dd>');
+					echo( '<dd><b id="loclinkadd">Local Link IPv6 Address</b><br/>'+ '</dd>');
+					echo( '<dd><b id="connection-type">Connection</b><br/>'+ 'Wi-Fi' + '</dd>');
 					echo( '</dl>');	
 				echo( '</div>');	
                 echo( '</td>');
@@ -946,13 +966,13 @@ $(document).ready(function() {
 			return $Hotspot_SSID_clients;
 		}
 		echo( '<div  class="module forms data div-pub-network" style="position:relative; top:10px; ">');
-    	        echo( '<h2>Online Devices - Public Wi-Fi SSID</h2>');
+    	        echo( '<h2 id="ondevpub">Online Devices - Public Wi-Fi SSID</h2>');
                 echo( '<table   class="data" summary="this table displays online devices connected to Public Wi-Fi SSID">');
       		echo( '<tr>');
-      		echo( '<th id="xfinitywifi-host-name" width="30%">'+_("Host Name")+'</th>');
-      		echo( '<th id="xfinitywifi-ipv4-address" width="30%">'+_("IPV4 Address")+'</th>');
-      		echo( '<th id="xfinitywifi-rssi-level" width="20%">'+_("RSSI Level")+'</th>');
-      		echo( '<th id="xfinitywifi-mac-address" width="20%">'+_("MAC Address")+'</th>');
+      		echo( '<th id="xfinitywifi-host-name" width="30%">Host Name</th>');
+      		echo( '<th id="xfinitywifi-ipv4-address" width="30%">IPV4 Address</th>');
+      		echo( '<th id="xfinitywifi-rssi-level" width="20%">RSSI Level</th>');
+      		echo( '<th id="xfinitywifi-mac-address" width="20%">MAC Address</th>');
       		echo( '<th id="xfinitywifi-disconnect-button" width="20%"></th>');
       		echo( '</tr>');
                 $Hotspot_SSIDNumberOfEntries = getStr("Device.X_COMCAST-COM_GRE.Tunnel.1.SSIDNumberOfEntries");
@@ -986,12 +1006,12 @@ $(document).ready(function() {
          		echo( '<td headers="xfinitywifi-host-name"><a href="javascript:void(0)" tabindex="0" class="label device-name"><u>'+ $Hostname +'</u></a>');
 			echo( '<div class="device-info">');	
 			echo( '<dl><dd><br/></dd>');
-			echo( '<dd><b>'+_("IPv6 Prefix")+'</b><br/>'+ $IPv6Prefix+ '</dd>');
-		        echo( '<dd><b>'+_("IPv6 Address")+'</b><br/>'+ $IPv6Address+ '</dd>');
-			echo( '<dd><b>'+_("Local link IPv6 Address")+'</b><br/>'+ $IPv6LocalAddr+ '</dd>');
-			echo( '<dd><b>'+_("DHCPv4 Status")+'</b><br/>'+ $DHCPv4Status+ '</dd>');
-			echo( '<dd><b>'+_("DHCPv6 Status")+'</b><br/>'+ $DHCPv6Status+ '</dd>');
-			echo( '<dd><b>'+_("Connection")+'</b><br/>'+ $WiFiType + '</dd>');
+			echo( '<dd><b id="ipv6prefloc">IPv6 Prefix</b><br/>'+ $IPv6Prefix+ '</dd>');
+		        echo( '<dd><b id="ipv6addloc">IPv6 Address</b><br/>'+ $IPv6Address+ '</dd>');
+			echo( '<dd><b id="loclinkadd">Local link IPv6 Address</b><br/>'+ $IPv6LocalAddr+ '</dd>');
+			echo( '<dd><b id="dhcpstat">DHCPv4 Status</b><br/>'+ $DHCPv4Status+ '</dd>');
+			echo( '<dd><b id="dhcpv6stat">DHCPv6 Status</b><br/>'+ $DHCPv6Status+ '</dd>');
+			echo( '<dd><b id="connection-type">Connection</b><br/>'+ $WiFiType + '</dd>');
 			echo( '</dl>');	
 			echo( '</div>');	
                         echo( '</td>');
@@ -1021,49 +1041,52 @@ $(document).ready(function() {
 for ($i=0; $i < $onlinePrivateNetworkHost['hostNum']; $i++) { 
 	$ID      = $onlinePrivateNetworkHost[$i.toString()]['instanceID'];
 	$AddrSrc = $onlinePrivateNetworkHost[$i.toString()]['AddressSource'];
+	var unknowid="";
+	if($onlinePrivateNetworkHost[$i.toString()]['Connection']=="Unknown")
+		unknowid="unknown";
 	echo( "\
         <div id=\"edit-device-" +$ID+ "\"  class=\"edit-device content \" style='display:none'>\
-		    <h1>"+_('Connected Devices > Devices > Edit Device')+"</h1>\
+		    <h1 id=\"conndevedithead\">Connected Devices > Devices > Edit Device</h1>\
 		    <div  class=\"educational-tip-edit\">\
-				<p  class=\"tip\">"+_('Change the IP address assignment method for Online Devices.')+"</p>\
-				<p  class=\"hidden\">"+_('If DHCP is selected, the Gateway\'s DHCP server will automatically assign the IP address.')+"</p>\
-				<p  class=\"hidden\">"+_('If Reserved IP is selected, the IP address will be fixed without DHCP operation and you\'ll need to manually enter the IP address. The IP address must be within the DHCP IP address pool. To find your IP address range, go to <strong>Gateway > Connection > Local IP Network.</strong>')+"</p>\
-				<p  class=\"hidden\">"+_('Reserved IP addresses can be assigned to any device that acts as a server or that requires a fixed IP address.')+"</p> \
+				<p  class=\"tip\" id='chipadd'>Change the IP address assignment method for Online Devices.</p>\
+				<p  class=\"hidden\" id='connedittip'>If DHCP is selected, the Gateway\'s DHCP server will automatically assign the IP address.</p>\
+				<p  class=\"hidden\" id='connedittip2'>If Reserved IP is selected, the IP address will be fixed without DHCP operation and you\'ll need to manually enter the IP address. The IP address must be within the DHCP IP address pool. To find your IP address range, go to <strong>Gateway > Connection > Local IP Network.</strong></p>\
+				<p  class=\"hidden\" id='connedittip3'>Reserved IP addresses can be assigned to any device that acts as a server or that requires a fixed IP address.</p> \
 			</div>\
 		<div  class=\"module forms\" id=\"computers-edit-" +$ID+ "\" >\
-		<h2>"+_('Edit Device')+"</h2> \
+		<h2 id='editdevloc'>Edit Device</h2> \
         <form id=\"pageForm-" +$ID+ "\"   class=\"pageForm\">\
 			<div  class=\"form-row\">\
-        		<span  class=\"readonlyLabel\" name=\"host_name\">"+_('Host Name:')+"</span>\
+        		<span  class=\"readonlyLabel\" name=\"host_name\" id=\"hostnew\">Host Name:</span>\
         		<span  class=\"value\">" + $onlinePrivateNetworkHost[$i.toString()]['HostName'] + "</span>\
 			</div>\
 			<div  class=\"form-row odd\">\
-			    <span  class=\"readonlyLabel\">"+_('Connection:')+"</span>\
-        		<span  class=\"value\">" + $onlinePrivateNetworkHost[$i.toString()]['Connection'] + "</span>\
+			    <span  class=\"readonlyLabel\" id=\"connew\">Connection:</span>\
+        		<span  class=\"value\" id="+unknowid+">" + $onlinePrivateNetworkHost[$i.toString()]['Connection'] + "</span>\
 			</div>\
 			<div  class=\"form-row\">\
-				<label for=\"ip\" style='margin:4px 5px 0 0;'>"+_('Configuration:')+"</label>\
+				<label for=\"ip\" style='margin:4px 5px 0 0;' id='confloc'>Configuration:</label>\
 				<input type=\"radio\" name=\"ip\" value=\"" +$AddrSrc+ "\" " +( ($AddrSrc == "DHCP") ? "checked='checked'" : '' )+ " class=\"ip_dchp\" id=\"ip_dhcp-" +$ID+ "\" />\
 				<label  class=\"radio\" for=\"ip_dhcp-" +$ID+ "\">DHCP</label>\
 				<br/>\
 				<input  class=\"trigger ip_static\" type=\"radio\"" +(($AddrSrc == "DHCP") ? '' : "checked='checked'"  )+ " name=\"ip\" value=\"static\" id=\"ip_static-" +$ID+ "\" />\
-				<label  class=\"radio\" for=\"ip_static-" +$ID+ "\">"+_("Reserved IP")+"</label>\
+				<label  class=\"radio\" for=\"ip_static-" +$ID+ "\" id=\"reserveip\">Reserved IP</label>\
 			</div>\
 			<div id=\"dhcp-mac" +$ID+ "\"  class=\"dhcp-mac form-row odd\">\
-			    	<span  class=\"readonlyLabel\">"+_('MAC Address:')+"</span>\
+			    	<span  class=\"readonlyLabel\" id=\"macaddronline\">MAC Address:</span>\
         			<span  class=\"value\">"+$onlinePrivateNetworkHost[$i.toString()]['PhysAddress']+"</span>\
 			</div>\
       		<div id=\"static-ip" +$ID+ "\"  class=\"static-ip form-row odd\" >\
-				<label for=\"staticIPAddress-" +$ID+ "\">"+_('Reserved IP Address:')+"</label>\
+				<label for=\"staticIPAddress-" +$ID+ "\" id=\"reservediploc\">Reserved IP Address:</label>\
 				<input type=\"text\" value=\""+ $onlinePrivateNetworkHost[$i.toString()]['IPv4Address'] +"\" id=\"staticIPAddress-" +$ID+ "\" name=\"staticIPAddress\"  class=\"target\" />\
 			</div>\
 			<div  class=\"form-row\">\
-				<label for=\"comment-" +$ID+ "\" >"+_('Comments:')+"</label>\
+				<label for=\"comment-" +$ID+ "\" id=\"commentloc\">Comments:</label>\
 		        <textarea id=\"comment-" +$ID+ "\" name=\"comments\" ros=\"6\" cols=\"18\" maxlength=\"63\">"+ $onlinePrivateNetworkHost[$i.toString()]['Comments'] +"</textarea>\
 			</div>\
 			<div  class=\"form-row form-btn\">\
-				<input type=\"button\" id=\"submit_editDevice-" +$ID+ "\"  class=\"btn\" value=\""+_("Save")+"\"/>\
-			    <input type=\"reset\" id=\"btn-cancel-" +$ID+ "\" class=\"btn-cancel btn alt reset\" value=\""+_("Cancel")+"\"/>\
+				<input type=\"button\" id=\"submit_editDevice-" +$ID+ "\"  class=\"btn\" value=\"Save\"/>\
+			    <input type=\"reset\" id=\"btn-cancel-" +$ID+ "\" class=\"btn-cancel btn alt reset\" value=\"Cancel\"/>\
 			</div>\
 		</form>\
 	</div> <!-- end .module -->\
@@ -1080,49 +1103,52 @@ for ($i=0; $i < $offlinePrivateNetworkHost['hostNum']; $i++) {
 
         $ID      = $offlinePrivateNetworkHost[$i.toString()]['instanceID'];
         $AddrSrc = $offlinePrivateNetworkHost[$i.toString()]['AddressSource'];
+	var unknowid="";
+        if($offlinePrivateNetworkHost[$i.toString()]['Connection']=="Unknown")
+                unknowid="unknown";
         echo("\
         <div id=\"offline-edit-device-" +$ID+ "\"  class=\"edit-device content \" style='display:none'>\
-                    <h1>"+_('Connected Devices > Devices > Edit Device')+"</h1>\
+                    <h1 id=\"conndevedithead1\">Connected Devices > Devices > Edit Device</h1>\
                     <div  class=\"educational-tip-edit\">\
-                                <p  class=\"tip\">"+_('Change the IP address assignment method for Offline Devices')+"</p> \
-                                <p  class=\"hidden\">"+_('If DHCP is selected, the Gateway\'s DHCP server will automatically assign the IP address.')+"</p> \
-                                <p  class=\"hidden\">"+_('If Reserved IP is selected, the IP address will be fixed without DHCP operation and you\'ll need to manually enter the IP address. The IP address must be within the DHCP IP address pool. To find your IP address range, go to <strong>Gateway > Connection > Local IP Network.</strong>')+"</p> \
-                                <p  class=\"hidden\">"+_('Reserved IP addresses can be assigned to any device that acts as a server or that requires a fixed IP address.')+"</p> \
+                                <p  class=\"tip\" id=\"conndeveditoffmess1\">Change the IP address assignment method for Offline Devices</p> \
+                                <p  class=\"hidden\" id='connedittip'>If DHCP is selected, the Gateway\'s DHCP server will automatically assign the IP address.</p> \
+                                <p  class=\"hidden\" id='connedittip2'>If Reserved IP is selected, the IP address will be fixed without DHCP operation and you\'ll need to manually enter the IP address. The IP address must be within the DHCP IP address pool. To find your IP address range, go to <strong>Gateway > Connection > Local IP Network.</strong></p> \
+                                <p  class=\"hidden\" id='connedittip3'>Reserved IP addresses can be assigned to any device that acts as a server or that requires a fixed IP address.</p> \
                         </div> \
                 <div  class=\"module forms\" id=\"computers-edit-" +$ID+ "\" > \
-                <h2>"+_('Edit Device')+"</h2> \
+                <h2 id=\"editdevloc1\">Edit Device</h2> \
         <form id=\"pageForm-" +$ID+ "\"   class=\"pageForm\"> \
                         <div  class=\"form-row\"> \
-                        <span  class=\"readonlyLabel\" name=\"host_name\">"+_('Host Name:')+"</span> \
+                        <span  class=\"readonlyLabel\" name=\"host_name\" id=\"hostnew\">Host Name:</span> \
                         <span  class=\"value\">" + $offlinePrivateNetworkHost[$i.toString()]['HostName'] + "</span> \
                         </div> \
                         <div  class=\"form-row odd\"> \
-                            <span  class=\"readonlyLabel\">"+_('Connection:')+"</span> \
-                        <span  class=\"value\">" + $offlinePrivateNetworkHost[$i.toString()]['Connection'] + "</span> \
+                            <span  class=\"readonlyLabel\"  id=\"connew\">Connection:</span> \
+                        <span  class=\"value\" id="+unknowid+">" + $offlinePrivateNetworkHost[$i.toString()]['Connection'] + "</span> \
                         </div>\
                         <div  class=\"form-row\">\
-                                <label for=\"ip\" style='margin:4px 5px 0 0;'>"+_('Configuration:')+"</label>\
+                                <label for=\"ip\" style='margin:4px 5px 0 0;'  id='confloc'>Configuration:</label>\
                                 <input type=\"radio\" name=\"ip\" value=\"" +$AddrSrc+ "\" " +( ($AddrSrc == "DHCP") ? "checked='checked'" : '' )+ " class=\"ip_dchp\" id=\"ip_dhcp-" +$ID+ "\" />\
                                 <label  class=\"radio\" for=\"ip_dhcp-" +$ID+ "\">DHCP</label>\
                                 <br/>\
                                 <input  class=\"trigger ip_static\" type=\"radio\"" +(($AddrSrc == "DHCP") ? '' : "checked='checked'"  )+ " name=\"ip\" value=\"static\" id=\"ip_static-" +$ID+ "\" />\
-                                <label  class=\"radio\" for=\"ip_static-" +$ID+ "\">"+_("Reserved IP")+"</label>\
+                                <label  class=\"radio\" for=\"ip_static-" +$ID+ "\" id=\"reserveip\">Reserved IP</label>\
                         </div>\
                         <div id=\"dhcp-mac" +$ID+ "\"  class=\"dhcp-mac form-row odd\">\
-                                <span  class=\"readonlyLabel\">"+_('MAC Address:')+"</span>\
+                                <span  class=\"readonlyLabel\" id=\"macaddronline\">MAC Address:</span>\
                                 <span  class=\"value\">"+$offlinePrivateNetworkHost[$i.toString()]['PhysAddress']+"</span>\
                         </div>\
                 <div id=\"static-ip" +$ID+ "\"  class=\"static-ip form-row odd\" >\
-                                <label for=\"staticIPAddress-" +$ID+ "\">"+_('Reserved IP Address:')+"</label>\
+                                <label for=\"staticIPAddress-" +$ID+ "\" id=\"reservediploc\">Reserved IP Address:</label>\
                                 <input type=\"text\" value=\""+ $resIp +"\" id=\"staticIPAddress-" +$ID+ "\" name=\"staticIPAddress\"  class=\"target\" />\
                         </div>\
                         <div  class=\"form-row\">\
-                                <label for=\"comment-" +$ID+ "\" >"+_('Comments:')+"</label>\
+                                <label for=\"comment-" +$ID+ "\" id=\"commentloc\">Comments:</label>\
                         <textarea id=\"comment-" +$ID+ "\" name=\"comments\" ros=\"6\" cols=\"18\" maxlength=\"63\">"+ $offlinePrivateNetworkHost[$i.toString()]['Comments'] +"</textarea>\
                         </div>\
                         <div  class=\"form-row form-btn\">\
-                                <input type=\"button\" id=\"submit_editDevice-" +$ID+ "\"  class=\"btn\" value=\""+_("Save")+"\"/>\
-                            <input type=\"reset\" id=\"btn-cancel-" +$ID+ "\" class=\"btn-cancel btn alt reset\" value=\""+_("Cancel")+"\"/>\
+                                <input type=\"button\" id=\"submit_editDevice-" +$ID+ "\"  class=\"btn\" value=\"Save\"/>\
+                            <input type=\"reset\" id=\"btn-cancel-" +$ID+ "\" class=\"btn-cancel btn alt reset\" value=\"Cancel\"/>\
                         </div>\
                 </form>\
         </div> <!-- end .module -->\

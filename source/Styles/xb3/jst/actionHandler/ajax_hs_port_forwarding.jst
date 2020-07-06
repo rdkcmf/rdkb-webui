@@ -82,7 +82,7 @@ if (isset($_POST['add'])) {
 					["Device.NAT.PortMapping."+$i+".Description", "string", $name],
 				];
 			$retStatus = DmExtSetStrsWithRootObj($rootObjName, true, $paramArray);
-			if (!$retStatus){$result=_("Success!");}	
+			if (!$retStatus){$result="Success!";}	
 		} 
 		else {
 			//$result="";
@@ -100,30 +100,30 @@ if (isset($_POST['add'])) {
 					$InternalPort = $key["InternalPort"];
 					if($name==$arrayName) {
 						if($InternalPort !=0){
-							$result+=_("Service name has been used in HS Port Forwarding service!\n");
+							$result+="Service name has been used in HS Port Forwarding service!\n";
 							break;
 						} else {
-							$result+=_("Service name has been used in Port Forwarding service!\n");
+							$result+="Service name has been used in Port Forwarding service!\n";
 							break;
 						}
 					} else if($type=="BOTH"||$arrayType=="BOTH"||$type==$arrayType){
 						if($arrayIP==$ip && $InternalPort==$priport){
 							if($InternalPort !=0){
-								$result+=_("Conflict with other HS Port Forwarding service. Please check Private Port(s) and IP!");
+								$result+="Conflict with other HS Port Forwarding service. Please check Private Port(s) and IP!";
 								break;
 							} else {
-								$result+=_("Conflict with other Port Forwarding service. Please check port and IP!");
+								$result+="Conflict with other Port Forwarding service. Please check port and IP!";
 								break;
 							}
 						}
 						else{
-							$porttest=PORTTEST(parseInt($startport),parseInt($endport),parseInt($arraySPort),parseInt($arrayEPort));
+							$porttest=PORTTEST($startport,$endport,$arraySPort,$arrayEPort);
 							if ($porttest==1) {
 								if($InternalPort !=0){
-									$result+=_("Conflict with other HS Port Forwarding service. Please check Public port and IP!");
+									$result+="Conflict with other HS Port Forwarding service. Please check Public port and IP!";
 									break;
 								} else {
-									$result+=_("Failure! As Port Triggering/Port Forwarding rule exists for the same port.");
+									$result+="Failure! As Port Triggering/Port Forwarding rule exists for the same port.";
 									break;
 								}
 							}
@@ -147,7 +147,7 @@ if (isset($_POST['add'])) {
 						["Device.NAT.PortMapping."+$i+".Description", "string", $name],
 					];
 				$retStatus = DmExtSetStrsWithRootObj($rootObjName, true, $paramArray);
-				if (!$retStatus){$result=_("Success!");}	
+				if (!$retStatus){$result="Success!";}	
 			}
 		}
 
@@ -163,9 +163,9 @@ if (isset($_POST['add'])) {
                                         $arraySPort=getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."+$j+".ForwardPortStart");
                                         $arrayEPort=getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."+$j+".ForwardPortEnd");
                                         if($type=="BOTH" || $arrayType=="BOTH" || $type==$arrayType){
-                                                $porttest=PORTTEST(parseInt($startport),parseInt($endport),parseInt($arraySPort),parseInt($arrayEPort));
+                                                $porttest=PORTTEST($startport,$endport,$arraySPort,$arrayEPort);
                                                 if ($porttest==1) {
-                                                        $result+=_("Failure! As Port Triggering/Port Forwarding rule exists for the same port.");
+                                                        $result+="Failure! As Port Triggering/Port Forwarding rule exists for the same port.";
                                                         break;
                                                 }
                                         }
@@ -214,31 +214,31 @@ if (isset($_POST['edit'])){
 				$InternalPort 	= $key["InternalPort"];
 				if($name==$arrayName) { 
 					if($InternalPort !=0){
-						$result+=_("Service name has been used in HS Port Forwarding service!\n");
+						$result+="Service name has been used in HS Port Forwarding service!\n";
 						break;
 					} else {
-						$result+=_("Service name has been used in Port Forwarding service!\n");
+						$result+="Service name has been used in Port Forwarding service!\n";
 						break;
 					}
 				}
 				else if($type=="BOTH"||$arrayType=="BOTH"||$type==$arrayType){
 					if($arrayIP==$ip && $InternalPort==$priport){
 						if($InternalPort !=0){
-							$result+=_("Conflict with other HS Port Forwarding service. Please check Private Port(s) and IP!");
+							$result+="Conflict with other HS Port Forwarding service. Please check Private Port(s) and IP!";
 							break;
 						} else {
-							$result+=_("Conflict with other Port Forwarding service. Please check port and IP!");
+							$result+="Conflict with other Port Forwarding service. Please check port and IP!";
 							break;
 						}
 					}
 					else{
-						$porttest=PORTTEST(parseInt($sport),parseInt($eport),parseInt($arraySPort),parseInt($arrayEPort));
+						$porttest=PORTTEST($sport,$eport,$arraySPort,$arrayEPort);
 						if ($porttest==1) {
 							if($InternalPort !=0){
-								$result+=_("Conflict with other HS Port Forwarding service. Please check Public port and IP!");
+								$result+="Conflict with other HS Port Forwarding service. Please check Public port and IP!";
 								break;
 							} else {
-								$result+=_("Failure! As Port Triggering/Port Forwarding rule exists for the same port.");
+								$result+="Failure! As Port Triggering/Port Forwarding rule exists for the same port.";
 								break;
 							}
 						}
@@ -259,7 +259,7 @@ if (isset($_POST['edit'])){
 					["Device.NAT.PortMapping."+$i+".Description", "string", $name],
 				];
 			$retStatus = DmExtSetStrsWithRootObj($rootObjName, true, $paramArray);	
-			if (!$retStatus){$result=_("Success!");}
+			if (!$retStatus){$result="Success!";}
 		}
 
 		if ($result=="") {
@@ -274,9 +274,9 @@ if (isset($_POST['edit'])){
                                         $arraySPort=getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."+$j+".ForwardPortStart");
                                         $arrayEPort=getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."+$j+".ForwardPortEnd");
                                         if($type=="BOTH" || $arrayType=="BOTH" || $type==$arrayType){
-                                                $porttest=PORTTEST(parseInt($sport),parseInt($eport),parseInt($arraySPort),parseInt($arrayEPort));
+                                                $porttest=PORTTEST($sport,$eport,$arraySPort,$arrayEPort);
                                                 if ($porttest==1) {
-                                                        $result+=_("Failure! As Port Triggering/Port Forwarding rule exists for the same port.");
+                                                        $result+="Failure! As Port Triggering/Port Forwarding rule exists for the same port.";
                                                         break;
                                                 }
                                         }
@@ -296,7 +296,7 @@ if (isset($_POST['active'])){
 		$isChecked=$_POST['isChecked'];
 		$i=$_POST['id'];
 		if (setStr("Device.NAT.PortMapping."+$i+".Enable",$isChecked,true) === true) {
-			$result=_("Success!");
+			$result="Success!";
 		}
 	}
 }

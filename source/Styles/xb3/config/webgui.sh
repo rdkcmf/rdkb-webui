@@ -130,6 +130,9 @@ cp $LIGHTTPD_DEF_CONF $LIGHTTPD_CONF
 #sed -i "s/^server.port.*/server.port = $HTTP_PORT/" /var/lighttpd.conf
 #sed -i "s#^\$SERVER\[.*\].*#\$SERVER[\"socket\"] == \":$HTTPS_PORT\" {#" /var/lighttpd.conf
 
+if [ "$BOX_TYPE" == "HUB4" ]; then
+    echo "setenv.add-environment = (\"LANG\" => \"$LOCALE\")" >> $LIGHTTPD_CONF
+fi
 HTTP_SECURITY_HEADER_ENABLE=`syscfg get HTTPSecurityHeaderEnable`
 
 if [ "$HTTP_SECURITY_HEADER_ENABLE" = "true" ]; then

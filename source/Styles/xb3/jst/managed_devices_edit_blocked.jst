@@ -103,11 +103,11 @@ $(document).ready(function() {
 		radio_name: "block",
 		id_on: "yes",
 		id_off: "no",
-		title_on: "<?% echo( _("Select always block"));?>",
-		title_off: "<?% echo( _("Unselect always block"));?>",
+		title_on: $.i18n("Select always block"),
+		title_off: $.i18n("Unselect always block"),
 		size: "small",
-		label_on: "<?% echo( _("Yes"));?>",
-		label_off: "<?% echo( _("No"));?>",
+		label_on: $.i18n("Yes"),
+		label_off: "No",
 		revertOrder: true,
 		state: jsBlockStatus ? "on" : "off"
 	}).change(function(event, data) {
@@ -125,24 +125,24 @@ $(document).ready(function() {
 				(tmpHour === 0) && (tmpHour = 12);
 				$('#time_start_hour').val(tmpHour.toString());
 				$('#time_start_minute').val(jsStartTime[1]);
-				$('#time_start_ampm').val("<?% echo( _("PM"));?>");
+				$('#time_start_ampm').val("PM");
 			} else {
 				(parseInt(jsStartTime[0])===0) && (jsStartTime[0] = 12);
 				$('#time_start_hour').val(jsStartTime[0]);
 				$('#time_start_minute').val(jsStartTime[1]);
-				$('#time_start_ampm').val("<?% echo( _("AM"));?>");
+				$('#time_start_ampm').val("AM");
 			}
 			if((parseInt(jsEndTime[0])>=12)) {
 				var tmpHour = Math.abs(parseInt(jsEndTime[0]) - 12);
 				(tmpHour === 0) && (tmpHour = 12);
 				$('#time_end_hour').val(tmpHour.toString());
 				$('#time_end_minute').val(jsEndTime[1]);
-				$('#time_end_ampm').val("<?% echo( _("PM"));?>");
+				$('#time_end_ampm').val("PM");
 			} else {
 				(parseInt(jsEndTime[0])===0) && (jsEndTime[0] = 12);
 				$('#time_end_hour').val(jsEndTime[0]);
 				$('#time_end_minute').val(jsEndTime[1]);
-				$('#time_end_ampm').val("<?% echo( _("AM"));?>");
+				$('#time_end_ampm').val("AM");
 			}
 			$("#weekday input").prop("checked", false);
 			var checkObject = document.getElementsByName("day");                          
@@ -211,7 +211,7 @@ $(document).ready(function() {
 				isMacValid = false;
 			if(isMacValid) {
 				if(block) {
-					jProgress('<?% echo( _("This may take several seconds"));?>', 60);
+					jProgress($.i18n("This may take several seconds"), 60);
 					$.ajax({
 						type:"POST",
 						url:"actionHandler/ajax_managed_devices.jst",
@@ -220,12 +220,12 @@ $(document).ready(function() {
 							//jAlert(results);
               var status = JSON.parse(results).status;
 							jHide();
-							if (status=="<?% echo( _("Success!"));?>") { window.location.href="managed_devices.jst";}
+							if (status=="Success!") { window.location.href="managed_devices.jst";}
 							else jAlert(status);
 						},
 						error:function(){
 							jHide();
-							jAlert("<?% echo( _("Failure, please try again."));?>");
+							alertLocale("Failure, please try again.");
 						}
 					});
 				} 
@@ -236,20 +236,20 @@ $(document).ready(function() {
 					var endHour   = parseInt($('#time_end_hour').val());
 					var sminute   = parseInt($('#time_start_minute').val());
 					var eminute   = parseInt($('#time_end_minute').val());
-					if (startTime_unit === "<?% echo( _("PM"));?>" && startHour !== 12) {      
+					if (startTime_unit === "PM" && startHour !== 12) {      
 						startHour += 12;
 					}
-					else if (startTime_unit === "<?% echo( _("AM"));?>" && startHour === 12) {
+					else if (startTime_unit === "AM" && startHour === 12) {
 						startHour = 0;
 					}
-					if (endTime_unit === "<?% echo( _("PM"));?>" && endHour !== 12) {      
+					if (endTime_unit === "PM" && endHour !== 12) {      
 						endHour += 12;
 					}
-					else if (endTime_unit === "<?% echo( _("AM"));?>" && endHour === 12) {
+					else if (endTime_unit === "AM" && endHour === 12) {
 						endHour = 0;
 					}
 					if ((startHour>endHour) || ((startHour==endHour) && (sminute>=eminute))) {
-						jAlert("<?% echo( _("Start time should be smaller than End time !"));?>");
+						alertLocale("Start time should be smaller than End time !");
 						return;
 					} 	
 					(0 === startHour) && (startHour = '00');
@@ -266,7 +266,7 @@ $(document).ready(function() {
 							days += ",";
 					});
 		//			alert(name+";"+mac+";"+block+";"+startTime+";"+endTime+";"+days);
-					jProgress('<?% echo( _("This may take several seconds"));?>', 60);
+					jProgress($.i18n("This may take several seconds"), 60);
 					$.ajax({
 						type:"POST",
 						url:"actionHandler/ajax_managed_devices.jst",
@@ -275,58 +275,58 @@ $(document).ready(function() {
 							//jAlert(results);
 							jHide();
               var status = JSON.parse(results).status;
-							if (status=="<?% echo( _("Success!"));?>") { window.location.href="managed_devices.jst";}
+							if (status=="Success!") { window.location.href="managed_devices.jst";}
 							else jAlert(status);
 						},
 						error:function(){
 							jHide();
-							jAlert("<?% echo( _("Failure, please try again."));?>");
+							alertLocale("Failure, please try again.");
 						}
 					});
 				} 
 			} else {
-				jAlert("<?% echo( _("MAC is not valid! Can not be saved."));?>");
+				alertLocale("MAC is not valid! Can not be saved.");
 			}
 		} else {
-				jAlert("<?% echo( _("Not valid! Can not be saved."));?>");
+				alertLocale("Not valid! Can not be saved.");
 		}
 	});
 });
 </script>
 <?% if($CloudUIEnable == "true"){ ?>
 <div id="content">
-	<h1><?% echo( _("Parental Control > Managed Devices > Edit Blocked Device"));?></h1>
+	<h1 id="editbldevmess3">Parental Control > Managed Devices > Edit Blocked Device</h1>
 	<div class="module forms enable">
 		<div id="content" style="text-align: center;">
 			<br>
-			<h3><?% echo( _("Managing your home network settings is now easier than ever.<br>Visit <a href=\"http://")+ $productLink+'">'+ $productLink + _("</a> to enable parental controls for devices connected<br>to your home network, among many other features and settings."));?></h3>
+			<h3><span id="connhom1">Managing your home network settings is now easier than ever.</span><br><span id="visithead">Visit </span><?% echo('<a href="http://'+$productLink+'">'+$productLink +'</a>');?><span id="mandevmess"> to enable parental controls for devices connected</span><br><span id="mandevmessnew">to your home network, among many other features and settings.</span></h3>
 			<br>
 		</div>
 	</div>
 </div><!-- end #content -->
 <?% } else { ?>
 <div id="content">
-	<h1><?% echo( _("Parental Control > Managed Devices > Edit Blocked Device"));?></h1>
+	<h1 id="editbldevmess3">Parental Control > Managed Devices > Edit Blocked Device</h1>
 	<form id="pageForm" method="post">
 	<div class="module">
 		<div class="forms">
-			<h2><?% echo( _("Edit Device to be Blocked"));?></h2>
+			<h2 id="editbldevmess4">Edit Device to be Blocked</h2>
             <div class="form-row">
-				<label for="device"><?% echo( _("Computer Name:"));?></label>
+				<label for="device" id="editbldevmess2">Computer Name:</label>
 				<input type="text" id="computer_name" value="name" name="computer_name" class="text" />
 			</div>
 			<div class="form-row">
-				<label for="device"><?% echo( _("MAC Address:"));?></label>
+				<label for="device" id="macaddloc">MAC Address:</label>
 				<input type="text" id="mac_address" value="mac" name="mac_address" class="text" />
 			</div>
 			<div class="form-row">
-				<label for="on"><?% echo( _("Always Block?"));?></label>
+				<label for="on" id="addblcmpmess3">Always Block?</label>
 				<span id="always_switch"></span>
 			</div>
         	<div id="block-time">
-        		<h3><?% echo( _("Set Block Time"));?></h3>
+        		<h3 id="addblcmpmess4">Set Block Time</h3>
         		<div class="form-row">
-        	<label for="time_start_hour"><?% echo( _("Start from:"));?></label>
+        	<label for="time_start_hour" id="adddevallmess7">Start from:</label>
            <select id="time_start_hour" name="time_start_hour">
                 <option value"12">12</option>
                 <option value"1">1</option>
@@ -350,12 +350,12 @@ $(document).ready(function() {
         </select>
          <label for="time_start_ampm" class="acs-hide"></label>
         <select id="time_start_ampm" name="time_start_ampm">
-                <option value"AM"><?% echo( _("AM"));?></option>
-                <option value"PM"><?% echo( _("PM"));?></option>
+                <option value"AM">AM</option>
+                <option value"PM">PM</option>
         </select>
         </div>
         <div class="form-row">
-           <label for="time_end_hour"><?% echo( _("End on:"));?></label>
+           <label for="time_end_hour" id="addblcmpmess5">End on:</label>
            <select id="time_end_hour" name="time_end_hour">
                 <option value"12">12</option>
                 <option value"1">1</option>
@@ -380,27 +380,27 @@ $(document).ready(function() {
         </select>
         <label for="time_end_ampm" class="acs-hide"></label>
         <select id="time_end_ampm" name="time_end_ampm">
-                <option value"AM"><?% echo( _("AM"));?></option>
-                <option value"PM" selected="selected"><?% echo( _("PM"));?></option>
+                <option value"AM">AM</option>
+                <option value"PM" selected="selected">PM</option>
         </select>
         </div>
-<h3><?% echo( _("Set Block Days"));?></h3>
+<h3 id="addblcmpmess6">Set Block Days</h3>
 <div class="select_all_none">
-   <a rel="weekday" href="#select_all" id="weekday_select_all" class=""><?% echo( _("Select All"));?></a> | <a rel="weekday" id="weekday_select_none" href="#select_none" class=""><?% echo( _("Select None"));?></a>
+   <a rel="weekday" href="#select_all" id="weekday_select_all" class="">Select All</a> | <a rel="weekday" id="weekday_select_none" href="#select_none" class="">Select None</a>
 </div>
 <div class="form-row" id="weekday">
-   <input type="checkbox" name="day" id="monday" value="Mon" checked="checked" /><label class="checkbox" for="monday"><?% echo( _("Monday"));?></label><br />
-   <input type="checkbox" name="day" id="tuesday" value="Tue" checked="checked" /><label class="checkbox" for="tuesday"><?% echo( _("Tuesday"));?></label><br />
-   <input type="checkbox" name="day" id="wednesday" value="Wed" checked="checked" /><label class="checkbox" for="wednesday"><?% echo( _("Wednesday"));?></label><br />
-   <input type="checkbox" name="day" id="thursday" value="Thu" checked="checked" /><label class="checkbox" for="thursday"><?% echo( _("Thursday"));?></label><br />
-   <input type="checkbox" name="day" id="friday" value="Fri" checked="checked" /><label class="checkbox" for="friday"><?% echo( _("Friday"));?></label><br />
-   <input type="checkbox" name="day" id="saturday" value="Sat" checked="checked" /><label class="checkbox" for="saturday"><?% echo( _("Saturday"));?></label><br />
-   <input type="checkbox" name="day" id="sunday" value="Sun" checked="checked" /><label class="checkbox" for="sunday"><?% echo( _("Sunday"));?></label>
+   <input type="checkbox" name="day" id="monday" value="Mon" checked="checked" /><label class="checkbox" for="monday" id="mon-">Monday</label><br />
+   <input type="checkbox" name="day" id="tuesday" value="Tue" checked="checked" /><label class="checkbox" for="tuesday" id="tue-">Tuesday</label><br />
+   <input type="checkbox" name="day" id="wednesday" value="Wed" checked="checked" /><label class="checkbox" for="wednesday" id="wed-">Wednesday</label><br />
+   <input type="checkbox" name="day" id="thursday" value="Thu" checked="checked" /><label class="checkbox" for="thursday" id="thurs-">Thursday</label><br />
+   <input type="checkbox" name="day" id="friday" value="Fri" checked="checked" /><label class="checkbox" for="friday" id="fri-">Friday</label><br />
+   <input type="checkbox" name="day" id="saturday" value="Sat" checked="checked" /><label class="checkbox" for="saturday" id="satur-">Saturday</label><br />
+   <input type="checkbox" name="day" id="sunday" value="Sun" checked="checked" /><label class="checkbox" for="sunday" id="sun-">Sunday</label>
 </div>
 </div> <!-- end #block-time -->
             <div class="form-row form-btn">
-            	<input type="button" id="btn-save" name="save" class="btn submit" value="<?% echo( _("Save"));?>"/>
-            	<input type="button" id="btn-cancel" name="cancel" class="btn alt reset" value="<?% echo( _("Cancel"));?>"/>
+            	<input type="button" id="btn-save" name="save" class="btn submit" value="Save"/>
+            	<input type="button" id="btn-cancel" name="cancel" class="btn alt reset" value="Cancel"/>
             </div>
     	</div> <!-- end .form -->
 	</div> <!-- end .module -->

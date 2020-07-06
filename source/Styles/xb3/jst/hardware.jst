@@ -44,55 +44,55 @@ $(document).ready(function() {
 	$hardware_mem_total     = Number($hardware_mem_used) + Number($hardware_mem_free);
 ?>
 <div id="content">
-	<h1><?% echo( _('Gateway > Hardware > System Hardware'));?></h1>
+	<h1 id="hardhead">Gateway > Hardware > System Hardware</h1>
 	<div id="educational-tip">
-		<p class="tip"><?% echo( _('View information about the Gateway\'s hardware.'));?></p>
-		<p class="hidden"><?% echo( _('You may need this information for troubleshooting assistance.'));?></p>
+		<p class="tip" id="hardtip1">View information about the Gateway\'s hardware.</p>
+		<p class="hidden" id="hardtip2">You may need this information for troubleshooting assistance.</p>
 	</div>
 	<div class="module forms">
-		<h2><?% echo( _('System Hardware'));?></h2>
+		<h2 id="hardmess1">System Hardware</h2>
 		<div class="form-row odd">
-			<span class="readonlyLabel"<?% echo( _('>Model:'));?></span> <span class="value">
+			<span class="readonlyLabel" id="hardmess2">Model:</span> <span class="value">
 			<?% echo( $model_name); ?></span>
 		</div>
 		<div class="form-row">
-			<span class="readonlyLabel"><?% echo( _('Vendor:'));?></span> <span class="value">
+			<span class="readonlyLabel" id="vend">Vendor:</span> <span class="value">
 			<?% echo( $manufacturer); ?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel"><?% echo( _('Hardware Revision:'));?></span> <span class="value">
+			<span class="readonlyLabel" id="hardmess3">Hardware Revision:</span> <span class="value">
 			<?% echo( $hardware_version); ?></span>
 		</div>
 		<div class="form-row">
-			<span class="readonlyLabel"><?% echo( _('Serial Number:'));?></span> <span class="value">
+			<span class="readonlyLabel" id="sernum">Serial Number:</span> <span class="value">
 			<?% echo(  $serial_number); ?></span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel"><?% echo( _('Processor Speed:'));?></span> <span class="value">
+			<span class="readonlyLabel" id="hardmess4">Processor Speed:</span> <span class="value">
 			<?% echo( $cisco_processor_speed); ?> MHz</span>
 		</div>
 		<div class="form-row">
-			<span class="readonlyLabel"><?% echo( _('DRAM Total Memory:'));?></span> <span class="value">
+			<span class="readonlyLabel" id="hardmess5">DRAM Total Memory:</span> <span class="value">
 			<?% echo( $mem_total); ?> MB</span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel"><?% echo( _('DRAM Used Memory:'));?></span> <span class="value">
+			<span class="readonlyLabel" id="hardmess6">DRAM Used Memory:</span> <span class="value">
 			<?% echo( $mem_used); ?> MB</span>
 		</div>
 		<div class="form-row">
-			<span class="readonlyLabel"><?% echo( _('DRAM Available Memory:'));?></span> <span class="value">
+			<span class="readonlyLabel" id="hardmess7">DRAM Available Memory:</span> <span class="value">
 			<?% echo( $mem_free); ?> MB</span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel"><?% echo( _('Flash Total Memory:'));?></span> <span class="value">
+			<span class="readonlyLabel" id="hardmess8">Flash Total Memory:</span> <span class="value">
 			<?% echo( $hardware_mem_total); ?> MB</span>
 		</div>
 		<div class="form-row">
-			<span class="readonlyLabel"><?% echo( _('Flash Used Memory:'));?></span> <span class="value">
+			<span class="readonlyLabel" id="hardmess9">Flash Used Memory:</span> <span class="value">
 			<?% echo( $hardware_mem_used); ?> MB</span>
 		</div>
 		<div class="form-row odd">
-			<span class="readonlyLabel"><?% echo( _('Flash Available Memory:'));?></span> <span class="value">
+			<span class="readonlyLabel"  id="hardmess10">Flash Available Memory:</span> <span class="value">
 			<?% echo( $hardware_mem_free); ?> MB</span>
 		</div>
 	</div> <!-- end .module -->

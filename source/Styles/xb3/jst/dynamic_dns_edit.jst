@@ -45,11 +45,11 @@ $(document).ready(function() {
     gateway.page.init("Advanced > Dynamic DNS", "nav-Dynamic-dns");
 	jQuery.validator.addMethod("noSpace", function(value, element) { 
 		return value.indexOf(" ") < 0 && value != ""; 
-	}, "<?% echo( _('Spaces are not allowed'));?>");   
+	}, $.i18n('Spaces are not allowed'));   
 	$.validator.addMethod("allowed_char_new", function(value, element, param) {
 	//Invalid characters are Less than (<), Greater than (>), Ampersand (&), Double quote ("), Single quote ('), Pipe (|).
 	return !param || (value.match(/[\[\(<>&"'$`;|\)]/)==null);
-	}, '<?% echo( _('Special characters are not allowed.'));?>');
+	}, $.i18n('Special characters are not allowed.'));
  
 	$("#pageForm").validate({
 		rules: {
@@ -105,7 +105,7 @@ $(document).ready(function() {
 			hostArray[0]=hostnames[0].value;
 			for(var i=1;i<hostnames.length;i++) {
 				if(hostnames[i].value==""){
-					alert("<?% echo( _('Please enter HostName.'));?>");
+					alertLocale("Please enter HostName.");
 					return false;
 				}
 				if(hostnames[i].value!=""){
@@ -122,30 +122,30 @@ $(document).ready(function() {
 
 	        for (var prop in object) {
 		   if(prop.charAt(0) == '.'){
-                        alert("<?% echo( _('Host Name starting with period(.) is not allowed'));?>");
+                        alert("Host Name starting with period(.) is not allowed);
                         return false;
                    }
 		   if(prop.charAt(prop.length-1) == '.') {
-                       alert("<?% echo( _('Host Name ending with period(.) is not allowed'));?>");
+                       alert("Host Name ending with period(.) is not allowed");
                        return false;
                    }
 		   if(prop.match((/([.])\1/ig))) {
-                      alert("<?% echo( _('Host Name having consecutive period(.) is not allowed'));?>");
+                      alert("Host Name having consecutive period(.) is not allowed");
                          return false;
                    }
 	           if(object[prop] >= 2) {
-	               alert("<?% echo( _('Host Name having Duplicate Values'));?>");
+	               alertLocale("Host Name having Duplicate Values");
 	               return false;
 	           }
 	        }
 	        if(hostname.length>64){
-	        	alert("<?% echo( _('Host Name having greater than 64 characters'));?>");
+	        	alert("Host Name having greater than 64 characters");
 	        	return false;
 	        }
 	        if(spLC!="dyndns.org" && spLC!="tzo.com" && spLC!="changeip.com" && spLC!="freedns.afraid.org") {
-				alert( _('Service provider name should be \"DynDns.org\" or \"TZO.com\" or \"changeip.com\" or \"freedns.afraid.org\".'));
+				alertLocale('Service provider name should be \"DynDns.org\" or \"TZO.com\" or \"changeip.com\" or \"freedns.afraid.org\".');
 			} else {
-				jProgress('<?% echo( _('This may take several seconds'));?>', 60);
+				jProgress($.i18n('This may take several seconds'), 60);
 				$.ajax({
 					type:"POST",
 					url:"actionHandler/ajax_ddns.jst",
@@ -154,17 +154,17 @@ $(document).ready(function() {
 						//jAlert(results);
 						jHide();
 						var result = JSON.parse(results);
-						if (!result.localeCompare("<?% echo( _("Success!"));?>")) { window.location.href="dynamic_dns.jst";}
+						if (!result.localeCompare("Success!")) { window.location.href="dynamic_dns.jst";}
 					},
 					error:function(){
 						jHide();
-						jAlert("<?% echo( _('Failure, please try again.'));?>");
+						alertLocale("Failure, please try again.");
 					}
 				});
 			}
 		}
     });
-	$("#btn-cancel").click(function() {
+	$("#btn-cancelloc").click(function() {
     	window.location = "dynamic_dns.jst";
     });
 });
@@ -188,15 +188,15 @@ var label = document.createElement("label");
   element.type="text"
 var button=document.createElement('input');
 button.type="button";
-button.value="<?% echo( _('Remove'));?>";
+button.value=$.i18n('Remove');
 label.setAttribute("id",count);
-var labeltext = document.createTextNode("<?% echo( _('Host Name:'));?>");
+var labeltext = document.createTextNode("Host Name:");
 label.appendChild(labeltext);
 count=count+1;
 element.setAttribute("id",count);
 element.setAttribute("size","36");
 element.style.margin="0px 0px 20px 0px ";
-element.setAttribute("name", "<?% echo( _('Host_Name'));?>");
+element.setAttribute("name", "Host_Name");
 if(hostName!=null) 
 	element.value = hostName;
 count=count+1;
@@ -212,16 +212,16 @@ button.onclick=add1
 }
 </script>
 <div id="content">
-	<h1><?% echo( _('Advanced > Dynamic DNS > Edit'));?></h1>
+	<h1 id="dyndnsedithead">Advanced > Dynamic DNS > Edit</h1>
 	<div id="educational-tip">
-		<p class="tip"><?% echo( _('You can edit this existing DDNS entry, by changing the service provider name/host name/user name/password combination.'));?></p>
+		<p class="tip" id="dyndnsedittip">You can edit this existing DDNS entry, by changing the service provider name/host name/user name/password combination.</p>
 	</div>
 	<form id="pageForm">
 		<div class="module forms">
-			<h2><?% echo( _('Dynamic DNS'));?></h2>
+			<h2 id="dyndnshead2">Dynamic DNS</h2>
 			<div class="form-row " id="Service_Provider" >
 				<div class="form-row "  style="float:left">
-					<label for="Service_Provider"><?% echo( _('Service Provider:'));?></label>
+					<label for="Service_Provider" id="servprov">Service Provider:</label>
 					<!--input type="text" value="dyndns.org" id="Service_Provider1"  name="Service_Provider" /-->
 					<select name="Service_Provider1" id="Service_Provider1">
 					<?%
@@ -237,21 +237,21 @@ button.onclick=add1
 				</div>
 			</div>
 			<div class="form-row odd" >
-				<label for="User_name"> <?% echo( _('User Name:'));?></label> <input type="text"  id="User_name" name="User_name" class="text" size="35"  value=""/>
+				<label for="User_name" id="usernamenew">User Name:</label> <input type="text"  id="User_name" name="User_name" class="text" size="35"  value=""/>
 			</div>
 			<div class="form-row">
-				<label for="Password"><?% echo( _('Password:'));?></label> <input type="password"  id="Password" name="Password" class="text" size="32"  value=""/>
+				<label for="Password">Password:</label> <input type="password"  id="Password" name="Password" class="text" size="32"  value=""/>
 			</div>
 			<div class="form-row odd" id="show1">
-				<label for="Host_Name"><?% echo( _('Host Name:'));?></label> <input type="text"  id="Host_Name1" name="Host_Name" class="text" size="35"  value=""/>
+				<label for="Host_Name" id="hostnew">Host Name:</label> <input type="text"  id="Host_Name1" name="Host_Name" class="text" size="35"  value=""/>
 			</div>
 			<div class="form-row odd" ><div id="foo"></div></div>
 			<div class="form-btn">
-				<input type="button" value="<?% echo( _('ADD'));?>" id="add-Dynamic-DNS" class="btn" onclick="add()"/>
+				<input type="button" value="ADD" id="add-Dynamic-DNS" class="btn" onclick="add()"/>
 			</div>
 			<div class="form-btn">
-				<input type="button" id="btn-save" value="<?% echo( _('Save Settings'));?>" class="btn submit" />
-				<input type="button" id="btn-cancel" value="<?% echo( _('Cancel Settings'));?>" class="btn alt reset"/>
+				<input type="button" id="btn-saveloc" value="Save Settings" class="btn submit" />
+				<input type="button" id="btn-cancelloc" value="Cancel Settings" class="btn alt reset"/>
 			</div>
 		</div> <!-- end .module -->
 	</form>

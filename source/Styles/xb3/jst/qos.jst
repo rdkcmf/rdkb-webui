@@ -29,8 +29,8 @@ $(document).ready(function() {
     gateway.page.init("Gateway > Connection > CallP/QoS ", "nav-qos");
 	$('#show_DSXlog').click(function(){
 		jConfirm(
-		"<?% echo( _("This action may take more than one minute. Do you want to continue?"));?>", 
-		"<?% echo( _("Are You Sure?"));?>", 
+		$.i18n("This action may take more than one minute. Do you want to continue?"), 
+		$.i18n("Are You Sure?"), 
 		function(ret){
 			if(ret){
 				window.location = "DSXlog.jst";
@@ -39,8 +39,8 @@ $(document).ready(function() {
     });
 	$('#show_callsignallog').click(function(){
 		jConfirm(
-		"<?% echo( _("This action may take more than one minute. Do you want to continue?"));?>", 
-		"<?% echo( _("Are You Sure?"));?>", 
+		$.i18n("This action may take more than one minute. Do you want to continue?"), 
+		$.i18n("Are You Sure?"), 
 		function(ret){
 			if(ret){
 				window.location = "callsignallog.jst";
@@ -52,19 +52,19 @@ function save_config(target)
 {
 	var jsConfig = "";
 	if ("switch_callsignallog" == target) {
-		if ($('#switch_callsignallog').attr("value")=="<?% echo( _("Enable Logging"));?>")	{
-			$('#switch_callsignallog').attr("value", "<?% echo( _("Disable Logging"));?>");
+		if ($('#switch_callsignallog').attr("value")==$.i18n("Enable Logging"))	{
+			$('#switch_callsignallog').attr("value", $.i18n("Disable Logging"));
 			jsConfig = '{"target":"'+target+'", "value":"'+"true"+'"}';
 		}
 		else {
-			$('#switch_callsignallog').attr("value", "<?% echo( _("Enable Logging"));?>");
+			$('#switch_callsignallog').attr("value", $.i18n("Enable Logging"));
 			jsConfig = '{"target":"'+target+'", "value":"'+"false"+'"}';
 		}
 		set_config(jsConfig);
 	}
 	else if ("clear_callsignallog" == target) {
 		jConfirm(
-			"<?% echo( _("Are you sure to clear call signal log?"));?>", 
+			$.i18n("Are you sure to clear call signal log?"), 
 			"Confirm", 
 			function(ret){if(ret){
 				jsConfig = '{"target":"'+target+'", "value":"'+"true"+'"}';
@@ -73,20 +73,20 @@ function save_config(target)
 		});
 	}
 	else if ("switch_DSXlog" == target) {
-		if ($('#switch_DSXlog').attr("value")=="<?% echo( _("Enable Logging"));?>")	{
-			$('#switch_DSXlog').attr("value", "<?% echo( _("Disable Logging"));?>");
+		if ($('#switch_DSXlog').attr("value")==$.i18n("Enable Logging"))	{
+			$('#switch_DSXlog').attr("value", $.i18n("Disable Logging"));
 			jsConfig = '{"target":"'+target+'", "value":"'+"true"+'"}';
 		}
 		else {
-			$('#switch_DSXlog').attr("value", "<?% echo( _("Enable Logging"));?>");
+			$('#switch_DSXlog').attr("value", $.i18n("Enable Logging"));
 			jsConfig = '{"target":"'+target+'", "value":"'+"false"+'"}';
 		}
 		set_config(jsConfig);
 	}	
 	else if ("clear_DSXlog" == target) {
 		jConfirm(
-			"<?% echo( _("Are you sure to clear DSX log?"));?>", 
-			"<?% echo( _("Confirm"));?>", 
+			$.i18n("Are you sure to clear DSX log?"), 
+			$.i18n("Confirm"), 
 			function(ret){if(ret){
 				jsConfig = '{"target":"'+target+'", "value":"'+"true"+'"}';
 				set_config(jsConfig);
@@ -97,7 +97,7 @@ function save_config(target)
 function set_config(jsConfig)
 {
 	// alert(jsConfig);
-	jProgress('<?% echo( _("This may take several seconds..."));?>', 60);
+	jProgress($.i18n("This may take several seconds..."), 60);
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_qos.jst",
@@ -108,24 +108,24 @@ function set_config(jsConfig)
 		},
 		error: function(){
 			jHide();
-			jAlert("<?% echo( _("Failure, please try again."));?>");
+			alertLocale("Failure, please try again.");
 		}
 	});
 }
 </script>
 <div id="content">
-    <h1><?% echo( _("Gateway > Connection > CallP/QoS"));?> </h1>
+    <h1>Gateway > Connection > CallP/QoS </h1>
     <div id="educational-tip">
-		<p class="tip"><?% echo( _("This Page shows CallP/QoS statistics of USG."));?></p>
+		<p class="tip" id="qostip">This Page shows CallP/QoS statistics of USG.</p>
     </div>
     <div class="module data">
 		<h2>CALLP </h2>
 		<table class="data">
 			<tr>
-				<th><?% echo( _("Line"));?></th>
-				<th><?% echo( _("LC State"));?></th>
-				<th><?% echo( _("CallP State"));?></th>
-				<th><?% echo( _("Loop Current"));?></th>
+				<th id="qosmess1">Line</th>
+				<th id="qosmess2">LC State</th>
+				<th id="qosmess3">CallP State</th>
+				<th id="qosmess4">Loop Current</th>
 			</tr>
 			<tr>
 				<td>1</td>
@@ -142,20 +142,23 @@ function set_config(jsConfig)
 		</table>
     </div> <!-- end .module -->
 	<div class="btn-group">
-		&nbsp;&nbsp;&nbsp;&nbsp;<input id="show_callsignallog" name="show_callsignallog" type="button"  value="<?% echo( _("Show Call Signalling Log"));?>" class="btn" />
-		<input id="switch_callsignallog" type="button" onClick="save_config('switch_callsignallog')"  value="<?% echo( getStr('Device.X_CISCO_COM_MTA.CallSignallingLogEnable')!='true'?_('Enable Logging'):_('Disable Logging')); ?>" class="btn alt" />
-        <input id="clear_callsignallog"  type="submit" onClick="save_config('clear_callsignallog')"   value="<?% echo( _("Clear"));?>" class="btn" />
+		&nbsp;&nbsp;&nbsp;&nbsp;<input id="show_callsignallog" name="show_callsignallog" type="button"  value="Show Call Signalling Log" class="btn" />
+		<?%
+			var callsigLog =getStr('Device.X_CISCO_COM_MTA.CallSignallingLogEnable')!='true'? 'enablelogging' : 'disablelogging';
+		?>
+		<input id="switch_callsignallog" type="button" onClick="save_config('switch_callsignallog')"  value="<?% echo( getStr('Device.X_CISCO_COM_MTA.CallSignallingLogEnable')!='true'?'Enable Logging':'Disable Logging'); ?>" class="btn alt <?% echo(callsigLog); ?>" />
+        <input id="clear_callsignallog"  type="submit" onClick="save_config('clear_callsignallog')"   value="Clear" class="btn" />
     </div>
 	<div class="module data">
 		<h2>QoS </h2>
 		<table class="data">
 			<tr>
 				<th>SFID</th>
-				<th><?% echo( _("Service Class Name"));?></th>
-				<th><?% echo( _("Direction"));?></th>
-				<th><?% echo( _("Primary Flow"));?></th>
-				<th><?% echo( _("Traffic Type"));?></th>
-				<th><?% echo( _("Packets"));?></th>
+				<th id="qosmess5">Service Class Name</th>
+				<th id="qosmess6">Direction</th>
+				<th id="qosmess7">Primary Flow</th>
+				<th id="qosmess8">Traffic Type</th>
+				<th id="qosmess9">Packets</th>
 			</tr>
 			<?%
 				$ids = array_filter(explode(",", getInstanceIds("Device.X_CISCO_COM_MTA.ServiceFlow.")));
@@ -174,9 +177,12 @@ function set_config(jsConfig)
 		</table>
     </div> <!-- end .module -->
     <div class="btn-group">
-		&nbsp;&nbsp;&nbsp;&nbsp;<input id="show_DSXlog" name="show_DSXlog" type="button"   value="<?% echo( _("Show DSX Log"));?>" class="btn" />
-        <input id="switch_DSXlog" type="button" onClick="save_config('switch_DSXlog')" value="<?% echo( getStr('Device.X_CISCO_COM_MTA.DSXLogEnable')!='true'?_('Enable Logging'):_('Disable Logging')); ?>" class="btn alt" />
-        <input id="clear_DSXlog"  type="submit" onClick="save_config('clear_DSXlog')"  value="<?% echo( _("Clear"));?>" class="btn" />
+		&nbsp;&nbsp;&nbsp;&nbsp;<input id="show_DSXlog" name="show_DSXlog" type="button"   value="Show DSX Log" class="btn" />
+	<?%
+                        var callsigLog =getStr('Device.X_CISCO_COM_MTA.DSXLogEnable')!='true'? 'enablelogging' : 'disablelogging';
+        ?>
+        <input id="switch_DSXlog" type="button" onClick="save_config('switch_DSXlog')" value="<?% echo( getStr('Device.X_CISCO_COM_MTA.DSXLogEnable')!='true'?'Enable Logging':'Disable Logging'); ?>" class="btn alt <?% echo(callsigLog); ?>" />
+        <input id="clear_DSXlog"  type="submit" onClick="save_config('clear_DSXlog')"  value="Clear" class="btn" />
     </div>
 </div><!-- end #content -->
 <?% include('includes/footer.jst'); ?>

@@ -89,7 +89,7 @@ switch($timef){			//	[$mintime, $maxtime)
 		$mintime=strtotime("-90 days");
 	break;
 	default:
-		throw Error(_('Not allowed!'));
+		throw Error('Not allowed!');
 }
 switch($mode){
 	case "site":
@@ -105,7 +105,7 @@ switch($mode){
 		$type="all";
 		break;
 	default:
-		throw Error(_('Not allowed!'));
+		throw Error('Not allowed!');
 }
 exec("/usr/ccsp/ccsp_bus_client_tool eRT getv Device.X_CISCO_COM_Security.InternetAccess.LogEntry. | grep 'type:' > /tmp/log_parental.txt");
 $file= fopen("/tmp/log_parental.txt", "r");

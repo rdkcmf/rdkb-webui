@@ -19,7 +19,7 @@
 <?%
 session_start();
 if ($_SESSION["loginuser"] == "" || $_SESSION["loginuser"] == false) {
-	echo( '<script type="text/javascript">alert("'+_("Please Login First!")+'"); location.href="../index.jst";</script>');
+	echo( '<script type="text/javascript">alert("Please Login First!"); location.href="../index.jst";</script>');
 	exit(0);
 }
 $blockedSiteInfo = json_decode($_POST['BlockInfo'], true);
@@ -41,7 +41,7 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 		if($validation) $validation = validTime($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime']);
 		if($validation) $validation = validDays($blockedSiteInfo['blockedDays']);
 	}
-	$result = ($validation)?'':_('Invalid Inputs!');
+	$result = ($validation)?'':'Invalid Inputs!';
 	if ($result == ""){
 	   	//firstly, check whether URL exist or not
 		$url = $blockedSiteInfo['URL'];
@@ -61,7 +61,7 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 			$TD2=[$start_Time, $end_Time, $block_Days];
 			$urlVal=explode("://",$value["Site"])[1] ;	
 			if ($urlVal && (!strcasecmp($urlVal,$checkUrl)) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
-				$result += _("Conflict with other blocked site rule. Please check your input!");
+				$result += "Conflict with other blocked site rule. Please check your input!";
 				break;
 			}
 		}
@@ -79,10 +79,10 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 			];
 			$retStatus = DmExtSetStrsWithRootObj($rootObjName, true, $paramArray);
 			if (!$retStatus){
-				$result=_("Success!");
+				$result="Success!";
 			}
 			else {
-				$result = _('Failed to add');
+				$result = 'Failed to add';
 			}
 			/*setStr($objPrefix+$index+".Site", $blockedSiteInfo['URL'], false);
 			setStr($objPrefix+$index+".AlwaysBlock", $blockedSiteInfo['alwaysBlock'], false);
@@ -117,10 +117,10 @@ if( array_key_exists('URL', $blockedSiteInfo) ) {
 				$retStatus2 = DmExtSetStrsWithRootObj($rootObjName, true, $paramArray);
 			}
 			if ((!$retStatus1 && !$timeData[3]) || (!$retStatus1 && $timeData[3] && !$retStatus2)){
-				$result=_("Success!");
+				$result="Success!";
 			}
 			else {
-				$result = _('Failed to add');
+				$result = 'Failed to add';
 			}
 /*
 			setStr($objPrefix+$index+".Site", $blockedSiteInfo['URL'], false);
@@ -143,7 +143,7 @@ else{
 		if($validation) $validation = validTime($blockedSiteInfo['StartTime'], $blockedSiteInfo['EndTime']);
 		if($validation) $validation = validDays($blockedSiteInfo['blockedDays']);
 	}
-	$result = ($validation)?'':_('Invalid Inputs!');
+	$result = ($validation)?'':'Invalid Inputs!';
 	$keyword = $blockedSiteInfo['Keyword'];
 		$rootObjName    = "Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.";
 		$paramNameArray = ["Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite."];
@@ -159,7 +159,7 @@ else{
 		$TD1=[$startTime, $endTime, $blockDays];
 		$TD2=[$start_Time, $end_Time, $block_Days];
 		if ((strcasecmp($keyword,$value["Site"]) == 0) && ((($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)))){
-			$result += _("Conflict with other blocked Keyword rule. Please check your input!");
+			$result += "Conflict with other blocked Keyword rule. Please check your input!";
 			break;
 		}
 	}
@@ -176,10 +176,10 @@ else{
 			];
 			$retStatus = DmExtSetStrsWithRootObj($rootObjName, true, $paramArray);
 			if (!$retStatus){
-				$result=_("Success!");
+				$result="Success!";
 			}
 			else {
-				$result = _('Failed to add');
+				$result = 'Failed to add';
 			}
 			/*setStr($objPrefix+$index+".Site", $blockedSiteInfo['Keyword'], false);
 			setStr($objPrefix+$index+".AlwaysBlock", $blockedSiteInfo['alwaysBlock'], false);
@@ -214,10 +214,10 @@ else{
 				$retStatus2 = DmExtSetStrsWithRootObj($rootObjName, true, $paramArray);
 			}
 			if ((!$retStatus1 && !$timeData[3]) || (!$retStatus1 && $timeData[3] && !$retStatus2)){
-				$result=_("Success!");
+				$result="Success!";
 			}
 			else {
-				$result = _('Failed to add');
+				$result = 'Failed to add';
 			}
 /*
 			setStr($objPrefix+$index+".Site", $blockedSiteInfo['Keyword'], false);

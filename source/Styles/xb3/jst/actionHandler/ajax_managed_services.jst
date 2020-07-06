@@ -79,7 +79,7 @@ if (isset($_POST['add'])){
 		if($validation) $validation = validTime($_POST['startTime'], $_POST['endTime']);
 		if($validation) $validation = validDays($_POST['days']);
 	}
-	$result = ($validation)?'':_('Invalid Inputs!');
+	$result = ($validation)?'':'Invalid Inputs!';
 	if($validation) {
 		$service=$_POST['service'];
 		$protocol=$_POST['protocol'];
@@ -127,7 +127,7 @@ if (isset($_POST['add'])){
 				}
 				setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service."+$i+".AlwaysBlock",$block,true);
 			}
-			$result=_("Success!");
+			$result="Success!";
 		}
 		else {
 			$result="";
@@ -146,7 +146,7 @@ if (isset($_POST['add'])){
 				$end_Time = $key["EndTime"];
 				$block_Days = $key["BlockDays"];
 				if (strcasecmp($service,$serviceName) == 0) {
-					$result += _("Service Name has been used!\n");
+					$result += "Service Name has been used!\n";
 					break;
 				}
 				else if ($type=="BOTH" || $ptcol_type=="BOTH" || $type==$ptcol_type) {
@@ -156,7 +156,7 @@ if (isset($_POST['add'])){
 						$TD1=[$startTime, $endTime, $blockDays]/*p2j-array*/;
 						$TD2=[$start_Time, $end_Time, $block_Days]/*p2j-array*/;
 						if(($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)){
-							$result += _("Conflict with other service. Please check your input!");
+							$result += "Conflict with other service. Please check your input!";
 							break;
 						}
 					}
@@ -200,7 +200,7 @@ if (isset($_POST['add'])){
 					}
 					setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Service."+$i+".AlwaysBlock",$block,true);
 				}
-				$result = _("Success!");
+				$result = "Success!";
 			}
 		}
 	}
@@ -223,7 +223,7 @@ if (isset($_POST['edit'])){
 		if($validation) $validation = validTime($_POST['startTime'], $_POST['endTime']);
 		if($validation) $validation = validDays($_POST['days']);
 	}
-	$result = ($validation)?'':_('Invalid Inputs!');
+	$result = ($validation)?'':'Invalid Inputs!';
 	if($validation) {
 		$i=$_POST['ID'];
 		$service=$_POST['service'];
@@ -257,7 +257,7 @@ if (isset($_POST['edit'])){
 			$end_Time = $key["EndTime"];
 			$block_Days = $key["BlockDays"];
 			if (strcasecmp($service,$serviceName) == 0) {
-				$result += _("Service Name has been used!\n");
+				$result += "Service Name has been used!\n";
 				break;
 			}
 			else if ($type=="BOTH" || $ptcol_type=="BOTH" || $type==$ptcol_type) {
@@ -267,7 +267,7 @@ if (isset($_POST['edit'])){
 					$TD1=[$startTime, $endTime, $blockDays]/*p2j-array*/;
 					$TD2=[$start_Time, $end_Time, $block_Days]/*p2j-array*/;
 					if(($always_Block == "true") || ($block == "true") || time_date_conflict($TD1, $TD2)){
-						$result += _("Conflict with other service. Please check your input!");
+						$result += "Conflict with other service. Please check your input!";
 						break;
 					}
 				}
@@ -322,7 +322,7 @@ if (isset($_POST['edit'])){
                                       $j=$j+1;
                                 }
 			}
-			$result=_("Success!");
+			$result="Success!";
 		}
 	}
 	header("Content-Type: application/json");

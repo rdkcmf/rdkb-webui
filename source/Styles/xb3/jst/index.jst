@@ -23,18 +23,12 @@
  * Set the Locale for the Web UI based on the LANG setting or current linux locale
  */
 $locale = getenv("LANG");
-if($locale != false) {
-    if(!isset($_SESSION['language'])){
-        //putenv("LANG=" . $locale);
-        exec("export LC_MESSAGES="+$locale);
-		exec("export LC_TIME="+$locale);
-        
-        $domain = "rdkb";
-        bindtextdomain($domain, 'locales');
-        bind_textdomain_codeset($domain, 'UTF-8');
-        textdomain($domain);
-        $_SESSION['language'] = $locale; // set the default locale for future pages
-    }
+$locale = $locale ? $locale : "false";
+if($locale != "false"){
+	if(strstr($locale, 'it')){
+        	$locale="it";
+        	$_SESSION['language'] = $locale;
+	}
 }
 ?>
 <?% include('includes/utility.jst'); ?>
@@ -120,9 +114,6 @@ if(!$isMSO) {
 		$ip_addr = strpos($SERVER_ADDR, ":") == false ? $LanGwIPv4 : $LanGwIPv6 ;
 		 $SecWebUI = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.SecureWebUI.Enable");
                 $LocFqdn = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.SecureWebUI.LocalFqdn");
-                if (!strcmp($url, "myrouter.io")) {
-                        $url = $ip_addr;
-                }
 		if(strcmp($url,$ip_addr)){
 			if(($enableRFCpativePortal=="true") && ($cableRFSignalStatus=="false") && !(($allowEthWanMode=="true") && ($wan_enabled=="true")) &&($modelName!="X5001")){
 				if (!strcmp($SecWebUI, "true")) {
@@ -203,7 +194,7 @@ if (strpos($partnersId, "sky-") !== false) {
 	<script type="text/javascript" src="./cmn/js/lib/jquery-migrate-1.2.1.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.validate.js"></script>
 	<script type="text/javascript" src="<?% 
-	    if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) { 
+	    if((isset($locale)&&($locale!="false")) && !strstr($locale, 'en')) { 
 	        echo( './locales/'+$locale+'/cmn/js/lib/jquery.alerts.js');
 	    } else {
 	        echo( './cmn/js/lib/jquery.alerts.js');
@@ -211,31 +202,41 @@ if (strpos($partnersId, "sky-") !== false) {
 	<script type="text/javascript" src="./cmn/js/lib/jquery.ciscoExt.js"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.highContrastDetect.js"></script>
 	<script type="text/javascript" src="<?% 
-	    if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) { 
+	    if((isset($locale)&&($locale!="false")) && !strstr($locale, 'en')) { 
 	        echo( './locales/'+$locale+'/cmn/js/lib/jquery.radioswitch.js');
 	    } else {
 	        echo( './cmn/js/lib/jquery.radioswitch.js');
 	    }?>"></script>
 	<script type="text/javascript" src="./cmn/js/lib/jquery.virtualDialog.js"></script>
 	<script type="text/javascript" src="<?% 
-	    if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) { 
+	    if((isset($locale)&&($locale!="false")) && !strstr($locale, 'en')) { 
 	        echo( './locales/'+$locale+'/cmn/js/utilityFunctions.js');
 	    } else {
 	        echo( './cmn/js/utilityFunctions.js');
 	    }?>"></script>
     <script type="text/javascript" src="<?% 
-        if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) {
+        if((isset($locale)&&($locale!="false")) && !strstr($locale, 'en')) {
             echo( './locales/'+$locale+'/cmn/js/gateway.js');
         } else {
             echo( './cmn/js/gateway.js');
         }?>"></script>	
 	<script type="text/javascript" src="./cmn/js/lib/bootstrap.min.js"></script>
     <script type="text/javascript" src="<?% 
-    if((isset($locale)&&($locale!="")) && !strstr($locale, 'en')) { 
+    if((isset($locale)&&($locale!="false")) && !strstr($locale, 'en')) { 
         echo( './locales/'+$locale+'/cmn/js/lib/bootstrap-waitingfor.js');
     } else {
         echo( './cmn/js/lib/bootstrap-waitingfor.js');
     }?>"></script>
+  <script src="locale/CLDRPluralRuleParser.js"></script>
+  <script src="locale/jquery.i18n.js"></script>
+  <script src="locale/jquery.i18n.messagestore.js"></script>
+  <script src="locale/jquery.i18n.fallbacks.js"></script>
+  <script src="locale/jquery.i18n.language.js"></script>
+  <script src="locale/jquery.i18n.parser.js"></script>
+  <script src="locale/jquery.i18n.emitter.js"></script>
+  <script src="locale/jquery.i18n.emitter.bidi.js"></script>
+   <script src="locale/global.js"></script> <!-- add this -->
+
 <style>
 
 		.helix{
@@ -266,27 +267,28 @@ if (strpos($partnersId, "sky-") !== false) {
 //Old Nav Bar. Put new login here.
 ?>
 <!--div id="nav"-->
-<h1><?% echo( _('Gateway > Login'));?></h1>
+<h1 id="index_header">Gateway > Login</h1>
 <div style="float: left; margin: 0 20px 20px 0; width: 60%; height:290px;background:white;">
-	<form action="check.jst" method="post" id="pageForm"  onsubmit="return f();">
-	<div class="form-row">
-		<p><?% echo( _('Please login to view and manage your Gateway settings.'));?></p>
-	</div>
-	<div>
-		<table  style="background:white; text-align:center;">
-			<tr>
-				<td><label for="username"><b><?% echo( _('Username:'));?></b></label></td>
-				<td><input type="text"     id="username" name="username" style="width: 250px;" class="text" autocomplete="off" /></td>
-			</tr>
-			<tr>
-				<td><label for="password"><b><?% echo( _('Password:'));?></b></label></td>
-				<td><input type="password" id="password" name="password" style="width: 250px;" class="text" autocomplete="off" /></td>
-			</tr>
-		</table>
-	</div>
-	<div class="form-btn"  style="margin-top: 25px;text-align:center;">
-		<input type="submit" class="btn" value="<?% echo( _('Login')); ?>" />
-	</div>
+        <form action="check.jst" method="post" id="pageForm"  onsubmit="return f();">
+        <div class="form-row">
+                <p id="index_helptext">Please login to view and manage your Gateway settings.</p>
+        </div>
+        <div>
+                <table  style="background:white; text-align:center;">
+                        <tr>
+                                <td><label for="username"><b><div id="username_label">Username:</div></b></label></td>
+                                <td><input type="text"     id="username" name="username" style="width: 250px;" class="text" autocomplete="off" /></td>
+                        </tr>
+                        <tr>
+                                <td><label for="password"><b><label id="password">Password:</label></b></label></td>
+                                <td><input type="password" id="password" name="password" style="width: 250px;" class="text" autocomplete="off" /></td>
+                        </tr>
+                </table>
+        </div>
+        <div class="form-btn"  style="margin-top: 25px;text-align:center;">
+                <input type="submit" class="btn" value="Login" />
+        </div>
+<input type="hidden" name="locale" id="locale" value="<?% echo($locale); ?>">
 </form>
 </div>
 <script type="text/javascript">
@@ -305,7 +307,7 @@ $(document).ready(function() {
 		,invalidHandler: function(form, validator) {
 			var errors = validator.numberOfInvalids();
 			if (errors) {
-				var message = errors == 1 ? '<?% echo( _("You missed 1 field. It has been highlighted"));?>' : '<?% echo( _("You missed") );?> ' + errors + ' <?% echo( _("fields. They have been highlighted"));?>';
+				var message = errors == 1 ? $.i18n("You missed 1 field. It has been highlighted") : $.i18n("You missed") + errors + $.i18n("fields. They have been highlighted");
 				$("div.error").html(message);
 				$("div.error").show();
 			} else {
@@ -324,11 +326,11 @@ $(document).ready(function() {
 		}
 		,messages: {
 			username: {
-				required: "<?% echo( _('Username cannot be blank. Please enter a valid username.'));?>"
+				required: $.i18n('Username cannot be blank. Please enter a valid username.')
 			}
 			,password: {
-				required: "<?% echo( _('Password cannot be blank. Please enter a valid password.'));?>"
-				,minlength: "<?% echo( _('Password must be at least 3 characters.'));?>"
+				required: $.i18n('Password cannot be blank. Please enter a valid password.')
+				,minlength: $.i18n("Password must be at least 3 characters.")
 			}
 		}
 	});

@@ -31,15 +31,15 @@ $(document).ready(function() {
     $('#service_name').focus();
 	jQuery.validator.addMethod("port",function(value,element){
 		return this.optional(element) || (value.match(/^\d+$/g) && value >= 0 && value <= 65535);
-	}, "<?% echo( _("Please enter a port number less than 65536."));?>");
+	}, $.i18n("Please enter a port number less than 65536."));
 	jQuery.validator.addMethod("triggermore",function(value,element){
 		var fstartport=parseInt($("#from_start_port").val());
 		return this.optional(element) || value>=fstartport;
-	}, "<?% echo( _("Please enter a value more than or equal to Trigger Starting Port."));?>");
+	}, $.i18n("Please enter a value more than or equal to Trigger Starting Port."));
 	jQuery.validator.addMethod("targetmore",function(value,element){
 		var tstartport=parseInt($("#to_start_port").val());
 		return this.optional(element) || value>=tstartport;
-	}, "<?% echo( _("Please enter a value more than or equal to Target Starting Port."));?>");	
+	}, $.i18n("Please enter a value more than or equal to Target Starting Port."));	
     $("#pageForm").validate({
         rules: {
             service_name: {
@@ -91,7 +91,7 @@ $(document).ready(function() {
 		var tsp=$('#to_start_port').val();
 		var tep=$('#to_end_port').val();
 		if($("#pageForm").valid()){
-		jProgress('<?% echo( _("This may take several seconds."));?>',60);
+		jProgress($.i18n('This may take several seconds.'),60);
 		$.ajax({
 			type:"POST",
 			url:"actionHandler/ajax_port_triggering.jst",
@@ -99,13 +99,13 @@ $(document).ready(function() {
 			dataType: "json",
 			success:function(results){
 				jHide();
-				if (results=="<?% echo( _("Success!"));?>") { window.location.href="port_triggering.jst";}
-				else if (results=="") {jAlert('<?% echo( _("Failure! Please check your inputs."));?>');}
-				else jAlert(results);
+				if (results=="Success!") { window.location.href="port_triggering.jst";}
+				else if (results=="") {alertLocale('Failure! Please check your inputs.');}
+				else alertLocale(results);
 			},
 			error:function(){
 				jHide();
-				jAlert("<?% echo( _("Something went wrong, please try later!"));?>");
+				alertLocale("Something went wrong, please try later!");
 			}
 		});
 		}
@@ -127,20 +127,20 @@ $(document).ready(function() {
     $port_trigger_value = KeyExtGet("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.", $port_trigger_param);
 ?>
 <div id="content">
-	<h1><?% echo( _("Advanced > Port Triggering > Edit Port Trigger"));?></h1>
+	<h1 id="portrigedthead">Advanced > Port Triggering > Edit Port Trigger</h1>
     <div id="educational-tip">
-		<p class="tip"><?% echo( _("Edit a rule for port triggering services by user."));?></p>
-		<p class="hidden"><?% echo( _("Port triggering monitors outbound traffic on your network. When traffic is detected on a particular outbound port, the Gateway remembers that computer's IP address, triggers the inbound port to accept the incoming traffic, and directs the communications to the same computer."));?></p>
-		<p class="hidden"><?% echo( _("Port triggering settings can affect the Gateway's performance."));?></p>
+		<p class="tip" id="porttrigedttip1">Edit a rule for port triggering services by user.</p>
+		<p class="hidden"  id="portrigtip2">Port triggering monitors outbound traffic on your network. When traffic is detected on a particular outbound port, the Gateway remembers that computer's IP address, triggers the inbound port to accept the incoming traffic, and directs the communications to the same computer.</p>
+		<p class="hidden"  id="portrigtip4">Port triggering settings can affect the Gateway's performance.</p>
 	</div>
 	<form method="post" id="pageForm" action="">
 	<div class="module forms">
-		<h2><?% echo( _("Edit Port Trigger"));?></h2>
+		<h2 id="portrigedtmess1">Edit Port Trigger</h2>
 		<div class="form-row odd">
-			<label for="service_name"><?% echo( _("Service Name:"));?></label> <input type="text" class="text" value="<?% echo( $port_trigger_value["service_name"]); ?>" id="service_name" name="service_name" />
+			<label for="service_name" id="servname">Service Name:</label> <input type="text" class="text" value="<?% echo( $port_trigger_value["service_name"]); ?>" id="service_name" name="service_name" />
 		</div>
 		<div class="form-row">
-			<label for="service_type"><?% echo( _("Service Type:"));?></label>
+			<label for="service_type" id="servtyp">Service Type:</label>
 			<select id="service_type">
 			<?% $type = $port_trigger_value["type"]; ?>
 			<option value="tcp_udp" <?% if($type === 'BOTH') echo( 'selected'); ?>>TCP/UDP</option>
@@ -149,20 +149,20 @@ $(document).ready(function() {
 			</select>
 		</div>
 		<div class="form-row odd">
-			<label for="from_start_port"><?% echo( _("Trigger From Starting Port:"));?></label>  <input type="text" class="text" value="<?% echo( $port_trigger_value["from_start_port"]); ?>" id="from_start_port" name="from_start_port" />
+			<label for="from_start_port" id="portrigedtmess2">Trigger From Starting Port:</label>  <input type="text" class="text" value="<?% echo( $port_trigger_value["from_start_port"]); ?>" id="from_start_port" name="from_start_port" />
 		</div>
 		<div class="form-row">
-			<label for="from_end_port"><?% echo( _("Trigger From Ending Port:"));?></label>  <input type="text" class="text" value="<?% echo( $port_trigger_value["from_end_port"]); ?>" id="from_end_port" name="from_end_port" />
+			<label for="from_end_port" id="portrigedtmess3">Trigger From Ending Port:</label>  <input type="text" class="text" value="<?% echo( $port_trigger_value["from_end_port"]); ?>" id="from_end_port" name="from_end_port" />
 		</div>
 	    <div class="form-row odd">
-			<label for="to_start_port"><?% echo( _("Target To Starting Port:"));?></label>  <input type="text" class="text" value="<?% echo( $port_trigger_value["to_start_port"]);?>" id="to_start_port" name="to_start_port" />
+			<label for="to_start_port" id="portrigaddmess4">Target To Starting Port:</label>  <input type="text" class="text" value="<?% echo( $port_trigger_value["to_start_port"]);?>" id="to_start_port" name="to_start_port" />
 		</div>
 		<div class="form-row">
-			<label for="to_end_port"><?% echo( _("Target To Ending Port:"));?></label>  <input type="text" class="text" value="<?% echo( $port_trigger_value["to_end_port"]);?>" id="to_end_port" name="to_end_port" />
+			<label for="to_end_port" id="portrigaddmess5">Target To Ending Port:</label>  <input type="text" class="text" value="<?% echo( $port_trigger_value["to_end_port"]);?>" id="to_end_port" name="to_end_port" />
 		</div>
 		<div class="form-btn">
-			<input type="button" id="btn-save" value="<?% echo( _("Save"));?>" class="btn submit"/>
-			<input type="reset" id="btn-cancel" value="<?% echo( _("Cancel"));?>" class="btn alt reset"/>
+			<input type="button" id="btn-save" value="Save" class="btn submit"/>
+			<input type="reset" id="btn-cancel" value="Cancel" class="btn alt reset"/>
 		</div>
 	</div> <!-- end .module -->
 	</form>

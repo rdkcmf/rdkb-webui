@@ -145,7 +145,7 @@ function populateIPv6Addr(v6addr){
 	}
 	$.validator.addMethod("hexadecimal", function(value, element) {
 		return this.optional(element) || /^[a-fA-F0-9]+$/i.test(value);
-	}, "<?% echo( _('Only hexadecimal characters are valid. Acceptable characters are ABCDEF0123456789.'));?>");
+	}, $.i18n("Only hexadecimal characters are valid. Acceptable characters are ABCDEF0123456789."));
 	$.validator.addMethod("isIp4ValidSubnet",function(value,element){		
 		var netmask = jsNetMask;
 		var ipaddr = jsGatewayIP;
@@ -155,9 +155,9 @@ function populateIPv6Addr(v6addr){
 		}
 		var dhcp_addr = $("#dmz_host_address_1").val() + "." + $("#dmz_host_address_2").val() + "." + $("#dmz_host_address_3").val() + "." + $("#dmz_host_address_4").val();
 		isIp4Valid = ValidIp4Addr(dhcp_addr, ipaddr, netmask);
-		$("p:contains('<?% echo( _("DMZ v4 Host address is beyond the valid range."));?>'):visible").remove();
+		$("p:contains($.i18n('DMZ v4 Host address is beyond the valid range.')):visible").remove();
 		return isIp4Valid;
-	}, "<?% echo( _('DMZ v4 Host address is beyond the valid range.'));?>");
+	}, $.i18n('DMZ v4 Host address is beyond the valid range.'));
 	var validator =	$("#pageForm").validate({
 		debug: true,
 		onfocusout: false,
@@ -190,8 +190,8 @@ function populateIPv6Addr(v6addr){
 		radio_name: "dmz",
 		id_on: "dmz_enabled",
 		id_off: "dmz_disabled",
-		title_on: "<?% echo( _('Enable DMZ'));?>",
-		title_off: "<?% echo( _('Disable DMZ'));?>",
+		title_on: $.i18n("Enable DMZ"),
+		title_off: $.i18n("Disable DMZ"),
 		state: jsEnableDMZ ? "on" : "off"
 	});	
 	$('[id^=dmz_host_address_]').each(function(index){
@@ -243,25 +243,25 @@ $('#save_setting').click(function() {
 		// check some extra IPv4 rule. TODO: add IPv6 checking
 		if(isValid && !IsBlank("dmz_host_address_")) {
 			if (host == jsGatewayIP){
-				jAlert("<?% echo( _('DMZ v4 Host IP can\'t be equal to the Gateway IP address !'));?>");
+				alertLocale("DMZ v4 Host IP can\'t be equal to the Gateway IP address !");
 				isValid = false;
 			}
 			else if(jsNetMask.indexOf('255.255.255') >= 0){
 				//the first three field should be equal to gw ip field
 				if((jsGwIP[0] != host0) || (jsGwIP[1] != host1) || (jsGwIP[2] != host2) || host3<2 || host3>253){
-					jAlert('<?% echo( _("DMZ v4 Host IP is not in valid range:"));?>\n' + jsGwIP[0] + '.' + jsGwIP[1] + '.' + jsGwIP[2] + '.[2~253]');
+					jAlert($.i18n("DMZ v4 Host IP is not in valid range:")+'\n' + jsGwIP[0] + '.' + jsGwIP[1] + '.' + jsGwIP[2] + '.[2~253]');
 					isValid = false;
 				}
 			}
 			else if(jsNetMask == "255.255.0.0"){
 				if((jsGwIP[0] != host0) || (jsGwIP[1] != host1)){
-					jAlert('<?% echo( _("DMZ v4 Host IP is not in valid range:"));?>\n' + jsGwIP[0] + '.' + jsGwIP[1] + '.[0~255]' + '.[2~253]');
+					jAlert($.i18n("DMZ v4 Host IP is not in valid range:")+'\n' + jsGwIP[0] + '.' + jsGwIP[1] + '.[0~255]' + '.[2~253]');
 					isValid = false;
 				}
 			}
 			else{
 				if(jsGwIP[0] != host0){
-					jAlert("<?% echo( _('DMZ v4 Host IP is not in valid range:'));?>"+"\n");
+					jAlert($.i18n("DMZ v4 Host IP is not in valid range:")+"\n");
 					isValid = false;
 				}
 			}
@@ -282,7 +282,7 @@ $('#save_setting').click(function() {
 });
 function saveQoS(information){
 //alert(information);
-	jProgress('<?% echo( _("This may take several seconds"));?>', 60);
+	jProgress($.i18n("This may take several seconds"), 60);
 	$.ajax({
 		type: "POST",
 		url: "actionHandler/ajaxSet_DMZ_configuration.jst",
@@ -293,7 +293,7 @@ function saveQoS(information){
 		},
 		error: function(){            
 			jHide();
-			jAlert("<?% echo( _('Failure, please try again.'));?>");
+			alertLocale('Failure, please try again.');
 		}
 	});
 }
@@ -331,12 +331,12 @@ populate_IPv6();
 </script>
 <?% if($CloudUIEnable == "true"){ ?>
 <div  id="content">
-	<h1><?% echo( _('Advanced > DMZ'));?></h1>
+	<h1 id="advdmzhead1">Advanced > DMZ</h1>
 	<div  id=dmz-items>
 		<div class="module data">
 			<div id="content" style="text-align: center;">
 				<br>
-				<h3><?% echo( _("Managing your home network settings is now easier than ever.<br>Visit <a href=\"http://")+$productLink+'">'+ $productLink +_("</a> to set up DMZ, among many other features and settings."));?></h3>
+				<h3><span id="connhom1">Managing your home network settings is now easier than ever.</span><br><span id="visithead">Visit </span><?% echo('<a href="http://'+$productLink+'">'+$productLink +'</a>');?><span id="dmzmess"> to set up DMZ, among many other features and settings.</span></h3>
 				<br>
 			</div>
 		</div> <!-- end .module -->
@@ -344,19 +344,19 @@ populate_IPv6();
 </div><!-- end #content -->
 <?% } else { ?>
 <div id="content">
-	<h1><?% echo( _('Advanced > DMZ'));?></h1>
+	<h1 id="advdmz">Advanced > DMZ</h1>
 	<div id="educational-tip">
-		<p class="tip"><?% echo( _('Configure DMZ to allow a single computer on your LAN to open all of its ports.'));?></p>
+		<p class="tip" id="advdmztip">Configure DMZ to allow a single computer on your LAN to open all of its ports.</p>
 	</div>
 	<form action="dmz.jst" method="post" id="pageForm">
 	<div class="module forms">
 		<h2>DMZ</h2>
 		<div class="form-row odd">
-			<label for="dmz"><?% echo( _('DMZ:'));?></label>
+			<label for="dmz" id="dmzloc">DMZ:</label>
 			<span id="dmz_switch"></span>
 		</div>
 		<div class="form-row">
-                <label for="dmz_host_address_1"><?% echo( _('DMZ v4 Host:'));?></label>
+                <label for="dmz_host_address_1" id="dmzv4">DMZ v4 Host:</label>
 				<input type="text" size="3" maxlength="3" id="dmz_host_address_1"  value="" name="dmz_host_address_1" class="gateway_address smallInput" />.
 				<label for="dmz_host_address_2" class="acs-hide"></label>
     	        <input type="text" size="3" maxlength="3" id="dmz_host_address_2"  value="" name="dmz_host_address_2" class="gateway_address smallInput" />.
@@ -390,7 +390,7 @@ populate_IPv6();
 	}
 	?>
     		 <div class="form-btn">
-			<input id="save_setting" name="save_setting" type="button" value="<?% echo( _("Save"));?>" class="btn right" />
+			<input id="save_setting" name="save_setting" type="button" value="Save" class="btn right" />
 		</div>
 	</div><!-- end .module -->
 	</form>
