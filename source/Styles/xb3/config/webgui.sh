@@ -65,6 +65,7 @@ LIGHTTPD_DEF_CONF="/etc/lighttpd.conf"
 FILE_LOCK="/tmp/webgui.lock"
 MAX_RETRY_COUNT=10
 webgui_count=0
+export LANG=
 
 #Only one process should create conf file and start lighttpd at a time
 while : ; do
