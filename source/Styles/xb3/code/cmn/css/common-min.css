@@ -611,16 +611,16 @@ div.sprite_cont, span.sprite_cont {
 	float: left;
 	font-weight: bold;
 	line-height: 1.4em;
-	margin: 4px 40px 0 0;
+	margin: 4px 10px 0 0;
 	text-align: right;
-	width: 220px;
+	width: 210px;
 }
 .forms .readonlyLabel {
 	display: block;
 	float: left;
 	font-weight: bold;
 	line-height: 1.4em;
-	margin: 1px 40px 0 0;
+	margin: 1px 10px 0 0;
 	text-align: right;
 	width: 220px;
 }
@@ -644,7 +644,7 @@ div.sprite_cont, span.sprite_cont {
 }
 .forms .value {
 	display: inline;
-	margin: 4px 0 0 -30px;
+	margin: 4px 0 0 0;
 	line-height: 1.6em;
 	font-weight: bold;
 }
@@ -657,7 +657,7 @@ div.sprite_cont, span.sprite_cont {
 .forms .checkbox {
 	display: inline;
 	float: left;
-	margin: 4px 0 0 -30px;
+	margin: 4px 0 0 0;
 }
 
 
