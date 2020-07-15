@@ -30,7 +30,7 @@
 	$autoWanEnable= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_AutowanFeatureSupport");
 	$allowEthWan= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.AllowEthernetWAN");
 	$wanPort= getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Port");
-	if(!(((($autoWanEnable=="true") || ($allowEthWan=="true")) && (($modelName=="CGM4140COM") || ($modelName=="CGM4331COM"))) || (($allowEthWan=="true") && ($modelName=="TG4482A"))) ){
+	if(!((($autoWanEnable=="true") || ($allowEthWan=="true")) && (($modelName=="CGM4140COM") || ($modelName=="CGM4331COM") || ($modelName=="TG4482A"))) ){
 		die();
 	}
 	$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");

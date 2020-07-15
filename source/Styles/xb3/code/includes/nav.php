@@ -137,7 +137,7 @@ echo '<li class="nav-gateway">';
 		if ($MoCA) {
 		  echo '<li class="nav-moca"><a role="menuitem"  href="moca.php">'._("MoCA").'</a></li>';
 		}
-		if(((($autoWanEnable=="true") || ($allowEthWan=="true")) && (($modelName=="CGM4140COM") || ($modelName=="CGM4331COM"))) || (($allowEthWan=="true") && ($modelName=="TG4482A"))){
+		if((($autoWanEnable=="true") || ($allowEthWan=="true")) && (($modelName=="CGM4140COM") || ($modelName=="CGM4331COM") || ($modelName=="TG4482A"))){
 			if($wan_network) echo '<li class="nav-wan-network"><a role="menuitem"  href="wan_network.php">'._("WAN Network").'</a></li>';
 		}
 		echo '</ul>';
