@@ -212,8 +212,8 @@ csrfprotector_rdkb::init();
 			{
 				if(partner_id.indexOf('sky-')===-1|| $(this).attr('headers') == 'server-ipv6' || $(this).attr('headers') == 'IP')
 				   $(this).closest('table').css("table-layout", "fixed");
-                                if(partner_id.indexOf('sky-')===0 && $(this).attr('headers')=='private-Name'){$(this).css("word-break", "break-word")}
-				$(this).css("word-wrap", "break-word");
+                                //if(partner_id.indexOf('sky-')===0 && $(this).attr('headers')=='private-Name'){$(this).css("word-break", "break-word")}
+				$(this).css("word-break", "break-word");
 			}
 		});
 	});
