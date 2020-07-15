@@ -24,7 +24,7 @@ if (!isset($_SESSION["loginuser"])) {
 $allowEthWan= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.AllowEthernetWAN");
 $autoWanEnable= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_AutowanFeatureSupport");
 $modelName= getStr("Device.DeviceInfo.ModelName");
-if(!(((($autoWanEnable=="true") || ($allowEthWan=="true")) && (($modelName=="CGM4140COM") || ($modelName=="CGM4331COM"))) || (($allowEthWan=="true") && ($modelName=="TG4482A"))) ){
+if(!((($autoWanEnable=="true") || ($allowEthWan=="true")) && (($modelName=="CGM4140COM") || ($modelName=="CGM4331COM") || ($modelName=="TG4482A"))) ){
 		die();
 }
 $jsConfig = $_POST['configInfo'];
