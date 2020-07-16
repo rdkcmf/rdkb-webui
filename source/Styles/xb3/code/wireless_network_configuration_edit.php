@@ -262,7 +262,7 @@ function showDialog() {
 }
 	var fromOther;
 $(document).ready(function() {
-    gateway.page.init("Gateway > Connection > Wireless > Edit <?php echo $radio_band; ?> GHz", "nav-wifi-config");
+    gateway.page.init("Gateway > Connection > Wireless > Edit <?php echo _($radio_band); ?> GHz", "nav-wifi-config");
 	$Mesh_Mode = '<?php echo $Mesh_Mode; ?>';
 	var MeshEnable= '<?php echo $Mesh_Enable; ?>';
 	var partner_id = '<?php echo $partnerId; ?>';
@@ -878,11 +878,11 @@ function setResetInfo(info) {
 //zqiu <<
 </script>
 <div id="content">
-	<h1><?php echo _("Gateway > Connection >  Wi-Fi > Edit")." ".$radio_band; ?> GHz</h1>
+	<h1><?php echo _("Gateway > Connection >  Wi-Fi > Edit")." "._($radio_band); ?> GHz</h1>
 	<div id="educational-tip">
-		<p class="tip"><?php echo sprintf(_("Manage your %s GHz network settings."),$radio_band)?></p>
+		<p class="tip"><?php echo sprintf(_("Manage your %s GHz network settings."),_($radio_band))?></p>
 		<p class="hidden"><?php echo _("<strong>Network Name (SSID):</strong> Identifies your home network from other nearby networks. Your default name can be found on the bottom label of the Gateway, but can be changed for easier identification.")?></p>
-		<p class="hidden"><?php echo sprintf(_("<strong>Mode:</strong>  %s GHz operates in b/g/n modes. Unless you have older Wi-Fi devices that use only 'b' mode, use the default 802.11 g/n for faster performance."),$radio_band)?></p>
+		<p class="hidden"><?php echo sprintf(_("<strong>Mode:</strong>  %s GHz operates in b/g/n modes. Unless you have older Wi-Fi devices that use only 'b' mode, use the default 802.11 g/n for faster performance."),_($radio_band))?></p>
 		<p class="hidden"><?php echo _("<strong>Security Mode:</strong> Secures data between your Wi-Fi devices and the Gateway. The default WPAWPA2-PSK (TKIP/AES) setting is compatible with most devices and provides the best security and performance.")?></p>
 		<p class="hidden"><?php echo _("<strong>Channel Selection:</strong>  Channel to be used for your home Wi-Fi network. In Automatic mode (default), the Gateway will select the channel with the least amount of Wi-Fi interference. In Manual mode, you can choose the channel to be used.")?></p>
 		<p class="hidden"><?php echo _("<strong>Network Password(Key):</strong> Required by Wi-Fi products to connect to your secure network. The default setting can be found on the bottom label of the Gateway.")?> </p>
@@ -890,7 +890,7 @@ function setResetInfo(info) {
 	</div>
 	<div class="module forms">
 		<form action="#TBD" method="post" id="pageForm">
-		<h2><?php if ($id>2) echo sprintf(_("Public Wi-Fi Network Configuration (%s GHz)"),$radio_band); else echo sprintf(_("Private Wi-Fi Network Configuration (%s GHz)"),$radio_band); ?></h2>
+		<h2><?php if ($id>2) echo sprintf(_("Public Wi-Fi Network Configuration (%s GHz)"),_($radio_band)); else echo sprintf(_("Private Wi-Fi Network Configuration (%s GHz)"),_($radio_band)); ?></h2>
 		<?php
 			if($Mesh_Mode=="true"){
 		?>

@@ -5659,11 +5659,11 @@ msgstr "MaxRate"
 
 #: wireless_network_configuration.php:415
 msgid "Enable radio 2.4G"
-msgstr "Abilita wifi 2.4G"
+msgstr "Abilita wifi 2,4G"
 
 #: wireless_network_configuration.php:416
 msgid "Disable radio 2.4G"
-msgstr "Disabilita wifi 2.4G"
+msgstr "Disabilita wifi 2,4G"
 
 #: wireless_network_configuration.php:426
 msgid "Enable radio 5G"
@@ -6870,3 +6870,4 @@ msgstr "Gestire le impostazioni della tua rete domestica è semplicissimo. Visit
 #: connected_devices_computers.php:1043
 msgid "Change the IP address assignment method for Offline Devices."
 msgstr "Modificare il metodo di assegnazione dell'indirizzo IP per i dispositivi offline."
+
