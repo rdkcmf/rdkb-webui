@@ -61,6 +61,95 @@ csrfprotector_rdkb::init();
 <!-- for Dual Band Network -->
 <style>
 
+@media only screen
+ and (max-device-width: 480px){
+
+
+        #WiFi_Name_Field, #password_field {
+
+                    display: block;
+                    width: 90vw;
+                    margin: auto;
+                    background-color: rgba(255,255,255,.15);
+        }
+
+
+        #WiFi_Name, #WiFi_Password{
+                background: none;
+                outline: none;
+                font-size: 15px;
+                margin-top: 0px;
+        }
+
+        #WiFi_Name{
+                width: 241px;
+                margin-left:-34px;
+        }
+
+        #WiFi_Password{
+                width:203px;
+                margin-left:-73px;
+        }
+
+        #showPass {
+                 margin: -36px 0 0 57% !important;
+        }
+
+}
+
+
+
+
+@media only screen
+ and (min-width: 481px){
+
+    #WiFi_Name_Field{
+        display: inline-block;
+    width: 357px;
+    height: 56px;
+    background-color: rgba(255,255,255,.15);
+}
+
+#password_field{
+        display: inline-block;
+    width: 357px;
+    height: 56px;
+    background-color: rgba(255,255,255,.15);
+ margin-top: 28px;
+    margin-left: -12px;
+}
+
+
+
+#WiFi_Name{
+         outline: none;
+    background: none;
+    margin-left: -51px;
+    width: 287px;
+    margin-top: 0px;
+}
+
+/*#password_field{
+        display: inline-block;
+    width: 357px;
+    height: 56px;
+    background-color: rgba(255,255,255,.15);
+    margin-top:24px;
+    margin-left: -14px;
+}*/
+
+ #WiFi_Password{
+         background: none;
+    margin-top: 0px;
+    margin-left: -78px;
+    width: 256px;
+    outline: none;
+}
+
+
+
+
+}
 
 #WiFi_Password_01,#WiFi_Name_01,#WiFi_Name_02
 ,#WiFi_Password_02,#WiFi_Name_04,#WiFi_Password_04,#WiFi_Password_05,
@@ -95,7 +184,7 @@ csrfprotector_rdkb::init();
 @media only screen 
  and (max-device-width: 480px){
 
-  #WiFi_Name, #WiFi_Password,#WiFi5_Name,#WiFi5_Password{    
+  /*#WiFi_Name, #WiFi_Password,#WiFi5_Name,#WiFi5_Password{    
     display: block !important;   
     margin-right: auto !important;
     margin-left: auto !important;
@@ -104,19 +193,19 @@ csrfprotector_rdkb::init();
     width: 80% !important;
     font-size: 12px !important;
        
-  }
+  }*/
 
 p {
     margin-right: auto !important;
     margin-left: auto !important;
-    font-size: 17px !important;
+    font-size: 12px !important;
     width: 100%;
     text-align: center !important;
 
 }
 
   #showPass{
-  	         margin: -36px 0 0 132px !important;
+  	         margin: -36px 0 0 173px !important;
   }
 
   #show5Pass{
@@ -700,7 +789,7 @@ $("#f_i_option1").click(function(){
 	$("#visit_xfinity").click(function(){
 		location.href = "http://XFINITY.net";
 	});
-	$("#WiFi_Name").bind("focusin keyup change input",(function() {
+	$("#WiFi_Name_Field").bind("focusin keyup change input",(function() {
 		//VALIDATION for wifi_name
 		/*return !param || /^[ -~]{3,32}$/i.test(value);
 		"3-32 ASCII Printable Characters");
@@ -708,7 +797,8 @@ $("#f_i_option1").click(function(){
 		'SSID containing "XHS" and "Xfinitywifi" are reserved !'
 		return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
 		'SSID containing "optimumwifi", "TWCWiFi" and "CableWiFi" are reserved !');*/
-		var val	= $(this).val();
+		var wiFiNameField=$("#WiFi_Name_Field");
+                var val = $("#WiFi_Name").val();
 		isValid		= /^[ -~]{1,32}$/i.test(val);
 		valLowerCase	= val.toLowerCase();
 		isXHS		= valLowerCase.indexOf("xhs-") !=0 && valLowerCase.indexOf("xh-") !=0;
@@ -721,53 +811,53 @@ $("#f_i_option1").click(function(){
 		isOther	= str.indexOf("cablewifi") == -1 && str.indexOf("twcwifi") == -1 && str.indexOf("optimumwifi") == -1 && str.indexOf("xfinitywifi") == -1 && str.indexOf("coxwifi") == -1 && str.indexOf("coxwifi") == -1 && str.indexOf("spectrumwifi") == -1 && str.indexOf("shawopen") == -1 && str.indexOf("shawpasspoint") == -1 && str.indexOf("shawguest") == -1 && str.indexOf("shawmobilehotspot") == -1 && str.indexOf("shawgo") == -1 && str.indexOf("xfinity") == -1;
 		if(val == ""){
 			goNextName = false;
-			$(this).addClass("error").removeClass("success");
+			$(wiFiNameField).addClass("error").removeClass("success");
 			messageHandler("name","<?php echo $lang["wifi_name"]; ?>" ," <?php echo $lang["please_enter"]; ?>");
 		}
 		else if(valLowerCase == Defaultssid.toLowerCase()){
 			goNextName = false;
-			$(this).addClass("error").removeClass("success");
+			$(wiFiNameField).addClass("error").removeClass("success");
 			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff1"]; ?>");
 		}
 		else if(valLowerCase == Defaultssid1.toLowerCase()){
 			goNextName = false;
-			$(this).addClass("error").removeClass("success");
+			$(wiFiNameField).addClass("error").removeClass("success");
 			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff"]; ?>");
 		}
 		else if(isOnlySpaces)
 		{
 			goNextName = false;
-			$(this).addClass("error").removeClass("success");
+			$(wiFiNameField).addClass("error").removeClass("success");
 			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["name_cannot_space"]; ?>");
 		}
 		else if("<?php echo $network_name;?>".toLowerCase() == val.toLowerCase()){
 			goNextName = false;
-			$(this).addClass("error").removeClass("success");
+			$(wiFiNameField).addClass("error").removeClass("success");
 			messageHandler("name","<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["choose_diff"]; ?>");
 		}
 		else if(!isXHS){
 			goNextName = false;
-			$(this).addClass("error").removeClass("success");
+			$(wiFiNameField).addClass("error").removeClass("success");
 			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", '<?php echo $lang["ssid_invalid"]; ?>');
 		}
 		else if(!isXFINITY){
 			goNextName = false;
-			$(this).addClass("error").removeClass("success");
+			$(wiFiNameField).addClass("error").removeClass("success");
 			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", '<?php echo $lang["ssid_invalid"]; ?>');
 		}
 		else if(!isOther){
 			goNextName = false;
-			$(this).addClass("error").removeClass("success");
+			$(wiFiNameField).addClass("error").removeClass("success");
 			messageHandler("name", "<?php echo $lang["lets_try_again"]; ?>", '<?php echo $lang["ssid_invalid"]; ?>');
 		}
 		else if(!isValid){
 			goNextName = false;
-			$(this).addClass("error").removeClass("success");
+			$(wiFiNameField).addClass("error").removeClass("success");
 			messageHandler("name","<?php echo $lang["lets_try_again"]; ?>", "<?php echo $lang["ascii_characters"]; ?>");
 		}
 		else {
 			goNextName = true;
-			$(this).addClass("success").removeClass("error");
+			$(wiFiNameField).addClass("success").removeClass("error");
 			messageHandler("name", "<?php echo $lang["wifi_name"]; ?>", "<?php echo $lang["this_identifies"]; ?>");
 		}
 		toShowNext();
@@ -777,8 +867,8 @@ $("#f_i_option1").click(function(){
 			return !param || /^[ -~]{8,63}$/i.test(value); "8-63 ASCII characters or a 64 hex character password"
 		*/
 		//VALIDATION for WiFi_Password
-		$WiFiPass = $("#WiFi_Password");
-		var val = $WiFiPass.val();
+		$WiFiPass = $("#password_field");
+        var val = $("#WiFi_Password").val();
 		isValid	= /^[ -~]{8,63}$|^[a-fA-F0-9]{64}$/i.test(val);
 		if(val == ""){
 			goNextPassword	= false;
@@ -973,7 +1063,9 @@ $("#f_i_option1").click(function(){
 					</div>
 				</div>
 				<p style="display:inline; margin: 1px 40px 0 0; text-align: right;"><?php echo $lang["wifi_name"]; ?></p>
-				<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi_Name" type="text" placeholder=<?php echo $lang["exampleaccounttext"]; ?> maxlength="32" class="">
+				<span id="WiFi_Name_Field" class="" >
+                                        <input style="/*display:inline; margin: 4px 0 0 -8px;*/" id="WiFi_Name" type="text" placeholder="Example: [account name] Wi-Fi" maxlength="32" class="">
+                </span>
 				<br>
 				<div id="PasswordContainer" class="container" style="display: none;">
 					<div class="requirements">
@@ -983,7 +1075,7 @@ $("#f_i_option1").click(function(){
 					</div>
 				</div>
 				<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;"><?php echo $lang["wifi_password"]; ?></p>
-				<span style="display:inline; margin: 4px 0 0 -26px;" id="password_field"><input id="WiFi_Password" type="text" placeholder=<?php echo $lang["passwordtext"]; ?> maxlength="64" class="" autocorrect="off" autocapitalize="off"></span>
+				<span style="/*display:inline; margin: 4px 0 0 -26px;*/" id="password_field"><input id="WiFi_Password" type="text" placeholder=<?php echo $lang["passwordtext"]; ?> maxlength="64" class="" autocorrect="off" autocapitalize="off"></span>
 				<div id="showPass" style="display:inline-table; margin: 4px 0 0 -90px;">
 					<a href="javascript:void(0)" style="white-space: pre;"><?php echo $lang["hide"]; ?></a>
 			    </div>
