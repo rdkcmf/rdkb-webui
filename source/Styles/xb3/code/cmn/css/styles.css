@@ -17,6 +17,51 @@
  * limitations under the License.
 */
 
+@media only screen
+ and (max-device-width: 480px){
+
+.error{
+
+ 	background:url('../img/fail.png') no-repeat 98% 10px;
+        outline-style: solid;
+    	outline-color: #c3ac64;
+}
+
+
+.success{
+         background:url('../img/success.png') no-repeat 98% 10px;
+  	 background-color: rgba(255,255,255,.15);
+	 outline-style: solid;
+ 	 outline-color: #2ea0dd;
+
+}
+
+
+
+}
+
+
+@media only screen
+ and (min-width: 481px){
+
+.error{
+        
+  	background:url('../img/fail.png') no-repeat 312px 10px;
+        outline-style: solid;
+   	outline-color: #c3ac64;
+}
+
+.success{
+         background:url('../img/success.png') no-repeat 312px 10px;
+  	 background-color: rgba(255,255,255,.15);
+	 outline-style: solid;
+	 outline-color: #2ea0dd;
+
+}
+
+}
+
+
 body{
   background:url('../img/bg.jpg');
   text-align: center;
