@@ -60,7 +60,7 @@
 #endif
 
 #define MAX_SUBSYSTEMPREFIX 6
-#define MAX_STRING_LEN_SIZE 256
+#define MAX_STRING_LEN_SIZE 1024
 
 #define RDK_SAFECLIB_ERR(func)  CosaPhpExtLog("safeclib error at %s %s:%d %s", __FILE__, __FUNCTION__, __LINE__, func)
 
