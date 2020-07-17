@@ -324,7 +324,7 @@ $(document).ready(function() {
         	<div id="block-time">
         		<h3><?php echo _('Set Block Time')?></h3>
         		<div class="form-row">
-        	<label for="time_start_hour"<?php echo _('>Start from:')?></label>
+        	<label for="time_start_hour"><?php echo _('Start from:')?></label>
            <select id="time_start_hour" name="time_start_hour">
                 <option value"12">12</option>
                 <option value"1">1</option>

@@ -3586,10 +3586,6 @@ msgstr "Blocca sempre"
 msgid "Set Block Time"
 msgstr "Imposta limite orario"
 
-#: managed_devices_add_computer_blocked.php:305
-msgid ">Start from:"
-msgstr "Inizio"
-
 #: managed_devices_add_computer_blocked.php:334
 #: managed_devices_edit_allowed.php:358 managed_devices_edit_blocked.php:354
 #: managed_services_add.php:243 managed_services_edit.php:382
