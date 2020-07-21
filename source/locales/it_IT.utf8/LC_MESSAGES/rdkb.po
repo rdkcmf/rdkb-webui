@@ -984,11 +984,11 @@ msgid "Wi-Fi Passkey:"
 msgstr "Password wifi:"
 
 #: at_a_glance.php:272
-msgid "Wi-Fi SSID (2.4Ghz):"
+msgid "Wi-Fi SSID (2.4 Ghz):"
 msgstr "Nome rete wifi (2,4 Ghz):"
 
 #: at_a_glance.php:277
-msgid "Wi-Fi Passkey (2.4Ghz):"
+msgid "Wi-Fi Passkey (2.4 Ghz):"
 msgstr "Password wifi (2,4 GHz):"
 
 #: at_a_glance.php:286
