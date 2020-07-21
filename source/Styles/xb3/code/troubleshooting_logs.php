@@ -339,7 +339,7 @@ function ajaxDo(mode,timef){
 		</div>
 	</div> <!-- end .module -->
 	<div class="module forms data" id="event" style="display:none">
-		<h2>Event Logs</h2>
+		<h2><?php echo _("Event Logs")?></h2>
 		<table id="event_logs_today" cellpadding="0" cellspacing="0" class="data" style="display:none">
 			<thead>
 				<tr>
