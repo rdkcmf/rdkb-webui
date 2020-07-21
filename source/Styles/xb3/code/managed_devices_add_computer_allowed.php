@@ -331,7 +331,7 @@ $(document).ready(function() {
         </select>
         </div>
         <div class="form-row">
-           <label for="time_end_hour">End on:</label>
+           <label for="time_end_hour"><?php echo _('End on:')?></label>
            <select id="time_end_hour" name="time_end_hour">
                 <option value"12">12</option>
                 <option value"1">1</option>

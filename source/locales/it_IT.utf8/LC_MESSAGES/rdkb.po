@@ -3590,7 +3590,7 @@ msgstr "Imposta limite orario"
 #: managed_devices_edit_allowed.php:358 managed_devices_edit_blocked.php:354
 #: managed_services_add.php:243 managed_services_edit.php:382
 #: managed_sites.php:721 managed_sites_add_keyword.php:204
-#: managed_sites_add_site.php:213
+#: managed_sites_add_site.php:213 managed_devices_add_computer_allowed.php:334
 msgid "End on:"
 msgstr "Fine"
 
@@ -3828,7 +3828,7 @@ msgid "URL"
 msgstr "URL"
 
 #: managed_sites.php:512 managed_sites.php:550 managed_services.php:270
-#: managed_devices.php:338
+#: managed_devices.php:338 managed_devices.php:298
 msgid "Always"
 msgstr "Sempre"
 

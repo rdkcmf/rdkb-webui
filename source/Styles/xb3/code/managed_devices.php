@@ -295,7 +295,7 @@ $(document).ready(function() {
 						<td headers='allowed-number' class=\"row-label alt number\">$j</td>
 						<td headers='allowed-device-name'>".$arrayAllowName[$i]."</td>
 						<td headers='allowed-mac-address'>".$arrayAllowMAC[$i]."</td>
-						<td headers='allowed-time'>".$arrayAllowStatus[$i]."</td>
+						<td headers='allowed-time'>"._($arrayAllowStatus[$i])."</td>
 						<td headers='allowed-edit-button' class=\"edit\"><a tabindex='0' href=\"managed_devices_edit_allowed.php?id=$arrayAllowID[$i]\" class=\"btn\"  id=\"edit_$arrayAllowID[$i]\">"._("Edit")."</a></td>
 						<td headers='allowed-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.php?del=$arrayAllowID[$i]\" class=\"btn confirm\" title=\""._("Delete this device")."\" id=\"delete_$arrayAllowID[$i]\">x</a></td>
 					</tr>"; 
