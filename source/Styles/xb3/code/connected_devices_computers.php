@@ -953,7 +953,7 @@ $(document).ready(function() {
 			echo '<dd><b>'._("Local link IPv6 Address").'</b><br/>'. $IPv6LocalAddr. '</dd>';
 			echo '<dd><b>'._("DHCPv4 Status").'</b><br/>'. $DHCPv4Status. '</dd>';
 			echo '<dd><b>'._("DHCPv6 Status").'</b><br/>'. $DHCPv6Status. '</dd>';
-			echo '<dd><b>'._("Connection").'</b><br/>'. $WiFiType . '</dd>';
+			echo '<dd><b>'._("Connection").'</b><br/>'. _($WiFiType) . '</dd>';
 			echo '</dl>';	
 			echo '</div>';	
                         echo '</td>';
@@ -1001,7 +1001,7 @@ for ($i=0; $i < $onlinePrivateNetworkHost['hostNum']; $i++) {
 			</div>
 			<div  class=\"form-row odd\">
 			    <span  class=\"readonlyLabel\">"._('Connection:')."</span>
-        		<span  class=\"value\">" . $onlinePrivateNetworkHost["$i"]['Connection'] . "</span>
+        		<span  class=\"value\">" . _($onlinePrivateNetworkHost["$i"]['Connection']) . "</span>
 			</div>
 			<div  class=\"form-row\">
 				<label for=\"ip\" style='margin:4px 5px 0 0;'>"._('Configuration:')."</label>
@@ -1054,7 +1054,7 @@ for ($i=0; $i < $offlinePrivateNetworkHost['hostNum']; $i++) {
                         </div>
                         <div  class=\"form-row odd\">
                             <span  class=\"readonlyLabel\">"._('Connection:')."</span>
-                        <span  class=\"value\">" . $offlinePrivateNetworkHost["$i"]['Connection'] . "</span>
+                        <span  class=\"value\">" . _($offlinePrivateNetworkHost["$i"]['Connection']) . "</span>
                         </div>
                         <div  class=\"form-row\">
                                 <label for=\"ip\" style='margin:4px 5px 0 0;'>"._('Configuration:')."</label>

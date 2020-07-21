@@ -984,19 +984,19 @@ msgid "Wi-Fi Passkey:"
 msgstr "Password wifi:"
 
 #: at_a_glance.php:272
-msgid "Wi-Fi SSID (2.4 Ghz):"
-msgstr "Nome rete wifi (2,4 Ghz):"
+msgid "Wi-Fi SSID (2.4 GHz):"
+msgstr "Nome rete wifi (2,4 GHz):"
 
 #: at_a_glance.php:277
-msgid "Wi-Fi Passkey (2.4 Ghz):"
+msgid "Wi-Fi Passkey (2.4 GHz):"
 msgstr "Password wifi (2,4 GHz):"
 
 #: at_a_glance.php:286
-msgid "Wi-Fi SSID (5Ghz):"
-msgstr "Nome rete wifi (5 Ghz):"
+msgid "Wi-Fi SSID (5 GHz):"
+msgstr "Nome rete wifi (5 GHz):"
 
-#: at_a_glance.php:291
-msgid "Wi-Fi Passkey (5Ghz):"
+#: at_a_glance.php:291 index.php:512
+msgid "Wi-Fi Passkey (5GHz):"
 msgstr "Password wifi (5 GHz):"
 
 #: at_a_glance.php:304 index.php:524
@@ -2988,10 +2988,6 @@ msgstr "Password wifi (2,4 GHz):"
 #: index.php:521 index.php:531
 msgid "Wi-Fi Passkey"
 msgstr "Password wifi"
-
-#: index.php:512
-msgid "Wi-Fi Passkey (5GHz):"
-msgstr "Password wifi (5 GHz):"
 
 #: index.php:558
 msgid "Wi-Fi On"
