@@ -5520,7 +5520,7 @@ msgstr "Tipo di log:"
 msgid "System Logs"
 msgstr "Log di sistema"
 
-#: troubleshooting_logs.php:276
+#: troubleshooting_logs.php:276 troubleshooting_logs.php:342
 msgid "Event Logs"
 msgstr "Log evento"
 
