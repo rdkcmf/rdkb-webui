@@ -531,11 +531,11 @@ if ("WEP-64" == $encrypt_mode1){
 		?>
 			<p class="summary"><?php echo _("Next, we need to configure your wireless network. Note that your network can be accessed  by both 2.4 GHz (Wi-Fi B, G, N) and 5GHz(Wi-Fi A, N) compatible devices.")?></p>
 			<div class="form-row odd">
-				<label for="network_name"><?php echo sprintf(_("Wi-Fi Network Name (%sGHz):"), $radioband1); ?></label>
+				<label for="network_name"><?php echo sprintf(_("Wi-Fi Network Name (%sGHz):"), _($radioband1)); ?></label>
 				<input type="text" size="23" value="<?php echo htmlspecialchars($network_name);?>" id="network_name" name="network_name" class="text" />
 			</div>
 			<div class="form-row">
-				<label for="security"><?php echo sprintf(_("Encryption Method (%sGHz):"), $radioband1); ?></label>
+				<label for="security"><?php echo sprintf(_("Encryption Method (%sGHz):"), _($radioband1)); ?></label>
 				<select name="encryption_method" id="security">
 					<option value="None" 				title="<?php echo _("Open networks do not have a password.")?>" 			<?php if ("None"==$security) echo "selected";?> ><?php echo _("Open (risky)")?></option>
 					<!--option value="WEP_64" 				title="WEP  64 requires a  5 ASCII character or 10 hex character password.  Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_64"==$security)              echo "selected";?> >WEP 64 (risky)</option-->
@@ -550,7 +550,7 @@ if ("WEP-64" == $encrypt_mode1){
 			</div>
 			<div id="netPassword">
 				<div class="form-row odd">
-					<label for="network_password"><?php echo sprintf(_("Network Password (%sGHz):"), $radioband1); ?></label>
+					<label for="network_password"><?php echo sprintf(_("Network Password (%sGHz):"), _($radioband1)); ?></label>
 					<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password); ?>"/></span>
 				</div>
 				<p id="netPassword-footnote" class="footnote"><?php echo _("8 to 63 ASCII characters or a 64 hex character password. Case sensitive.")?></p>
@@ -570,11 +570,11 @@ if ("WEP-64" == $encrypt_mode1){
 				<span class="checkbox"><input type="checkbox" id="password_check" name="password_check" /></span>
 			</div>
 			<div class="form-row odd">
-				<label for="network_name1"><?php echo sprintf(_("Wi-Fi Network Name (%sGHz):"), $radioband2); ?></label>
+				<label for="network_name1"><?php echo sprintf(_("Wi-Fi Network Name (%sGHz):"), _($radioband2)); ?></label>
 				<input type="text" size="23" value="<?php echo htmlspecialchars($network_name1);?>" id="network_name1" name="network_name1" class="text" />
 			</div>	
 			<div class="form-row">
-				<label for="security1"><?php echo sprintf(_("Encryption Method (%sGHz):"), $radioband2); ?></label>
+				<label for="security1"><?php echo sprintf(_("Encryption Method (%sGHz):"), _($radioband2)); ?></label>
 				<select name="encryption_method1" id="security1">
 					<option value="None" 			title="<?php echo _("Open networks do not have a password.")?>" 			<?php if ("None"==$security1) echo "selected";?> ><?php echo _("Open (risky)")?></option>
 					<!--option value="WEP_64"               title="WEP  64 requires a  5 ASCII character or 10 hex character password.  Hex means only the following characters can be used: ABCDEF0123456789." <?php if ("WEP_64"==$security1)              echo "selected";?> >WEP 64 (risky)</option-->
@@ -589,7 +589,7 @@ if ("WEP-64" == $encrypt_mode1){
 			</div>
 			<div id="netPassword1">
 				<div class="form-row odd">
-					<label for="network_password1"><?php echo sprintf(_("Network Password (%sGHz):"), $radioband2); ?></label>
+					<label for="network_password1"><?php echo sprintf(_("Network Password (%sGHz):"), _($radioband2)); ?></label>
 					<span id="password_field1"><input type="password" size="23" id="network_password1" name="network_password1" class="text" value="<?php if($password_mso_user) echo htmlspecialchars($network_password1); ?>"/></span>
 				</div>
 				<p id="netPassword-footnote1" class="footnote"><?php echo _("8 to 63 ASCII characters or a 64 hex character password. Case sensitive.")?></p>

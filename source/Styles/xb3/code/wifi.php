@@ -84,7 +84,7 @@ function div_mod($n, $m)
 		<!--<p class="hidden"><strong>DECT:</strong> Provides details of the cordless phone base built into the Gateway.</p>-->
 	</div>
 	<div class="module forms block">
-		<h2><?php echo _("Wi-Fi LAN port"); ?> (<?php echo $radioband1; ?> GHZ)</h2>
+		<h2><?php echo _("Wi-Fi LAN port"); ?> (<?php echo _($radioband1); ?> GHZ)</h2>
 		<div class="form-row">
 			<span class="readonlyLabel"><?php echo _("Wi-Fi link status:")?></span>
 			<span class="value"><?php echo ($wifi_status1)?_("Active"):_("Inactive");?></span>
@@ -109,7 +109,7 @@ function div_mod($n, $m)
 		</span>	</div>
 	</div> <!-- end .module -->
 	<div class="module forms block">
-		<h2><?php echo _("Wi-Fi LAN port"); ?> (<?php echo $radioband2; ?> GHZ)</h2>
+		<h2><?php echo _("Wi-Fi LAN port"); ?> (<?php echo _($radioband2); ?> GHZ)</h2>
 		<div class="form-row">
 			<span class="readonlyLabel"><?php echo _("Wi-Fi link status:")?></span>
 			<span class="value"><?php echo ($wifi_status2)?_("Active"):_("Inactive");?></span>
