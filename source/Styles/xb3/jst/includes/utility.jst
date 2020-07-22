@@ -500,7 +500,16 @@ function UTC_to_local_date_logs($utcTime){
   //convert log format to iso: from "Jul 15 11:22:33 2019" to "2019-07-15 11:22:33"
 	var $months = {"Jan":"01","Feb":"02","Mar":"03","Apr":"04","May":"05","Jun":"06","Jul":"07","Aug":"08","Sep":"09","Oct":"10","Nov":"11","Dec":"12"};
 	var $parts = $utcTime.split(/[\s,]+/); //[Jul,15,11:22:33,2019]
-  var $isoformat = $parts[3]+"-"+$months[$parts[0]]+"-"+$parts[1]+" "+$parts[2];
+    var $isoformat;
+    if( ! empty($parts[3]))
+    {
+        $isoformat = $parts[3]+"-"+$months[$parts[0]]+"-"+$parts[1]+" "+$parts[2];
+    }
+    else{
+           var date1 = new Date();
+              $isoformat = date1.getFullYear()+"-"+$months[$parts[0]]+"-"+$parts[1]+" "+$parts[2];
+    }
+
   var date = new Date($isoformat);
 
   //add that timeOffset, which i believe is in second, so convert to ms
