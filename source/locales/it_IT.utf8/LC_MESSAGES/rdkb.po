@@ -556,7 +556,7 @@ msgstr "Accesso bloccato, contattare l’amministratore"
 #: parental_reports_download.php:29 trigger_download.php:27
 #: trigger_spectrum_download.php:27
 msgid "Please Login First!"
-msgstr "Per procedere, effettua l\\'accesso"
+msgstr "Per procedere, effettua l'accesso"
 
 #: actionHandler/ajaxSet_Battery.php:39
 #: actionHandler/ajaxSet_add_blockedSite.php:80
@@ -1273,7 +1273,7 @@ msgstr "Password errata per MSO"
 
 #: check.php:203
 msgid "Incorrect password for admin!"
-msgstr "Password errata per l\\'amministratore"
+msgstr "Password errata per l'amministratore"
 
 #: check.php:220
 msgid "You are using default password. Please change the password."
