@@ -883,7 +883,7 @@ function remote_access_block(){
 			?>
 			<h3><input type="radio"  name="single" value="single" id="single" checked="checked" /><label class="acs-hide" for="single"></label><b><?php echo _("Single Computer")?></b><br/></h3>
 			<div class="form-row">
-				<label for="ip_address_1"><?php echo _("IPv4 Address:")?></label>
+				<label for="ip_address_1"><?php echo _("IPv4 Address")?>:</label>
 				 <input type="text" size="5" maxlength="3"  id="ip_address_1" name="ip_address_1" value="<?php echo $single_ip[0];?>" /><label for="ip_address_2" class="acs-hide"></label>
 				.<input type="text" size="5" maxlength="3"  id="ip_address_2" name="ip_address_2" value="<?php echo $single_ip[1];?>" /><label for="ip_address_3" class="acs-hide"></label>
 				.<input type="text" size="5" maxlength="3"  id="ip_address_3" name="ip_address_3" value="<?php echo $single_ip[2];?>" /><label for="ip_address_4" class="acs-hide"></label>
@@ -948,7 +948,7 @@ function remote_access_block(){
 			?>
 		<h3><input type="radio"  name="single" value="single" id="single" /><label class="acs-hide" for="single"></label><b><?php echo _("Single Computer")?></b><br/></h3>
 		<div class="form-row">
-			<label for="ip_address_1"><?php echo _("IPv4 Address:")?></label>
+			<label for="ip_address_1"><?php echo _("IPv4 Address")?>:</label>
 			 <input type="text" size="5" maxlength="3"  id="ip_address_1" name="ip_address_1"  disabled="disabled"/><label for="ip_address_2" class="acs-hide"></label>
 			.<input type="text" size="5" maxlength="3"  id="ip_address_2" name="ip_address_2"  disabled="disabled"/><label for="ip_address_3" class="acs-hide"></label>
 			.<input type="text" size="5" maxlength="3"  id="ip_address_3" name="ip_address_3"  disabled="disabled"/><label for="ip_address_4" class="acs-hide"></label>
