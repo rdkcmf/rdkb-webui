@@ -216,6 +216,11 @@ csrfprotector_rdkb::init();
 				$(this).css("word-break", "break-word");
 			}
 		});
+                if(partner_id.indexOf('sky-')===0){
+            $("table.data td dd").each(function() {
+              if($(this).text().split("\n")[0].length > 25){$(this).css("word-break", "break-word");}
+            });
+        }
 	});
 </script>
 <body>
