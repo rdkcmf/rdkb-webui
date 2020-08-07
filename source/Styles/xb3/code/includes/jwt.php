@@ -41,7 +41,17 @@ function VerifyToken($token, $clientid)
 function VerifySignature($header, $payload, $sig)
 {
 
-    $pubkeyid = openssl_pkey_get_public( "file:///etc/ssl/certs/jwtpubkey.cer");
+    $headerdecoded = base64decode_url( $header );
+    $headerdecoded = trim( $headerdecoded, "{}" );
+    $headerdecoded = str_replace( '"', '', $headerdecoded );
+    $headerdata = array();
+    foreach ( explode( ',', $headerdecoded ) as $pair ) {
+        list( $key, $val ) = explode( ':', $pair, 2 );
+        $headerdata[$key] = $val;
+    }
+
+    $pubkey = "file:///etc/ssl/certs/" . $headerdata['kid'] . ".cer";
+    $pubkeyid = openssl_pkey_get_public( $pubkey );
     $token = $header . '.' . $payload;
     $sig2verify = base64decode_url( $sig );
     $sigvalid = openssl_verify( $token, $sig2verify, $pubkeyid, 'SHA256' );
