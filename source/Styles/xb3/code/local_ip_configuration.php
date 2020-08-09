@@ -391,28 +391,28 @@ $(document).ready(function() {
 				min: 0,
 				max: 255,
 				digits: true,
-				checkMaskBegin: true
+		//		checkMaskBegin: true
 			}
 			,ipv4_dhcp_ending_address_2: {
 			    required: true,
 				min: 0,
 				max: 255,
 				digits: true,
-				checkMaskEnd: true
+		//		checkMaskEnd: true
 			}
 			,ipv4_dhcp_beginning_address_3: {
 			    required: true,
 				min: 0,
 				max: 255,
 				digits: true,
-				checkMaskBegin: true
+		//		checkMaskBegin: true
 			}
 			,ipv4_dhcp_ending_address_3: {
 			    required: true,
 				min: 0,
 				max: 255,
 				digits: true,
-				checkMaskEnd: true
+		//		checkMaskEnd: true
 			}
 			,ipv4_dhcp_beginning_address_4: {
 			    required: true,
