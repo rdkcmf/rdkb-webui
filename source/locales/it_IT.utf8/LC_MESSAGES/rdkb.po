@@ -655,7 +655,7 @@ msgid ""
 "IP has already been reserved for another device.\n"
 "Please try using another IP address!"
 msgstr ""
-"L&#39;IP è già stato riservato per un altro dispositivo.\n"
+"L'IP è già stato riservato per un altro dispositivo.\n"
 "Prova a utilizzare un altro indirizzo IP"
 
 #: actionHandler/ajaxSet_add_device.php:139
