@@ -663,6 +663,29 @@ for ($i=1, $j=1; $i<count($ds_ofdm_ids); $i++)
             $ds_ofdm_tab[$i]['LockStatus'] = 'Not Locked';
         }
 }
+
+//changes to eliminate duplicate entries of index for OFDM
+$channel_id=array();
+for ($j=1; $j<count($ds_ofdm_ids); $j++){
+         array_push($channel_id,$ds_ofdm_tab[$j]['ChannelID']);
+}
+  
+for ($i=1; $i<count($ds_ids); $i++){
+        if($ds_tab[$i]['Modulation']=="OFDM"){
+           unset($ds_tab[$i]);
+                unset($ds_ids[$i]);
+        }
+        else {
+                 for ($j=0; $j<count($channel_id); $j++){
+                     if($channel_id[$j]==$ds_tab[$i]['ChannelID']){                    
+                                unset($ds_tab[$i]);
+                                unset($ds_ids[$i]);
+                              	break;
+                     }
+             }
+        }
+}
+
 ?>
 
 <div class="module" style="overflow:auto">
@@ -677,7 +700,7 @@ for ($i=1, $j=1; $i<count($ds_ofdm_ids); $i++)
 		<tr class="">
 			<th class="row-label ">Index</td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['ChannelID'].'</div></td>';?>
-                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++, $i++) echo '<td><div style="width:100px">'.$ds_ofdm_tab[$i]['ChannelID'].'</div></td>';?>
+                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++) echo '<td><div style="width:100px">'.$ds_ofdm_tab[$j]['ChannelID'].'</div></td>';?>
 		</tr>
 		<tr class="odd">
 			<th class="row-label ">Lock Status</td>
