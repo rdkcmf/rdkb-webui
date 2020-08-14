@@ -556,7 +556,7 @@ msgstr "Accesso bloccato, contattare l’amministratore"
 #: parental_reports_download.php:29 trigger_download.php:27
 #: trigger_spectrum_download.php:27
 msgid "Please Login First!"
-msgstr "Per procedere, effettua l&#39;accesso"
+msgstr "Per procedere, effettua l'accesso"
 
 #: actionHandler/ajaxSet_Battery.php:39
 #: actionHandler/ajaxSet_add_blockedSite.php:80
