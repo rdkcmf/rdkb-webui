@@ -26,7 +26,7 @@ $Log = array();
 if (file_exists("/tmp/log_mta.txt"))
 {
 	$raw = file("/tmp/log_mta.txt");
-	$len = count($raw);
+	$len = count($raw)-1;
 	$pos = 50;		//global file pointer where to read the value in a line
 	for ($i=0; $i<$len; $i++) 
 	{
