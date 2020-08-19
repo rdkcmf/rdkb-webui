@@ -659,7 +659,27 @@ ili{
 	$CONFIGUREWIFI 			= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_ConfigureWiFi");
 	$CaptivePortalEnable	= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CaptivePortalEnable");
 	$CloudPersonalizationURL= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudPersonalizationURL");
-	if(!(($personalization_value["Support"] == "true") && ($CaptivePortalEnable == "true") && ($CONFIGUREWIFI == "true"))) {
+	 $url = $_SERVER['HTTP_HOST'];
+        $wan_enabled=getStr("Device.Ethernet.X_RDKCENTRAL-COM_WAN.Enabled");
+        if($wan_enabled=="true"){
+                $Wan_IPv4 = getStr("Device.DeviceInfo.X_COMCAST-COM_WAN_IP");
+                $Wan_IPv6 = getStr("Device.DeviceInfo.X_COMCAST-COM_WAN_IPv6");
+        }else{
+                $Wan_IPv4 = getStr("Device.X_CISCO_COM_CableModem.IPAddress");
+                $Wan_IPv6 = getStr("Device.X_CISCO_COM_CableModem.IPv6Address");
+        }
+        //if user is entering literal IPv6 address then remove "[" and "]"
+        $url = str_replace("[","",$url);
+        $url = str_replace("]","",$url);
+
+        if((!strcmp($url, $Wan_IPv4) || ((inet_pton($url)!="") || (inet_pton($Wan_IPv6!==""))) &&(inet_pton($url) == inet_pton($Wan_IPv6)))){
+                $isMSO  = true;
+        }
+        else {
+                $isMSO  = false;
+        }
+
+	if(!(($personalization_value["Support"] == "true") && ($CaptivePortalEnable == "true") && ($CONFIGUREWIFI == "true") && !$isMSO )) {
 		header('Location:index.jst');
 		exit;
 	}
