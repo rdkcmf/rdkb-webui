@@ -139,6 +139,26 @@ if (isset($_POST['add'])){
 				if (!$retStatus){$result=_("Success!");}
 			}
 			// echo json_encode($result);
+                     if ($result=="") {
+			/*
+			* this piece of code is going to check forward start port and end port not overlapped with port forwarding entry
+			*/
+			$ids=explode(",",getInstanceIDs("Device.NAT.PortMapping."));
+			for(var $key in $ids) { var $j=$ids[$key];/*p2j-foreach*/
+				if (getStr("Device.NAT.PortMapping."+$j+".LeaseDuration")==0 && getStr("Device.NAT.PortMapping."+$j+".InternalPort")==0){
+					$portMappingType=getStr("Device.NAT.PortMapping."+$j+".Protocol");
+					$arraySPort=getStr("Device.NAT.PortMapping."+$j+".ExternalPort");
+					$arrayEPort=getStr("Device.NAT.PortMapping."+$j+".ExternalPortEndRange");
+					if($type=="BOTH" || $portMappingType=="BOTH" || $type==$portMappingType){
+						$porttest=PORTTEST($tsp,$tep,$arraySPort,$arrayEPort);
+						if ($porttest==1) {
+							$result+=_("Failure! As Port Triggering/Port Forwarding rule exists for the same port.");
+							break;
+						}
+					}
+				}
+			} //end of foreach		
+		    }  
 		}
 
 	}

@@ -1318,7 +1318,7 @@ msgstr "L&#39;indirizzo IP riservato non è in un intervallo valido:"
 #: connected_devices_computers.php:218 connected_devices_computers_add.php:116
 #: hs_port_forwarding_add.php:109 hs_port_forwarding_edit.php:137
 #: port_forwarding_add.php:346 port_forwarding_edit.php:365
-#: port_triggering_edit.php:103
+#: port_triggering_edit.php:103 port_triggering_add.php:102
 msgid "Failure! Please check your inputs."
 msgstr "Errore! Verifica le informazioni immesse"
 

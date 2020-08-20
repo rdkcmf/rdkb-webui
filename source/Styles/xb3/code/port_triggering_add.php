@@ -99,7 +99,7 @@ $(document).ready(function() {
 			success:function(results){
 				jHide();
 				if (results=="<?php echo _("Success!")?>") { window.location.href="port_triggering.php";}
-				else if (results=="") {jAlert('<?php echo _("Failure! As Port Triggering/Port Forwarding rule exists for the same port.")?>');}
+				else if (results=="") {jAlert('<?php echo _("Failure! Please check your inputs.")?>');}
 				else jAlert(results);
 			},
 			error:function(){
