@@ -710,7 +710,7 @@ for ($i=1; $i<count($ds_ids); $i++){
 		<tr class="">
 			<th class="row-label ">Frequency</td>
 			<?php for ($i=1; $i<count($ds_ids); $i++) echo '<td><div style="width: 100px">'.$ds_tab[$i]['Frequency'].'</div></td>';?>
-                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++) echo '<td><div style="width: 100px">'.$ds_ofdm_tab[$j]['SubcarrierZeroFreq'].'</div></td>';?>
+                        <?php for ($j=1; $j<count($ds_ofdm_ids); $j++) echo '<td><div style="width: 100px">'. $ds_ofdm_tab[$j]['PlcFreq'] .'</div></td>';?>
 		</tr>
 		<tr class="odd">
 			<th class="row-label ">SNR</td>
