@@ -446,6 +446,60 @@ PHP_SESSION_ACTIVE = 2;
 	}
 	function create_session(){
 		session_start();
+                $modelName= getStr("Device.DeviceInfo.ModelName");
+                if (($modelName != "CGM4140COM") && ($modelName != "CGM4331COM") && ($modelName != "TG1682G")) { 
+                    // session IP binding
+                    if (!isset($_SESSION['PREV_REMOTEADDR'])) {
+                        //session_regenerate_id();
+                        $_SESSION['PREV_REMOTEADDR'] = $_SERVER['REMOTE_ADDR'];
+                    }
+                    $curr_sessID = session_id();
+                    $curr_IP = $_SERVER['REMOTE_ADDR'];
+                    exec("/usr/bin/logger -t GUI -p local5.notice \"Webui: session'" + $curr_sessID + "' is open from '" + $curr_IP + "' \" ");
+                    if ($_SERVER['REMOTE_ADDR'] != $_SESSION['PREV_REMOTEADDR']) {
+                        exec("/usr/bin/logger -t GUI -p local5.notice \"Webui: session'" + $curr_sessID + "' is closed \" ");
+                        session_destroy(); // Destroy all data in session
+                        echo( '<script type="text/javascript">alert("Please Login First!"); location.href="../index.jst";</script>');
+                        exit(0);
+                    }
+                    if (!isset($_SESSION['PREV_SESSID'])) {
+                        $_SESSION['PREV_SESSID'] = session_id();
+                    }
+                    
+                    if ($curr_sessID != $_SESSION['PREV_SESSID']) {
+                        exec("/usr/bin/logger -t GUI -p local5.notice \"Webui: session'" + $curr_sessID + "' is closed \" ");
+                        session_destroy(); // Destroy all data in session
+                        echo( '<script type="text/javascript">alert("Please Login First!"); location.href="../index.jst";</script>');
+                        exit(0);
+                    }
+                }
+                if ($modelName == "TG1682G") {
+                    if (!isset($_SESSION['PREV_REMOTEADDR'])) {
+                        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                            $_SESSION['PREV_REMOTEADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                        }
+                        else
+                        {
+                            $_SESSION['PREV_REMOTEADDR'] = $_SERVER['REMOTE_ADDR'];
+                        }
+                    }
+                    $curr_sessID = session_id();
+                    if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                        $_SESSION['CURR_REMOTEADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                    }
+                    else
+                    {
+                        $_SESSION['CURR_REMOTEADDR'] = $_SERVER['REMOTE_ADDR'];
+                    }
+                    $curr_IP = $_SESSION['CURR_REMOTEADDR'];
+                    exec("/bin/echo \"Webui: session'" + $curr_sessID + "' is open from '" + $curr_IP + "' \" >> /rdklogs/logs/Consolelog.txt.0");
+                    if ($_SESSION['CURR_REMOTEADDR'] != $_SESSION['PREV_REMOTEADDR']) {
+                        exec("/bin/echo \"Webui: session'" + $curr_sessID + "' is closed \" >> /rdklogs/logs/Consolelog.txt.0");
+                        session_destroy(); // Destroy all data in session
+                        echo( '<script type="text/javascript">alert("Please Login First!"); location.href="../index.jst";</script>');
+                        exit(0);
+                    }
+                 }
         
 		/*
 		 * Set the Locale for the Web UI based on the LANG setting or current linux locale

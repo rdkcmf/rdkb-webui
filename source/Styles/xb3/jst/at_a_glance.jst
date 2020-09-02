@@ -19,6 +19,9 @@
 <!-- $Id: at_a_glance.dory.jst 2943 2009-08-25 20:58:43Z slemoine $ -->
 <?%
 session_start();
+$curr_sessID = session_id();
+$curr_IP = $_SERVER['REMOTE_ADDR'];
+exec("/usr/bin/logger -t GUI -p local5.notice \"Webui: session'" + $curr_sessID + "' is open from '" + $curr_IP + "' \" ");
 	$a = "";
 	$b = "";
 	$a = getStr("Device.X_CISCO_COM_MTA.Battery.RemainingCharge");
