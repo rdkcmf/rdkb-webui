@@ -6857,3 +6857,16 @@ msgstr "Errore"
 #: ajax_network_diagnostic_tools.php:152
 msgid "Error_Internal"
 msgstr "Errore Interno"
+
+#: network_diagnostic_tools.php:348
+msgid "Traceroute tool"
+msgstr "Strumento Traceroute"
+
+#: dmz.php:339 
+#, php-format
+msgid "Managing your home network settings is now easier than ever.<br>Visit <a href='http://%s'>%s</a> to set up DMZ, among many other features and settings."
+msgstr "Gestire le impostazioni della tua rete domestica è semplicissimo. Visita <a href='http://%s'>%s</a> per abilitare il DMZ, insieme a molte altre funzionalità e impostazioni."
+
+#: connected_devices_computers.php:1043
+msgid "Change the IP address assignment method for Offline Devices."
+msgstr "Modificare il metodo di assegnazione dell'indirizzo IP per i dispositivi offline."
