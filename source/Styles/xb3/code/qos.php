@@ -119,7 +119,7 @@ function set_config(jsConfig)
 }
 </script>
 <div id="content">
-    <h1><?php echo _("Gateway > Connection >CallP/QoS")?> </h1>
+    <h1><?php echo _("Gateway > Connection > CallP/QoS")?> </h1>
     <div id="educational-tip">
 		<p class="tip"><?php echo _("This Page shows CallP/QoS statistics of USG.")?></p>
     </div>

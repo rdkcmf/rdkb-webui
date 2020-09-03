@@ -94,7 +94,7 @@ function decodeHTMLEntities (text) {
 });
 </script>
 <div id="content">
-	<h1><?php echo _("Gateway > Connection > MTA >SIP Packet Log")?></h1>
+	<h1><?php echo _("Gateway > Connection > MTA > SIP Packet Log")?></h1>
 	<div id="educational-tip">
 		<p class="tip"><?php echo _("Information related to the SIP Packet Log.")?></p>
 	</div>
