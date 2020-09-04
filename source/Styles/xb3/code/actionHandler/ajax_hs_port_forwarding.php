@@ -116,14 +116,14 @@ if (isset($_POST['add'])) {
 								break;
 							}
 						}
-						else if($arrayIP==$ip) {
+						else {
 							$porttest=PORTTEST($startport,$endport,$arraySPort,$arrayEPort);
 							if ($porttest==1) {
 								if($InternalPort !=0){
 									$result.=_("Conflict with other HS Port Forwarding service. Please check Public port and IP!");
 									break;
 								} else {
-									$result.=_("Conflict with other Port Forwarding service. Please check Start/End port and IP!");
+									$result.=_("Failure! As Port Triggering/Port Forwarding rule exists for the same port.");
 									break;
 								}
 							}
@@ -150,6 +150,24 @@ if (isset($_POST['add'])) {
 				if (!$retStatus){$result=_("Success!");}	
 			}
 		}
+			 if($result==""){
+
+                            $ids=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."));
+                            foreach ($ids as $key=>$j) {
+                                $arraySPort = getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.$j.ForwardPortStart");
+                                        $arrayEPort= getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.$j.ForwardPortEnd");
+                                if($type=="BOTH"||$arrayType=="BOTH"||$type==$arrayType){
+                                $porttest=PORTTEST($startport,$endport,$arraySPort,$arrayEPort);
+                                if($porttest==1){
+                                    $result.=_("Failure! As Port Triggering/Port Forwarding rule exists for the same port.");
+                                    break;
+                                }
+                            }
+
+
+                        } //end of foreach
+                }	
+			
 	}
 }
 if (isset($_POST['edit'])){
@@ -208,14 +226,14 @@ if (isset($_POST['edit'])){
 							break;
 						}
 					}
-					else if($arrayIP==$ip) {
-						$porttest=PORTTEST($startport,$endport,$arraySPort,$arrayEPort);
+					else {
+						$porttest=PORTTEST($sport,$eport,$arraySPort,$arrayEPort);
 						if ($porttest==1) {
 							if($InternalPort !=0){
 								$result.=_("Conflict with other HS Port Forwarding service. Please check Public port and IP!");
 								break;
 							} else {
-								$result.=_("Conflict with other Port Forwarding service. Please check Start/End port and IP!");
+								$result.=_("Failure! As Port Triggering/Port Forwarding rule exists for the same port.");
 								break;
 							}
 						}
@@ -238,6 +256,24 @@ if (isset($_POST['edit'])){
 			$retStatus = DmExtSetStrsWithRootObj($rootObjName, TRUE, $paramArray);	
 			if (!$retStatus){$result=_("Success!");}
 		}
+		
+		  if($result==""){
+
+                            $ids=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."));
+                            foreach ($ids as $key=>$j) {
+                                $arraySPort= getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.$j.ForwardPortStart");
+                                        $arrayEPort= getStr("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.$j.ForwardPortEnd");
+                                if($type=="BOTH"||$arrayType=="BOTH"||$type==$arrayType){
+                                $porttest=PORTTEST($sport,$eport,$arraySPort,$arrayEPort);
+                                if($porttest==1){
+                                    $result.=_("Failure! As Port Triggering/Port Forwarding rule exists for the same port.");
+                                    break;
+                                }
+                            }
+
+
+                        } //end of foreach
+                }	
 	}
 }
 if (isset($_POST['active'])){
@@ -258,16 +294,17 @@ if (isset($_POST['del'])){
 	if($validation) $validation = validId($_POST['del']);
 	if($validation) delTblObj("Device.NAT.PortMapping.".$_POST['del'].".");
 }
-if ($result=="") {
-//the set operation failure due to conflict with port trigger rules or ...
-//so need to remove the '0.0.0.0' entry
+
+//to remove the zero entry
 $ids=explode(",",getInstanceIDs("Device.NAT.PortMapping."));
 	foreach ($ids as $key=>$j) {
-        if (getStr("Device.NAT.PortMapping.$j.InternalClient") == "0.0.0.0") {
-        	delTblObj("Device.NAT.PortMapping.$j.");
-        }
+		 $arrayExternalPort= getStr("Device.NAT.PortMapping.$j.ExternalPort");
+                $arrayExternalPortEndRange= getStr("Device.NAT.PortMapping.$j.ExternalPortEndRange");
+        	if ($arrayExternalPort==0 && $arrayExternalPort== $arrayExternalPortEndRange) {
+        		delTblObj("Device.NAT.PortMapping.$j.");
+        	}
 	} //end of foreach
-} //end of if
+
 header("Content-Type: application/json");
 echo json_encode($result);
 ?>
