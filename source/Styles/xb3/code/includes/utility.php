@@ -521,7 +521,7 @@ function get_wan_type()
     return $type;
 }
 
-if(!defined(PREPAID)){
+if(!defined('PREPAID')){
 	$modelName = getStr("Device.DeviceInfo.ModelName");
 	($modelName == "TG1682P")?define("PREPAID",true):define("PREPAID",false);
 }
