@@ -32,18 +32,7 @@ if ($_SESSION["loginuser"] == "" || $_SESSION["loginuser"] == false) {
 	else if($sta_batt > 18) { $battery_class = "bat-25"; }
 	else if($sta_batt > 8) { $battery_class = "bat-10"; }
 	else { $battery_class = "bat-0"; }
-	$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
-	$WANIPv4 = getStr($fistUSif+"IPv4Address.1.IPAddress");
-	$WANIPv6 = "" ;
-	$ids = explode(",", getInstanceIds($fistUSif+"IPv6Address."));
-	for(var $keytmp in $ids) { var $i=$ids[$keytmp];/*p2j-foreach*/
-		$val = getStr($fistUSif+"IPv6Address."+$i+".IPAddress");
-		if (!strstr($val, "fe80::")){
-			$WANIPv6 = $val;
-			break;
-		}
-	}
-	$sta_inet = ($WANIPv4 != "0.0.0.0" || strlen($WANIPv6) > 0) ? "true" : "false";
+	$sta_inet = (getStr("Device.DeviceInfo.X_RDKCENTRAL-COM.InternetStatus")=="true") ? "true" : "false";
 	//in Bridge mode > Internet connectivity status is always active
 	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
 	$sta_wifi = "false";
