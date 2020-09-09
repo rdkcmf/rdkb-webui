@@ -1,0 +1,108 @@
+/*
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright 2015 RDK Management
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
+
+
+/* All rules are under .radioswitch_cont class */
+.radioswitch_cont ul {
+	list-style: none;
+}
+.rs_radiolist {
+	overflow: hidden;
+	background: #9e9e9e;
+	padding: 3px 2px;
+	float: left;
+}
+.rs_radiolist li {
+	float: left;
+	margin: 0 2px;
+	width: 60px;
+	height: 20px;
+	position: relative;
+	z-index: 1;
+	color: #888;
+	border: solid 1px #eee;
+	background: #eee url(../../img/gradient.png) repeat-x 0 bottom;
+	font-size: .9em;
+}
+.rs_radiolist li:focus {
+	outline: 1px solid blue;
+}
+.rs_radiolist.rs_size_small li {
+	width: 40px;
+}
+.rs_radiolist li label {
+	display: block;
+	text-align: center;
+	line-height: 20px;
+	width: 100%;
+	height: 20px;
+	z-index: 5;
+	cursor: pointer;
+	margin: 0 !important;
+}
+.rs_radiolist li.rs_radio_off.rs_selected {
+	background: #e6411a;
+	border: solid 1px #aa1f00;
+	color: #fff;
+	text-shadow: 0 1px 0 #9f0c00;
+}
+.rs_radiolist li.rs_selected {
+	background: #92c700;
+	border: solid 1px #6da006;
+	color: #fff;
+	text-shadow: 0 1px 1px #5a9007;
+}
+.rs_radiolist li.rs_selected label {
+	font-weight: bold;
+	cursor: default;
+}
+.rs_radiolist li input {
+	display: none;
+}
+
+/* diabled style */
+.rs_radiolist.disabled li {
+	background: #eee url(../../img/gradient.png) repeat-x 0 bottom !important;
+	color: #ccc !important;
+	border: solid 1px #eee !important;
+}
+.rs_radiolist.disabled li label {
+	cursor: not-allowed;
+}
+.rs_radiolist.disabled li.rs_selected {
+	text-shadow: none;
+}
+.rs_radiolist.disabled li.rs_selected label {
+	font-weight: normal;
+}
+/* show current state, but disable option to select */
+.rs_radiolist.disabled_state li {
+	background: !important;
+	color: !important;
+	border: solid 1px #eee !important;
+	opacity:0.4;
+}
+.rs_radiolist.disabled_state li label {
+	cursor: not-allowed;
+}
+.rs_radiolist.disabled_state li.rs_selected {
+	text-shadow: none;
+}
+.rs_radiolist.disabled_state li.rs_selected label {
+	font-weight: normal;

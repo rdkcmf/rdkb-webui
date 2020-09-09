@@ -1,0 +1,956 @@
+<?%
+/*
+ If not stated otherwise in this file or this component's Licenses.txt file the
+ following copyright and licenses apply:
+
+ Copyright 2018 RDK Management
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+?>
+<?% include('includes/header.jst'); ?>
+<?% include('includes/utility.jst'); ?>
+<div id="sub-header">
+	<?% include('includes/userbar.jst'); ?>
+</div><!-- end #sub-header -->
+<?% include('includes/nav.jst'); ?>
+<style type="text/css">
+#content {
+	display: none;
+}
+</style>
+<?%
+	$NetworkName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.HelpTip.NetworkName");
+	$wanType = get_wan_type();
+	$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
+?>
+<script type="text/javascript">
+$(document).ready(function() {
+    gateway.page.init("Gateway > Connection > <?% echo( $NetworkName); ?>", "nav-gateway-network");
+	if ("admin" == "<?% echo( $_SESSION["loginuser"]); ?>"){
+		$(".div_cm").remove();
+		$(".div_mta").remove();
+	}
+	var wanType="<?% echo ($wanType);?>"
+	if (wanType == "DSL"){
+		$(".div_cm").remove();
+		$(".div_mta").remove();
+		$(".div_cm_mac").remove();
+		$(".div_mta_mac").remove();
+		$(".div_init").remove();
+		$(".div_up").remove();
+		$(".div_down").remove();
+		$(".div_code").remove();
+	} else {
+		$(".div_dsl").remove();
+	}
+	// now we can show target content
+	$("#content").show();
+});
+</script>
+<?%
+	$rootObjName    = "Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Connection.";
+	$paramNameArray = ["Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.Connection."]/*p2j-array*/;
+	$mapping_array  = ["MSOinfo", "StatusTitle", "StatusInfo"]/*p2j-array*/;
+	$Connection_values = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+function div_mod($n, $m)
+{
+	if (!is_numeric($n) || !is_numeric($m) || (0==$m)){
+		return [0, 0]/*p2j-array*/;
+	}	
+	for($i=0; $n >= $m; $i++){
+		$n = $n - $m;
+	}	
+	return [$i, $n]/*p2j-array*/;
+}
+function sec2dhms($sec)
+{
+	$tmp = div_mod($sec, 24*60*60);
+	$day = $tmp[0];
+	$tmp = div_mod($tmp[1], 60*60);
+	$hor = $tmp[0];
+	$tmp = div_mod($tmp[1],    60);
+	$min = $tmp[0];
+	return "D:" +$day+ " H:" +$hor+ " M:" +$min+ " S:" +$tmp[1];
+}
+	$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
+	$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
+	$WANIPv4 = getStr($fistUSif+"IPv4Address.1.IPAddress");
+	$ids = explode(",", getInstanceIds($fistUSif+"IPv6Address."));
+	$WANIPv6="";
+	$DHCP_LET_IPv6="";
+	if (strpos($partnerId, "sky-") !== false) {
+		$IPv6Adr = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstDownstreamIpInterface");
+		$ids = explode(",", getInstanceIds($IPv6Adr+"IPv6Address."));
+		for(var $keytmp in $ids) { $i=$ids[$keytmp];/*p2j-foreach*/
+			$val = getStr($fistUSif+"IPv6Address."+$i+".IPAddress");
+			if (!strstr($val, "fe80::")){
+				$WANIPv6=$val;
+					//DHCP Lease Expire Time (IPv6):
+					// echo $fistUSif."IPv6Address.$i.X_Comcast_com_LeaseTime";
+					$sec = getStr($fistUSif+"IPv6Address."+$i+".X_CISCO_COM_PreferredLifetime");
+					$tmp = div_mod($sec, 24*60*60);
+					$day = $tmp[0];
+					$tmp = div_mod($tmp[1], 60*60);
+					$hor = $tmp[0];
+					$tmp = div_mod($tmp[1],    60);
+					$min = $tmp[0];
+					$DHCP_LET_IPv6=$day+"d:"+$hor+"h:"+$min+"m";
+			}
+			if (strstr($val, "fe80::")){
+				$WANIPv6LinkLocal = $val;
+			}
+		}
+	}
+	else{
+		$ids = explode(",", getInstanceIds($fistUSif+"IPv6Address."));
+	for(var $keytmp in $ids) { $i=$ids[$keytmp];/*p2j-foreach*/
+		$val = getStr($fistUSif+"IPv6Address."+$i+".IPAddress");
+		if (!strstr($val, "fe80::")){
+			$WANIPv6 = $val;
+				//DHCP Lease Expire Time (IPv6):
+				// echo $fistUSif."IPv6Address."+$i+".X_Comcast_com_LeaseTime";
+				$sec = getStr($fistUSif+"IPv6Address."+$i+".X_CISCO_COM_PreferredLifetime");
+				$tmp = div_mod($sec, 24*60*60);
+				$day = $tmp[0];
+				$tmp = div_mod($tmp[1], 60*60);
+				$hor = $tmp[0];
+				$tmp = div_mod($tmp[1],    60);
+				$min = $tmp[0];
+				$DHCP_LET_IPv6 = $day+"d:"+$hor+"h:"+$min+"m";
+		}
+		if (strstr($val, "fe80::")){
+			$WANIPv6LinkLocal = $val;
+		}
+	    }
+	}
+	$sta_inet = ($WANIPv4 != "0.0.0.0" || strlen($WANIPv6) > 0) ? "true" : "false";
+	//in Bridge mode > Internet connectivity status is always active
+	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
+	$WANIPv4Gateway = getStr("Device.DHCPv4.Client.1.IPRouters");
+	if(strpos($partnerId, "sky-") !== false){
+		$isMapT = getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapTransportMode");
+		if($isMapT == 'MAPT'){
+		    $WANIPv4_val = getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapRuleIPv4Prefix");
+		    $WANIPv4_val_array = explode('.',$WANIPv4_val);
+                    $Convert_int = intval($WANIPv4_val_array[3]);
+                    $Add_val_int = getStr('Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapPSIDOffset');
+                    $Add_val_int = intval($Add_val_int);
+                    $WANIPv4_val_array[3]=$Convert_int+$Add_val_int;
+                    $WANIPv4 = $WANIPv4_val_array[0]+'.'+$WANIPv4_val_array[1]+'.'+$WANIPv4_val_array[2]+'.'+$WANIPv4_val_array[3]+' (Shared using MAP-T)';
+                    $WANIPv4Gateway = '-NA-';
+		}
+	}
+?>
+<div id="content">
+<h1><?% echo( _("Gateway > Connection >") + $Connection_values[0]['StatusTitle']); ?></h1>
+<div id="educational-tip">
+	<p class="tip"><?% echo( $Connection_values[0]['MSOinfo']); ?></p>
+	<p class="hidden"><?% echo( $Connection_values[0]['StatusInfo']); ?></p>
+</div>
+<div class="module forms">
+	<h2><?% echo( $Connection_values[0]['StatusTitle']); ?></h2>
+	<div class="form-row">
+		<span class="readonlyLabel"><?% echo( _("Internet:"));?></span>
+		<span class="value"><?% echo( ($sta_inet=="true") ? _("Active") : _("Inactive"));?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("Local time:"));?></span>
+		<span class="value"><?% echo( getStr("Device.Time.CurrentLocalTime"));?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("System Uptime:"));?></span>
+		<span class="value">
+		<?%
+			$sec = getStr("Device.DeviceInfo.UpTime");
+			$tmp = div_mod($sec, 24*60*60);
+			$day = $tmp[0];
+			$tmp = div_mod($tmp[1], 60*60);
+			$hor = $tmp[0];
+			$tmp = div_mod($tmp[1],    60);
+			$min = $tmp[0];
+			echo( $day+" "+_("days")+" "+$hor+"h: "+$min+"m: "+$tmp[1]+"s");
+		?>
+		</span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("WAN IP Address (IPv4):"));?></span>
+		<span class="value"><?% echo( $WANIPv4);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("WAN Default Gateway Address (IPv4):"));?></span> <span class="value">
+		<?%
+			//echo getStr("Device.Routing.Router.1.IPv4Forwarding.1.GatewayIPAddress");
+			/* For BWG, we just use the DHCP GW received from upstream as the wan side GW */
+			echo( getStr("Device.DHCPv4.Client.1.IPRouters"));
+		?>
+		</span>
+	</div>		
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("WAN IP Address (IPv6):"));?></span> <span class="value">
+		<?%
+			echo( $WANIPv6);
+		?>
+		</span>
+	</div>	
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("WAN Default Gateway Address (IPv6):"));?></span> <span class="value">
+		<?%
+		$ids = explode(",", getInstanceIds("Device.Routing.Router.1.IPv6Forwarding."));
+		for(var $keytmp in $ids) { $i=$ids[$keytmp];/*p2j-foreach*/
+			$val1 = getStr("Device.Routing.Router.1.IPv6Forwarding."+$i+".DestIPPrefix");
+			$val2 = getStr("Device.Routing.Router.1.IPv6Forwarding."+$i+".Interface");
+			if ("::/0"==$val1 && $fistUSif+""==$val2){
+				echo( getStr("Device.Routing.Router.1.IPv6Forwarding."+$i+".NextHop"));
+				break;
+			}
+		}
+		?>		
+		</span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("Delegated prefix (IPv6):"));?></span> <span class="value">
+		<?%
+		$ids = explode(",", getInstanceIds($fistUSif+"IPv6Prefix."));
+		echo( getStr($fistUSif+"IPv6Prefix."+$ids[0]+".Prefix"));
+		?>		
+		</span>
+	</div>			
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("Primary DNS Server (IPv4):"));?></span> <span class="value">
+		<?%
+		$ids    = explode(",", getInstanceIds("Device.DNS.Client.Server."));
+		$dns_v4 = []/*p2j-array*/;
+		$dns_v6 = []/*p2j-array*/;
+		for(var $keytmp in $ids) { $i=$ids[$keytmp];/*p2j-foreach*/
+			$val = getStr("Device.DNS.Client.Server."+$i+".DNSServer");
+			if (strstr($val, ".")){
+				if(strstr($val, "127.0.0.1")) continue;
+				array_push($dns_v4, $val);
+			}
+			else{
+				array_push($dns_v6, $val);
+			}
+		}
+		if(strpos($partnerId, "sky-") !== false && $isMapT == 'MAPT'){echo ($dns_v4[0] = '-NA-');}
+		else {if (isset($dns_v4[0])) echo( $dns_v4[0]);}
+		?>
+		</span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("Secondary DNS Server (IPv4):"));?></span> <span class="value"><?% if(strpos($partnerId, "sky-") !== false && $isMapT == 'MAPT'){echo ($dns_v4[1] = '-NA-');} else { if (isset($dns_v4[1])) echo( $dns_v4[1]);}?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("Primary DNS Server (IPv6):"));?></span> <span class="value"><?% if (isset($dns_v6[0])) echo( $dns_v6[0]);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("Secondary DNS Server (IPv6):"));?></span> <span class="value"><?% if (isset($dns_v6[1])) echo( $dns_v6[1]);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("WAN Link Local Address (IPv6):"));?></span>
+		<span class="value">
+		<?%
+			echo( $WANIPv6LinkLocal);
+		?>
+		</span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("DHCP Client (IPv4):"));?></span>
+		<span class="value"><?% echo( ("DHCP"==getStr("Device.X_CISCO_COM_DeviceControl.WanAddressMode")) ? _("Enabled") : _("Disabled"));?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("DHCP Client (IPv6):"));?></span> <span class="value">
+		<?% echo( ("true"==getStr("Device.DHCPv6.Client.1.Enable")) ? _("Enabled") : _("Disabled"));?>
+		</span>
+	</div>	
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("DHCP Lease Expire Time (IPv4):"));?></span>
+		<span class="value">
+		<?%
+			$sec = getStr("Device.DHCPv4.Client.1.LeaseTimeRemaining");
+			$tmp = div_mod($sec, 24*60*60);
+			$day = $tmp[0];
+			$tmp = div_mod($tmp[1], 60*60);
+			$hor = $tmp[0];
+			$tmp = div_mod($tmp[1],    60);
+			$min = $tmp[0];
+			echo( $day+"d:"+$hor+"h:"+$min+"m");
+		?>
+		</span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("DHCP Lease Expire Time (IPv6):"));?></span> <span class="value">
+		<?%
+			echo( $DHCP_LET_IPv6);
+		?>		
+		</span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("WAN MAC:"));?></span>
+		<span class="value">
+			<?% echo( strtoupper(getStr(getStr(getStr($fistUSif+"LowerLayers")+".LowerLayers")+".MACAddress"))); ?>
+		</span>
+	</div>
+	<div class="form-row div_mta_mac">
+		<span class="readonlyLabel"><?% echo( _("eMTA MAC:"));?></span>
+		<span class="value"><?% echo( strtoupper(getStr("Device.X_CISCO_COM_MTA.MACAddress")));?></span>
+	</div>
+	<?%
+		$CM_param = {
+			"MACAddress"	: "Device.X_CISCO_COM_CableModem.MACAddress",
+			"CMStatus"		: "Device.X_CISCO_COM_CableModem.CMStatus",
+			"CoreVersion"	: "Device.X_CISCO_COM_CableModem.CoreVersion" 
+		}/*p2j-array*/;
+		$CM_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $CM_param);
+		if(typeof($CM_value["MACAddress"])=="undefined")
+                        $CM_value["MACAddress"]="";
+	?>
+	<div class="form-row odd div_cm_mac">
+		<span class="readonlyLabel"><?% echo( _("CM MAC:"));?></span>
+		<span class="value"><?% echo( strtoupper($CM_value["MACAddress"]));?></span>
+	</div>
+</div>
+<?%
+$cmStatus = $CM_value["CMStatus"];
+$initStatus = []/*p2j-array*/;
+if ("NOT_READY" == $cmStatus) {
+	$initStatus = ["NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted"]/*p2j-array*/;
+}
+else if ("NOT_SYNCHRONIZED" == $cmStatus) {
+	$initStatus = ["Complete", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted"]/*p2j-array*/;
+}
+else if ("EAE_IN_PROGRESS" == $cmStatus) {
+	$initStatus = ["Complete", "InProgress", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted"]/*p2j-array*/;
+}
+else if ("US_PARAMETERS_ACQUIRED" == $cmStatus) {
+	$initStatus = ["Complete", "Complete", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted"]/*p2j-array*/;
+}
+else if ("RANGING_IN_PROGRESS" == $cmStatus) {
+	$initStatus = ["Complete", "Complete", "InProgress", "NotStarted", "NotStarted", "NotStarted", "NotStarted"]/*p2j-array*/;
+}
+else if ("RANGING_COMPLETE" == $cmStatus) {
+	$initStatus = ["Complete", "Complete", "Complete", "NotStarted", "NotStarted", "NotStarted", "NotStarted"]/*p2j-array*/;
+}
+else if ("DHCPV4_IN_PROGRESS" == $cmStatus) {
+	$initStatus = ["Complete", "Complete", "Complete", "InProgress", "NotStarted", "NotStarted", "NotStarted"]/*p2j-array*/;
+}
+else if ("DHCPV4_COMPLETE" == $cmStatus) {
+	$initStatus = ["Complete", "Complete", "Complete", "Complete", "NotStarted", "NotStarted", "NotStarted"]/*p2j-array*/;
+}
+else if ("BPI_INIT" == $cmStatus) {
+	$initStatus = ["Complete", "Complete", "Complete", "Complete", "InProgress", "NotStarted", "NotStarted"]/*p2j-array*/;
+}
+else if ("TOD_ESTABLISHED" == $cmStatus) {
+	$initStatus = ["Complete", "Complete", "Complete", "Complete", "Complete", "NotStarted", "NotStarted"]/*p2j-array*/;
+}
+else if ("DS_TOPOLOGY_RESOLUTION_IN_PROGRESS" == $cmStatus) {
+	$initStatus = ["Complete", "Complete", "Complete", "Complete", "Complete", "InProgress", "NotStarted"]/*p2j-array*/;
+}
+else if ("CONFIG_FILE_DOWNLOAD_COMPLETE" == $cmStatus) {
+	$initStatus = ["Complete", "Complete", "Complete", "Complete", "Complete", "Complete", "NotStarted"]/*p2j-array*/;
+}
+else if ("RANGING_IN_PROGRESS" == $cmStatus) {
+	$initStatus = ["Complete", "Complete", "Complete", "Complete", "Complete", "Complete", "InProgress"]/*p2j-array*/;
+}
+else if ("REGISTRATION_COMPLETE" == $cmStatus || "OPERATIONAL" == $cmStatus) {
+	$initStatus = ["Complete", "Complete", "Complete", "Complete", "Complete", "Complete", "Complete"]/*p2j-array*/;
+}
+else {
+	$initStatus = ["NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted", "NotStarted"]/*p2j-array*/;
+}
+?>
+<div class="module forms">
+	<h2><?% echo( _("Initialization Procedure"));?></h2>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("Initialize Hardware:"));?></span>
+		<span class="value"><?% echo( $initStatus[0]);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("Acquire Downstream Channel:"));?></span>
+		<span class="value"><?% echo( $initStatus[1]);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("Upstream Ranging:"));?></span>
+		<span class="value"><?% echo( $initStatus[2]);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("DHCP bound:"));?></span>
+		<span class="value"><?% echo( $initStatus[3]);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("Set Time-of-Day:"));?></span>
+		<span class="value"><?% echo( $initStatus[4]);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("Configuration File Download:"));?></span>
+		<span class="value"><?% echo( $initStatus[5]);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("Registration:"));?></span>
+		<span class="value"><?% echo( $initStatus[6]);?></span>
+	</div>
+</div>
+<?%
+if($_SESSION["loginuser"] == "mso"){
+	$cm_param = {
+		"IPAddress"				: "Device.X_CISCO_COM_CableModem.IPAddress",
+		"SubnetMask"			: "Device.X_CISCO_COM_CableModem.SubnetMask",
+		"Gateway"				: "Device.X_CISCO_COM_CableModem.Gateway",
+		"TFTPServer"			: "Device.X_CISCO_COM_CableModem.TFTPServer",
+		"TimeServer"			: "Device.X_CISCO_COM_CableModem.TimeServer",
+		"TimeOffset"			: "Device.X_CISCO_COM_CableModem.TimeOffset",
+		"BootFileName"			: "Device.X_CISCO_COM_CableModem.BootFileName",
+		"MDDIPOverride"			: "Device.X_CISCO_COM_CableModem.MDDIPOverride",
+		"LearnedIPMode"			: "Device.X_CISCO_COM_CableModem.ProvIpType",
+		"LeaseTimeRemaining"	: "Device.X_CISCO_COM_CableModem.LeaseTimeRemaining",
+		"RebindTimeRemaining"	: "Device.X_CISCO_COM_CableModem.RebindTimeRemaining",
+		"RenewTimeRemaining"	: "Device.X_CISCO_COM_CableModem.RenewTimeRemaining",
+	//	"PrimaryDHCPServer"		: "Device.X_CISCO_COM_MTA.PrimaryDHCPServer",
+	//	"SecondaryDHCPServer"	: "Device.X_CISCO_COM_MTA.SecondaryDHCPServer",
+		"IPv6Address"				: "Device.X_CISCO_COM_CableModem.IPv6Address",
+		"IPv6TFTPServer"			: "Device.X_CISCO_COM_CableModem.IPv6TFTPServer",
+		"IPv6TimeServer"			: "Device.X_CISCO_COM_CableModem.IPv6TimeServer",
+		"IPv6BootFileName"			: "Device.X_CISCO_COM_CableModem.IPv6BootFileName",
+		"IPv6LeaseTimeRemaining"	: "Device.X_CISCO_COM_CableModem.IPv6LeaseTimeRemaining",
+		"IPv6RebindTimeRemaining"	: "Device.X_CISCO_COM_CableModem.IPv6RebindTimeRemaining",
+		"IPv6RenewTimeRemaining"	: "Device.X_CISCO_COM_CableModem.IPv6RenewTimeRemaining" 
+		}/*p2j-array*/;
+	$cm_value = KeyExtGet("Device.X_CISCO_COM_CableModem.", $cm_param);
+	if($cm_value['LearnedIPMode'] == 'IPv6' || $cm_value['LearnedIPMode'] == 'IPV6'){
+		$cm_value['IPAddress']			 = $cm_value['IPv6Address'];
+		$cm_value['SubnetMask']			 = 'NA';
+		$cm_value['Gateway']			 = 'NA';
+		$cm_value['TFTPServer']			 = $cm_value['IPv6TFTPServer'];
+		$cm_value['TimeServer']			 = $cm_value['IPv6TimeServer'];
+		$cm_value['BootFileName']		 = $cm_value['IPv6BootFileName'];
+		$cm_value['LeaseTimeRemaining']	 = $cm_value['IPv6LeaseTimeRemaining'];
+		$cm_value['RebindTimeRemaining'] = $cm_value['IPv6RebindTimeRemaining'];
+		$cm_value['RenewTimeRemaining']	 = $cm_value['IPv6RenewTimeRemaining'];
+  }
+  if(!isset($cm_value['PrimaryDHCPServer']))
+    $cm_value['PrimaryDHCPServer']='';
+  if(!isset($cm_value['SecondaryDHCPServer']))
+    $cm_value['SecondaryDHCPServer']='';
+} else {
+	$cm_value = {
+    'IPAddress':'', 
+    'SubnetMask':'', 
+    'Gateway':'', 
+    'TFTPServer':'', 
+    'TimeServer':'', 
+    'TimeOffset':'', 
+    'BootFileName':'', 
+    'MDDIPOverride':'', 
+    'LearnedIPMode':'', 
+    'LeaseTimeRemaining':'', 
+    'RebindTimeRemaining':'', 
+    'RenewTimeRemaining':'',
+    'PrimaryDHCPServer':'',
+    'SecondaryDHCPServer':''
+  }
+}
+?>
+<div class="module forms div_cm">
+	<h2><?% echo( _("CM DHCP Parameters"));?></h2>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("CM IP Address:"));?></span>
+		<span class="value"><?% echo( $cm_value['IPAddress']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("CM Subnet Mask:"));?></span>
+		<span class="value"><?% echo( $cm_value['SubnetMask']);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("CM IP Gateway:"));?></span>
+		<span class="value"><?% echo( $cm_value['Gateway']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("CM TFTP Server:"));?></span>
+		<span class="value"><?% echo( $cm_value['TFTPServer']);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("CM Time Server:"));?></span>
+		<span class="value"><?% echo( $cm_value['TimeServer']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("CM Time Offset:"));?></span>
+		<span class="value"><?% echo( $cm_value['TimeOffset']);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("CM Boot File:"));?></span>
+		<span class="value"><?% echo( $cm_value['BootFileName']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("MDD IP Mode Override:"));?></span>
+		<span class="value"><?% echo( $cm_value['MDDIPOverride']);?></span>
+	</div>
+	<div class="form-row">
+		<span class="readonlyLabel"><?% echo( _("Learned IP Mode:"));?></span>
+		<span class="value"><?% echo( $cm_value['LearnedIPMode']);?></span>
+	</div>
+</div>
+<div class="module forms div_cm">
+	<h2><?% echo( _("CM IP Time Remaining"));?></h2>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("DHCP Lease Time:"));?></span>
+		<span class="value"><?% echo( sec2dhms($cm_value['LeaseTimeRemaining']));?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("DHCP Rebind Time:"));?></span>
+		<span class="value"><?% echo( sec2dhms($cm_value['RebindTimeRemaining']));?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("DHCP Renew Time:"));?></span>
+		<span class="value"><?% echo( sec2dhms($cm_value['RenewTimeRemaining']));?></span>
+	</div>
+</div>
+<!--
+<div class="module forms div_cm">
+	<h2>CM PacketCable Options</h2>
+	<div class="form-row ">
+		<span class="readonlyLabel">Sub-option 1 Service Provider's Primary DHCP:</span>
+		<span class="value"><?% echo( $cm_value['PrimaryDHCPServer']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel">Sub-option 1 Service Provider's Secondary DHCP:</span>
+		<span class="value"><?% echo( $cm_value['SecondaryDHCPServer']);?></span>
+	</div>
+</div>
+-->
+<?%
+if($_SESSION["loginuser"] == "mso"){
+	$mta_param = {
+		"FQDN"					: "Device.X_CISCO_COM_MTA.FQDN",
+		"IPAddress"				: "Device.X_CISCO_COM_MTA.IPAddress",
+		"SubnetMask"			: "Device.X_CISCO_COM_MTA.SubnetMask",
+		"Gateway"				: "Device.X_CISCO_COM_MTA.Gateway",
+		"BootFileName"			: "Device.X_CISCO_COM_MTA.BootFileName",
+		"LeaseTimeRemaining"	: "Device.X_CISCO_COM_MTA.LeaseTimeRemaining",
+		"RebindTimeRemaining"	: "Device.X_CISCO_COM_MTA.RebindTimeRemaining",
+		"RenewTimeRemaining"	: "Device.X_CISCO_COM_MTA.RenewTimeRemaining",
+		"PrimaryDNS"			: "Device.X_CISCO_COM_MTA.PrimaryDNS",
+		"SecondaryDNS"			: "Device.X_CISCO_COM_MTA.SecondaryDNS",
+		"DHCPOption3"			: "Device.X_CISCO_COM_MTA.DHCPOption3",
+		"DHCPOption6"			: "Device.X_CISCO_COM_MTA.DHCPOption6",
+		"DHCPOption7"			: "Device.X_CISCO_COM_MTA.DHCPOption7",
+		"DHCPOption8"			: "Device.X_CISCO_COM_MTA.DHCPOption8",
+		"PrimaryDHCPServer"		: "Device.X_CISCO_COM_MTA.PrimaryDHCPServer",
+		"SecondaryDHCPServer"	: "Device.X_CISCO_COM_MTA.SecondaryDHCPServer" 
+		}/*p2j-array*/;
+	$mta_value = KeyExtGet("Device.X_CISCO_COM_MTA.", $mta_param);
+} else {
+	$mta_value = {
+		"FQDN"					: '',
+		"IPAddress"				: '',
+		"SubnetMask"			: '',
+		"Gateway"				: '',
+		"BootFileName"			: '',
+		"LeaseTimeRemaining"	: '',
+		"RebindTimeRemaining"	: '',
+		"RenewTimeRemaining"	: '',
+		"PrimaryDNS"			: '',
+		"SecondaryDNS"			: '',
+		"DHCPOption3"			: '',
+		"DHCPOption6"			: '',
+		"DHCPOption7"			: '',
+		"DHCPOption8"			: '',
+		"PrimaryDHCPServer"		: '',
+		"SecondaryDHCPServer"	: ''
+		}
+}
+?>
+<div class="module forms div_cm">
+	<h2><?% echo( _("CM PacketCable Options"));?></h2>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("Sub-option 1 Service Provider's Primary DHCP:"));?></span>
+		<span class="value"><?% echo( $mta_value['PrimaryDHCPServer']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("Sub-option 1 Service Provider's Secondary DHCP:"));?></span>
+		<span class="value"><?% echo( $mta_value['SecondaryDHCPServer']);?></span>
+	</div>
+</div>
+<div class="module forms div_mta">
+	<h2><?% echo( _("MTA DHCP Parameters"));?></h2>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("MTA FQDN:"));?></span>
+		<span class="value"><?% echo( $mta_value['FQDN']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("MTA IP Address:"));?></span>
+		<span class="value"><?% echo( $mta_value['IPAddress']);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("MTA IP Subnet Mask:"));?></span>
+		<span class="value"><?% echo( $mta_value['SubnetMask']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("MTA IP Gateway:"));?></span>
+		<span class="value"><?% echo( $mta_value['Gateway']);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("MTA Bootfile:"));?></span>
+		<span class="value"><?% echo( $mta_value['BootFileName']);?></span>
+	</div>
+</div>
+<div class="module forms div_mta">
+	<h2><?% echo( _("MTA IP Time Remaining"));?></h2>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("DHCP Lease Time:"));?></span>
+		<span class="value"><?% echo( sec2dhms($mta_value['LeaseTimeRemaining']));?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("DHCP Rebind Time:"));?></span>
+		<span class="value"><?% echo( sec2dhms($mta_value['RebindTimeRemaining']));?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("DHCP Renew Time:"));?></span>
+		<span class="value"><?% echo( sec2dhms($mta_value['RenewTimeRemaining']));?></span>
+	</div>
+</div>
+<div class="module forms div_mta">
+	<h2><?% echo( _("MTA DHCP Option 6"));?></h2>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("Network Primary DNS:"));?></span>
+		<span class="value"><?% echo( $mta_value['PrimaryDNS']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("Network Secondary DNS:"));?></span>
+		<span class="value"><?% echo( $mta_value['SecondaryDNS']);?></span>
+	</div>
+</div>
+<div class="module forms div_mta">
+	<h2><?% echo( _("MTA PacketCable Options(Option 122)"));?></h2>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("Sub-option 3:"));?></span>
+		<span class="value"><?% echo( $mta_value['DHCPOption3']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("Sub-option 6:"));?></span>
+		<span class="value"><?% echo( $mta_value['DHCPOption6']);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel"><?% echo( _("Sub-option 7:"));?></span>
+		<span class="value"><?% echo( $mta_value['DHCPOption7']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel"><?% echo( _("Sub-option 8:"));?></span>
+		<span class="value"><?% echo( $mta_value['DHCPOption8']);?></span>
+	</div>
+</div>
+<?%
+$device_value={};
+// $device_param = array(
+	// "HardwareVersion"			=> "Device.DeviceInfo.HardwareVersion",
+	// "Manufacturer"				=> "Device.DeviceInfo.Manufacturer",
+	// "BootloaderVersion"			=> "Device.DeviceInfo.X_CISCO_COM_BootloaderVersion",
+	// "ModelName"					=> "Device.DeviceInfo.ModelName",
+	// "ProductClass"				=> "Device.DeviceInfo.ProductClass",
+	// "Hardware"					=> "Device.DeviceInfo.Hardware",
+	// "AdditionalSoftwareVersion"	=> "Device.DeviceInfo.AdditionalSoftwareVersion",
+	// "SerialNumber"				=> "Device.DeviceInfo.SerialNumber",
+	// );
+// $device_value = KeyExtGet("Device.DeviceInfo.", $device_param);
+// there are bugs in native DmExtGetStrsWithRootObj when geting DeviceInfo, have to get one by one
+$device_value["HardwareVersion"] 			= getStr("Device.DeviceInfo.HardwareVersion");
+$device_value["Manufacturer"] 				= getStr("Device.DeviceInfo.Manufacturer");
+$device_value["BootloaderVersion"] 			= getStr("Device.DeviceInfo.X_CISCO_COM_BootloaderVersion");
+$device_value["ModelName"] 					= getStr("Device.DeviceInfo.ModelName");
+$device_value["ProductClass"] 				= getStr("Device.DeviceInfo.ProductClass");
+$device_value["Hardware"] 					= getStr("Device.DeviceInfo.Hardware");
+$device_value["AdditionalSoftwareVersion"] 	= getStr("Device.DeviceInfo.AdditionalSoftwareVersion");
+$device_value["SerialNumber"] 				= getStr("Device.DeviceInfo.SerialNumber");
+if ($wanType == "DSL") {
+    $modemType = _("DSL Modem");
+} else {
+    $modemType = _("Cable Modem");
+}
+?>
+<!-- Updating the CoreVersion value as 'NA' for DSL details to SKY -->
+<?% if($wanType == "DSL" && strpos($partnerId, "sky-") !== false){
+  if(!$CM_value["CoreVersion"]){ $CM_value["CoreVersion"] = 'NA';}
+}?>
+<div class="module forms">
+	<h2><?% echo ($modemType);?></h2>
+	<div class="form-row ">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?% echo( _("HW Version:"));?></span>
+		<span class="value"><?% echo( $device_value['HardwareVersion']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?% echo( _("Vendor:"));?></span>
+		<span class="value"><?% echo( $device_value['Manufacturer']);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?% echo( _("BOOT Version:"));?></span>
+		<span class="value"><?% echo( $device_value['BootloaderVersion']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?% echo( _("Core Version:"));?></span>
+		<span class="value"><?% echo( $CM_value["CoreVersion"]);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?% echo( _("Model:"));?></span>
+		<span class="value"><?% echo( $device_value['ModelName']);?></span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?% echo( _("Product Type:"));?></span>
+		<span class="value"><?% echo( $device_value['ProductClass']);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?% echo( _("Flash Part:"));?></span>
+		<span class="value"><?% echo( $device_value['Hardware']);?> MB</span>
+	</div>
+	<div class="form-row odd">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?% echo( _("Download Version:"));?></span>
+		<span class="value"><?% echo( $device_value['AdditionalSoftwareVersion']);?></span>
+	</div>
+	<div class="form-row ">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?% echo( _("Serial Number:"));?></span>
+		<span class="value"><?% echo( $device_value['SerialNumber']);?></span>
+	</div>
+</div>
+<?%
+$ds_obj = "Device.X_CISCO_COM_CableModem.DownstreamChannel.";
+$ds_val = DmExtGetStrsWithRootObj($ds_obj, [$ds_obj]/*p2j-array*/);
+$ds_ids = DmExtGetInstanceIds($ds_obj);
+$ds_tab = []/*p2j-array*/;
+for ($i=1, $j=1; $i<count($ds_ids); $i++)
+{
+	$ds_tab[$i]={};
+	$ds_tab[$i]['ChannelID']		= $ds_val[$j++][1];
+	$ds_tab[$i]['Frequency']		= $ds_val[$j++][1];
+	$ds_tab[$i]['PowerLevel']		= $ds_val[$j++][1];
+	$ds_tab[$i]['SNRLevel']			= $ds_val[$j++][1];
+	$ds_tab[$i]['Modulation']		= $ds_val[$j++][1];
+	$ds_tab[$i]['Octets']			= $ds_val[$j++][1];
+	$ds_tab[$i]['Correcteds']		= $ds_val[$j++][1];
+	$ds_tab[$i]['Uncorrectables']	= $ds_val[$j++][1];
+	$ds_tab[$i]['LockStatus']		= $ds_val[$j++][1];
+}
+?>
+<div class="module div_down" style="overflow:auto">
+	<table class="data" cellspacing="0" cellpadding="0">
+	<thead>
+		<tr>
+			<td class="row-label acs-th"><div style="width: 100px"><?% echo( _("Downstream"));?></div></td>
+			<td class="row-label acs-th" colspan="<?% echo( count($ds_ids));?>"><?% echo( _("Channel Bonding Value"));?></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="">
+			<th class="row-label "><?% echo( _("Index"));?></td>
+			<?% for ($i=1; $i<count($ds_ids); $i++) echo( '<td><div style="width: 100px">'+$i+'</div></td>');?>
+		</tr>
+		<tr class="odd">
+			<th class="row-label "><?% echo( _("Lock Status"));?></td>
+			<?% for ($i=1; $i<count($ds_ids); $i++) echo( '<td><div style="width: 100px">'+$ds_tab[$i]['LockStatus']+'</div></td>');?>
+		</tr>
+		<tr class="">
+			<th class="row-label "><?% echo( _("Frequency"));?></td>
+			<?% for ($i=1; $i<count($ds_ids); $i++) echo( '<td><div style="width: 100px">'+$ds_tab[$i]['Frequency']+'</div></td>');?>
+		</tr>
+		<tr class="odd">
+			<th class="row-label "><?% echo( _("SNR"));?></td>
+			<?% for ($i=1; $i<count($ds_ids); $i++) echo( '<td><div style="width: 100px">'+$ds_tab[$i]['SNRLevel']+'</div></td>');?>
+		</tr>
+		<tr class="">
+			<th class="row-label "><?% echo( _("Power Level"));?></td>
+			<?% for ($i=1; $i<count($ds_ids); $i++) echo( '<td><div style="width: 100px">'+$ds_tab[$i]['PowerLevel']+'</div></td>');?>
+		</tr>
+		<tr class="odd">
+			<th class="row-label "><?% echo( _("Modulation"));?></td>
+			<?% for ($i=1; $i<count($ds_ids); $i++) echo( '<td><div style="width: 100px">'+$ds_tab[$i]['Modulation']+'</div></td>');?>
+		</tr>
+	</tbody>
+	</table>
+</div>
+<?%
+$us_obj = "Device.X_CISCO_COM_CableModem.UpstreamChannel.";
+$us_val = DmExtGetStrsWithRootObj($us_obj, [$us_obj]/*p2j-array*/);
+$us_ids = DmExtGetInstanceIds($us_obj);
+$us_tab = []/*p2j-array*/;
+for ($i=1, $j=1; $i<count($us_ids); $i++)
+{
+	$us_tab[$i]={};
+	$us_tab[$i]['ChannelID']		= $us_val[$j++][1];
+	$us_tab[$i]['Frequency']		= $us_val[$j++][1];
+	$us_tab[$i]['PowerLevel']		= $us_val[$j++][1];
+	$us_tab[$i]['ChannelType']		= $us_val[$j++][1];
+	$us_tab[$i]['SymbolRate']		= $us_val[$j++][1];
+	$us_tab[$i]['Modulation']		= $us_val[$j++][1];
+	$us_tab[$i]['LockStatus']		= $us_val[$j++][1];
+}
+?>
+<div class="module div_up" style="overflow:auto">
+	<table class="data" cellspacing="0" cellpadding="0">
+	<thead>
+		<tr>
+			<td class="row-label acs-th"><div style="width: 100px"><?% echo( _("Upstream"));?></div></td>
+			<td class="row-label acs-th" colspan="<?% echo( count($us_ids));?>"><?% echo( _("Channel Bonding Value"));?></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="">
+			<th class="row-label "><?% echo( _("Index"));?></td>
+			<?% for ($i=1; $i<count($us_ids); $i++) echo( '<td><div style="width: 100px">'+$i+'</div></td>');?>
+		</tr>
+		<tr class="odd">
+			<th class="row-label "><?% echo( _("Lock Status"));?></td>
+			<?% for ($i=1; $i<count($us_ids); $i++) echo( '<td><div style="width: 100px">'+$us_tab[$i]['LockStatus']+'</div></td>');?>
+		</tr>
+		<tr class="">
+			<th class="row-label "><?% echo( _("Frequency"));?></td>
+			<?% for ($i=1; $i<count($us_ids); $i++) echo( '<td><div style="width: 100px">'+$us_tab[$i]['Frequency']+'</div></td>');?>
+		</tr>
+		<tr class="odd">
+			<th class="row-label "><?% echo( _("Symbol Rate"));?></td>
+			<?% for ($i=1; $i<count($us_ids); $i++) echo( '<td><div style="width: 100px">'+$us_tab[$i]['SymbolRate']+'</div></td>');?>
+		</tr>
+		<tr class="">
+			<th class="row-label "><?% echo( _("Power Level"));?></td>
+			<?% for ($i=1; $i<count($us_ids); $i++) echo( '<td><div style="width: 100px">'+$us_tab[$i]['PowerLevel']+'</div></td>');?>
+		</tr>
+		<tr class="odd">
+			<th class="row-label "><?% echo( _("Modulation"));?></td>
+			<?% for ($i=1; $i<count($us_ids); $i++) echo( '<td><div style="width: 100px">'+$us_tab[$i]['Modulation']+'</div></td>');?>
+		</tr>
+		<tr class="">
+			<th class="row-label "><?% echo( _("Channel Type"));?></td>
+			<?% for ($i=1; $i<count($us_ids); $i++) echo( '<td><div style="width: 100px">'+$us_tab[$i]['ChannelType']+'</div></td>');?>
+		</tr>
+	</tbody>
+	</table>
+</div>
+<?%
+$ec_obj = "Device.X_CISCO_COM_CableModem.CMErrorCodewords.";
+$ec_val = DmExtGetStrsWithRootObj($ec_obj, [$ec_obj]/*p2j-array*/);
+$ec_ids = DmExtGetInstanceIds($ec_obj);
+$ec_tab = []/*p2j-array*/;
+for ($i=1, $j=1; $i<count($ec_ids); $i++)
+{
+        $ec_tab[$i]={};
+        $ec_tab[$i]['UnerroredCodewords']                = $ec_val[$j++][1];
+        $ec_tab[$i]['CorrectableCodewords']              = $ec_val[$j++][1];
+        $ec_tab[$i]['UncorrectableCodewords']            = $ec_val[$j++][1];
+}
+?>
+<div class="module" style="overflow:auto">
+	<table class="data" cellspacing="0" cellpadding="0">
+	<thead>
+		<tr>
+			<td class="row-label acs-th" colspan="<?% echo( count($ds_ids));?>">CM Error Codewords</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="">
+			<th class="row-label "><?% echo( _("Unerrored Codewords"));?></td>
+			<?% for ($i=1; $i<count($ec_ids); $i++) echo( '<td><div style="width: 100px">'+$ec_tab[$i]['UnerroredCodewords']+'</div></td>');?>
+		</tr>
+		<tr class="odd">
+			<th class="row-label "><?% echo( _("Correctable Codewords"));?></td>
+			<?% for ($i=1; $i<count($ec_ids); $i++) echo( '<td><div style="width: 100px">'+$ec_tab[$i]['CorrectableCodewords']+'</div></td>');?>
+		</tr>
+		<tr class="">
+			<th class="row-label "><?% echo( _("Uncorrectable Codewords"));?></td>
+			<?% for ($i=1; $i<count($ec_ids); $i++) echo( '<td><div style="width: 100px">'+$ec_tab[$i]['UncorrectableCodewords']+'</div></td>');?>
+		</tr>
+	</tbody>
+	</table>
+</div>
+<?%
+//WAN details Fetching
+$wan_Interface_obj = "Device.IP.Interface.";
+$wan_Interface_ids =  DmExtGetInstanceIds($wan_Interface_obj);
+$wan_er_name = {};
+for ($i= 1; $i< count($wan_Interface_ids);$i++){
+	$id = $wan_Interface_ids[$i];
+	$val_get = "Device.IP.Interface."+$i+".Name";
+	$wan_er_name[$id] = getStr($val_get);
+	if($wan_er_name[$id] == "erouter0"){
+		$wan_ip = "Device.IP.Interface."+$i+".IPv4Address.1.IPAddress";
+		$wan_ip_val = getStr($wan_ip);
+		if (inet_pton($wan_ip_val)) {
+  		    if($wan_ip_val != "0.0.0.0"){
+			$Wan_Port_Status ="Connected";
+  		    } else {
+			$Wan_Port_Status ="Disconnected";
+		    }
+		} else if (inet_pton($WANIPv6)){
+   			if($WANIPv6){
+				$Wan_Port_Status ="Connected";
+			} else {
+    				$Wan_Port_Status ="Disconnected";
+    		}
+    	}
+	$port_detail= "Device.IP.Interface."+$i+".LowerLayers";
+    }
+}
+$Wan_Port_Detail = getStr($port_detail);
+$wan_port_value = substr($Wan_Port_Detail, -1);
+if(strpos($partnerId, "sky-") !== false){
+	$ipv4_status =  getStr("Device.X_RDK-Central_COM_WanAgent.IPV4WanConnectionState");
+	$ipv6_status =  getStr("Device.X_RDK-Central_COM_WanAgent.IPV6WanConnectionState");
+	if($ipv6_status == 'up' || $ipv4_status == 'up'){
+	    $Wan_Port_Status ="Connected";
+    	    $wan_port_value =  _("Port ")+( $wan_port_value + 1);
+	}
+	else{
+    	$Wan_Port_Status ="Disconnected";
+    	$wan_port_value = _('WAN is not connected');
+    }
+}
+else{
+	if($Wan_Port_Status !="Disconnected"){
+	    $wan_port_value =  _("Port ")+( $wan_port_value + 1);
+	} else{
+	    $wan_port_value = _('WAN is not connected');
+	}
+}
+$modem_downstream = getStr("Device.X_RDK-Central_COM_WanAgent.WanOE.DownstreamCurrRate");
+$modem_upstream = getStr("Device.X_RDK-Central_COM_WanAgent.WanOE.UpstreamCurrRate");
+if(strpos($partnerId, "sky-") !== false){
+   if($Wan_Port_Status =="Connected"){
+	   if($modem_downstream == 0) $modem_downstream = '-NA-';
+	   if($modem_upstream == 0) $modem_upstream = '-NA-';
+   }
+   else if($Wan_Port_Status =="Disconnected"){
+	   $modem_downstream = '-NA-';$modem_upstream = '-NA-';
+   }
+}
+?>
+<div class="module forms div_dsl">
+	<h2><?% echo( _("Modem Stats"));?></h2>
+ 	<div class="form-row ">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?% echo( _("Modem Status:"));?></span>
+		<span class="value"><?% echo( _($Wan_Port_Status));?></span>
+ 	</div>
+     <?% if(strpos($partnerId, "sky-") === false){ ?>
+ 	<div class="form-row odd">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?% echo( _("DownStream Connection Speed:"));?></span>
+		<span class="value"><?% echo ($modem_downstream);?></span>
+ 	</div>
+	<div class="form-row ">
+ 		<span class="readonlyLabel" style="text-align:left; color:#333333"><?% echo( _("UpStream Connection Speed:"));?></span>
+		<span class="value"><?% echo ($modem_upstream);?></span>
+	</div>
+     <?% } ?>
+</div>
+<div class="module forms div_dsl">
+	<h2><?% echo( _("WAN Port"));?></h2>
+ 	<div class="form-row">
+		<span class="readonlyLabel" style="text-align:left; color:#333333"><?% echo( _("Port Detail:"));?></span>
+		<span class="value"><?% echo ($wan_port_value); ?></span>
+	</div>
+</div>
+</div> <!-- end #container -->
+<?% include('includes/footer.jst'); ?>

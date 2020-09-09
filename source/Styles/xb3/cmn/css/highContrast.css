@@ -1,0 +1,84 @@
+/*
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright 2015 RDK Management
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
+
+/**********************************************************************
+   Copyright [2018] [Cisco Systems, Inc.]
+ 
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+ 
+       http://www.apache.org/licenses/LICENSE-2.0
+ 
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+**********************************************************************/
+
+/**
+ * highContrast.css
+ *
+ * Stylesheet to overwrite normal styles when high contrast mode enabled.
+ *
+ * Author: Nobel Huang
+ * Date: Oct 28, 2013
+ */
+
+/* to fix nav menu +/- indicator */
+#nav a.top-level, #nav a.folder {
+	position: relative;
+}
+.hi_nav_top_indi {
+	display: block;
+	position: absolute;
+	left: -6px;
+}
+#nav li li .hi_nav_folder_indi,
+#nav li li li .hi_nav_top_indi {
+	display: block;
+	position: absolute;
+}
+#nav li li .hi_nav_folder_indi {
+	left: 0px;
+}
+#nav li li li .hi_nav_folder_indi {
+	left: 10px;
+}
+#nav li a.selected {
+	text-decoration: underline;
+}
+
+/* to fix input border lost */
+input.btn {
+	border: 2px outset !important;
+}
+input.text {
+	border: 2px groove !important;
+}
+
+/* to fix smartpagination */
+.pager div.short {
+	width: 84px !important;
+}
+.pager div.short input[type=text] {
+	border: 2px groove !important;
+}
+

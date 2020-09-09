@@ -1,0 +1,69 @@
+<?%
+/*
+ If not stated otherwise in this file or this component's Licenses.txt file the
+ following copyright and licenses apply:
+ Copyright 2016 RDK Management
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ http://www.apache.org/licenses/LICENSE-2.0
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+?>
+<?% include('includes/actionHandlerUtility.jst') ?>
+<?%
+session_start();
+if ($_SESSION["loginuser"] == "" || $_SESSION["loginuser"] == false) {
+	echo( '<script type="text/javascript">alert("Please Login First!"); location.href="../index.jst";</script>');
+	exit(0);
+}
+include("includes/utility.jst");
+$opType = $_POST['op'];
+$r_enable = $_POST['enable'];
+$response = {};
+try {
+	if ($opType !== 'savePort4XHS' || !($r_enable == 'true' || $r_enable == 'false')) {
+		throw 'Parameters are invalid';
+	}
+	/* get the flag path first */
+	$rootObjName = "Device.X_CISCO_COM_MultiLAN.";
+	$paramNameArray = ["Device.X_CISCO_COM_MultiLAN."]/*p2j-array*/;
+	$mapping_array  = ["PrimaryLANBridge", "PrimaryLANBridgeHSPorts", "HomeSecurityBridge", "HomeSecurityBridgePorts"]/*p2j-array*/;
+	$multiLan = getParaValues($rootObjName, $paramNameArray, $mapping_array);
+	if (empty($multiLan)) {
+		throw 'failed to fetch parameters from backend';
+	}
+	$pLanBridgeHSPortEnablePath = ($multiLan[0]["PrimaryLANBridge"]+".Port."+$multiLan[0]["PrimaryLANBridgeHSPorts"]+".Enable");
+	$HSBridgePortEnablePath = ($multiLan[0]["HomeSecurityBridge"]+".Port."+$multiLan[0]["HomeSecurityBridgePorts"]+".Enable");
+	if (empty($pLanBridgeHSPortEnablePath) || empty($HSBridgePortEnablePath)) {
+		throw 'failed to fetch parameters from backend';
+	}
+	if ($r_enable === 'true') {
+		if (setStr($pLanBridgeHSPortEnablePath, "false", true) !== true
+			|| setStr($HSBridgePortEnablePath, "true", true) !== true) {
+			throw 'failed to set parameters to backend';
+		}
+	}
+	else {
+		//zqiu: port should be removed first and then added to another vlan
+		//if (setStr($pLanBridgeHSPortEnablePath, "true", true) !== true
+		//	|| setStr($HSBridgePortEnablePath, "false", true) !== true) {
+		if (setStr($HSBridgePortEnablePath, "false", true) !== true
+                        || setStr($pLanBridgeHSPortEnablePath, "true", true) !== true) {
+			throw 'failed to set parameters to backend';
+		}
+	}
+	$response["status"] = "success";
+	header("Content-Type: application/json");
+	echo( htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8'));
+}
+catch ($err) {
+	$response = {"status" : _("Failed"), "msg" : $err}/*p2j-array*/;
+	header("Content-Type: application/json");
+	echo( htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8'));
+}
+?>

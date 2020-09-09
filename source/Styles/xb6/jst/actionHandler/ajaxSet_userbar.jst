@@ -1,0 +1,143 @@
+<?%
+/*
+ If not stated otherwise in this file or this component's Licenses.txt file the
+ following copyright and licenses apply:
+ Copyright 2016 RDK Management
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ http://www.apache.org/licenses/LICENSE-2.0
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+?>
+<?% include('includes/actionHandlerUtility.jst') ?>
+<?%
+session_start();
+if (!isset($_SESSION["loginuser"])) {
+	echo( '<script type="text/javascript">alert("Please Login First!"); location.href="../index.jst";</script>');
+	exit(0);
+}
+	$sta_batt=getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.estimatedChargeRemaining");
+	//$sta_batt = "61";
+	//find battery class manually	
+	if($sta_batt > 90) { $battery_class = "bat-100"; }
+	else if($sta_batt > 60) { $battery_class = "bat-75"; }
+	else if($sta_batt > 39) { $battery_class = "bat-50"; }
+	else if($sta_batt > 18) { $battery_class = "bat-25"; }
+	else if($sta_batt > 8) { $battery_class = "bat-10"; }
+	else { $battery_class = "bat-0"; }
+	$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
+	$WANIPv4 = getStr($fistUSif+"IPv4Address.1.IPAddress");
+	$WANIPv6 = "" ;
+	$ids = explode(",", getInstanceIds($fistUSif+"IPv6Address."));
+	for(var $keytmp in $ids) { var $i=$ids[$keytmp];/*p2j-foreach*/
+		$val = getStr($fistUSif+"IPv6Address."+$i+".IPAddress");
+		if (!strstr($val, "fe80::")){
+			$WANIPv6 = $val;
+			break;
+		}
+	}
+	$sta_inet = ($WANIPv4 != "0.0.0.0" || strlen($WANIPv6) > 0) ? "true" : "false";
+	//in Bridge mode > Internet connectivity status is always active
+	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
+	$sta_wifi = "false";
+	if("Disabled"==$_SESSION["psmMode"]){
+		$ssids = explode(",", getInstanceIds("Device.WiFi.SSID."));
+		if($_SESSION['loginuser'] == 'admin') $ssids = [1,2]/*p2j-array*/;
+		for(var $keytmp in $ssids) { var $i=$ssids[$keytmp];/*p2j-foreach*/
+			$r = (2 - intval($i)%2);	//1,3,5,7==1(2.4G); 2,4,6,8==2(5G)
+			if ("true" == getStr("Device.WiFi.Radio."+$r+".Enable") && "true" == getStr("Device.WiFi.SSID."+$i+".Enable")){	//bwg has radio.enable, active status is “at least one SSID and its Radio is enabled”
+				$sta_wifi = "true";
+				break;
+			}
+		}	
+	}
+  $sta_moca = "";
+	if("Disabled"==$_SESSION["psmMode"]) {
+		$sta_moca_enabled = getStr("Device.MoCA.Interface.1.Enable");
+		$sta_moca_status = getStr("Device.MoCA.Interface.1.Status");
+		$sta_moca = (($sta_moca_enabled=="true")&&(strtolower($sta_moca_status)=="up")) ? "true" : "false";
+	}
+
+	$sta_dect = getStr("Device.X_CISCO_COM_MTA.Dect.Enable");
+	$sta_fire = getStr("Device.X_CISCO_COM_Security.Firewall.FirewallLevel");
+	$arConfig = {
+		"target" : "sta_inet,sta_wifi,sta_moca,sta_fire",
+		"status" : $sta_inet+","+$sta_wifi+","+$sta_moca+","+$sta_fire 
+	}/*p2j-array*/;
+	//to update main status
+	$mainStatus = [$sta_inet,$sta_wifi,$sta_moca,$sta_fire,$sta_batt,$battery_class]/*p2j-array*/;
+	$_SESSION['sta_inet'] = $sta_inet;
+	$_SESSION['sta_wifi'] = $sta_wifi;
+	$_SESSION['sta_moca'] = $sta_moca;
+	$_SESSION['sta_fire'] = $sta_fire;
+	$_SESSION['sta_batt'] = $sta_batt;
+	$_SESSION['battery_class'] = $battery_class;
+	/* Grab XBB or other MTA Legacy Battery Install Status */
+	$_SESSION['batteryInstalled'] = getStr("Device.X_CISCO_COM_MTA.Battery.Installed");
+function get_tips($target, $status)
+{
+	$tip = "No Tips!";
+	switch($target)
+	{
+		case "sta_inet":{
+			if ("true"==$status){
+				$tip = 'Status: Connected-'+getStr("Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber")+' devices connected';
+			}
+			else{
+				$tip = 'Status: Unconnected-no devices';
+			}
+		}break;
+		case "sta_wifi":{
+			if ("true"==$status){
+				$sum = 0;
+				var $ids = explode(",", getInstanceIds("Device.WiFi.AccessPoint."));
+				if($_SESSION['loginuser'] == 'admin') $ids = [1,2]/*p2j-array*/;
+				for(var $keytmp in $ids) { var $i=$ids[$keytmp];/*p2j-foreach*/
+					$sum += Number(getStr("Device.WiFi.AccessPoint."+$i+".AssociatedDeviceNumberOfEntries"));
+				}
+				$tip = 'Status: Connected-'+$sum+' devices connected';
+			}
+			else{
+				$tip = 'Status: Unconnected-no devices';
+			}
+		}break;
+		case "sta_moca":{
+			if ("true"==$status){
+				$tip = 'Status: Connected-'+getStr("Device.MoCA.Interface.1.X_CISCO_COM_NumberOfConnectedClients")+' devices connected';
+			}
+			else{
+				$tip = 'Status: Unconnected-no devices';
+			}	
+		}break;
+		/*case "sta_dect":{
+			if ("true"==$status){
+				$tip = getStr("Device.X_CISCO_COM_MTA.Dect.HandsetsNumberOfEntries").' Handsets connected';
+			}
+			else{
+				$tip = 'no Handsets';
+			}
+		}break;*/
+		case "sta_fire":{
+			$tip = 'Firewall is set to '+$status;
+		}break;
+		default:{
+			$tip = "No Tips!";
+		}break;
+	}
+	return $tip;
+}
+$tags = explode(',', $arConfig['target']);
+$stas = explode(',', $arConfig['status']);
+$tips = []/*p2j-array*/;
+for (var $i=0; $i<count($tags); $i++) {
+	$tips.push(get_tips($tags[$i], $stas[$i]));
+}
+$arConfig = {'tags':$tags, 'tips':$tips, 'mainStatus':$mainStatus}/*p2j-array*/;
+$jsConfig = json_encode($arConfig);
+echo( htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8'));
+?>

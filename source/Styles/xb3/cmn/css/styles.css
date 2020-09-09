@@ -1,0 +1,324 @@
+/*
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright 2015 RDK Management
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
+
+@media only screen
+ and (max-device-width: 480px){
+
+.error{        
+    background:url('../img/fail.png') no-repeat 98% 10px;
+    outline-style: solid;
+    outline-color: #c3ac64;
+}
+
+
+.success{
+    background:url('../img/success.png') no-repeat 98% 10px;
+    background-color: rgba(255,255,255,.15);
+    outline-style: solid;
+    outline-color: #2ea0dd;
+}
+
+}
+
+
+@media only screen
+ and (min-width: 481px){
+
+.error{
+    background:url('../img/fail.png') no-repeat 312px 10px;
+    outline-style: solid;
+    outline-color: #c3ac64;
+}
+
+.success{
+    background:url('../img/success.png') no-repeat 312px 10px;
+    background-color: rgba(255,255,255,.15);
+    outline-style: solid;
+    outline-color: #2ea0dd;
+
+}
+
+}
+
+body{
+  background:url('../img/bg.jpg');
+  text-align: center;
+  margin:0;
+  background-size: cover;
+}
+#topbar{
+  background-color: rgba(255, 255, 255, 0.051);
+  -webkit-box-shadow: 0 0 2px #060707;
+  width: 100%;
+  height: 100px;
+}
+h1{
+  color:#fff;
+  font-size: 36px;
+  -webkit-font-smoothing: antialiased;
+  font-weight: normal;
+  -webkit-margin-after: 0;
+  margin-top:49px;
+}
+h2{
+  color:#fff;
+  font-size: 20px;
+  -webkit-font-smoothing: antialiased;
+  font-weight: normal;
+  margin:27px 0 0 0;
+}
+img{
+  margin-top:35px;
+}
+p{
+  font-size: 14px;
+  line-height: 24px;
+  color:#fff;
+  -webkit-font-smoothing: antialiased;
+  width:454px;
+  margin:12px auto 0 auto;
+}
+input[type='text']{
+  font-size:18px;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  color:#fff;
+  margin:0 auto;
+  border:none;
+  width: 357px;
+  height: 56px;
+  background-color: rgba(255,255,255,.15);
+  margin-top:9px;
+  outline-color: #2ea0dd;
+}
+input[type='text'].error{
+  outline-color: #c3ac64;
+  background:url('../img/fail.png') no-repeat 312px 10px;
+  background-color: rgba(255,255,255,.15);
+}
+input[type='text'].success{
+  background:url('../img/success.png') no-repeat 312px 10px;
+  background-color: rgba(255,255,255,.15);
+}
+input[type='password']{
+  font-size:18px;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  color:#fff;
+  margin:0 auto;
+  border:none;
+  width: 357px;
+  height: 56px;
+  background-color: rgba(255,255,255,.15);
+  margin-top:9px;
+  outline-color: #2ea0dd;
+}
+input[type='password'].error{
+  outline-color: #c3ac64;
+  background:url('../img/fail.png') no-repeat 312px 10px;
+  background-color: rgba(255,255,255,.15);
+}
+input[type='password'].success{
+  background:url('../img/success.png') no-repeat 312px 10px;
+  background-color: rgba(255,255,255,.15);
+}
+input::-webkit-input-placeholder {
+  color: #fff;
+  opacity: .2;
+  text-align: left;
+  text-indent: 20px;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #fff;
+  opacity: .2;
+  text-align: left;
+  text-indent: 20px;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+  color: #fff;
+  opacity: .2;
+  text-align: left;
+  text-indent: 20px;
+}
+:-ms-input-placeholder {
+  color: #fff;
+  opacity: .2;
+  text-align: left;
+  text-indent: 20px;
+}
+.link_example{
+  margin:50px 0;
+}
+a{
+  -webkit-font-smoothing: antialiased;
+  color:#2ea0dd;
+  font-size:14px;
+  text-decoration: none;
+}
+button{
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+  width: 215px;
+  height: 40px;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
+  background-color: #2ea0dd;
+  color:#fff;
+  border:none;
+  cursor: pointer;
+}
+.transparent {
+    font-size: 14px;
+    width: 130px;
+    height: 20px;
+    margin-right:10px;
+    color:#2ea0dd;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+.portal{
+  width:590px;
+  margin: 0 auto;
+}
+.container{
+  position: relative;
+  width:262px;
+}
+.requirements{
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  position:absolute;
+  text-align: left;
+  background-color: #39464d;
+  color:#fff;
+  width:300px;
+  border-top: 1px solid #38444b;
+  border-bottom: 1px solid #38444b;
+  border-right: 1px solid #253137;
+  left:540px;
+  top:-35px;
+}
+.requirements .top{
+  background-color: #455158;
+  padding:14px;
+}
+.requirements .bottom{
+  border-top: 1px solid #27343c;
+  padding:14px;
+  line-height:25px;
+}
+.arrow{
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8.5px 9px 8.5px 0;
+  border-color: transparent #39464d transparent transparent;
+  margin-left:-9px;
+  top:60px;
+}
+input[type=checkbox] {
+  position:absolute;
+  left:-10000px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}
+.insertBox {
+  vertical-align: middle;
+  width: 22px;
+  height: 22px;
+  background-color: transparent;
+  border: solid 3px #424d51;
+  content: "";
+  display: inline-block;
+  margin-right:10px;
+}
+.checkbox {
+  position: relative;
+  margin-top: 30px;
+}
+.check-copy{
+  font-size: 14px;
+  color:#fff;
+  display:inline-block; 
+  vertical-align:middle;
+  -webkit-font-smoothing: antialiased;
+}
+.checkLabel {
+  background:url('../img/check.png') no-repeat 2px 3px;
+  opacity: 1;
+}
+input::-ms-clear, input::-ms-reveal
+{
+  display: none;
+}
+hr{
+    border: 0;
+    height: 1px;
+    background: rgba(255,255,255,.1);
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    margin:36px 0;
+}
+.final-settings{
+  font-size: 24px;
+  -webkit-font-smoothing: antialiased;
+  color:#fff;
+  margin-bottom:40px;
+}
+.password-text
+{
+	margin: 0 0 0 170px;
+	text-align: left;
+}
+
+.progress-bg
+{
+	width: 357px;
+	height: 4px;
+	background-color: rgba(255,255,255,.15);
+	margin: 9px 0 0 170px;
+}
+
+.weak-red
+{
+	width: 119px;
+	height: 4px;
+	background-color: #fb543f;
+}
+
+.average-yellow
+{
+	width: 238px;
+	height: 4px;
+	background-color: #f8c61c;
+}
+
+.strong-green
+{
+	width: 357px;
+	height: 4px;
+	background-color: #7dd221;
+}
