@@ -1,0 +1,53 @@
+<?%
+include('includes/php.jst');
+
+function getGreeting()
+{
+  return "Hello There Form DukTape";
+}
+
+/*
+HTTPS
+HTTP_HOST
+HTTP_RANGE
+SCRIPT_FILENAME
+REMOTE_ADDR
+REQUEST_METHOD
+REQUEST_SCHEME
+REQUEST_URI
+SERVER_ADDR
+SERVER_NAME
+SERVER_PROTOCOL
+*/
+
+var $_SERVER = new Proxy({}, {
+    get: function(obj, prop) {
+        var value = comcast_dm.getenv(prop);
+        return value;
+    }
+});
+
+?>
+
+<html>
+<body>
+  <strong><?%= getGreeting() ?></strong>
+  </br>Server Params:</br>
+<?% 
+  print("<br/>HTTPS:"+$_SERVER["HTTPS"]);
+  print("<br/>HTTP_HOST:"+$_SERVER["HTTP_HOST"]);
+  print("<br/>HTTP_RANGE:"+$_SERVER["HTTP_RANGE"]);
+  print("<br/>SCRIPT_FILENAME:"+$_SERVER["SCRIPT_FILENAME"]);
+  print("<br/>REMOTE_ADDR:"+$_SERVER["REMOTE_ADDR"]);
+  print("<br/>REQUEST_METHOD:"+$_SERVER["REQUEST_METHOD"]);
+  print("<br/>REQUEST_SCHEME:"+$_SERVER["REQUEST_SCHEME"]);
+  print("<br/>REQUEST_URI:"+$_SERVER["REQUEST_URI"]);
+  print("<br/>SERVER_ADDR:"+$_SERVER["SERVER_ADDR"]);
+  print("<br/>SERVER_NAME:"+$_SERVER["SERVER_NAME"]);
+  print("<br/>SERVER_PROTOCOL:"+$_SERVER["SERVER_PROTOCOL"]);
+?>
+</br>End Server Params</br>
+</body>
+</html>
+
+

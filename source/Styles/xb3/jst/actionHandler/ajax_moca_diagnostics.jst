@@ -1,0 +1,87 @@
+<?%
+/*
+ If not stated otherwise in this file or this component's Licenses.txt file the
+ following copyright and licenses apply:
+ Copyright 2016 RDK Management
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ http://www.apache.org/licenses/LICENSE-2.0
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+?>
+<?% include('includes/actionHandlerUtility.jst') ?>
+<?% include('includes/utility.jst'); ?>
+<?%
+session_start();
+if ($_SESSION["loginuser"] == "" || $_SESSION["loginuser"] == false) {
+	echo( '<script type="text/javascript">alert("Please Login First!"); location.href="../index.jst";</script>');
+	exit(0);
+}
+$MeshTableEntries = "" ;
+$MeshTableEntries	= getStr("Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTableNumberOfEntries");
+if($MeshTableEntries != '0'){
+	/*--
+	AssociatedDeviceNumberOfEntries is the number of other MoCA nodes in the network (not including the XB3).
+	MeshTableNumberOfEntries is the total number of MoCA nodes in the network (including the XB3 itself).
+	The MeshTable has TxRates from each node to every other node, 
+	whereas Device.MoCA.Interface.1.AssociatedDevice only has information about the other nodes in the network.
+	*/
+	//MoCA Nodes Table
+	$MeshNodeArray = []/*p2j-array*/;
+	$MeshNodeArrayValues = {}/*p2j-array*/;
+	$MeshNodeArrayContents = {}/*p2j-array*/;
+	$MeshNodes = {};
+	for ($i=1; $i <= $MeshTableEntries; $i++) {
+		$rootObjName	= "Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTable."+$i+".";
+		$paramNameArray	= ["Device.MoCA.Interface.1.X_RDKCENTRAL-COM_MeshTable."+$i+"."]/*p2j-array*/;
+		$mapping_array	= ["MeshTxNodeId", "MeshRxNodeId", "MeshPHYTxRate"]/*p2j-array*/;
+		$MeshNodes	= getParaValues($rootObjName, $paramNameArray, $mapping_array);
+		array_push($MeshNodeArray, $MeshNodes);
+	}
+	//for AssociatedDevices
+	$AssociatedDevices = {};
+	$rootObjName	= "Device.MoCA.Interface.1.AssociatedDevice.";
+	$paramNameArray	= ["Device.MoCA.Interface.1.AssociatedDevice."]/*p2j-array*/;
+	$mapping_array	= ["MACAddress", "NodeID", "HighestVersion", "PreferredNC", "TxPowerControlReduction", "RxPowerLevel"]/*p2j-array*/;
+	$AssociatedDevices	= getParaValues($rootObjName, $paramNameArray, $mapping_array);
+	//for Modem NC
+	$Mesh_HighestVersion = [];
+	$MACAddress_Modem = "";
+	$PreferredNC_Modem = "";
+	$BackupNC_Modem = "";
+	$HighestVersion_Modem = "";
+	$NodeID_Modem = "";
+	$MACAddress_Modem	= getStr("Device.MoCA.Interface.1.MACAddress");
+	$PreferredNC_Modem	= getStr("Device.MoCA.Interface.1.PreferredNC");
+	$BackupNC_Modem		= getStr("Device.MoCA.Interface.1.BackupNC");
+	$HighestVersion_Modem = getStr("Device.MoCA.Interface.1.HighestVersion");
+	$HighestVersion_Modem = str_replace('.', '', $HighestVersion_Modem);
+	$NodeID_Modem 	= getStr("Device.MoCA.Interface.1.NodeID");
+	for($key in $AssociatedDevices) { $value=$AssociatedDevices[$key];/*p2j-foreach*/
+		$Mesh_HighestVersion[$value["NodeID"]] = $value["HighestVersion"];
+	}
+	$Mesh_HighestVersion[$NodeID_Modem] = $HighestVersion_Modem;
+	$MeshNodeArrayValues['Mesh_HighestVersion'] = $Mesh_HighestVersion;
+	$AssociatedDevicesGWValues={};
+	$AssociatedDevicesGWValues['GW_MACAddress']=$MACAddress_Modem;
+	$AssociatedDevicesGWValues['GW_NodeID']=$NodeID_Modem;
+	$AssociatedDevicesGWValues['GW_BackupNC']=$BackupNC_Modem;
+	$AssociatedDevicesGWValues['GW_PreferredNC']=$PreferredNC_Modem;
+	array_push($AssociatedDevices, $AssociatedDevicesGWValues);
+	$MeshNodeArrayValues['AssociatedDevices'] = $AssociatedDevices;
+	$MeshNodeArrayValues['MeshTableEntries'] = $MeshTableEntries;
+	$MeshNodeArrayContents['MeshNodeArray']=$MeshNodeArrayValues;
+	array_push($MeshNodeArray, $MeshNodeArrayContents);
+}
+else {
+	$MeshNodeArray = {}/*p2j-array*/;
+	$MeshNodeArray['MeshTableEntries'] = '0';
+}
+header("Content-Type: application/json");
+echo( htmlspecialchars(json_encode($MeshNodeArray), ENT_NOQUOTES, 'UTF-8'));
+?>

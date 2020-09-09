@@ -1,0 +1,151 @@
+<?% include('includes/php.jst'); ?>
+
+<?%
+
+function VerifyToken($token, $clientid)
+{
+    $tokensegs = explode('.', $token);
+    $cnt = count($tokensegs);
+    if( $cnt != 3) {
+        $validtoken = false;
+        throw new Exception('The JWT has an incorrect number of segments');
+    }
+    else
+    {
+        $validtoken = VerifySignature( $tokensegs[0], $tokensegs[1], $tokensegs[2] );
+    }
+
+    if( $validtoken == true ) {
+        $decodeddata = base64decode_url( $tokensegs[1] );
+        $decodeddata = trim( $decodeddata, "{}" );
+        $decodeddata = str_replace( '{', '', $decodeddata);
+        $decodeddata = str_replace( '}', '', $decodeddata);
+        $decodeddata = $decodeddata.split('"').join('');
+        $tokendata = {};
+        $pair = explode( ',', $decodeddata );
+        for ( $k in $pair ) {
+            temp = $pair[$k];
+            list = {};
+            list = explode( ':', temp, 2 );
+            $tokendata[list[0]] = list[1];
+        }
+        $validtoken &= VerifyTokenData( $tokendata, $clientid );
+    }
+    else
+    {
+        $tokendata = "Invalid Token Received";
+    }
+    LogTokenData( $tokendata, $validtoken );
+
+    return $validtoken;
+}
+
+
+function VerifySignature($header, $payload, $sig)
+{
+    $headerdecoded = base64decode_url( $header );
+    $headerdecoded = trim( $headerdecoded, "{}" );
+    $headerdecoded = str_replace( '{', '', $headerdecoded );
+    $headerdecoded = str_replace( '}', '', $headerdecoded );
+    $headerdecoded = $headerdecoded.split('"').join('');
+    $headerdata = {};
+    $pair = explode( ',', $headerdecoded );
+    for ( $k in $pair ) {
+        temp = $pair[$k];
+        list = {};
+        list = explode( ':', temp, 2 );
+        $headerdata[list[0]] = list[1];
+    }
+    $pubkey = "file:///etc/ssl/certs/" + $headerdata['kid'] + ".cer";
+    $token = $header + '.' + $payload;
+    $sig2verify = base64decode_url( $sig );
+    $sigvalid = ccsp.openssl_verify_with_cert($pubkey, $token, $sig2verify, 'SHA256');
+
+    if( $sigvalid == 1 )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+function VerifyTokenData($tkdata, $clientid )
+{
+    $retval = false;
+
+    var date = new Date();
+    $curtime = date.getTime();
+    $tkdata['exp'] = str_replace( '}', '', $tkdata['exp']);
+    $tokenexp = parseInt( $tkdata['exp'] );
+    $tokenexp = $tokenexp*1000; //converting to milliseconds
+    if( $curtime < $tokenexp )
+    {
+        if( $clientid == $tkdata['client_id'] )
+        {
+            if( $tkdata['scope'] != "none" && $tkdata['scope'] != "[none]" )
+            {
+                $retval = true;
+            }
+        }
+    }
+    return $retval;
+}
+
+function LogTokenData($tkdata, $usetoken)
+{
+
+    $file = fopen( "/rdklogs/logs/webui.log", "a" );
+    if( $file != false )
+    {
+        var date = new Date();
+
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+        $str = year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
+
+        if( $usetoken == true )
+        {
+            $str = $str + " WebUI: OAUTH userId=" + $tkdata['COMCAST_EMAIL'];
+            $str = $str + " scope=" + $tkdata['scope'];
+            $str = $str + " expiration=" + $tkdata['exp'];
+        }
+        else
+        {
+            $str = $tkdata;
+        }
+        $str = $str + "\n";
+        fwrite( $file, $str );
+        fclose( $file );
+    }
+}
+
+function base64decode_url($string)
+{
+	/* Need to map non-RFC-1421 characters in the URL to the proper base64 charset. */
+	$data = $string.split("-").join("+");
+	$data = $data.split("_").join("/");
+	/* Decode input must be a multiple of 4 bytes so pad up with “=”. */
+	$mod4 = strlen($data) % 4;
+
+	switch ($mod4)
+	{
+		case 1:
+			 $data = $data+"===";
+			 break;
+	 	case 2:
+	 		 $data = $data+"==";
+	 		 break;
+	 	case 3:
+	 		 $data = $data+"=";
+	 		 break;
+	}
+	 return base64_decode($data);
+}
+?>
+

@@ -1,0 +1,678 @@
+<?%
+/*
+ If not stated otherwise in this file or this component's Licenses.txt file the
+ following copyright and licenses apply:
+
+ Copyright 2018 RDK Management
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+?>
+<?% include('includes/php.jst'); ?>
+<?%
+
+// enable _SESSION var
+// session_start();		// already start in head.php
+//wrap for PSM mode
+function php_getstr($str)
+{
+	if ("Enabled" == $_SESSION["psmMode"])
+	{
+		if (strstr($str, "WiFi")){
+			return "";
+		}
+		if (strstr($str, "MoCA")){
+			return "";
+		}
+	}
+	return getStr($str);
+}
+//wrap for PSM mode
+function php_getinstanceids($str)
+{
+	if ("Enabled" == $_SESSION["psmMode"])
+	{
+		if (strstr($str, "WiFi")){
+			return "";
+		}
+		if (strstr($str, "MoCA")){
+			return "";
+		}
+	}
+	return getInstanceIds($str);
+}
+
+function array_differ(a1, a2) {
+  var result = [];
+  for (var i = 0; i < a1.length; i++) {
+    if (a2.indexOf(a1[i]) === -1) {
+      result.push(a1[i]);
+    }
+  }
+  return result;
+}
+function array_key_exists_int($key,$arr)
+{
+  for(var k in $arr)
+  {
+    if(parseInt(k) === parseInt($key))
+      return true;
+  }
+  return false;
+}
+function getInstanceIDs($str)
+{
+  return getInstanceIds($str);
+}
+//now you can use key to index the array
+function KeyExtGet($root, $param)
+{
+	var $raw_ret = DmExtGetStrsWithRootObj($root, $param);
+	var $key_ret = {};
+	for (var $i=1; $i<count($raw_ret); $i++)
+	{
+		var $tmp = array_keys($param, $raw_ret[$i][0]);
+		var $key = $tmp[0];
+		var $val = $raw_ret[$i][1];
+		$key_ret[$key] = $val;
+	}
+	return $key_ret;
+}
+//return a string of encryption type
+function encrypt_map($mode, $method)
+{
+	$method = str_replace("AES+TKIP", "TKIP/AES", $method);
+	switch ($mode)
+	{
+	case "None":
+		return "Open (risky)";
+	case "WEP-64":
+		return "WEP 64 (risky)";
+	case "WEP-128":
+		return "WEP 128 (risky)";
+	case "WPA-Personal":
+		return "WPA-PSK ("+$method+")"; 
+	case "WPA2-Personal":
+		return "WPA2-PSK ("+$method+")"; 
+	case "WPA-WPA2-Personal":
+		return "WPAWPA2-PSK ("+$method+")"; 
+	case "WPA-Enterprise":
+		return "WPA ("+$method+")"; 
+	case "WPA2-Enterprise":
+		return "WPA2 ("+$method+")"; 
+	case "WPA-WPA2-Enterprise":
+		return "WPAWPA2 ("+$method+")"; 
+	default:
+		return "WPAWPA2-PSK (TKIP/AES)";
+	}
+}
+/**
+ * Discription: 
+ *     This function is used to get the corresponding leaf name called by getParaValues
+ *              
+ * argument:
+ *     $root: name of the common root object name for all paramters,
+ *      e.g. $root   = "Device.Hosts.Host.";
+ *
+ *     $str: the returned dm parameters name	
+ *      e.g. Device.Hosts.Host.{i}.Active
+ *
+ * return: The expected leaf name of dm parameters name
+ *      e.g. Active is the returned string in above case 
+ *
+ * author: yaowu@cisco.com
+ */
+function getLeafName($str, $root){
+	if (!empty($str)){	
+		$str = str_replace($root, "", $str);
+		var $pos = strpos($str, '.');
+		if ($pos === false) {
+			/* if no further {i}. can be found, the leaf is just the remaining string */
+			return $str;
+		}
+		return substr($str, $pos+1);
+	}
+} 
+/**
+ * Extract the id ({i}) portion in a DM path given the root obj path.
+ * e.g. $str = Device.Hosts.Host.{i}.Active, $root = Device.Hosts.Host.,
+ * then return id = {i}
+ *
+ */
+function getObjIdInPath($str, $root) {
+	if (!empty($str)) {
+		$str = str_replace($root, "", $str);
+		var $pos = strpos($str, '.');
+		if ($pos === false) {
+			return null;
+		}
+		return substr($str, 0, $pos);
+	}
+}
+/**
+ * Discription: 
+ *     This function is a wrapper for Dinghua's group get api call, enabling caller
+ *     access returned parameter values via key name of PHP array
+ *              
+ * argument:
+ *     $root: name of the common root object name for all paramters,
+ *      e.g. $root   = "Device.Hosts.Host.";
+ *
+ *     $paramArray: usually = array($root);	
+ *      e.g. $paramNameArray = array("Device.Hosts.Host.");
+ *
+ *     $mapping_array: the specific parameters you want to obtain,
+ *      e.g. $mapping_array  = array("IPAddress", "HostName", "Active");
+ *
+ *     $includeId: optional, if true to specify the object id via '__id' attribute.
+ *
+ * return: The expected multiple-dimension PHP array
+ *      e.g.  $key_ret[$i]['IPAddress'], $key_ret[$i]['HostName'], $key_ret[$i]['Active']
+ *
+ * author: yaowu@cisco.com
+ */
+function getParaValues($root, $paramArray, $mapping_array, $includeId) {
+  $includeId = $includeId || 0;
+  if(!$includeId)
+    $includeId = false;
+	var $key_ret = new Array();
+	var $i = 0;
+	var $cId = null;
+	var $pId = null;
+	var $mapping_array_size = count($mapping_array);
+	var $raw_ret = DmExtGetStrsWithRootObj($root, $paramArray);
+	if(isset($raw_ret)){
+		for (var $key in $raw_ret) {
+      var $value = $raw_ret[$key];
+			var $leafValueName = getLeafName($value[0], $root);  //value[0] is like Device.Hosts.Host.MACAddress
+			if(in_array($leafValueName, $mapping_array)){
+				$pId = getObjIdInPath($value[0], $root);
+				if (!isset($cId)) $cId = $pId;
+				if ($cId !== $pId) {
+					$cId = $pId;
+					$i++;
+				}
+        if(typeof($key_ret[$i]) == 'undefined')
+          $key_ret[$i] = {};
+				$key_ret[$i][$leafValueName] = $value[1];
+				if ($includeId && !isset($key_ret[$i]['__id'])) {
+					$key_ret[$i]['__id'] = $pId;
+				}
+			}
+		}
+	}
+	return $key_ret;
+}
+//show a PSM mode notification webpage, (then exit current script)
+function init_psmMode($title, $navElementId)
+{
+	var $msg = "";
+	if ("Enabled"==$_SESSION["psmMode"])
+	{
+		$msg += '<script type="text/javascript">';
+		$msg += '	$(document).ready(function(){gateway.page.init("'+$title+'", "'+$navElementId+'");});';
+		$msg += '</script>';
+		$msg += '<div id="content" class="main_content">';
+		$msg += '	<h1>'+$title+'</h1>';
+		$msg += '	<div class="module data">';
+		$msg += '		<h2>'+_("No information available")+'</h2><br/>';
+		$msg += '		<strong>'+_("Gateway operating in battery mode.")+'</strong>';
+		$msg += '	</div>';
+		$msg += '</div>';
+		$msg += file_get_contents("./includes/footer.jst");
+	}
+	return $msg;
+}
+//bit-and limited to 32, I have to write this
+function php_str_and($a, $b)
+{
+	var $c = "";
+	for (var $i=0; $i<16; $i++)
+	{
+		$c = $c+dechex((hexdec(substr($a,$i,1)) & hexdec(substr($b,$i,1))));
+	}
+	return $c;
+}
+//delete front-tail blank of element, and delete empty element
+function array_trim($arr){
+	var $ret = new Array();
+	for(var $k in $arr){
+    var $v = $arr[$k];
+		$v = $v.trim();
+		if ("" != $v){
+			$ret.push($v);
+		}
+	}
+	return $ret;
+}
+// get array of default value from DB file, do not use simpleXML method!
+function getDefault($xmlFile, $arrName)
+{
+	var $key_ret = array();
+	if (file_exists($xmlFile))
+	{
+		$arrLine = file($xmlFile);
+		for(var $k1 in $arrLine)
+		{
+      var $line = $arrLine[$k1];
+			for(var $k2 in $arrName)
+			{
+        var $name = $arrName[$k2];
+				if (strpos($line, $name)) //search name can not be the start of the line
+				{
+					var $tmp = array_keys($arrName, $name);
+					var $key = $tmp[0];
+					$key_ret[$key] = trim(strip_tags($line));
+					break;
+				}
+			}
+		}
+	}
+	return $key_ret;
+}
+//div_sub($n, $m) is for division by subtraction
+function div_sub($n, $m)
+{
+	if (!is_numeric($n) || !is_numeric($m) || (0==$m)){
+		return new Array(0, 0);
+	}
+	for(var $i=0; $n >= $m; $i++){
+		$n = $n - $m;
+	}
+	return new Array($i, $n);
+}
+//hm_to_sec($time) converts H:M to sec
+function hm_to_sec($time){
+	var $newTime = explode(":",$time);
+	var $timeSec = $newTime[0]*60*60 + $newTime[1]*60;
+	return $timeSec;
+}
+//sec_to_hm($time) converts sec to H:M
+function sec_to_hm($time){
+	var $tmp = div_sub($time, 60*60);
+	var $hor = $tmp[0];
+	$tmp = div_sub($tmp[1], 60);
+	var $min = $tmp[0];
+	$min = ($min < 10)?('0'+$min):$min;
+	var $hor = ($hor>=24)?($hor - 24):$hor;
+	$hor = ($hor < 10)?('0'+$hor):$hor;
+	return ""+$hor+":"+$min;
+}
+//$blockedDays are the days picked by user
+//$shift true is to shift by +1Day
+//$shift false is to shift by -1Day
+function shift_blockedDays($blockedDays, $shift){
+	$blockedDays = explode(',', $blockedDays);
+	var $week=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  var $index;
+	if($shift){
+		for(var $i=0;$i<sizeof($blockedDays);$i++){
+			for(var $j=0;$j<sizeof($week);$j++){
+				if($week[$j]==$blockedDays[$i]){
+					$index=($j+1)%sizeof($week);
+					$blockedDays[$i]=$week[$index];
+					break;
+				}
+			}
+		}
+	}
+	else {
+		for(var $i=0;$i<sizeof($blockedDays);$i++){
+			for(var $j=0;$j<sizeof($week);$j++){
+				if($week[$j]==$blockedDays[$i]){
+					if($j==0) $j=sizeof($week);
+					$index=($j-1)%sizeof($week);
+					$blockedDays[$i]=$week[$index];
+					break;
+				}
+			}
+		}
+	}
+	if($blockedDays[0]=='Sun') {
+		array_pop($blockedDays);
+		$blockedDays.push('Sun');
+	}
+	if($blockedDays[sizeof($blockedDays)-1]=='Mon') {
+		array_pop($blockedDays);
+		$blockedDays.push('Mon');
+	}
+	return implode(',', $blockedDays);
+}
+/*function group_2D_array($data, $fields) {
+	if(empty($fields) || !Array.isArray($fields)) {
+		return $data;
+	}
+	var $tempArray = {};
+	var $field = $fields.shift();
+	for(var $k in $data) {
+    var $val = $data[$k];
+		$tempArray[$val[$field]].push($val);
+	}
+  var $keys = array_keys($tempArray);
+	for(var $k in $keys) {
+    var $key = $keys[$k];
+		$tempArray[$key] = group_2D_array($tempArray[$key], $fields);
+	}
+	return $tempArray;
+}*/
+function group_device_2D_array($data, $fields) {
+        if(empty($fields) || !Array.isArray($fields)) {
+                return $data;
+        }
+        var $tempArray = new Array();
+        var $field = $fields.shift();
+        for(var $k in $data) {
+                        var $val = $data[$k];
+                        $valAr = $val[$field];
+                        $type=$val['Type']
+                        $tempArray[$valAr]= new Array();
+                        for(var $r=($k-1);$r>=0;$r--){
+                                var flag=0;
+                                if(($valAr == $data[$r][$field])&& ($type=="Block")){
+                                        flag=1;
+                                        break;
+                                }
+                        }
+                        if(flag==1 && ($data[$r]['Type']=="Block")){
+                                        var $valnew = $data[$r];
+                                        $val['__id'] = $valnew['__id']+'_'+$val['__id'];
+                                        $val['StartTime'] = $valnew['StartTime'];
+                        }
+                                var flag_allow=0;
+                                for(var $m=($k-1);$m>=0;$m--){
+                                if(($valAr == $data[$m][$field])&& ($type=="Allow")){
+                                        flag_allow=1;
+                                        break;
+                                }
+
+                        }
+                        if(flag_allow==1 && ($data[$m]['Type']=="Allow")){
+                                        var $valnew = $data[$m];
+                                        $val['__id'] = $valnew['__id']+'_'+$val['__id'];
+                                        $val['StartTime'] = $valnew['StartTime'];
+                        }
+
+            $tempArray[$valAr+"_"+$type]=$val;
+        }
+        return $tempArray;
+}
+function group_2D_array($data, $fields) {
+        if(empty($fields) || !Array.isArray($fields)) {
+                return $data;
+        }
+        var $tempArray = new Array();
+        var $field = $fields.shift();
+        for(var $k in $data) {
+			var $val = $data[$k];
+			$valAr = $val[$field];
+			$tempArray[$valAr]= new Array();
+			for(var $r=($k-1);$r>=0;$r--){
+				var flag=0;
+				if($valAr == $data[$r][$field]){
+					flag=1;
+					break;
+				}
+			}
+			if(flag==1){
+					var $valnew = $data[$r];
+					$val['__id'] = $valnew['__id']+'_'+$val['__id'];
+					$val['StartTime'] = $valnew['StartTime'];
+			}
+            $tempArray[$valAr]=$val;
+        }
+        return $tempArray;
+}
+$UTC_Enable = getStr("Device.Time.UTC_Enable");
+
+
+$UTC_local_Time_conversion = ($UTC_Enable === 'true') ? true : false ;
+
+//MROLLINS FIXME - setting this false because I cannot get days_time_conversion_get which calls group_2D_array, to work, when table fields are blank
+//Remove this 4 Line FIXME Block once fixed
+//$UTC_local_Time_conversion=false;
+//MROLLINS FIXME END
+
+$timeOffset = getStr("Device.Time.TimeOffset");
+//$timeOffset = '-25200'; //Eastern Standard Time (EST) = UTC-5
+//$timeOffset = '-18000'; //Mountain Standard Time (MST) = UTC-7
+//$timeOffset = '+25200'; //Indonesia Western Time = UTC+7
+//local_to_UTC_Time($localTime) is for converting $localTime to $utcTime for SET
+function local_to_UTC_Time($localTime, $blockedDays){
+	//global $timeOffset;
+	if($localTime=='') return new Array('', '', false, false);
+	var $utcTime = hm_to_sec($localTime) - $timeOffset;
+	var $timeChangePos = ($utcTime > (24*60*60));
+	var $timeChangeNeg = ($utcTime < 0);
+	var $timeChangeEqu = ($utcTime == (24*60*60));
+	$utcTime = ($timeChangePos)?($utcTime - (24*60*60)):$utcTime;
+	$utcTime = ($timeChangeNeg)?($utcTime + (24*60*60)):$utcTime;
+	if($timeChangePos)	$blockedDays = shift_blockedDays($blockedDays, true);
+	if($timeChangeNeg)	$blockedDays = shift_blockedDays($blockedDays, false);
+	return new Array(sec_to_hm($utcTime), $blockedDays, ($timeChangePos || $timeChangeNeg ));
+}
+//UTC_to_local_Time($utcTime) is for converting $utcTime to $localTime for GET
+function UTC_to_local_Time($utcTime, $blockedDays){
+	//global $timeOffset;
+	if($utcTime=='') return new Array('', '');
+	var $localTime = hm_to_sec($utcTime) + parseInt($timeOffset);
+	var $timeChangePos = ($localTime > (24*60*60));
+	var $timeChangeNeg = ($localTime < 0);
+	$localTime = ($timeChangePos)?($localTime - (24*60*60)):$localTime;
+	$localTime = ($timeChangeNeg)?($localTime + (24*60*60)):$localTime;
+	if($timeChangePos)	$blockedDays = shift_blockedDays($blockedDays, true);
+	if($timeChangeNeg)	$blockedDays = shift_blockedDays($blockedDays, false);
+	return new Array(sec_to_hm($localTime), $blockedDays);
+}
+function UTC_to_local_date($utcTime){
+  //global $timeOffset;
+  var $localTime = strtotime($utcTime) + $timeOffset;
+  return gmdate("Y-m-d H:i:s", $localTime);
+}
+/*
+function UTC_to_local_date_logs($utcTime){
+  //global $timeOffset;
+  var $localTime = strtotime($utcTime) + $timeOffset;
+  return gmdate("M d H:i:s Y", $localTime);
+}*/
+function UTC_to_local_date_logs($utcTime){
+  //global $timeOffset;
+  //MROLLINS had to rework this a lot for duktape
+  //Not 100% confident about how this works
+  //I think it coverts to a timestamp, adds the $timeOffset, then coverts to GMT
+  //i dont't understand why is needs to add a -5 hours $timeOffset in addition to converting to gmt/utc time.
+
+  //duktape appears to only support ISO format so cannot create a js Date from the loosely formated log dates
+  //convert log format to iso: from "Jul 15 11:22:33 2019" to "2019-07-15 11:22:33"
+	var $months = {"Jan":"01","Feb":"02","Mar":"03","Apr":"04","May":"05","Jun":"06","Jul":"07","Aug":"08","Sep":"09","Oct":"10","Nov":"11","Dec":"12"};
+	var $parts = $utcTime.split(/[\s,]+/); //[Jul,15,11:22:33,2019]
+  var $isoformat = $parts[3]+"-"+$months[$parts[0]]+"-"+$parts[1]+" "+$parts[2];
+  var date = new Date($isoformat);
+
+  //add that timeOffset, which i believe is in second, so convert to ms
+  date.setTime(date.getTime() + $timeOffset*1000);
+
+  //MROLLINS - see if we can just replace the above 5 lines of code with this improved strtotime
+  //var date = new Date(strtotime($utcTime)+$timeOffset*1000);
+
+  //conver back to log format using the UTC/GMT time
+	var $months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var $hour = date.getHours();
+  var $mins = date.getMinutes();
+  var $secs = date.getSeconds();
+  if($hour < 10) $hour = '0'+$hour;
+  if($mins < 10) $mins = '0'+$mins;
+  if($secs < 10) $secs = '0'+$secs;
+  var $ret = $months[date.getMonth()]+" "+date.getDate()+" "+$hour+":"+$mins+":"+$secs+" "+date.getFullYear();
+  return $ret;
+}
+
+//
+function time_in_min($time){
+	var $min = explode(':', $time);
+	if(count($min)>1)
+		return (($min[0]*60)+$min[1]);
+	else
+		return 0;
+}
+function cmp($a, $b) {
+	if ($a["StartTime"]==$b["StartTime"]) return 0;
+	return ($a["StartTime"]<$b["StartTime"])?-1:1;
+}
+function merge_days($data){
+	usort($data, "cmp");
+	// this code is removed. because blocked devices and allowed device is not properly set for different times on same days.
+/*
+	for (var $i=0; $i < sizeof($data); $i++) {
+		if((isset($data[$i]['EndTime']) && time_in_min($data[$i]['EndTime'])+1) == (isset($data[$i+1]['StartTime']) && time_in_min($data[$i+1]['StartTime']) )) {
+			$data[$i]['__id'] = $data[$i]['__id']+'_'+$data[$i+1]['__id'];
+			$data[$i]['EndTime'] = $data[$i+1]['EndTime'];
+			array_remove($data,$i+1);
+			$i++;
+		}
+	}*/
+	$k=sizeof($data);
+        for($i=0; $i < $k; $i++){
+            if(isset($data[$i]['StartTime']) && isset($data[$i]['EndTime'])){
+                for ($j=$i+1; $j < $k; $j++){
+               		if(((time_in_min($data[$i]['EndTime'])) == (time_in_min($data[$j]['StartTime']))) || ((time_in_min($data[$i]['EndTime'])+1) == (time_in_min($data[$j]['StartTime'])))) 
+                    {
+                        $data[$i]['__id'] = $data[$i]['__id']+'_'+$data[$j]['__id'];
+                        $data[$i]['EndTime'] = $data[$j]['EndTime'];
+                        array_remove($data,$j);
+                    }
+                }
+            }
+        }
+	return $data;
+}
+function days_time_conversion_get($data, $type){
+	var $returnData = [];
+	for (var $key in $data) {
+    var $value = $data[$key];
+		var $startArr	= UTC_to_local_Time($value['StartTime'], $value['BlockDays']);
+		var $endArr		= UTC_to_local_Time($value['EndTime'], $value['BlockDays']);
+		$value['StartTime']	= $startArr[0];
+		$value['EndTime']	= $endArr[0];
+		$value['BlockDays']	= $endArr[1];
+	}
+	if(Array.isArray($type)){
+		//for "Managed Devices"
+		var $tempArray = group_device_2D_array($data, Array( $type[1], 'BlockDays'));
+		for (var $key in $tempArray) {
+      			var $value = $tempArray[$key];
+			$returnData.push($value);
+		}
+	}
+	else {
+		//for "Blocked Sites​", "Blocked Keywords​", "Managed Services​"
+		$tempArray = group_2D_array($data, Array($type, 'BlockDays'));
+		for (var $key in $tempArray) {
+      			var $value = $tempArray[$key];
+			$returnData.push($value);
+		}
+	}
+	return $returnData;
+}
+//for $startTime, $endTime, $blockedDays parameters do local_to_UTC_Time($localTime)
+//$timeOffset can move this $blockedDays to Tomorrow or Yesterday
+function days_time_conversion_set($startTime, $endTime, $blockedDays){
+	var $day_change = false;
+	var $startData 	= local_to_UTC_Time($startTime, 	$blockedDays);
+	var $endData 	= local_to_UTC_Time($endTime, 	$blockedDays);
+	if(($startData[2] && $endData[2]) || (!$startData[2] && !$endData[2])){
+		//start and end time in same day
+		return new Array($startData[0], $endData[0], $startData[1], $day_change);
+	}
+	else {
+		$day_change = true;
+		return new Array($startData[0], '23:59', $startData[1], $day_change, '00:00', $endData[0], $endData[1]);
+	}
+}
+//Check for time and day conflicts before ADD/EDIT of table rules
+function time_date_conflict($TD1, $TD2) {
+	var $ret = false;
+	var $days1 = explode(",", $TD1[2]);
+	var $days2 = explode(",", $TD2[2]);
+  for (var $key in $days1){
+    var $value=$days1[$key];
+		if (in_array($value, $days2)) {
+			//deMorgan's law - to find if ranges are overlapping
+			//(StartA <= EndB)  and  (EndA >= StartB)
+			if((strtotime($TD1[0]) < strtotime($TD2[1])) && (strtotime($TD1[1]) > strtotime($TD2[0]))){
+				$ret = true;
+				break;
+			}
+		}
+	}
+	return $ret;
+}
+// resolve IPV6 global address
+function resolve_IPV6_global_address($address1, $address3){
+	// IPV6 address can be "global address", "EMPTY" [from STACK] or NOT-SET [from STACK]
+	var $IPV6_Addresses = '';
+	if(isset($address1)){
+		if($address1 != ' ') $IPV6_Addresses = $address1;
+		else if ($address3 != ' ') $IPV6_Addresses = $address3;
+	}
+	return $IPV6_Addresses;
+}
+/**
+ * Discription: 
+ *     This function determines what the WAN type is
+ *              
+ * return: On a DOCSIS device returns "DOCSIS", on a EPON device retuns "EPON"
+ */
+function get_wan_type()
+{
+  if (typeof get_wan_type.wan_type == 'undefined')
+  {
+    if (getStr("Device.DPoE.Mac_address"))
+      get_wan_type.wan_type = "EPON";
+    else
+      get_wan_type.wan_type = "DOCSIS";
+  }
+
+  return get_wan_type.wan_type;
+}
+
+function inet_ntop (a) {
+var i = 0
+  var m = ''
+  var c = []
+
+  a += ''
+  if (a.length === 4) {
+    // IPv4
+    return [
+      a.charCodeAt(0),
+      a.charCodeAt(1),
+      a.charCodeAt(2),
+      a.charCodeAt(3)
+    ].join('.')
+  } else if (a.length === 16) {
+    // IPv6
+    for (i = 0; i < 16; i++) {
+      c.push(((a.charCodeAt(i++) << 8) + a.charCodeAt(i)).toString(16))
+    }
+    return c.join(':')
+      .replace(/((^|:)0(?=:|$))+:?/g, function (t) {
+        m = (t.length > m.length) ? t : m
+        return t
+      })
+      .replace(m || ' ', '::')
+  } else {
+    // Invalid length
+    return false
+  }
+}
+?>
