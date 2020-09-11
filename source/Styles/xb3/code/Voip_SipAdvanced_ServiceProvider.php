@@ -48,6 +48,10 @@
 			'HoldEnable' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.CallingFeatures.X_RDK-Central_COM_HoldEnable"),
 			'PhoneCallerIDEnable' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.CallingFeatures.X_RDK-Central_COM_PhoneCallerIDEnable"),
 			'sip_status' => getStr("Device.Services.VoiceService.1.X_RDK-Central_COM_VoiceProcessStatus"),
+                        'DSCPMark_sip' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.SIP.DSCPMark"),
+			'DSCPMark_rtp' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.RTP.DSCPMark"),
+			'PriorityMark_sip' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.SIP.EthernetPriorityMark"),
+			'PriorityMark_rtp' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.RTP.EthernetPriorityMark"),
 			//'SkyEuroFlashCallWaitingEnable' => getStr("Device.Services.VoiceService.1.VoiceProfile.1.SIP.X_RDK-Central_COM_EuroFlashCallWaitingEnable"),
 		);
 	}
@@ -86,6 +90,82 @@
 			<div class="form-row odd">
 				<label for="sky_ntwrk_discnt">Enable Sky Network Disconnect :</label>
 				<input type="checkbox" id='sky_ntwrk_discnt' name="sky_ntwrk_discnt" />
+			</div>
+			<div class="form-row ">
+				<label for="dscp_sip">DSCP for SIP :</label>
+				<select id='dscp_sip' name='dscp_sip'>
+					<option value='46'>EF (101110)</option>
+					<option value='14'>AF13 (001110)</option>
+					<option value='12'>AF12 (001100)</option>
+					<option value='10'>AF11 (001010)</option>
+					<option value='8'>CS1 (001000)</option>
+					<option value='22'>AF23 (010110)</option>
+					<option value='20'>AF22 (010100)</option>
+					<option value='18'>AF21 (010010)</option>
+					<option value='16'>CS2 (010000)</option>
+					<option value='30'>AF33 (011110)</option>
+					<option value='28'>AF32 (011100)</option>
+					<option value='26'>AF31 (011010)</option>
+					<option value='24'>CS3 (011000)</option>
+					<option value='38'>AF43 (100110)</option>
+					<option value='36'>AF42 (100100)</option>
+					<option value='34'>AF41 (100010)</option>
+					<option value='32'>CS4 (100000)</option>
+					<option value='40'>CS5 (101000)</option>
+					<option value='48'>CS6 (110000)</option>
+					<option value='56'>CS7 (111000)</option>
+				</select>
+			</div>
+			<div class="form-row odd">
+				<label for="dscp_rtp">DSCP for RTP :</label>
+				<select id='dscp_rtp' name='dscp_rtp'>
+					<option value='46'>EF (101110)</option>
+					<option value='14'>AF13 (001110)</option>
+					<option value='12'>AF12 (001100)</option>
+					<option value='10'>AF11 (001010)</option>
+					<option value='8'>CS1 (001000)</option>
+					<option value='22'>AF23 (010110)</option>
+					<option value='20'>AF22 (010100)</option>
+					<option value='18'>AF21 (010010)</option>
+					<option value='16'>CS2 (010000)</option>
+					<option value='30'>AF33 (011110)</option>
+					<option value='28'>AF32 (011100)</option>
+					<option value='26'>AF31 (011010)</option>
+					<option value='24'>CS3 (011000)</option>
+					<option value='38'>AF43 (100110)</option>
+					<option value='36'>AF42 (100100)</option>
+					<option value='34'>AF41 (100010)</option>
+					<option value='32'>CS4 (100000)</option>
+					<option value='40'>CS5 (101000)</option>
+					<option value='48'>CS6 (110000)</option>
+					<option value='56'>CS7 (111000)</option>
+				</select>
+			</div>
+                        <div class="form-row ">
+				<label for="priority_sip">Ethernet Priority for SIP :</label>
+				<select id='priority_sip' name="priority_sip">
+					<option value='0'>0</option>
+					<option value='1'>1</option>
+					<option value='2'>2</option>
+					<option value='3'>3</option>
+					<option value='4'>4</option>
+					<option value='5'>5</option>
+					<option value='6'>6</option>
+					<option value='7'>7</option>
+				</select>
+			</div>
+			<div class="form-row odd">
+				<label for="priority_rtp">Ethernet Priority for RTP :</label>
+				<select id='priority_rtp' name="priority_rtp">
+					<option value='0'>0</option>
+					<option value='1'>1</option>
+					<option value='2'>2</option>
+					<option value='3'>3</option>
+					<option value='4'>4</option>
+					<option value='5'>5</option>
+					<option value='6'>6</option>
+					<option value='7'>7</option>
+				</select>
 			</div>
 			<div class="form-row">
 				<label for="sky_conferencing_uri">Conference URI :</label>
@@ -127,6 +207,10 @@
 		if(php_value['Sky_Network_Disconnect']=='true')
 			$('#sky_ntwrk_discnt').attr('checked',true);		
 		$('#sky_conferencing_uri').val(php_value['Conference_URI']);
+		$('#dscp_sip').val(php_value['DSCPMark_sip']);
+		$('#dscp_rtp').val(php_value['DSCPMark_rtp']);
+		$('#priority_sip').val(php_value['PriorityMark_sip']);
+		$('#priority_rtp').val(php_value['PriorityMark_rtp']);
 	}
 	
 	function get_set_val(){
@@ -139,6 +223,10 @@
 			SkyEuroFlashCallWaitingEnable:$('#eur_sky_flsh_waitng_mode').is(':checked'),
 			Sky_Network_Disconnect:$('#sky_ntwrk_discnt').is(':checked'),
 			Conference_URI:$('#sky_conferencing_uri').val(),
+			DSCP_SIP:$('#dscp_sip').val(),
+			DSCP_RTP:$('#dscp_rtp').val(),
+			Priority_SIP:$('#priority_sip').val(),
+			Priority_RTP:$('#priority_rtp').val(),
 		};
 		return ret;
 	}
@@ -151,6 +239,10 @@
 		 +'","MWIEnable":"'+values['MWIEnable']
 		 +'","Sky_Network_Disconnect":"'+values['Sky_Network_Disconnect']
 		 +'","Conference_URI":"'+values['Conference_URI']
+		 +'","DSCPMark_sip":"'+values['DSCP_SIP']
+		 +'","DSCPMark_rtp":"'+values['DSCP_RTP']
+		 +'","PriorityMark_sip":"'+values['Priority_SIP']
+		 +'","PriorityMark_rtp":"'+values['Priority_RTP']
 		 +'","SkyEuroFlashCallWaitingEnable":"'+values['SkyEuroFlashCallWaitingEnable']+'"}';
     	         jProgress("<?php echo _('This may take several seconds...')?>", 60);
 		$.ajax({

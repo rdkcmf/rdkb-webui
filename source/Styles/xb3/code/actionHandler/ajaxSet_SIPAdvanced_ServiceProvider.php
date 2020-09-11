@@ -36,6 +36,10 @@ if($thisUser > 1){
 	setStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.CallingFeatures.X_RDK-Central_COM_ConferenceCallingEnable", $arConfig['ConferenceCallingEnable'], true);
 	setStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.CallingFeatures.X_RDK-Central_COM_HoldEnable", $arConfig['HoldEnable'], true);
 	setStr("Device.Services.VoiceService.1.VoiceProfile.1.Line.1.CallingFeatures.X_RDK-Central_COM_PhoneCallerIDEnable", $arConfig['PhoneCallerIDEnable'], true);
+	setStr("Device.Services.VoiceService.1.VoiceProfile.1.SIP.DSCPMark", $arConfig['DSCPMark_sip'], true);
+	setStr("Device.Services.VoiceService.1.VoiceProfile.1.RTP.DSCPMark", $arConfig['DSCPMark_rtp'], true);
+	setStr("Device.Services.VoiceService.1.VoiceProfile.1.SIP.EthernetPriorityMark", $arConfig['PriorityMark_sip'], true);
+	setStr("Device.Services.VoiceService.1.VoiceProfile.1.RTP.EthernetPriorityMark", $arConfig['PriorityMark_rtp'], true);
 	//setStr("Device.Services.VoiceService.1.VoiceProfile.1.SIP.X_RDK-Central_COM_EuroFlashCallWaitingEnable", $arConfig['SkyEuroFlashCallWaitingEnable'], true);
 }
 else{

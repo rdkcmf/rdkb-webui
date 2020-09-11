@@ -6793,6 +6793,14 @@ msgstr "Il valore del prefisso dovrebbe iniziare con [fc] o [fd]"
 msgid "Please login to view and manage your Gateway settings."
 msgstr "Effettua il login per visualizzare e gestire le impostazioni del tuo Sky Wifi Hub."
 
+#: lan.php:260
+msgid "Reclaim Eth port"
+msgstr "Reclamare Eth porta"
+
+#: lan.php:263
+msgid "Switch to WANOE"
+msgstr "Passa a WANoE"
+
 #: local_ip_configuration.php:1039
 msgid "Incorrect Prefix ULA address..!"
 msgstr "Prefisso indirizzo ULA errato ..!"
@@ -6808,6 +6816,19 @@ msgstr "L&#39;indirizzo di inizio e fine DHCP non può essere lo stesso, inserir
 #: admin_password_change.php:158 password_change.php:98
 msgid "Alert"
 msgstr "Attenzione"
+
+#: ajax_network_diagnostic_tools.php:48 ajax_network_diagnostic_tools.php:68
+#: ajax_network_diagnostic_tools.php:72 ajax_network_diagnostic_tools.php:92
+#: ajax_network_diagnostic_tools.php:96 ajax_network_diagnostic_tools.php:137
+#: ajax_network_diagnostic_tools.php:167
+msgid "Error"
+msgstr "Errore"
+
+#: ajax_network_diagnostic_tools.php:39 ajax_network_diagnostic_tools.php:64
+#: ajax_network_diagnostic_tools.php:88 ajax_network_diagnostic_tools.php:122
+#: ajax_network_diagnostic_tools.php:152
+msgid "Error_Internal"
+msgstr "Errore Interno"
 
 #: wireless_network_configuration_edit.php:783
 msgid "More Security Mode Options"
@@ -6840,19 +6861,6 @@ msgstr "2,4 GHz"
 #: connected_devices_computers.php:639
 msgid "Wi-Fi 2.4G"
 msgstr "Wi-Fi 2,4G"
-
-#: ajax_network_diagnostic_tools.php:48 ajax_network_diagnostic_tools.php:68
-#: ajax_network_diagnostic_tools.php:72 ajax_network_diagnostic_tools.php:92
-#: ajax_network_diagnostic_tools.php:96 ajax_network_diagnostic_tools.php:137
-#: ajax_network_diagnostic_tools.php:167
-msgid "Error"
-msgstr "Errore"
-
-#: ajax_network_diagnostic_tools.php:39 ajax_network_diagnostic_tools.php:64
-#: ajax_network_diagnostic_tools.php:88 ajax_network_diagnostic_tools.php:122
-#: ajax_network_diagnostic_tools.php:152
-msgid "Error_Internal"
-msgstr "Errore Interno"
 
 #: network_diagnostic_tools.php:348
 msgid "Traceroute tool"
