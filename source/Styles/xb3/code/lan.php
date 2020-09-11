@@ -45,6 +45,19 @@ $rootObjName = "Device.Ethernet.Interface.";
 $paramNameArray = array("Device.Ethernet.Interface.");
 $mapping_array  = array("Upstream", "Status", "MACAddress", "CurrentBitRate");
 $ethernetParam = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
+if(strpos($PartnerId, "sky-") !== false){
+	$port_entries = getStr('Device.X_RDK-Central_COM_WanAgent.InterfaceNumberOfEntries');
+	for ($i=1;$i<=$port_entries; $i++){
+        if("eth3" ==getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'.$i.'.Name')){
+            if('true'==getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'.$i.'.Wan.Enable')){
+               $reclaim = true;
+            }
+            else{
+               $reclaim = false;
+            }
+        }
+    }
+}
 ?>
 <script type="text/javascript">
 var o_isPort4XHSEnabled = <?php echo $isPort4XHSEnabled ? 'true' : 'false'; ?>;
@@ -83,10 +96,56 @@ function initEvents() {
 	$("#saveXHSBtn").unbind("click").click(onsavePort4);
 }
 $(document).ready(function() {
-    gateway.page.init("Gateway > Hardware > LAN Ethernet", "nav-lan");
-	$("#port4").prop("checked", o_isPort4XHSEnabled);
-	initEvents();
+  gateway.page.init("Gateway > Hardware > LAN Ethernet", "nav-lan");
+  $("#port4").prop("checked", o_isPort4XHSEnabled);
+  initEvents();
+  $('.btn_vdsl').click(function(){
+    var click_val = $(this).attr('name');
+    var set_val;
+    if(click_val == 'reclaim'){set_val='{"value_set":"'+false+'"}';}
+    else if(click_val == 'wan_OE'){set_val='{"value_set":"'+true+'"}';}
+    if(set_val!== null){
+      jProgress('<?php echo _('This may take several seconds')?>', 5*60);
+      $.ajax({
+        type: 'POST',
+        url: 'actionHandler/ajaxSet_wanOE_lan.php',
+        data:{configInfo: set_val},
+        success: function(data){
+          msg_parseJSON = $.parseJSON(data);
+          if(msg_parseJSON.error_message == 'success'){
+            reboot();
+          }
+        }
+      });
+    }
+  });
 });
+function reboot(){
+  var set_val='{"router_reboot":"Router,Wifi,VoIP,Dect,MoCA"}';
+  $.ajax({
+    type: 'POST',
+    url: 'actionHandler/ajaxSet_wanOE_lan.php',
+    data: { configInfo: set_val},
+    success: function(data) {
+      msg_parseJSON = $.parseJSON(data);
+      if(msg_parseJSON.error_message == 'success'){
+        setTimeout(function recon_check(){
+          var url = 'http://'+location.host+'/index.php';
+          var request = new XMLHttpRequest;
+          request.open('GET', url, true);
+          request.send();
+          request.onreadystatechange = function(){
+            if(request.status==200){
+              location.href= url;
+            }
+            else{
+              setTimeout(recon_check,30*1000);
+            }
+          }},3*60*1000);
+      }
+    }
+  });
+}
 </script>
 <div id="content">
 	<h1><?php echo _('Gateway > Hardware > LAN Ethernet')?></h1>
@@ -137,10 +196,10 @@ $(document).ready(function() {
 	foreach ($ethernetParam as $id => $value)
 	{
 		if ("true" == $ethernetParam[$id]["Upstream"]){
-			continue;		
+			continue;
 		}
 		//WAN port details are not showing in lan page
-		if($ids[$id]!='4' || strpos($PartnerId, "sky-") === false ){
+		if(strpos($PartnerId, "sky-") === false || (strpos($PartnerId, "sky-") !== false && $reclaim && $ids[$id]!='4')||(strpos($PartnerId, "sky-") !== false && $reclaim==false)){
 		echo '<div class="module forms block">';
 		echo '<h2>'.sprintf(_("LAN Ethernet Port %s"),$ids[$id]).'</h2>';
 		$dm = array(
@@ -203,5 +262,18 @@ $(document).ready(function() {
              }
 	}
 	?>
+<?php
+	if(strpos($PartnerId, "sky-") !== false){
+	    echo '<div class="form-btn">';
+	    //SWITCH to WANOE && RECLAIM ETH PORT
+           if($reclaim == true){
+               echo '<input id="reclaim" type="button" name="reclaim" value="'._('Reclaim Eth port').'" class="btn btn_vdsl">';
+            }
+            else{
+               echo '<input type="button" id="wanOE" name="wan_OE" value="'._('Switch to WANOE').'" class="btn btn_vdsl">';
+            }
+	   echo '</div>';
+      }
+?>
 </div><!-- end #content -->
 <?php include('includes/footer.php'); ?>

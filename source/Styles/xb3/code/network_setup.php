@@ -932,13 +932,15 @@ for ($i=1, $j=1; $i<count($ec_ids); $i++)
 </div>
 <?php
         if (strpos($partnerId, "sky-") !== false) {
-	   $ids = getInstanceIds("Device.X_RDK-Central_COM_WanAgent.Interface.");
-	   for ($i=1;$i<=$ids; $i++){
-	        if("true" ==getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'.$i.'.Wan.ActiveLink')){
-	            $wan_port_value=getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'.$i.'.DisplayName');
-	        }
-	        else{$wan_port_value='-NA-';}
-	    }
+	   $ids = explode(",",getInstanceIds("Device.X_RDK-Central_COM_WanAgent.Interface."));
+           foreach($ids as $i=>$j){
+            $val_activeLink = getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'.$j.'.Wan.ActiveLink');
+            if(true == $val_activeLink && 'true'==$val_activeLink){
+                $wan_port_value=getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'.$j.'.DisplayName');
+              break;
+            }
+            else{$wan_port_value='-NA-';}
+        }
         }
 ?>    
 <div class="module forms div_dsl">
