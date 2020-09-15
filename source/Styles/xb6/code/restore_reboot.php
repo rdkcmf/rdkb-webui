@@ -54,7 +54,7 @@ $('#btn1').click(function(e) {
 		$.post(
 			"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
 			{"get_statusx":"true",
-                        "restore_reboot":"true"},
+			"restore_reboot":"true"},
 			function(msg)
 			{
 				jHide();
@@ -136,7 +136,7 @@ $('#btn5').click(function(e) {
 		$.post(
 			"actionHandler/ajaxSet_mta_Line_Diagnostics.php",
 			{"get_statusx":"true",
-                        "restore_reboot":"true"},
+			"restore_reboot":"true"},
 			function(msg)
 			{
 				jHide();
