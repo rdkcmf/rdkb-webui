@@ -1,4 +1,4 @@
-This component contains software that is Copyright (c) 2015, 2016  RDK Management.
+This component contains software that is Copyright (c) 2015, 2016 RDK Management.
 The component is licensed to you under the Apache License, Version 2.0 (the "License").
 You may not use the component except in compliance with the License.
 
@@ -7,14 +7,58 @@ listed below. Your use of this material within the component is also subject to 
 conditions of these licenses. The LICENSE file contains the text of all the licenses which apply
 within this component.
 
-Copyright 2014, 2018 Cisco Systems, Inc.
+Copyright (C) 2011-2016 Almende B.V, http://almende.com
+Vis.js is licensed here under the MIT License
+
+http://hammerjs.github.io/
+Copyright (c) 2016 Jorik Tangelder;
+Licensed under the MIT license
+
+Bootstrap v3.3.5 (http://getbootstrap.com)
+Copyright 2011-2015 Twitter, Inc.
+Licensed under the MIT license
+
+bootstrap-waitingfor
+Copyright (c) 2014 Eugene Maslovich
+Licensed under the MIT license
+
+Copyright [2014] [Cisco Systems, Inc.]
 Licensed under the Apache License, Version 2.0
 
-Copyright (C) 2010-2016 Almende B.V.
-Dual licensed under both Apache License, Version 2.0 or MIT License.
+jQuery JavaScript Library v1.9.1
+Copyright 2005, 2012 jQuery Foundation, Inc. and other contributors
+Released under the MIT license
 
+jQuery Alert Dialogs Plugin
+Copyright 2008 A Beautiful Site, LLC.
+Licensed here under the MIT license
+
+jQuery Folder Tree Plugin
+copyright 2008 A Beautiful Site, LLC.
+Licensed here under the MIT license
+
+jQuery Migrate - v1.2.1 - 2013-05-08
+Copyright 2005, 2013 jQuery Foundation, Inc. and other contributors;
+Licensed under the MIT license
+
+jQuery Validation Plugin 1.11.1
+Copyright 2013 Jörn Zaefferer
+Licensed under the MIT license
+
+jQuery UI CSS Framework
+Copyright (c) 2008 AUTHORS.txt (http://ui.jquery.com/about)
+Licensed here under the MIT license.
+
+lighttpd
+Copyright (c) 2004, Jan Kneschke, incremental
+Licensed under the BSD-3 license
+
+Some icons are generated from http://www.ajaxload.info and are licensed under the WTFPL license.
+
+This product includes PHP software, freely available from <http://www.php.net/software/>
+Copyright (c) 1999 - 2018 The PHP Group. All rights reserved.
+Licensed under the PHP License, version 3.01
+
+This component is using a configuration template of CSRF which is:
 Copyright 2014 OWASP Foundation
-Licensed under the Apache License, Version 2.0
-
-Copyright 2006-2008, 2013 Jörn Zaefferer
-Licensed under the MIT License
+Licensed under the Apache License, Version 2.0 
