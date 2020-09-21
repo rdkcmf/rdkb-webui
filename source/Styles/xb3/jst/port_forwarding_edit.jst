@@ -295,6 +295,10 @@ var validator = $("#pageForm").validate({
         		jAlert("<?% echo( _("Please input a service name !"));?>");
         		return;
         	}
+                else if(name.length > 63){
+                        alertLocale("Service Name should be less than 64 characters !");
+                        return;
+                }
         	else if(name.match(/[<>&"'|]/)!=null){
 				jAlert( _('Please input valid Service Name ! \n Less than (<), Greater than (>), Ampersand (&), Double quote ("), \n Single quote (\') and Pipe (|) characters are not allowed.'));
 				return;
