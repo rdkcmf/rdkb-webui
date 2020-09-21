@@ -803,7 +803,7 @@ function addslashes( str ) {
 }
 function click_save()
 {
-	var network_name_1= '<?% echo( $network_name); ?>';
+	var network_name_1= "<?% echo( htmlspecialchars($network_name)); ?>";
         network_name_1= addslashes(network_name_1);
 	var password_mso_user = '<?% echo( $password_mso_user); ?>';
 	var network_password = "";
