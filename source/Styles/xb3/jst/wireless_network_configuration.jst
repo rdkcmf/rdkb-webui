@@ -834,6 +834,14 @@ $(document).ready(function() {
 		//disable >> Channel Selection:, Channel:, Channel Bandwidth:
 		$('#channel_automatic, #channel_manual, #channel_automatic1, #channel_manual1, #channel_number, #channel_number1, #auto_channel_number, #auto_channel_number1, input[name=channel_bandwidth], input[name=channel_bandwidth1]').prop("disabled", true);
 	}
+
+
+	if($Mesh_Mode == 'true'  && "mso"=="<?% echo( $_SESSION["loginuser"]); ?>"){
+                //disable WiFi mode when Mesh is enabled for MSO
+                $('#wireless_mode1, #wireless_mode').prop("disabled", true);
+                
+        }
+
 });
 $(window).load(function() {
 	var mac_ssid_GET	= "<?% echo( $_GET['mac_ssid']);?>";
