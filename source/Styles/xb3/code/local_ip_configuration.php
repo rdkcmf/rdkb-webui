@@ -361,6 +361,11 @@ $(document).ready(function() {
 	$.validator.addMethod("hexadecimal", function(value, element) {
 		return this.optional(element) || /^[a-fA-F0-9]+$/i.test(value);
 	}, "<?php echo _('Only hexadecimal characters are valid. Acceptable characters are ABCDEF0123456789.')?>");
+	
+	$.validator.addMethod("checkLeadingZero", function(value, element) {
+                return  !(/\b0+\B/g.test(value));
+        }, $.i18n('Invalid IP'));
+
 	$("#pageForm").validate({
 		groups: {
 	    	ip_set: "ipv4_gateway_address_1 ipv4_gateway_address_2 ipv4_gateway_address_3",
@@ -372,61 +377,66 @@ $(document).ready(function() {
 				required: true,
 				min: 1,
 				max: 255,
-				digits: true
+				digits: true,
+				checkLeadingZero: true
 			},
 			ipv4_gateway_address_2: {
 				required: true,
 				min: 0,
 				max: 255,
-				digits: true
+				digits: true,
+				checkLeadingZero: true
 			},
 			ipv4_gateway_address_3: {
 				required: true,
 				min: 0,
 				max: 255,
-				digits: true
+				digits: true,
+				checkLeadingZero: true
 			}
 			,ipv4_dhcp_beginning_address_2: {
 			    required: true,
 				min: 0,
 				max: 255,
 				digits: true,
-		//		checkMaskBegin: true
+				checkLeadingZero: true
 			}
 			,ipv4_dhcp_ending_address_2: {
 			    required: true,
 				min: 0,
 				max: 255,
 				digits: true,
-		//		checkMaskEnd: true
+				checkLeadingZero: true
 			}
 			,ipv4_dhcp_beginning_address_3: {
 			    required: true,
 				min: 0,
 				max: 255,
 				digits: true,
-		//		checkMaskBegin: true
+				checkLeadingZero: true
 			}
 			,ipv4_dhcp_ending_address_3: {
 			    required: true,
 				min: 0,
 				max: 255,
 				digits: true,
-		//		checkMaskEnd: true
+				checkLeadingZero: true
 			}
 			,ipv4_dhcp_beginning_address_4: {
 			    required: true,
 				min: 0,
 				max: 253,
 				digits: true,
-				checkMaskBegin: true
+				checkMaskBegin: true,
+				checkLeadingZero: true
 			}
 			,ipv4_dhcp_ending_address_4: {
 			    required: true,
 				min: 0,
 				max: 253,
 				digits: true,
-				checkMaskEnd: true
+				checkMaskEnd: true,
+				checkLeadingZero: true
 			}
 			,ipv4_dhcp_lease_time_amount: {
 				required: function() {
