@@ -129,7 +129,6 @@ $(document).ready(function() {
 			var channel = $('#mode_option').val();
 			var tf_channel;
 			tf_channel = (channel - 1000)/25;
-			$('[id^="tf_"]').prop("disabled", false).attr('checked', true);
 			$("#tf_"+tf_channel).prop("disabled", true).attr('checked', false);
 		}
 	});
@@ -216,6 +215,23 @@ $(document).ready(function() {
 	// now we can show target content
 	$("#content").show();
 });
+
+
+function scanAuto() {
+	$("#mode_option").prop("disabled", true);
+	$('[id^="tf_"]').prop("disabled", true).attr('checked', false);
+}
+
+function scanManual() {
+	$("#mode_option").prop("disabled", false);
+	$('[id^="tf_"]').prop("disabled", false);
+	var channel = $('#mode_option').val();
+	var tf_channel;
+	tf_channel = (channel - 1000)/25;
+	$('[id^="tf_"]').prop("disabled", false).attr('checked', true);
+	$("#tf_"+tf_channel).prop("disabled", true).attr('checked', false);
+}
+
 function next_step() 
 {
 	var moca_enable		= $("#moca_switch").radioswitch("getState").on;
@@ -336,10 +352,10 @@ function next_step()
 		</div>
 		<div class="form-row odd" id="div_channel_switch">
 			<label for="channel_selection" id="mocamess4">Channel Selection:</label>
-			<input tabindex='0' id="scan_auto"   type="radio" value="auto"   name="channel_switch" checked="checked">
+			<input tabindex='0' id="scan_auto"   type="radio" value="auto"   name="channel_switch" checked="checked" onclick="return scanAuto()">
 			<label for="scan_auto" class="acs-hide"></label>
 			<b>Scan</b>
-			<input id="scan_manual" type="radio" value="manual" name="channel_switch" <?% if (("false"==$scan_method) && $isNotAdmin) echo( 'checked="checked"'); ?> />
+			<input id="scan_manual" type="radio" value="manual" name="channel_switch" <?% if (("false"==$scan_method) && $isNotAdmin) echo( 'checked="checked"'); ?>  onclick="return scanManual()"/>
 			<label for="scan_manual" class="acs-hide"></label>
 			<b>Manual</b>
 		</div>
