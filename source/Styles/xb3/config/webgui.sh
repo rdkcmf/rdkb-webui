@@ -367,7 +367,7 @@ fi
 
 if [ "$VIDEO_ANALYTICS" = "enabled" ]
 then
-    CONFIGPARAMGEN=/usr/bin/cpgc
+    CONFIGPARAMGEN=/usr/bin/configparamgen
     if [ -d /etc/webui/certs ]; then
        mkdir -p /tmp/.webui/
        cp /etc/webui/certs/comcast-rdk-ca-chain.cert.pem /tmp/.webui/
