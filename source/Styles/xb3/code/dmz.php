@@ -35,6 +35,8 @@ $hostv6 		= getStr("Device.NAT.X_CISCO_COM_DMZ.IPv6Host");
 $LanSubnetMask	= getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask");
 $LanGwIP 		= getStr("Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
 $IPv6Prefix     = getStr("Device.IP.Interface.1.IPv6Prefix.1.Prefix");
+$beginAddr      = getStr("Device.DHCPv4.Server.Pool.1.MinAddress");
+$endAddr        = getStr("Device.DHCPv4.Server.Pool.1.MaxAddress");
 ("" == $enableDMZ) && ($enableDMZ = "false");
 /*if ($_SESSION['_DEBUG']){
 	$enableDMZ 		= "true";
@@ -68,6 +70,8 @@ $(document).ready(function() {
 	var jsGatewayIP = "<?php echo $LanGwIP; ?>";
 	var jsGwIP = "<?php echo $LanGwIP; ?>".split(".");
 	var local_v6_prefix = <?php echo(json_encode($IPv6Prefix)) ?>;
+	var beginAddr       = "<?php echo $beginAddr; ?>";
+        var endAddr         = "<?php echo $endAddr; ?>";
 	//alert(typeof(jsGwIP[0]));
 	jsGwIP[0] = parseInt(jsGwIP[0]);
 	jsGwIP[1] = parseInt(jsGwIP[1]);
@@ -236,6 +240,12 @@ $('#save_setting').click(function() {
     var host3 = parseInt($("#dmz_host_address_4").val());
 	var hostv6 = IsBlank("ip6_address_r") ? 'x' : GetAddress(":", "ip6_address_r");
 	if (isEnabledDMZ) {
+		var ip= $("#dmz_host_address_1").val() + '.' + $("#dmz_host_address_2").val() + '.'+ $("#dmz_host_address_3").val() + '.' +$("#dmz_host_address_4").val();
+                var IPv4_valid = ValidIp4AddrInDhcpPool(ip, beginAddr, endAddr);
+                if(!IPv4_valid){
+                                jAlert("<?php echo _('Server IP addr is not in valid range !')?>");
+                                return;
+                        }	
 		// check the basic rules
 		isValid = $("#pageForm").valid();
 		// check some extra IPv4 rule. TODO: add IPv6 checking
