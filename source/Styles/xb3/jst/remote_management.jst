@@ -843,7 +843,7 @@ function remote_access_block(){
 			:<input type="text" disabled="disabled" name="rangeipv6_address_5" id="rangeipv6_address_5" maxlength="4" class="ipv6-input"><label for="rangeipv6_address_6" class="acs-hide"></label>
 			:<input type="text" disabled="disabled" name="rangeipv6_address_6" id="rangeipv6_address_6" maxlength="4" class="ipv6-input"><label for="rangeipv6_address_7" class="acs-hide"></label>
 			:<input type="text" disabled="disabled" name="rangeipv6_address_7" id="rangeipv6_address_7" maxlength="4" class="ipv6-input"><label for="rangeipv6_address_8" class="acs-hide"></label>
-			:<input type="text" disabled="disabled" name="rangeipv6_address_8" id="rangeipv6_address_8" maxlength="4" class="ipv6-input">							
+			:<input type="text" disabled="disabled" name="rangeipv6_address_8" id="rangeipv6_address_8" maxlength="4" class="ipv6-input">
 		</div>
 		<div class="form-row">
 			<label for="endipv6_address_1" id="remmess9">End IPv6 Address:</label>
@@ -854,7 +854,7 @@ function remote_access_block(){
 			:<input type="text" disabled="disabled" name="endipv6_address_5" id="endipv6_address_5" maxlength="4" class="ipv6-input"><label for="endipv6_address_6" class="acs-hide"></label>
 			:<input type="text" disabled="disabled" name="endipv6_address_6" id="endipv6_address_6" maxlength="4" class="ipv6-input"><label for="endipv6_address_7" class="acs-hide"></label>
 			:<input type="text" disabled="disabled" name="endipv6_address_7" id="endipv6_address_7" maxlength="4" class="ipv6-input"><label for="endipv6_address_8" class="acs-hide"></label>
-			:<input type="text" disabled="disabled" name="endipv6_address_8" id="endipv6_address_8" maxlength="4" class="ipv6-input">							
+			:<input type="text" disabled="disabled" name="endipv6_address_8" id="endipv6_address_8" maxlength="4" class="ipv6-input">
 		</div>
 		<h3><input type="radio"  name="single" value="any" id="any" checked="checked" /><label for="any" class="acs-hide"></label><b id="remmess10">Any Computer</b></h3>
 		<?% } else {
@@ -893,14 +893,14 @@ function remote_access_block(){
 			<!--IPv6 enabled-->
 			<div class="form-row">
 				<label for="ipv6_address_1" id="netdiagmess13">IPv6 Address:</label>
-				 <input type="text" name="ipv6_address_1" id="ipv6_address_1" maxlength="4" class="ipv6-input" value="<?% echo( $single_ipv6[0]);?>" /><label for="ipv6_address_2" class="acs-hide"></label>
-				:<input type="text" name="ipv6_address_2" id="ipv6_address_2" maxlength="4" class="ipv6-input" value="<?% echo( $single_ipv6[1]);?>" /><label for="ipv6_address_3" class="acs-hide"></label>
-				:<input type="text" name="ipv6_address_3" id="ipv6_address_3" maxlength="4" class="ipv6-input" value="<?% echo( $single_ipv6[2]);?>" /><label for="ipv6_address_4" class="acs-hide"></label>
-				:<input type="text" name="ipv6_address_4" id="ipv6_address_4" maxlength="4" class="ipv6-input" value="<?% echo( $single_ipv6[3]);?>" /><label for="ipv6_address_5" class="acs-hide"></label>
-				:<input type="text" name="ipv6_address_5" id="ipv6_address_5" maxlength="4" class="ipv6-input" value="<?% echo( $single_ipv6[4]);?>" /><label for="ipv6_address_6" class="acs-hide"></label>
-				:<input type="text" name="ipv6_address_6" id="ipv6_address_6" maxlength="4" class="ipv6-input" value="<?% echo( $single_ipv6[5]);?>" /><label for="ipv6_address_7" class="acs-hide"></label>
-				:<input type="text" name="ipv6_address_7" id="ipv6_address_7" maxlength="4" class="ipv6-input" value="<?% echo( $single_ipv6[6]);?>" /><label for="ipv6_address_8" class="acs-hide"></label>
-				:<input type="text" name="ipv6_address_8" id="ipv6_address_8" maxlength="4" class="ipv6-input" value="<?% echo( $single_ipv6[7]);?>" />						
+				 <input type="text" name="ipv6_address_1" id="ipv6_address_1" maxlength="4" class="ipv6-input" value="<?% if($single_ipv6[0]!=undefined){echo( $single_ipv6[0]);} else{echo('');}?>" /><label for="ipv6_address_2" class="acs-hide"></label>
+				:<input type="text" name="ipv6_address_2" id="ipv6_address_2" maxlength="4" class="ipv6-input" value="<?% if($single_ipv6[1]!=undefined){echo( $single_ipv6[1]);} else{echo('');}?>" /><label for="ipv6_address_3" class="acs-hide"></label>
+				:<input type="text" name="ipv6_address_3" id="ipv6_address_3" maxlength="4" class="ipv6-input" value="<?% if($single_ipv6[2]!=undefined){echo( $single_ipv6[2]);} else{echo('');}?>" /><label for="ipv6_address_4" class="acs-hide"></label>
+				:<input type="text" name="ipv6_address_4" id="ipv6_address_4" maxlength="4" class="ipv6-input" value="<?% if($single_ipv6[3]!=undefined){echo( $single_ipv6[3]);} else{echo('');}?>" /><label for="ipv6_address_5" class="acs-hide"></label>
+				:<input type="text" name="ipv6_address_5" id="ipv6_address_5" maxlength="4" class="ipv6-input" value="<?% if($single_ipv6[4]!=undefined){echo( $single_ipv6[4]);} else{echo('');}?>" /><label for="ipv6_address_6" class="acs-hide"></label>
+				:<input type="text" name="ipv6_address_6" id="ipv6_address_6" maxlength="4" class="ipv6-input" value="<?% if($single_ipv6[5]!=undefined){echo( $single_ipv6[5]);} else{echo('');}?>" /><label for="ipv6_address_7" class="acs-hide"></label>
+				:<input type="text" name="ipv6_address_7" id="ipv6_address_7" maxlength="4" class="ipv6-input" value="<?% if($single_ipv6[6]!=undefined){echo( $single_ipv6[6]);} else{echo('');}?>" /><label for="ipv6_address_8" class="acs-hide"></label>
+				:<input type="text" name="ipv6_address_8" id="ipv6_address_8" maxlength="4" class="ipv6-input" value="<?% if($single_ipv6[7]!=undefined){echo( $single_ipv6[7]);} else{echo('');}?>" />
 			</div>
 			<h3> <input type="radio"  name="single" value="range" id="range" /><label for="range" class="acs-hide"></label><b id="remmess5">Range Of IPs</b></h3>
 			<div class="form-row">
@@ -927,7 +927,7 @@ function remote_access_block(){
 				:<input type="text" disabled="disabled" name="rangeipv6_address_5" id="rangeipv6_address_5" maxlength="4" class="ipv6-input"><label for="rangeipv6_address_6" class="acs-hide"></label>
 				:<input type="text" disabled="disabled" name="rangeipv6_address_6" id="rangeipv6_address_6" maxlength="4" class="ipv6-input"><label for="rangeipv6_address_7" class="acs-hide"></label>
 				:<input type="text" disabled="disabled" name="rangeipv6_address_7" id="rangeipv6_address_7" maxlength="4" class="ipv6-input"><label for="rangeipv6_address_8" class="acs-hide"></label>
-				:<input type="text" disabled="disabled" name="rangeipv6_address_8" id="rangeipv6_address_8" maxlength="4" class="ipv6-input">							
+				:<input type="text" disabled="disabled" name="rangeipv6_address_8" id="rangeipv6_address_8" maxlength="4" class="ipv6-input">
 			</div>
 			<div class="form-row">
 				<label for="endipv6_address_1" id="remmess9">End IPv6 Address:</label>
@@ -938,7 +938,7 @@ function remote_access_block(){
 				:<input type="text" disabled="disabled" name="endipv6_address_5" id="endipv6_address_5" maxlength="4" class="ipv6-input"><label for="endipv6_address_6" class="acs-hide"></label>
 				:<input type="text" disabled="disabled" name="endipv6_address_6" id="endipv6_address_6" maxlength="4" class="ipv6-input"><label for="endipv6_address_7" class="acs-hide"></label>
 				:<input type="text" disabled="disabled" name="endipv6_address_7" id="endipv6_address_7" maxlength="4" class="ipv6-input"><label for="endipv6_address_8" class="acs-hide"></label>
-				:<input type="text" disabled="disabled" name="endipv6_address_8" id="endipv6_address_8" maxlength="4" class="ipv6-input">							
+				:<input type="text" disabled="disabled" name="endipv6_address_8" id="endipv6_address_8" maxlength="4" class="ipv6-input">
 			</div>
 			<h3><input type="radio"  name="single" value="any" id="any" /><label for="any" class="acs-hide"></label><b id="remmess10">Any Computer</b></h3>
 			<?% } else { 
@@ -965,7 +965,7 @@ function remote_access_block(){
 			:<input type="text" name="ipv6_address_5" id="ipv6_address_5" maxlength="4" class="ipv6-input" disabled="disabled" /><label for="ipv6_address_6" class="acs-hide"></label>
 			:<input type="text" name="ipv6_address_6" id="ipv6_address_6" maxlength="4" class="ipv6-input" disabled="disabled" /><label for="ipv6_address_7" class="acs-hide"></label>
 			:<input type="text" name="ipv6_address_7" id="ipv6_address_7" maxlength="4" class="ipv6-input" disabled="disabled" /><label for="ipv6_address_8" class="acs-hide"></label>
-			:<input type="text" name="ipv6_address_8" id="ipv6_address_8" maxlength="4" class="ipv6-input" disabled="disabled" />						
+			:<input type="text" name="ipv6_address_8" id="ipv6_address_8" maxlength="4" class="ipv6-input" disabled="disabled" />
 		</div>
 	    <h3> <input type="radio"  name="single" value="range" id="range" checked="checked" /><label for="range" class="acs-hide"></label><b id="remmess5">Range Of IPs</b></h3>
 		<div class="form-row">
@@ -992,7 +992,7 @@ function remote_access_block(){
 			:<input type="text"  name="rangeipv6_address_5" id="rangeipv6_address_5" maxlength="4" class="ipv6-input" value="<?% echo( $range_start_ipv6[4]);?>" /><label for="rangeipv6_address_6" class="acs-hide"></label>
 			:<input type="text"  name="rangeipv6_address_6" id="rangeipv6_address_6" maxlength="4" class="ipv6-input" value="<?% echo( $range_start_ipv6[5]);?>" /><label for="rangeipv6_address_7" class="acs-hide"></label>
 			:<input type="text"  name="rangeipv6_address_7" id="rangeipv6_address_7" maxlength="4" class="ipv6-input" value="<?% echo( $range_start_ipv6[6]);?>" /><label for="rangeipv6_address_8" class="acs-hide"></label>
-			:<input type="text"  name="rangeipv6_address_8" id="rangeipv6_address_8" maxlength="4" class="ipv6-input" value="<?% echo( $range_start_ipv6[7]);?>" />							
+			:<input type="text"  name="rangeipv6_address_8" id="rangeipv6_address_8" maxlength="4" class="ipv6-input" value="<?% echo( $range_start_ipv6[7]);?>" />
 		</div>
 		<div class="form-row">
 			<label for="endipv6_address_1" id="remmess9">End IPv6 Address:</label>
@@ -1003,7 +1003,7 @@ function remote_access_block(){
 			:<input type="text"  name="endipv6_address_5" id="endipv6_address_5" maxlength="4" class="ipv6-input" value="<?% echo( $range_end_ipv6[4]);?>" /><label for="endipv6_address_6" class="acs-hide"></label>
 			:<input type="text"  name="endipv6_address_6" id="endipv6_address_6" maxlength="4" class="ipv6-input" value="<?% echo( $range_end_ipv6[5]);?>" /><label for="endipv6_address_7" class="acs-hide"></label>
 			:<input type="text"  name="endipv6_address_7" id="endipv6_address_7" maxlength="4" class="ipv6-input" value="<?% echo( $range_end_ipv6[6]);?>" /><label for="endipv6_address_8" class="acs-hide"></label>
-			:<input type="text"  name="endipv6_address_8" id="endipv6_address_8" maxlength="4" class="ipv6-input" value="<?% echo( $range_end_ipv6[7]);?>" />							
+			:<input type="text"  name="endipv6_address_8" id="endipv6_address_8" maxlength="4" class="ipv6-input" value="<?% echo( $range_end_ipv6[7]);?>" />
 		</div>
 		<h3><input type="radio"  name="single" value="any" id="any" /><label for="any" class="acs-hide"></label><b id="remmess10">Any Computer</b></h3>
 		<?% }
