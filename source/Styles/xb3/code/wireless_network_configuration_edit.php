@@ -329,6 +329,9 @@ $(document).ready(function() {
                                                         $("#network_password").val(pass_val);
 							$("#network_password").prop("disabled", false);
 							$("#netPassword-footnote").text($("option:selected", $("#security")).attr("title"));
+							if(password_mso_user){
+								$("#div_password_show").show();
+							}
 						}
 					} else {
 						$security_val = security_val;
@@ -352,6 +355,7 @@ $(document).ready(function() {
 					$("#network_password").val("");
 					$("#network_password").prop("disabled", true);
 					$("#div_change_password").show();
+					$("#div_password_show").hide();
 				}
 				else {
 					$("#network_password").prop("disabled", false);
