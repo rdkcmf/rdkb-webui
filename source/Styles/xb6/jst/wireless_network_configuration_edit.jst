@@ -322,6 +322,10 @@ $(document).ready(function() {
                                                         $("#network_password").val(pass_val);
                                                         $("#network_password").prop("disabled", false);
                                                         $("#netPassword-footnote").text($("option:selected", $("#security")).attr("title")); 
+							var pwd_mso=JSON.parse(password_mso_user);
+                                                        if(pwd_mso){
+                                                                $("#div_password_show").show();
+                                                        }
                                                          }
 						} else {
 							$security_val = security_val;
@@ -362,10 +366,12 @@ $(document).ready(function() {
 					$("#network_password").val("");
 					$("#network_password").prop("disabled", true);
 					$("#div_change_password").show();
+					$("#div_password_show").hide();
 				}
 				else {
 					$("#network_password").prop("disabled", false);
 					$("#div_change_password").hide();
+					$("#div_password_show").show();
 				}
 			}
 			$("#netPassword-footnote").text($("option:selected", $(this)).attr("title"));
