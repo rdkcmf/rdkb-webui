@@ -115,6 +115,7 @@ $mintime/=1000;
 $maxtime/=1000;
 $Log = [];
 $value = getStr("Device.X_CISCO_COM_Security.InternetAccess.LogEntryNumberOfEntries");
+$k=0;
 for (var $i=0; $i < $value; $i++) {
 	var $Count 	    = substr(fgets($file),$pos);
 	var $SourceIP 	= substr(fgets($file),$pos);	//don't need, but have to read
@@ -129,16 +130,19 @@ for (var $i=0; $i < $value; $i++) {
 	if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
 	$timeArr = str2time(UTC_to_local_date_logs(trim($time)));
 	if ($type == $Type) {
-		$Log[$i] = {"time":$timeArr['formatted_time'], "Des":$Des, "Count":$Count, "Target":$TargetIP,"Source":$SourceIP,"Type":$Type};
+		$Log[$k] = {"time":$timeArr['formatted_time'], "Des":$Des, "Count":$Count, "Target":$TargetIP,"Source":$SourceIP,"Type":$Type};
+		$k++;
     }
     else if ($type == "all") {
 	if($partnerId=="cox"){
 		if (in_array($Type, ["Service Blocked", "Device Blocked"])) {
-			$Log[$i] = {"time":$timeArr['formatted_time'], "Des":$Des, "Count":$Count, "Target":$TargetIP,"Source":$SourceIP,"Type":$Type};
+			$Log[$k] = {"time":$timeArr['formatted_time'], "Des":$Des, "Count":$Count, "Target":$TargetIP,"Source":$SourceIP,"Type":$Type};
+			$k++;
 		}
 	}else{
 		if (in_array($Type, ["Site Blocked", "Service Blocked", "Device Blocked"])) {
-			$Log[$i] = {"time":$timeArr['formatted_time'], "Des":$Des, "Count":$Count, "Target":$TargetIP,"Source":$SourceIP,"Type":$Type};
+			$Log[$k] = {"time":$timeArr['formatted_time'], "Des":$Des, "Count":$Count, "Target":$TargetIP,"Source":$SourceIP,"Type":$Type};
+			$k++;
 		}
 	}
     }
