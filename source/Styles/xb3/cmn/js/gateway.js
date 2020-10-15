@@ -209,7 +209,17 @@ gateway.page = function() {
                 error.appendTo(element.closest(".form-row"));
             }
     	});
-    
+   /*!
+ * jQuery Validation Plugin 1.11.1
+ *
+ * http://bassistance.de/jquery-plugins/jquery-plugin-validation/
+ * http://docs.jquery.com/Plugins/Validation
+ *
+ * Copyright 2013 JÃ¶rn Zaefferer
+ * Released under the MIT license:
+ *   http://www.opensource.org/licenses/mit-license.php
+*/
+ 
         jQuery.extend(jQuery.validator.messages, {
         	required: "This is a required field.",
         	remote: "Please fix this field.",

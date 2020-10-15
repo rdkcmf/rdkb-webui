@@ -407,12 +407,6 @@ $encrypt_method		= $wifi_value['encrypt_method'];
 $network_password	= $wifi_value['network_password'];
 $network_pass_64	= $wifi_value['network_pass_64'];
 $network_pass_128	= $wifi_value['network_pass_128'];
-// $network_name 		= "string";
-// $encrypt_mode 		= "WPA-Personal";
-// $encrypt_method		= "TKIP";
-// $network_password 	= "abc123456";
-// $network_pass_64		= "wep64";
-// $network_pass_128	= "wep128";
 $security = "None";
 if ("WEP-64" == $encrypt_mode){
 		$security = "WEP_64";
@@ -446,12 +440,6 @@ $encrypt_method1	= $wifi_value['encrypt_method1'];
 $network_password1	= $wifi_value['network_password1'];
 $network_pass_64	= $wifi_value['network_pass_64_1'];
 $network_pass_128	= $wifi_value['network_pass_128_1'];
-// $network_name1 		= "string";
-// $encrypt_mode1 		= "WPA-Personal";
-// $encrypt_method1		= "TKIP";
-// $network_password1 	= "abc123456";
-// $network_pass_64		= "wep64";
-// $network_pass_128	= "wep128";
 $security1 = "None";
 if ("WEP-64" == $encrypt_mode1){
 		$security1 = "WEP_64";
