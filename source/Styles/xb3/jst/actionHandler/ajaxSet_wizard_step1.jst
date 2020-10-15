@@ -22,9 +22,7 @@ if (!(isset($_SESSION["loginuser"]) || isset($_SESSION["password_change"])) || $
 	exit(0);
 }
 $jsConfig = $_POST['configInfo'];
-//$jsConfig = '{"newPassword": "11111111", "instanceNum": "1", "oldPassword": "111"}';
 //if request is from "password_change.jst"
-//$jsConfig = '{"newPassword": "11111111", "instanceNum": "1", "oldPassword": "111", "ChangePassword": "true"}';
 $arConfig = json_decode($jsConfig);
 //print_r($arConfig);
 $i = $arConfig['instanceNum'];

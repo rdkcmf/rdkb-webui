@@ -26,6 +26,10 @@
  * ---- jsUrl
  * ---- tokenLength
  */
+/*
+Copyright 2014 OWASP Foundation
+Licensed under the Apache License, Version 2.0
+*/
 return array(
 	"CSRFP_TOKEN" => "",
 	"logDirectory" => "../log",

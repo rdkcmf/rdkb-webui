@@ -138,27 +138,6 @@ if ("false" == $wifi_value['Radio_'+$rf+'_Enable']){
 }
 //check if support 802.11ac
 $supported_mode		= $wifi_value['SupportedStandards'];
-/*if ($_SESSION['_DEBUG']){
-	$radio_enable		= "true";
-	$network_name		= "string";
-	$wireless_mode		= "b,g,n";
-	$encrypt_mode		= "WPA2-Personal";
-	$encrypt_mode		= "WEP-128";
-	// $encrypt_mode		= "None";
-	$encrypt_method		= "AES";
-	$channel_automatic	= "false";
-	$channel_number		= "36";
-	$broadcastSSID		= "false";
-	$network_password	= "abc123456";
-	$enableWMM			= "true";
-	$channel_bandwidth	= "40MHz";
-	$ext_channel			= "BelowControlChannel";
-	$network_pass_64		= "wep64";
-	$network_pass_128	= "wep128";
-	$possible_channels	= "36,40,44,48,149,153,157,161,165";
-	// $possible_channels	= "1-11";
-	$supported_mode 	= "a,n,ac";
-}*/
 if ("1-11"==$possible_channels)
 $possible_channels = "1,2,3,4,5,6,7,8,9,10,11";
 $security = "None";
@@ -508,7 +487,6 @@ $(document).ready(function() {
     $("#restore-default-settings").click(function() {
 		<?%
 		$xml_SSID = "HOME-DEFAULT";
-		$xml_Passphrase = "COMCAST123456";
 		$xml_WLANEnable = "1";
 		$xml_HideSSID = "0";
 		$xml_Mode = "32";
