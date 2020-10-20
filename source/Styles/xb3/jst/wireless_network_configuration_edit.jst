@@ -531,7 +531,7 @@ $(document).ready(function() {
 		//return value.toLowerCase().indexOf("optimumwifi")==-1 && value.toLowerCase().indexOf("twcwifi")==-1 && value.toLowerCase().indexOf("cablewifi")==-1;
 	}, 'SSID containing "optimumwifi", "TWCWiFi", "cablewifi", "xfinity" and "xfinitywifi" are reserved !');
 	<?%
-	if(strpos($partnerId, "sky-") != false) {
+	if(strpos($partnerId, "sky-") !== false) {
 		echo(" $.validator.addMethod('not_defaulSSID', function(value, element, param) { return true;}, '');");
 		echo(" $.validator.addMethod('not_defaulPassword', function(value, element, param) { return true;}, '');");
 	} else {
