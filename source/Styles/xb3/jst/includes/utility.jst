@@ -600,6 +600,11 @@ function days_time_conversion_set($startTime, $endTime, $blockedDays){
 	}
 }
 //Check for time and day conflicts before ADD/EDIT of table rules
+function strtotimecon(str)
+{
+        var timestamp = Date.now(str);
+        return timestamp;
+}
 function time_date_conflict($TD1, $TD2) {
 	var $ret = false;
 	var $days1 = explode(",", $TD1[2]);
@@ -609,7 +614,7 @@ function time_date_conflict($TD1, $TD2) {
 		if (in_array($value, $days2)) {
 			//deMorgan's law - to find if ranges are overlapping
 			//(StartA <= EndB)  and  (EndA >= StartB)
-			if((strtotime($TD1[0]) < strtotime($TD2[1])) && (strtotime($TD1[1]) > strtotime($TD2[0]))){
+			if((strtotimecon($TD1[0]) <= strtotimecon($TD2[1])) && (strtotimecon($TD1[1]) >= strtotimecon($TD2[0]))){
 				$ret = true;
 				break;
 			}
