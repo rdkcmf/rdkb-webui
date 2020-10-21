@@ -54,13 +54,13 @@ if($validation){
             $idArr = explode(",", $IDs);
             $instanceid = array_pop($idArr);
             setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".HostDescription", $flag['HostName'], false);
-            setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".IPAddress", $flag['IPAddress'], false);
             if ( strpos($flag['IPAddress'], ':') != false ){
                 setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".IPAddressType", "IPv6", false);
             }
             else{
                 setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".IPAddressType", "IPv4", false);
             }
+            setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".IPAddress", $flag['IPAddress'], false);
             setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".Trusted", $flag['trustFlag'], true);
         }
         else{
