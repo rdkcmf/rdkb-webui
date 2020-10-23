@@ -339,8 +339,7 @@ function shift_blockedDays($blockedDays, $shift){
 		}
 	}
 	if($blockedDays[0]=='Sun') {
-		//array_pop($blockedDays);
-                $blockedDays.shift();
+		$blockedDays.shift();
 		$blockedDays.push('Sun');
 	}
 	if($blockedDays[sizeof($blockedDays)-1]=='Mon') {
