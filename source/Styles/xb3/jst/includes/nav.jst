@@ -114,6 +114,19 @@ if (strstr($hwselftest, "true")) {
 }
 
 /*
+* Allow navigation to HWSelfTest link only if user is MSO
+* and Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.hwHealthTest.Enabe is set
+*/
+if (isset($_SESSION['loginuser']) && $_SESSION['loginuser'] == 'mso') {
+	if (strstr($hwselftest, "true")) {
+		$hwselftest_enabled = true;
+	}
+	else {
+		$hwselftest_enabled = false;
+	}
+}
+
+/*
  * generate menu and submenu accroding to above configuration
  */
 $allowEthWan= "";
