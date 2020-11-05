@@ -90,6 +90,14 @@ function file_download($file_path, $file_name)
 	die();
 }
 $timeFrame=$_POST["time_frame"];
+$locale = getenv("LANG");
+$locale = $locale ? $locale : "false";
+if($locale != "false"){
+        if(strstr($locale, 'it')){
+                $locale="it";
+                $_SESSION['language'] = $locale;
+        }
+}
 if($locale=="it"){
         if($timeFrame == "Today")
                 $timeFrame = "Oggi";
@@ -105,14 +113,6 @@ if($locale=="it"){
 
 //MROLLINS FIXME set_time_limit(0) not implemented
 //set_time_limit(0);
-$locale = getenv("LANG");
-$locale = $locale ? $locale : "false";
-if($locale != "false"){
-        if(strstr($locale, 'it')){
-                $locale="it";
-                $_SESSION['language'] = $locale;
-        }
-}
 $report=$_POST['report_type']+"_"+$timeFrame;
 $report1=$_POST['report_type']+"_"+$_POST["time_frame"];
 $report_type_array = ["all", "site", "service", "device"]/*p2j-array*/;
