@@ -31,6 +31,7 @@
 ?>
 <?%
 $enableMS = getStr("Device.X_Comcast_com_ParentalControl.ManagedServices.Enable");
+$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 /*if ($_DEBUG) {
 	$enableMS = "true";
 }*/
@@ -273,6 +274,32 @@ function getTitle(val){
 							$stime = $value["StartTime"];
 							$etime = $value["EndTime"];
 							$bdays = $value["BlockDays"];
+							if(strpos($partnerId, "sky-") !== false){
+								$days_cvt = $bdays;
+								$days_cvt = explode(',',$days_cvt);
+								$val_key="";
+								for($a=0;$a<=count($days_cvt);$a++) {
+									if($locale=="it"){
+										if($days_cvt[$a] == "Mon")
+											$val_key += "Lun";
+										else if($days_cvt[$a] == "Tue")
+											$val_key += "Mart";
+										else if($days_cvt[$a] == "Wed")
+											$val_key += "Merc";
+										else if($days_cvt[$a] == "Thu")
+											$val_key += "Giov";
+										else if($days_cvt[$a] == "Fri")
+											$val_key += "Vene";
+										else if($days_cvt[$a] == "Sat")
+											$val_key += "Sab";
+										else if($days_cvt[$a] == "Sun")
+											$val_key += "Dome";
+									}
+									if($a<(count($days_cvt)-1)){$val_key += ',';}
+								}
+								$days_cvt = $val_key;
+								$bdays = $days_cvt;
+							}
 					        $blockStatus = $stime+"-"+$etime+","+$bdays;
 						}
 						echo('<input type="hidden" id=servicename_'+$i+' value='+$value["Description"]+'>');
@@ -386,7 +413,7 @@ function getTitle(val){
 						<td headers="number">null</td>
 						<td headers="device-name">null</td>
 						<td headers="IP">null</td>
-						<td headers="trusted-or-not">null</td>						
+						<td headers="trusted-or-not">null</td>
 					</tr>
 				</tfoot>
 				</table>
