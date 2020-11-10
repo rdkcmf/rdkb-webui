@@ -738,7 +738,7 @@ function click_save()
 			msg_parseJSON = JSON.parse(msg);
 			// location.reload();
 			if(msg_parseJSON != "success"){
-				jAlert(msg_parseJSON);
+				alertLocale(msg_parseJSON);
 				$("#network_name").val(network_name_1);
 			} else location.href = 'wireless_network_configuration.jst';
 		},
