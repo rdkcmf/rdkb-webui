@@ -913,7 +913,7 @@ function setResetInfo(info) {
 		</div>		
 		<div class="form-row _network_name">
 			<label for="network_name">Network Name (SSID):</label>
-			<input type="text" size="34" value="<?% echo( $network_name);?>" id="network_name" name="network_name" class="text" />
+			<input type="text" size="34" value="<?% echo( htmlspecialchars($network_name));?>" id="network_name" name="network_name" class="text" />
 		</div>
 		<div class="form-row odd" id="div_wireless_mode">
 			<label for="wireless_mode">Mode:</label>
