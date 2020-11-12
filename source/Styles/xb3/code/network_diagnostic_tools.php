@@ -308,7 +308,13 @@ $(document).ready(function() {
 						}, 500);					
 					}
 				},
-				error:function(){
+				error:function(error){
+					if(error.statusText=="abort"){
+						var trace_ipv4_status = "Error! Traceroute Failed";
+						$("#pop_trace").text("<?php echo _("Status:")?> "+trace_ipv4_status+" !\n");
+						jHide();
+						checkTraceError(trace_ipv4_status);
+					}else {
 					jHide();
 					jAlert("<?php echo _("Sorry, please try again.")?>");
 				}

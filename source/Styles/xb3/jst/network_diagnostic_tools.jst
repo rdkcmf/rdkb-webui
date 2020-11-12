@@ -231,15 +231,9 @@ $(document).ready(function() {
 					$("#packets_received").html(results.success_received);
 				},
 				error:function(){
-					if(error.statusText=="abort"){
-							var trace_ipv4_status = "Error! Traceroute Failed";
-							$("#pop_trace").text($.i18n("Status:")+trace_ipv4_status+" !\n");
-							jHide();				
-							checkTraceError(trace_ipv4_status);
-						}else{
-							jHide();
-							alertLocale("Sorry, please try again.");
-					}
+					jHide();
+					alertLocale("Sorry, please try again.");
+					
 				}
 			});	
 		}
@@ -322,7 +316,13 @@ $(document).ready(function() {
 						}, 500);					
 					}
 				},
-				error:function(){
+				error:function(error){
+					if(error.statusText=="abort"){
+						var trace_ipv4_status = "Error! Traceroute Failed";
+						 $("#pop_trace").text($.i18n("Status:") +trace_ipv4_status+" !\n");
+					         jHide();
+                	                        checkTraceError(trace_ipv4_status);
+					}else{
 					jHide();
 					alertLocale("Sorry, please try again.");
 				}
