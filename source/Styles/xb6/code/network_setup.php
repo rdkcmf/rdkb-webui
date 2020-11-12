@@ -90,7 +90,7 @@ function sec2dhms($sec)
 			$WANIPv6LinkLocal = $val;
 		}
 	}
-	$sta_inet = ($WANIPv4 != "0.0.0.0" || strlen($WANIPv6) > 0) ? "true" : "false";
+	$sta_inet = (getStr("Device.DeviceInfo.X_RDKCENTRAL-COM.InternetStatus")=="true") ? "true" : "false";
 	//in Bridge mode > Internet connectivity status is always active
 	$sta_inet = ($_SESSION["lanMode"] == "bridge-static") ? "true" : $sta_inet ;
 ?>
