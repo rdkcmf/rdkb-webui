@@ -62,3 +62,21 @@ Licensed under the PHP License, version 3.01
 This component is using a configuration template of CSRF which is:
 Copyright 2014 OWASP Foundation
 Licensed under the Apache License, Version 2.0 
+
+Copyright 2006-2008, 2013 Jörn Zaefferer
+Licensed under the MIT License
+
+cldrpluralparser.js is
+Copyright 2012-2014 Santhosh Thottingal and other contributors
+Released under the MIT license
+
+BIDI embedding support for jQuery.i18n:
+Copyright (C) 2015, David Chan
+Here licensed under the MIT license
+
+jQuery Internationalization library - Message Store
+Copyright (C) 2012 Santhosh Thottingal
+jQuery Internationalization library
+Copyright (C) 2012 Santhosh Thottingal
+Copyright (C) 2011-2013 Santhosh Thottingal, Neil Kandalgaonkar
+jquery.i18n here licensed under the MIT license
