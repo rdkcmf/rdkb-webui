@@ -105,7 +105,7 @@ $(document).ready(function() {
 		if(click_val == 'reclaim'){set_val='{"value_set":"'+false+'"}';}
 		else if(click_val == 'wan_OE'){set_val='{"value_set":"'+true+'"}';}
 		if(set_val!== null){
-			jProgress(($.i18n('This may take several seconds'), 5*60);
+			jProgress($.i18n('This may take several seconds'), 5*60);
 			$.ajax({
 				type: 'POST',
 				url: 'actionHandler/ajaxSet_wanOE_lan.jst',
