@@ -62,8 +62,8 @@ if($validation){
                 $idArr = explode(",", $IDs);
                 $instanceid = array_pop($idArr);
                 setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$instanceid+".HostDescription", $flag['HostName'], false);
-                setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$instanceid+".IPAddress", $ipAddr[1], false);
                 setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$instanceid+".IPAddressType", "IPv6", false);
+                setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$instanceid+".IPAddress", $ipAddr[1], false);
                 setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$instanceid+".Trusted", $flag['trustFlag'], true);
             }
             if($ipAddr[0]=="NA")
@@ -73,8 +73,8 @@ if($validation){
             $idArr = explode(",", $IDs);
             $instanceid = array_pop($idArr);
             setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$instanceid+".HostDescription", $flag['HostName'], false);
-            setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$instanceid+".IPAddress", $ipAddr[0], false);
             setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$instanceid+".IPAddressType", "IPv4", false);
+            setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$instanceid+".IPAddress", $ipAddr[0], false);
 	    setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$instanceid+".Trusted", $flag['trustFlag'], true);
         }
     }
