@@ -564,7 +564,8 @@ $("#addblsthead").text($.i18n("Parental Control > Managed Sites > Add Blocked Do
 $("#addblstmess1").text($.i18n("Add Site to be Blocked"));
 $("#mocahead").text($.i18n("Gateway > Connection > MoCA"));
 $("#mocamess1").text($.i18n("You have the option to enable or disable the Gateway's MoCA Network."));
-$("#mocamess2").html($.i18n("<strong>MoCA Privacy: </strong> You can enable or disable MoCA Privacy. If Privacy is enabled, all the devices connecting to the Gateway via MoCA will use the MoCA Network Password. </p><p class=\"hidden\"><strong>Network Password:</strong> This is the password for the MoCA network, and will only be used when MoCA Privacy is enabled."));  
+$("#mocamess2").html($.i18n("<strong>MoCA Privacy: </strong> You can enable or disable MoCA Privacy. If Privacy is enabled, all the devices connecting to the Gateway via MoCA will use the MoCA Network Password. "));
+$("#mocamesstip2").html($.i18n("<strong>Network Password:</strong> This is the password for the MoCA network, and will only be used when MoCA Privacy is enabled. "));
 $("#mocamess3").text($.i18n("MoCA information")); 
 $("label[id^='mocamess4']").text($.i18n("Channel Selection:"));
 $("label[id^='mocamess5']").text($.i18n("Channel:"));
