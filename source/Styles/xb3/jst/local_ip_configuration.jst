@@ -785,7 +785,9 @@ function setIPv6configuration(configuration){
 			data: { configInfo: configuration },
 			success: function(){            
 				jHide();
-				window.location.href = "local_ip_configuration.jst";
+				if(partner_id.indexOf("sky-") !== -1){setTimeout(function(){window.location.href = "local_ip_configuration.jst";},10000)}
+				else{window.location.href = "local_ip_configuration.jst";}
+				//window.location.href = "local_ip_configuration.jst";
 			},
 			error: function(){            
 				jHide();
