@@ -673,7 +673,7 @@ function getTitle(val){
 			</td>\
 		        <td headers='connection-type' id="+privconnnetid+">\
 			");
-			echo('<span id="connection_type">'+$onlinePrivateNetworkHost[$x.toString()]['Connection']+'</span>');
+			echo('<span id='+privconnnetid+'>'+$onlinePrivateNetworkHost[$x.toString()]['Connection']+'</span>');
 			echo("\
 			</td>\
                 <td headers='edit-button'><input type='button' value='Edit' tabindex='0' id=" + "'btn-" +$onlinePrivateNetworkHost[$x.toString()]['instanceID'] + "'"+ "  class=\"btn private edbutton\"></input></td>\
@@ -757,7 +757,7 @@ function getTitle(val){
 		</td>\
 	        <td headers='offline-device-conncection' id="+privconnnetid+">\
 			");
-		echo('<span id="connection_type">'+$offlinePrivateNetworkHost[$x.toString()]['Connection']+'</span>');
+		echo('<span id='+privconnnetid+'>'+$offlinePrivateNetworkHost[$x.toString()]['Connection']+'</span>');
 	echo("</td><td headers='edit-button'><input type='button' value='Edit' tabindex='0' id=" + "'btn-" +$offlinePrivateNetworkHost[$x.toString()]['instanceID'] + "'"+ "  class=\"btn private edbutton\"></input>");
                 echo("</td><td headers='offline-device-disconnect-button'>");echo($style);echo("</td>");
                         echo("</tr>");	
