@@ -93,7 +93,7 @@ $(document).ready(function() {
 		add(hostArr[i].replace(/&lt;/g,'<').replace(/&gt;/g,'>'));
 	}
 	// If Enable UPnP is not checked, disable the next two form fields
-    $("#btn-save").click(function() {
+    $("#btn-saveloc").click(function() {
     	if($("#pageForm").valid()){
 	    	var sp = $("#Service_Provider1").val();
 			var spLC = sp.toLowerCase();
@@ -122,7 +122,7 @@ $(document).ready(function() {
 
 	        for (var prop in object) {
 		   if(prop.charAt(0) == '.'){
-                        alert("Host Name starting with period(.) is not allowed);
+                        alert("Host Name starting with period(.) is not allowed");
                         return false;
                    }
 		   if(prop.charAt(prop.length-1) == '.') {
