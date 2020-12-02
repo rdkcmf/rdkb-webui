@@ -125,7 +125,7 @@ $(document).ready(function() {
 <script>
 	//Don't allow user to add morethan 4 rules as only 4 Service Provider are allowed
 	function add_service() {
-		if ($('#add-service').hasClass('disabled'))
+		if ($('#add-service-dns').hasClass('disabled'))
 			return;
 		else if ($('.edit').length > 3) {
 			alertLocale("No more than 4 Dynamic DNS rules can be added!");
@@ -155,7 +155,7 @@ $(document).ready(function() {
 <div id="DNS-items">
 <div class="module data">
 		<h2 id="dyndnshead2">Dynamic DNS</h2>
-		<p class="button"><a class="btn" id="add-service" onclick="add_service()">+ ADD DDNS</a></p>
+		<p class="button"><a class="btn" id="add-service-dns" onclick="add_service()">+ ADD DDNS</a></p>
 		<table class="data">
 			<tr>
 				<td class="acs-th">Service Provider</td>
