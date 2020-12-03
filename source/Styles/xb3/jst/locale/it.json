@@ -415,7 +415,7 @@
  "Peer-to-peer apps:":"App peer-to-peer:",
  "kazaa - (TCP/UDP port 1214)":"kazaa - (TCP/UDP porta 1214)",
  "bittorrent - (TCP port 6881-6999)":"bittorrent - (TCP porta 6881-6999)",
- "gnutella- (TCP/UDP port 6346)":"gnutella- (TCP/UDP porta 6346)",
+ "gnutella - (TCP/UDP port 6346)":"gnutella - (TCP/UDP porta 6346)",
  "vuze - (TCP port 49152-65534)":"vuze - (TCP porta 49152-65534)",
  "Minimum Security (Low)":"Sicurezza minima",
  "<strong>WAN-to-LAN:</strong> Block as per below and enable IDS":"<strong>In entrata:</strong> blocca i protocolli indicati di seguito e abilita IDS",
