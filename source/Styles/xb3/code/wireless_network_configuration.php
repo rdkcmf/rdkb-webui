@@ -1288,7 +1288,7 @@ function saveBandSteeringSettings()
 	<table class="data" id="private_wifi" summary="<?php echo _("Private Wi-Fi Network")?>">
 	<tr>
 		<th id="private-Name" class="name" width="20%"><?php echo _("Name")?></th>
-		<th id="private-Frequency" class="name" width="20%"><?php echo _("Frequency Band:")?></th>
+		<th id="private-Frequency" class="name" width="20%"><?php echo _("Frequency Band")?></th>
 		<th id="private-MAC" class="protocals" width="20%"><?php echo _("MAC Address")?></th>
 		<th id="private-Security" class="security" width="30%"><?php echo _("Security Mode")?></th>
 		<th id="private-Blank" class="edit" width="10%">&nbsp;</th>
