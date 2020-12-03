@@ -135,10 +135,10 @@ $('#at_edu2').html($.i18n('Select <strong>VIEW CONNECTED DEVICES </strong>to man
 $("#wificonf").text($.i18n("Wi-Fi Configuration"));
 $("#wifissid").text($.i18n("Wi-Fi SSID:"));
 $("#wifipass").text($.i18n("Wi-Fi Passkey:"));
-$("#wifissid24").text($.i18n("Wi-Fi SSID (2.4Ghz):"));
-$("#wifipasskey24").text($.i18n("Wi-Fi Passkey (2.4Ghz):"));
-$("#wifissid5").text($.i18n("Wi-Fi SSID (5Ghz):"));
-$("#wifipasskey5").text($.i18n("Wi-Fi Passkey (5Ghz):"));
+$("#wifissid24").text($.i18n("Wi-Fi SSID (2.4 GHz):"));
+$("#wifipasskey24").text($.i18n("Wi-Fi Passkey (2.4 GHz):"));
+$("#wifissid5").text($.i18n("Wi-Fi SSID (5 GHz):"));
+$("#wifipasskey5").text($.i18n("Wi-Fi Passkey (5 GHz):"));
 $("#powsav").text($.i18n("Power Saving Mode is enabled!"));
 $("#vidser").text($.i18n("Video Service only works in this setting."));
 $("#homnet").text($.i18n("Home Network"));
