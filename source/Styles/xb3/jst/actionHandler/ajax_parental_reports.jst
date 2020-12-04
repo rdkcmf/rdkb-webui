@@ -154,7 +154,7 @@ $fh=fopen("/tmp/parental_reports_"+$mode+"_"+$timef+".txt","w");
 for(var $key in $firewall_log) 
 {
 	var $value=$firewall_log[$key];
-	fwrite($fh, $value["Des"]+", "+$value["Count"]+" Attemps, "+$value["time"]+"\t"+$value["Type"]+"\r\n");
+	fwrite($fh, $value["Des"]+", "+$value["Count"]+" Attempts, "+$value["time"]+"\t"+$value["Type"]+"\r\r\r\n");
 }
 fclose($fh);
 header("Content-Type: application/json");
