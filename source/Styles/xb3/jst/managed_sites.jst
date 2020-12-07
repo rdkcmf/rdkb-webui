@@ -851,7 +851,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
         		</div>\
         		<h3 id=\"manservaddblmess6\">Set Blocked Days</h3>\
         		<div class=\"select_all_none\">\
-        			<a rel=\"weekday\" href=\"#select_all\"  class=\"weekday_select_all\">Select All</a> | <a rel=\"weekday\"  href=\"#select_none\" class=\"weekday_select_none\">Select None</a>\
+        			<a rel=\"weekday\" href=\"#select_all\" id=\"weekday_select_all\"  class=\"weekday_select_all\">Select All</a> | <a rel=\"weekday\" id=\"weekday_select_none\"  href=\"#select_none\" class=\"weekday_select_none\">Select None</a>\
                 </div>\
         		<div class=\"form-row weekday\">\
         			<input  name=\"day\" class=\"blockedDay-" +$ID+ "\"  type=\"checkbox\" id=\"monday-" +$ID+ "\"  value=\"Mon\"" + ( ((stristr($block_days, "Mon") != false)|| ($blockedInfo['AlwaysBlock']=="true")) ? " checked='checked'" : "" )+ "/><label class=\"checkbox\" for=\"monday-" +$ID+ "\" id=\"mon-\">Monday</label><br />\
@@ -897,7 +897,7 @@ $.validator.addMethod("no_space", function(value, element, param) {
     		<div class=\"forms\">\
     		<h2 id=\"manstmess14\">Edit Keyword to be Blocked</h2>\
     			<div class=\"form-row\">\
-    			<label for=\"Keyword-" +$blockedSitesKeyWord[$i.toString()]['InstanceID']+ "\" class=\"checkbox\">Keyword:</label>\
+    			<label for=\"Keyword-" +$blockedSitesKeyWord[$i.toString()]['InstanceID']+ "\" class=\"checkbox\" id=\"keywordSpan\">Keyword:</label>\
     			<input id=\"Keyword-" +$blockedSitesKeyWord[$i.toString()]['InstanceID']+ "\"  type=\"text\"  value=\"" +$blockedSitesKeyWord[$i.toString()]['Site']+ "\"  name=\"Keyword\" class=\"text\" size=\"50\" maxlength='64' />\
     		    </div>" 
     		    +generateEditPart($blockedSitesKeyWord[$i.toString()]) +
