@@ -22,6 +22,8 @@ jQuery(function($) {
   var do_translate = function() { 
 $('#username_label').text($.i18n('Username:'));    
 $('#nonesec').text($.i18n('None'));
+$("#wirelesstip1").text($.i18n("View information about the Gateway's wireless components."));
+$("#wirelesstip2").html($.i18n("<strong>Wi-Fi:</strong> The Gateway provides concurrent 2.4 GHz and 5 GHz for Wi-Fi connections."));
 $("#priwificonf").text($.i18n("Private Wi-Fi Network Configuration"));
 $("[id^='radioband24']").text($.i18n('2.4'));
 $("[id^='wifimess1']").text($.i18n('Wi-Fi LAN port'));
