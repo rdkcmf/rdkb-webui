@@ -603,6 +603,7 @@ $("#refresh").prop("value", $.i18n('Refresh'));
 $("#mtalinhead").text($.i18n("Gateway > Connection > MTA > Line Diagnostics"));
 $("#mtalintip1").text($.i18n("Information related to the MTA Line Diagnostics."));
 $("#mtalinmess1").text($.i18n("MTA Line 1 Diagnostics"));
+$("#mtalinmessnew1").text($.i18n("Resistive Faults:"));
 $("[id^='mtalinmess2']").text($.i18n("Hazardous Potential:"));  
 $("#line1hp,#line1hp,#line1femf,#line1rf,#line1roh,#line1re,#line2hp,#line2femf,#line2rf,#line2roh,#line2re").text($.i18n("Not Started")); 
 $("[id^='mtalinmess3']").text($.i18n("Foreign EMF:"));
