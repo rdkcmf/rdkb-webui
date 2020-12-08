@@ -160,6 +160,11 @@ $(document).ready(function() {
 		});
 	});
 });
+function getTitle(val){
+		var name= document.getElementById("servicename_"+val).value;
+		var mytitle= $.i18n("delete port Triggering for ")+name;
+		document.getElementById('deleteporttrig_'+val).setAttribute('title',mytitle);
+}
 </script>
 <div id="content">
 	<h1 id="portrighead">Advanced > Port Triggering</h1>
@@ -212,6 +217,7 @@ $(document).ready(function() {
 				if ($iclass=="") {$iclass="odd";} else {$iclass="";}
 				$Protocol =  $portTriggerValues[$i.toString()]["TriggerProtocol"];
 				if ($Protocol=="BOTH") $Protocol="TCP/UDP";
+				echo('<input type="hidden" id=servicename_'+$i+' value='+$portTriggerValues[$i.toString()]["Description"]+'>');
 				echo( "\
 		    	<tr  class=" + "'" +$iclass+ "'" + ">\
 		        <td headers='service-name'>"+$portTriggerValues[$i.toString()]["Description"]+"</td>\
@@ -225,7 +231,7 @@ $(document).ready(function() {
 				}
 				echo( "\
 	            <td headers='edit-button' class=\"edit\"><a tabindex='0' href=\"port_triggering_edit.jst?id="+$i+"\" class=\"btn\" id=\"edit_"+$i+"\">Edit</a></td>\
-		        <td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_port_triggering.jst?del="+$i+"\" class=\"btn confirm\" title=\""+"delete port Triggering for "+$portTriggerValues[$i.toString()]["Description"]+" \" id=\"delete_"+$i+"\">x</a></td>\
+		        <td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_port_triggering.jst?del="+$i+"\" class=\"btn confirm\" onmouseover=getTitle("+$i+") id=\"deleteporttrig_"+$i+"\">x</a></td>\
 		    </tr>");
 			} }?>
 			<tfoot>

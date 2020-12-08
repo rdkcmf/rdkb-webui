@@ -616,6 +616,11 @@ $(document).ready(function() {
 		});
 	});
 });
+function getTitle(val){
+		var name= document.getElementById("devicename_"+val).value;
+		var mytitle= $.i18n("remove computer named ")+name;
+		document.getElementById('offline-X-'+val).setAttribute('title',mytitle);
+}
 </script>
 
     <?% 
@@ -723,9 +728,10 @@ $(document).ready(function() {
                 privconnnetid ="unknown";
 
 		if(($CloudUIEnable == "true" ) || $offlinePrivateNetworkHost[$x.toString()]['Blocked']) $style = "&nbsp;";
-		else $style = "<input type='button' id=" + "'offline-X-" +$k+ "'" + " value='X' tabindex='0' title='remove computer named ' +$dev_name+'  name=" + "'{\"dev_name\":\""+$dev_name+"\", \"mac_addr\":\""+$mac_addr+"\"}'" + "  class=\"btn confirm private\"></input>";
+		else $style = "<input type='button' id=" + "'offline-X-" +$k+ "'" + " value='X' tabindex='0' onmouseover=getTitle("+$k+")  name=" + "'{\"dev_name\":\""+$dev_name+"\", \"mac_addr\":\""+$mac_addr+"\"}'" + "  class=\"btn confirm private\"></input>";
     	if($k % 2) $odd = "";
     	else $odd = " class='odd'";
+	echo('<input type="hidden" id=devicename_'+$k+' value='+$dev_name+'>');
     	echo( "\
 		    <tr " + "'" +$odd+ "'" + ">\
 	        <td headers='offline-device-host-name'><a href='javascript:void(0)' tabindex='0' class=\"label device-name private\"><u>\

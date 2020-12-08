@@ -1020,7 +1020,6 @@ $("#wifimessmode1").text($.i18n(" app or visit "));
 $("#wiremannet").text($.i18n("Manage your "));
 $("#wiremannet1").text($.i18n(" GHz network settings."));
 $("input[id^='online-X-']").attr('title',$.i18n("add this device to Blocked Devices List"));
-$("input[id^='offline-X-']").attr('title',$.i18n("remove computer named "));
 $("input[id^='xhs-X-']").attr('title',$.i18n("disconnect and deny Wi-Fi access to this device"));
 $("input[id^='hotspot-X-']").attr('title',$.i18n("disconnect and deny Wi-Fi access to this device"));
 $("#skip-link").text($.i18n("Skip to content"));

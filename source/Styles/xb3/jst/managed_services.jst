@@ -197,6 +197,11 @@ $(document).ready(function() {
 		});
 	});
 });
+function getTitle(val){
+	var name= document.getElementById("servicename_"+val).value;
+        var mytitle= $.i18n("delete this service for ")+name;
+        document.getElementById('deleteservice_'+val).setAttribute('title',mytitle);
+}
 </script>
 <div  id="content" class="main_content">
 	<h1>Parental Control > <span id="manserloc">Managed Services</span></h1>
@@ -270,6 +275,7 @@ $(document).ready(function() {
 							$bdays = $value["BlockDays"];
 					        $blockStatus = $stime+"-"+$etime+","+$bdays;
 						}
+						echo('<input type="hidden" id=servicename_'+$i+' value='+$value["Description"]+'>');
 						echo( "\
 					<tr class=" + "'" +$iclass+ "'" + ">\
 						<td headers='service-number' class=\"row-label alt number\">"+$j+"</td>\
@@ -279,7 +285,7 @@ $(document).ready(function() {
 						<td headers='end-port'>"+$value["EndPort"]+"</td>\
 						<td headers='effect-time' id="+$idval+">"+$blockStatus+"</td>\
 						<td headers='edit-button' class=\"edit\"><a style='padding: 4px 2px' tabindex='0' href=\"managed_services_edit.jst?id="+$i+"\" class=\"btn\"  id=\"edit_"+$i+"\">Edit</a></td>\
-						<td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_services.jst?del="+$i+"\" class=\"btn confirm\" title=\""+"delete this service for "+$value["Description"]+" \" id=\"deleteservice_"+$i+"\">x</a></td>\
+						<td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_services.jst?del="+$i+"\" class=\"btn confirm\" onmouseover=getTitle("+$i+") id=\"deleteservice_"+$i+"\">x</a></td>\
 					</tr>"); 
 					}
 				}
