@@ -165,6 +165,11 @@ $(document).ready(function() {
 		});
 	});
 });
+function getTitle(val){
+		var name= document.getElementById("servicename_"+val).value;
+		var mytitle= $.i18n("delete this Port Forwarding service for ")+name;
+		document.getElementById('deleteport_'+val).setAttribute('title',mytitle);
+}
 </script>
 <?% if($CloudUIEnable == "true"){ ?>
 <div  id="content">
@@ -257,6 +262,7 @@ $(document).ready(function() {
 							}
 					    	if ($resArray[$i]['X_CISCO_COM_InternalClientV6'] == 'x')
 					    		$resArray[$i]['X_CISCO_COM_InternalClientV6'] = '';
+						echo('<input type="hidden" id=servicename_'+$index+' value='+$resArray[$i]['Description']+'>');
 					    	echo( "\
 					    	    <tr class='" + $iclass+ "'>\
 								<td headers='service-name'>" + $resArray[$i]['Description'] + "</td>\
@@ -268,7 +274,7 @@ $(document).ready(function() {
 								<td headers='active'><input type=\"checkbox\" id=\"PortActive_"+$index+"\" name=\""+"PortActive"+"\" " + $checked + " /></td>\
 								<td headers='edit-button'  class=\"edit\"><a tabindex='0' href=\"port_forwarding_edit.jst?id="+$index+"\" class=\"btn\"  id=\"edit_"+$index+"\">Edit</a></td>\
 								<td headers='delete-button'  class=\"delete\"><a tabindex='0'  href=\"actionHandler/ajax_port_forwarding.jst?del="+$index+"\" class=\"btn confirm\" \
-								    title=\""+"delete this Port Forwarding service for " + $resArray[$i]['Description'] + " \" id=\"delete_"+$index+"\">x</a></td>\
+								    onmouseover=getTitle("+$index+")  id=\"deleteport_"+$index+"\">x</a></td>\
 								</tr>\
 					    	    ");
 					    }//end of for

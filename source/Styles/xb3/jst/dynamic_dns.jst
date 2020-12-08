@@ -48,7 +48,7 @@ $(document).ready(function() {
 		$("a.confirm").click(function(e) {
 			e.preventDefault();            
 			var href = $(this).attr("href");
-		    	var message = ($(this).attr("title").length > 0) ? $.i18n('Are you sure you want to') + $(this).attr("title") + "?" : $.i18n('Are you sure?');
+		    	var message = ($(this).attr("title").length > 0) ? $.i18n('Are you sure you want to ') + $(this).attr("title") + "?" : $.i18n('Are you sure?');
 			jConfirm(
 				message
 				,$.i18n('Are you sure?')
@@ -123,6 +123,12 @@ $(document).ready(function() {
 });
 </script>
 <script>
+	function getTitle(val){
+        	var name= document.getElementById("servicename_"+val).value;
+        	var mytitle= $.i18n("delete this service for ")+name;
+        	document.getElementById('del_'+val).setAttribute('title',mytitle);
+	}
+
 	//Don't allow user to add morethan 4 rules as only 4 Service Provider are allowed
 	function add_service() {
 		if ($('#add-service-dns').hasClass('disabled'))
@@ -184,6 +190,7 @@ $(document).ready(function() {
 							}
 							$hostname = getStr("Device.X_CISCO_COM_DDNS.Service."+$i+".Domain");
 							$hostname = htmlspecialchars($hostname, ENT_NOQUOTES, 'UTF-8');
+							echo('<input type="hidden" id=servicename_'+$i+' value='+$name+'>');
 							echo( "\
 							<tr class=$iclass>\
 								<td>"+$name+"</td>\
@@ -191,7 +198,7 @@ $(document).ready(function() {
 								<td >"+$passwordStr+"</td>\
 								<td>"+$hostname+"</td>\
 								<td class=\"edit\"><a  tabindex='0' href=\"dynamic_dns_edit.jst?id="+$i+"\" class=\"btn\" id=\"edit_"+$i+"\">Edit</a></td>\
-								<td class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_ddns.jst?del="+$i+"\" class=\"btn confirm\" title=\""+"delete this service for "+getStr("Device.X_CISCO_COM_DDNS.Service."+$i+".ServiceName")+" \"id=\"delete_"+$i+"\">x</a></td>\
+								<td class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_ddns.jst?del="+$i+"\" class=\"btn confirm\" onmouseover=getTitle("+$i+") id=\"del_"+$i+"\">x</a></td>\
 							</tr>"); 
 						}
 					} 
