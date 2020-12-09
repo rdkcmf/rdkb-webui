@@ -194,7 +194,7 @@ function setResetInfo(info) {
 			}
 			else if(JSON.parse(data).wifi) {
 				var cnt = 90;
-				jProgress($.i18n('Restarting Wi-Fi radios. This may take up to ') +"<span id=\"count_down\" style=\"font-weight:bold\">"+ cnt +"</span>"+ $.i18n("seconds..."),120);
+				jProgress($.i18n('Restarting Wi-Fi radios. This may take up to ') +"<span id=\"count_down\" style=\"font-weight:bold\">"+ cnt +"</span>"+ $.i18n(" seconds..."),120);
 				var h_cntd  = setInterval(function(){
 					$("#count_down").text(--cnt);
 					if (cnt<=0) {
