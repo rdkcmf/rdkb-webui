@@ -890,7 +890,7 @@ function check_add()
 	if (!RegExp("^([0-9a-fA-F]{2})(([/\s:-][0-9a-fA-F]{2}){5})$").test(addr) 
 		|| ("00:00:00:00:00:00"==addr)
 		|| (parseInt(sHex,16)%2 != 0) ) {
-		return ["ERROR", $.i18n('Please enter valid MAC address! \\n First byte must be even. \\n Each character must be [0-9a-fA-F].')];
+		return ["ERROR", $.i18n('Please enter valid MAC address! \n First byte must be even. \n Each character must be [0-9a-fA-F].')];
 	}
 	$("#device_name").val("");
 	$("#mac_address_1").val("");

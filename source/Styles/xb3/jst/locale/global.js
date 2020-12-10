@@ -946,7 +946,7 @@ $("#wiremess48").text($.i18n("MAC Filtering Mode:"));
 $("#allow_all").text($.i18n("Allow-All"));
 $("#allow").text($.i18n("Allow"));
 $("#deny").text($.i18n("Deny"));
-$("#wiremess49").text($.i18n("Wi-Fi Control List(up to 16 items)"));
+$("#wiremess49").text($.i18n("Wi-Fi Control List(up to 64 items)"));
 $("#wiremess50").text($.i18n("Auto-Learned Wi-Fi Devices"));
 $("#wiremess51").text($.i18n("Manually-Added Wi-Fi Devices"));
 $("#save_filter").prop("value", $.i18n('SAVE FILTER SETTING'));
