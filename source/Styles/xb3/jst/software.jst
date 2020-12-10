@@ -25,6 +25,15 @@
 	<?% include('includes/userbar.jst'); ?>
 </div><!-- end #sub-header -->
 <?% include('includes/nav.jst'); ?>
+<style>
+@media only screen
+ and (max-device-width: 480px){
+  #software_image{
+    font-weight: bold;
+    margin-left: 30px;
+}
+}
+</style>
 <script type="text/javascript">
 $(document).ready(function() {
     gateway.page.init("Gateway > Software", "nav-software");
@@ -60,7 +69,7 @@ $(document).ready(function() {
 			<?% /*echo getStr("Device.X_CISCO_COM_MTA.Dect.SoftwareVersion");*/ ?></span>
 		</div-->
 		<div class="form-row odd">
-			<span class="readonlyLabel" id="softmess3">Software Image Name:</span> <span class="value">
+			<span class="readonlyLabel" id="softmess3">Software Image Name:</span> <span class="value" id="software_image">
 			<?% echo( $FirmwareName); ?></span>
 		</div>
 		<div class="form-row ">
