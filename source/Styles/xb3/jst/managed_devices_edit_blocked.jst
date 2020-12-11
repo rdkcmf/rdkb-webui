@@ -84,6 +84,13 @@ $CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
 	($blockStatus == "") && ($blockStatus = "true");
 	$productLink = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.link");
 ?>
+
+<style>
+label{
+        margin-right: 10px !important;
+                }
+</style>
+
 <script type="text/javascript">
 $(document).ready(function() {
 	gateway.page.init("Parental Control > Managed Devices > Add Blocked Device", "nav-devices");

@@ -38,6 +38,12 @@ $enableZero = getStr("Device.X_CISCO_COM_DeviceControl.EnableZeroConfig");
 ("" == $timeToLive) && ($timeToLive = "false");
 ("" == $enableZero) && ($enableZero = "false");
 ?>
+<style>
+label{
+        margin-right:10px !important;
+}
+</style>
+
 <script type="text/javascript">
 $(document).ready(function() {
     gateway.page.init("Advanced > Device Discovery", "nav-device-discovery");

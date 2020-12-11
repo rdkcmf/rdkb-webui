@@ -193,6 +193,17 @@ $brandName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBrand
 $productName = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.productname");
 $productLink = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.CloudUI.link");
 ?>
+<style>
+#tip_security_mode {
+    margin-left: 8px;
+}
+label[for="network_name"], label[for="security"], label[for="network_password"] {
+    margin-right: 12px !important;
+}
+.wirelessradio {
+    margin-right: 10px !important;
+}
+</style>
 <script type="text/javascript">
 function showDialog() {
 	$Mesh_Mode = '<?% echo( $Mesh_Mode); ?>';
@@ -798,7 +809,7 @@ function setResetInfo(info) {
 			}
 		?>
 		<div class="form-row odd">
-			<span class="readonlyLabel label" id="wireedtmess1">Wireless Network:</span>
+			<span class="readonlyLabel label wirelessradio" id="wireedtmess1">Wireless Network:</span>
 			<span id="wireless_network_switch"></span>
 		</div>
 		<div class="form-row _network_name">
