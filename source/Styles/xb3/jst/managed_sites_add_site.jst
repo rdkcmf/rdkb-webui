@@ -28,6 +28,11 @@
 	$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 	if($partnerId=="cox") die();
 ?>
+<style>
+label{
+	margin-right: 10px !important;
+}
+</style>
 <script type="text/javascript">
 $(document).ready(function() {
     gateway.page.init("Parental Control > Managed Sites > Add Blocked Domain", "nav-sites");
