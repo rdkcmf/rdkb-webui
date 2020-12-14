@@ -216,7 +216,7 @@ $(document).ready(function() {
 			<p class="hidden" id="mandevmess4">If you want your devices to be restricted, select <strong>Block All.</strong> Click <strong>+ADD ALLOWED DEVICE</strong> to add the device you don't want to restrict.</p>
 	</div>
 	<div class="module forms enable">
-		<h2 id="mandevmess5">Managed Devices</h2>
+		<h2 id="mandevloc">Managed Devices</h2>
 		<div class="form-row">
 			<span class="readonlyLabel label" id="mandevmess5">Managed Devices:</span>
 			<span id="managed_devices_switch"></span>
@@ -307,7 +307,7 @@ $(document).ready(function() {
 						<td headers='allowed-device-name'>"+$arrayAllowName[$i]+"</td>\
 						<td headers='allowed-mac-address'>"+$arrayAllowMAC[$i]+"</td>\
 						<td headers='allowed-time' id="+$idval+">"+$arrayAllowStatus[$i]+"</td>\
-						<td headers='allowed-edit-button' class=\"edit\"><a style='padding: 4px 2px' tabindex='0' href=\"managed_devices_edit_allowed.jst?id="+$arrayAllowID[$i]+"\" class=\"btn\"  id=\"edit_"+$arrayAllowID[$i]+"\">Edit</a></td>\
+						<td headers='allowed-edit-button' class=\"edit\"><a tabindex='0' href=\"managed_devices_edit_allowed.jst?id="+$arrayAllowID[$i]+"\" class=\"btn\"  id=\"edit_"+$arrayAllowID[$i]+"\">Edit</a></td>\
 						<td headers='allowed-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.jst?del="+$arrayAllowID[$i]+"\" class=\"btn confirm\" title=\"Delete this device\" id=\"delete_"+$arrayAllowID[$i]+"\">x</a></td>\
 					</tr>"); 
 				} 
