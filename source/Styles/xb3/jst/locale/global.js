@@ -178,7 +178,7 @@ $("#contip").text($.i18n("View information about devices currently connected to 
 $("#contip2").text($.i18n("Every device listed below was auto discovered via DHCP."));
 $("#contip3").html($.i18n("<strong>Online Devices</strong> are currently connected to your Gateway."));
 $("#contip4").html($.i18n("<strong>Offline Devices</strong>  were once connected to your network, but not currently."));
-$("#contip5").html($.i18n("To block Internet access to a device connected to your Gateway, click the <strong>X</strong> button."));
+$("#contip5").text($.i18n("To block Internet access to a device connected to your Gateway, click the <strong>X</strong> button."));
 $("#prefpriv").text($.i18n("Prefer Private Connection"));
 $("#online-table-cap").text($.i18n("Online Devices-Private Network"));
 $("#host-name").text($.i18n("Host Name"));
@@ -308,7 +308,7 @@ $("#dyndnstip4").html($.i18n("<strong>Password:</strong> Password registered wit
 $("#dyndnstip5").html($.i18n("<strong>Host Name:</strong> Host Name registered with the service provider"));
 $("#dyndnshead").text($.i18n('Dynamic DNS:'));
 $("#dyndnshead2").text($.i18n("Dynamic DNS"));
-$("#add-service").text($.i18n("+ ADD DDNS"));
+$("#add-service-dns").text($.i18n("+ ADD DDNS"));
 $("#dynusername").html($.i18n("User Name"));
 $("#dynhostname").text($.i18n('HostName(s)'));
 $("#dyndnsadd").text($.i18n('Advanced > Dynamic DNS > Add'));
