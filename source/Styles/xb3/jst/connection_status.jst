@@ -34,6 +34,7 @@
     $ipv6_local_addr = "";
     $ipv6_global_addr = "";
     $ipv6_DNS = "";
+    $wan_ipv6_addr = "";
 	$DNSv6Index = "";
     /*local ipv6 address */
     $idArr = explode(",", getInstanceIds($interface+"IPv6Address."));
@@ -55,6 +56,7 @@
         }
     }
     $ipv6_DNS = php_getstr("Device.DNS.Client.Server."+$DNSv6Index+".DNSServer");
+    $wan_ipv6_addr = php_getstr("Device.DeviceInfo.X_COMCAST-COM_WAN_IPv6");
     // $ipv6_local_addr = "fe80::250:f1ff:fe80:0";
     // $ipv6_global_addr = "2018:cafe:aaaa::fccc";
     // $ipv6_DNS = "2018:cafe::20c:29ff:fe97:fccc";
@@ -176,6 +178,7 @@ $(document).ready(function() {
   var local_v6 = "<?% echo( $ipv6_local_addr); ?>";
   var global_v6 = "<?% echo( $ipv6_global_addr); ?>";
   var ipv6_DNS = "<?% echo( $ipv6_DNS); ?>";
+  var wan_ipv6 = "<?% echo( $wan_ipv6_addr); ?>";
   // console.log(local_v6.length);
   // console.log(global_v6.length);
   // console.log(ipv6_DNS.length);
@@ -187,6 +190,9 @@ $(document).ready(function() {
   }
   if(ipv6_DNS.length > ipv6_max_len){
     $('#v6-dns').removeClass('value').addClass('ipv6-style');
+  }
+  if(wan_ipv6.length > ipv6_max_len){
+    $('#v6-wan').removeClass('value').addClass('ipv6-style');
   }
 });
 </script>
@@ -371,14 +377,13 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
                          <?%
                           $fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
                           $WANIPv4 = getStr($fistUSif+"IPv4Address.1.IPAddress");
-                          $WANIPv6 = getStr("Device.DeviceInfo.X_COMCAST-COM_WAN_IPv6");
                           echo( $WANIPv4);
                          ?>
                     </span>
                 </div>
                 <div class="form-row ">
-                    <span class="readonlyLabel"  id="wanip6">WAN IP Address (IPv6):</span> <span class="ipv6-style">
-                        <?% echo( $WANIPv6); ?>
+                    <span class="readonlyLabel"  id="wanip6">WAN IP Address (IPv6):</span> <span id="v6-wan" class="value">
+                        <?% echo( $wan_ipv6_addr); ?>
                     </span>
                 </div>
     </div><!-- End of Module -->
