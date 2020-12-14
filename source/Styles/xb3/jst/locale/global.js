@@ -308,7 +308,7 @@ $("#dyndnstip4").html($.i18n("<strong>Password:</strong> Password registered wit
 $("#dyndnstip5").html($.i18n("<strong>Host Name:</strong> Host Name registered with the service provider"));
 $("#dyndnshead").text($.i18n('Dynamic DNS:'));
 $("#dyndnshead2").text($.i18n("Dynamic DNS"));
-$("#add-service").text($.i18n("+ ADD DDNS"));
+$("#add-service-dns").text($.i18n("+ ADD DDNS"));
 $("#dynusername").html($.i18n("User Name"));
 $("#dynhostname").text($.i18n('HostName(s)'));
 $("#dyndnsadd").text($.i18n('Advanced > Dynamic DNS > Add'));
