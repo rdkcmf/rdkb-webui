@@ -957,9 +957,11 @@ $("#wiremess53").text($.i18n("You must enable WPS to connect your device to this
 $("#wiremess54").text($.i18n("WPS Pin Method:"));
 $("#wiremess55").text($.i18n("Connect to your WPS-supported device"));
 $("#wiremess56").text($.i18n("Push Button(recommended)"));
-$("#wiremess57").text($.i18n("Push the WPS button on the Gateway or click \"PAIR WITH MY Wi-Fi CLIENT\" below to connect your<br/>  &nbsp; &nbsp; Wireless client to your network."));
+$("#wiremess57").text($.i18n("Push the WPS button on the Gateway or click \"PAIR WITH MY Wi-Fi CLIENT\" below to connect your"));
+$("#wiremess57a").text($.i18n("Wireless client to your network."));
 $("#wiremess58").text($.i18n("PIN Number"));
-$("#wiremess59").text($.i18n("If your Wireless client supports WPS(PIN Type), enter the PIN Number here.<br/><br/> &nbsp; &nbsp; Enter Wireless Client's PIN"));
+$("#wiremess59").text($.i18n("If your Wireless client supports WPS(PIN Type), enter the PIN Number here."));
+$("#wiremess59a").text($.i18n("Enter Wireless Client's PIN"));
 $("#wps_pair_btn").prop("value", $.i18n('PAIR WITH MY Wi-Fi CLIENT'));
 $("#pop_ok").prop("value", $.i18n('Apply'));
 $("#wireedthead").text($.i18n("Gateway > Connection >  Wi-Fi > Edit"));
