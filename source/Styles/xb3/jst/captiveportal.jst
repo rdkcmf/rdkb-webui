@@ -678,6 +678,41 @@ ili{
         else {
                 $isMSO  = false;
         }
+        if(get_wan_type() == "EPON"){
+
+            if(typeof($url) == 'string')
+            {
+                $fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
+                $Wan_IPv4 = getStr($fistUSif+".IPv4Address.1.IPAddress");
+                $ids = explode(",", getInstanceIds($fistUSif+"IPv6Address."));
+                               for ($idskey in $ids){
+                                        $i= $ids[$idskey];
+                                       $val = getStr($fistUSif+"IPv6Address."+$i+".IPAddress");
+                                       if (!strstr($val, "fe80::")){
+                                               $Wan_IPv6 = $val;
+                                               break;
+                                       }
+                               }
+              //remove any port from url
+              $mport = $url.match(/((?::))(?:[0-9]+)$/);
+              if($mport)
+                  $url = str_replace($mport[0],"",$url);
+               //if user is entering literal IPv6 address then remove "[" and "]"
+              $url = str_replace("[","",$url);
+              $url = str_replace("]","",$url);
+              // On the XF3 device, the MSO page can only be accessed from IPv6
+             if(inet_pton($url) == inet_pton($Wan_IPv6)){
+               $isMSO  = true;
+             }
+            else {
+             $isMSO  = false;
+            }
+         }   
+         else
+         {
+          $isMSO = false;
+         }    
+       }    
 
 	if(!(($personalization_value["Support"] == "true") && ($CaptivePortalEnable == "true") && ($CONFIGUREWIFI == "true") && !$isMSO )) {
 		header('Location:index.jst');
