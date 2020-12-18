@@ -108,7 +108,7 @@ $(document).ready(function() {
         $("#block_ident").prop("disabled",true).attr('checked', false);
 
         jConfirm(
-            $.i18n('The firewall security level is currently set to') +' '+  currentSetting +'. '+ $.i18n('Are you sure you want to change to default settings?')
+            $.i18n('The firewall security level is currently set to') +  currentSetting + $.i18n('Are you sure you want to change to default settings?')
             ,$.i18n('Reset Default Firewall Settings')
             ,function(ret) {
                 if(ret) {
@@ -236,7 +236,7 @@ $(document).ready(function() {
 						echo( '<p class="error" id="vidser">Video Service only works in this setting.</p>');
 				?>
 				<div class="hide">
-					<p id="firwlsec1"><strong>LAN-to-WAN:</strong> Allow as per below.</p>
+					<p id="firwlsec1"><strong>LAN-to-WAN :</strong> Allow as per below.</p>
 					<dl>
 					<dd id="firwldd1">HTTP and HTTPS (TCP port 80, 443)</dd>
 					<dd id="firwldd2">DNS (TCP/UDP port 53)</dd>
@@ -245,15 +245,15 @@ $(document).ready(function() {
 					<dd id="firwldd5">VPN (GRE, UDP 500, 4500, 62515, TCP 1723)</dd>
 					<dd id="firwldd6">iTunes (TCP port 3689)</dd>
 					</dl>
-					<p id="firmess1"><strong>WAN-to-LAN:</strong> Block all unrelated traffic and enable IDS.</p>
+					<p id="firmess1"><strong>WAN-to-LAN :</strong> Block all unrelated traffic and enable IDS.</p>
 				</div>
 			</li>
 			<li id="medium">
 				<input type="radio" name="firewall_level" value="medium" id="firewall_level_typical" <?% if ( !strcasecmp("Medium", $SecurityLevel)) echo( "checked"); ?> />
 				<label for="firewall_level_typical" class="label" id="firtypesecmed">Typical Security (Medium)</label>
 				<div class="hide">
-					<p id="firmess2"><strong>LAN-to-WAN:</strong> Allow all.</p>
-					<p id="firmess3"><strong>WAN-to-LAN:</strong> Block as per below and enable IDS.</p>
+					<p id="firmess2"><strong>LAN-to-WAN :</strong> Allow all.</p>
+					<p id="firmess3"><strong>WAN-to-LAN :</strong> Block as per below and enable IDS.</p>
 					<dl>
 					<dd  id="firmess4">IDENT (port 113)</dd>
 					<dd id="firmess5">ICMP request</dd>
@@ -262,7 +262,7 @@ $(document).ready(function() {
 					<dt id="firmess6">Peer-to-peer apps:</dt>
 					<dd id="firmess7">kazaa - (TCP/UDP port 1214)</dd>
 					<dd id="firmess8">bittorrent - (TCP port 6881-6999)</dd>
-					<dd id="firmess9">gnutella - (TCP/UDP port 6346)</dd>
+					<dd id="firmess9">gnutella- (TCP/UDP port 6346)</dd>
 					<dd id="firmess10">vuze - (TCP port 49152-65534)</dd>
 					</dl>
 					</dd>
@@ -273,8 +273,8 @@ $(document).ready(function() {
 				<input type="radio" name="firewall_level" value="low" id="firewall_level_minimum" <?% if ( !strcasecmp("Low", $SecurityLevel)) echo( "checked"); ?>  />
 				<label for="firewall_level_minimum" class="label" id="minsec">Minimum Security (Low)</label>
 				<div class="hide">
-					<p id="firmess2"><strong>LAN-to-WAN:</strong> Allow all.</p>
-					<p id="firmess3"><strong>WAN-to-LAN:</strong> Block as per below and enable IDS</p>
+					<p id="firmess2"><strong>LAN-to-WAN :</strong> Allow all.</p>
+					<p id="firmess3"><strong>WAN-to-LAN :</strong> Block as per below and enable IDS</p>
 					<dl>
 					<dd id="firmess4">IDENT (port 113)</dd>
 					</dl>
