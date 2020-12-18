@@ -251,6 +251,9 @@ function ajaxDo(mode,timef){
 			if(length>20){
 				$('#'+mode+'_logs_'+timef2).comcastPaginator();
 			}
+                        else {
+                            $('#comcastPaginator').remove();
+                            }
 			//adjust current data table
 			adjust_acs_tb("This is "+mode+" logs, for "+timef, Array("Discription", "Time", "Level"));
 		},
