@@ -1130,7 +1130,7 @@
  "Allow-All":"Consenti tutti",
  "Allow":"Consenti alcuni",
  "Deny":"Nega",
- "Wi-Fi Control List(up to 16 items)":"Lista di controllo wifi (fino a 16 voci)",
+ "Wi-Fi Control List(up to 64 items)":"Lista di controllo wifi (fino a 64 voci)",
  "Wi-Fi Control List":"Lista di controllo wifi (fino a 16 voci)",
  "Auto-Learned Wi-Fi Devices":"Dispositivi wifi aggiunti in automatico",
  "Manually-Added Wi-Fi Devices":"Dispositivi wireless aggiunti manualmente",
