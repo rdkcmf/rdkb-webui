@@ -256,7 +256,7 @@ $(document).ready(function() {
 					<dt><?php echo _('Peer-to-peer apps:')?></dt>
 					<dd><?php echo _('kazaa - (TCP/UDP port 1214)')?></dd>
 					<dd><?php echo _('bittorrent - (TCP port 6881-6999)')?></dd>
-					<dd><?php echo _('gnutella- (TCP/UDP port 6346)')?></dd>
+					<dd><?php echo _('gnutella - (TCP/UDP port 6346)')?></dd>
 					<dd><?php echo _('vuze - (TCP port 49152-65534)')?></dd>
 					</dl>
 					</dd>

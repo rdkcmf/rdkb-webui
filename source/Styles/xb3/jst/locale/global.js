@@ -355,7 +355,7 @@ $("#firmess5").text($.i18n("ICMP request"));
 $("#firmess6").text($.i18n("Peer-to-peer apps:"));
 $("#firmess7").text($.i18n("kazaa - (TCP/UDP port 1214)"));
 $("#firmess8").text($.i18n('bittorrent - (TCP port 6881-6999)'));
-$("#firmess9").text($.i18n("gnutella- (TCP/UDP port 6346)"));
+$("#firmess9").text($.i18n("gnutella - (TCP/UDP port 6346)"));
 $("#firmess10").text($.i18n("vuze - (TCP port 49152-65534)"));
 $("#minsec").text($.i18n('Minimum Security (Low)'));
 $("#cussec").text($.i18n("Custom Security"));
