@@ -603,7 +603,7 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
   <div style="width:355px;float:left;position:relative;left:5px;" class="wifi_section"><!-- contain private and public Wi-Fi -->
     <div class="module forms block private-wifi">
         <h2 class="noTrimSpace"><div class="ssid-style">
-		<span id="priwifinet">Private Wi-Fi Network-</span><?% echo(htmlspecialchars($wifi_value["SSID1"], ENT_NOQUOTES, 'UTF-8')); ?></div>
+		<span id="priwifinet">Private Wi-Fi Network-</span><span style="white-space: pre-wrap;overflow-wrap: break-word;"><?% echo(htmlspecialchars($wifi_value["SSID1"], ENT_NOQUOTES, 'UTF-8')); ?></span></div>
 	</h2>
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.jst?id=1" class="btn" id="editloc">Edit</a></p>
         <div class="form-row">
@@ -651,7 +651,7 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
     </div><!-- end .module private wifi 2.4-->  
     <div class="module forms block private-wifi" style="position:relative;top:0px;right:0px;">
        <h2 class="noTrimSpace"><div class="ssid-style">
-		<span id="priwifinet">Private Wi-Fi Network-</span><?% echo(htmlspecialchars($wifi_value["SSID2"], ENT_NOQUOTES, 'UTF-8')); ?></div>
+		<span id="priwifinet">Private Wi-Fi Network-</span><span style="white-space: pre-wrap;overflow-wrap: break-word;"><?% echo(htmlspecialchars($wifi_value["SSID2"], ENT_NOQUOTES, 'UTF-8')); ?></span></div>
 	</h2>
         <p class="button"><a tabindex='0' href="wireless_network_configuration_edit.jst?id=2" class="btn" id="editloc">Edit</a></p>
         <div class="form-row">
