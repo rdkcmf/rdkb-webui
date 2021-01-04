@@ -177,8 +177,8 @@ $(document).ready(function() {
 							//jAlert(results);
 							jHide();
 							var status = JSON.parse(results).status;
-							if (status=="Success!") { window.location.href="managed_devices.jst";}
-							else jAlert(status);
+							if (status=="<?% echo( _("Success!"));?>") { window.location.href="managed_devices.jst";}
+							else jAlert($.i18n(status));
 						},
 						error:function(){
 							jHide();
@@ -232,8 +232,8 @@ $(document).ready(function() {
 							//jAlert(results);
 							jHide();
 							var status = JSON.parse(results).status;
-							if (status=="Success!") { window.location.href="managed_devices.jst";}
-							else jAlert(status);
+							if (status=="<?% echo( _("Success!"));?>") { window.location.href="managed_devices.jst";}
+							else jAlert($.i18n(status));
 						},
 						error:function(){
 							jHide();
