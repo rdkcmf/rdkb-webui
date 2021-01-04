@@ -516,6 +516,32 @@ $.validator.addMethod("no_space", function(value, element, param) {
 				 $iclass=""; 
 				for ($i=0,$k=1; $i < $URLNums; $i++,$k++) { 
 					$URLAlwaysBlock = $blockedSitesURL[$i.toString()]['AlwaysBlock'];
+					if(strpos($partnerId, "sky-") !== false){
+						$days_cvt = $blockedSitesURL[$i.toString()]['BlockedDays'];
+						$days_cvt = explode(',',$days_cvt);
+						$val_key="";
+						for($a=0;$a<=count($days_cvt);$a++) {
+							if($locale=="it"){
+								if($days_cvt[$a] == "Mon")
+									$val_key += "Lun";
+								else if($days_cvt[$a] == "Tue")
+									$val_key += "Mart";
+								else if($days_cvt[$a] == "Wed")
+									$val_key += "Merc";
+								else if($days_cvt[$a] == "Thu")
+									$val_key += "Giov";
+								else if($days_cvt[$a] == "Fri")
+									$val_key += "Vene";
+								else if($days_cvt[$a] == "Sat")
+									$val_key += "Sab";
+								else if($days_cvt[$a] == "Sun")
+									$val_key += "Dome";
+							}
+							if($a<(count($days_cvt)-1)){$val_key += ',';}
+						}
+						$days_cvt = $val_key;
+						$blockedSitesURL[$i.toString()]['BlockedDays'] = $days_cvt;
+					}
 					$URLBlockTime = $blockedSitesURL[$i.toString()]['StartTime']+ " - " +$blockedSitesURL[$i.toString()]['EndTime']+ ",  " +$blockedSitesURL[$i.toString()]['BlockedDays'];
 					 if ($iclass=="") {$iclass="odd";} else {$iclass="";}
 					$idblk= ($URLAlwaysBlock == 'true')? "idval" :"";
@@ -554,6 +580,32 @@ $.validator.addMethod("no_space", function(value, element, param) {
 			<?% 
 				for ($i=0,$k=1; $i < $KeywordNums; $i++,$k++) {
 					$KeywordAlwaysBlock = $blockedSitesKeyWord[$i.toString()]['AlwaysBlock'];
+				if(strpos($partnerId, "sky-") !== false){
+						$days_cvt = $blockedSitesKeyWord[$i.toString()]['BlockedDays'];
+						$days_cvt = explode(',',$days_cvt);
+						$val_key="";
+						for($a=0;$a<=count($days_cvt);$a++) {
+							if($locale=="it"){
+								if($days_cvt[$a] == "Mon")
+									$val_key += "Lun";
+								else if($days_cvt[$a] == "Tue")
+									$val_key += "Mart";
+								else if($days_cvt[$a] == "Wed")
+									$val_key += "Merc";
+								else if($days_cvt[$a] == "Thu")
+									$val_key += "Giov";
+								else if($days_cvt[$a] == "Fri")
+									$val_key += "Vene";
+								else if($days_cvt[$a] == "Sat")
+									$val_key += "Sab";
+								else if($days_cvt[$a] == "Sun")
+									$val_key += "Dome";
+							}
+							if($a<(count($days_cvt)-1)){$val_key += ',';}
+						}
+						$days_cvt = $val_key;
+						$blockedSitesKeyWord[$i.toString()]['BlockedDays'] = $days_cvt;
+					}
 					$KeywordBlockTime = $blockedSitesKeyWord[$i.toString()]['StartTime']+ " - " +$blockedSitesKeyWord[$i.toString()]['EndTime']+ ",  " +$blockedSitesKeyWord[$i.toString()]['BlockedDays'];
 					if($k % 2) $odd = "class='odd'";
 					else $odd = "";
@@ -699,14 +751,35 @@ $.validator.addMethod("no_space", function(value, element, param) {
 	$end_hour = 13;
     }
     $block_days = $blockedInfo['BlockedDays'];
-    if($rel_st_hour == 0)
-    	$rel_st_hour = 12;
-    if($rel_end_hour == 0) {
+	if(strpos($partnerId, "sky-") !== false){
+		$days_cnt = $block_days;
+		$days_cnt = explode(',',$days_cnt);
+		$val_key=""; 
+		for($a=0;$a<=count($days_cnt);$a++) {
+			if($locale=="it"){
+				if($days_cnt[$a]!=undefined){
+					if($days_cnt[$a]=="Lun"){$val_key += "Mon";}
+					else if($days_cnt[$a] == "Mart"){$val_key += "Tue";}
+					else if($days_cnt[$a] == "Merc"){$val_key += "Wed";}
+					else if($days_cnt[$a] == "Giov"){$val_key += "Thu";}
+					else if($days_cnt[$a] == "Vene"){$val_key += "Fri";}
+					else if($days_cnt[$a] == "Vene"){$val_key += "Fri";}
+					else if($days_cnt[$a] == "Sab"){$val_key += "Sat";}
+					else if($days_cnt[$a] == "Dome"){$val_key += "Sun";}
+					if($a<=(count($days_cnt)-1)){$val_key += ',';}
+				}
+			}
+		}
+		$block_days = $val_key;
+	}
+	if($rel_st_hour == 0)
+	$rel_st_hour = 12;
+	if($rel_end_hour == 0) {
 	$rel_end_hour = 11;
 	$end_min = 59;
 	$end_hour = 13;
-    }
-        $str_edit = "<div class=\"form-row\">\
+	}
+	$str_edit = "<div class=\"form-row\">\
 				<label for=\"on\" id=\"addblcmpmess3\">Always Block?</label>\
 				<span id=\"blockRadio_"+$ID+"\" switch-val=\""+($blockedInfo['AlwaysBlock'] == 'true' ? "on" : "off")+"\"></span>\
 			</div>\

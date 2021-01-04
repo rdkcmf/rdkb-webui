@@ -20,6 +20,7 @@
 ?>
 <?%
 $CloudUIEnable = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
+$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 ?>
 <?% include('includes/header.jst'); ?>
 <?% include('includes/utility.jst'); ?>
@@ -259,7 +260,33 @@ $(document).ready(function() {
 					//$arrayAllowStatus[$allowCnt] = "Period";
 					$stime = $value["StartTime"]; 
 					$etime = $value["EndTime"]; 
-					$bdays = $value["BlockDays"]; 
+					$bdays = $value["BlockDays"];
+					if(strpos($partnerId, "sky-") !== false){
+						$days_cvt = $bdays;
+						$days_cvt = explode(',',$days_cvt);
+						$val_key="";
+						for($a=0;$a<=count($days_cvt);$a++) {
+							if($locale=="it"){
+								if($days_cvt[$a] == "Mon")
+									val_key += "Lun";
+								else if($days_cvt[$a] == "Tue")
+									$val_key += "Mart";
+								else if($days_cvt[$a] == "Wed")
+									$val_key += "Merc";
+								else if($days_cvt[$a] == "Thu")
+									$val_key += "Giov";
+								else if($days_cvt[$a] == "Fri")
+									$val_key += "Vene";
+								else if($days_cvt[$a] == "Sat")
+									$val_key += "Sab";
+								else if($days_cvt[$a] == "Sun")
+									$val_key += "Dome";
+							}
+							if($a<(count($days_cvt)-1)){$val_key += ',';}
+						}
+						$days_cvt = $val_key;
+						$bdays = $days_cvt;
+					} 
 				    $arrayAllowStatus[$allowCnt] = $stime+"-"+$etime+","+$bdays;
 				}
 				$allowCnt++;
@@ -277,11 +304,37 @@ $(document).ready(function() {
 					//$arrayBlockStatus[$blockCnt] = "Period";
 					$stime = $value["StartTime"]; 
 					$etime = $value["EndTime"]; 
-					$bdays = $value["BlockDays"]; 
+					$bdays = $value["BlockDays"];
+					if(strpos($partnerId, "sky-") !== false){
+						$days_cnt = $bdays;
+						$days_cnt = explode(',',$days_cnt);
+						$val_key="";
+						for($a=0;$a<=count($days_cnt);$a++) {
+							if($locale=="it"){
+								if($days_cnt[$a] == "Mon")
+									$val_key += "Lun";
+								else if($days_cnt[$a] == "Tue")
+									$val_key += "Mart";
+								else if($days_cnt[$a] == "Wed")
+									$val_key += "Merc";
+								else if($days_cnt[$a] == "Thu")
+									$val_key += "Giov";
+								else if($days_cnt[$a] == "Fri")
+									$val_key += "Vene";
+								else if($days_cnt[$a] == "Sat")
+									$val_key += "Sab";
+								else if($days_cnt[$a] == "Sun")
+									$val_key += "Dome";
+								}
+								if($a<(count($days_cnt)-1)){$val_key += ',';}
+						}
+						$days_cnt = $val_key;
+						$bdays = $days_cnt;
+					} 
 				    $arrayBlockStatus[$blockCnt] = $stime+"-"+$etime+","+$bdays;
 				}
 				$blockCnt++;
-			}			
+			}
 		}
 	?>
 	<div  id="allowed-devices" class="module data">
@@ -300,7 +353,7 @@ $(document).ready(function() {
 				$iclass="even";
 				for($i=0;$i<count($arrayAllowName);$i++) {
 					if ($iclass=="even") {$iclass="odd";} else {$iclass="even";}
-					$j = $i + 1;				
+					$j = $i + 1;
 					echo( "\
 					<tr class=$iclass>\
 						<td headers='allowed-number' class=\"row-label alt number\">"+$j+"</td>\
@@ -340,7 +393,7 @@ $(document).ready(function() {
 				$iclass="";
 				for($i=0;$i<count($arrayBlockName);$i++) {
 					if ($iclass=="") {$iclass="odd";} else {$iclass="";}	
-					$j = $i + 1;			
+					$j = $i + 1;
 					echo( "\
 					<tr class=" + "'" +$iclass+ "'" + ">\
 						<td headers='blocked-number' class=\"row-label alt number\">"+$j+"</td>\
