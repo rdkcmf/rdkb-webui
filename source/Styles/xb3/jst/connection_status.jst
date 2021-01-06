@@ -437,19 +437,36 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
               ?>
              </span>
         </div>
-	<?%
-        	if($ipv6_global_addr!=""){
-        ?>
+      
         <div class="form-row odd">
               <span class="readonlyLabel">WAN IPv6 Address:</span> <span class="ipv6-style">
               <?%
-                  echo($ipv6_global_addr);
+       $partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
+       if (strpos($partnerId, "sky-") !== false) {
+                $IPv6Adr = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstDownstreamIpInterface");
+                $ids = explode(",", getInstanceIds($IPv6Adr+"IPv6Address."));
+                for(var $keytmp in $ids) { $i=$ids[$keytmp];/*p2j-foreach*/
+                        $val = getStr($IPv6Adr+"IPv6Address."+$i+".IPAddress");
+                        if (!strstr($val, "fe80::")){
+                                $WANIPv6=$val;
+                        }
+                }
+        }
+     else {
+       $fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
+       $ids = explode(",", getInstanceIds($fistUSif+"IPv6Address."));
+        for(var $keytmp in $ids) { $i=$ids[$keytmp];/*p2j-foreach*/
+                $val = getStr($fistUSif+"IPv6Address."+$i+".IPAddress");
+                if (!strstr($val, "fe80::")){
+                        $WANIPv6 = $val;
+                }
+        }
+    }
+                       echo($WANIPv6);
               ?>
              </span>
         </div>
-        <?%
-    		}
-    	?>
+    
         <div class="form-row">
         <span class="readonlyLabel" id="dhcpcliloc">DHCP Client:</span> 
 	<?%  if("DHCP" == $device_ctrl_value["WanAddressMode"]){
