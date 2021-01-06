@@ -95,6 +95,7 @@ if ($mode=="system"){
 	$Log = []/*p2j-array*/;
 	// for($i=0; !feof($file); $i++)
     $value = getStr("Device.X_CISCO_COM_Diagnostics.Syslog.EntryNumberOfEntries");
+	$k=0;
 	for(var $i=0; $i < $value; $i++ )
 	{
 		$time 	= substr(fgets($file),$pos);
@@ -107,7 +108,8 @@ if ($mode=="system"){
 		$timeU = $timeArr['timeU'];
 		$timeArr = str2time(trim(UTC_to_local_date_logs($time)));
 		if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
-		$Log[$i] = {"time":$timeArr['formatted_time'], "Level":$Level, "Des":$Des}/*p2j-array*/;
+		$Log[$k] = {"time":$timeArr['formatted_time'], "Level":$Level, "Des":$Des}/*p2j-array*/;
+		$k++;
 	}
 	fclose($file);
 	// array_pop($Log);	
@@ -125,6 +127,7 @@ else if ($mode=="event") {
 	$file= fopen("/tmp/log_event.txt", "r");
 	$Log = []/*p2j-array*/;
 	// for($i=0; !feof($file); $i++)
+	$n=0;
     $value = getStr("Device.X_CISCO_COM_Diagnostics.Eventlog.EntryNumberOfEntries");
 	for(var $i=0; $i < $value ; $i++)
 	{
@@ -138,7 +141,8 @@ else if ($mode=="event") {
 		$timeU = $timeArr['timeU'];
 		$timeArr = str2time(trim(UTC_to_local_date_logs($time)));
 		if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
-		$Log[$i] = {"time":$timeArr['formatted_time'], "Level":$Level, "Des":$Des}/*p2j-array*/;
+		$Log[$n] = {"time":$timeArr['formatted_time'], "Level":$Level, "Des":$Des}/*p2j-array*/;
+		$n++;
 	}
 	fclose($file);
 	// array_pop($Log);	
@@ -157,6 +161,7 @@ else if ($mode=="firewall") {
 	$Log = []/*p2j-array*/;
 	// for($i=0; !feof($file); $i++)
     $value = getStr("Device.X_CISCO_COM_Security.InternetAccess.LogEntryNumberOfEntries");
+	$p=0;
 	for(var $i=0; $i < $value; $i++)
 	{
 		$Count		= substr(fgets($file),$pos);
@@ -172,7 +177,8 @@ else if ($mode=="firewall") {
 		$timeU = $timeArr['timeU'];
 		$timeArr = str2time(trim(UTC_to_local_date_logs($time)));
 		if ($timeU > $maxtime || $timeU < $mintime) continue;	//only store the needed line
-		$Log[$i] = {"time":$timeArr['firewall_time'], "Des":$Des, "Count":$Count, "Target":$TargetIP,"Source":$SourceIP,"Type":$Type}/*p2j-array*/;
+		$Log[$p] = {"time":$timeArr['firewall_time'], "Des":$Des, "Count":$Count, "Target":$TargetIP,"Source":$SourceIP,"Type":$Type}/*p2j-array*/;
+		$p++;
 	}
 	fclose($file);
 	$firewallLog = $Log;	
