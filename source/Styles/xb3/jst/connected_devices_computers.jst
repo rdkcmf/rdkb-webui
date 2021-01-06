@@ -1044,7 +1044,11 @@ function getTitle(val){
 </div><!-- end #content -->
 <?% 
 //this part is to populate edit device info on each online private network host basis
-for ($i=0; $i < $onlinePrivateNetworkHost['hostNum']; $i++) { 
+for ($i=0; $i < $onlinePrivateNetworkHost['hostNum']; $i++) {
+    if(typeof($onlinePrivateNetworkHost[$i.toString()]['IPv4Address']) == "undefined")
+    {
+        $onlinePrivateNetworkHost[$i.toString()]['IPv4Address'] = "";
+    } 
 	$ID      = $onlinePrivateNetworkHost[$i.toString()]['instanceID'];
 	$AddrSrc = $onlinePrivateNetworkHost[$i.toString()]['AddressSource'];
 	var unknowid="";
