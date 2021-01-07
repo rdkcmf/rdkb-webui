@@ -311,12 +311,12 @@ function sec2dhms($sec)
 			if(strpos($partnerId, "sky-") !== false){
 				if($Wan_Port_Status !="Disconnected"){
 					$ids = explode(",", getInstanceIds($fistUSif+"IPv6Prefix."));
-					echo( getStr($fistUSif+"IPv6Prefix.$ids[0].Prefix"));
+					echo( getStr($fistUSif+"IPv6Prefix."+$ids[0]+".Prefix"));
 				}
 			}
 			else{
 				$ids = explode(",", getInstanceIds($fistUSif+"IPv6Prefix."));
-				echo( getStr($fistUSif+"IPv6Prefix.$ids[0].Prefix"));
+				echo( getStr($fistUSif+"IPv6Prefix."+$ids[0]+".Prefix"));
 			}
 		?>
 		</span>
