@@ -758,7 +758,7 @@ function remote_access_block(){
 			?>
 			<?%
 				$fistUSif =""; 
-                                if(strpos($partnerId, "sky-") !== false){
+                              /*  if(strpos($partnerId, "sky-") !== false){
 					$isMapT = getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapTransportMode");
 				if($isMapT != 'MAPT'){
 						echo('<span id="remmess1">Remote Management Address (IPv4):</span>');
@@ -766,11 +766,11 @@ function remote_access_block(){
 						echo( getStr($fistUSif+"IPv4Address.1.IPAddress"));
 					}
 				}
-				else{
+				else{*/
 					echo('<span id="remmess1">Remote Management Address (IPv4):</span>');
 					$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
 					echo( getStr($fistUSif+"IPv4Address.1.IPAddress"));
-				}
+				//}
 			?>
 			<br/>
 			<span id="remmess2">Remote Management Address (IPv6):</span> 		
