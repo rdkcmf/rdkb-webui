@@ -61,6 +61,13 @@ $(document).ready(function() {
                     title.appendChild(document.createTextNode("Results Not Available. Please Re-Run Tests."));
                     store.appendChild(title);
                 }
+                else if(result.startsWith("Error")){
+                    var store = document.getElementById("test_results");
+                    store.innerHTML = "";
+                    var title = document.createElement('h2');
+                    title.appendChild(document.createTextNode(result.substring(result.indexOf(":")+1)));
+                    store.appendChild(title);
+                }
                 else {
                     formatResults(result);
                 }
