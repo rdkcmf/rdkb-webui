@@ -91,7 +91,7 @@ $(document).ready(function() {
 		} else {
 			// document.getElementById('http').disabled = false;
 			jConfirm(
-				$.i18n("WARNING: Enabling Remote Management will expose your Gateway GUI to the Internet. Your Gateway will only be protected by your logon password. Are you sure you want to continue?")
+				$.i18n("WARNING: Enabling Remote Management will expose your Gateway GUI to Internet. Your Gateway will only be protected by your logon password. Are you sure you want to continue?")
 				,$.i18n("Confirm:")
 				,function(ret) {
 					if(ret) {
@@ -726,7 +726,7 @@ function remote_access_block(){
 	<div id="educational-tip">
         <p class="tip" id="remtip1">Remote Management allows the gateway to be remotely accessed by a customer account representative to perform troubleshooting or maintenance.</p>
 	    <p class="hidden" id="remtip2">Remote Management can be used via HTTP and HTTPS.</p>
-		<p class="hidden" id="remtip3">Enable the HTTP option and enter the value for HTTP Port, then you can access your device from HTTP. For example,if the WAN IP address is 11.22.11.22 and the HTTP port number is 8080, then you would use http://11.22.11.22:8080</p>
+		<p class="hidden" id="remtip3">Enable the HTTP option and enter the value for HTTP Port, then you can access your device from HTTP. For example, if the WAN IP address is 11.22.11.22 and the HTTP port number is 8080, then you would use http://11.22.11.22:8080</p>
 		<p class="hidden" id="remtip4">It's the same way to configure HTTPS.</p> 
 		<p class="hidden" id="remtip5">Select whether you would like to have Remote Management open to all Internet IP Addresses, an Internet IP Address range, or a single Internet IP Address.</p>
 	</div>
@@ -767,7 +767,7 @@ function remote_access_block(){
 					}
 				}
 				else{*/
-					echo('<span id="remmess1">Remote Management Address (IPv4):</span>');
+					echo('<span id="remmess1">Remote Management Address (IPv4):</span> ');
 					$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
 					echo( getStr($fistUSif+"IPv4Address.1.IPAddress"));
 				//}
@@ -1009,7 +1009,7 @@ function remote_access_block(){
 		<?% }
 		} ?>
 		<div>
-			<p id="remmess11"> Note:This option will allow any computer on the Internet to access your network and may cause a security risk.</p>
+			<p id="remmess11"> Note: This option will allow any computer on the Internet to access your network and may cause a security risk.</p>
 		</div>
 	</div>
 	<div class="form-btn">
