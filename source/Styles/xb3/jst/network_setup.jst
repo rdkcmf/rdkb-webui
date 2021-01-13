@@ -974,6 +974,18 @@ if(strpos($partnerId, "sky-") !== false){
 	</div>
      <?% } ?>
 </div>
+<?%
+        if (strpos($partnerId, "sky-") !== false) {
+           $ids = DmExtGetInstanceIds("Device.X_RDK-Central_COM_WanAgent.Interface.");
+           for ($i=1;$i<=count($ids); $i++){
+                if("true" ==getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'+$i+'.Wan.ActiveLink')){
+                    $wan_port_value=getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'+$i+'.DisplayName');
+                        break;
+                }
+                else{$wan_port_value='-NA-';}
+            }
+        }
+?>
 <div class="module forms div_dsl">
 	<h2 id="netsetmess43">WAN Port</h2>
  	<div class="form-row">
