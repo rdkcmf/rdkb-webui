@@ -143,7 +143,7 @@
   "Conflict with other service. Please check port and IP!":"Conflitto con altro servizio. Controlla porta e IP",
   "Service name has been used!\n":"Il nome del servizio è già stato utilizzato\n",
   "This may take several seconds...":"L'operazione potrebbe richiedere alcuni secondi...",
-  "Changes saved successfully . <br/> Please login with the new password.":"Modifiche salvate correttamente. <br/> Accedi con la nuova password.",
+  "Changes saved successfully. <br/> Please login with the new password.":"Modifiche salvate correttamente. <br/> Accedi con la nuova password.",
   "Current Password Wrong!":"Password attuale errata",
   "Current Password and New Password Can\\'t Be Same!":"La password attuale e la nuova password non possono coincidere",
   "Logout":"Esci",
