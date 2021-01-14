@@ -22,24 +22,25 @@
 <?% include('includes/utility.jst'); ?>
 <!-- $Id: battery.jst 3158 2010-01-08 23:32:05Z slemoine $ -->
 <div id="sub-header">
-	<?% include('includes/userbar.jst'); ?>
+    <?% include('includes/userbar.jst'); ?>
 </div><!-- end #sub-header -->
 <?% include('includes/nav.jst'); ?>
 <?%
 $battery_param = {
-        "bat_capacity"  	    : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.batteryCapacity",
+        "bat_capacity"              : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.batteryCapacity",
+        "bat_voltage"               : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.batteryVoltage",
         "bat_health"                : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.batteryHealth",
-        "bat_status"      	    : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.batteryStatus",
+        "bat_status"                : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.batteryStatus",
         "bat_chargestatus"          : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.chargingStatus",
         "bat_currtemp"              : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.currentTemperature",
-        "bat_chargeremain"  	    : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.estimatedChargeRemaining",
-	"bat_timeremain"   	    : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.estimatedMinutesRemaining",
-	"bat_chargehealth"	    : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.healthOfChargingSystem",
+        "bat_chargeremain"          : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.estimatedChargeRemaining",
+        "bat_timeremain"            : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.estimatedMinutesRemaining",
+        "bat_chargehealth"          : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.healthOfChargingSystem",
         "bat_hwversion"             : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.hwVersion",
         "bat_manufacturer"          : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.manufacturerName",
         "bat_maxtemp"               : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.maxTempExperienced",
-        "bat_mintemp"		    : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.minTempExperienced",
-	"bat_model"                 : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.modelIdentifier",
+        "bat_mintemp"               : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.minTempExperienced",
+        "bat_model"                 : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.modelIdentifier",
         "bat_idlepower1"            : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.poweredDeviceIdlePower1",
         "bat_idlepower2"            : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.poweredDeviceIdlePower2",
         "bat_lowbattime"            : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.configLowBattTime",
@@ -50,89 +51,109 @@ $battery_param = {
         "bat_secsonbatt"            : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.secondsOnBattery",
         "bat_serial"                : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.serialNumber",
         "bat_swversion"             : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.softwareVersion",
-	"bat_teststate"		    : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.testingState",
+        "bat_teststate"             : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.testingState",
         "bat_teststatus"            : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.testingStatus" 
-	}/*p2j-array*/;
+    }/*p2j-array*/;
     $battery_value = KeyExtGet("Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.", $battery_param);
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
     gateway.page.init("Hardware > Battery", "nav-battery");
-/*	if ("true" != "<?% echo( $battery_value['installed']); ?>"){
-		$(".div_battery [id^='bat_']").text("");
-		$("#bat_power").text("AC");
-		$("#bat_instal").text("No");
-		return;
-	}*/
-	//var percent	= $("#sta_batt").text().replace("Battery", "");
-         if ("0" == "<?% echo( $battery_value['bat_status']); ?>"){
-		//return without populating the table
-		$(".div_battery [id^='bat_']").text("");
-		return;
-         }
-	var bat_chargeremain	= "<?% echo( $battery_value['bat_chargeremain']); ?>";
-	$("#bat_chargeremain").text(bat_chargeremain + ' % ');
-	var bat_timeremain	= "<?% echo( $battery_value['bat_timeremain']); ?>";
-	var bat_hours	= Math.round(parseInt(bat_timeremain)/6).toString();
-	if (bat_hours.length <=1)
-	{
-		bat_hours = '0'+bat_hours;
-	}
-	$("#bat_hours").text(bat_hours.slice(0, -1) + "."+bat_hours.slice(-1) + ' hours');
 
-        var bat_health = "<?% echo( $battery_value['bat_health']); ?>";
-        if("0" == bat_health)
-          $("#bat_health").text("Good");
-        else if ("1" == bat_health)
-          $("#bat_health").text("Fair");
-        else if ("2" == bat_health)
-          $("#bat_health").text("Poor");
-        else if ("3" == bat_health)
-          $("#bat_health").text("Failure");
-        else
-          $("#bat_health").text("Unknown");
+    if ("true" == "<?% echo( $battery_value['bat_model'].includes('XBBL')); ?>") {
+        $(".xbb1_xbb24_data").hide();
+        $("#row_bat_health").addClass("odd");
+        $("#row_bat_currtemp").addClass("odd");
+        $("#row_bat_manufacturer").addClass("odd");
+        $("#row_bat_mintemp").addClass("odd");
+        $("#row_bat_lowtempthresh").addClass("odd");
+        $("#row_bat_lowtempdwelltripsecs").addClass("odd");
+    } else {
+        $(".xbbl_data").hide();
+        $("#row_bat_health").addClass("odd");
+        $("#row_bat_chargestatus").addClass("odd");
+        $("#row_bat_chargehealth").addClass("odd");
+        $("#row_bat_hours").addClass("odd");
+        $("#row_bat_manufacturer").addClass("odd");
+        $("#row_bat_mintemp").addClass("odd");
+        $("#row_bat_idlepower1").addClass("odd");
+        $("#row_bat_lowbattime").addClass("odd");
+        $("#row_bat_hightempthresh").addClass("odd");
+        $("#row_bat_hightempdwelltripsecs").addClass("odd");
+        $("#row_bat_serial").addClass("odd");
+        $("#row_bat_teststate").addClass("odd");
+    }
 
-        var bat_teststate = "<?% echo( $battery_value['bat_teststate']); ?>";
-        if("0" == bat_teststate)
-          $("#bat_teststate").text("Not Discharging");
-        else if ("1" == bat_teststate)
-          $("#bat_teststate").text("Discharging");
-        else if ("2" == bat_teststate)
-          $("#bat_teststate").text("Charging");
-        else
-          $("#bat_teststate").text("Unknown");
+    if ("0" == "<?% echo( $battery_value['bat_status']); ?>") {
+        //return without populating the table
+        $(".div_battery [id^='bat_']").text("");
+        return;
+    }
 
-        var bat_chargehealth = "<?% echo( $battery_value['bat_chargehealth']); ?>";
-        if("0" == bat_chargehealth)
-          $("#bat_chargehealth").text("Good");
-        else if ("1" == bat_chargehealth)
-          $("#bat_chargehealth").text("Voltage High");
-        else if ("2" == bat_chargehealth)
-          $("#bat_chargehealth").text("Current High");
-	else if ("3" == bat_chargehealth)
-          $("#bat_chargehealth").text("Current Low");
-        else if ("4" == bat_chargehealth)
-          $("#bat_chargehealth").text("DischargingOrTestCurrentFailure");
-        else
-          $("#bat_chargehealth").text("Unknown");
+    var bat_chargeremain = "<?% echo( $battery_value['bat_chargeremain']); ?>";
+    $("#bat_chargeremain").text(bat_chargeremain + ' % ');
+    var bat_timeremain = "<?% echo( $battery_value['bat_timeremain']); ?>";
+    var bat_hours = Math.round(parseInt(bat_timeremain)/6).toString();
+    if (bat_hours.length <=1) {
+        bat_hours = '0'+bat_hours;
+    }
+    $("#bat_hours").text(bat_hours.slice(0, -1) + "."+bat_hours.slice(-1) + ' hours');
 
-        var bat_chargestatus = "<?% echo( $battery_value['bat_chargestatus']); ?>";
-        if ("true" == bat_chargestatus)
-          $("#bat_chargestatus").text("Charging");
-        else
-          $("#bat_chargestatus").text("Not Charging");
+    var bat_health = "<?% echo( $battery_value['bat_health']); ?>";
+    if("0" == bat_health)
+        $("#bat_health").text("Good");
+    else if ("1" == bat_health)
+        $("#bat_health").text("Fair");
+    else if ("2" == bat_health)
+        $("#bat_health").text("Poor");
+    else if ("3" == bat_health)
+        $("#bat_health").text("Failure");
+    else
+        $("#bat_health").text("Unknown");
 
-        var bat_status = "<?% echo( $battery_value['bat_status']); ?>";
-        if("0" == bat_status)
-          $("#bat_status").text("Unknown");
-        else if ("1" == bat_status)
-          $("#bat_status").text("Normal");
-        else if ("2" == bat_status)
-          $("#bat_status").text("Low");
-        else if ("3" == bat_status)
-          $("#bat_status").text("Depleted");
-        else
-          $("#bat_status").text("Unknown");
+    var bat_teststate = "<?% echo( $battery_value['bat_teststate']); ?>";
+    if("0" == bat_teststate)
+        $("#bat_teststate").text("Not Discharging");
+    else if ("1" == bat_teststate)
+        $("#bat_teststate").text("Discharging");
+    else if ("2" == bat_teststate)
+        $("#bat_teststate").text("Charging");
+    else
+        $("#bat_teststate").text("Unknown");
+
+    var bat_chargehealth = "<?% echo( $battery_value['bat_chargehealth']); ?>";
+    if("0" == bat_chargehealth)
+        $("#bat_chargehealth").text("Good");
+    else if ("1" == bat_chargehealth)
+        $("#bat_chargehealth").text("Voltage High");
+    else if ("2" == bat_chargehealth)
+        $("#bat_chargehealth").text("Current High");
+    else if ("3" == bat_chargehealth)
+        $("#bat_chargehealth").text("Current Low");
+    else if ("4" == bat_chargehealth)
+        $("#bat_chargehealth").text("DischargingOrTestCurrentFailure");
+    else
+        $("#bat_chargehealth").text("Unknown");
+
+    var bat_chargestatus = "<?% echo( $battery_value['bat_chargestatus']); ?>";
+    if ("true" == bat_chargestatus)
+        $("#bat_chargestatus").text("Charging");
+    else
+        $("#bat_chargestatus").text("Not Charging");
+
+    var bat_status = "<?% echo( $battery_value['bat_status']); ?>";
+    if("0" == bat_status)
+        $("#bat_status").text("Unknown");
+    else if ("1" == bat_status)
+        $("#bat_status").text("Normal");
+    else if ("2" == bat_status)
+        $("#bat_status").text("Low");
+    else if ("3" == bat_status)
+        $("#bat_status").text("Depleted");
+    else
+        $("#bat_status").text("Unknown");
+
+    $("#bat_voltage").text("<?% echo( $battery_value['bat_voltage'] / 10.0); ?>");
 });
 </script>
 <div id="content">
@@ -143,108 +164,113 @@ $(document).ready(function() {
                 <p class="hidden"><strong>Number of Cycles to date:</strong> Indicates how many discharge and charge cycles the battery has gone through from the day it was inserted.</p>
         </div>
         <div class="module forms data div_battery">
+
                 <table cellspacing="0" cellpadding="0" class="data" summary="This table shows battery status" >
                 <tr>
                         <th id="battery_metric">Battery Status:</th>
                         <th id="battery_status">&nbsp;</th>
                 </tr>
-                <tr>
+                <tr id="row_bat_voltage" class="xbbl_data">
+                        <td headers="battery_metric" class="row-label">Battery Voltage:</td>
+                        <td headers="battery_status" id="bat_voltage"><?% echo( $battery_value["bat_voltage"]); ?></td>
+                </tr>
+                <tr id="row_bat_capacity" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Battery Life:</td>
                         <td headers="battery_status" id="bat_capacity"><?% echo( $battery_value["bat_capacity"]); ?></td>
                 </tr>
-                <tr class="odd">
+                <tr id="row_bat_health">
                         <td headers="battery_metric" class="row-label">Battery Health:</td>
                         <td headers="battery_status" id="bat_health"><?% echo( $battery_value["bat_health"]); ?></td>
                 </tr>
-                <tr>
+                <tr id="row_bat_status">
                         <td headers="battery_metric" class="row-label">Battery Status:</td>
                         <td headers="battery_status" id="bat_status"><?% echo( $battery_value["bat_status"]); ?></td>
                 </tr>
-                <tr class="odd">
+                <tr id="row_bat_chargestatus" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Battery Charge Status:</td>
                         <td headers="battery_status" id="bat_chargestatus"><?% echo( $battery_value["bat_chargestatus"]); ?></td>
                 </tr>
-                <tr>
+                <tr id="row_bat_currtemp">
                         <td headers="battery_metric" class="row-label">Current Temperature:</td>
                         <td headers="battery_status" id="bat_currtemp"><?% echo( $battery_value["bat_currtemp"]); ?></td>
                 </tr>
-                <tr class="odd">
+                <tr id="row_bat_chargehealth" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Charging System Health:</td>
                         <td headers="battery_status" id="bat_chargehealth"><?% echo( $battery_value["bat_chargehealth"]); ?></td>
                 </tr>
-                <tr>
+                <tr id="row_bat_chargeremain" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Remaining Charge:</td>
                         <td headers="battery_status" id="bat_chargeremain">Loading...</td>
                 </tr>
-                <tr class="odd">
+                <tr id="row_bat_hours" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Remaining Time:</td>
                         <td headers="battery_status" id="bat_hours" >Loading...</td>
                 </tr>
-                <tr>
+                <tr id="row_bat_hwversion">
                         <td headers="battery_metric" class="row-label">Hardware Version:</td>
                         <td headers="battery_status" id="bat_hwversion"><?% echo( $battery_value["bat_hwversion"]); ?></td>
                 </tr>
-                <tr class="odd">
+                <tr id="row_bat_manufacturer">
                         <td headers="battery_metric" class="row-label">Manufacturer Name:</td>
                         <td headers="battery_status" id="bat_manufacturer"><?% echo( $battery_value["bat_manufacturer"]); ?></td>
                 </tr>
-                <tr>
+                <tr id="row_bat_maxtemp">
                         <td headers="battery_metric" class="row-label">Max Temp Experienced:</td>
                         <td headers="battery_status" id="bat_maxtemp"><?% echo( $battery_value["bat_maxtemp"]); ?></td>
                 </tr>
-                <tr class="odd">
+                <tr id="row_bat_mintemp">
                         <td headers="battery_metric" class="row-label">Min Temp Experienced:</td>
                         <td headers="battery_status" id="bat_mintemp"><?% echo( $battery_value["bat_mintemp"]); ?></td>
                 </tr>
-                <tr>
+                <tr id="row_bat_model">
                         <td headers="battery_metric" class="row-label">Battery Model Number:</td>
                         <td headers="battery_status" id="bat_model"><?% echo( $battery_value["bat_model"]); ?></td>
                 </tr>
-                <tr class="odd">
+                <tr id="row_bat_idlepower1" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Power Consumed In Initial 8 Hours:</td>
                         <td headers="battery_status" id="bat_idlepower1"><?% echo( $battery_value["bat_idlepower1"]); ?></td>
                 </tr>
-                <tr>
+                <tr id="row_bat_idlepower2" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Power Consumed In Final 16 hours:</td>
                         <td headers="battery_status" id="bat_idlepower2"><?% echo( $battery_value["bat_idlepower2"]); ?></td>
                 </tr>
-                <tr class="odd">
+                <tr id="row_bat_lowbattime" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Low Battery Time:</td>
                         <td headers="battery_status" id="bat_lowbattime"><?% echo( $battery_value["bat_lowbattime"]); ?></td>
                 </tr>
-                <tr>
+                <tr id="row_bat_lowtempthresh">
                         <td headers="battery_metric" class="row-label">Low Temperature Threshold:</td>
                         <td headers="battery_status" id="bat_lowtempthresh"><?% echo( $battery_value["bat_lowtempthresh"]); ?></td>
                 </tr>
-                <tr class="odd">
+                <tr id="row_bat_hightempthresh">
                         <td headers="battery_metric" class="row-label">High Temperature Threshold:</td>
                         <td headers="battery_status" id="bat_hightempthresh"><?% echo( $battery_value["bat_hightempthresh"]); ?></td>
                 </tr>
-                <tr>
+                <tr id="row_bat_lowtempdwelltripsecs">
                         <td headers="battery_metric" class="row-label">Low Temperature Dwell TripPoint Seconds:</td>
                         <td headers="battery_status" id="bat_lowtempdwelltripsecs"><?% echo( $battery_value["bat_lowtempdwelltripsecs"]); ?></td>
                 </tr>
-                <tr class="odd">
+                <tr id="row_bat_hightempdwelltripsecs">
                         <td headers="battery_metric" class="row-label">High Temperature Dwell TripPoint Seconds:</td>
                         <td headers="battery_status" id="bat_hightempdwelltripsecs"><?% echo( $battery_value["bat_hightempdwelltripsecs"]); ?></td>
                 </tr>
-                <tr>
+                <tr id="row_bat_secsonbatt" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Seconds On Battery:</td>
                         <td headers="battery_status" id="bat_secsonbatt"><?% echo( $battery_value["bat_secsonbatt"]); ?></td>
                 </tr>
-                <tr class="odd">
+                <tr id="row_bat_serial" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Battery Serial Number:</td>
                         <td headers="battery_status" id="bat_serial"><?% echo( $battery_value["bat_serial"]); ?></td>
                 </tr>
-                <tr>
+                <tr id="row_bat_swversion" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Battery Software Version:</td>
                         <td headers="battery_status" id="bat_swversion"><?% echo( $battery_value["bat_swversion"]); ?></td>
                 </tr>
-                <tr class="odd">
+                <tr id="row_bat_teststate" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Battery Testing State:</td>
                         <td headers="battery_status" id="bat_teststate"><?% echo( $battery_value["bat_teststate"]); ?></td>
                 </tr>
-                <tr>
+                <tr id="row_bat_teststatus" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Battery Testing Status:</td>
                         <td headers="battery_status" id="bat_teststatus"><?% echo( $battery_value["bat_teststatus"]); ?></td>
                 </tr>
