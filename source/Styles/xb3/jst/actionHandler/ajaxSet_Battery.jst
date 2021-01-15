@@ -31,7 +31,7 @@ $infoArray = json_decode($_POST['batteryInfo'], true);
 function discoverBattery() {
 
         $paramArray = [
-                        ["Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.discover", "int", "1"],
+                        ["Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.discover", "int", "300"],
                     ]/*p2j-array*/;
 
         $retStatus = DmExtSetStrsWithRootObj("Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.", true, $paramArray);

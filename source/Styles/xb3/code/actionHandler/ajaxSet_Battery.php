@@ -31,7 +31,7 @@ $infoArray = json_decode($_REQUEST['batteryInfo'], true);
 function discoverBattery() {
 
         $paramArray = array (
-                        array("Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.discover", "int", "1"),
+                        array("Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.discover", "int", "300"),
                     );
 
         $retStatus = DmExtSetStrsWithRootObj("Device.DeviceInfo.", TRUE, $paramArray);
