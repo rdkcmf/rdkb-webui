@@ -980,7 +980,7 @@ function setResetInfo(info) {
 			<select name="encryption_method" id="security">
 				<option value="None" 				title="Open networks do not have a password." 			<?% if ("None"==$security) echo( "selected");?> >Open (risky)</option>
 				<option value="WPA2_PSK_TKIP" 		title="WPA requires an 8-63 ASCII character or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?% if ("WPA2_PSK_TKIP"==$security)       echo( "selected");?> >WPA2-PSK (TKIP)</option>
-				<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?% if ("WPA2_PSK_AES"==$security)        echo( "selected");?> >WPA2-PSK (AES)(Recommended)</option>
+				<option value="WPA2_PSK_AES" 		title="WPA requires an 8-63 ASCII character password or a 64 hex character password. Hex means only the following characters can be used: ABCDEF0123456789." <?% if ("WPA2_PSK_AES"==$security)        echo( "selected");?> >WPA2-PSK (AES) (Recommended)</option>
 				</select>
 			<p id="tip_security_mode" class="footnote">
 			<?%
@@ -1070,10 +1070,10 @@ function setResetInfo(info) {
 		<p style="color: green;"><b>The recommended security mode is "WPA2-PSK (AES)" as this mode gives best WiFi performance and optimum security.</b></p>
 	</div>
 	<div class="form-row">
-		<input name="path" id="path2" type="radio" value="WPA2_PSK_AES" checked="checked"><b>WPA2-PSK (AES) (Recommended)</b><br><span>This is the recommended and default option as this mode gives best WiFi performance and optimum security.Older Wi-Fi devices which doesn't support WPA2 and AES encryption will be unable to connect to your Wi-Fi network in this mode.</span><br>
+		<input name="path" id="path2" type="radio" value="WPA2_PSK_AES" checked="checked"><b>WPA2-PSK (AES) (Recommended)</b><br><span>This is the recommended and default option as this mode gives best WiFi performance and optimum security. Older Wi-Fi devices which doesn't support WPA2 and AES encryption will be unable to connect to your Wi-Fi network in this mode.</span><br>
 		<!--input name="path" id="path3" type="radio" value="WEP_64"><b>WEP (64)</b><br><span style="color: red;">This is only applicable for legacy Wi-Fi devices. Using this option will impact your Wi-Fi performance and less secure. Select this option only if you have very old Wi-Fi device and if it does not support WPA or WPA2 option.</span><br>
 		<input name="path" id="path4" type="radio" value="WEP_128"><b>WEP (128)</b><br><span style="color: red;">This is only applicable for legacy Wi-Fi devices. Using this option will impact your Wi-Fi performance and less secure.Select this option only if you have very old Wi-Fi device and if it does not support WPA or WPA2 option.</span><br-->
-		<input name="path" id="path5" type="radio" value="None"><b>Open (Risky)</b><br><span style="color: red;">This is not recommended as it is doesn't have any security and anybody can connect to your Wi-Fi network.</span><br>
+		<input name="path" id="path5" type="radio" value="None"><b>Open (Risky)</b><br><span style="color: red;">This is not recommended as it doesn't have any security and anybody can connect to your Wi-Fi network.</span><br>
 		<br>
 	</div>
 </div>
