@@ -397,7 +397,7 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
         <div class="form-row">
         <span class="readonlyLabel"><?% echo("Internet:");?></span>
               <?% 
-              if($allowEthWan=="true"){
+              if($allowEthWan=="true" || $autoWanEnable=="true"){
                 $wanipv4_status = php_getstr("Device.DeviceInfo.X_COMCAST-COM_WAN_IP");
                 $wanipv6_status = php_getstr("Device.DeviceInfo.X_COMCAST-COM_WAN_IPv6");
                 if( ($wanipv4_status!="0.0.0.0") || ($wanipv6_status!="")){
