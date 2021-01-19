@@ -112,7 +112,8 @@ $(document).ready(function() {
 	// only run once on init
 	if (false == jsEnableMD)
 	{
-		$('.main_content *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
+		$('.module *').not(".homenetwork,.radioswitch_cont, .radioswitch_cont *").addClass("disabled");
+		$(".homenetwork *").removeClass('disabled');
 		$("#allow_block_switch").radioswitch("doEnable", false);
 	}	
 	if(jsAllowAll == true) {
@@ -153,13 +154,13 @@ $(document).ready(function() {
 				if(isUMGDDisabled) {
 					// $("#allowed-devices").prop("disabled",true).addClass("disabled");
 					// $("#blocked-devices").prop("disabled",true).addClass("disabled");
-					$('.main_content *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
+					$('.module *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
 					$("#allow_block_switch").radioswitch("doEnable", false);
 				} else {
 					// $("#allowed-devices").prop("disabled",false).removeClass("disabled");
 					// $("#blocked-devices").prop("disabled",false).removeClass("disabled");
 					//shunjie, only enable to reload the radio-btn status
-					// $('.main_content *').removeClass("disabled");
+					// $('.module *').removeClass("disabled");
 					location.reload();
 				}
 			},
@@ -205,7 +206,7 @@ $(document).ready(function() {
 <div  id="content">
 	<h1 id="mandevhead">Parental Control > Managed Devices</h1>
 	<div class="module forms enable">
-		<div id="content" style="text-align: center;">
+		<div id="content" class="homenetwork" style="text-align: center;">
 			<br>
 			<h3><span id="connhom1">Managing your home network settings is now easier than ever.</span><br><span id="visithead">Visit </span><?% echo('<a href="http://'+$productLink+'">'+$productLink +'</a>');?><span id="mandevmess"> to enable parental controls for devices connected</span><br><span id="mandevmessnew">to your home network, among many other features and settings.</span></h3>
 			<br>

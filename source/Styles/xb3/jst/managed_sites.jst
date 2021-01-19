@@ -178,22 +178,22 @@ $(document).ready(function() {
         });
 });
 if(isManageEnabled != 'true'){
-	$('.main_content *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
-	$(".main_content .radioswitch_cont:not(#managed_sites_switch)").radioswitch("doEnable", false);
+	$('.module *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
+	$(".module .radioswitch_cont:not(#managed_sites_switch)").radioswitch("doEnable", false);
 	$(".btn").prop("disabled", true);
 	$('.del-btn').unbind('click');
 }
 $("#managed_sites_switch").change(function() {
  	var isManageDisabled = $("#managed_sites_switch").radioswitch("getState").on === false;
 	if(isManageDisabled) {
-		$('.main_content *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
-		$(".main_content .radioswitch_cont:not(#managed_sites_switch)").radioswitch("doEnable", false);
+		$('.module *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
+		$(".module .radioswitch_cont:not(#managed_sites_switch)").radioswitch("doEnable", false);
 		$(".btn").prop("disabled", true);
 		$('.del-btn').unbind("click");
 	}
  	else {
- 		$(".main_content *").not(".radioswitch_cont, .radioswitch_cont *").removeClass("disabled");
-		$(".main_content .radioswitch_cont:not(#managed_sites_switch)").radioswitch("doEnable", true);
+ 		$(".module *").not(".radioswitch_cont, .radioswitch_cont *").removeClass("disabled");
+		$(".module .radioswitch_cont:not(#managed_sites_switch)").radioswitch("doEnable", true);
  		$(".btn").prop("disabled", false);
 		$("a.confirm").click(function(e) {
 			e.preventDefault();
@@ -260,8 +260,12 @@ $("#managed_sites_switch").change(function() {
 			var blockRadio = "#blockRadio_" + k;
 			//alert(butn);
 			$(btn).click(function(){
-				$('.main_content').hide();
-				$(edit).show();
+				if ($(this).hasClass('disabled')) {
+                                        e.preventDefault();
+                                }else{
+					$('.main_content').hide();
+					$(edit).show();
+				}
 	 $(function() {
 $.validator.addMethod("no_space", function(value, element, param) {
 		return !param || /^[a-zA-Z0-9]*$/i.test(value);
