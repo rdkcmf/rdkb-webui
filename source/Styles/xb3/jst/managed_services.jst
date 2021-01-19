@@ -134,8 +134,8 @@ $(document).ready(function() {
 	// only run once on init
 	if (false == jsEnableMS)
 	{
-		$('.main_content *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
-		$(".main_content .radioswitch_cont:not(#managed_services_switch)").radioswitch("doEnable", false);
+		$('.module *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
+		$(".module .radioswitch_cont:not(#managed_services_switch)").radioswitch("doEnable", false);
 	}	
  // If Enable UPnP is not checked, disable the next two form fields
 	$("#managed_services_switch").change(function() {
@@ -162,12 +162,12 @@ $(document).ready(function() {
 				var isUMSDisabled = $("#managed_services_switch").radioswitch("getState").on === false;
 				if(isUMSDisabled){
 					// $("#managed-services-items").prop("disabled",true).addClass("disabled");
-					$('.main_content *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
-					$(".main_content .radioswitch_cont:not(#managed_services_switch)").radioswitch("doEnable", false);
+					$('.module *').not(".radioswitch_cont, .radioswitch_cont *").addClass("disabled");
+					$(".module .radioswitch_cont:not(#managed_services_switch)").radioswitch("doEnable", false);
 				}else{
 					// $("#managed-services-items").prop("disabled",false).removeClass("disabled");
-					$('.main_content *').not(".radioswitch_cont, .radioswitch_cont *").removeClass("disabled");
-					$(".main_content .radioswitch_cont:not(#managed_services_switch)").radioswitch("doEnable", true);
+					$('.module *').not(".radioswitch_cont, .radioswitch_cont *").removeClass("disabled");
+					$(".module .radioswitch_cont:not(#managed_services_switch)").radioswitch("doEnable", true);
 				}
 			},
 			error:function(){
