@@ -619,6 +619,7 @@ function init_form()
 	var security			= "<?% echo( $security); ?>";
 	var DFS_Support1		= "<?% echo( $DFS_Support1); ?>";
 	var DFS_Enable1			= "<?% echo( $DFS_Enable1); ?>";
+	var partner_id 			= '<?% echo( $partnerId); ?>';
 	//show or hide divs as per user
 	if ("mso"==thisUser){
 		$("#div_wireless_mode").hide();
@@ -651,7 +652,12 @@ function init_form()
 			else{
 				if ("BelowControlChannel"==ext_channel){
 					$("#channel_number [value='36'],[value='44'],[value='52'],[value='60'],[value='100'],[value='108'],[value='116'],[value='132'],[value='140'],[value='149'],[value='157'],[value='165']").prop("disabled", true);
-				}	
+					if(partner_id.indexOf('sky-')===0){
+						if('2.4'!=radio_band){
+							$("#channel_number [value='36'],[value='44']").prop("disabled", false);
+						}
+					}
+				}
 				else{	//AboveControlChannel or Auto
 					$("#channel_number [value='40'],[value='48'],[value='56'],[value='64'],[value='104'],[value='112'],[value='136'],[value='153'],[value='161']").prop("disabled", true);
 				}	
