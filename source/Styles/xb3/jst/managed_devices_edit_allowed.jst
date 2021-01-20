@@ -277,6 +277,7 @@ $(document).ready(function() {
 						data:{edit:"true",ID:ID,name:name,mac:mac,block:block,startTime:startTime,endTime:endTime,days:days},
 						success:function(results){
 							//jAlert(results);
+							var status = JSON.parse(results).status;
 							jHide();
 							if (status=="Success!") { window.location.href="managed_devices.jst";}
 							else jAlert(status);
