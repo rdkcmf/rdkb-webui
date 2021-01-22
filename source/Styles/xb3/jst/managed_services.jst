@@ -149,7 +149,12 @@ $(document).ready(function() {
 			success:function(result){
 				//jAlert(result);
 				jHide();
-        var status = JSON.parse(result).status;
+				if(isIE()){
+					var newmsg = JSON.stringify(result);
+		                	var status= jQuery.parseJSON( newmsg).status;
+				}else{
+					var status = JSON.parse(result).status;
+				}
 				if (UMSStatus!=status){ 
 					alertLocale("Could not do it!");
 					$("#managed_services_switch").radioswitch("doSwitch", status === 'Enabled' ? 'on' : 'off');

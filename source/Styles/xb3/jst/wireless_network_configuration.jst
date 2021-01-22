@@ -364,7 +364,12 @@ function update_Wi_Fi_control_list(){
 		url: "actionHandler/ajaxSet_wireless_network_configuration.jst",
 		data: { configInfo: jsConfig },
 		success: function(msg) {
-		var response_msg = JSON.parse(msg);
+		if(isIE()){
+			var newmsg = JSON.stringify(msg);
+			var response_msg= jQuery.parseJSON( newmsg);
+		}else{
+			var response_msg = JSON.parse(msg);
+		}
 		if (isBridge != 'bridge-static' || "mso" == "<?% echo( $_SESSION["loginuser"]); ?>") {
 				$("#filtering_mode").attr("value", response_msg.filtering_mode);
 				//clear the previous filter_table when ssid changed
