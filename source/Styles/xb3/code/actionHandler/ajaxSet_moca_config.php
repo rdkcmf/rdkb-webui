@@ -36,32 +36,32 @@ if ($validation && "true" == $arConfig['moca_enable'] && "admin" != $thisUser){
 	if($validation) $validation = (preg_match("/^0{7}[0-9a-f]{7}00$|^0{16}$/i", $arConfig['taboo_freq'])==1);
 	if($validation) $validation = isValInArray($arConfig['nc_enable'], array('true', 'false'));
 	if($validation) $validation = isValInArray($arConfig['privacy_enable'], array('true', 'false'));
-	if ("true" == $arConfig['privacy_enable'])
-		if($validation) $validation = (preg_match("/^\d{12,17}$/", $arConfig['net_password'])==1);
+	//if ("true" == $arConfig['privacy_enable'])
+		//if($validation) $validation = (preg_match("/^\d{12,17}$/", $arConfig['net_password'])==1);
 }
 if($validation) {
 	if ("true" == $arConfig['moca_enable']){
 		if ("admin" != $thisUser){
-			setStr("Device.MoCA.Interface.1.X_CISCO_COM_ChannelScanning", $arConfig['scan_method'], false);
+			setStr("Device.MoCA.Interface.1.X_CISCO_COM_ChannelScanning", $arConfig['scan_method'], true);
 			if ("false" == $arConfig['scan_method']){
-				setStr("Device.MoCA.Interface.1.FreqCurrentMaskSetting", $arConfig['channel'], false);
+				setStr("Device.MoCA.Interface.1.FreqCurrentMaskSetting", $arConfig['channel'], true);
 			}
-			setStr("Device.MoCA.Interface.1.BeaconPowerLimit", $arConfig['beacon_power'], false);
+			setStr("Device.MoCA.Interface.1.BeaconPowerLimit", $arConfig['beacon_power'], true);
 			// GUI version 3.0 removed Taboo enable option
 			// setStr("Device.MoCA.Interface.1.X_CISCO_COM_EnableTabooBit", $arConfig['taboo_enable'], false);
 			// if ("true" == $arConfig['taboo_enable']){
-				setStr("Device.MoCA.Interface.1.NodeTabooMask", $arConfig['taboo_freq'], false);
+				setStr("Device.MoCA.Interface.1.NodeTabooMask", $arConfig['taboo_freq'], true);
 			// }
-			setStr("Device.MoCA.Interface.1.PreferredNC", $arConfig['nc_enable'], false);
+			setStr("Device.MoCA.Interface.1.PreferredNC", $arConfig['nc_enable'], true);
 			// GUI version 3.0 removed QoS option
 			// setStr("Device.MoCA.Interface.1.QoS.X_CISCO_COM_Enabled", $arConfig['qos_enable'], false);
 		}
 		// GUI version 3.0 don't allowd home user to set MoCA privacy
 		if ("admin" != $thisUser){
 			if ("true" == $arConfig['privacy_enable']){
-				setStr("Device.MoCA.Interface.1.KeyPassphrase", $arConfig['net_password'], false);
+				setStr("Device.MoCA.Interface.1.KeyPassphrase", $arConfig['net_password'], true);
 			}
-			setStr("Device.MoCA.Interface.1.PrivacyEnabledSetting", $arConfig['privacy_enable'], false);
+			setStr("Device.MoCA.Interface.1.PrivacyEnabledSetting", $arConfig['privacy_enable'], true);
 		}
 	}
 	setStr("Device.MoCA.Interface.1.Enable", $arConfig['moca_enable'], true);
