@@ -232,10 +232,10 @@ jQuery.validator.addMethod("port",function(value,element){
 	return this.optional(element) || (value.match(/^\d+$/g) && value >= 1025 && value <= 65535);
 }, $.i18n("Please enter a port number 1025 ~ 65535."));
 jQuery.validator.addMethod("notEqual",function(value,element){
-	return this.optional(element) || (value != $('#http').val());
+	return this.optional(element) || ((value != 8081) && (value != $('#http').val() ));
 }, $.i18n("Please enter a different port."));
 jQuery.validator.addMethod("notEqualHttps",function(value,element){
-	return this.optional(element) || (value != $('#https').val());
+	return this.optional(element) || ((value != 8081) &&  (value != $('#https').val() ));
 }, $.i18n("Please enter a different port."));
 var validator = $("#pageForm").validate({
 	groups:{
