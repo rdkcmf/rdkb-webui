@@ -436,7 +436,6 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
                     if($isMapT == 'MAPT'){
                       $WANIPv4 = getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapIpv4Address")+' <label id="shrdMpT">(Shared using MAP-T)</label>';
                       //$WANIPv4Gateway = '-NA-';
-                      echo ($WANIPv4);
                     }else{
                         $interface = php_getstr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
                         echo( php_getstr( $interface + "IPv4Address.1.IPAddress" ));

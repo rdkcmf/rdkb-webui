@@ -1080,6 +1080,7 @@ $("[id^='ethcon']").text($.i18n("Ethernet"));
 $("[id^='ipv6-addr-val']").text($.i18n("EMPTY"));
 $("#wifinet5ghz").text($.i18n("Wireless Network (Wi-Fi 5 GHz):"));
 $("#wanipv6add").text($.i18n("WAN IPv6 Address:"));
+$("[id^='shrdMpT']").text($.i18n('(Shared using MAP-T)'));
 }
   $.i18n().load({ 
     'it': '/locale/it.json' 
