@@ -113,7 +113,6 @@ $("[id^='chPass']").text($.i18n('Change Password'));
 $('#oldpass').text($.i18n('Current Password:'));
 $('#logout').text($.i18n('Logout'));
 $('#passtool').text($.i18n('Periodically change your Admin Tool password to protect your network.'));
-$('#oldPassword').text($.i18n('Current Password:'));
 $('#newpass').text($.i18n('New Password:'));
 $('#verpass').text($.i18n('Re-enter New Password:'));
 $('#showtypass').text($.i18n('Show Typed Password:'));
