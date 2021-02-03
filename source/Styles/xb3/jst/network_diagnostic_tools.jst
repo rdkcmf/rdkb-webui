@@ -385,8 +385,16 @@ function showTracerouteDialog(width) {
 
 function checkTraceError(traceResults){
 	var states_trace=["Error_CannotResolveHostName","Error_MaxHopCountExceeded","Error! Traceroute Failed","Error_Internal","Error_Other","Error"];
-	//var errorPresent=false;
-	if(states_trace.includes(traceResults)){
+	var errorPresent=false;
+
+	for(var i=0; i< states_trace.length;i++){
+
+        	if(traceResults==states_trace[i]){
+                	errorPresent=true;
+                	break;
+        	}
+        }
+        if(errorPresent){
 		showTracerouteDialog("400px");
           	if($("#pop_trace").hasClass("noError")){
 		     $("#pop_trace").removeClass( "noError" );
