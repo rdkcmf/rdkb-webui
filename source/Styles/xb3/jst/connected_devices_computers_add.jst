@@ -120,7 +120,8 @@ $(document).ready(function() {
         //alert( deviceInfo);
         if($("#pageForm").valid()){
 	        var mac2bit = macAddress.substr(0,2); //it's a string type variable
-	        if( 1 == (mac2bit & 1) ){
+	        //if( 1 == (mac2bit & 1) ){
+		if (!RegExp("^([0-9a-fA-F]{2})(([/\s:-][0-9a-fA-F]{2}){5})$").test(macAddress) || ("00:00:00:00:00:00"==macAddress)|| (parseInt(mac2bit,16)%2 != 0) ) {
 		  		//mac2bit is odd
 		  		alertLocale("The MAC address is invalid, please input again.");
 		  		return;
