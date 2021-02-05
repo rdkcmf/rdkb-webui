@@ -34,7 +34,7 @@ function discoverBattery() {
                         ["Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.discover", "int", "1"],
                     ]/*p2j-array*/;
 
-        $retStatus = DmExtSetStrsWithRootObj("Device.DeviceInfo.", true, $paramArray);
+        $retStatus = DmExtSetStrsWithRootObj("Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.", true, $paramArray);
         if (!$retStatus){
                 echo("Success!");
         }
