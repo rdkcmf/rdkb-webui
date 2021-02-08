@@ -89,6 +89,7 @@ function sec2dhms($sec)
 	$ids = explode(",", getInstanceIds($fistUSif+"IPv6Address."));
 	$WANIPv6="";
 	$DHCP_LET_IPv6="";
+	$WANIPv6LinkLocal="";
 	if (strpos($partnerId, "sky-") !== false) {
 		$IPv6Adr = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstDownstreamIpInterface");
 		$ids = explode(",", getInstanceIds($IPv6Adr+"IPv6Address."));
