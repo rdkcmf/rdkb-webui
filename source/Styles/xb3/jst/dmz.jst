@@ -244,14 +244,14 @@ $('#save_setting').click(function() {
 	if (isEnabledDMZ) {
 		var ip= $("#dmz_host_address_1").val() + '.' + $("#dmz_host_address_2").val() + '.'+ $("#dmz_host_address_3").val() + '.' +$("#dmz_host_address_4").val();
                         var IPv4_valid = ValidIp4AddrInDhcpPool(ip, beginAddr, endAddr);
-                        if(!IPv4_valid){
-                                alertLocale("Server IP addr is not in valid range !");
-                                return;
-                        }
 		// check the basic rules
 		isValid = $("#pageForm").valid();
 		// check some extra IPv4 rule. TODO: add IPv6 checking
 		if(isValid && !IsBlank("dmz_host_address_")) {
+			if(!IPv4_valid){
+                                alertLocale("Server IP addr is not in valid range !");
+                                return;
+                        }
 			if (host == jsGatewayIP){
 				alertLocale("DMZ v4 Host IP can\'t be equal to the Gateway IP address !");
 				isValid = false;
