@@ -893,7 +893,7 @@
  "Service Type":"Tipo Servizio",
  "Trigger Port(s)":"Porta/e di trigger",
  "Target port(s)":"Porta/e di destinazione",
- "delete port Triggering for ":"elimina port triggering per ",
+ "delete port Triggering for ":"voler eliminare il port triggering ",
  "Failure! As Port Triggering/Port Forwarding rule exists for the same port.":"Si è verificato un errore. É presente una regola di Port Triggering/Port Forwarding per la stessa porta.",
  "Advanced > Port Triggering > Add Port Trigger":"Avanzate > Port Triggering > Aggiungi porta trigger",
  "Add a rule for port triggering services by user.":"Aggiungi una regola per i servizi di port triggering per utente.",
