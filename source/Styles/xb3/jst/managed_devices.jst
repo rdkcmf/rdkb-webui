@@ -257,10 +257,13 @@ $(document).ready(function() {
 				$arrayAllowName[$allowCnt] = $value["Description"];
 				$arrayAllowMAC[$allowCnt] = $value["MACAddress"]; 
 				$blockStatus = $value["AlwaysBlock"]; 
-				$idval="";
 				if($blockStatus == "true"){
 					$arrayAllowStatus[$allowCnt] = "Always";
-					$idval ="idval";
+					if(strpos($partnerId, "sky-") !== false){
+						if($locale=="it"){
+							$arrayAllowStatus[$allowCnt] = "Sempre";
+						}
+					}
 				}else if($blockStatus == "false") {
 					//$arrayAllowStatus[$allowCnt] = "Period";
 					$stime = $value["StartTime"]; 
@@ -273,7 +276,7 @@ $(document).ready(function() {
 						for($a=0;$a<=count($days_cvt);$a++) {
 							if($locale=="it"){
 								if($days_cvt[$a] == "Mon")
-									val_key += "Lun";
+									$val_key += "Lun";
 								else if($days_cvt[$a] == "Tue")
 									$val_key += "Mart";
 								else if($days_cvt[$a] == "Wed")
@@ -301,10 +304,13 @@ $(document).ready(function() {
 				$arrayBlockName[$blockCnt] = $value["Description"]; 
 				$arrayBlockMAC[$blockCnt] = $value["MACAddress"]; 
 				$blockStatus = $value["AlwaysBlock"]; 
-				$idvalblk="";
 				if($blockStatus == "true"){
 					$arrayBlockStatus[$blockCnt] = "Always";
-					$idvalblk="idval";
+					if(strpos($partnerId, "sky-") !== false){
+						if($locale=="it"){
+							$arrayBlockStatus[$blockCnt] = "Sempre";
+						}
+					}
 				}else if($blockStatus == "false"){
 					//$arrayBlockStatus[$blockCnt] = "Period";
 					$stime = $value["StartTime"]; 
@@ -364,7 +370,7 @@ $(document).ready(function() {
 						<td headers='allowed-number' class=\"row-label alt number\">"+$j+"</td>\
 						<td headers='allowed-device-name'>"+$arrayAllowName[$i]+"</td>\
 						<td headers='allowed-mac-address'>"+$arrayAllowMAC[$i]+"</td>\
-						<td headers='allowed-time' id="+$idval+">"+$arrayAllowStatus[$i]+"</td>\
+						<td headers='allowed-time'>"+$arrayAllowStatus[$i]+"</td>\
 						<td headers='allowed-edit-button' class=\"edit\"><a tabindex='0' href=\"managed_devices_edit_allowed.jst?id="+$arrayAllowID[$i]+"\" class=\"btn\"  id=\"edit_"+$arrayAllowID[$i]+"\">Edit</a></td>\
 						<td headers='allowed-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.jst?del="+$arrayAllowID[$i]+"\" class=\"btn confirm\" title=\"Delete this device\" id=\"delete_"+$arrayAllowID[$i]+"\">x</a></td>\
 					</tr>"); 
@@ -404,7 +410,7 @@ $(document).ready(function() {
 						<td headers='blocked-number' class=\"row-label alt number\">"+$j+"</td>\
 						<td headers='blocked-device-name'>"+$arrayBlockName[$i]+"</td>\
 						<td headers='blocked-mac-address'>"+$arrayBlockMAC[$i]+"</td>\
-						<td headers='blocked-time' id="+$idvalblk+">"+$arrayBlockStatus[$i]+"</td>\
+						<td headers='blocked-time'>"+$arrayBlockStatus[$i]+"</td>\
 						<td headers='blocked-edit-button' class=\"edit\"><a tabindex='0' href=\"managed_devices_edit_blocked.jst?id="+$arrayBlockID[$i]+"\" class=\"btn\"  id=\"edit_"+$arrayBlockID[$i]+"\">Edit</a></td>\
 						<td headers='blocked-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.jst?del="+$arrayBlockID[$i]+"\" class=\"btn confirm\" title=\"Delete this device\" id=\"delete_"+$arrayBlockID[$i]+"\">x</a></td>\
 					</tr>"); 
