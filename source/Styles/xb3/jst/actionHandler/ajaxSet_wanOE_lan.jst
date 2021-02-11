@@ -13,11 +13,13 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-?> 
+?>
+<?% include('includes/utility.jst') ?> 
 <?% include('../includes/actionHandlerUtility.jst') ?>
-<?%
-	if (!isset($_SESSION["loginuser"])) {
-		echo( '<script type="text/javascript">alertLocale("Please Login First!"); location.href="../index.jst";</script>');
+<?%	
+	session_start();
+        if ($_SESSION["loginuser"] == "" || $_SESSION["loginuser"] == false) {
+		echo( '<script type="text/javascript">alert("Please Login First!"); location.href="../index.jst";</script>');
 		exit(0);
 	}
 	$response_message = []/*p2j-array*/;
@@ -40,9 +42,5 @@
 			$response_message='success';
 		}
 	}
-	if($response_message!=''){
-		$response->error_message = $response_message;
-		echo( htmlspecialchars(json_encode($response), ENT_NOQUOTES, 'UTF-8'));
-	}
-	else echo( htmlspecialchars($jsConfig, ENT_NOQUOTES, 'UTF-8'));
+	echo( htmlspecialchars(json_encode($response_message.trim()), ENT_NOQUOTES, 'UTF-8'));
 ?>

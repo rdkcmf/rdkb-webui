@@ -110,9 +110,9 @@ $(document).ready(function() {
 				type: 'POST',
 				url: 'actionHandler/ajaxSet_wanOE_lan.jst',
 				data:{configInfo: set_val},
-				success: function(data){
-					msg_parseJSON = $.parseJSON(data);
-					if(msg_parseJSON.error_message == 'success'){
+				success: function(msg){
+					msg_parseJSON = JSON.parse(msg);
+					if(msg_parseJSON == 'success'){
 						reboot();
 					}
 				}
@@ -128,7 +128,7 @@ function reboot(){
 		data: { configInfo: set_val},
 		success: function(data) {
 			msg_parseJSON = $.parseJSON(data);
-			if(msg_parseJSON.error_message == 'success'){
+			if(msg_parseJSON == 'success'){
 				setTimeout(function recon_check(){
 					var url = 'http://'+location.host+'/index.jst';
 					var request = new XMLHttpRequest;
