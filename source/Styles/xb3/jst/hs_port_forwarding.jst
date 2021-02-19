@@ -221,7 +221,7 @@ function getTitle(val){
 								continue;
 							}								
 							$id = $hspf_entry['__id'];
-							echo('<input type="hidden" id=servicename_'+$id+' value='+$hspf_entry['Description']+'>');
+							echo('<input type="hidden" id=servicename_'+$id+' value="'+$hspf_entry['Description']+'">');
 							$iclass = ($iclass === "") ? "odd" : "";
 							($hspf_entry['Protocol'] === "BOTH") && ($hspf_entry['Protocol'] = "TCP/UDP");
 							$checked = $hspf_entry['Enable'] === "true" ? "checked" : "";

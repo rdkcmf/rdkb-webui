@@ -221,7 +221,7 @@ function getTitle(val){
 				if ($iclass=="") {$iclass="odd";} else {$iclass="";}
 				$Protocol =  $portTriggerValues[$i.toString()]["TriggerProtocol"];
 				if ($Protocol=="BOTH") $Protocol="TCP/UDP";
-				echo('<input type="hidden" id=servicename_'+$i+' value='+$portTriggerValues[$i.toString()]["Description"]+'>');
+				echo('<input type="hidden" id=servicename_'+$i+' value="'+$portTriggerValues[$i.toString()]["Description"]+'">');
 				echo( "\
 		    	<tr  class=" + "'" +$iclass+ "'" + ">\
 		        <td headers='service-name'>"+$portTriggerValues[$i.toString()]["Description"]+"</td>\

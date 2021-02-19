@@ -190,7 +190,7 @@ $(document).ready(function() {
 							}
 							$hostname = getStr("Device.X_CISCO_COM_DDNS.Service."+$i+".Domain");
 							$hostname = htmlspecialchars($hostname, ENT_NOQUOTES, 'UTF-8');
-							echo('<input type="hidden" id=servicename_'+$i+' value='+$name+'>');
+							echo('<input type="hidden" id=servicename_'+$i+' value="'+$name+'">');
 							echo( "\
 							<tr class=$iclass>\
 								<td>"+$name+"</td>\

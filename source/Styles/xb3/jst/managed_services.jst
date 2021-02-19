@@ -307,7 +307,7 @@ function getTitle(val){
 							}
 					        $blockStatus = $stime+"-"+$etime+","+$bdays;
 						}
-						echo('<input type="hidden" id=servicename_'+$i+' value='+$value["Description"]+'>');
+						echo('<input type="hidden" id=servicename_'+$i+' value="'+$value["Description"]+'">');
 						echo( "\
 					<tr class=" + "'" +$iclass+ "'" + ">\
 						<td headers='service-number' class=\"row-label alt number\">"+$j+"</td>\
