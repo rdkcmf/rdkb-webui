@@ -239,8 +239,16 @@ ili{
   </style>
 <script>
 var check="false";
+var cnt=0;
 function checkRFSignalStatus(val){
-      
+	//var min=1;
+	//var rand = Math.floor(Math.random() * (max - min + 1) + min);
+	if(cnt == 8)
+        	cnt =8;
+	else
+        	cnt++; 
+	var max= Math.pow(2, cnt) ;
+	//console.log("cnt====="+cnt+"===max==="+max);
       if(val=="button"){
         jProgress('Waiting for backend to be fully executed, please be patient...',60);
       }
@@ -265,7 +273,9 @@ function checkRFSignalStatus(val){
         }
       }
     });
+setTimeout(checkRFSignalStatus, max * 1000);
       }
+checkRFSignalStatus();
 $(document).ready(function(){
   $("#get_set_up").click(function(){
      checkRFSignalStatus("button");
@@ -286,13 +296,13 @@ $(document).ready(function(){
     
   });
 });
-setInterval(function() {
+/*setInterval(function() {
 
   if(check=="false"){
       checkRFSignalStatus();
   }
   
-}, 5000);
+}, 5000);*/
   </script>
 </head>
 
