@@ -104,23 +104,6 @@ $(document).ready(function() {
 		$(this).attr("aria-checked", $(this).find("input").attr("checked") ? "true" : "false");
 	});
 
-       // grey any 2.4G operation
-       var ctrl11n = sessionStorage.getItem("ctrl11n-value");
-       if ("0" == ctrl11n) {
-               // radio
-               $(".div_enable_radio:lt(1)").find(".radioswitch_cont").radioswitch("doEnable", false).find(".rs_selected label").css("color", "black");
-               $(".div_radio_setting:lt(2)").find("input,select").prop("disabled", true);
-               // ssid of private/xhs/hhs
-               var $theObj = $("#pageForm");
-               if ($theObj.find("h2").text().indexOf('2.4 GHz') != -1) {
-                       $theObj.find(".radioswitch_cont").radioswitch("doEnable", false).find(".rs_selected label").css("color", "black");
-                       $theObj.find("input,select").prop("disabled", true);
-               }
-               // wizard
-               $("#wizard-form-buttons").closest('form').find('div:lt(3) *').prop("disabled", true);
-       }
-       sessionStorage.removeItem("ctrl11n-value");
-
 });
 </script>	
 </body>
