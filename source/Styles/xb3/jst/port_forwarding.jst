@@ -268,7 +268,7 @@ function getTitle(val){
 							}
 					    	if ($resArray[$i]['X_CISCO_COM_InternalClientV6'] == 'x')
 					    		$resArray[$i]['X_CISCO_COM_InternalClientV6'] = '';
-						echo('<input type="hidden" id=servicename_'+$index+' value='+$resArray[$i]['Description']+'>');
+						echo('<input type="hidden" id=servicename_'+$index+' value="'+$resArray[$i]['Description']+'">');
 					    	echo( "\
 					    	    <tr class='" + $iclass+ "'>\
 								<td headers='service-name'>" + $resArray[$i]['Description'] + "</td>\
