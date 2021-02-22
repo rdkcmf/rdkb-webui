@@ -379,6 +379,17 @@ if($_SESSION["loginuser"] == "mso"){
 		$cm_value['RebindTimeRemaining'] = $cm_value['IPv6RebindTimeRemaining'];
 		$cm_value['RenewTimeRemaining']	 = $cm_value['IPv6RenewTimeRemaining'];
 	}
+        else if ($cm_value['LearnedIPMode'] == 'APM' && $cm_value['IPAddress'] == '0.0.0.0'){
+                $cm_value['IPAddress']                   = $cm_value['IPv6Address'];
+                $cm_value['SubnetMask']                  = 'NA';
+                $cm_value['Gateway']                     = 'NA';
+                $cm_value['TFTPServer']                  = $cm_value['IPv6TFTPServer'];
+                $cm_value['TimeServer']                  = $cm_value['IPv6TimeServer'];
+                $cm_value['BootFileName']                = $cm_value['IPv6BootFileName'];
+                $cm_value['LeaseTimeRemaining']  = $cm_value['IPv6LeaseTimeRemaining'];
+                $cm_value['RebindTimeRemaining'] = $cm_value['IPv6RebindTimeRemaining'];
+                $cm_value['RenewTimeRemaining']  = $cm_value['IPv6RenewTimeRemaining'];
+        }
 } else {
 	$cm_value = "NULL";
 }
