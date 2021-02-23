@@ -432,8 +432,21 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
         <div class="form-row odd">
               <span class="readonlyLabel" id="waniploc">WAN IP Address:</span> <span class="value">
               <?%
-                  $interface = php_getstr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
-                  echo( php_getstr( $interface + "IPv4Address.1.IPAddress" ));
+                  if(strpos($partnerId, "sky-") !== false){
+                    $isMapT = getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapTransportMode");
+                    if($isMapT == 'MAPT'){
+                      $WANIPv4 = getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapIpv4Address")+' <label id="shrdMpT">(Shared using MAP-T)</label>';
+                      //$WANIPv4Gateway = '-NA-';
+                      echo ($WANIPv4);
+                    }else{
+                        $interface = php_getstr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
+                        echo( php_getstr( $interface + "IPv4Address.1.IPAddress" ));
+                      }
+                  }
+                  else{
+                      $interface = php_getstr("com.cisco.spvtg.ccsp.pam.Helper.FirstUpstreamIpInterface");
+                      echo( php_getstr( $interface + "IPv4Address.1.IPAddress" ));
+                  } 
               ?>
              </span>
         </div>
@@ -449,7 +462,8 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
                         $val = getStr($IPv6Adr+"IPv6Address."+$i+".IPAddress");
                         if (!strstr($val, "fe80::")){
                                 $WANIPv6=$val;
-                        }
+				break;
+                        }else{$WANIPv6='';}
                 }
         }
      else {
