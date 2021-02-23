@@ -660,9 +660,15 @@ function getTitle(val){
                 	addsrcid= "reserveip";
         	}
 		var privconnnetid="";
-        	if($onlinePrivateNetworkHost[$x.toString()]['Connection']=="Unknown")
-                	privconnnetid ="unknown";
-
+		if($onlinePrivateNetworkHost[$x.toString()]['Connection']=="Unknown"){
+			privconnnetid ="unknown";
+		}
+		else if($onlinePrivateNetworkHost[$x.toString()]['Connection']=="Wi-Fi 2.4G"){
+			privconnnetid ="24_G";
+		}
+		else if($onlinePrivateNetworkHost[$x.toString()]['Connection']=="Wi-Fi 5G"){
+			privconnnetid ="5_G";
+		}else{privconnnetid ="ethcon";}
 		if(($CloudUIEnable == "true" ) || $onlinePrivateNetworkHost[$x.toString()]['Blocked']) $style = "&nbsp;";
          	else $style = "<input type='button' id=" + "'online-X-" +$k+ "'" + " value='X' tabindex='0' title='add this device to Blocked Devices List' name=" + "'{\"dev_name\":\""+$dev_name+"\", \"mac_addr\":\""+$mac_addr+"\"}'" + " class=\"btn confirm private\"></input>";
 		if($k % 2)  $odd = "";
@@ -752,9 +758,17 @@ function getTitle(val){
         }else{
                 addsrcid= "reserveip";
         }
-	var privconnnetid="";
-        if($offlinePrivateNetworkHost[$x.toString()]['Connection']=="Unknown")
-                privconnnetid ="unknown";
+
+	var privconnnetOffid="";
+        if($offlinePrivateNetworkHost[$x.toString()]['Connection']=="Unknown"){
+                privconnnetOffid ="unknown";
+	}
+	else if($offlinePrivateNetworkHost[$x.toString()]['Connection']=="Wi-Fi 2.4G"){
+		privconnnetOffid ="24_G";
+	}
+	else if($offlinePrivateNetworkHost[$x.toString()]['Connection']=="Wi-Fi 5G"){
+		privconnnetOffid ="5_G";
+	}else{privconnnetOffid ="ethcon";}
 
 		if(($CloudUIEnable == "true" ) || $offlinePrivateNetworkHost[$x.toString()]['Blocked']) $style = "&nbsp;";
 		else $style = "<input type='button' id=" + "'offline-X-" +$k+ "'" + " value='X' tabindex='0' onmouseover=getTitle("+$k+")  name=" + "'{\"dev_name\":\""+$dev_name+"\", \"mac_addr\":\""+$mac_addr+"\"}'" + "  class=\"btn confirm private\"></input>";
@@ -784,9 +798,9 @@ function getTitle(val){
 		echo(($AddrSrc == "DHCP") ? "DHCP" : "Reserved IP");
 		echo("\
 		</td>\
-	        <td headers='offline-device-conncection' id="+privconnnetid+">\
+	        <td headers='offline-device-conncection' id="+privconnnetOffid+">\
 			");
-		echo('<span id='+privconnnetid+'>'+$offlinePrivateNetworkHost[$x.toString()]['Connection']+'</span>');
+		echo('<span id='+privconnnetOffid+'>'+$offlinePrivateNetworkHost[$x.toString()]['Connection']+'</span>');
 	echo("</td><td headers='edit-button'><input type='button' value='Edit' tabindex='0' id=" + "'btn-" +$offlinePrivateNetworkHost[$x.toString()]['instanceID'] + "'"+ "  class=\"btn private edbutton\"></input>");
                 echo("</td><td headers='offline-device-disconnect-button'>");echo($style);echo("</td>");
                         echo("</tr>");	
@@ -1087,8 +1101,15 @@ for ($i=0; $i < $onlinePrivateNetworkHost['hostNum']; $i++) {
 	$ID      = $onlinePrivateNetworkHost[$i.toString()]['instanceID'];
 	$AddrSrc = $onlinePrivateNetworkHost[$i.toString()]['AddressSource'];
 	var unknowid="";
-	if($onlinePrivateNetworkHost[$i.toString()]['Connection']=="Unknown")
+	if($onlinePrivateNetworkHost[$i.toString()]['Connection']=="Unknown"){
 		unknowid="unknown";
+	}
+	else if($onlinePrivateNetworkHost[$i.toString()]['Connection']=="Wi-Fi 2.4G"){
+		unknowid ="24_G";
+	}
+	else if($onlinePrivateNetworkHost[$i.toString()]['Connection']=="Wi-Fi 5G"){
+		unknowid ="5_G";
+	}else{unknowid ="ethcon";}
 	echo( "\
         <div id=\"edit-device-" +$ID+ "\"  class=\"edit-device content \" style='display:none'>\
 		    <h1 id=\"conndevedithead\">Connected Devices > Devices > Edit Device</h1>\
@@ -1154,8 +1175,15 @@ for ($i=0; $i < $offlinePrivateNetworkHost['hostNum']; $i++) {
         $ID      = $offlinePrivateNetworkHost[$i.toString()]['instanceID'];
         $AddrSrc = $offlinePrivateNetworkHost[$i.toString()]['AddressSource'];
 	var unknowid="";
-        if($offlinePrivateNetworkHost[$i.toString()]['Connection']=="Unknown")
+        if($offlinePrivateNetworkHost[$i.toString()]['Connection']=="Unknown"){
                 unknowid="unknown";
+	}
+	else if($offlinePrivateNetworkHost[$i.toString()]['Connection']=="Wi-Fi 2.4G"){
+		unknowid ="24_G";
+	}
+	else if($offlinePrivateNetworkHost[$i.toString()]['Connection']=="Wi-Fi 5G"){
+		unknowid ="5_G";
+	}else{unknowid ="ethcon";}
         echo("\
         <div id=\"offline-edit-device-" +$ID+ "\"  class=\"edit-device content \" style='display:none'>\
                     <h1 id=\"conndevedithead1\">Connected Devices > Devices > Edit Device</h1>\
