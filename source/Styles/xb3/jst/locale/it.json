@@ -1256,6 +1256,9 @@
 "Please note 802.11 n/ac mode only compatible with AES and None encryption!!":"Nota: la modalità 802.11 n / ac è compatibile solo con la crittografia AES e Nessuna !!",
 "Please note 802.11 n mode only compatible with AES and None encryption!!":"Nota: la modalità 802.11 n è compatibile solo con la crittografia AES e Nessuna !!",
 "Reclaim Eth port":"Reclamare ETH Porta",
-"Switch to WANOE":"Passa a WANoE"
+"Switch to WANOE":"Passa a WANoE",
+"Wi-Fi 2.4G":"wifi 2,4 GHz",
+"Wi-Fi 5G":"wifi 5 GHz",
+"Ethernet":"Ethernet"
 }
 

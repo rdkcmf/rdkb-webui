@@ -554,7 +554,7 @@ $("#manstmess6").html($.i18n("The Gateway will block connections to websites on 
 $("[id^='idval']").text($.i18n("Always"));
 $("#manstmess8").text($.i18n("Blocked Sites"));
 $("#manstmess9").text($.i18n("Blocked Keywords"));  
-$("[id^='keywordSpan']").text($.i18n("Keyword:")); 
+$("[id^='keywordSpan']").text($.i18n("Keyword")); 
 $("#manstmess10").text($.i18n("Trusted devices management"));
 $("#manstmess11").text($.i18n("Parental Control > Managed Sites > Edit Blocked Site"));
 $("#manstmess12").text($.i18n("Edit Site to be Blocked"));
@@ -1073,6 +1073,9 @@ $("[id^='btn-cancel']").prop("value", $.i18n('Cancel'));
 $("#reclaim").text($.i18n("Reclaim Eth port"));
 $("#wanOE").text($.i18n("Switch to WANOE"));
 $("#shwmresecopt").attr('title',$.i18n("More Security Mode Options"));
+$("[id^='24_G']").text($.i18n("Wi-Fi 2.4G"));
+$("[id^='5_G']").text($.i18n("Wi-Fi 5G"));
+$("[id^='ethcon']").text($.i18n("Ethernet"));
 }
   $.i18n().load({ 
     'it': '/locale/it.json' 
