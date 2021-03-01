@@ -150,7 +150,9 @@ function DisplayStatus(count,store,diagName,status)
     if (status === 0) {
          img.src = "hwselftest/resources/icon-success-18.png";
     }
-    else if (status === 1) {
+    else if ((status === 1) ||
+             (status <= -300))
+    {
         img.src = "hwselftest/resources/icon-fail-18.png";
         overall_result = "Fail. Replace device";
     }
@@ -340,7 +342,9 @@ function formatResults(result) {
                 if (out["result"] === 0) {
                     img.src = "hwselftest/resources/icon-success-18.png";
                 }
-                else if (out["result"] === 1) {
+                else if ((out["result"] === 1) ||
+                         (out["result"] <= -300))
+                {
                     img.src = "hwselftest/resources/icon-fail-18.png";
                     overall_result = "Fail. Replace device";
                 }
