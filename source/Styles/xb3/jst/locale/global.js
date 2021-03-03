@@ -179,7 +179,7 @@ $("#contip").text($.i18n("View information about devices currently connected to 
 $("#contip2").text($.i18n("Every device listed below was auto discovered via DHCP."));
 $("#contip3").html($.i18n("<strong>Online Devices</strong> are currently connected to your Gateway."));
 $("#contip4").html($.i18n("<strong>Offline Devices</strong>  were once connected to your network, but not currently."));
-$("#contip5").text($.i18n("To block Internet access to a device connected to your Gateway, click the <strong>X</strong> button."));
+$("#contip6").html($.i18n("To block Internet access to a device connected to your Gateway, click the <strong>X</strong> button."));
 $("#prefpriv").text($.i18n("Prefer Private Connection"));
 $("#online-table-cap").text($.i18n("Online Devices-Private Network"));
 $("#host-name").text($.i18n("Host Name"));
@@ -1078,7 +1078,6 @@ $("#shwmresecopt").attr('title',$.i18n("More Security Mode Options"));
 $("[id^='24_G']").text($.i18n("Wi-Fi 2.4G"));
 $("[id^='5_G']").text($.i18n("Wi-Fi 5G"));
 $("[id^='ethcon']").text($.i18n("Ethernet"));
-$("[id^='ipv6-addr-val']").text($.i18n("EMPTY"));
 }
   $.i18n().load({ 
     'it': '/locale/it.json' 
