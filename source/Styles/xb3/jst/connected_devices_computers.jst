@@ -679,7 +679,7 @@ function getTitle(val){
 						if ($onlinePrivateNetworkHost[$x.toString()]['IPv4Address'] != '') {echo( "<dd><b id='ipvaddloc'>IPv4 Address</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['IPv4Address']);}
 						if ($onlinePrivateNetworkHost[$x.toString()]['IPv6Address2'] != '') {echo( "<dd><b id='ipv6addloc'>IPv6 Address</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['IPv6Address2']);}
 						if ( typeof $onlinePrivateNetworkHost[$x.toString()]['IPv6Address1'] !== 'undefined' && $onlinePrivateNetworkHost[$x.toString()]['IPv6Address1'] != '') {echo( "<dd><b id='loclinkadd'>Local Link IPv6 Address</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['IPv6Address1']);}
-						echo(    "<dd><b id='macaddloc'>MAC Address</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['PhysAddress']);
+						echo(    "<dd><b id='macaddlocnew'>MAC Address</b><br/></dd>"); echo($onlinePrivateNetworkHost[$x.toString()]['PhysAddress']);
 							echo("<dd><b id='commentnew'>Comments</b><br/></dd>"); echo($commentsOnline1);
 						echo("\
 						</dl>\
@@ -773,7 +773,7 @@ function getTitle(val){
 						if ($offlinePrivateNetworkHost[$x.toString()]['IPv4Address'] != '') {echo( "<dd><b id='ipvaddloc'>IPv4 Address</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['IPv4Address']);}
 						if ($offlinePrivateNetworkHost[$x.toString()]['IPv6Address2'] != ''  ) {echo( "<dd><b id='ipv6addloc'>IPv6 Address</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['IPv6Address2']);}
 						if ( typeof $offlinePrivateNetworkHost[$x.toString()]['IPv6Address1'] !== 'undefined' && $offlinePrivateNetworkHost[$x.toString()]['IPv6Address1'] !== '' ) {echo( "<dd><b id='loclinkadd'>Local Link IPv6 Address</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['IPv6Address1']);}
-						echo(    "<dd><b id='macaddloc'>MAC Address</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['PhysAddress']);
+						echo(    "<dd><b id='macaddlocnew'>MAC Address</b><br/></dd>");echo( $offlinePrivateNetworkHost[$x.toString()]['PhysAddress']);
 						echo( "<dd><b id='commentnew'>Comments</b><br/></dd>");echo($commentsOffline);
 					echo( "\
 					</dl>\
