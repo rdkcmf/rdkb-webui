@@ -219,6 +219,7 @@ $("#editdevloc,#editdevloc1").text($.i18n("Edit Device"));
 $("label[id^='confloc']").text($.i18n("Configuration:"));
 $("span[id^='idyes']").text($.i18n("Yes"));
 $("[id^='macaddloc']").text($.i18n("MAC Address:"));
+$("[id^='macaddlocnew']").text($.i18n("MAC Address"));
 $("#XHS-mac-address,#public-MAC,#acl-MAC1,#private-MAC,#other-MAC,#auto-MAC,#manual-MAC1,#macipaddr,#macipaddr1,#allowed-mac-address,#blocked-mac-address").text($.i18n("MAC Address"));
 $("#offXHS-mac-address").text($.i18n("MAC Address"));
 $("#xfinitywifi-mac-address").text($.i18n("MAC Address"));
