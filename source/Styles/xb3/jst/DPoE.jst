@@ -598,7 +598,7 @@ $DPoE_param = {
                 </div>
         </div>
         <div class="module" style="overflow:auto">
-		<h2>DPoE Llid Forwarding State</h2>
+		<h2 style="width:280%">DPoE Llid Forwarding State</h2>
                 <table class="data">
                 <tbody>
                         <tr class="">
@@ -617,8 +617,13 @@ $DPoE_param = {
                 </table>
         </div>
         <div class="module" style="overflow:auto">
-		<h2>DPoE Oam Frame Rate</h2>
-                <table class="data">
+                <table class="data" cellspacing="0" cellpadding="0">
+		 <thead>
+                <tr>
+                        <td class="row-label acs-th" colspan="<?% echo( count($DPoE_OFR_Values)+1); ?>">DPoE Oam Frame Rate</td>
+                </tr>
+                </thead>
+
                 <tbody>
                         <tr class="">
 				<th class="row-label ">Index</th>
@@ -677,8 +682,12 @@ $DPoE_param = {
                 </table>
         </div>
         <div class="module form div_dpoe" style="overflow:auto">
-		<h2>DPoE OnuLinkStatistics</h2>
-                <table class="data">
+                <table class="data" cellspacing="0" cellpadding="0">
+                 <thead>
+                <tr>
+                        <td class="row-label acs-th" colspan="<?% echo( count($DPoE_OLS_Values)+1); ?>">DPoE OnuLinkStatistics</td>
+                </tr>
+                </thead>
                 <tbody>
                         <tr class="">
 				<th class="row-label ">Index</th>
