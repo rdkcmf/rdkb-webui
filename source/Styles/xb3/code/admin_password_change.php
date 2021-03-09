@@ -184,7 +184,7 @@ function set_config(jsConfig)
 			jHide();
 			//msg.p_status >> Good_PWD, Default_PWD, Invalid_PWD
 			if ("Good_PWD" == msg.p_status) {
-				jAlert('<?php echo _("Changes saved successfully . <br/> Please login with the new password.")?>', "<?php echo _("Alert") ?>",function () {
+				jAlert('<?php echo _("Changes saved successfully. <br/> Please login with the new password.")?>', "<?php echo _("Alert") ?>",function () {
 				  window.location = "home_loggedout.php";
 				});
 			}
