@@ -55,6 +55,7 @@ $battery_param = {
         "bat_teststatus"            : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.testingStatus" 
     }/*p2j-array*/;
     $battery_value = KeyExtGet("Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.", $battery_param);
+    $battery_value['bat_model'] = (typeof($battery_value['bat_model'])== "undefined") ?  "" : $battery_value['bat_model'];
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
