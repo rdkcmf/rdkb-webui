@@ -554,7 +554,7 @@ $("#manstmess6").html($.i18n("The Gateway will block connections to websites on 
 $("[id^='idval']").text($.i18n("Always"));
 $("#manstmess8").text($.i18n("Blocked Sites"));
 $("#manstmess9").text($.i18n("Blocked Keywords"));  
-$("[id^='keywordSpan']").text($.i18n("Keyword:")); 
+$("[id^='keywordSpan']").text($.i18n("Keyword")); 
 $("#manstmess10").text($.i18n("Trusted devices management"));
 $("#manstmess11").text($.i18n("Parental Control > Managed Sites > Edit Blocked Site"));
 $("#manstmess12").text($.i18n("Edit Site to be Blocked"));
