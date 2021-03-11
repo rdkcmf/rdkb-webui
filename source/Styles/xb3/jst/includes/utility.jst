@@ -374,11 +374,12 @@ function group_device_2D_array($data, $fields) {
         for(var $k in $data) {
                         var $val = $data[$k];
                         $valAr = $val[$field];
+			$blockdays=$val['BlockDays'];
                         $type=$val['Type']
                         $tempArray[$valAr]= new Array();
                         for(var $r=($k-1);$r>=0;$r--){
                                 var flag=0;
-                                if(($valAr == $data[$r][$field])&& ($type=="Block")){
+                                if(($valAr == $data[$r][$field])&& ($type=="Block") && ($blockdays == $data[$r]['BlockDays'])){
                                         flag=1;
                                         break;
                                 }
@@ -390,7 +391,7 @@ function group_device_2D_array($data, $fields) {
                         }
                                 var flag_allow=0;
                                 for(var $m=($k-1);$m>=0;$m--){
-                                if(($valAr == $data[$m][$field])&& ($type=="Allow")){
+                                if(($valAr == $data[$m][$field])&& ($type=="Allow") && ($blockdays == $data[$m]['BlockDays'])){
                                         flag_allow=1;
                                         break;
                                 }
@@ -402,7 +403,7 @@ function group_device_2D_array($data, $fields) {
                                         $val['StartTime'] = $valnew['StartTime'];
                         }
 
-            $tempArray[$valAr+"_"+$type]=$val;
+            $tempArray[$valAr+"_"+$type+"_"+$blockdays]=$val;
         }
         return $tempArray;
 }
