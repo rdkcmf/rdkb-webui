@@ -668,7 +668,7 @@ function getTitle(val){
 		}
 		else if($onlinePrivateNetworkHost[$x.toString()]['Connection']=="Wi-Fi 5G"){
 			privconnnetid ="5_G";
-		}else{privconnnetid ="ethcon";}
+		}else if($onlinePrivateNetworkHost[$x.toString()]['Connection']=="Ethernet"){privconnnetid ="ethcon";}
 		if(($CloudUIEnable == "true" ) || $onlinePrivateNetworkHost[$x.toString()]['Blocked']) $style = "&nbsp;";
          	else $style = "<input type='button' id=" + "'online-X-" +$k+ "'" + " value='X' tabindex='0' title='add this device to Blocked Devices List' name=" + "'{\"dev_name\":\""+$dev_name+"\", \"mac_addr\":\""+$mac_addr+"\"}'" + " class=\"btn confirm private\"></input>";
 		if($k % 2)  $odd = "";
@@ -768,7 +768,7 @@ function getTitle(val){
 	}
 	else if($offlinePrivateNetworkHost[$x.toString()]['Connection']=="Wi-Fi 5G"){
 		privconnnetOffid ="5_G";
-	}else{privconnnetOffid ="ethcon";}
+	}else if($offlinePrivateNetworkHost[$x.toString()]['Connection']=="Ethernet"){privconnnetOffid ="ethcon";}
 
 		if(($CloudUIEnable == "true" ) || $offlinePrivateNetworkHost[$x.toString()]['Blocked']) $style = "&nbsp;";
 		else $style = "<input type='button' id=" + "'offline-X-" +$k+ "'" + " value='X' tabindex='0' onmouseover=getTitle("+$k+")  name=" + "'{\"dev_name\":\""+$dev_name+"\", \"mac_addr\":\""+$mac_addr+"\"}'" + "  class=\"btn confirm private\"></input>";
