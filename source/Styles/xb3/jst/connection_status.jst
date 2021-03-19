@@ -453,6 +453,7 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
         <div class="form-row">
               <span class="readonlyLabel" id="wanipv6add">WAN IPv6 Address:</span> <span class="ipv6-style">
               <?%
+       $WANIPv6 = "";
        $partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
        if (strpos($partnerId, "sky-") !== false) {
                 $IPv6Adr = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstDownstreamIpInterface");
