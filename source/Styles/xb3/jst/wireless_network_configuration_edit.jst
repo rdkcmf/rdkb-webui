@@ -264,6 +264,12 @@ function showDialog() {
 		$("#security").change();
 	});
 }
+
+function restyle_div(){
+        $('#pageForm > div').removeClass("odd");
+        $('#pageForm > div:visible:even').addClass("odd");
+}
+
 	var fromOther;
 $(document).ready(function() {
     gateway.page.init("Gateway > Connection > Wireless > Edit <?% echo( $radio_band); ?> GHz", "nav-wifi-config");
@@ -329,6 +335,7 @@ $(document).ready(function() {
 						$('#security option[value="' + $security_val + '"]').prop('selected', true);
 						if("None" == $security_val){
 							$("#network_password").prop("disabled", true);
+							 restyle_div();
 						} else {
                                                         var pass_val = $("#network_password").val();
                                                         $("#network_password").val(pass_val);
@@ -338,6 +345,7 @@ $(document).ready(function() {
 							if(pwd_mso){
 								$("#div_password_show").show();
                                                         }
+							 restyle_div();
 						}
 					} else {
 						$security_val = security_val;
@@ -349,6 +357,7 @@ $(document).ready(function() {
 						if(!pwd_mso && "None" == $security_val){
 							$("#div_change_password").hide();
 						}
+						 restyle_div();
 
 					}
 				});
@@ -356,6 +365,7 @@ $(document).ready(function() {
 			if ("None" == $("#security").val()) {
 				$("#network_password").prop("disabled", true);
                                  $("#div_password_show").hide();
+				 restyle_div();
 			}
 			else {
 				var pwd_mso=JSON.parse(password_mso_user);
@@ -364,11 +374,13 @@ $(document).ready(function() {
 					$("#network_password").prop("disabled", true);
 					$("#div_change_password").show();
 					$("#div_password_show").hide();
+					 restyle_div();
 				}
 				else {
 					$("#network_password").prop("disabled", false);
-					$("#div_change_password").hide();
+					$("#div_change_password").hide();	
 					$("#div_password_show").show();
+					restyle_div();	
 				}
 			}
 			$("#netPassword-footnote").text($("option:selected", $(this)).attr("title"));
@@ -636,10 +648,9 @@ function init_form()
 	else{
 		$("#div_enableWMM").hide();
 	}
-	//re-style each div
-	$('#pageForm > div').removeClass("odd");
-	$('#pageForm > div:visible:even').addClass("odd");
-
+	
+	restyle_div();
+	
 	if ("true"!="<?% echo( $DFS_Support1); ?>" || "true"!="<?% echo( $DFS_Enable1); ?>") {
 		$("#channel_number [value='52'],[value='56'],[value='60'],[value='64'],[value='100'],[value='104'],[value='108'],[value='112'],[value='116'],[value='120'],[value='124'],[value='128'],[value='132'],[value='136'],[value='140'],[value='144']").prop("disabled", true);
 	}
@@ -940,10 +951,12 @@ function setResetInfo(info) {
 			<span id="password_field"><input type="password" size="23" id="network_password" name="network_password" class="text" value="<?% if($password_mso_user) echo( htmlspecialchars($network_password)); ?>" </span>
 			<p id="netPassword-footnote" class="footnote">8 to 63 ASCII characters or a 64 hex character password. Case sensitive.</p>
 		</div>
+
 		<div class="form-row" id="div_change_password">
 			<label for="change_password" id="wireedtmess4">Change Password:</label>
 			<span class="checkbox"><input type="checkbox" id="password_check" name="password_check" /></span>
 		</div>
+
 		<div class="form-row odd" id="div_password_show">
 			<label for="password_show" id="mocamess10">Show Network Password:</label>
 			<span class="checkbox"><input type="checkbox" id="password_show" name="password_show" /></span>

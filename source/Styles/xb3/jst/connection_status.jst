@@ -451,7 +451,7 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
              </span>
         </div>
       
-        <div class="form-row odd">
+        <div class="form-row">
               <span class="readonlyLabel">WAN IPv6 Address:</span> <span class="ipv6-style">
               <?%
        $partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
@@ -481,7 +481,7 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
              </span>
         </div>
     
-        <div class="form-row">
+        <div class="form-row odd">
         <span class="readonlyLabel" id="dhcpcliloc">DHCP Client:</span> 
 	<?%  if("DHCP" == $device_ctrl_value["WanAddressMode"]){
                                 var isEnableId1= "enablespanid";
@@ -493,7 +493,7 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
                   ?>
                         <span class="value" id="<?% echo(isEnableId1); ?>"><?% echo(enabledVal1); ?></span> 
         </div>
-        <div class="form-row odd">
+        <div class="form-row">
           <span class="readonlyLabel" id="dhcpexploc">DHCP Expire Time:</span> <span class="value">
                     <?%
                     $expire_time = $dhcpv4_value["LeaseTimeRemaining"];
