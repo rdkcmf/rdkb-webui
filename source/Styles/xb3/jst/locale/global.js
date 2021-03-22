@@ -558,7 +558,7 @@ $("[id^='keywordSpan']").text($.i18n("Keyword"));
 $("#manstmess10").text($.i18n("Trusted devices management"));
 $("[id^='manstmess11']").text($.i18n("Parental Control > Managed Sites > Edit Blocked Site"));
 $("[id^='manstmess12']").text($.i18n("Edit Site to be Blocked"));
-$("[id^='#manstmess13']").text($.i18n("Parental Control > Managed Sites > Edit Blocked Keyword"));
+$("[id^='manstmess13']").text($.i18n("Parental Control > Managed Sites > Edit Blocked Keyword"));
 $("[id^='manstmess14']").text($.i18n("Edit Keyword to be Blocked"));
 $("#addblkywdhead").text($.i18n("Parental Control > Managed Sites > Add Blocked Keyword"));
 $("#addblkywdmess1").text($.i18n("Add Keyword to be Blocked"));
