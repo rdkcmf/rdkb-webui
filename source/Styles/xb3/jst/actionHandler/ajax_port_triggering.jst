@@ -55,7 +55,22 @@ if (isset($_POST['add'])){
 		$fep=$_POST['fep'];
 		$tsp=$_POST['tsp'];
 		$tep=$_POST['tep'];
-		if (getStr("Device.NAT.X_CISCO_COM_PortTriggers.TriggerNumberOfEntries")==0) {
+		$ids=explode(",",getInstanceIDs("Device.NAT.PortMapping."));
+		for ($key in $ids){ $j=$ids[$key] /*p2j-foreach*/
+			if (getStr("Device.NAT.PortMapping."+$j+".LeaseDuration")==0 && getStr("Device.NAT.PortMapping."+$j+".InternalPort")==0){
+				$portMappingType=getStr("Device.NAT.PortMapping."+$j+".Protocol");
+				$arraySPort=getStr("Device.NAT.PortMapping."+$j+".ExternalPort");
+				$arrayEPort=getStr("Device.NAT.PortMapping."+$j+".ExternalPortEndRange");
+				if($type=="BOTH" || $portMappingType=="BOTH" || $type==$portMappingType){
+					$porttest=PORTTEST($tsp,$tep,$arraySPort,$arrayEPort);
+					if ($porttest==1) {
+						$result += "Failure! As Port Triggering/Port Forwarding rule exists for the same port.";
+						break;
+					}
+				}
+			}
+		}
+		if (getStr("Device.NAT.X_CISCO_COM_PortTriggers.TriggerNumberOfEntries")==0 && $result=="") {
 			addTblObj("Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
 			$IDs=explode(",",getInstanceIDs("Device.NAT.X_CISCO_COM_PortTriggers.Trigger."));
 			$i=$IDs[count($IDs)-1];
@@ -83,7 +98,7 @@ if (isset($_POST['add'])){
 			if (!$retStatus){$result="Success!";}
 			// echo json_encode("Success!");
 		} else {
-			// $result="";
+			 $result="";
 			$rootObjName    = "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.";
 			$paramNameArray = ["Device.NAT.X_CISCO_COM_PortTriggers.Trigger."]/*p2j-array*/;
 			$mapping_array  = ["Description", "TriggerProtocol", "TriggerPortStart", "TriggerPortEnd", "ForwardPortStart", "ForwardPortEnd"]/*p2j-array*/;
