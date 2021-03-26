@@ -1079,6 +1079,8 @@ $("[id^='24_G']").text($.i18n("Wi-Fi 2.4G"));
 $("[id^='5_G']").text($.i18n("Wi-Fi 5G"));
 $("[id^='ethcon']").text($.i18n("Ethernet"));
 $("[id^='ipv6-addr-val']").text($.i18n("EMPTY"));
+$("#wifinet5ghz").text($.i18n("Wireless Network (Wi-Fi 5 GHz):"));
+$("#wanipv6add").text($.i18n("WAN IPv6 Address:"));
 }
   $.i18n().load({ 
     'it': '/locale/it.json' 

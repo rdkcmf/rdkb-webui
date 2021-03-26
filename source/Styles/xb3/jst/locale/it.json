@@ -301,6 +301,7 @@
  "Active Docsis WAN":"WAN Docsis attiva",
  "View":"Visualizza",
  "WAN IP Address:":"Indirizzo IP WAN:",
+ "WAN IPv6 Address:":"Indirizzo IPv6 WAN:",
  "DHCP Client:":"Client DHCP:",
  "DHCP Expire Time:":"Lease time DHCP:",
  "MoCA Network:":"Rete MoCA:",

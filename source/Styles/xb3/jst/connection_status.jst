@@ -451,7 +451,7 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
         </div>
       
         <div class="form-row">
-              <span class="readonlyLabel">WAN IPv6 Address:</span> <span class="ipv6-style">
+              <span class="readonlyLabel" id="wanipv6add">WAN IPv6 Address:</span> <span class="ipv6-style">
               <?%
        $partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
        if (strpos($partnerId, "sky-") !== false) {
