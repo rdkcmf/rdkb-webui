@@ -1159,14 +1159,14 @@ $("#f_i_option1").click(function(){
 		var val = $("#WiFi_Name").val();
 		isValid		= /^[ -~]{1,32}$/i.test(val);
 		valLowerCase	= val.toLowerCase();
-		isXHS		= valLowerCase.indexOf("xhs-") !=0 && valLowerCase.indexOf("xh-") !=0  && valLowerCase.indexOf("chl-") !=0 && valLowerCase.indexOf("rshm-") !=0 && valLowerCase.indexOf("shs-") !=0 && valLowerCase.indexOf("vlhs-") !=0;
+		isXHS		= valLowerCase.indexOf("xhs-") !=0 && valLowerCase.indexOf("xh-") !=0  && valLowerCase.indexOf("chl-") !=0 && valLowerCase.indexOf("rshm-") !=0 && valLowerCase.indexOf("shs-") !=0 && valLowerCase.indexOf("vlhs-") !=0 && valLowerCase.indexOf("xfi") !=0 && valLowerCase.indexOf("xfinity public") !=0;
 		isXFSETUP 	= valLowerCase.indexOf("xfsetup") != 0;
 		isHOME 		= valLowerCase.indexOf("home") != 0;
 		isXFINITY 	= valLowerCase.indexOf("xfinity")==-1;
 		isOnlySpaces = /^\s+$/.test(valLowerCase);
 		//isOther checks for "wifi" || "cable" && "twc" && "optimum" && "Cox" && "BHN"
 		var str = val.replace(/[\.,-\/#@!$%\^&\*;:{}=+?\-_`~()"'\\|<>\[\]\s]/g,'').toLowerCase();
-		isOther	= str.indexOf("cablewifi") == -1 && str.indexOf("twcwifi") == -1 && str.indexOf("optimumwifi") == -1 && str.indexOf("xfinitywifi") == -1 && str.indexOf("coxwifi") == -1 && str.indexOf("coxwifi") == -1 && str.indexOf("spectrumwifi") == -1 && str.indexOf("shawopen") == -1 && str.indexOf("shawpasspoint") == -1 && str.indexOf("shawguest") == -1 && str.indexOf("shawmobilehotspot") == -1 && str.indexOf("shawgo") == -1 && str.indexOf("xfinity") == -1 && str.indexOf("panoramicwifi") == -1 && str.indexOf("panoramic") == -1 && str.indexOf("panowifi") == -1 && str.indexOf("outofservice") == -1;
+		isOther	= str.indexOf("cablewifi") == -1 && str.indexOf("twcwifi") == -1 && str.indexOf("optimumwifi") == -1 && str.indexOf("xfinitywifi") == -1 && str.indexOf("coxwifi") == -1 && str.indexOf("coxwifi") == -1 && str.indexOf("spectrumwifi") == -1 && str.indexOf("shawopen") == -1 && str.indexOf("shawpasspoint") == -1 && str.indexOf("shawguest") == -1 && str.indexOf("shawmobilehotspot") == -1 && str.indexOf("shawgo") == -1 && str.indexOf("xfinity") == -1 && str.indexOf("panoramicwifi") == -1 && str.indexOf("panoramic") == -1 && str.indexOf("panowifi") == -1 && str.indexOf("outofservice") == -1 && str.indexOf("xfi") == -1 && str.indexOf("xfinity public") == -1;
 		if(val == ""){
 			goNextName = false;
 			$(wiFiNameField).addClass("error").removeClass("success");
