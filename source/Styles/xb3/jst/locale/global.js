@@ -164,7 +164,6 @@ $("#battot").text($.i18n("Total Capacity:"));
 $("#batactcap").text($.i18n("Actual Capacity:"));
 $("#batremchar").text($.i18n("Remaining Charge:"));
 $("div[id^='bat_remain']").text($.i18n("Loading..."));
-$("#bat_hours").text($.i18n("Loading..."));
 $("#pop_trace").text($.i18n("Loading..."));
 $("#remtim").text($.i18n("Remaining Time:"));
 $("#nocyc").text($.i18n("Number of Cycles to date:"));
