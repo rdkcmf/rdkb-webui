@@ -5365,7 +5365,7 @@ msgid "The RIP protocol is used to exchange the routing information between the 
 msgstr "Il protocollo RIP viene utilizzato per scambiare le informazioni di routing tra il tuo Sky Wifi Hub e l&#39;headend."
 
 #: routing.php:244
-msgid "<strong>Interface Name:</strong>Select the interface that the rip information will send from."
+msgid "<strong>Interface Name:</strong> Select the interface that the rip information will send from."
 msgstr "<strong>Nome interfaccia:</strong>Selezionare l&#39;interfaccia da cui verranno inviate le informazioni sul rip."
 
 #: routing.php:245

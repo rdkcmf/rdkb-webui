@@ -826,7 +826,7 @@ $("#btn5").text($.i18n("RESTORE FACTORY SETTINGS"));
 $("#restoremsg9").text($.i18n("Press \"Restore Factory Settings\" to activate your Gateway Default Settings. All your previous settings will be lost."));
 $("#routhead").text($.i18n("Advanced > Routing"));
 $("#routtip1").text($.i18n("The RIP protocol is used to exchange the routing information between the gateway and headend."));
-$("#routtip2").html($.i18n("<strong>Interface Name:</strong>Select the interface that the rip information will send from."));
+$("#routtip2").html($.i18n("<strong>Interface Name:</strong> Select the interface that the rip information will send from."));
 $("#routtip3").html($.i18n("<strong>RIP Send Version:</strong> Select the rip Send Version."));
 $("#routtip4").html($.i18n("<strong>RIP Receive Version:</strong> Select the rip Receive Version."));
 $("#routtip5").html($.i18n("<strong>Update Interval:</strong> Enter the time that the rip information will resend."));

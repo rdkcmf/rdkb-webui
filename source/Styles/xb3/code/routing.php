@@ -241,7 +241,7 @@ function saveRIP(information) {
 	<h1><?php echo _("Advanced > Routing")?></h1>
 	<div id="educational-tip">
 		<p class="tip"><?php echo _("The RIP protocol is used to exchange the routing information between the gateway and headend.")?></p>
-		<p class="hidden"><?php echo _("<strong>Interface Name:</strong>Select the interface that the rip information will send from.")?></p>
+		<p class="hidden"><?php echo _("<strong>Interface Name:</strong> Select the interface that the rip information will send from.")?></p>
 		<p class="hidden"><?php echo _("<strong>RIP Send Version:</strong> Select the rip Send Version.")?></p>
 		<p class="hidden"> <?php echo _("<strong>RIP Receive Version:</strong> Select the rip Receive Version.")?></p>
 		<p class="hidden"><?php echo _("<strong>Update Interval:</strong> Enter the time that the rip information will resend.")?></p>
