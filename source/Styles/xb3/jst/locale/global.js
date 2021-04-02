@@ -211,7 +211,7 @@ $("#ondevpub").text($.i18n("Online Devices - Public Wi-Fi SSID"));
 $("#ipv6prefloc").text($.i18n("IPv6 Prefix"));
 $("#dhcpstat").text($.i18n("DHCPv4 Status"));
 $("#dhcpv6stat").text($.i18n("DHCPv6 Status"));
-$("#chipadd").text($.i18n("Change the IP address assignment method for Online Devices."));
+$("[id^='chipadd']").text($.i18n("Change the IP address assignment method for Online Devices."));
 $("p[id^='connedittip']").text($.i18n("If DHCP is selected, the Gateway's DHCP server will automatically assign the IP address."));
 $("p[id^='connedittip2']").html($.i18n("If Reserved IP is selected, the IP address will be fixed without DHCP operation and you'll need to manually enter the IP address. The IP address must be within the DHCP IP address pool. To find your IP address range, go to <strong>Gateway > Connection > Local IP Network.</strong>"));
 $("p[id^='connedittip3']").text($.i18n("Reserved IP addresses can be assigned to any device that acts as a server or that requires a fixed IP address."));
