@@ -185,11 +185,6 @@ $logo = "cmn/syndication/img/".$msoLogo;
 			color: #0000FF;
 			/*background-color: #b3d4fc;*/
 		}
-
-		.helix{
-			margin-top: 0px !important;
-		}
-
 	</style>
 </head>
 <body>
@@ -243,13 +238,6 @@ $logo = "cmn/syndication/img/".$msoLogo;
 <script type="text/javascript">
 $(document).ready(function() {
 	var user_type = "<?php echo ($isMSO)?'mso':'admin'; ?>";
-	
-	var logo= "<?php echo $msoLogo;  ?>";
-	if(logo.indexOf('videotron')!==-1){
-	
-		$('#logo').addClass("helix");
-	
-	}
 
 	gateway.page.init("Login", "nav-login");
 	$("#pageForm").validate({

@@ -236,14 +236,6 @@ if (strpos($partnersId, "sky-") !== false) {
   <script src="locale/jquery.i18n.emitter.js"></script>
   <script src="locale/jquery.i18n.emitter.bidi.js"></script>
    <script src="locale/global.js"></script> <!-- add this -->
-
-<style>
-
-		.helix{
-			margin-top: 0px !important;
-		}
-	
-	</style>
 </head>
 <body>
 	<!--Main Container - Centers Everything-->
@@ -293,12 +285,6 @@ if (strpos($partnersId, "sky-") !== false) {
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-	var logo= "<?% echo($msoLogo);  ?>";
-	if(logo.indexOf('videotron')!==-1){
-	
-		$('#logo').addClass("helix");
-	
-	}
 	var user_type = "<?% echo(($isMSO)?'mso':'admin'); ?>";
 	gateway.page.init("Login", "nav-login");
 	$("#pageForm").validate({

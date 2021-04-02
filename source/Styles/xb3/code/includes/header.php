@@ -191,22 +191,11 @@ csrfprotector_rdkb::init();
 		color: #0000FF;		
 		/*background-color: #b3d4fc;*/
 	}
-
-	.helix{
-		margin-top: -18px !important;
-	}
-
 	</style>	
 </head>
 <script type="text/javascript">
         var partner_id = '<?php echo $partnerId; ?>';
 	$(document).ready(function() {
-
-		var logo= "<?php echo $msoLogo;  ?>";
-			if(logo.indexOf('videotron')!==-1){
-				$('#logo').addClass("helix");
-			}
-
 		$("table.data td").each(function() {
 			if($(this).text().split("\n")[0].length > 25)
 			{

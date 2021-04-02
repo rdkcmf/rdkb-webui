@@ -218,14 +218,6 @@ if (strpos($partnersId, "sky-") !== false) {
     } else {
         echo './cmn/js/lib/bootstrap-waitingfor.js';
     }?>"></script>
-
-	<style>
-
-		.helix{
-			margin-top: 0px !important;
-		}
-	
-	</style>
 </head>
 <body>
 	<!--Main Container - Centers Everything-->
@@ -278,14 +270,6 @@ if (strpos($partnersId, "sky-") !== false) {
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-
-	var logo= "<?php echo $msoLogo;  ?>";
-	if(logo.indexOf('videotron')!==-1){
-	
-		$('#logo').addClass("helix");
-	
-	}
-
 	var user_type = "<?php echo ($isMSO)?'mso':'admin'; ?>";
         var partner_id = '<?php echo getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId"); ?>';
 	gateway.page.init("Login", "nav-login");
