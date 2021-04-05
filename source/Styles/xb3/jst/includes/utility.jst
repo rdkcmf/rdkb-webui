@@ -344,94 +344,132 @@ function shift_blockedDays($blockedDays, $shift){
 	}
 	if($blockedDays[sizeof($blockedDays)-1]=='Mon') {
 		array_pop($blockedDays);
-		$blockedDays.push('Mon');
+		$blockedDays.unshift('Mon');
 	}
 	return implode(',', $blockedDays);
 }
-/*function group_2D_array($data, $fields) {
-	if(empty($fields) || !Array.isArray($fields)) {
-		return $data;
-	}
-	var $tempArray = {};
-	var $field = $fields.shift();
-	for(var $k in $data) {
-    var $val = $data[$k];
-		$tempArray[$val[$field]].push($val);
-	}
-  var $keys = array_keys($tempArray);
-	for(var $k in $keys) {
-    var $key = $keys[$k];
-		$tempArray[$key] = group_2D_array($tempArray[$key], $fields);
-	}
-	return $tempArray;
-}*/
+
+
+function time_in_min($time){
+        var $min = explode(':', $time);
+        if(count($min)>1)
+                return (($min[0]*60)+parseInt($min[1]));
+        else
+                return 0;
+}
+
+
+
+function comparetimes($val,$valr){
+
+   return  ((time_in_min($val['StartTime'])==(time_in_min($valr['EndTime']) + 1)) && (time_in_min($valr['EndTime']) < time_in_min($val['EndTime'])));
+}
+
 function group_device_2D_array($data, $fields) {
         if(empty($fields) || !Array.isArray($fields)) {
                 return $data;
         }
         var $tempArray = new Array();
         var $field = $fields.shift();
-        for(var $k in $data) {
-                        var $val = $data[$k];
-                        $valAr = $val[$field];
-			$blockdays=$val['BlockDays'];
-                        $type=$val['Type']
-                        $tempArray[$valAr]= new Array();
-                        for(var $r=($k-1);$r>=0;$r--){
-                                var flag=0;
-                                if(($valAr == $data[$r][$field])&& ($type=="Block") && ($blockdays == $data[$r]['BlockDays'])){
-                                        flag=1;
-                                        break;
-                                }
-                        }
-                        if(flag==1 && ($data[$r]['Type']=="Block")){
-                                        var $valnew = $data[$r];
-                                        $val['__id'] = $valnew['__id']+'_'+$val['__id'];
-                                        $val['StartTime'] = $valnew['StartTime'];
-                        }
-                                var flag_allow=0;
-                                for(var $m=($k-1);$m>=0;$m--){
-                                if(($valAr == $data[$m][$field])&& ($type=="Allow") && ($blockdays == $data[$m]['BlockDays'])){
-                                        flag_allow=1;
-                                        break;
+        var $matchingId='';
+	for(var $k in $data) {
+
+                var $val = $data[$k];
+                $valAr = $val[$field];
+                var $deviceType= $val['Type'];
+                $blockdays=$val['BlockDays'];
+                var $flag=0;
+                for(var $r=($k-1);$r>=0;$r--){
+                        $valr=$data[$r];
+                        if($deviceType== $valr['Type']){
+                                if(($valAr == $data[$r][$field]) && ($blockdays == $data[$r]['BlockDays'])){
+                                        if(comparetimes($val,$valr)){
+                                                var $endUTCTime=local_to_UTC_Time($valr['EndTime'],$valr['BlockDays'])[0];
+						var $startUTCTime=local_to_UTC_Time($val['StartTime'],$val['BlockDays'])[0];	
+                                                if($endUTCTime=="23:59" && $startUTCTime=="00:00"){
+                                                        $flag=1;
+                                                        $matchingId=$valr['__id'];
+                                                        break;
+                                                }
+                                        }
                                 }
 
                         }
-                        if(flag_allow==1 && ($data[$m]['Type']=="Allow")){
-                                        var $valnew = $data[$m];
-                                        $val['__id'] = $valnew['__id']+'_'+$val['__id'];
-                                        $val['StartTime'] = $valnew['StartTime'];
+
+                }
+
+                if($flag==1){
+                        for($j in $tempArray){
+                                if($tempArray[$j]['__id']==$matchingId){
+                                        array_remove($tempArray,$j);
+                                        break;
+                                }
                         }
 
-            $tempArray[$valAr+"_"+$type+"_"+$blockdays]=$val;
+
+                        var $valnew = $data[$r];
+                        $val['__id'] = $valnew['__id']+'_'+$val['__id'];
+                        $val['StartTime'] = $valnew['StartTime'];
+                }
+
+
+                $tempArray.push($val);
+
+
         }
+
         return $tempArray;
+	
 }
+
 function group_2D_array($data, $fields) {
+	
         if(empty($fields) || !Array.isArray($fields)) {
                 return $data;
         }
         var $tempArray = new Array();
         var $field = $fields.shift();
-        for(var $k in $data) {
-			var $val = $data[$k];
-			$valAr = $val[$field];
-			$tempArray[$valAr]= new Array();
-			for(var $r=($k-1);$r>=0;$r--){
-				var flag=0;
-				if($valAr == $data[$r][$field]){
-					flag=1;
-					break;
-				}
-			}
-			if(flag==1){
-					var $valnew = $data[$r];
-					$val['__id'] = $valnew['__id']+'_'+$val['__id'];
-					$val['StartTime'] = $valnew['StartTime'];
-			}
-            $tempArray[$valAr]=$val;
+
+for($k=0;$k<$data.length;$k++){
+        var $flag=0;
+        var $matchingId='';
+        var $val=$data[$k];
+        for(var $r=($k-1);$r>=0;$r--){
+                var $valr= $data[$r];
+                if($val[$field]==$valr[$field] && $val['BlockDays']==$valr['BlockDays']){
+                        if(comparetimes($val,$valr)){
+                               	var $endUTCTime=local_to_UTC_Time($valr['EndTime'],$valr['BlockDays'])[0];
+				var $startUTCTime=local_to_UTC_Time($val['StartTime'],$val['BlockDays'])[0];
+                                if($endUTCTime=="23:59" &&  $startUTCTime=="00:00"){
+                                        $flag=1;
+                                        $matchingId=$valr['__id'];
+                                        break;
+                                }
+                        }
+
+                }
+
         }
-        return $tempArray;
+
+        if($flag==1){
+                for($j in $tempArray){
+                        if($tempArray[$j]['__id']==$matchingId){                
+                                array_remove($tempArray,$j);
+                                break;
+                        }
+                }
+
+                var $valnew = $data[$r];
+                $val['__id'] = $valnew['__id']+'_'+$val['__id'];
+                $val['StartTime'] = $valnew['StartTime'];
+        }
+
+    $tempArray.push($val);
+
+}
+
+        return $tempArray;        
+        
 }
 $UTC_Enable = getStr("Device.Time.UTC_Enable");
 
@@ -530,14 +568,7 @@ function UTC_to_local_date_logs($utcTime){
   return $ret;
 }
 
-//
-function time_in_min($time){
-	var $min = explode(':', $time);
-	if(count($min)>1)
-		return (($min[0]*60)+$min[1]);
-	else
-		return 0;
-}
+
 function cmp($a, $b) {
 	if ($a["StartTime"]==$b["StartTime"]) return 0;
 	return ($a["StartTime"]<$b["StartTime"])?-1:1;
@@ -627,7 +658,7 @@ function time_date_conflict($TD1, $TD2) {
 		if (in_array($value, $days2)) {
 			//deMorgan's law - to find if ranges are overlapping
 			//(StartA <= EndB)  and  (EndA >= StartB)
-			if((strtotimecon($TD1[0]) <= strtotimecon($TD2[1])) && (strtotimecon($TD1[1]) >= strtotimecon($TD2[0]))){
+			if((hm_to_sec($TD1[0]) < hm_to_sec($TD2[1])) && (hm_to_sec($TD1[1]) > hm_to_sec($TD2[0]))){
 				$ret = true;
 				break;
 			}
