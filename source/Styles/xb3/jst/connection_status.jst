@@ -121,12 +121,12 @@
         "WanAddressMode"  : "Device.X_CISCO_COM_DeviceControl.WanAddressMode"
       }/*p2j-array*/;
     $device_ctrl_value = php_KeyExtGet("Device.X_CISCO_COM_DeviceControl.", $device_ctrl_param);
-    $dhcpv4_param = {
+    /*$dhcpv4_param = {
         "Enable"                : "Device.DHCPv4.Server.Enable",
         "LeaseTime"             : "Device.DHCPv4.Server.Pool.1.LeaseTime",
         "LeaseTimeRemaining"    : "Device.DHCPv4.Client.1.LeaseTimeRemaining"
-      }/*p2j-array*/;
-    $dhcpv4_value = php_KeyExtGet("Device.DHCPv4.", $dhcpv4_param);
+      }*//*p2j-array*/;
+    //$dhcpv4_value = php_KeyExtGet("Device.DHCPv4.", $dhcpv4_param);
     $partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
     /* Turn off MoCA based on Partner devices */
     if (strpos($partnerId, "sky-") !== false) {
@@ -242,7 +242,7 @@ width:80%;
                 </div>
                 <div class="form-row ">
                         <span class="readonlyLabel" id="dhcpserverloc">DHCPv4 Server:</span>  
-                  <?% if ( !strcasecmp("true", $dhcpv4_value["Enable"])) {
+                  <?% if ( !strcasecmp("true", getStr("Device.DHCPv4.Server.Enable"))) {
 				var isEnableId= "enablespanid";
         	                var enabledVal ="Enabled";
 			}else{
@@ -287,7 +287,7 @@ width:80%;
                         $min = $tmp[0];
                         return ""+$day+"d:"+$hor+"h:"+$min+"m";
                       }
-                      $dhcp_lease_time = $dhcpv4_value["LeaseTime"];      
+                      $dhcp_lease_time =getStr("Device.DHCPv4.Server.Pool.1.LeaseTime");
                       echo( sec2dhms($dhcp_lease_time));
                       ?>
                     </span>
@@ -495,7 +495,7 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
         <div class="form-row">
           <span class="readonlyLabel" id="dhcpexploc">DHCP Expire Time:</span> <span class="value">
                     <?%
-                    $expire_time = $dhcpv4_value["LeaseTimeRemaining"];
+                    $expire_time = getStr("Device.DHCPv4.Client.1.LeaseTimeRemaining");
                     echo( sec2dhms($expire_time));
                     ?>
                 </span>

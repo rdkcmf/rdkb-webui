@@ -58,8 +58,17 @@ if(strpos($PartnerId, "sky-") !== false){
 					$reclaim = false;
 				}
 			}
-			else{
-				$reclaim = false;
+		}
+	}else{
+		$port_entries = getStr('Device.X_RDK-Central_COM_WanAgent.InterfaceNumberOfEntries');
+		for ($i=1;$i<=$port_entries; $i++){
+			if("eth3" ==getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'+$i+'.Name')){
+				if('true'==getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'+$i+'.Wan.Enable')){
+					$reclaim = true;
+				}
+				else{
+					$reclaim = false;
+				}
 			}
 		}
 	}

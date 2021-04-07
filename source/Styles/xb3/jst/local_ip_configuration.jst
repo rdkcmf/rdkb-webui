@@ -31,13 +31,13 @@ $device_ctrl_param = {
 		"subnetmask" : "Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask" 
 	}/*p2j-array*/;
     $device_ctrl_value = KeyExtGet("Device.X_CISCO_COM_DeviceControl.", $device_ctrl_param);
-$dhcpv4_param = {
+/*$dhcpv4_param = {
         "DHCPTime"   			: "Device.DHCPv4.Server.Pool.1.LeaseTime",
         "WAN_GW_IPv4_Address" 	: "Device.DHCPv4.Client.1.IPRouters",
         "beginAddr" 			: "Device.DHCPv4.Server.Pool.1.MinAddress",
         "endAddr" 				: "Device.DHCPv4.Server.Pool.1.MaxAddress" 
-	}/*p2j-array*/;
-    $dhcpv4_value = KeyExtGet("Device.DHCPv4.", $dhcpv4_param);
+	}*//*p2j-array*/;
+    //$dhcpv4_value = KeyExtGet("Device.DHCPv4.", $dhcpv4_param);
 $dhcpv6_param = {
        	"DHCPV6Time" 	: "Device.DHCPv6.Server.Pool.1.LeaseTime",
        	"state" 		: "Device.DHCPv6.Server.X_CISCO_COM_Type",
@@ -46,7 +46,7 @@ $dhcpv6_param = {
 	}/*p2j-array*/;
     $dhcpv6_value = KeyExtGet("Device.DHCPv6.Server.", $dhcpv6_param);
 $LanGwIP    = $device_ctrl_value["LanGwIP"];
-$DHCPTime   = $dhcpv4_value["DHCPTime"];
+$DHCPTime   = getStr("Device.DHCPv4.Server.Pool.1.LeaseTime");
 $DHCPV6Time = $dhcpv6_value["DHCPV6Time"];
 $ipv6_prefix = getStr("Device.IP.Interface.1.IPv6Prefix.1.Prefix");
 $interface = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstDownstreamIpInterface");
@@ -54,7 +54,7 @@ $DeviceMode = $device_ctrl_value["DeviceMode"];
 //CM GW IP Address
 $CM_GW_IP_Address = getStr("Device.X_CISCO_COM_CableModem.Gateway");
 //WAN GW IP Address (IPv4)
-$WAN_GW_IPv4_Address = $dhcpv4_value["WAN_GW_IPv4_Address"];
+$WAN_GW_IPv4_Address =getStr("Device.DHCPv4.Client.1.IPRouters");
 //Virtual LAN_GW_IPv4_Address
 $LAN_GW_IPv4_Address = "";
 $out={};
@@ -1159,7 +1159,7 @@ setIPv6configuration(IPv6Config);
     			<label for="ipv4_dhcp_beginning_address_1" id="localipmess2">DHCP Beginning Address:</label>
 <!--     			<span id="ipv4_dhcp_beginning_address" class="readonlyValue"></span> -->
                 <?%
-    			   $beginAddr = $dhcpv4_value["beginAddr"];
+    			   $beginAddr = getStr("Device.DHCPv4.Server.Pool.1.MinAddress");
 			   $SecWebUI = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.SecureWebUI.Enable");
                            if (!strcmp($SecWebUI, "true")) {
                                  $dhcp_min = getStr("Device.DHCPv4.Server.Pool.1.MinAddress");
@@ -1181,7 +1181,7 @@ setIPv6configuration(IPv6Config);
     		<div class="form-row odd">
                 <label for="ipv4_dhcp_ending_address_1" id="localipmess3">DHCP Ending Address:</label>
                 <?%
-    			   $endAddr = $dhcpv4_value["endAddr"];
+    			   $endAddr = getStr("Device.DHCPv4.Server.Pool.1.MaxAddress");
 			   if (!strcmp($SecWebUI, "true")) {
                                  $dhcp_max = getStr("Device.DHCPv4.Server.Pool.1.MaxAddress");
                                  $endArr = explode(".", $dhcp_max);
