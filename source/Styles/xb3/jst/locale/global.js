@@ -1072,12 +1072,13 @@ $("[id^='dys']").text($.i18n("days"));
 $("#tip_security_mode").text($.i18n("Please note 802.11 n/ac mode only compatible with AES and None encryption!!"));
 $("#tip_security_mode2").text($.i18n("Please note 802.11 n mode only compatible with AES and None encryption!!"));
 $("[id^='btn-cancel']").prop("value", $.i18n('Cancel'));
-$("#reclaim").text($.i18n("Reclaim Eth port"));
-$("#wanOE").text($.i18n("Switch to WANOE"));
+$("#reclaim").prop("value",$.i18n("Reclaim Eth port"));
+$("#wanOE").prop("value",$.i18n("Switch to WANOE"));
 $("#shwmresecopt").attr('title',$.i18n("More Security Mode Options"));
 $("[id^='24_G']").text($.i18n("Wi-Fi 2.4G"));
 $("[id^='5_G']").text($.i18n("Wi-Fi 5G"));
 $("[id^='ethcon']").text($.i18n("Ethernet"));
+$("[id^='ipv6-addr-val']").text($.i18n("EMPTY"));
 }
   $.i18n().load({ 
     'it': '/locale/it.json' 
