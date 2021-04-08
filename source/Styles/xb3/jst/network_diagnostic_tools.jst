@@ -319,7 +319,7 @@ $(document).ready(function() {
 				error:function(error){
 					if(error.statusText=="abort"){
 						var trace_ipv4_status = "Error! Traceroute Failed";
-						 $("#pop_trace").text($.i18n("Status:") +trace_ipv4_status+" !\n");
+						 $("#pop_trace").text($.i18n("Status:") +$.i18n(trace_ipv4_status)+" !\n");
 					         jHide();
                 	                        checkTraceError(trace_ipv4_status);
 					}else{
