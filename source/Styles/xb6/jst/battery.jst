@@ -52,7 +52,8 @@ $battery_param = {
         "bat_serial"                : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.serialNumber",
         "bat_swversion"             : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.softwareVersion",
         "bat_teststate"             : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.testingState",
-        "bat_teststatus"            : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.testingStatus" 
+        "bat_teststatus"            : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.testingStatus",
+        "bat_lidopen"               : "Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.batteryLidOpen" 
     }/*p2j-array*/;
     $battery_value = KeyExtGet("Device.DeviceInfo.X_RDKCENTRAL-COM_batteryBackup.", $battery_param);
     $battery_value['bat_model'] = (typeof($battery_value['bat_model'])== "undefined") ?  "" : $battery_value['bat_model'];
@@ -69,6 +70,8 @@ $(document).ready(function() {
         $("#row_bat_mintemp").addClass("odd");
         $("#row_bat_lowtempthresh").addClass("odd");
         $("#row_bat_lowtempdwelltripsecs").addClass("odd");
+        $("#row_bat_serial").addClass("odd");
+        $("#row_bat_lidopen").addClass("odd");
     } else {
         $(".xbbl_data").hide();
         $("#row_bat_health").addClass("odd");
@@ -259,11 +262,11 @@ $(document).ready(function() {
                         <td headers="battery_metric" class="row-label">Seconds On Battery:</td>
                         <td headers="battery_status" id="bat_secsonbatt"><?% echo( $battery_value["bat_secsonbatt"]); ?></td>
                 </tr>
-                <tr id="row_bat_serial" class="xbb1_xbb24_data">
+                <tr id="row_bat_serial">
                         <td headers="battery_metric" class="row-label">Battery Serial Number:</td>
                         <td headers="battery_status" id="bat_serial"><?% echo( $battery_value["bat_serial"]); ?></td>
                 </tr>
-                <tr id="row_bat_swversion" class="xbb1_xbb24_data">
+                <tr id="row_bat_swversion">
                         <td headers="battery_metric" class="row-label">Battery Software Version:</td>
                         <td headers="battery_status" id="bat_swversion"><?% echo( $battery_value["bat_swversion"]); ?></td>
                 </tr>
@@ -274,6 +277,10 @@ $(document).ready(function() {
                 <tr id="row_bat_teststatus" class="xbb1_xbb24_data">
                         <td headers="battery_metric" class="row-label">Battery Testing Status:</td>
                         <td headers="battery_status" id="bat_teststatus"><?% echo( $battery_value["bat_teststatus"]); ?></td>
+                </tr>
+                <tr id="row_bat_lidopen" class="xbbl_data">
+                        <td headers="battery_metric" class="row-label">Battery Lid:</td>
+                        <td headers="battery_lidopen" id="bat_lidopen"><?% echo( $battery_value["bat_lidopen"] == "true" ? "Open" : "Closed"); ?></td>
                 </tr>
                 </table>
         </div><!-- end .module -->
