@@ -142,13 +142,14 @@ function sec2dhms($sec)
 	if(strpos($partnerId, "sky-") !== false){
 		$isMapT = getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapTransportMode");
 		if($isMapT == 'MAPT'){
-		    $WANIPv4_val = getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapRuleIPv4Prefix");
+		    /*$WANIPv4_val = getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapRuleIPv4Prefix");
 		    $WANIPv4_val_array = explode('.',$WANIPv4_val);
                     $Convert_int = intval($WANIPv4_val_array[3]);
                     $Add_val_int = getStr('Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapPSIDOffset');
                     $Add_val_int = intval($Add_val_int);
                     $WANIPv4_val_array[3]=$Convert_int+$Add_val_int;
-                    $WANIPv4 = $WANIPv4_val_array[0]+'.'+$WANIPv4_val_array[1]+'.'+$WANIPv4_val_array[2]+'.'+$WANIPv4_val_array[3]+' (Shared using MAP-T)';
+                    $WANIPv4 = $WANIPv4_val_array[0]+'.'+$WANIPv4_val_array[1]+'.'+$WANIPv4_val_array[2]+'.'+$WANIPv4_val_array[3]+' (Shared using MAP-T)';*/
+		    $WANIPv4=getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapIpv4Address").' (Shared using MAP-T)';
                     $WANIPv4Gateway = '-NA-';
 		}
 	}
