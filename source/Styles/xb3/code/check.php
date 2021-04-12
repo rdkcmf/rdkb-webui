@@ -62,6 +62,7 @@ $failedAttempt=getStr("Device.Users.User.3.NumOfFailedAttempts");
 $failedAttempt_mso=getStr("Device.Users.User.1.NumOfFailedAttempts");
 $passLockoutAttempt=getStr("Device.UserInterface.PasswordLockoutAttempts");
 $passLockoutTime=getStr("Device.UserInterface.PasswordLockoutTime");
+$currentOpMode = getStr("Device.X_RDKCENTRAL-COM_EthernetWAN.CurrentOperationalMode");
 $passLockoutTimeMins=$passLockoutTime/(1000*60);
 $client_ip = $_SERVER["REMOTE_ADDR"];       // $client_ip="::ffff:10.0.0.101";
 $server_ip = $_SERVER["SERVER_ADDR"];
@@ -109,7 +110,7 @@ header('X-robots-tag: noindex,nofollow');
             {
                 $curPwd1 = "Invalid_PWD";    // trigger SSO login attempt
             }
-            if ( innerIP($client_ip) || (if_type($server_ip)=="rg_ip") )
+            if ( innerIP($client_ip) || ( (if_type($server_ip)=="rg_ip") && (strtolower($currentOpMode) !="ethernet") ) )
             {
                 if($passLockEnable == "true")
                 {
