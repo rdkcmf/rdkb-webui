@@ -562,6 +562,7 @@ $('#device').click(function(){
                         $IPAddress = getStr("Device.Hosts.Host."+$hostsInstanceArr[$i]+".IPAddress");
                         $Active    = getStr("Device.Hosts.Host."+$hostsInstanceArr[$i]+".Active");
 			$IPv6Addr = "EMPTY";
+			$ipv6_addr_val = "";
                         $IPv6Num = getStr("Device.Hosts.Host."+$hostsInstanceArr[$i]+".IPv6AddressNumberOfEntries");
 			if ((intval($IPv6Num)) > 0) {
                                 $ids = explode(",", getInstanceIds("Device.Hosts.Host."+$hostsInstanceArr[$i]+".IPv6Address."));
@@ -585,6 +586,9 @@ $('#device').click(function(){
 				}
 				}
 			}
+			if($IPv6Addr == "EMPTY"){
+                                $ipv6_addr_val = "ipv6-addr-val";
+                        }
 			/*if ($_DEBUG) {
 				$HostName = "Host ".($i+1);
 				$IPAddress = "1.1.1.".($i+1);
@@ -595,7 +599,7 @@ $('#device').click(function(){
 				echo( '<tr>');
 				echo( '<td headers="devcie-name">'+ $HostName + '</td>');
 				echo( '<td headers="ipv4-addr">'+ $IPAddress + '</td>');
-				echo( '<td headers="ipv6-addr" id="ipv6-addr-val">'+ $IPv6Addr + '</td>');
+				echo( '<td headers="ipv6-addr" id='+$ipv6_addr_val+'>'+ $IPv6Addr + '</td>');
 				echo( '<td headers="add-radio"><input type="radio" value="add" id="add-' +$i+ '" name="select-device"><label for="add-' +$i+ '" class="acs-hide"></label></td>');
 				echo( '</tr>');
 			} 
