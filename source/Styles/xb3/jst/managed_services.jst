@@ -398,11 +398,11 @@ function getTitle(val){
 						<th id="IP" class="ip">IP</th>
 						<th id="trusted-or-not" class="trusted">Trusted</th>
 					</tr>
-					<?% 
+					<?%
+					$iclass=""; 
 					for ($i=0,$k=1; $i < $hostNums; $i++,$k++) {
-						if($k % 2) $odd = "class='odd'";
-						else $odd = "";
-						echo( "<tr $odd>\
+						if ($iclass=="") {$iclass="odd";} else {$iclass="";}
+						echo( "<tr class=" + "'" +$iclass+ "'" + ">\
 						<td headers='number' class=\"row-label alt\">" +$k+ "</td>\
 						<td headers='device-name'  id='HostName-" +$k+ "' >" +$Host[$i.toString()]['HostName']+ "</td>\
 						<td headers='IP'  id='IPAddress-" +$k+ "' >" +$Host[$i.toString()]['IPShow']+ "</td>\

@@ -586,7 +586,8 @@ $.validator.addMethod("no_space", function(value, element, param) {
 					<th id="edit-keyword" class="edit">&nbsp;</th>
 					<th id="delete-keyword" class="delete">&nbsp;</th>
 				</tr>
-			<?% 
+			<?%
+				$iclass=""; 
 				for ($i=0,$k=1; $i < $KeywordNums; $i++,$k++) {
 					$KeywordAlwaysBlock = $blockedSitesKeyWord[$i.toString()]['AlwaysBlock'];
 				if(strpos($partnerId, "sky-") !== false){
@@ -616,10 +617,9 @@ $.validator.addMethod("no_space", function(value, element, param) {
 						$blockedSitesKeyWord[$i.toString()]['BlockedDays'] = $days_cvt;
 					}
 					$KeywordBlockTime = $blockedSitesKeyWord[$i.toString()]['StartTime']+ " - " +$blockedSitesKeyWord[$i.toString()]['EndTime']+ ",  " +$blockedSitesKeyWord[$i.toString()]['BlockedDays'];
-					if($k % 2) $odd = "class='odd'";
-					else $odd = "";
+					if ($iclass=="") {$iclass="odd";} else {$iclass="";}
 					$keyblk= ($KeywordAlwaysBlock == 'true')? "idval" :"";
-					echo( "<tr $odd>\
+					echo( "<tr class=" + "'" +$iclass+ "'" + ">\
 					<td headers='keyword-number' class=\"row-label alt\">" +$k+ "</td>\
 					<td headers='keyword'>" +$blockedSitesKeyWord[$i.toString()]['Site']+ "</td>\
 					<td headers='keyword-blocked-time' id="+$keyblk+">" + ( ($KeywordAlwaysBlock == 'true') ? "Always" : $KeywordBlockTime ) + "</td>\
