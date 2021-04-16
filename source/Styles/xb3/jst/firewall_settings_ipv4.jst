@@ -108,7 +108,7 @@ $(document).ready(function() {
         $("#block_ident").prop("disabled",true).attr('checked', false);
 
         jConfirm(
-            $.i18n('The firewall security level is currently set to') +  currentSetting + $.i18n('Are you sure you want to change to default settings?')
+            $.i18n('The firewall security level is currently set to') +' '+  currentSetting +'. '+ $.i18n('Are you sure you want to change to default settings?')
             ,$.i18n('Reset Default Firewall Settings')
             ,function(ret) {
                 if(ret) {
