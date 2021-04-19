@@ -149,7 +149,7 @@ function sec2dhms($sec)
                     $Add_val_int = intval($Add_val_int);
                     $WANIPv4_val_array[3]=$Convert_int+$Add_val_int;
                     $WANIPv4 = $WANIPv4_val_array[0]+'.'+$WANIPv4_val_array[1]+'.'+$WANIPv4_val_array[2]+'.'+$WANIPv4_val_array[3]+' (Shared using MAP-T)';*/
-		    $WANIPv4=getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapIpv4Address").' (Shared using MAP-T)';
+		    $WANIPv4=getStr("Device.DHCPv6.Client.1.X_RDKCENTRAL-COM_RcvOption.MapIpv4Address")+' (Shared using MAP-T)';
                     $WANIPv4Gateway = '-NA-';
 		}
 	}
