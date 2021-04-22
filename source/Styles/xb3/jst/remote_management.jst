@@ -776,7 +776,7 @@ function remote_access_block(){
 			<span id="remmess2">Remote Management Address (IPv6):</span> 		
 			<?%
 				/* Fiber devices use brlan0 ipv6 address */
-				if (get_wan_type() == "EPON" || (get_wan_type() == "DSL" && strpos($partnerId, "sky-") !== false)) {
+				if ((get_wan_type() == "DSL" && strpos($partnerId, "sky-") !== false)) {
 					$fistUSif = getStr("com.cisco.spvtg.ccsp.pam.Helper.FirstDownstreamIpInterface");
 				}
 				$ids = explode(",", getInstanceIds($fistUSif+"IPv6Address."));
