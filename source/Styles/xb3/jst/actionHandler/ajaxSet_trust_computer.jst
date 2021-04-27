@@ -27,7 +27,7 @@ $ipAddr= explode("/",$flag['IPAddress']);
 $validation = true;
 if($validation) $validation = isValInArray($flag['trustFlag'], ['true', 'false']/*p2j-array*/);
 if($validation) $validation = printableCharacters($flag['HostName']);
-if($validation) $validation = (validIPAddr($ipAddr[0])||$ipAddr[0]=="");
+if($validation) $validation = (validIPAddr($ipAddr[0])||$ipAddr[0]=="NA");
 if($validation){
     if( $flag['trustFlag'] == "true" ){
         // "no" => "yes"
@@ -45,9 +45,9 @@ if($validation){
                $deviceExist = true;
                $id = $value["__id"];
 		$ipStatus= getStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$id+".IPAddressType");
-                if($ipStatus=="IPv4"){
+                if($ipStatus=="IPv4" && $ipAddr[0]!="NA"){
                     setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$id+".IPAddress", $ipAddr[0], false);
-                }else if($ipStatus=="IPv6"){
+                }else if($ipStatus=="IPv6" && $ipAddr[1]!="NA"){
                     setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$id+".IPAddress", $ipAddr[1], false);
                 }
                setStr("Device.X_Comcast_com_ParentalControl.ManagedSites.TrustedUser."+$id+".Trusted", $flag['trustFlag'], true);

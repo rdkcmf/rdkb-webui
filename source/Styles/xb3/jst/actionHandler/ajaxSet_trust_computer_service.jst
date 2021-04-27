@@ -23,10 +23,11 @@ if ($_SESSION["loginuser"] == "" || $_SESSION["loginuser"] == false) {
 	exit(0);
 }
 $flag = json_decode($_POST['TrustFlag'], true);
+$ipAddr= explode("/",$flag['IPAddress']);
 $validation = true;
 if($validation) $validation = isValInArray($flag['trustFlag'], ['true', 'false']/*p2j-array*/);
 if($validation) $validation = printableCharacters($flag['HostName']);
-if($validation) $validation = (validIPAddr($flag['IPAddress'])||$flag['IPAddress']=='');
+if($validation) $validation = (validIPAddr($ipAddr[0])||$ipAddr[0]=='NA');
 if($validation){
     if( $flag['trustFlag'] == "true" ){
         // "no" => "yes"
@@ -56,11 +57,13 @@ if($validation){
             setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".HostDescription", $flag['HostName'], false);
             if ( strpos($flag['IPAddress'], ':') != false ){
                 setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".IPAddressType", "IPv6", false);
-            }
+            	setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".IPAddress", $ipAddr[1], false);
+	    }
             else{
                 setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".IPAddressType", "IPv4", false);
+		setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".IPAddress", $ipAddr[0], false);
             }
-            setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".IPAddress", $flag['IPAddress'], false);
+            //setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".IPAddress", $flag['IPAddress'], false);
             setStr("Device.X_Comcast_com_ParentalControl.ManagedServices.TrustedUser."+$instanceid+".Trusted", $flag['trustFlag'], true);
         }
         else{
