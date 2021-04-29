@@ -1261,6 +1261,7 @@
 "Switch to WANOE":"Passa a WANoE",
 "Wi-Fi 2.4G":"wifi 2,4 GHz",
 "Wi-Fi 5G":"wifi 5 GHz",
-"Ethernet":"Ethernet"
+"Ethernet":"Ethernet",
+"Error! Traceroute Failed":"Errore! Traceroute non riuscito"
 }
 
