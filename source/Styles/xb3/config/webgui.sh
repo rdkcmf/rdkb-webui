@@ -34,6 +34,7 @@
 #   limitations under the License.
 #######################################################################
 
+source /lib/rdk/t2Shared_api.sh
 
 #WEBGUI_SRC=/fss/gw/usr/www/html.tar.bz2
 #WEBGUI_DEST=/var/www
@@ -328,6 +329,7 @@ then
      			 	   echo "WEBGUI : Setting ConfigureWiFi to true is success"
 				uptime=`cat /proc/uptime | awk '{ print $1 }' | cut -d"." -f1`
 				   echo_t "Enter_WiFi_Personalization_captive_mode:$uptime"
+				   t2ValNotify "btime_wcpenter_split" $uptime
 				   if [ -e "/usr/bin/onboarding_log" ]; then
 				       /usr/bin/onboarding_log "Enter_WiFi_Personalization_captive_mode:$uptime"
 				   fi
