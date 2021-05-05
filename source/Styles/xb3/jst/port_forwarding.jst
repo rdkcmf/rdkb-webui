@@ -270,7 +270,7 @@ function getTitle(val){
 								<td headers='start-port'>" + $resArray[$i]['ExternalPort'] + "</td>\
 								<td headers='end-port'>" + $resArray[$i]['ExternalPortEndRange'] + "</td>\
 								<td headers='server-ip'>" + $resArray[$i]['InternalClient'] + "</td>\
-								<td headers='server-ipv6'>" + $resArray[$i]['X_CISCO_COM_InternalClientV6'] + "</td>\
+								<td headers='server-ipv6' style='overflow-wrap: break-word;'>" + $resArray[$i]['X_CISCO_COM_InternalClientV6'] + "</td>\
 								<td headers='active'><input type=\"checkbox\" id=\"PortActive_"+$index+"\" name=\""+"PortActive"+"\" " + $checked + " /></td>\
 								<td headers='edit-button'  class=\"edit\"><a tabindex='0' href=\"port_forwarding_edit.jst?id="+$index+"\" class=\"btn\"  id=\"edit_"+$index+"\">Edit</a></td>\
 								<td headers='delete-button'  class=\"delete\"><a tabindex='0'  href=\"actionHandler/ajax_port_forwarding.jst?del="+$index+"\" class=\"btn confirm\" \
