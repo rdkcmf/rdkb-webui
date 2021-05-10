@@ -727,6 +727,7 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
 			'security'		=> encrypt_map($wifi_value["ModeEnabled".$i], $wifi_value["EncryptionMethod".$i])
 		));
 	}
+	$wlan_max_len = 28;
 	for ($j=0; $j<count($public_v); $j++)
 	{
 		echo '<div class="module forms block tr_hotspot" style="position:relative;top:0px;right:0px;">';
@@ -734,7 +735,15 @@ if(($allowEthWan=="true") || ($autoWanEnable=="true")) {
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">'._("Public Wi-Fi Capable:").'</span> <span class="value">'.("true"==$public_v[$j]['xf_capable']?_("Yes"):_("No")).'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">'.sprintf(_("Wireless Network (Wi-Fi %s GHz):"),$public_v[$j]['radio_freq']).'</span> <span class="value">'.("true"==$public_v[$j]['ssid_enable']?_("Active"):_("Inactive")).'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">'._("Time Since Last Status:").'</span> <span class="value">'.$public_v[$j]['time_last'].'</span></div>';
-		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">'._("WLAN Gateway:").'</span> <span class="value">'.$public_v[$j]['wlan_gw'].'</span></div>';
+		$wlan_len = strlen($public_v[$j]['wlan_gw']);
+		if ($wlan_len < $wlan_max_len )
+		{
+			echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">'._("WLAN Gateway:").'</span> <span class="value">'.$public_v[$j]['wlan_gw'].'</span></div>';
+		}
+		else
+		{
+			echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">'._("WLAN Gateway:").'</span> <span class="ipv6-style">'.$public_v[$j]['wlan_gw'].'</span></div>';
+		}
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">'._("Supported Protocols:").'</span> <span class="value">'.$public_v[$j]['radio_mode'].'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">'._("Security:").'</span> <span class="value">'.$public_v[$j]['security'].'</span></div>';
 		echo '<div class="form-row '.(($odd=!$odd)?'odd':'').'"><span class="readonlyLabel">'._("No of Clients connected:").'</span> <span class="value">'.$public_v[$j]['client_cnt'].'</span></div>';
