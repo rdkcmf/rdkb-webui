@@ -892,6 +892,7 @@ $("[id^='wiremess1']").text($.i18n("Wi-Fi Radio"));
 $("#wiremess2").text($.i18n("Private Wi-Fi Network"));
 $("#private-Name,#other-Name,#public-Name").text($.i18n("Name"));
 $("#private-Frequency").text($.i18n("Frequency Band:"));
+$("#private-Frequency-wifi").text($.i18n("Frequency Band"));
 $("#private-Security,#other-Security,#public-Security").text($.i18n("Security Mode"));
 $("#wiremess3").text($.i18n("Other Wi-Fi Network"));
 $("#other-Frequency,#public-Frequency").text($.i18n("Frequency Band"));
