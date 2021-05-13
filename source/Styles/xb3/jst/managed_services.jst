@@ -307,7 +307,7 @@ function getTitle(val){
 							}
 					        $blockStatus = $stime+"-"+$etime+","+$bdays;
 						}
-						echo('<input type="hidden" id=servicename_'+$i+' value="'+$value["Description"]+'">');
+						echo('<input type="hidden" id=servicename_'+$j+' value="'+$value["Description"]+'">');
 						echo( "\
 					<tr class=" + "'" +$iclass+ "'" + ">\
 						<td headers='service-number' class=\"row-label alt number\">"+$j+"</td>\
@@ -317,7 +317,7 @@ function getTitle(val){
 						<td headers='end-port'>"+$value["EndPort"]+"</td>\
 						<td headers='effect-time' id="+$idval+">"+$blockStatus+"</td>\
 						<td headers='edit-button' class=\"edit\"><a style='padding: 4px 2px' tabindex='0' href=\"managed_services_edit.jst?id="+$i+"\" class=\"btn\"  id=\"edit_"+$i+"\">Edit</a></td>\
-						<td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_services.jst?del="+$i+"\" class=\"btn confirm\" onmouseover=getTitle("+$i+") id=\"deleteservice_"+$i+"\">x</a></td>\
+						<td headers='delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_services.jst?del="+$i+"\" class=\"btn confirm\" onmouseover=getTitle("+$j+") id=\"deleteservice_"+$j+"\">x</a></td>\
 					</tr>"); 
 					}
 				}
