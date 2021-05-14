@@ -646,7 +646,8 @@ $(".btn").click(function(){
 			success:function(results){
 				 if(results.replace(/\s+/g, " ").trim() !='""'){
                                         jHide();
-                                        jAlert(results.replace(/\s+/g, " ").trim());
+                                        var res=results.replace(/\s+/g, " ").trim().split('"').join('');
+					alertLocale(res);
 				}else{
 					setTimeout(function(){
 						jHide();

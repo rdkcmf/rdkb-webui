@@ -46,14 +46,33 @@ $paramNameArray = ["Device.Ethernet.Interface."]/*p2j-array*/;
 $mapping_array  = ["Upstream", "Status", "MACAddress", "CurrentBitRate"]/*p2j-array*/;
 $ethernetParam = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
 if(strpos($PartnerId, "sky-") !== false){
-	$port_entries = getStr('Device.X_RDK-Central_COM_WanAgent.InterfaceNumberOfEntries');
-	for ($i=1;$i<=$port_entries; $i++){
-		if("eth3" ==getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'+$i+'.Name')){
-			if('true'==getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'+$i+'.Wan.Enable')){
-				$reclaim = true;
+	$fileget = file_exists("/tmp/OS_WANMANAGER_ENABLED");
+	if($fileget){
+		$instval= explode(",",getInstanceIds("Device.X_RDK_WanManager.CPEInterface."));
+		for($a= 1;$a <= count($instval);$a++) {
+			if("eth3" ==getStr('Device.X_RDK_WanManager.CPEInterface.'+$a+'.Name')){
+				if('true'==getStr('Device.X_RDK_WanManager.CPEInterface.'+$a+'.Wan.Enable')){
+					$reclaim = true;
+				}
+				else{
+					$reclaim = false;
+				}
 			}
 			else{
 				$reclaim = false;
+			}
+		}
+	}
+	else{
+		$port_entries = getStr('Device.X_RDK-Central_COM_WanAgent.InterfaceNumberOfEntries');
+		for ($i=1;$i<=$port_entries; $i++){
+			if("eth3" ==getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'+$i+'.Name')){
+				if('true'==getStr('Device.X_RDK-Central_COM_WanAgent.Interface.'+$i+'.Wan.Enable')){
+					$reclaim = true;
+				}
+				else{
+					$reclaim = false;
+				}
 			}
 		}
 	}

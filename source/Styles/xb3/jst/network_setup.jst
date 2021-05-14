@@ -194,9 +194,24 @@ function sec2dhms($sec)
 		$portVal="Porta";
 	}
 	if(strpos($partnerId, "sky-") !== false){
-		$ipv4_status =  getStr("Device.X_RDK-Central_COM_WanAgent.IPV4WanConnectionState");
-		$ipv6_status =  getStr("Device.X_RDK-Central_COM_WanAgent.IPV6WanConnectionState");
-		if($ipv6_status == 'up' || $ipv4_status == 'up'){
+		$fileget = file_exists("/tmp/OS_WANMANAGER_ENABLED");
+		if($fileget){
+			$instval= explode(",",getInstanceIds("Device.X_RDK_WanManager.CPEInterface."));
+			for($a= 1; $a <= count($instval);$a++) {
+				$activelink = getStr("Device.X_RDK_WanManager.CPEInterface."+$a+".Wan.ActiveLink");
+				if($activelink == 'true'|| $activelink==true){
+					$ipv4_status = getStr("Device.X_RDK_WanManager.CPEInterface."+$a+".IP.IPv4Status");
+					$ipv6_status =  getStr("Device.X_RDK_WanManager.CPEInterface."+$a+".IP.IPv6Status");
+				}
+			}
+		}
+		else{
+			$ipv4_status =  getStr("Device.X_RDK-Central_COM_WanAgent.IPV4WanConnectionState");
+			$ipv6_status =  getStr("Device.X_RDK-Central_COM_WanAgent.IPV6WanConnectionState");
+		}
+		//$ipv4_status =  getStr("Device.X_RDK-Central_COM_WanAgent.IPV4WanConnectionState");
+		//$ipv6_status =  getStr("Device.X_RDK-Central_COM_WanAgent.IPV6WanConnectionState");
+		if(strtoupper($ipv6_status) == 'UP' || strtoupper($ipv4_status) == 'UP'){
 			$idconn ="connected";
 			$Wan_Port_Status ="Connected";
 			$wan_port_value =  $portVal+" "+( parseInt($wan_port_value) + 1);
