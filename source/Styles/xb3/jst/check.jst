@@ -218,7 +218,7 @@ PHP_SESSION_ACTIVE = 2;
 			sleep(1);
 			$passVal= getStr("Device.Users.User.3.X_RDKCENTRAL-COM_ComparePassword");
 			if(!$return_status) $passVal = "Invalid_PWD";
-			if (( !innerIP($client_ip) && (if_type($server_ip)!="rg_ip")) || !checkAdminAccess($server_ip) )
+			if ( !innerIP($client_ip) && (if_type($server_ip)!="rg_ip") && (if_type($server_ip)!="rm_ip") )
 				{
 					if($passLockEnable == "true"){
 							if($failedAttempt<$passLockoutAttempt){
@@ -373,23 +373,6 @@ PHP_SESSION_ACTIVE = 2;
         }
     }
 
-	 function checkAdminAccess($ip_addr){
-                $remote_ip=get_ips("erouter0");
-                $remoteAcess= getStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.Enable");
-                $httpRemoteEnable= getStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpEnable");
-                $httpRemotePort= getStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpPort");
-                
-                $httpsRemoteEnable=getStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpsEnable");
-                $httpsRemotePort= getStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpsPort");
-                $server_port = $_SERVER["SERVER_PORT"];
-                
-                	if( $remoteAcess && ($httpRemoteEnable || $httpsRemoteEnable) && (($server_port==$httpRemotePort)|| ($server_port==$httpsRemotePort))){
-                    			return true;
-			}
-                        
-                        return false;
-		}
-
 	function innerIP($client_ip){		//for compatibility, $client_ip is not used
 		$out		= [];
 		$tmp		= [];
@@ -458,7 +441,27 @@ PHP_SESSION_ACTIVE = 2;
 			return "cm_ip";
 		}
 		else{
-			return "rg_ip";
+			if(strtolower($currentOpMode) =="ethernet"){
+				$remote_ip=get_ips("erouter0");
+				$remoteAcess= getStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.Enable");
+				$httpRemoteEnable= getStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpEnable");
+				$httpRemotePort= getStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpPort");
+
+				$httpsRemoteEnable=getStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpsEnable");
+				$httpsRemotePort= getStr("Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpsPort");
+				$server_port = $_SERVER["SERVER_PORT"];
+				$server_ip      = parseIP($_SERVER["SERVER_ADDR"]);
+				if (in_array($server_ip,$remote_ip)){
+					if( $remoteAcess && ($httpRemoteEnable || $httpsRemoteEnable) && (($server_port==$httpRemotePort)|| ($server_port==$httpsRemotePort))){
+							return "rm_ip";
+					}
+				}
+				return "eth_ip";
+			}else{
+				return "rg_ip";
+			}
+			
+		//	return "rg_ip";
 		}
 		// print_r($lan_ip);
 		// print_r($cm_ip);
