@@ -48,6 +48,13 @@ source /lib/rdk/t2Shared_api.sh
 #else
 #	echo "WEBGUI SRC does not exist!"
 #fi
+source /etc/device.properties
+
+if [ ! -f /nvram/certs/myrouter.io.cert.pem ] && [ "$BOX_TYPE" = "XB3" ]; then
+    if [ -f /lib/rdk/check-webui-update.sh ]; then
+        sh /lib/rdk/check-webui-update.sh
+    fi
+fi
 
 # start lighttpd
 source /etc/utopia/service.d/log_capture_path.sh
