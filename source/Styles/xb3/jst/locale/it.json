@@ -1235,7 +1235,7 @@
  "Alert":"Attenzione",
  "Wi-Fi Control List(up to 64 items)":"Lista di controllo wifi (fino a 64 voci)",
  "2.4":"2,4",
-  "IP has already been reserved for another device.\nPlease try using another IP address!":"L'IP è già stato riservato per un altro dispositivo.\nProva a utilizzare un altro indirizzo IP",
+  "IP has already been reserved for another device.\nPlease try using another IP address!":"L'indirizzo IP è già stato riservato per un altro dispositivo.\nProva a utilizzare un altro indirizzo IP",
  "Select <strong>VIEW CONNECTED DEVICES </strong>to manage devices connected to your network.":"Seleziona <strong>VISUALIZZA DISPOSITIVI CONNESSI </strong>per gestire i dispositivi connessi alla tua rete.",
 "<strong>Mode:</strong>  ":"<strong>Modalità:</strong> I ",
 " GHz operates in b/g/n modes. Unless you have older Wi-Fi devices that use only 'b' mode, use the default 802.11 g/n for faster performance.":" GHz funzionano in modalità b/g/g/n. A meno che non si disponga di vecchi dispositivi wifi che utilizzano solo la modalità \"b\", utilizzare il valore predefinito 802.11 g/n per prestazioni più rapide.",
