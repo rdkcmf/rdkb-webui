@@ -51,7 +51,7 @@ function get_results()
 	$paramNameArray = ["Device.WiFi.NeighboringWiFiDiagnostic.Result."]/*p2j-array*/;
 	$mapping_array  = ['Radio', 'Channel', 'SSID', 'BSSID', 'SignalStrength', 'SupportedStandards', 'SecurityModeEnabled', 'SupportedDataTransferRates']/*p2j-array*/;
 	$wifi_spec_values  = getParaValues($rootObjName, $paramNameArray, $mapping_array, true);
-	if(empty($wifi_spec_values))
+        if($wifi_spec_values.length == 0)
 	{
 		//get_results();
 		return {"status" : "In progress"}/*p2j-array*/;
