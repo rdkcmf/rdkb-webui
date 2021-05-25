@@ -39,10 +39,12 @@ $(document).ready(function() {
     gateway.page.init("Gateway > Software", "nav-software");
 });
 </script>
-<?%
+<?%	
+	$partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 	$version		= getStr("Device.DeviceInfo.AdditionalSoftwareVersion");
 	$FirmwareName	= getStr("Device.DeviceInfo.X_CISCO_COM_FirmwareName");
 	$ModelName		= getStr("Device.DeviceInfo.ModelName");
+	if(strpos($partnerId, "sky-") !== false){$dslFirmver = getStr("Device.DSL.Line.1.FirmwareVersion");}
 	$wanType = get_wan_type();
 	if ($wanType == "EPON") {
 	   $BackendSoftwareVersion = "EPON";
@@ -60,10 +62,18 @@ $(document).ready(function() {
 	</div>
 	<div class="module forms">
 		<h2 id="softmess1">System Software Version</h2>
+		<?% if(strpos($partnerId, "sky-") !== false){ if($BackendSoftwareVersion == "DSL"){if($dslFirmver !=''){ ?>
 		<div class="form-row">
 			<span class="readonlyLabel"><?% echo( $BackendSoftwareVersion+" "); ?><span id="softmess2">Software Version:</span></span> <span class="value">
-			<?% echo( $version); ?></span>
+			<?% echo( $dslFirmver); ?></span>
 		</div>
+		<?% }}}else{ ?>
+        		<div class="form-row">
+            			<span class="readonlyLabel"><?% echo( $BackendSoftwareVersion+" "); ?><span id="softmess2">Software Version:</span></span> <span class="value">
+             				<?% echo ($version); ?>
+            			</span>
+        		</div>
+		<?% } ?>
 		<!--div class="form-row odd">
 			<span class="readonlyLabel">DECT Software Version:</span> <span class="value">
 			<?% /*echo getStr("Device.X_CISCO_COM_MTA.Dect.SoftwareVersion");*/ ?></span>
