@@ -1418,13 +1418,13 @@ $("#f_i_option1").click(function(){
 		classVal = $("#WiFi_Password").attr('class');
 		if ($("#showPass").children().text() == "Hide ") {
 			$("[id^='showPass']").children().text("Show");
-			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="password" placeholder="Minimum Eight Characters" maxlength="64" class="">';
+			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="password" placeholder="<?% echo( $lang["passwordtext"]); ?>" maxlength="64" class="">';
 			$("[id^='WiFi_Password_0']").hide();
 			$("[id^='WiFi_Password_pass_0']").show();
 		}
 		else {
 			$("[id^='showPass']").children().text("Hide ");
-			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="">';
+			document.getElementById("password_field").innerHTML = '<input id="WiFi_Password" type="text" placeholder="<?% echo( $lang["passwordtext"]); ?>" maxlength="64" class="">';
 			$("[id^='WiFi_Password_0']").show();
 			$("[id^='WiFi_Password_pass_0']").hide();
 		}
@@ -1436,13 +1436,13 @@ $("#f_i_option1").click(function(){
 		class5Val = $("#WiFi5_Password").attr('class');
 		if ($("#show5Pass").children().text() == "Hide ") {
 			$("[id^='show5Pass']").children().text("Show");
-			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="password" placeholder="Minimum Eight Characters" maxlength="64" class="">';
+			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="password" placeholder="<?% echo( $lang["passwordtext"]); ?>" maxlength="64" class="">';
 			$("[id^='WiFi5_Password_0']").hide();
 			$("[id^='WiFi5_Password_pass_0']").show();
 		}
 		else {
 			$("[id^='show5Pass']").children().text("Hide ");
-			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="">';
+			document.getElementById("password5_field").innerHTML = '<input id="WiFi5_Password" type="text" placeholder="<?% echo( $lang["passwordtext"]); ?>" maxlength="64" class="">';
 			$("[id^='WiFi5_Password_0']").show();
 			$("[id^='WiFi5_Password_pass_0']").hide();
 		}
@@ -1605,7 +1605,7 @@ $("#f_i_option1").click(function(){
 				</div>
 				<p style="display:inline; margin: 1px 40px 0 0; text-align: right;"><?% echo( $lang["wifi_name"]); ?></p>
 				<span id="WiFi_Name_Field" class="" >
-					<input style="/*display:inline; margin: 4px 0 0 -8px;*/" id="WiFi_Name" type="text" placeholder="Example: [account name] Wi-Fi" maxlength="32" class="">
+					<input style="/*display:inline; margin: 4px 0 0 -8px;*/" id="WiFi_Name" type="text" placeholder="<?% echo( $lang["exampleaccounttext"]); ?>" maxlength="32" class="">
 				</span>	
 				<br>
 				<div id="PasswordContainer" class="container" style="display: none;">
@@ -1616,7 +1616,7 @@ $("#f_i_option1").click(function(){
 					</div>
 				</div>
 				<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;"><?% echo( $lang["wifi_password"]); ?></p>
-				<span style="/*display:inline; margin: 4px 0 0 -26px;*/" id="password_field"><input id="WiFi_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" autocorrect="off" autocapitalize="off"></span>
+				<span style="/*display:inline; margin: 4px 0 0 -26px;*/" id="password_field"><input id="WiFi_Password" type="text" placeholder="<?% echo( $lang["passwordtext"]); ?>" maxlength="64" class="" autocorrect="off" autocapitalize="off"></span>
 				<div id="showPass" style="display:inline-table; margin: 4px 0 0 -90px;">
 					<a href="javascript:void(0)" style="white-space: pre;"><?% echo( $lang["hide"]); ?></a>
 			    </div>
@@ -1635,7 +1635,7 @@ $("#f_i_option1").click(function(){
 						</div>
 					</div>
 					<p style="display:inline; margin: 1px 40px 0 0; text-align: right;"><?% echo( $lang["wifi_name"]); ?></p>
-					<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi5_Name" type="text" placeholder="Example: [account name] Wi-Fi" maxlength="32" class="">
+					<input style="display:inline; margin: 4px 0 0 -8px;" id="WiFi5_Name" type="text" placeholder="<?% echo( $lang["exampleaccounttext"]); ?>" maxlength="32" class="">
 					<br>
 					<div id="PasswordContainer5" class="container" style="display: none;">
 						<div class="requirements">
@@ -1645,7 +1645,7 @@ $("#f_i_option1").click(function(){
 						</div>
 					</div>
 					<p style="display:inline; margin: 1px 40px 0 -60px; text-align: right;"><?% echo( $lang["wifi_password"]); ?></p>
-					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder="Minimum Eight Characters" maxlength="64" class="" autocorrect="off" autocapitalize="off" ></span>
+					<span style="display:inline; margin: 4px 0 0 -26px;" id="password5_field"><input id="WiFi5_Password" type="text" placeholder="<?% echo( $lang["passwordtext"]); ?>" maxlength="64" class="" autocorrect="off" autocapitalize="off" ></span>
 					<div id="show5Pass" style="display:inline-table; margin: 4px 0 0 -90px;">
 						<a href="javascript:void(0)" style="white-space: pre;"><?% echo( $lang["hide"]); ?> </a>
 				    </div>
@@ -1792,11 +1792,10 @@ $("#f_i_option1").click(function(){
 			<br><br>
 		</div>
 		<div id="complete" style="display: none;" class="portal">
-			<h1>Your Wi-Fi is Nearly Complete</h1>
+			<h1><?% echo( $lang["nearly_complete"]); ?></h1>
 			<img src="cmn/img/progress.gif" height="75" width="75"/>
 			<div class="link_example">
-				<p>We'll have this finished up shortly.<br>
-					Once complete, you can start connecting devices.
+				<p><?% echo( $lang["progress_text"]); ?>
 				</p>
 			</div>
 			<hr>
@@ -1842,11 +1841,10 @@ $("#f_i_option1").click(function(){
 			<br><br>
 		</div>
 		<div id="ready" style="display: none;" class="portal">
-			<h1>Your Wi-Fi is Ready</h1>
+			<h1><?% echo( $lang["wifi_ready"]); ?></h1>
 			<img src="cmn/img/success_lg.png"/>
 			<div class="link_example">
-				<p>You may begin using your Wi-Fi.<br>
-				<b>You'll have to reconnect your device using the new credentials.</b>
+				<p><?% echo( $lang["begin_using"]); ?>
 				</p>
 			</div>
 			<hr>
