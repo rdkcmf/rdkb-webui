@@ -782,7 +782,7 @@ $("#qosmess8").text($.i18n("Traffic Type"));
 $("#qosmess9").text($.i18n("Packets"));
 $("#show_DSXlog").prop("value", $.i18n('Show DSX Log'));
 $("#remhead").text($.i18n("Advanced > Remote Management"));
-$("#remtip1").text($.i18n("Remote Management allows the gateway to be remotely accessed by a customer account representative to perform troubleshooting or maintenance."));
+$("#remtip1").text($.i18n("Remote Management allows the gateway to be accessed remotely by a customer account representative to perform troubleshooting or maintenance."));
 $("#remtip2").text($.i18n("Remote Management can be used via HTTP and HTTPS."));
 $("#remtip3").text($.i18n("Enable the HTTP option and enter the value for HTTP Port, then you can access your device from HTTP. For example, if the WAN IP address is 11.22.11.22 and the HTTP port number is 8080, then you would use http://11.22.11.22:8080"));
 $("#remtip4").text($.i18n("It's the same way to configure HTTPS."));
