@@ -388,7 +388,7 @@ $("#hardmess9").text($.i18n("Flash Used Memory:"));
 $("#hardmess10").text($.i18n("Flash Available Memory:"));
 $("#hsporthead").text($.i18n("Advanced > HS Port Forwarding"));
 $("#hsporttip1").text($.i18n("Add port forwarding related to Home Security Device."));
-$("#hsporttip2").text($.i18n("Users can configure the RG to provide the port forwarding services which allow the Internet users to access local services such as the Web server or FTP server at your local site. This is done by redirecting the combination of the WAN IP address and the service port to the local private IP and its service port"));
+$("#hsporttip2").text($.i18n("Users can configure the RG to provide the port forwarding services which allow the Internet users to access local services such as the Web server or FTP server at your local site. This is done by redirecting the combination of the WAN IP address and the service port to the local private IP and its service port."));
 $("#hsportmess1").text($.i18n("HS Port Forwarding:"));
 $("#hsportmess2").text($.i18n("HS Port Forwarding"));
 $("#add-port-forward").text($.i18n("+ Add Port Forward"));
