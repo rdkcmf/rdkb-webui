@@ -258,7 +258,7 @@ $(document).ready(function() {
             if(status == "Success!"){
               window.location.href = "managed_services.jst";
             }else{
-              jAlert(status);                        
+              jAlert($.i18n(status));                        
             }
           },
 					error:function(){
@@ -315,7 +315,7 @@ $(document).ready(function() {
             if(status == "Success!"){
               window.location.href = "managed_services.jst";
             }else{
-              jAlert(status);                        
+              jAlert($.i18n(status));
             }
           },
 					error:function(){
