@@ -45,6 +45,14 @@ $productLink = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBra
 ("" == $enableMD) && ($enableMD = "false");
 ("" == $allowAll) && ($allowAll = "false");
 ?>
+
+<style>
+
+	#mandevmess5{
+		margin-right: 10px !important;
+	}
+</style>
+
 <script  type="text/javascript">
 $(document).ready(function() {
     gateway.page.init("Parental Control > Managed Devices", "nav-devices");
@@ -362,19 +370,19 @@ $(document).ready(function() {
         		<th id="allowed-delete-button" class=" delete">&nbsp;</th>
 		    </tr>
 		    <?% 
-				$iclass="even";
+				$iclass="";
 				for($i=0;$i<count($arrayAllowName);$i++) {
-					if ($iclass=="even") {$iclass="odd";} else {$iclass="even";}
+					if ($iclass=="") {$iclass="odd";} else {$iclass="";}
 					$j = $i + 1;
-					echo( "\
-					<tr class=$iclass>\
+					echo( "<tr class=" + "'" +$iclass+ "'" + ">\
 						<td headers='allowed-number' class=\"row-label alt number\">"+$j+"</td>\
 						<td headers='allowed-device-name'>"+$arrayAllowName[$i]+"</td>\
 						<td headers='allowed-mac-address'>"+$arrayAllowMAC[$i]+"</td>\
 						<td headers='allowed-time'>"+$arrayAllowStatus[$i]+"</td>\
 						<td headers='allowed-edit-button' class=\"edit\"><a tabindex='0' href=\"managed_devices_edit_allowed.jst?id="+$arrayAllowID[$i]+"\" class=\"btn\"  id=\"edit_"+$arrayAllowID[$i]+"\">Edit</a></td>\
 						<td headers='allowed-delete-button' class=\"delete\"><a tabindex='0' href=\"actionHandler/ajax_managed_devices.jst?del="+$arrayAllowID[$i]+"\" class=\"btn confirm\" title=\"Delete this device\" id=\"delete_"+$arrayAllowID[$i]+"\">x</a></td>\
-					</tr>"); 
+					</tr>\
+"); 
 				} 
 			?>
 		    <tfoot>
