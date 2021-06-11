@@ -27,9 +27,8 @@ csrfprotector_rdkb::init(); */
 <?% include('includes/utility.jst'); ?>
 <?%
 	header('X-robots-tag: noindex,nofollow');
-	session_start();
 	$PartnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
-	$default_lang                  = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.DefaultLanguage");
+	$defaultLanguage                  = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.DefaultLanguage");
         $title                         = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.Title");
       //WiFiPersonalization.Support UI inclusion/exclusion (on/off)
         $personalization_param = {
@@ -45,41 +44,30 @@ csrfprotector_rdkb::init(); */
         $personalization_value = KeyExtGet("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.WiFiPersonalization.", $personalization_param);
         $lang_file='';
 	$lang={};
-        if (!isset($_SESSION['lang'])) {
-                $_SESSION['lang'] = $default_lang;
-                if ($default_lang == "eng") {
-                        $_SESSION['lang'] = "eng";
-                        $lang_file='includes/eng.jst';
-                }
-                else if ($default_lang == "fre") {
-                        $_SESSION['lang'] = "fre";
-                        $lang_file='includes/fre.jst';
-                }
-	}
-	else if (isset($_SESSION['lang']) && $_SESSION['lang'] != $_GET['lang'] && !empty($_GET['lang'])) {
+	var $arr = new Array();
+	$arr['lang']="";
+	if ($arr['lang'] != $_GET['lang'] && !empty($_GET['lang'])) {
                 if ($_GET['lang'] == "eng") {
-                        $_SESSION['lang'] = "eng";
+                        $arr['lang'] = "eng";
                         $lang_file='includes/eng.jst';
                 }
                 else if ($_GET['lang'] == "fre") {
-                        $_SESSION['lang'] = "fre";
+                        $arr['lang'] = "fre";
                         $lang_file='includes/fre.jst';
                 }
         }else{
-                 if ($default_lang == "eng") {
-                        $_SESSION['lang'] = "eng";
+                 if ($defaultLanguage == "eng") {
+                        $arr['lang'] = "eng";
                         $lang_file='includes/eng.jst';
                 }
-                else if ($default_lang == "fre") {
-                        $_SESSION['lang'] = "fre";
+                else if ($defaultLanguage == "fre") {
+                        $arr['lang'] = "fre";
                         $lang_file='includes/fre.jst';
                 }
-
         }
-
+	
 	header('X-robots-tag: noindex,nofollow');
         include($lang_file);
-        session_start();
 
 ?>
 <html lang="en">

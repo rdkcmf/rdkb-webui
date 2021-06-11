@@ -309,7 +309,6 @@ $(document).ready(function(){
 <body class="si-twilight-background">
 <?% include('includes/utility.jst'); ?>
 <?%
-        session_start();
         
 $defaultLanguage= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UIBranding.DefaultLanguage");
   $partnerId= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
@@ -329,39 +328,29 @@ $defaultLanguage= getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.RDKB_UI
 $lang_file='';
 $lang={};
 $personalization_value='';
-        if (!isset($_SESSION['lang'])) {
-                $_SESSION['lang'] = $defaultLanguage;
-                if ($defaultLanguage == "eng") {
-                        $_SESSION['lang'] = "eng";
-                        $lang_file='includes/eng.jst';
-                }
-                else if ($defaultLanguage == "fre") {
-                        $_SESSION['lang'] = "fre";
-                        $lang_file='includes/fre.jst';
-                }
-        }
-        else if (isset($_SESSION['lang']) && $_SESSION['lang'] != $_GET['lang'] && !empty($_GET['lang'])) {
+var $arr = new Array();
+$arr['lang']="";
+ if ($arr['lang'] != $_GET['lang'] && !empty($_GET['lang'])) {
                 if ($_GET['lang'] == "eng") {
-                        $_SESSION['lang'] = "eng";
+                        $arr['lang'] = "eng";
                         $lang_file='includes/eng.jst';
                 }
                 else if ($_GET['lang'] == "fre") {
-                        $_SESSION['lang'] = "fre";
+                        $arr['lang'] = "fre";
                         $lang_file='includes/fre.jst';
                 }
         }else{
                  if ($defaultLanguage == "eng") {
-                        $_SESSION['lang'] = "eng";
+                        $arr['lang'] = "eng";
                         $lang_file='includes/eng.jst';
                 }
                 else if ($defaultLanguage == "fre") {
-                        $_SESSION['lang'] = "fre";
+                        $arr['lang'] = "fre";
                         $lang_file='includes/fre.jst';
                 }
         }
   header('X-robots-tag: noindex,nofollow');
         include($lang_file);
-              session_start();
 
 ?>
 
