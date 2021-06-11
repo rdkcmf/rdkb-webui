@@ -53,7 +53,7 @@ $endAddr        = getStr("Device.DHCPv4.Server.Pool.1.MaxAddress");
 $IPv6Prefix = substr($IPv6Prefix,0, $IPv6Prefix.lastIndexOf("::"));
 // these means disable, MUST show empty on GUI!!!
 ("0.0.0.0" == $host)	&& ($host = "");
-("x" == $hostv6)	&& ($hostv6 = "");
+("0:0:0:0:0:0:0:0" == $hostv6)	&& ($hostv6 = "");
 $partnerId = getStr("Device.DeviceInfo.X_RDKCENTRAL-COM_Syndication.PartnerId");
 if (strpos($partnersId, "sky-") !== false) {
     $dmz_v6 =false;
@@ -240,7 +240,7 @@ $('#save_setting').click(function() {
     var host1 = parseInt($("#dmz_host_address_2").val());
     var host2 = parseInt($("#dmz_host_address_3").val());
     var host3 = parseInt($("#dmz_host_address_4").val());
-	var hostv6 = IsBlank("ip6_address_r") ? 'x' : GetAddress(":", "ip6_address_r");
+	var hostv6 = IsBlank("ip6_address_r") ? '0:0:0:0:0:0:0:0' : GetAddress(":", "ip6_address_r");
 	if (isEnabledDMZ) {
 		var ip= $("#dmz_host_address_1").val() + '.' + $("#dmz_host_address_2").val() + '.'+ $("#dmz_host_address_3").val() + '.' +$("#dmz_host_address_4").val();
                         var IPv4_valid = ValidIp4AddrInDhcpPool(ip, beginAddr, endAddr);
