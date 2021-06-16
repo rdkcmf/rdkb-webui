@@ -1918,7 +1918,7 @@ function saveBandSteeringSettings()
 				 $isBridge = $_SESSION["lanMode"];
 				for(var $keytmp in $ssids) { $i=$ssids[$keytmp];/*p2j-foreach*/
 				$id = ($isBridge == 'bridge-static' && "mso" == $_SESSION["loginuser"])? 3:1;
-					echo( '<option value="'+$i+'" '+(($id==$i)?'selected="selected"':"")+'>'+str_replace(" ", "&nbsp;", htmlspecialchars(getStr("Device.WiFi.SSID."+$i+".SSID"), ENT_NOQUOTES, 'UTF-8'))+'</option>');
+					echo( '<option value="'+$i+'" '+(($id==$i)?'selected="selected"':"")+'>'+str_replace(/ /g, "&nbsp;", htmlspecialchars(getStr("Device.WiFi.SSID."+$i+".SSID"), ENT_NOQUOTES, 'UTF-8'))+'</option>');
 				}
 			?>
 		</select>
