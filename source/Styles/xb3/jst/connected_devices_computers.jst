@@ -1121,7 +1121,7 @@ for ($i=0; $i < $onlinePrivateNetworkHost['hostNum']; $i++) {
 	}
 	else if($onlinePrivateNetworkHost[$i.toString()]['Connection']=="Wi-Fi 5G"){
 		unknowid ="5_G";
-	}else{unknowid ="ethcon";}
+	}else if($onlinePrivateNetworkHost[$i.toString()]['Connection']=="Ethernet"){unknowid ="ethcon";}
 	echo( "\
         <div id=\"edit-device-" +$ID+ "\"  class=\"edit-device content \" style='display:none'>\
 		    <h1 id=\"conndevedithead\">Connected Devices > Devices > Edit Device</h1>\
