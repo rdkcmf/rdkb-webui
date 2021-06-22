@@ -50,7 +50,7 @@ if(strpos($PartnerId, "sky-") !== false){
 	if($fileget){
 		$instval= explode(",",getInstanceIds("Device.X_RDK_WanManager.CPEInterface."));
 		for($a= 1;$a <= count($instval);$a++) {
-			if("eth3" ==getStr('Device.X_RDK_WanManager.CPEInterface.'+$a+'.Name')){
+			if("eth3" ==getStr('Device.X_RDK_WanManager.CPEInterface.'+$a+'.Name')||"eth0" ==getStr('Device.X_RDK_WanManager.CPEInterface.'+$a+'.Name')){
 				if('true'==getStr('Device.X_RDK_WanManager.CPEInterface.'+$a+'.Wan.Enable')){
 					$reclaim = true;
 				}
