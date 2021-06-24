@@ -1264,6 +1264,10 @@
 "Ethernet":"Ethernet",
 "Error! Traceroute Failed":"Errore! Traceroute non riuscito",
 "Conflict with other port123. Please use a different port!":"Conflitto con altra porta123. Si prega di utilizzare una porta diversa!",
-"(Shared using MAP-T)":"(Condiviso utilizzando MAP-T)"
+"(Shared using MAP-T)":"(Condiviso utilizzando MAP-T)",
+"Device Name should not exceed more than 63 characters":"Il nome del dispositivo non deve superare più di 63 caratteri",
+"Failure! As Port Triggering/Port Forwarding rule exists for the same port.Service name has been used!\n ":"Si è verificato un errore. É presente una regola di Port Triggering/Port Forwarding per la stessa porta.Il nome del servizio è già stato utilizzato",
+"Failure! As Port Triggering/Port Forwarding rule exists for the same port.Conflict with other service. Please check Trigger and Target Ports!":"Si è verificato un errore. É presente una regola di Port Triggering/Port Forwarding per la stessa porta.Conflitto con altro servizio. Controlla porte trigger e target",
+"Delegated prefix (IPv6):":"Prefisso delegato (IPv6):"
 }
 
