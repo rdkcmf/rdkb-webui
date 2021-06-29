@@ -157,7 +157,6 @@ $(document).ready(function() {
 			$("#ipv4_dhcp_ending_address_4").val(old_ending_ip4);
 		}*/
 		if(subnet == "255.255.0.0") {
-			beginning_ip3 = "0";
 			beginning_ip4 = "2";
 			ending_ip3 = "255";
 			ending_ip4 = "253";
@@ -198,11 +197,9 @@ $(document).ready(function() {
 			$("#ipv4_gateway_address_3").prop("disabled", false);
 		}
 		else if (subnet == "255.0.0.0") {
-			beginning_ip3 = "0";
 			beginning_ip4 = "2";
 			ending_ip3 = "255";
 			ending_ip4 = "253";
-			beginning_ip2 = "0";
 			ending_ip2 = "255";
 			$("#ipv4_dhcp_beginning_address_1").prop("disabled", true);
 			$("#ipv4_dhcp_beginning_address_2").prop("disabled", false);
@@ -431,7 +428,7 @@ $(document).ready(function() {
 			}
 			,ipv4_dhcp_beginning_address_4: {
 			    required: true,
-				min: 0,
+				min: 2,
 				max: 253,
 				digits: true,
 				checkMaskBegin: true,
@@ -691,6 +688,12 @@ $('#submit_ipv4').click(function(e){
     var gw_ip1 = parseInt($('#ipv4_gateway_address_1').val());
     var gw_ip2 = parseInt($('#ipv4_gateway_address_2').val());
     var gw_ip3 = parseInt($('#ipv4_gateway_address_3').val());
+    var gw_ip4 = parseInt($("#ipv4_gateway_address_4").val());
+    var GWArr = Array(gw_ip2, gw_ip3, gw_ip4);
+    if (! validate_v4addr_pool(GWArr,DBArr)) {
+        jAlert("Beginning Address can't be smaller than gateway address!");
+        return;
+    }
     if( ((gw_ip1 != 10) && (gw_ip1 != 172) && (gw_ip1 != 192)) || ((gw_ip1 == 172) && ((gw_ip2<16) || (gw_ip2>31)))  || ((gw_ip1== 192) && ((gw_ip2 != 168) || (gw_ip3== 147)) ) ){
 		jAlert($.i18n('Gateway IP is not in valid private IP range')+'\n [10.0.0.1 ~ 10.255.255.253,\n172.16.0.1 ~ 172.31.255.253,\n192.168.0.1 ~ 192.168.146.253,\n192.168.148.1 ~ 192.168.255.253]');
     	return;
