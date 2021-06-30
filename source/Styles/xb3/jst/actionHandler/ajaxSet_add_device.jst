@@ -143,6 +143,7 @@ if($validation) $validation = is_allowed_string($deviceInfo['Comments']);
 $result = ($validation)?'':'Invalid Inputs!';
 var $macArr = {};
 var $index = null;
+if($validation){
 if( !array_key_exists('delFlag', $deviceInfo) ) {
     //key kelFlag is not exist, so this is to reserve a ip addr for host 
     //firstly check whether this device is already in the reserved ip list
@@ -291,6 +292,7 @@ else{
        setStr("Device.Hosts.Host."+$i+".AddressSource", "DHCP", true);
     }
     $result = "success";
+}
 }
 echo( htmlspecialchars(json_encode($result), ENT_NOQUOTES, 'UTF-8'));
 ?>
